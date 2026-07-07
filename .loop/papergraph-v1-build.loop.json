@@ -1,0 +1,444 @@
+{
+  "task": "Implement PaperGraph v1 (src/paperproof + tests) from docs/00–12, milestones M0–M4 with docs/11 §9 gates, executed by Claude Code (Opus); live smoke stays a manual human node.",
+  "loop_altitude": "medium",
+  "loop_altitude_rationale": "Blast radius is repo-local code (no prod surface), fully git-reversible, and docs/10 §7 mandates strictly sequential milestones — so sequential gated stages with a single generator; fan-out inside a stage is an implementation detail, not loop structure.",
+  "selection_log": [
+    {
+      "decision": "D0",
+      "answer": "loop",
+      "why": "Done is machine-decidable per milestone: `pytest -q` green (default markers) + required-file presence, and at the end a fresh-clone suite — docs/11 §9 defines exactly these gates; no human needs to read output to close a stage."
+    },
+    {
+      "decision": "D1",
+      "answer": "staged (5 seams)",
+      "why": "M0→M1→M2→M3→M4→final-audit: each milestone hands a stable artifact the next consumes unchanged (schemas/store → proof loop → docs loop → endgame → surface → auditable package), each upstream gate runs without downstream code existing (CLI stubs from M0 keep the conformance meta-test green), and milestones own disjoint modules."
+    },
+    {
+      "decision": "D2",
+      "answer": "plan_execute_verify for m0–m4, review for final-audit",
+      "why": "Each milestone is a large, ambiguous build against a dense spec — needs mid-flight self-correction, not blind retry; the final stage IS a correctness judgment (fresh-clone + adversarial audit). Checks are the cumulative pytest suite + file-presence compounds that fail on missing or broken work."
+    },
+    {
+      "decision": "D3",
+      "answer": "on_the_loop",
+      "why": "Low blast radius (local repo), high reversibility (git), strong feedback (deterministic suite + meta-tests that police their own coverage) — human reviews at gates and owns only live smoke, contract disputes, and doc changes."
+    },
+    {
+      "decision": "D4",
+      "answer": "medium",
+      "why": "docs/10 §7: no milestone starts before the previous acceptance — the stage graph is a chain with zero independent stages, so multi-agent fan-out buys nothing at loop level."
+    },
+    {
+      "decision": "D5",
+      "answer": "caps 3/4/3/3/3/2, restart for m1–m4, escalate for m0 and final-audit, outer budget 3",
+      "why": "m1 (committer/queue/decision table) is where patch-piles rot into archaeology → restart re-derives from the contract; m0 failing 3 passes implicates the spec itself → escalate; final-audit failures beyond 2 mean environment/contract issues → escalate; reward-hacking, spec-drift, token-blowup guards below."
+    },
+    {
+      "decision": "D6",
+      "answer": "completeness_first",
+      "why": "Iteration boundaries are expensive (each pass must reload a 3k-line spec) and the check is thorough-but-slow (full cumulative pytest + verify), so few long passes: low caps (≤4), plan_execute_verify, whole-milestone scope per pass, full-suite gates instead of smoke checks."
+    }
+  ],
+  "stages": [
+    {
+      "id": "m0-foundation",
+      "definition_of_done": {
+        "goal": "Gate command exits 0: full `pytest -q` green AND every docs/11 §9 M0-required test file exists (schemas, textutil, ids, clock, store, snapshot, scoping, V-SPEC/V-PATH rules, project/spec CLI + full stub surface registered).",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "plan_execute_verify",
+      "feedback_signal": {
+        "check": "pytest -q && test -f tests/unit/test_textutil.py && test -f tests/unit/test_jsonl_store.py && test -f tests/unit/test_snapshot.py && test -f tests/unit/test_ids.py && test -f tests/contract/test_schemas.py && test -f tests/contract/test_v_spec.py && test -f tests/contract/test_v_path.py && test -f tests/contract/test_cli_envelope.py",
+        "expect": "pass",
+        "falsifiable_when": "The topic parser mishandles the P4 example's all-`#` headings (docs/01 P1) so the byte-exact golden PaperSpec test fails; or the CLI conformance test finds a command missing from the registered stub surface; or an unknown-field schema fixture is accepted.",
+        "passing_but_wrong": "Generator creates the required test files with trivial/empty assertions so pytest greens on hollow tests — the file-presence check cannot see assertion quality; caught by the evaluator's fixture audit (re-deriving sampled V-SPEC rules from docs/09 and checking the fixtures encode them) plus the rule-coverage meta-test once it lands in m1."
+      },
+      "stop_conditions": {
+        "failure": [
+          "pytest red after a full pass",
+          "a required M0 test file is missing",
+          "gate not green within the cap"
+        ],
+        "max_iterations": 3,
+        "on_failure": {
+          "action": "escalate"
+        }
+      },
+      "depends_on": []
+    },
+    {
+      "id": "m1-proof-loop",
+      "definition_of_done": {
+        "goal": "Gate command exits 0: full `pytest -q` green AND all M1-required files exist (decision table 24 goldens + totality fuzz, V-PR/V-EXP/V-TASK/V-Q/V-COMMIT fixtures, rule-coverage meta-test, scenarios S1/S4/S5/S6, determinism byte-identity).",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "plan_execute_verify",
+      "feedback_signal": {
+        "check": "pytest -q && test -f tests/unit/test_decision_table.py && test -f tests/contract/test_v_pr.py && test -f tests/contract/test_v_exp.py && test -f tests/contract/test_v_task.py && test -f tests/contract/test_v_q.py && test -f tests/contract/test_v_commit.py && test -f tests/contract/test_rule_coverage.py && test -f tests/integration/test_s1_seed_loop.py && test -f tests/integration/test_s4_parallel.py && test -f tests/integration/test_s5_crash.py && test -f tests/integration/test_s6_stale.py && test -f tests/integration/test_determinism.py",
+        "expect": "pass",
+        "falsifiable_when": "Decision table returns pass for golden row N01 (out_of_scope must reject); S1 finds no wired bridge edges C→B/D→B after the needs_repair(bridge) commit; two identical S1 runs differ by one byte in graph/logic_nodes.jsonl; a hostile H-fixture is accepted without its named V-rule in failed_rules.",
+        "passing_but_wrong": "Determinism test compares parsed JSON objects instead of raw bytes, hiding canonical-serialization bugs; or the totality fuzz iterates a hand-copied enum list that omits not_evaluated, vacuously passing — evaluator re-derives the enum product size from docs/03 and checks the fuzz case count against it."
+      },
+      "stop_conditions": {
+        "failure": [
+          "pytest red after a full pass",
+          "same assertion failing on two consecutive attempts without a written diagnosis in progress.md",
+          "gate not green within the cap"
+        ],
+        "max_iterations": 4,
+        "on_failure": {
+          "action": "restart"
+        }
+      },
+      "depends_on": [
+        "m0-foundation"
+      ]
+    },
+    {
+      "id": "m2-docs",
+      "definition_of_done": {
+        "goal": "Gate command exits 0: full `pytest -q` green AND M2-required files exist (V-DR fixtures incl. quote_match hostile, S2 cache/cap loop, S3 cascade).",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "plan_execute_verify",
+      "feedback_signal": {
+        "check": "pytest -q && test -f tests/contract/test_v_dr.py && test -f tests/integration/test_s2_docs_loop.py && test -f tests/integration/test_s3_contradiction.py",
+        "expect": "pass",
+        "falsifiable_when": "S2's identical second request dispatches a docs work item instead of resolving fulfilled_by=\"cache\"; the third needs_docs verdict fails to produce a born-dead item; hostile D02 (fake quote) passes quote_match; S3 cascade leaves an incident edge non-rejected.",
+        "passing_but_wrong": "The matcher is tuned to the exact fixture tokens (overfit to the two-source mini corpus) and would miss on any real corpus — the suite cannot see retrieval quality beyond its fixtures; evaluator adds one adversarial fixture of its own devising at the gate."
+      },
+      "stop_conditions": {
+        "failure": [
+          "pytest red after a full pass",
+          "gate not green within the cap"
+        ],
+        "max_iterations": 3,
+        "on_failure": {
+          "action": "restart"
+        }
+      },
+      "depends_on": [
+        "m1-proof-loop"
+      ]
+    },
+    {
+      "id": "m3-endgame",
+      "definition_of_done": {
+        "goal": "Gate command exits 0: full `pytest -q` green AND M3-required files exist (V-FRZ/V-CDR/V-PROSE-AUD fixtures, S7 full pipeline incl. MSA-1..9 + zero-gap dry run + trace, S1 freeze coda + S3 MSA-9 coda).",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "plan_execute_verify",
+      "feedback_signal": {
+        "check": "pytest -q && test -f tests/contract/test_v_frz.py && test -f tests/contract/test_v_cdr.py && test -f tests/contract/test_v_prose_aud.py && test -f tests/integration/test_s7_full_pipeline.py",
+        "expect": "pass",
+        "falsifiable_when": "msa-check passes on the S3-coda fixture whose thesis support was hollowed out (MSA-9 must fail it); the post-freeze dry run reports a gap on a clean freeze (docs/06 says zero by construction); trace fails to resolve a spine node down to the raw file; a V-FRZ precondition violation is not refused.",
+        "passing_but_wrong": "S7's prose fixtures are authored to trivially satisfy V-PROSE (every sentence annotated, no unannotated transitions), so the annotation-grammar parser is never exercised on realistic prose — evaluator feeds the seeded forbidden-language variant and one hand-mangled annotation file at the gate."
+      },
+      "stop_conditions": {
+        "failure": [
+          "pytest red after a full pass",
+          "gate not green within the cap"
+        ],
+        "max_iterations": 3,
+        "on_failure": {
+          "action": "restart"
+        }
+      },
+      "depends_on": [
+        "m2-docs"
+      ]
+    },
+    {
+      "id": "m4-surface",
+      "definition_of_done": {
+        "goal": "Gate command exits 0: full `pytest -q` green AND M4-required files exist (S8 rebuild/corruption, /api endpoint tests answering the six Overview questions; ui static page present).",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "plan_execute_verify",
+      "feedback_signal": {
+        "check": "pytest -q && test -f tests/integration/test_s8_rebuild.py && test -f tests/integration/test_api.py && test -f src/paperproof/ui/static/index.html",
+        "expect": "pass",
+        "falsifiable_when": "A corrupted JSONL line is silently skipped instead of exiting 3 with file+line; db rebuild twice yields different index_manifest hashes; /api/overview cannot answer one of the six questions from the S7-shaped fixture; the stale_index flag stays false after touching a source JSONL.",
+        "passing_but_wrong": "Endpoints return values computed from the JSONL directly instead of the DuckDB index, making the stale-banner mechanism decorative while all read-tests pass — evaluator deletes db/ mid-test to prove reads actually go through the index."
+      },
+      "stop_conditions": {
+        "failure": [
+          "pytest red after a full pass",
+          "gate not green within the cap"
+        ],
+        "max_iterations": 3,
+        "on_failure": {
+          "action": "restart"
+        }
+      },
+      "depends_on": [
+        "m3-endgame"
+      ]
+    },
+    {
+      "id": "final-audit",
+      "definition_of_done": {
+        "goal": "Fresh-clone gate exits 0: clone into a mktemp dir, venv-install `.[dev]`, run the full default suite there — proving the package carries no dev-environment or repo-path dependence.",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "review",
+      "feedback_signal": {
+        "check": "AUDIT=$(mktemp -d) && git clone -q . \"$AUDIT/repo\" && python3 -m venv \"$AUDIT/venv\" && \"$AUDIT/venv/bin/pip\" -q install -e \"$AUDIT/repo[dev]\" && cd \"$AUDIT/repo\" && \"$AUDIT/venv/bin/python\" -m pytest -q",
+        "expect": "pass",
+        "falsifiable_when": "The suite passes in the dev checkout but fails from a fresh clone (uncommitted fixture, absolute path, missing package-data entry for prompts/ or ui/static/, undeclared dependency).",
+        "passing_but_wrong": "A green fresh-clone suite still cannot prove spec conformance beyond what the tests encode — the adversarial evaluator pass over the contract (sampled rule re-derivation, weakened-test hunt vs gate tags) is the explicit residue-catcher, and live smoke with real workers stays a human node by design."
+      },
+      "stop_conditions": {
+        "failure": [
+          "fresh-clone suite red",
+          "evaluator files a hollow-gate finding the generator cannot refute",
+          "gate not green within the cap"
+        ],
+        "max_iterations": 2,
+        "on_failure": {
+          "action": "escalate"
+        }
+      },
+      "depends_on": [
+        "m4-surface"
+      ]
+    }
+  ],
+  "human_placement": "on_the_loop",
+  "maker_checker": {
+    "separate_checker": true,
+    "scope": "Per gate: adversarially review the stage diff (git diff gate/<prev> -- src tests) plus the gate report against the contract — re-derive 3 randomly sampled V-rules from docs/09 and confirm the fixtures encode them, hunt weakened/deleted tests vs the previous gate tag (including untracked files via git status --porcelain), and re-run the gate command in a clean shell."
+  },
+  "roles": {
+    "planner": {
+      "mandate": "Reads docs/00–12 + AGENTS.md/CLAUDE.md only. At each stage entry, emits the stage plan (modules, file list, build order, doc sections cited) into .loop/state/progress.md and keeps .loop/state/contract.md current. Never writes src/ or tests/ code."
+    },
+    "generator": {
+      "mandate": "Claude Code (Opus). Implements src/paperproof and tests for the current stage per the plan and the cited docs; runs the gate command and records the report. Forbidden from: declaring its own gate final (the evaluator does), weakening or deleting fixtures/tests to pass, changing docs/ to legalize a bug without flagging the doc-change in progress.md, or adding CLI/schema surface beyond the closed lists (docs/10 §4, docs/08) — that requires escalation."
+    },
+    "evaluator": {
+      "separate_context": true,
+      "adversarial": true,
+      "mandate": "Fresh context per gate that never saw the generator's reasoning: receives only docs/, the stage diff vs the previous gate tag, and the gate report. Told the milestone is broken and must prove it: re-runs the gate command, re-derives sampled rules from docs/09 and audits the fixtures, hunts weakened tests (diff vs gate tag + untracked scan), and for m2/m3/m4 executes its named adversarial probe (own fixture / mangled annotations / delete db mid-test). Writes PASS or FAIL+findings to the gate report; only its PASS closes a gate."
+    }
+  },
+  "contract": {
+    "negotiated_by": [
+      "generator",
+      "evaluator"
+    ],
+    "assertions": [
+      {
+        "id": "A1",
+        "must": "The package installs editable with dev extras on Python >=3.12",
+        "check": "pip install -e \".[dev]\"",
+        "stage": "m0-foundation"
+      },
+      {
+        "id": "A2",
+        "must": "Every schema_version round-trips and rejects unknown fields and out-of-enum values",
+        "check": "pytest -q tests/contract/test_schemas.py",
+        "stage": "m0-foundation"
+      },
+      {
+        "id": "A3",
+        "must": "spec build on examples/topic-input-p4.md yields byte-exact golden PaperSpec + Contract under PAPERPROOF_NOW",
+        "check": "pytest -q tests/contract/test_v_spec.py -k golden",
+        "stage": "m0-foundation"
+      },
+      {
+        "id": "A4",
+        "must": "Each V-SPEC rule has a failing topic fixture rejected with that rule id",
+        "check": "pytest -q tests/contract/test_v_spec.py",
+        "stage": "m0-foundation"
+      },
+      {
+        "id": "A5",
+        "must": "JSONL store is append-only with latest-by-id semantics and rejects path traversal",
+        "check": "pytest -q tests/unit/test_jsonl_store.py",
+        "stage": "m0-foundation"
+      },
+      {
+        "id": "A6",
+        "must": "The typer app exposes exactly the docs/10 §4 closed command list (stubs = envelope + NOT-IMPLEMENTED + exit 1) and every command emits one JSON envelope",
+        "check": "pytest -q tests/contract/test_cli_envelope.py",
+        "stage": "m0-foundation"
+      },
+      {
+        "id": "A7",
+        "must": "textutil implements docs/09 §0 exactly, including CJK tokenization/sentence splitting and the frozen 72-word stopword list",
+        "check": "pytest -q tests/unit/test_textutil.py",
+        "stage": "m0-foundation"
+      },
+      {
+        "id": "A8",
+        "must": "All 24 golden decision-table rows (N01–N10, E01–E14) compute their documented verdicts",
+        "check": "pytest -q tests/unit/test_decision_table.py -k golden",
+        "stage": "m1-proof-loop"
+      },
+      {
+        "id": "A9",
+        "must": "Totality fuzz: every enum combination either computes exactly one verdict or is rejected by V-PR-14/15/05",
+        "check": "pytest -q tests/unit/test_decision_table.py -k totality",
+        "stage": "m1-proof-loop"
+      },
+      {
+        "id": "A10",
+        "must": "Every hostile proof-form entry H01–H18 is rejected with its named rule in failed_rules",
+        "check": "pytest -q tests/contract/test_v_pr.py",
+        "stage": "m1-proof-loop"
+      },
+      {
+        "id": "A11",
+        "must": "S1: needs_repair(bridge) commit wires C,D plus edges C→B,D→B; re-proof blocked_by all four items; final pass(conditional); C,D in the spine",
+        "check": "pytest -q tests/integration/test_s1_seed_loop.py",
+        "stage": "m1-proof-loop"
+      },
+      {
+        "id": "A12",
+        "must": "S4: 8 items under 4 concurrent fake workers all reach committed with no double leases and a replayable event log",
+        "check": "pytest -q tests/integration/test_s4_parallel.py",
+        "stage": "m1-proof-loop"
+      },
+      {
+        "id": "A13",
+        "must": "S5 lease expiry requeues with attempt+1 then dead at >3; S6 stale items rebuild as -r2 with immutable old bundles",
+        "check": "pytest -q tests/integration/test_s5_crash.py tests/integration/test_s6_stale.py",
+        "stage": "m1-proof-loop"
+      },
+      {
+        "id": "A14",
+        "must": "Two identical S1 runs under the determinism harness produce byte-identical canonical files",
+        "check": "pytest -q tests/integration/test_determinism.py",
+        "stage": "m1-proof-loop"
+      },
+      {
+        "id": "A15",
+        "must": "Every rule id in the registry has pass+fail fixtures or a SCENARIO_COVERED entry — enforced by a meta-test that fails on gaps in either direction",
+        "check": "pytest -q tests/contract/test_rule_coverage.py",
+        "stage": "cross-cutting"
+      },
+      {
+        "id": "A16",
+        "must": "Docs hostile catalog D01–D05 rejected with named rules; quote_match accepts whitespace-normalized true quotes and rejects fakes",
+        "check": "pytest -q tests/contract/test_v_dr.py",
+        "stage": "m2-docs"
+      },
+      {
+        "id": "A17",
+        "must": "S2: identical second request resolves fulfilled_by=cache with no work item; third needs_docs verdict produces a born-dead re-proof item",
+        "check": "pytest -q tests/integration/test_s2_docs_loop.py",
+        "stage": "m2-docs"
+      },
+      {
+        "id": "A18",
+        "must": "S3: rejection cascades tombstone incident edges as endpoint_rejected and cancel their open items; verify exits 0 afterwards",
+        "check": "pytest -q tests/integration/test_s3_contradiction.py",
+        "stage": "m2-docs"
+      },
+      {
+        "id": "A19",
+        "must": "Each V-FRZ precondition violation is refused; unfreeze re-opens proofs via batch commit",
+        "check": "pytest -q tests/contract/test_v_frz.py",
+        "stage": "m3-endgame"
+      },
+      {
+        "id": "A20",
+        "must": "S7 drives P4 to audited prose: MSA-1..9 individually asserted, zero-gap dry run, DraftMap determinism, audit passed, trace resolves every spine node to a raw file",
+        "check": "pytest -q tests/integration/test_s7_full_pipeline.py",
+        "stage": "m3-endgame"
+      },
+      {
+        "id": "A21",
+        "must": "Annotation grammar + audit finding kinds behave per docs/06: seeded violations of each kind are caught, clean drafts pass",
+        "check": "pytest -q tests/contract/test_v_prose_aud.py",
+        "stage": "m3-endgame"
+      },
+      {
+        "id": "A22",
+        "must": "S8: db rebuild is idempotent (identical manifest hashes) and a corrupted JSONL line makes every CLI command exit 3 naming file+line",
+        "check": "pytest -q tests/integration/test_s8_rebuild.py",
+        "stage": "m4-surface"
+      },
+      {
+        "id": "A23",
+        "must": "/api endpoints answer the six Overview questions from an S7-shaped fixture and expose stale_index truthfully",
+        "check": "pytest -q tests/integration/test_api.py",
+        "stage": "m4-surface"
+      },
+      {
+        "id": "A24",
+        "must": "The default pytest run excludes live markers (live smoke can never leak into the automated gate)",
+        "check": "grep -q \"not live\" pyproject.toml",
+        "stage": "cross-cutting"
+      },
+      {
+        "id": "A25",
+        "must": "The suite passes from a fresh clone in a clean venv (no dev-environment dependence)",
+        "check": "AUDIT=$(mktemp -d) && git clone -q . \"$AUDIT/repo\" && python3 -m venv \"$AUDIT/venv\" && \"$AUDIT/venv/bin/pip\" -q install -e \"$AUDIT/repo[dev]\" && cd \"$AUDIT/repo\" && \"$AUDIT/venv/bin/python\" -m pytest -q",
+        "stage": "final-audit"
+      },
+      {
+        "id": "A26",
+        "must": "Live smoke per docs/11 §9 (real Claude workers on the seed edge, docs loop, and full P4) is executed by the human and recorded in agent_notes/milestones/ — deliberately outside the automated loop",
+        "check": "human-verify: real-worker behavior cannot be deterministically asserted; the human runs the -m live protocol and records acceptance",
+        "stage": "cross-cutting"
+      },
+      {
+        "id": "A27",
+        "must": "Doc-first discipline holds: any implementation that deviates from docs/ ships the doc amendment in the same commit (CLAUDE.md rule)",
+        "check": "human-verify: the evaluator spot-audits commit history at each gate for src/ changes that contradict docs/ without a paired doc edit",
+        "stage": "cross-cutting"
+      }
+    ]
+  },
+  "harness_primitives": [
+    ".loop/state/contract.md — the negotiated assertions A1–A27 (the graded criteria), rendered from this design",
+    ".loop/state/progress.md — per-stage status, current plan, next actions, failure diagnoses; the resume point after any compaction or crash",
+    ".loop/state/log.md — append-only, one line per operation: ## [date] op | title",
+    ".loop/state/gate-reports/<stage>-attempt<N>.md — gate command tail + evaluator verdict per attempt",
+    "git tag gate/<stage> at each green gate — the pinned baseline the evaluator diffs tests/ and fixtures/ against (git diff gate/<prev> -- tests; git status --porcelain for untracked)",
+    ".loop/state/traces/ — captured generator run transcripts for read-the-traces debugging"
+  ],
+  "stop_conditions": {
+    "success": "Stages m0-foundation through final-audit all gate-green at HEAD: full `pytest -q` passes (default markers), every machine assertion A1–A25 holds, the fresh-clone suite passes, and each gate carries an evaluator PASS verdict. Live smoke (A26) and doc-discipline spot-audit (A27) remain deliberate human nodes and are recorded, not automated.",
+    "failure": [
+      "a stage exhausts its inner cap without a green gate",
+      "the outer budget of 3 full-loop re-entries is exhausted",
+      "the evaluator proves the same stage's gate green-but-hollow twice"
+    ],
+    "escalate": [
+      "a contract assertion turns out wrong or unsatisfiable against docs/ — a spec bug; humans own the doc change",
+      "the build needs a command or schema outside the closed surfaces (docs/10 §4, docs/08) — the doc must be amended first, a human decision",
+      "the evaluator finds deliberately weakened or deleted fixtures/tests",
+      "live smoke reveals a worker-protocol spec failure rather than a code bug"
+    ],
+    "max_iterations": 3
+  },
+  "risk_guards": [
+    {
+      "risk": "Reward hacking: the generator weakens fixtures, deletes hostile cases, or skips tests to green a gate",
+      "mitigation": "Evaluator diffs tests/ + fixtures/ against the previous gate tag including untracked files; the rule-coverage meta-test makes fixture deletion loud (a rule without fixtures fails the build); weakening found twice ⇒ escalate"
+    },
+    {
+      "risk": "Spec drift: implementing from memory of the docs instead of the docs",
+      "mitigation": "Stage plans must cite the doc sections they implement; the evaluator re-derives 3 sampled V-rules from docs/09 at every gate and compares against the fixtures; CLAUDE.md same-commit doc-sync rule spot-audited (A27)"
+    },
+    {
+      "risk": "Archaeology: patching the committer/queue until the code is a patch-pile",
+      "mitigation": "on_failure=restart for m1–m4 discards the stage's work and re-derives from the contract; restarts are autonomous — no human interrupt (humans are reserved for wrong contracts)"
+    },
+    {
+      "risk": "Context drift / compaction loss across a multi-day build",
+      "mitigation": "All loop state lives in .loop/state/* (contract, progress, log, gate reports); resume = re-read those files, never trust a session summary"
+    },
+    {
+      "risk": "Token blowup: unbounded retries against a red suite",
+      "mitigation": "Completeness-first caps (≤4 per stage, 3 outer); a same-assertion second failure requires a written diagnosis in progress.md before the next attempt"
+    },
+    {
+      "risk": "Dev-environment dependence: suite green only in the working checkout",
+      "mitigation": "final-audit gate clones into mktemp + clean venv and re-runs the whole suite there (A25)"
+    }
+  ]
+}
