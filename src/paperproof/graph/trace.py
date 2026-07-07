@@ -17,7 +17,7 @@ from typing import Any
 from ..errors import DomainError
 from ..paths import Paths
 from ..store import jsonl
-from ..textutil import contains, sentence_split
+from ..textutil import sentence_split
 from . import model as graph_model
 
 COMMITS = "commit/commit_decisions.jsonl"
@@ -45,11 +45,13 @@ def _prose_occurrences(paths: Paths, node_id: str) -> list[dict[str, Any]]:
     prose_dir = paths.resolve(PROSE_DIR)
     if not prose_dir.exists():
         return out
-    needle = f"(claim: {node_id})"
+    # Same annotation tolerance as the writers (compiler/prose.py, audit/run.py):
+    # (claim:\s*<id>\s*) — optional whitespace around the node id.
+    claim_re = re.compile(rf"\(claim:\s*{re.escape(node_id)}\s*\)")
     for path in sorted(prose_dir.glob("*.md")):
         text = path.read_text(encoding="utf-8")
         for idx, sentence in enumerate(sentence_split(text), start=1):
-            if contains(sentence, needle):
+            if claim_re.search(sentence):
                 out.append({"section": path.stem, "sentence": idx})
     return out
 

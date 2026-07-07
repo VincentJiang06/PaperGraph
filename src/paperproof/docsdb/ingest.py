@@ -198,11 +198,15 @@ def ingest_result(paths: Paths, output_file: str, work_item_id: str, actor: str 
         doc_id = next_id("DOC", existing_doc_ids)
         existing_doc_ids.append(doc_id)
         raw_rel = f"docs/raw/{doc_id}.txt"
-        text_rel = f"docs/text/{doc_id}.txt"
         paths.resolve(raw_rel).parent.mkdir(parents=True, exist_ok=True)
-        paths.resolve(text_rel).parent.mkdir(parents=True, exist_ok=True)
         paths.resolve(raw_rel).write_text(text, encoding="utf-8")
-        paths.resolve(text_rel).write_text(text, encoding="utf-8")
+        # text_path is null when no text could be extracted (docs/04); do not
+        # write an empty text file, mirroring the `docs ingest` path.
+        text_rel: str | None = None
+        if text:
+            text_rel = f"docs/text/{doc_id}.txt"
+            paths.resolve(text_rel).parent.mkdir(parents=True, exist_ok=True)
+            paths.resolve(text_rel).write_text(text, encoding="utf-8")
         ck = _unique_citation_key(doc.citation_key, existing_keys)
         existing_keys.add(ck)
         record = Document(

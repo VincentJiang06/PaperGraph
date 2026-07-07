@@ -38,6 +38,6 @@ grades THIS, not the raw spec. Each assertion is machine-gradable unless marked
 - [x] A22 S8 db rebuild idempotent (same manifest hash); corrupt JSONL → every CLI exit 3 file+line · test_s8 · m4
 - [x] A23 /api answers six Overview questions from S7 fixture; stale_index truthful · test_api · m4
 - [x] A24 default pytest excludes live markers · `grep "not live" pyproject.toml` · cross-cutting ✓ (verified at m0)
-- [ ] A25 suite passes from fresh clone in clean venv · fresh-clone gate · final-audit
+- [x] A25 suite passes from fresh clone in clean venv · fresh-clone gate · final-audit
 - [ ] A26 human-verify: live smoke (real workers) run by human, recorded in agent_notes/milestones/ · cross-cutting
 - [ ] A27 human-verify: doc-first — any src deviation from docs/ ships doc amendment same commit · cross-cutting

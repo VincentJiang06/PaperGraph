@@ -24,3 +24,8 @@
 ## [2026-07-07] m4-cyto | orchestrator vendored REAL cytoscape 3.30.2 (373KB, unpkg); 375 still green
 ## [2026-07-07] m4-eval | evaluator PASS (index-not-JSONL proved, idempotent rebuild, S8 exit-3 x13 readers, six questions real)
 ## [2026-07-07] m4-cleanup | N1 project status real MSA (+2 guard tests, 377 green); N2/N3 doc drift aligned (docs/12 vanilla-JS, stale-masks-corrupt note)
+## [2026-07-07] final-fresh-clone | FAILED first: .gitignore db/ swallowed src/paperproof/db; fresh clone ModuleNotFoundError
+## [2026-07-07] final-gitignore-fix | scoped ignore to data/**/db/; committed swallowed db pkg; fresh clone RE-RUN 377 green (commit)
+## [2026-07-07] final-eval | final-audit PASS: fresh-clone 377 from clone, weakened-test hunt clean, rules faithful, invariant sweep genuine
+## [2026-07-07] polish | closed 4 low findings (commit_queue FIFO-by-validation-time docs/05, wheel build, trace regex, text_path null); 381 green; wheel ships prompts+ui/static
+## [2026-07-07] polish-note | polish subagent overstepped + reverted loop-state files; bookkeeping repaired by orchestrator; code fixes intact

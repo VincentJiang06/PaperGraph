@@ -269,7 +269,12 @@ def record(reader, rid: str) -> dict[str, Any]:
 def queue(reader, queue_name: str | None = None, status: str | None = None) -> dict[str, Any]:
     items = reader.current("work_items")
     if queue_name == "commit_queue":
-        items = sorted([i for i in items if i["status"] == "validated"], key=lambda i: i["work_item_id"])
+        # derived view: validated items awaiting commit, FIFO by validation time
+        # (updated_at = validation-transition time; work_item_id is the tiebreak).
+        items = sorted(
+            [i for i in items if i["status"] == "validated"],
+            key=lambda i: (i["updated_at"], i["work_item_id"]),
+        )
     else:
         if queue_name:
             items = [i for i in items if i.get("queue_name") == queue_name]

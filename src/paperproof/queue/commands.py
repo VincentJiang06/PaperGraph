@@ -19,8 +19,12 @@ def list_items(paths: Paths, queue: str | None = None, status: str | None = None
     _sweep(paths)
     items = engine.load_items(paths)
     if queue == "commit_queue":
-        # derived view: validated items awaiting commit, FIFO by work_item_id
-        items = sorted([i for i in items if i["status"] == "validated"], key=lambda i: i["work_item_id"])
+        # derived view: validated items awaiting commit, FIFO by validation time
+        # (updated_at = validation-transition time; work_item_id is the tiebreak).
+        items = sorted(
+            [i for i in items if i["status"] == "validated"],
+            key=lambda i: (i["updated_at"], i["work_item_id"]),
+        )
     else:
         if queue:
             items = [i for i in items if i["queue_name"] == queue]
