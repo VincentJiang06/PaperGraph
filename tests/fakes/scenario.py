@@ -327,6 +327,62 @@ def s7_script() -> dict[str, Any]:
     }
 
 
+def monitor_fixture(paths: Paths) -> dict[str, Any]:
+    """An S7-shaped project state that exercises all six Overview questions
+    (docs/12 §9) at once, built with FakeWorkers:
+
+      * BFS-MAIN seed loop fully proved + committed (Q,T,A,B + bridges active);
+      * the thesis locally frozen                       -> frozen = 1;
+      * a fresh BFS-MAIN layer-1 expansion (3 definition nodes + 2 depends_on
+        edges) opens new work:
+          NODE-007 claimed by worker-1, NODE-008 claimed by worker-2  -> working=2;
+          the two edges blocked_by their endpoints                     -> blocked=2;
+          NODE-009 proved to *validated* (not committed)               -> committable=1;
+          open (queued/claimed/blocked) work items                     -> open=4.
+
+    Returns the expected counts + key ids so both the API test and the S8 test can
+    assert against one deterministic fixture.
+    """
+    from paperproof.freeze import apply as freeze_mod
+    from paperproof.prooftask import builder
+    from paperproof.queue import engine
+
+    from tests.fakes.workers import FakeProofWorker, drain, prove_one
+
+    seed_layer0(paths)
+    drain(paths, FakeProofWorker(s1_script()))
+    freeze_mod.apply(paths, T, "local")
+
+    ingest_expansion(
+        paths, "EXP-BFS-MAIN-L1", "BFS-MAIN", 1,
+        nodes=[
+            {"claim": "Collateral haircuts widened materially during the stress window.", "node_type": "definition", "scope": {}, "parents": [B]},
+            {"claim": "Repo funding tightened as haircuts widened.", "node_type": "definition", "scope": {}, "parents": [B]},
+            {"claim": "Dealer intermediation capacity contracted under the funding strain.", "node_type": "definition", "scope": {}, "parents": [B]},
+        ],
+        edges=[
+            {"source_ref": "#0", "target_ref": "#1", "edge_type": "depends_on", "edge_claim": "Haircut widening underpins the repo funding tightening."},
+            {"source_ref": "#1", "target_ref": "#2", "edge_type": "depends_on", "edge_claim": "Repo tightening underpins the dealer capacity contraction."},
+        ],
+    )
+    builder.build_frontier(paths, "test")
+
+    def _wi(target_id: str) -> str:
+        return next(i["work_item_id"] for i in engine.load_items(paths)
+                    if i["target_id"] == target_id and i["status"] == "queued")
+
+    engine.claim(paths, queue_name="proof_queue", agent="worker-1", wi_id=_wi("NODE-007"))
+    engine.claim(paths, queue_name="proof_queue", agent="worker-2", wi_id=_wi("NODE-008"))
+    prove_one(paths, "NODE-009", FakeProofWorker({"NODE-009": node_pass_form()}), commit=False)
+
+    return {
+        "expected": {"open": 4, "working": 2, "blocked": 2, "committable": 1, "frozen": 1, "dead": 0},
+        "frozen_id": T,
+        "claimed": {"worker-1": "NODE-007", "worker-2": "NODE-008"},
+        "validated_node": "NODE-009",
+    }
+
+
 def s1_script() -> dict[str, Any]:
     """A scripted worker table for the whole S1 loop keyed by target id."""
     return {

@@ -122,4 +122,14 @@ def run(paths: Paths) -> dict[str, Any]:
             env["failed_rules"],
             data={"failed_rules": env["failed_rules"], "detail": env["detail"]},
         )
-    return {"ok": True, "checked": True}
+
+    # DB manifest freshness (docs/09 §3): warning only — a stale derived index is
+    # never a corruption, since db/ is rebuildable from the canonical JSONL.
+    warnings: list[str] = []
+    from .db import indexer as _indexer
+
+    if paths.resolve(_indexer.MANIFEST_FILE).exists():
+        if _indexer.check(paths)["stale_index"]:
+            warnings.append("db index is stale (run `paperproof db rebuild`)")
+
+    return {"ok": True, "checked": True, "warnings": warnings}

@@ -92,18 +92,16 @@ def test_every_command_emits_one_envelope(tmp_path, command, monkeypatch):
     assert result.stdout.strip().count("\n") == 0
 
 
-def test_stub_commands_report_not_implemented(tmp_path, monkeypatch):
+def test_no_stub_commands_remain(tmp_path, monkeypatch):
+    """M4 is the last milestone: db/ui are now REAL, so no command returns the
+    NOT-IMPLEMENTED stub sentinel anymore (the closed surface is unchanged)."""
     monkeypatch.setenv("PAPERPROOF_NOW", "2026-07-07T00:00:00Z")
+    monkeypatch.delenv("PAPERPROOF_PROJECT", raising=False)
     runner = CliRunner()
-    # M1 implemented graph/queue/commit/verify; M2 docs; M3 freeze/compiler/audit/
-    # trace. Only db/ui remain stubs (M4).
-    for command in ["db rebuild", "db check", "ui serve"]:
+    for command in sorted(CLOSED_COMMANDS):
         result = runner.invoke(app, ["--root", str(tmp_path), *command.split()])
         env = _assert_valid_envelope(result)
-        assert result.exit_code == 1
-        assert env["ok"] is False
-        assert env["errors"] == ["NOT-IMPLEMENTED"]
-        assert env["command"] == command
+        assert env["errors"] != ["NOT-IMPLEMENTED"], command
 
 
 def test_usage_error_emits_envelope_exit_2(tmp_path, monkeypatch):

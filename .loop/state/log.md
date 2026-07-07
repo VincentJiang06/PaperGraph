@@ -20,3 +20,6 @@
 ## [2026-07-07] m3-n1 | closing N1: verify resolves evidence_bindings + duplicate_of (additive, docs/09 §3)
 ## [2026-07-07] m3-n1-done | 367 green; verify now resolves evidence_bindings+duplicate_of (docs/09 §3); EU-999 repro exits 3; S7 clean
 ## [2026-07-07] m3-gate | GATE PASS; tagging gate/m3-endgame; advancing to m4
+## [2026-07-07] m4-gen | M4 generator: 375 green (+8 db/ui/S8); shipped 4KB cytoscape stub
+## [2026-07-07] m4-cyto | orchestrator vendored REAL cytoscape 3.30.2 (373KB, unpkg); 375 still green
+## [2026-07-07] m4-eval | evaluator PASS (index-not-JSONL proved, idempotent rebuild, S8 exit-3 x13 readers, six questions real)

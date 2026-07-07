@@ -35,8 +35,8 @@ grades THIS, not the raw spec. Each assertion is machine-gradable unless marked
 - [x] A19 each V-FRZ precondition violation refused; unfreeze re-opens via batch commit · test_v_frz · m3
 - [x] A20 S7 P4→audited prose: MSA-1..9 asserted, zero-gap dry run, DraftMap determinism, audit passed, trace resolves every spine node · test_s7 · m3
 - [x] A21 annotation grammar + audit finding kinds per docs/06; seeded violations caught, clean passes · test_v_prose_aud · m3
-- [ ] A22 S8 db rebuild idempotent (same manifest hash); corrupt JSONL → every CLI exit 3 file+line · test_s8 · m4
-- [ ] A23 /api answers six Overview questions from S7 fixture; stale_index truthful · test_api · m4
+- [x] A22 S8 db rebuild idempotent (same manifest hash); corrupt JSONL → every CLI exit 3 file+line · test_s8 · m4
+- [x] A23 /api answers six Overview questions from S7 fixture; stale_index truthful · test_api · m4
 - [x] A24 default pytest excludes live markers · `grep "not live" pyproject.toml` · cross-cutting ✓ (verified at m0)
 - [ ] A25 suite passes from fresh clone in clean venv · fresh-clone gate · final-audit
 - [ ] A26 human-verify: live smoke (real workers) run by human, recorded in agent_notes/milestones/ · cross-cutting

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PaperGraph Monitor</title>
+<style>
+:root {
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e;
+  --muted:#898781; --grid:#e1e0d9; --border:rgba(11,11,11,.10);
+  --st-candidate:#898781; --st-pending:#2a78d6; --st-active:#0ca30c;
+  --st-repair:#eda100; --st-docs:#4a3aa7; --st-rejected:#d03b3b; --st-parked:#52514e;
+  --q-good:#0ca30c; --q-warn:#eda100; --q-serious:#ec835a; --q-crit:#d03b3b;
+  --accent:#2a78d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#fff; --ink-2:#c3c2b7;
+    --grid:#2c2c2a; --border:rgba(255,255,255,.10);
+    --st-pending:#3987e5; --st-active:#008300; --st-repair:#c98500;
+    --st-docs:#9085e9; --q-good:#0ca30c; --q-warn:#c98500;
+  }
+}
+[data-theme="dark"] {
+  --page:#0d0d0d; --surface:#1a1a19; --ink:#fff; --ink-2:#c3c2b7;
+  --grid:#2c2c2a; --border:rgba(255,255,255,.10);
+  --st-pending:#3987e5; --st-active:#008300; --st-repair:#c98500;
+  --st-docs:#9085e9; --q-warn:#c98500;
+}
+[data-theme="light"] {
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e;
+  --grid:#e1e0d9; --border:rgba(11,11,11,.10); --st-warn:#eda100;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; background:var(--page); color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif; font-size:14px;
+}
+code, .mono, .id { font-family:ui-monospace,monospace; }
+.tnum { font-variant-numeric:tabular-nums; }
+#banner { display:none; padding:10px 16px; font-weight:600; }
+#banner.stale { display:block; background:var(--q-warn); color:#111; }
+#banner.corrupt { display:block; background:var(--q-crit); color:#fff; }
+#banner.contract { display:block; background:var(--accent); color:#fff; }
+#topbar {
+  display:flex; align-items:center; gap:16px; padding:10px 16px;
+  background:var(--surface); border-bottom:1px solid var(--border); flex-wrap:wrap;
+}
+#topbar .brand { font-weight:700; }
+.chip { padding:2px 8px; border-radius:10px; border:1px solid var(--border); font-size:12px; }
+#layout { display:flex; min-height:calc(100vh - 100px); }
+#nav { width:150px; border-right:1px solid var(--border); padding:8px; flex:0 0 auto; }
+#nav a {
+  display:block; padding:8px 10px; color:var(--ink-2); text-decoration:none;
+  border-radius:6px; cursor:pointer;
+}
+#nav a.active { background:var(--accent); color:#fff; }
+#main { flex:1 1 auto; padding:16px; overflow:auto; }
+#drawer {
+  width:420px; border-left:1px solid var(--border); padding:16px; flex:0 0 auto;
+  display:none; background:var(--surface);
+}
+#drawer.open { display:block; }
+table { border-collapse:collapse; width:100%; }
+th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--border); }
+.card { border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:12px; background:var(--surface); }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; }
+.state { padding:1px 6px; border-radius:8px; font-size:12px; }
+a.rl { color:var(--accent); cursor:pointer; text-decoration:underline; }
+pre { overflow:auto; background:var(--page); padding:8px; border-radius:6px; }
+button { cursor:pointer; }
+.tableWrap { overflow-x:auto; }
+</style>
+</head>
+<body>
+  <div id="banner" data-testid="banner"></div>
+  <div id="topbar">
+    <span class="brand">PaperGraph</span>
+    <span class="chip mono" id="project" data-testid="project-id">—</span>
+    <span class="chip" id="contract">contract —</span>
+    <span class="chip" id="msa">MSA —</span>
+    <span class="chip tnum" id="open">● 0 open</span>
+    <span class="chip tnum" id="dead" style="display:none">☠ 0 dead</span>
+    <span style="margin-left:auto"></span>
+    <button id="theme">◐</button>
+    <button id="refresh" title="refresh">⟳</button>
+  </div>
+  <div id="layout">
+    <nav id="nav">
+      <a data-testid="nav-overview" data-view="overview" class="active">Overview</a>
+      <a data-testid="nav-map" data-view="map">Logic Map</a>
+      <a data-testid="nav-queue" data-view="queue">Queue</a>
+      <a data-testid="nav-evidence" data-view="evidence">Evidence</a>
+      <a data-testid="nav-compiler" data-view="compiler">Compiler</a>
+    </nav>
+    <main id="main" data-testid="main"></main>
+    <aside id="drawer" data-testid="drawer">
+      <div id="drawer-head" class="id mono"></div>
+      <div id="drawer-body"></div>
+      <button id="drawer-close">close</button>
+    </aside>
+  </div>
+
+<script src="vendor/cytoscape.min.js"></script>
+<script>
+"use strict";
+var CUR = "overview";
+var POLL = null;
+
+function j(url, opts){ return fetch(url, opts).then(function(r){ return r.json(); }); }
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c]; }); }
+function rl(id){ return id ? '<a class="rl" data-id="'+esc(id)+'">'+esc(id)+'</a>' : "—"; }
+
+function setBanner(ov){
+  var b = document.getElementById("banner");
+  if (ov && ov.corrupted){ b.className="corrupt"; b.textContent="State corrupted — run `paperproof verify`"; return; }
+  if (ov && ov.stale_index){
+    b.className="stale";
+    b.innerHTML = "⚠ INDEX STALE — showing indexed data" + (ov.index_built_at ? " from "+esc(ov.index_built_at) : "") + '. <button id="rebuild">Rebuild</button>';
+    var rb = document.getElementById("rebuild");
+    if (rb) rb.onclick = function(){ j("/api/db/rebuild",{method:"POST"}).then(load); };
+    return;
+  }
+  if (ov && ov.contract && !ov.contract.accepted_by_user){ b.className="contract"; b.textContent="Contract not accepted — expansion gated"; return; }
+  b.className=""; b.textContent="";
+}
+
+function renderTop(ov){
+  document.getElementById("project").textContent = ov.project_id || "—";
+  var c = ov.contract;
+  document.getElementById("contract").textContent = c ? (c.accepted_by_user ? "Contract ✓"+(c.contract_version||"v1") : "Contract ✗ draft") : "contract —";
+  var msa = ov.msa && ov.msa.checklist ? ov.msa.checklist : {};
+  var pass = Object.keys(msa).filter(function(k){ return msa[k].pass; }).length;
+  document.getElementById("msa").textContent = "MSA "+pass+"/"+Object.keys(msa).length;
+  document.getElementById("open").textContent = "● "+ov.open.count+" open";
+  var d = document.getElementById("dead");
+  if (ov.dead_letters.count > 0){ d.style.display=""; d.textContent="☠ "+ov.dead_letters.count+" dead"; }
+  else d.style.display="none";
+}
+
+function viewOverview(){
+  return j("/api/overview").then(function(ov){
+    setBanner(ov); renderTop(ov);
+    var m = document.getElementById("main");
+    var working = ov.working.by_agent;
+    var wrows = Object.keys(working).map(function(a){
+      return "<tr><td>"+esc(a)+"</td><td>"+working[a].map(function(w){ return rl(w.work_item_id); }).join(" ")+"</td></tr>";
+    }).join("") || '<tr><td colspan="2">nobody claimed</td></tr>';
+    var msa = ov.msa.checklist;
+    var msaRows = Object.keys(msa).map(function(k){
+      return "<tr><td>"+(msa[k].pass?"✓":"✗")+" "+esc(k)+"</td><td>"+esc(msa[k].detail)+"</td></tr>";
+    }).join("");
+    var qm = ov.queue_matrix;
+    m.innerHTML =
+      '<div class="grid">' +
+        '<div class="card"><h3>Open</h3><div class="tnum" style="font-size:24px" data-testid="open-count">'+ov.open.count+'</div></div>' +
+        '<div class="card"><h3>Blocked</h3><div class="tnum" style="font-size:24px" data-testid="blocked-count">'+ov.blocked.count+'</div></div>' +
+        '<div class="card"><h3>Committable</h3><div class="tnum" style="font-size:24px" data-testid="committable-count">'+ov.committable.count+'</div></div>' +
+        '<div class="card"><h3>Frozen</h3><div class="tnum" style="font-size:24px" data-testid="frozen-count">'+ov.frozen.count+'</div></div>' +
+      '</div>' +
+      '<div class="card"><h3>Who is working on what</h3><table data-testid="working-table"><tr><th>agent</th><th>items</th></tr>'+wrows+'</table></div>' +
+      '<div class="card"><h3>MSA Checklist</h3><table>'+msaRows+'</table></div>' +
+      '<div class="card"><h3>Queue matrix</h3><div class="tableWrap"><table><tr><th>queue</th><th>queued</th><th>claimed</th><th>validated</th><th>committed</th><th>dead</th></tr>' +
+        ["proof_queue","docs_queue","compile_queue"].map(function(q){
+          var r = qm[q]||{};
+          return "<tr><td>"+q+"</td><td class='tnum'>"+(r.queued||0)+"</td><td class='tnum'>"+((r.claimed||0)+(r.running||0))+"</td><td class='tnum'>"+(r.validated||0)+"</td><td class='tnum'>"+(r.committed||0)+"</td><td class='tnum'>"+(r.dead||0)+"</td></tr>";
+        }).join("") + "</table></div></div>";
+    bindLinks();
+  });
+}
+
+function viewQueue(){
+  return j("/api/queue").then(function(d){
+    var m = document.getElementById("main");
+    var rows = d.items.map(function(it){
+      var claim = it.status==="queued" ? '<button data-claim="'+esc(it.work_item_id)+'">Claim</button>' : "";
+      var rel = (it.status==="claimed"||it.status==="running") ? '<button data-release="'+esc(it.work_item_id)+'">Release</button>' : "";
+      return "<tr><td>"+rl(it.work_item_id)+"</td><td>"+esc(it.status)+"</td><td>"+rl(it.target_id)+"</td><td>"+esc((it.lease||{}).claimed_by||"—")+"</td><td>"+(it.blocked_by||[]).map(rl).join(" ")+"</td><td>"+claim+rel+"</td></tr>";
+    }).join("") || '<tr><td colspan="6">queue quiet ✓</td></tr>';
+    m.innerHTML = '<div class="card"><h3>Queue</h3><div class="tableWrap"><table data-testid="queue-table"><tr><th>id</th><th>status</th><th>target</th><th>agent</th><th>blocked_by</th><th>actions</th></tr>'+rows+"</table></div></div>";
+    bindLinks();
+    document.querySelectorAll("[data-claim]").forEach(function(b){ b.onclick=function(){ var a=prompt("agent name","worker-1"); if(a) j("/api/queue/"+b.dataset.claim+"/claim",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({agent:a})}).then(viewQueue); }; });
+    document.querySelectorAll("[data-release]").forEach(function(b){ b.onclick=function(){ j("/api/queue/"+b.dataset.release+"/release",{method:"POST"}).then(viewQueue); }; });
+  });
+}
+
+function viewMap(){
+  return j("/api/graph").then(function(g){
+    var m = document.getElementById("main");
+    m.innerHTML = '<div class="card"><h3>Logic Map</h3><div id="cy" style="height:520px" data-testid="cy"></div></div>';
+    var els = g.nodes.map(function(n){ return {data:{id:n.node_id,label:n.claim,layer:n.layer,state:n.lifecycle_state}}; })
+      .concat(g.edges.map(function(e){ return {data:{id:e.edge_id,source:e.source_node_id,target:e.target_node_id}}; }));
+    if (window.cytoscape){
+      var cy = cytoscape({container:document.getElementById("cy"), elements:els});
+      cy.on("tap","node",function(ev){ openDrawer(ev.target.data().id); });
+    }
+  });
+}
+
+function viewEvidence(){
+  return j("/api/evidence").then(function(d){
+    var m = document.getElementById("main");
+    m.innerHTML = '<div class="card"><h3>Evidence</h3>' + (d.documents.length ? d.documents.map(function(doc){
+      return '<div class="card"><b>'+esc(doc.document.title)+'</b> <span class="mono">'+esc(doc.document.citation_key)+'</span> ('+doc.eu_count+' EU)' +
+        doc.evidence_units.map(function(u){ return '<div>'+rl(u.evidence_id)+' '+esc(u.support_direction)+' — '+esc(u.summary)+'</div>'; }).join("") + '</div>';
+    }).join("") : "no documents — `paperproof docs ingest <file>`") + "</div>";
+    bindLinks();
+  });
+}
+
+function viewCompiler(){
+  return j("/api/compiler").then(function(d){
+    var m = document.getElementById("main");
+    var dr = d.dry_run;
+    m.innerHTML = '<div class="card"><h3>WRITING READY: '+(d.writing_ready?"YES":"NO")+'</h3>'+(d.gaps.length?d.gaps.length+" gaps open":"")+"</div>" +
+      '<div class="card"><h3>Prose sections</h3>'+(d.prose_files.join(", ")||"none yet")+"</div>" +
+      (d.audit ? '<div class="card"><h3>Audit</h3>'+(d.audit.passed?"passed ✓":"findings: "+d.audit.findings.length)+"</div>" : "");
+  });
+}
+
+function openDrawer(id){
+  var dr = document.getElementById("drawer");
+  dr.classList.add("open");
+  document.getElementById("drawer-head").textContent = id;
+  document.getElementById("drawer-body").innerHTML = "loading…";
+  j("/api/record/"+encodeURIComponent(id)).then(function(rec){
+    if (!rec.found){ document.getElementById("drawer-body").innerHTML = "not found in index — index may be stale"; return; }
+    var body = "<div>table: "+esc(rec.table)+"</div><pre>"+esc(JSON.stringify(rec.record,null,2))+"</pre>";
+    if (rec.verdict_records && rec.verdict_records.length){
+      body += "<h4>Proof history</h4>" + rec.verdict_records.map(function(v){ return "<div>"+rl(v.proof_result_id)+" "+esc((v.computed_verdict||{}).verdict)+"</div>"; }).join("");
+    }
+    document.getElementById("drawer-body").innerHTML = body;
+  });
+}
+
+function bindLinks(){
+  document.querySelectorAll("a.rl").forEach(function(a){ a.onclick=function(){ openDrawer(a.dataset.id); }; });
+}
+
+var VIEWS = {overview:viewOverview, queue:viewQueue, map:viewMap, evidence:viewEvidence, compiler:viewCompiler};
+
+function load(){
+  var fn = VIEWS[CUR] || viewOverview;
+  // always refresh the top bar + banner from overview
+  if (CUR !== "overview") viewOverview();
+  return fn();
+}
+
+function selectView(v){
+  CUR = v;
+  document.querySelectorAll("#nav a").forEach(function(a){ a.classList.toggle("active", a.dataset.view===v); });
+  location.hash = "#/"+v;
+  load();
+}
+
+document.querySelectorAll("#nav a").forEach(function(a){ a.onclick=function(){ selectView(a.dataset.view); }; });
+document.getElementById("drawer-close").onclick=function(){ document.getElementById("drawer").classList.remove("open"); };
+document.getElementById("refresh").onclick=load;
+document.getElementById("theme").onclick=function(){
+  var cur = document.documentElement.getAttribute("data-theme");
+  document.documentElement.setAttribute("data-theme", cur==="dark"?"light":"dark");
+};
+document.addEventListener("keydown", function(e){ if(e.key==="Escape") document.getElementById("drawer").classList.remove("open"); });
+
+var initial = (location.hash||"").replace("#/","") || "overview";
+if (!VIEWS[initial]) initial="overview";
+selectView(initial);
+POLL = setInterval(function(){ if(!document.hidden) load(); }, 5000);
+</script>
+</body>
+</html>

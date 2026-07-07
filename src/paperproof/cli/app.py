@@ -261,27 +261,49 @@ app.add_typer(spec_app, name="spec")
 
 
 # ---------------------------------------------------------------------------
-# stub surface (unbuilt commands - replaced with real behavior each milestone)
+# db (M4): derived DuckDB index — rebuild / check
 # ---------------------------------------------------------------------------
 
+from ..db import indexer as _indexer  # noqa: E402
 
-def _make_stub(command: str) -> Callable[[], None]:
-    def _cmd() -> None:
-        _stub(command)
-
-    return _cmd
+db_app = typer.Typer(no_args_is_help=False)
 
 
-_STUB_GROUPS: dict[str, list[str]] = {
-    "db": ["rebuild", "check"],
-    "ui": ["serve"],
-}
+@db_app.command("rebuild")
+def db_rebuild(ctx: typer.Context) -> None:
+    s = _state(ctx)
+    _dispatch("db rebuild", lambda: _indexer.rebuild(_project_paths(s)))
 
-for _group_name, _commands in _STUB_GROUPS.items():
-    _group_app = typer.Typer(no_args_is_help=False)
-    for _cname in _commands:
-        _group_app.command(_cname)(_make_stub(f"{_group_name} {_cname}"))
-    app.add_typer(_group_app, name=_group_name)
+
+@db_app.command("check")
+def db_check(ctx: typer.Context) -> None:
+    s = _state(ctx)
+    _dispatch("db check", lambda: _indexer.check(_project_paths(s)))
+
+
+app.add_typer(db_app, name="db")
+
+
+# ---------------------------------------------------------------------------
+# ui (M4): read-only WebUI over the derived index
+# ---------------------------------------------------------------------------
+
+ui_app = typer.Typer(no_args_is_help=False)
+
+
+@ui_app.command("serve")
+def ui_serve(ctx: typer.Context, port: int = typer.Option(8420, "--port")) -> None:
+    s = _state(ctx)
+
+    def body() -> dict[str, Any]:
+        from ..ui import app as ui_module
+
+        return ui_module.serve(_project_paths(s), port)
+
+    _dispatch("ui serve", body)
+
+
+app.add_typer(ui_app, name="ui")
 
 # ---------------------------------------------------------------------------
 # M1 real command groups
