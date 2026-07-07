@@ -1,0 +1,22 @@
+{
+  "id": "E01",
+  "task_type": "EDGE_CHECK",
+  "node_type": null,
+  "form": {
+    "scope_check": "out_of_scope",
+    "duplicate_check": {
+      "duplicate": false,
+      "duplicate_of": null
+    },
+    "wellformed_check": "not_evaluated",
+    "evidence_check": "not_evaluated",
+    "inference_check": "not_evaluated"
+  },
+  "assumptions": [],
+  "expected": {
+    "verdict": "rejected",
+    "repair_kind": null,
+    "strength": null,
+    "reason": "out_of_scope"
+  }
+}

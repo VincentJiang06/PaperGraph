@@ -1,0 +1,21 @@
+{
+  "id": "N02",
+  "task_type": "NODE_CHECK",
+  "node_type": "fact",
+  "form": {
+    "scope_check": "in_scope",
+    "duplicate_check": {
+      "duplicate": true,
+      "duplicate_of": "NODE-002"
+    },
+    "wellformed_check": "not_evaluated",
+    "evidence_check": "not_evaluated"
+  },
+  "assumptions": [],
+  "expected": {
+    "verdict": "rejected",
+    "repair_kind": null,
+    "strength": null,
+    "reason": "duplicate"
+  }
+}

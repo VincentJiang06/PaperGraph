@@ -10,9 +10,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .envelope import Failure, to_envelope
-from .rules import v_path, v_spec
+from .rules import v_commit, v_exp, v_path, v_pr, v_q, v_spec, v_task
 
-__all__ = ["Failure", "to_envelope", "RULES", "rule_ids", "v_spec", "v_path"]
+__all__ = [
+    "Failure", "to_envelope", "RULES", "rule_ids",
+    "v_spec", "v_path", "v_pr", "v_exp", "v_task", "v_q", "v_commit",
+]
 
 
 @dataclass(frozen=True)
@@ -39,6 +42,43 @@ RULES: dict[str, Rule] = {
         _rule("V-PATH-02", "project-relative, no traversal, no symlink escape"),
         _rule("V-PATH-03", "valid UTF-8 JSON (or .md), single document"),
         _rule("V-PATH-04", "no writes outside allowed paths (prefix rule)"),
+        _rule("V-EDGE-02", "edge_claim not a verbatim restatement of an endpoint claim"),
+        _rule("V-PR-01", "schema valid; enums valid; unknown fields rejected"),
+        _rule("V-PR-02", "task_id + target match the claimed work item"),
+        _rule("V-PR-03", "no verdict/numeric/invented-id fields (raw scan)"),
+        _rule("V-PR-04", "inference_check present iff EDGE_CHECK"),
+        _rule("V-PR-05", "fact/mechanism nodes may not answer evidence not_required"),
+        _rule("V-PR-06", "evidence_used subset of DocsPack"),
+        _rule("V-PR-07", "conditional attachments present exactly when required"),
+        _rule("V-PR-08", "duplicate_of in ContextPack ids, != target"),
+        _rule("V-PR-09", "repair proposal shapes (bridge/narrow)"),
+        _rule("V-PR-10", "notes <=150 words; no stray evidence id tokens"),
+        _rule("V-PR-11", "narrowed_claim passes V-NODE-02"),
+        _rule("V-PR-12", "recorded verdict equals decision-table output"),
+        _rule("V-PR-13", "pass => language_limits present; else null"),
+        _rule("V-PR-14", "ladder shape: not_evaluated exactly where earlier stage stopped"),
+        _rule("V-PR-15", "assumptions iff holds_only_with_assumptions (edge) / evidence gate (node)"),
+        _rule("V-EXP-01", "lane previous layer fully committed"),
+        _rule("V-EXP-02", "based_on_snapshot current (whole graph)"),
+        _rule("V-EXP-03", "<=12 nodes; layer = lane frontier + 1"),
+        _rule("V-EXP-04", "edge refs resolve (existing id or #index)"),
+        _rule("V-EXP-05", "proposed nodes pass V-NODE-02/03"),
+        _rule("V-EXP-06", "layer-0 question/thesis rule; none elsewhere"),
+        _rule("V-EXP-07", "first proposal requires depends_on lanes complete"),
+        _rule("V-TASK-01", "claim refuses stale items until rebuilt"),
+        _rule("V-TASK-02", "ContextPack = target + 1-hop + full claim_digest"),
+        _rule("V-TASK-03", "DocsPack evidence ids resolve to archived Documents"),
+        _rule("V-Q-01", "transitions only along the docs/05 table"),
+        _rule("V-Q-02", "claim atomic: no two live leases"),
+        _rule("V-Q-03", "every status change has exactly one QueueEvent"),
+        _rule("V-Q-04", "blocked_by exist; claimable iff resolved + endpoints active"),
+        _rule("V-Q-05", "expired lease => requeue attempt+1; >3 => dead"),
+        _rule("V-COMMIT-01", "input-scoped currency"),
+        _rule("V-COMMIT-02", "input artifact passed validation"),
+        _rule("V-COMMIT-03", "no target frozen"),
+        _rule("V-COMMIT-04", "CommitDecision lists every append; replay reproduces post"),
+        _rule("V-COMMIT-05", "post-commit graph passes V-GRAPH-01..03"),
+        _rule("V-COMMIT-06", "proof verdict commits only onto a provable target"),
     ]
 }
 

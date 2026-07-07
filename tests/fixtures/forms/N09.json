@@ -1,0 +1,21 @@
+{
+  "id": "N09",
+  "task_type": "NODE_CHECK",
+  "node_type": "definition",
+  "form": {
+    "scope_check": "in_scope",
+    "duplicate_check": {
+      "duplicate": false,
+      "duplicate_of": null
+    },
+    "wellformed_check": "single_proposition",
+    "evidence_check": "not_required"
+  },
+  "assumptions": [],
+  "expected": {
+    "verdict": "pass",
+    "repair_kind": null,
+    "strength": "strong",
+    "reason": null
+  }
+}

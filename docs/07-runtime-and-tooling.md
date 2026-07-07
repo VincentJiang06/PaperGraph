@@ -30,7 +30,7 @@ specs/
 graph/
   logic_nodes.jsonl  logic_edges.jsonl  tombstones.jsonl  snapshots.jsonl
 proof/
-  tasks/  context/  proof_results.jsonl
+  tasks/  context/  proof_results.jsonl  .lock
 docs/
   raw/  text/  docspacks/
   documents.jsonl  evidence_units.jsonl  docs_requests.jsonl
@@ -70,7 +70,10 @@ Timestamps are RFC 3339 UTC ("2026-07-07T09:00:00Z"). The clock is injectable:
 Canonical serialization: UTF-8, compact separators, no ASCII-escaping, schema
   field order, one record per line, trailing newline. Same data ⇒ same bytes.
 Appends take an fcntl lock on the target file; the Committer and queue engine
-  additionally hold commit/.lock / queue/.lock exclusively. v1 is POSIX-only.
+  additionally hold commit/.lock / queue/.lock exclusively, and the Validator
+  holds proof/.lock while it allocates a PR- id and appends the verdict record
+  (so parallel validations, docs/11 S4, cannot collide on id allocation).
+  v1 is POSIX-only.
 Actor identity: --agent flag where present, else PAPERPROOF_ACTOR, else
   "orchestrator".
 Derived db/ may be deleted anytime; `paperproof db check` reports stale_index

@@ -1,0 +1,22 @@
+{
+  "id": "E05",
+  "task_type": "EDGE_CHECK",
+  "node_type": null,
+  "form": {
+    "scope_check": "in_scope",
+    "duplicate_check": {
+      "duplicate": false,
+      "duplicate_of": null
+    },
+    "wellformed_check": "single_proposition",
+    "evidence_check": "contradicting",
+    "inference_check": "not_evaluated"
+  },
+  "assumptions": [],
+  "expected": {
+    "verdict": "rejected",
+    "repair_kind": null,
+    "strength": null,
+    "reason": "contradicted"
+  }
+}

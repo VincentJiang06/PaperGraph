@@ -1,0 +1,22 @@
+{
+  "id": "E06",
+  "task_type": "EDGE_CHECK",
+  "node_type": null,
+  "form": {
+    "scope_check": "in_scope",
+    "duplicate_check": {
+      "duplicate": false,
+      "duplicate_of": null
+    },
+    "wellformed_check": "single_proposition",
+    "evidence_check": "insufficient",
+    "inference_check": "not_evaluated"
+  },
+  "assumptions": [],
+  "expected": {
+    "verdict": "needs_docs",
+    "repair_kind": null,
+    "strength": null,
+    "reason": null
+  }
+}

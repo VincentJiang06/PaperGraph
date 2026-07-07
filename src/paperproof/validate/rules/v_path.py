@@ -97,6 +97,68 @@ def check_prefix_rule(project_dir: str | Path, manifest: dict[str, dict[str, Any
     return failures
 
 
+# Files only the Committer/Freeze/Docs-ingestor write. A proof worker's lease
+# window [claim, validate] never legitimately coincides with a change to these
+# (commits run after validate in the layer loop), so any change to them during a
+# lease is worker tampering (catches H10). Legit engine appends to queue/proof
+# JSONL still pass via the prefix rule. (docs/05 §Parallelism; see OPEN DOC ISSUES.)
+COMMITTER_OWNED: frozenset[str] = frozenset(
+    {
+        "graph/logic_nodes.jsonl",
+        "graph/logic_edges.jsonl",
+        "graph/tombstones.jsonl",
+        "graph/snapshots.jsonl",
+        "commit/commit_decisions.jsonl",
+        "freeze/frozen_items.jsonl",
+        "docs/documents.jsonl",
+        "docs/evidence_units.jsonl",
+        "docs/docs_requests.jsonl",
+    }
+)
+
+
+def check_lease_scan(project_dir: str | Path, lease_manifest: dict[str, Any]) -> list[Failure]:
+    """Full post-run V-PATH-04 scan from a claim-time lease manifest blob
+    (keys: files, baseline, allowed). Prefix rule on all JSONL, byte-identity on
+    non-JSONL and on committer-owned files, plus the stray-write rule."""
+    project_dir = Path(project_dir)
+    files = lease_manifest.get("files", {})
+    failures = check_prefix_rule(project_dir, files)
+    for rel, rec in files.items():
+        if rel in COMMITTER_OWNED:
+            p = project_dir / rel
+            data = p.read_bytes() if p.exists() else b""
+            if _sha(data) != rec["sha256"]:
+                failures.append(Failure("V-PATH-04", f"committer-owned file changed under a worker lease: {rel}"))
+    # Stray-write rule: a worker may only create files under agent_outputs/** or
+    # agent_notes/**. Using the broad agent area (not the item's single declared
+    # output) avoids false positives from CONCURRENT workers' own output files;
+    # V-PATH-01 separately pins this worker to its exact declared output. A new
+    # file anywhere in a canonical directory is the violation. (OPEN DOC ISSUE.)
+    baseline = set(lease_manifest.get("baseline", []))
+    failures += check_no_stray_writes(project_dir, baseline, ["agent_outputs/**", "agent_notes/**"])
+    return failures
+
+
+def build_lease_manifest(project_dir: str | Path, allowed_write_paths: list[str]) -> dict[str, Any]:
+    """Claim-time manifest over every canonical (non-agent) file: prefix hashes,
+    a baseline file set for the stray-write rule, and the allowed write paths."""
+    project_dir = Path(project_dir)
+    baseline = sorted(_walk_relpaths(project_dir))
+    canonical = [
+        rel
+        for rel in baseline
+        if not rel.startswith("agent_outputs/")
+        and not rel.startswith("agent_notes/")
+        and not rel.endswith(".lock")
+    ]
+    return {
+        "files": build_manifest(project_dir, canonical),
+        "baseline": baseline,
+        "allowed": list(allowed_write_paths),
+    }
+
+
 def _is_allowed(rel: str, allowed_write_paths: list[str]) -> bool:
     for allowed in allowed_write_paths:
         if allowed.endswith("/**"):

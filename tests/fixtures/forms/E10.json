@@ -1,0 +1,24 @@
+{
+  "id": "E10",
+  "task_type": "EDGE_CHECK",
+  "node_type": null,
+  "form": {
+    "scope_check": "in_scope",
+    "duplicate_check": {
+      "duplicate": false,
+      "duplicate_of": null
+    },
+    "wellformed_check": "single_proposition",
+    "evidence_check": "not_required",
+    "inference_check": "holds_only_with_assumptions"
+  },
+  "assumptions": [
+    "a"
+  ],
+  "expected": {
+    "verdict": "pass",
+    "repair_kind": null,
+    "strength": "conditional",
+    "reason": null
+  }
+}

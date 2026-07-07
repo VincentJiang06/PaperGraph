@@ -1,0 +1,104 @@
+{
+  "task": {
+    "schema_version": "proof_task.v1",
+    "task_id": "PT-NODE-001",
+    "project_id": "p4-ldi",
+    "task_type": "NODE_CHECK",
+    "target": {
+      "node_id": "NODE-001"
+    },
+    "context_pack": "proof/context/CTX-NODE-001.json",
+    "docs_pack": "docs/docspacks/DOCSPACK-NODE-001.json",
+    "output_file": "agent_outputs/proof_results/PT-NODE-001.proof_result.json"
+  },
+  "context_pack": {
+    "schema_version": "context_pack.v1",
+    "pack_id": "CTX-NODE-001",
+    "task_id": "PT-NODE-001",
+    "project_id": "p4-ldi",
+    "based_on_snapshot": "GS-000002",
+    "target": {
+      "node_id": "NODE-001",
+      "node_type": "definition",
+      "claim": "A single clear proposition."
+    },
+    "neighbor_nodes": [
+      {
+        "node_id": "NODE-002"
+      }
+    ],
+    "neighbor_edges": [],
+    "claim_digest": [
+      {
+        "node_id": "NODE-001",
+        "claim": "x"
+      },
+      {
+        "node_id": "NODE-002",
+        "claim": "y"
+      }
+    ],
+    "contract_scope": {},
+    "forbidden_claims": [],
+    "prior_results": []
+  },
+  "docs_pack": {
+    "schema_version": "docs_pack.v1",
+    "pack_id": "DOCSPACK-NODE-001",
+    "task_id": "PT-NODE-001",
+    "project_id": "p4-ldi",
+    "evidence_units": [
+      {
+        "evidence_id": "EU-001"
+      }
+    ],
+    "documents_meta": [
+      {
+        "doc_id": "DOC-001"
+      }
+    ]
+  },
+  "work_item": {
+    "work_item_id": "WI-000001",
+    "task_id": "PT-NODE-001",
+    "target_id": "NODE-001",
+    "target_type": "node",
+    "output_files": [
+      "agent_outputs/proof_results/PT-NODE-001.proof_result.json"
+    ],
+    "bundle": {
+      "task_file": "proof/tasks/PT-NODE-001.json",
+      "context_pack": "proof/context/CTX-NODE-001.json",
+      "docs_pack": "docs/docspacks/DOCSPACK-NODE-001.json"
+    }
+  },
+  "result": {
+    "schema_version": "proof_result.v1",
+    "task_id": "PT-NODE-001",
+    "project_id": "p4-ldi",
+    "target_type": "node",
+    "target_id": "NODE-001",
+    "form": {
+      "scope_check": "bogus_enum",
+      "duplicate_check": {
+        "duplicate": false,
+        "duplicate_of": null
+      },
+      "wellformed_check": "single_proposition",
+      "evidence_check": "not_required"
+    },
+    "assumptions": [],
+    "evidence_used": [],
+    "language_limits": {
+      "allowed": [
+        "The strongest supported wording."
+      ],
+      "forbidden": [
+        "An overclaim to avoid."
+      ]
+    },
+    "repair_proposals": [],
+    "docs_requests": [],
+    "notes": "ok"
+  }
+}

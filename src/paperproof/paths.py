@@ -62,6 +62,7 @@ EMPTY_JSONL: tuple[str, ...] = (
 LOCK_FILES: tuple[str, ...] = (
     "queue/.lock",
     "commit/.lock",
+    "proof/.lock",
 )
 
 # The three graph files a snapshot hashes over (docs/07 §Snapshots).

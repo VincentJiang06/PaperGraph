@@ -273,16 +273,7 @@ def _make_stub(command: str) -> Callable[[], None]:
 
 
 _STUB_GROUPS: dict[str, list[str]] = {
-    "graph": ["list-nodes", "list-edges", "show", "msa-check", "park", "unpark"],
-    "expand": ["ingest"],
-    "proof": ["build-tasks", "build-task"],
     "docs": ["ingest", "search", "build-pack", "request", "ingest-result"],
-    "queue": [
-        "list", "claim", "heartbeat", "release", "complete", "fail",
-        "expire", "requeue", "events",
-    ],
-    "validate": ["result", "proposal", "docs-result"],
-    "commit": ["apply"],
     "freeze": ["apply", "unfreeze"],
     "compiler": ["dry-run", "draft-map", "ingest-prose"],
     "audit": ["run"],
@@ -296,9 +287,234 @@ for _group_name, _commands in _STUB_GROUPS.items():
         _group_app.command(_cname)(_make_stub(f"{_group_name} {_cname}"))
     app.add_typer(_group_app, name=_group_name)
 
-# top-level stub commands
-app.command("verify")(_make_stub("verify"))
+# top-level stub commands (trace arrives at M3)
 app.command("trace")(_make_stub("trace"))
+
+# ---------------------------------------------------------------------------
+# M1 real command groups
+# ---------------------------------------------------------------------------
+
+from ..committer import apply as _committer  # noqa: E402
+from ..expander import ingest as _expander  # noqa: E402
+from ..graph import commands as _graph  # noqa: E402
+from ..prooftask import builder as _prooftask  # noqa: E402
+from ..queue import commands as _queue  # noqa: E402
+from ..validate import proof as _validate_proof  # noqa: E402
+from .. import verify as _verify  # noqa: E402
+
+
+# --- graph ------------------------------------------------------------------
+graph_app = typer.Typer(no_args_is_help=False)
+
+
+@graph_app.command("list-nodes")
+def graph_list_nodes(
+    ctx: typer.Context,
+    state: Optional[str] = typer.Option(None, "--state"),
+    lane: Optional[str] = typer.Option(None, "--lane"),
+    layer: Optional[int] = typer.Option(None, "--layer"),
+) -> None:
+    s = _state(ctx)
+    _dispatch("graph list-nodes", lambda: _graph.list_nodes(_project_paths(s), state, lane, layer))
+
+
+@graph_app.command("list-edges")
+def graph_list_edges(
+    ctx: typer.Context,
+    state: Optional[str] = typer.Option(None, "--state"),
+    lane: Optional[str] = typer.Option(None, "--lane"),
+    layer: Optional[int] = typer.Option(None, "--layer"),
+) -> None:
+    s = _state(ctx)
+    _dispatch("graph list-edges", lambda: _graph.list_edges(_project_paths(s), state, lane, layer))
+
+
+@graph_app.command("show")
+def graph_show(ctx: typer.Context, target_id: str = typer.Argument(...)) -> None:
+    s = _state(ctx)
+    _dispatch("graph show", lambda: _graph.show(_project_paths(s), target_id))
+
+
+@graph_app.command("msa-check")
+def graph_msa_check(ctx: typer.Context) -> None:
+    s = _state(ctx)
+
+    def body() -> dict[str, Any]:
+        data = _graph.msa_check(_project_paths(s))
+        if not data["all_pass"]:
+            raise DomainError(["MSA incomplete"], data=data)
+        return data
+
+    _dispatch("graph msa-check", body)
+
+
+@graph_app.command("park")
+def graph_park(
+    ctx: typer.Context,
+    target_id: str = typer.Argument(...),
+    reason: str = typer.Option(..., "--reason"),
+    into: Optional[str] = typer.Option(None, "--into"),
+) -> None:
+    s = _state(ctx)
+    _dispatch("graph park", lambda: _graph.park(_project_paths(s), target_id, reason, into))
+
+
+@graph_app.command("unpark")
+def graph_unpark(ctx: typer.Context, target_id: str = typer.Argument(...)) -> None:
+    s = _state(ctx)
+    _dispatch("graph unpark", lambda: _graph.unpark(_project_paths(s), target_id))
+
+
+app.add_typer(graph_app, name="graph")
+
+
+# --- expand -----------------------------------------------------------------
+expand_app = typer.Typer(no_args_is_help=False)
+
+
+@expand_app.command("ingest")
+def expand_ingest(ctx: typer.Context, proposal_file: str = typer.Argument(...)) -> None:
+    s = _state(ctx)
+    _dispatch("expand ingest", lambda: _expander.ingest(_project_paths(s), proposal_file))
+
+
+app.add_typer(expand_app, name="expand")
+
+
+# --- proof ------------------------------------------------------------------
+proof_app = typer.Typer(no_args_is_help=False)
+
+
+@proof_app.command("build-tasks")
+def proof_build_tasks(ctx: typer.Context, frontier: bool = typer.Option(False, "--frontier")) -> None:
+    s = _state(ctx)
+    _dispatch("proof build-tasks", lambda: _prooftask.build_frontier(_project_paths(s)))
+
+
+@proof_app.command("build-task")
+def proof_build_task(ctx: typer.Context, target_id: str = typer.Argument(...)) -> None:
+    s = _state(ctx)
+    _dispatch("proof build-task", lambda: _prooftask.build_one(_project_paths(s), target_id))
+
+
+app.add_typer(proof_app, name="proof")
+
+
+# --- queue ------------------------------------------------------------------
+queue_app = typer.Typer(no_args_is_help=False)
+
+
+@queue_app.command("list")
+def queue_list(
+    ctx: typer.Context,
+    queue: Optional[str] = typer.Option(None, "--queue"),
+    status: Optional[str] = typer.Option(None, "--status"),
+) -> None:
+    s = _state(ctx)
+    _dispatch("queue list", lambda: _queue.list_items(_project_paths(s), queue, status))
+
+
+@queue_app.command("claim")
+def queue_claim(
+    ctx: typer.Context,
+    queue: str = typer.Option(..., "--queue"),
+    agent: str = typer.Option(..., "--agent"),
+    id: Optional[str] = typer.Option(None, "--id"),
+) -> None:
+    s = _state(ctx)
+    _dispatch("queue claim", lambda: _queue.claim(_project_paths(s), queue, agent, id))
+
+
+@queue_app.command("heartbeat")
+def queue_heartbeat(ctx: typer.Context, wi: str = typer.Argument(...), agent: str = typer.Option(..., "--agent")) -> None:
+    s = _state(ctx)
+    _dispatch("queue heartbeat", lambda: _queue.heartbeat(_project_paths(s), wi, agent))
+
+
+@queue_app.command("release")
+def queue_release(ctx: typer.Context, wi: str = typer.Argument(...)) -> None:
+    s = _state(ctx)
+    _dispatch("queue release", lambda: _queue.release(_project_paths(s), wi))
+
+
+@queue_app.command("complete")
+def queue_complete(ctx: typer.Context, wi: str = typer.Argument(...)) -> None:
+    s = _state(ctx)
+    _dispatch("queue complete", lambda: _queue.complete(_project_paths(s), wi))
+
+
+@queue_app.command("fail")
+def queue_fail(ctx: typer.Context, wi: str = typer.Argument(...), reason: str = typer.Option("manual", "--reason")) -> None:
+    s = _state(ctx)
+    _dispatch("queue fail", lambda: _queue.fail(_project_paths(s), wi, reason))
+
+
+@queue_app.command("expire")
+def queue_expire(ctx: typer.Context) -> None:
+    s = _state(ctx)
+    _dispatch("queue expire", lambda: _queue.expire(_project_paths(s)))
+
+
+@queue_app.command("requeue")
+def queue_requeue(ctx: typer.Context, wi: str = typer.Argument(...)) -> None:
+    s = _state(ctx)
+    _dispatch("queue requeue", lambda: _queue.requeue(_project_paths(s), wi))
+
+
+@queue_app.command("events")
+def queue_events(ctx: typer.Context, after: Optional[str] = typer.Option(None, "--after")) -> None:
+    s = _state(ctx)
+    _dispatch("queue events", lambda: _queue.events(_project_paths(s), after))
+
+
+app.add_typer(queue_app, name="queue")
+
+
+# --- validate ---------------------------------------------------------------
+validate_app = typer.Typer(no_args_is_help=False)
+
+
+@validate_app.command("result")
+def validate_result(ctx: typer.Context, file: str = typer.Argument(...), work_item: str = typer.Option(..., "--work-item")) -> None:
+    s = _state(ctx)
+    _dispatch("validate result", lambda: _validate_proof.validate_result(_project_paths(s), file, work_item))
+
+
+@validate_app.command("proposal")
+def validate_proposal(ctx: typer.Context, file: str = typer.Argument(...)) -> None:
+    s = _state(ctx)
+
+    def body() -> dict[str, Any]:
+        result = _expander.validate(_project_paths(s), file)
+        if not result["ok"]:
+            raise DomainError(result["failed_rules"], data=result)
+        return result
+
+    _dispatch("validate proposal", body)
+
+
+validate_app.command("docs-result")(_make_stub("validate docs-result"))
+app.add_typer(validate_app, name="validate")
+
+
+# --- commit -----------------------------------------------------------------
+commit_app = typer.Typer(no_args_is_help=False)
+
+
+@commit_app.command("apply")
+def commit_apply(ctx: typer.Context, result: str = typer.Option(..., "--result")) -> None:
+    s = _state(ctx)
+    _dispatch("commit apply", lambda: _committer.apply_proof_verdict(_project_paths(s), result))
+
+
+app.add_typer(commit_app, name="commit")
+
+
+# --- verify -----------------------------------------------------------------
+@app.command("verify")
+def verify_cmd(ctx: typer.Context) -> None:
+    s = _state(ctx)
+    _dispatch("verify", lambda: _verify.run(_project_paths(s)))
 
 
 def main() -> None:

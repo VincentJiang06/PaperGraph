@@ -1,0 +1,147 @@
+"""Graph-record static checks (docs/09 V-NODE / V-EDGE / V-GRAPH).
+
+These are NOT registered as top-level registry rules in M1 (the coverage
+meta-test covers only V-SPEC/V-PATH/V-PR/V-EXP/V-TASK/V-Q/V-COMMIT). They are
+reusable helpers: the Expander reports them under V-EXP-05, and the Committer /
+verify report structural violations under V-COMMIT-05. Keeping them here means
+one implementation of "single proposition", "reachability", and "no cycles".
+"""
+
+from __future__ import annotations
+
+from typing import Any
+
+from ...textutil import casefold, contains, sentence_count
+from ..envelope import Failure
+
+# V-NODE-02 static compound phrases (docs/09).
+COMPOUND_PHRASES = ("; and", "and therefore", "which means")
+
+
+def node02_ok(claim: str) -> tuple[bool, str]:
+    """V-NODE-02: 1-2 sentences, single proposition (static heuristic)."""
+    n = sentence_count(claim)
+    if not (1 <= n <= 2):
+        return False, f"claim has {n} sentences (want 1-2)"
+    for phrase in COMPOUND_PHRASES:
+        if contains(claim, phrase):
+            return False, f"claim contains compound phrase {phrase!r}"
+    return True, ""
+
+
+def node03_ok(node_scope: dict[str, Any], contract_scope: dict[str, Any]) -> tuple[bool, str]:
+    """V-NODE-03: node scope compatible with the contract scope."""
+    from ...textutil import scope_compatible
+
+    if scope_compatible(node_scope or {}, contract_scope or {}):
+        return True, ""
+    return False, "node scope incompatible with contract scope"
+
+
+def edge02_ok(edge_claim: str, source_claim: str, target_claim: str) -> tuple[bool, str]:
+    """V-EDGE-02: edge_claim is not a verbatim restatement of either endpoint."""
+    ec = casefold(edge_claim)
+    if ec == casefold(source_claim) or ec == casefold(target_claim):
+        return False, "edge_claim restates an endpoint claim verbatim"
+    return True, ""
+
+
+def no_supports_cycle(edges: list[dict[str, Any]]) -> tuple[bool, str]:
+    """V-GRAPH-01: no supports/depends_on cycle among non-rejected edges."""
+    adj: dict[str, list[str]] = {}
+    for e in edges:
+        if e["lifecycle_state"] == "rejected":
+            continue
+        if e["edge_type"] not in ("supports", "depends_on"):
+            continue
+        adj.setdefault(e["source_node_id"], []).append(e["target_node_id"])
+    WHITE, GRAY, BLACK = 0, 1, 2
+    color: dict[str, int] = {}
+
+    def visit(node: str) -> bool:
+        color[node] = GRAY
+        for nxt in adj.get(node, []):
+            c = color.get(nxt, WHITE)
+            if c == GRAY:
+                return False
+            if c == WHITE and not visit(nxt):
+                return False
+        color[node] = BLACK
+        return True
+
+    for node in list(adj.keys()):
+        if color.get(node, WHITE) == WHITE and not visit(node):
+            return False, f"supports/depends_on cycle at {node}"
+    return True, ""
+
+
+def graph_record_checks(nodes: list[dict[str, Any]], edges: list[dict[str, Any]]) -> list[Failure]:
+    """V-EDGE-02 + V-GRAPH-01..03 over the whole graph (used by verify + the
+    commit-time V-COMMIT-05 post-graph check)."""
+    failures: list[Failure] = []
+    node_claim = {n["node_id"]: n.get("claim", "") for n in nodes}
+    ok, detail = no_supports_cycle(edges)
+    if not ok:
+        failures.append(Failure("V-GRAPH-01", detail))
+
+    # V-EDGE-02: an active/pending edge_claim must not verbatim-restate either
+    # endpoint's claim (static, casefold). Rejected edges are exempt.
+    for e in edges:
+        if e["lifecycle_state"] == "rejected":
+            continue
+        ok2, detail2 = edge02_ok(
+            e["edge_claim"],
+            node_claim.get(e["source_node_id"], ""),
+            node_claim.get(e["target_node_id"], ""),
+        )
+        if not ok2:
+            failures.append(Failure("V-EDGE-02", f"{e['edge_id']}: {detail2}"))
+
+    # V-GRAPH-03: strength iff active; frozen only on active.
+    for rec in list(nodes) + list(edges):
+        rid = rec.get("node_id") or rec.get("edge_id")
+        active = rec["lifecycle_state"] == "active"
+        strong = rec["strength"] in ("strong", "conditional")
+        if active != strong:
+            failures.append(Failure("V-GRAPH-03", f"{rid}: strength/active mismatch"))
+        if rec.get("frozen") and not active:
+            failures.append(Failure("V-GRAPH-03", f"{rid}: frozen but not active"))
+
+    # V-GRAPH-02: every non-seed, non-rejected node reachable from a layer-0
+    # node via parents or edges.
+    node_by_id = {n["node_id"]: n for n in nodes}
+    reachable: set[str] = set()
+    # layer-0 seeds: origin.kind == seed, or the question/thesis nodes.
+    frontier: list[str] = []
+    for n in nodes:
+        if n["lifecycle_state"] == "rejected":
+            continue
+        if n["origin"]["kind"] == "seed" or n["node_type"] in ("question", "thesis"):
+            reachable.add(n["node_id"])
+            frontier.append(n["node_id"])
+    # propagate along parents (child reachable if a parent is) and edges
+    changed = True
+    child_edges: dict[str, list[str]] = {}
+    for e in edges:
+        if e["lifecycle_state"] == "rejected":
+            continue
+        child_edges.setdefault(e["target_node_id"], []).append(e["source_node_id"])
+        child_edges.setdefault(e["source_node_id"], []).append(e["target_node_id"])
+    while changed:
+        changed = False
+        for n in nodes:
+            nid = n["node_id"]
+            if nid in reachable or n["lifecycle_state"] == "rejected":
+                continue
+            parents = n.get("parents") or []
+            if any(p in reachable for p in parents) or any(
+                nb in reachable for nb in child_edges.get(nid, [])
+            ):
+                reachable.add(nid)
+                changed = True
+    for n in nodes:
+        if n["lifecycle_state"] == "rejected":
+            continue
+        if n["node_id"] not in reachable:
+            failures.append(Failure("V-GRAPH-02", f"{n['node_id']} unreachable from layer-0"))
+    return failures

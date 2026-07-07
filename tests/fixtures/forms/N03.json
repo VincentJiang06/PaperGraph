@@ -1,0 +1,21 @@
+{
+  "id": "N03",
+  "task_type": "NODE_CHECK",
+  "node_type": "fact",
+  "form": {
+    "scope_check": "in_scope",
+    "duplicate_check": {
+      "duplicate": false,
+      "duplicate_of": null
+    },
+    "wellformed_check": "too_broad",
+    "evidence_check": "not_evaluated"
+  },
+  "assumptions": [],
+  "expected": {
+    "verdict": "needs_repair",
+    "repair_kind": "narrow",
+    "strength": null,
+    "reason": null
+  }
+}

@@ -30,6 +30,7 @@ packages = ["src/paperproof"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 addopts = "-m 'not live'"
 markers = [
   "unit: pure-function tests",

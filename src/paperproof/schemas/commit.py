@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Literal
+from typing import Any, Literal, Optional
 
 from pydantic import BaseModel
 
@@ -24,6 +24,12 @@ class CommitActionEntry(BaseModel):
     action: CommitAction
     target_id: str
     detail: dict[str, Any]
+    # For every GRAPH-mutating action (append_node|update_node|append_edge|
+    # update_edge|tombstone|set_frozen), `record` is the EXACT graph record
+    # appended to graph/*.jsonl; for non-graph actions it is null. This makes the
+    # audit trail genuinely replayable (V-COMMIT-04, docs/08 §2b): the replay
+    # reconstructs the post-graph state from these records alone.
+    record: Optional[dict[str, Any]] = None
 
 
 class CommitDecision(BaseModel):

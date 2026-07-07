@@ -1,0 +1,22 @@
+{
+  "id": "E09",
+  "task_type": "EDGE_CHECK",
+  "node_type": null,
+  "form": {
+    "scope_check": "in_scope",
+    "duplicate_check": {
+      "duplicate": false,
+      "duplicate_of": null
+    },
+    "wellformed_check": "single_proposition",
+    "evidence_check": "not_required",
+    "inference_check": "holds"
+  },
+  "assumptions": [],
+  "expected": {
+    "verdict": "pass",
+    "repair_kind": null,
+    "strength": "strong",
+    "reason": null
+  }
+}

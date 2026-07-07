@@ -21,14 +21,14 @@ grades THIS, not the raw spec. Each assertion is machine-gradable unless marked
 - [x] A5  JSONL store append-only, latest-by-id, rejects path traversal · test_jsonl_store · m0 ✓ (evaluator attacked symlink/traversal)
 - [x] A6  typer app = exactly docs/10 §4 closed list (stubs=envelope+NOT-IMPLEMENTED+exit1); one envelope always · test_cli_envelope · m0 ✓ (43 cmds both directions)
 - [x] A7  textutil = docs/09 §0 exactly (CJK tok/sentence, frozen 82-word stoplist) · test_textutil · m0 ✓
-- [ ] A8  24 golden decision rows compute documented verdicts · test_decision_table -k golden · m1
-- [ ] A9  totality fuzz: every enum combo → one verdict or V-PR-14/15/05 reject · test_decision_table -k totality · m1
-- [ ] A10 hostile H01–H18 rejected w/ named rule in failed_rules · test_v_pr · m1
-- [ ] A11 S1 bridge wiring (C,D + C→B,D→B; re-proof blocked_by 4; pass(conditional); C,D in spine) · test_s1 · m1
-- [ ] A12 S4 8 items/4 workers all committed, no double leases, replayable log · test_s4 · m1
-- [ ] A13 S5 expiry attempt+1 then dead>3; S6 stale→-r2, old bundles immutable · test_s5,test_s6 · m1
-- [ ] A14 two identical S1 runs → byte-identical canonical files · test_determinism · m1
-- [ ] A15 every rule id has pass+fail fixtures OR SCENARIO_COVERED; meta-test fails on gaps both ways · test_rule_coverage · cross-cutting
+- [x] A8  24 golden decision rows compute documented verdicts · test_decision_table -k golden · m1
+- [x] A9  totality fuzz: every enum combo → one verdict or V-PR-14/15/05 reject · test_decision_table -k totality · m1
+- [x] A10 hostile H01–H18 rejected w/ named rule in failed_rules · test_v_pr · m1
+- [x] A11 S1 bridge wiring (C,D + C→B,D→B; re-proof blocked_by 4; pass(conditional); C,D in spine) · test_s1 · m1
+- [x] A12 S4 8 items/4 workers all committed, no double leases, replayable log · test_s4 · m1
+- [x] A13 S5 expiry attempt+1 then dead>3; S6 stale→-r2, old bundles immutable · test_s5,test_s6 · m1
+- [x] A14 two identical S1 runs → byte-identical canonical files · test_determinism · m1
+- [x] A15 every rule id has pass+fail fixtures OR SCENARIO_COVERED; meta-test fails on gaps both ways · test_rule_coverage · cross-cutting
 - [ ] A16 docs D01–D05 rejected w/ named rules; quote_match accepts true/rejects fake · test_v_dr · m2
 - [ ] A17 S2 identical 2nd request=cache no work item; 3rd needs_docs → born-dead item · test_s2 · m2
 - [ ] A18 S3 cascade tombstones incident edges endpoint_rejected + cancels items; verify=0 · test_s3 · m2

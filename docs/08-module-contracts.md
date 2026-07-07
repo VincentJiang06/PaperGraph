@@ -207,7 +207,10 @@ append node X:  lane + layer = A's (the original edge's SOURCE node),
                 parents = [B], origin = {kind: "bridge", source: <PR-id>},
                 first stored state pending_proof
 append edge X→B: edge_type = depends_on if X.node_type = definition,
-                else supports; first stored state pending_proof
+                else supports; edge_claim = the deterministic synthesis
+                "Bridge premise supporting the inference: <X.claim>" (satisfies
+                V-EDGE-02 — it states X's role in the inference, not a
+                restatement of either endpoint); first stored state pending_proof
 enqueue NODE_CHECK(X); enqueue EDGE_CHECK(X→B) blocked_by NODE_CHECK(X)
 re-proof item for A→B blocked_by ALL of the above (both bridges' node AND
                 edge items)
@@ -245,15 +248,15 @@ contract_reopen  batch re-open after a contract version bump. v1 ships NO CLI
   "based_on_snapshot": "GS-000004",
   "post_snapshot": "GS-000005",
   "actions": [
-    {"action": "update_edge", "target_id": "EDGE-001-002", "detail": {"lifecycle_state": "needs_repair"}},
-    {"action": "append_node", "target_id": "NODE-003", "detail": {"origin": "bridge"}},
-    {"action": "enqueue", "target_id": "WI-000007", "detail": {"queue": "proof_queue"}}
+    {"action": "update_edge", "target_id": "EDGE-001-002", "detail": {"lifecycle_state": "needs_repair"}, "record": { "…": "the full logic_edge.v1 record as appended" }},
+    {"action": "append_node", "target_id": "NODE-003", "detail": {"origin": "bridge"}, "record": { "…": "the full logic_node.v1 record as appended" }},
+    {"action": "enqueue", "target_id": "WI-000007", "detail": {"queue": "proof_queue"}, "record": null}
   ],
   "created_at": "2026-07-07T00:00:00Z"
 }
 ```
 
-`kind` enum: `proof_verdict | expansion | park | unpark | freeze_batch | unfreeze_batch | contract_reopen`. `action` enum: `append_node | update_node | append_edge | update_edge | tombstone | enqueue | cancel_item | mark_stale | docs_request | set_frozen`. Replaying `actions` against the pre-snapshot must reproduce the post-snapshot exactly [V-COMMIT-04].
+`kind` enum: `proof_verdict | expansion | park | unpark | freeze_batch | unfreeze_batch | contract_reopen`. `action` enum: `append_node | update_node | append_edge | update_edge | tombstone | enqueue | cancel_item | mark_stale | docs_request | set_frozen`. Each **graph-mutating** action (`append_node | update_node | append_edge | update_edge | tombstone | set_frozen`) carries `record` = the exact graph record it appended to `graph/*.jsonl`; non-graph actions set `record` to null. `detail` stays a human-readable summary. Replaying `actions` against the pre-snapshot must reproduce the post-snapshot exactly [V-COMMIT-04]: the replay reconstructs post-graph-state from **pre-state + the actions' `record` payloads only** (it never reads the appended lines), so a CommitDecision whose actions do not faithfully manifest the commit fails the check — the audit trail is genuinely replayable, not tautologically.
 
 ```json
 {
