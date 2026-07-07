@@ -3,16 +3,21 @@
 Resume point after any compaction/crash: re-read this file + contract.md + log.md.
 Do NOT trust a session summary.
 
-## Loop status
-- Outer budget: 3 re-entries. Used: 0.
-- Current stage: **m3-endgame** (attempt 1 PASSED; closing N1 hardening) → next m4.
-- Gate tags: gate/m0-foundation, gate/m1-proof-loop, gate/m2-docs.
-- m0: 171 green; PASS. A1–A7,A24.
-- m1: 312 green; attempt2 PASS (fixed hollow V-COMMIT-04 replay + V-EDGE-02). A8–A15.
-- m2: 335 green; attempt1 PASS (16 evaluator probes). A16–A18.
-- m3: 363 green; attempt1 PASS (evaluator broke msa preconditions, degenerate-gap
-  probes, tainted prose, trace-to-raw-file). A19–A21. Closing N1 (verify crossref
-  resolution for evidence_bindings + duplicate_of, additive, docs/09 §3) before commit.
+## Loop status — COMPLETE
+- All milestones gated, committed, tagged, pushed. Automated definition-of-done MET.
+- Gate tags: gate/m0-foundation, gate/m1-proof-loop, gate/m2-docs, gate/m3-endgame, gate/m4-surface.
+- Final state: 381 tests green from a FRESH CLONE in a clean 3.12 venv; wheel builds
+  and ships prompts + ui/static (real cytoscape). paperproof verify genuinely catches
+  corruption. All 27 contract assertions: A1-A25 machine-proven; A26 (live smoke, real
+  Claude workers) + A27 (doc-first, spot-audited clean bar one reconciled finding) are
+  the deliberate human nodes.
+- Per-milestone: m0 PASS(171) · m1 PASS attempt2(312, fixed hollow replay) · m2 PASS(335)
+  · m3 PASS(367, +N1 verify crossref) · m4 PASS(375→377, real cytoscape) · final-audit
+  PASS (fresh-clone caught+fixed the .gitignore db/ packaging bug) · polish(381, 4 low
+  findings closed).
+- The loop caught 3 things a self-grading build would have shipped: a tautological
+  V-COMMIT-04 replay (m1), a verify/doc crossref gap (m3-N1), and a .gitignore that
+  silently excluded the whole M4 db package from every commit (final-audit fresh-clone).
 
 ## m1 attempt-2 fix plan (F1 + secondary)
 F1: replay_reproduces is tautological (slices post lines, ignores action content).
