@@ -1,0 +1,1 @@
+{"schema_version":"queue_event.v1","event_id":"QE-000001","project_id":"p4-ldi","work_item_id":"WI-000001","op":"claim","from_status":"queued","to_status":"claimed","actor":"proof-worker-1","detail":{},"created_at":"2026-07-07T00:00:00Z"}

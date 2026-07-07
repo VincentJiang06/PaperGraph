@@ -1,0 +1,1 @@
+{"schema_version":"freeze_item.v1","freeze_id":"FRZ-001","project_id":"p4-ldi","action":"freeze","freeze_type":"local_freeze","target_ids":["NODE-001"],"evidence_ids":["EU-001"],"allowed_language":["allowed sentence"],"forbidden_language":["forbidden sentence"],"revokes":null,"created_at":"2026-07-07T00:00:00Z"}

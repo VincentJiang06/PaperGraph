@@ -123,6 +123,10 @@ exit 2  usage error
 exit 3  corrupted state (verify failure, bad JSONL line)        — stop and tell human
 ```
 
+The one-envelope rule covers the closed command surface below. The framework's
+`--help`/`-h` eager flag is exempt: it prints standard help text and exits 0, and
+is not one of the listed commands.
+
 Global options: `--root <dir>` (default `./data`), `--project <id>` / `PAPERPROOF_PROJECT`. The command list below is **closed for v1**: a workflow need that no command covers means this doc gets amended first. `data` payloads list their essential keys; envelopes may add informational keys but never remove these.
 
 | command | args | effect / data |

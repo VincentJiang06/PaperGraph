@@ -1,0 +1,1 @@
+{"schema_version":"draft_map.v1","draft_map_id":"DRAFTMAP-001","project_id":"p4-ldi","based_on_dry_run":"CDR-002","sections":[{"section_id":"SEC-mechanism","role":"mechanism","claims":[{"node_id":"NODE-001","claim":"...","evidence_ids":["EU-001"],"allowed_language":["..."],"forbidden_language":["..."]}],"edge_order":["EDGE-001-002"]}],"created_at":"2026-07-07T00:00:00Z"}

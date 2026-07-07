@@ -1,0 +1,4 @@
+RETRY {attempt}/3 — your previous output failed validation:
+{failed_rules_with_detail}
+Fix exactly these violations and rewrite the COMPLETE output file at the same
+path. Do not change anything else.

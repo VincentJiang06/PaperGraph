@@ -44,7 +44,7 @@ stopwords         the frozen list, exactly: a an the and or but if then else
                   each few more most other some such no nor not only same so
                   than too very can will just is are was were be been being
                   have has had do does did that this these those it its as
-                  (72 words; changing it is a spec change).
+                  (82 words; changing it is a spec change).
 ```
 
 ## 1. Validation Rule Registry

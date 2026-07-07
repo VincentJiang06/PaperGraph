@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "paperproof"
+version = "0.1.0"
+description = "PaperGraph deterministic core (paperproof)"
+requires-python = ">=3.12"
+dependencies = [
+  "pydantic>=2.7",
+  "typer>=0.12",
+  "fastapi>=0.111",
+  "uvicorn>=0.30",
+  "duckdb>=1.0",
+  "pypdf>=4.2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "httpx>=0.27"]
+
+[project.scripts]
+paperproof = "paperproof.cli.app:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/paperproof"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"src/paperproof/prompts" = "paperproof/prompts"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-m 'not live'"
+markers = [
+  "unit: pure-function tests",
+  "contract: single-module boundary tests",
+  "integration: multi-module scenario tests (S1-S8)",
+  "live: real Claude workers - milestone acceptance only, never CI/default",
+  "slow: concurrency/fuzz tests (>5s)",
+]

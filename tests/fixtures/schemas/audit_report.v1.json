@@ -1,0 +1,1 @@
+{"schema_version":"audit_report.v1","audit_id":"AUD-001","project_id":"p4-ldi","draft_ref":"DRAFTMAP-001","findings":[{"kind":"strength","location":"SEC-mechanism:para 2","target_id":"NODE-001","detail":"forbidden string present"}],"passed":false,"created_at":"2026-07-07T00:00:00Z"}

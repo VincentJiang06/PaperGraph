@@ -1,0 +1,1 @@
+{"paper_spec": {"bfs_plan": [{"bfs_id": "BFS-MAIN", "purpose": "a", "depends_on": ["BFS-ALT"]}, {"bfs_id": "BFS-ALT", "purpose": "b", "depends_on": ["BFS-MAIN"]}]}}

@@ -1,0 +1,1 @@
+{"schema_version":"context_pack.v1","pack_id":"CTX-EDGE-001-002","task_id":"PT-EDGE-001-002","project_id":"p4-ldi","based_on_snapshot":"GS-000004","target":{"edge_id":"EDGE-001-002"},"neighbor_nodes":[],"neighbor_edges":[],"claim_digest":[{"node_id":"NODE-001","claim":"..."}],"contract_scope":{"period":"2020-2023","region":"UK"},"forbidden_claims":[],"prior_results":[]}
