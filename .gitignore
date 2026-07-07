@@ -12,8 +12,8 @@ build/
 .pytest_cache/
 .coverage
 
-# derived index
-db/
+# derived index (per-project, under data/) — NOT the src/paperproof/db package
+data/**/db/
 
 # local tool state
 .claude/settings.local.json
