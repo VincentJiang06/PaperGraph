@@ -63,9 +63,17 @@ WebUI monitor: read-only view over all of the above, at every stage.
 11-test-suite.md               the executable test plan: fixtures, fakes, meta-tests,
                                milestone gates
 12-webui-spec.md               the WebUI design: shell, tokens, views, components
+
+— search program (DESIGN-FROZEN, staged; not yet binding — see 13) —
+13-search-program.md           S1–S5 overview, composition, dependency, staging
+14-search-planning.md          S1: deterministic SearchPlans + per-query accounting
+15-search-orchestra.md         S2: parallel angle waves, merger, coverage critic
+16-source-registry.md          S3: source tiers, fetch recipes, provenance, triangulation
+17-coverage-saturation.md      S4: coverage ledger + saturation stop criterion
+18-semantic-retrieval.md       S5: hybrid keyword+embedding matching, cross-lingual
 ```
 
-Documents 01–07 describe modules; 08–12 bind them. On any boundary question (who writes what, what a gate accepts), `08-module-contracts.md` is authoritative. On any check, the rule IDs in `09-verification.md` are authoritative. On what v1 includes, `10-v1-design.md` is authoritative. On test structure, `11-test-suite.md` is authoritative. On WebUI design, `12-webui-spec.md` is authoritative (within the scope docs/10 §6 allows).
+Documents 01–07 describe modules; 08–12 bind them. On any boundary question (who writes what, what a gate accepts), `08-module-contracts.md` is authoritative. On any check, the rule IDs in `09-verification.md` are authoritative. On what v1 includes, `10-v1-design.md` is authoritative. On test structure, `11-test-suite.md` is authoritative. On WebUI design, `12-webui-spec.md` is authoritative (within the scope docs/10 §6 allows). Documents 13–18 are the **search program**: fully designed, adoption-staged, and binding only once a docs/00 changelog entry adopts a set (docs/13 §Normativity).
 
 ## Non-Negotiables
 

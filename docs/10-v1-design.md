@@ -32,7 +32,10 @@ contract re-versioning automation      docs/08   → v1.1 (v1: no CLI trigger;
 multi-case merge lanes + comparison node type / contrasts_with edges   docs/02 → v2
 other paper patterns                   docs/01   → v2
 grill-me topic interviewer             docs/01   → v2
-embedding/semantic evidence search     docs/04   → v2
+embedding/semantic evidence search     docs/18 (S5) → v2
+search program S1–S4 (planning, waves+critic, source tiers, saturation)
+                                       docs/13–17 → staged v1.1/v1.2 (adoption
+                                       via a docs/00 entry; design-frozen now)
 multi-project concurrency, remote workers, Neo4j/GraphRAG, agent debate: not planned
 ```
 

@@ -36,6 +36,10 @@ a maintenance milestone gated by docs/11 §10 (T-r3-1..10). Implementation order
 8. ui serve --auto-rebuild (ui/app.py + cli) — T-r3-9; templates SELF-CHECK
    blocks (prompts/*.txt) — T-r3-10.
 Run data for regression fixtures: data/projects/ai-jobs (24 EU, 12 docs,
+STAGED AFTER r3: the search program S1-S5 (docs/13-18, design-frozen).
+Stage A (S1 planning + S2 orchestra + S3-lite registry) is the intended
+v1.1 milestone after the r3 maintenance items land; adopt via a docs/00
+changelog entry + a docs/11 worklist, per docs/13 SSNormativity.
 10 verdicts, 122 events — the V-PATH-04 failures are QE-000048/51/64/101/104).
 
 ## m1 attempt-2 fix plan (F1 + secondary)

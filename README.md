@@ -43,6 +43,10 @@ docs/11-test-suite.md           AUTHORITATIVE test plan: fixtures, FakeWorkers, 
                                 decision rows, hostile catalog, meta-tests, milestone gates
 docs/12-webui-spec.md           AUTHORITATIVE WebUI design: shell, tokens, views,
                                 components, accessibility, test hooks
+docs/13..18                     the SEARCH PROGRAM (S1-S5): design-frozen, staged
+                                specs for thorough evidence search — planning,
+                                waves+critic, source tiers, saturation, semantic
+                                retrieval; binding only on adoption (docs/13)
 ```
 
 ## Core Loop (first thing to build)

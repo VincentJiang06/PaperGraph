@@ -1,6 +1,6 @@
 # Agent Protocol
 
-`docs/` (00 → 12) is the single source of truth. Boundary questions: `docs/08-module-contracts.md` wins. Checks: the V-* registry in `docs/09-verification.md`. V1 scope: `docs/10-v1-design.md`. Test structure: `docs/11-test-suite.md`. WebUI design: `docs/12-webui-spec.md`. `archive/` is superseded legacy material; `product/` is product/GTM planning — neither is build spec. Never treat them as authoritative for implementation.
+`docs/` (00 → 12) is the single source of truth. Boundary questions: `docs/08-module-contracts.md` wins. Checks: the V-* registry in `docs/09-verification.md`. V1 scope: `docs/10-v1-design.md`. Test structure: `docs/11-test-suite.md`. WebUI design: `docs/12-webui-spec.md`. `docs/13`–`18` are the search program: design-frozen and adoption-staged — implement them ONLY when a docs/00 changelog entry adopts the set. `archive/` is superseded legacy material; `product/` is product/GTM planning — neither is build spec. Never treat them as authoritative for implementation.
 
 Roles are defined in `docs/07-runtime-and-tooling.md`:
 
