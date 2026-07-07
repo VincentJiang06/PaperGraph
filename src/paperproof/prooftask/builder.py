@@ -13,6 +13,7 @@ import re
 from typing import Any
 
 from ..clock import actor as clock_actor
+from ..docsdb import pack as docs_pack_builder
 from ..graph import model as graph_model
 from ..ids import bundle_id, next_bundle_revision
 from ..paths import Paths
@@ -112,12 +113,16 @@ def build_bundle(paths: Paths, work_item: dict[str, Any]) -> dict[str, Any]:
         prior_results=_prior_results(paths, target_id),
     )
 
+    # DocsPack assembled by the matcher (docs/04): the EvidenceUnits selected for
+    # this target claim + their documents' metadata. Empty when nothing archived
+    # yet (M1 behaviour) — an empty DocsPack is valid.
+    evidence_units, documents_meta = docs_pack_builder.assemble(paths, target_record)
     docspack = DocsPack(
         pack_id=dp_id,
         task_id=pt_id,
         project_id=paths.project_id,
-        evidence_units=[],
-        documents_meta=[],
+        evidence_units=evidence_units,
+        documents_meta=documents_meta,
     )
 
     jsonl.write_json(paths.resolve(task_file), task)

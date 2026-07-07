@@ -12,3 +12,6 @@
 ## [2026-07-07] m1-fix-done | 312 tests green; genuine replay + V-EDGE-02 live
 ## [2026-07-07] m1-eval2 | evaluator PASS attempt2 (independent: corrupt action->False, in-window line->False, V-EDGE-02 live, determinism intact)
 ## [2026-07-07] m1-gate | GATE PASS; tagging gate/m1-proof-loop; advancing to m2
+## [2026-07-07] m2-gen | M2 generator: 335 tests green (+23 docsdb/needs_docs)
+## [2026-07-07] m2-eval | evaluator PASS (16 probe tests: cache=no-workitem, quote fabrication rejected, dedup, born-dead cap, S3 cascade)
+## [2026-07-07] m2-gate | GATE PASS; tagging gate/m2-docs; advancing to m3

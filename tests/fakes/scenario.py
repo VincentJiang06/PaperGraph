@@ -115,6 +115,135 @@ BRIDGES = [
 ]
 
 
+# --- S2/S3 docs-loop scaffolding -------------------------------------------
+
+# A need reused across requests so the fingerprint cache resolves an identical
+# second request (docs/04).
+DOCS_NEED = "Evidence on the size and speed of LDI collateral calls in 2022."
+DOCS_HINTS = ["BoE FSR 2022", "gilt crisis LDI margin"]
+
+# A claim + matching EvidenceUnit engineered so the matcher (score >= 2, scope
+# compatible) selects the EU for the claim's DocsPack (docs/04).
+FACT_CLAIM = "LDI margin calls created acute liquidity pressure in 2022."
+
+
+def node_insufficient_form(need: str = DOCS_NEED, hints: list[str] | None = None) -> dict[str, Any]:
+    """A fact-node form answering evidence insufficient (=> needs_docs)."""
+    return {
+        "form": {
+            "scope_check": "in_scope",
+            "duplicate_check": {"duplicate": False, "duplicate_of": None},
+            "wellformed_check": "single_proposition",
+            "evidence_check": "insufficient",
+        },
+        "assumptions": [],
+        "evidence_used": [],
+        "language_limits": None,
+        "repair_proposals": [],
+        "docs_requests": [{"need": need, "search_hints": list(hints or DOCS_HINTS)}],
+        "notes": "insufficient evidence in pack",
+    }
+
+
+def node_sufficient_form(evidence_ids: list[str]) -> dict[str, Any]:
+    """A fact-node form answering evidence sufficient (=> pass strong)."""
+    return {
+        "form": {
+            "scope_check": "in_scope",
+            "duplicate_check": {"duplicate": False, "duplicate_of": None},
+            "wellformed_check": "single_proposition",
+            "evidence_check": "sufficient",
+        },
+        "assumptions": [],
+        "evidence_used": list(evidence_ids),
+        "language_limits": {"allowed": ["Strong wording the evidence carries."], "forbidden": ["An overclaim to avoid."]},
+        "repair_proposals": [],
+        "docs_requests": [],
+        "notes": "evidence sufficient",
+    }
+
+
+def node_contradicting_form(evidence_ids: list[str]) -> dict[str, Any]:
+    """A fact-node form answering evidence contradicting (=> rejected)."""
+    return {
+        "form": {
+            "scope_check": "in_scope",
+            "duplicate_check": {"duplicate": False, "duplicate_of": None},
+            "wellformed_check": "single_proposition",
+            "evidence_check": "contradicting",
+        },
+        "assumptions": [],
+        "evidence_used": list(evidence_ids),
+        "language_limits": None,
+        "repair_proposals": [],
+        "docs_requests": [],
+        "notes": "evidence contradicts the claim",
+    }
+
+
+def boe_docs_result_spec() -> dict[str, Any]:
+    """A scripted DocsResult (web source, inline text) whose EvidenceUnit's quote
+    is verbatim in the text (V-DR-05) and whose can_cite_for matches FACT_CLAIM."""
+    text = (
+        "In September 2022 LDI margin calls created acute liquidity pressure as "
+        "collateral calls exceeded liquid buffers within days."
+    )
+    return {
+        "documents": [
+            {
+                "title": "Bank of England Financial Stability Report, Nov 2022",
+                "source_type": "official_report",
+                "origin": {"kind": "web", "path": None, "url": "https://boe.example/fsr-2022"},
+                "citation_key": "BoE2022FSR",
+                "text": text,
+            }
+        ],
+        "evidence_units": [
+            {
+                "doc_ref": 0,
+                "doc_id": None,
+                "location": "p.12, Section 3.2",
+                "kind": "quote",
+                "quote_or_paraphrase": "LDI margin calls created acute liquidity pressure",
+                "summary": "LDI margin calls created acute liquidity pressure in 2022",
+                "support_direction": "supports",
+                "can_cite_for": [FACT_CLAIM],
+                "cannot_cite_for": ["all de-risking strategies create liquidity crises"],
+                "scope": {},
+            }
+        ],
+        "not_found": False,
+        "search_log": ["boe fsr 2022 ldi margin calls"],
+    }
+
+
+def seed_docs_facts(paths: Paths, fact_claims: list[str], actor: str = "test") -> dict[str, Any]:
+    """Ingest a layer-0 seed: Q, T, and one fact node per claim, each supporting
+    T (so the facts are reachable). Returns the ingest result (assigned_ids)."""
+    snap = snapshot.latest_snapshot_id(paths)
+    nodes = [
+        {"claim": "How did leveraged LDI transform solvency risk into liquidity risk in 2022?", "node_type": "question", "scope": {}, "parents": []},
+        {"claim": "Leveraged LDI converted solvency hedging into acute liquidity stress in 2022.", "node_type": "thesis", "scope": {}, "parents": []},
+    ]
+    for c in fact_claims:
+        nodes.append({"claim": c, "node_type": "fact", "scope": {}, "parents": []})
+    edges = [
+        {"source_ref": "#1", "target_ref": "#0", "edge_type": "supports", "edge_claim": "The thesis, if established, answers the research question."},
+    ]
+    for i in range(len(fact_claims)):
+        edges.append({"source_ref": f"#{2 + i}", "target_ref": "#1", "edge_type": "supports",
+                      "edge_claim": f"Fact {i + 1} provides empirical support for the thesis."})
+    proposal = {
+        "schema_version": "expansion_proposal.v1", "proposal_id": "EXP-BFS-MAIN-L0",
+        "project_id": "p4-ldi", "bfs_id": "BFS-MAIN", "layer": 0, "based_on_snapshot": snap,
+        "nodes": nodes, "edges": edges,
+    }
+    pf = paths.resolve("agent_outputs/expansions/EXP-BFS-MAIN-L0.json")
+    pf.parent.mkdir(parents=True, exist_ok=True)
+    pf.write_text(json.dumps(proposal), encoding="utf-8")
+    return expander.ingest(paths, str(pf), actor)
+
+
 def s1_script() -> dict[str, Any]:
     """A scripted worker table for the whole S1 loop keyed by target id."""
     return {

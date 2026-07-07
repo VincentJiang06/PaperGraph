@@ -273,7 +273,6 @@ def _make_stub(command: str) -> Callable[[], None]:
 
 
 _STUB_GROUPS: dict[str, list[str]] = {
-    "docs": ["ingest", "search", "build-pack", "request", "ingest-result"],
     "freeze": ["apply", "unfreeze"],
     "compiler": ["dry-run", "draft-map", "ingest-prose"],
     "audit": ["run"],
@@ -295,6 +294,7 @@ app.command("trace")(_make_stub("trace"))
 # ---------------------------------------------------------------------------
 
 from ..committer import apply as _committer  # noqa: E402
+from ..docsdb import commands as _docs  # noqa: E402
 from ..expander import ingest as _expander  # noqa: E402
 from ..graph import commands as _graph  # noqa: E402
 from ..prooftask import builder as _prooftask  # noqa: E402
@@ -493,8 +493,65 @@ def validate_proposal(ctx: typer.Context, file: str = typer.Argument(...)) -> No
     _dispatch("validate proposal", body)
 
 
-validate_app.command("docs-result")(_make_stub("validate docs-result"))
+@validate_app.command("docs-result")
+def validate_docs_result(ctx: typer.Context, file: str = typer.Argument(...), work_item: str = typer.Option(..., "--work-item")) -> None:
+    s = _state(ctx)
+    _dispatch("validate docs-result", lambda: _docs.validate_docs_result(_project_paths(s), file, work_item))
+
+
 app.add_typer(validate_app, name="validate")
+
+
+# --- docs -------------------------------------------------------------------
+docs_app = typer.Typer(no_args_is_help=False)
+
+
+@docs_app.command("ingest")
+def docs_ingest(
+    ctx: typer.Context,
+    file: str = typer.Argument(...),
+    source_type: Optional[str] = typer.Option(None, "--source-type"),
+    title: Optional[str] = typer.Option(None, "--title"),
+    citation_key: Optional[str] = typer.Option(None, "--citation-key"),
+) -> None:
+    s = _state(ctx)
+    _dispatch("docs ingest", lambda: _docs.ingest_file(_project_paths(s), file, source_type, title, citation_key))
+
+
+@docs_app.command("search")
+def docs_search(
+    ctx: typer.Context,
+    query: str = typer.Option(..., "--query"),
+    scope: Optional[str] = typer.Option(None, "--scope"),
+) -> None:
+    s = _state(ctx)
+    _dispatch("docs search", lambda: _docs.search(_project_paths(s), query, scope))
+
+
+@docs_app.command("build-pack")
+def docs_build_pack(ctx: typer.Context, task: str = typer.Option(..., "--task")) -> None:
+    s = _state(ctx)
+    _dispatch("docs build-pack", lambda: _docs.build_pack(_project_paths(s), task))
+
+
+@docs_app.command("request")
+def docs_request(
+    ctx: typer.Context,
+    target: str = typer.Option(..., "--target"),
+    need: str = typer.Option(..., "--need"),
+    hint: list[str] = typer.Option(None, "--hint"),
+) -> None:
+    s = _state(ctx)
+    _dispatch("docs request", lambda: _docs.request(_project_paths(s), target, need, list(hint or [])))
+
+
+@docs_app.command("ingest-result")
+def docs_ingest_result(ctx: typer.Context, file: str = typer.Argument(...), work_item: str = typer.Option(..., "--work-item")) -> None:
+    s = _state(ctx)
+    _dispatch("docs ingest-result", lambda: _docs.ingest_result(_project_paths(s), file, work_item))
+
+
+app.add_typer(docs_app, name="docs")
 
 
 # --- commit -----------------------------------------------------------------

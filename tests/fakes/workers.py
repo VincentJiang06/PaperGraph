@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import Any
 
 from paperproof.committer import apply as committer
+from paperproof.docsdb import ingest as docs_ingest
 from paperproof.paths import Paths
 from paperproof.prooftask import builder
 from paperproof.queue import engine
@@ -89,6 +90,57 @@ class FakeProofWorker:
                 fh.write('{"node_id":"NODE-999"}\n')
         else:
             out_path.write_text(json.dumps(result), encoding="utf-8")
+
+
+class FakeDocsWorker:
+    """Scripted DocsResult stand-in (docs/11 §5).
+
+    Reads a docs work item (whose target_id is the DocsRequest id) and writes a
+    schema-valid docs_result.v1 at the declared output path. The script is keyed
+    by request_id, with a "*" default entry; a scripted ``not_found`` result is a
+    legitimate terminal output.
+    """
+
+    def __init__(self, script: dict[str, Any], mode: str = "script") -> None:
+        self.script = script
+        self.mode = mode
+
+    def run(self, work_item: dict[str, Any], project_root: Path) -> None:
+        if self.mode == "crash":
+            return
+        request_id = work_item["target_id"]
+        spec = self.script.get(request_id) or self.script.get("*") or {}
+        result = {
+            "schema_version": "docs_result.v1",
+            "request_id": request_id,
+            "project_id": work_item["project_id"],
+            "documents": spec.get("documents", []),
+            "evidence_units": spec.get("evidence_units", []),
+            "not_found": spec.get("not_found", False),
+            "search_log": spec.get("search_log", ["scripted search"]),
+        }
+        out_path = project_root / work_item["output_files"][0]
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(json.dumps(result, ensure_ascii=False), encoding="utf-8")
+
+
+def drain_docs(paths: Paths, worker: FakeDocsWorker, max_rounds: int = 50, actor: str = "test") -> list[str]:
+    """Claim/run/complete/ingest every claimable docs_queue item to quiescence."""
+    processed: list[str] = []
+    for _ in range(max_rounds):
+        engine.run_sweeps(paths, actor)
+        claimable = [
+            i for i in engine.load_items(paths)
+            if i["queue_name"] == "docs_queue" and engine.is_claimable(paths, i)
+        ]
+        if not claimable:
+            break
+        item = engine.claim(paths, queue_name="docs_queue", agent="docs-w")
+        worker.run(item, paths.project_dir)
+        engine.complete(paths, item["work_item_id"])
+        docs_ingest.ingest_result(paths, item["output_files"][0], item["work_item_id"], actor)
+        processed.append(item["work_item_id"])
+    return processed
 
 
 def _verdict_for_item(paths: Paths, wi_id: str) -> str | None:

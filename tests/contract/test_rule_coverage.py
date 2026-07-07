@@ -4,8 +4,8 @@ For every rule id currently in the registry: either fixtures/vrules/<id>/ has
 >=1 pass_ and >=1 fail_ file, or the id appears in SCENARIO_COVERED (a closed map
 from rule id -> the test that exercises it). A rule in NEITHER place fails the
 build; so does a vrules directory for a rule id that no longer exists, or a stale
-SCENARIO_COVERED key. Covers only the rules registered so far (M0+M1):
-V-SPEC / V-PATH / V-PR / V-EXP / V-TASK / V-Q / V-COMMIT.
+SCENARIO_COVERED key. Covers the rules registered so far (M0+M1+M2):
+V-SPEC / V-PATH / V-PR / V-DR / V-EXP / V-TASK / V-Q / V-COMMIT.
 """
 
 from __future__ import annotations

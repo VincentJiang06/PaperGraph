@@ -15,11 +15,12 @@ Same input + same snapshot => byte-identical CommitDecision (no LLM here).
 
 from __future__ import annotations
 
-import hashlib
 from typing import Any, Optional
 
 from ..clock import actor as clock_actor
 from ..clock import now as clock_now
+from ..docsdb import cache as docs_cache
+from ..docsdb.matcher import fingerprint as docs_fingerprint
 from ..errors import DomainError
 from ..graph import model as graph_model
 from ..graph.model import structural_signature
@@ -114,10 +115,6 @@ def _tombstone_record(paths: Paths, existing_ts: list[str], target_type: str, ta
     }
 
 
-def _fingerprint(need: str, target_id: str) -> str:
-    return hashlib.sha256(f"{target_id}|{need}".encode("utf-8")).hexdigest()[:16]
-
-
 # --- currency (V-COMMIT-01, input-scoped) -----------------------------------
 
 
@@ -159,16 +156,11 @@ def _bridge_rounds(paths: Paths, edge_id: str) -> int:
     return rounds
 
 
-def _docs_rounds(paths: Paths, target_id: str) -> int:
-    verdicts = {r["proof_result_id"]: r for r in jsonl.read_all(paths.resolve(PROOF_RESULTS))}
-    rounds = 0
-    for cd in jsonl.read_all(paths.resolve(COMMITS)):
-        if cd.get("kind") != "proof_verdict":
-            continue
-        vr = verdicts.get(cd.get("input_ref"))
-        if vr and vr.get("target_id") == target_id and vr.get("computed_verdict", {}).get("verdict") == "needs_docs":
-            rounds += 1
-    return rounds
+def _docs_completed_cycles(paths: Paths, target_id: str) -> int:
+    """Docs round-trip cap counter (docs/04): the target's completed
+    (fulfilled/not_found) DocsRequest cycles in docs/docs_requests.jsonl."""
+    reqs = jsonl.latest_records(paths.resolve(DOCS_REQUESTS), "request_id")
+    return sum(1 for r in reqs if r.get("target_id") == target_id and r.get("status") in ("fulfilled", "not_found"))
 
 
 # --- the main entry: apply a proof verdict ----------------------------------
@@ -370,27 +362,37 @@ def _plan_needs_docs(paths, plan, vr, target, target_type, pr_id, commit_id, def
     _append_update(plan, target_type, new, {"lifecycle_state": "needs_docs"})
 
     tgt_id = target["edge_id"] if target_type == "edge" else target["node_id"]
-    rounds = _docs_rounds(paths, tgt_id)
-    if rounds >= 2:
+    # Docs round-trip cap (docs/04): at 2 completed cycles, no third request; the
+    # re-proof item is born dead ((created)->dead) for human review.
+    if _docs_completed_cycles(paths, tgt_id) >= 2:
         deferred_enqueues.append({"op": "dead_letter", "queue_name": "proof_queue",
                                   "target_type": target_type, "target_id": tgt_id, "reason": "docs cap reached"})
         return
 
     existing_dr = [r["request_id"] for r in jsonl.read_all(paths.resolve(DOCS_REQUESTS))]
-    dr_ids: list[str] = []
+    miss_dr_ids: list[str] = []
     for req in vr.get("docs_requests", []):
+        need = req.get("need", "")
+        hints = list(req.get("search_hints", []))
         dr_id = next_id("DR", existing_dr)
         existing_dr.append(dr_id)
+        fp = docs_fingerprint(need, hints)
+        # Request-level cache (docs/04): fingerprint match with a fulfilled
+        # request OR a matcher hit for the target claim => cache hit.
+        hit = docs_cache.is_cache_hit(paths, fp, target)
         record = {
             "schema_version": "docs_request.v1", "request_id": dr_id, "project_id": paths.project_id,
-            "requested_by": "committer", "target_id": tgt_id, "need": req.get("need", ""),
-            "search_hints": list(req.get("search_hints", [])), "fingerprint": _fingerprint(req.get("need", ""), tgt_id),
-            "status": "open", "fulfilled_by": None, "created_at": clock_now(),
+            "requested_by": pr_id, "target_id": tgt_id, "need": need, "search_hints": hints,
+            "fingerprint": fp,
+            "status": "fulfilled" if hit else "open",
+            "fulfilled_by": "cache" if hit else None, "created_at": clock_now(),
         }
         plan.graph_appends.append((DOCS_REQUESTS, record))
-        plan._action("docs_request", dr_id, {"target_id": tgt_id})
-        dr_ids.append(dr_id)
-    deferred_enqueues.append({"op": "docs_wiring", "target_type": target_type, "target_id": tgt_id, "dr_ids": dr_ids})
+        plan._action("docs_request", dr_id, {"target_id": tgt_id, "status": record["status"]})
+        if not hit:
+            miss_dr_ids.append(dr_id)
+    # re-proof blocked_by only real-miss docs items; all-cache => unblocked now.
+    deferred_enqueues.append({"op": "docs_wiring", "target_type": target_type, "target_id": tgt_id, "miss_dr_ids": miss_dr_ids})
 
 
 def _plan_rejected(paths, plan, vr, target, target_type, pr_id, commit_id, existing_ts, deferred_enqueues):
@@ -487,8 +489,10 @@ def _wire_bridges(paths: Paths, plan: _CommitPlan, op: dict[str, Any], actor: st
 
 def _wire_docs(paths: Paths, plan: _CommitPlan, op: dict[str, Any], actor: str) -> None:
     docs_wis: list[str] = []
-    for dr_id in op["dr_ids"]:
-        item = engine.enqueue(paths, queue_name="docs_queue", target_type="request", target_id=dr_id, actor=actor)
+    for dr_id in op["miss_dr_ids"]:
+        output = f"agent_outputs/docs_results/{dr_id}.docs_result.json"
+        item = engine.enqueue(paths, queue_name="docs_queue", target_type="request", target_id=dr_id,
+                              output_files=[output], actor=actor)
         plan._action("enqueue", item["work_item_id"], {"queue": "docs_queue", "target": dr_id})
         docs_wis.append(item["work_item_id"])
     reproof = engine.enqueue(paths, queue_name="proof_queue", target_type=op["target_type"], target_id=op["target_id"], blocked_by=docs_wis, actor=actor)

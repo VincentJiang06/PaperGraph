@@ -5,13 +5,12 @@ Do NOT trust a session summary.
 
 ## Loop status
 - Outer budget: 3 re-entries. Used: 0.
-- Current stage: **m2-docs** (attempt 1, cap 3). [m0 PASSED; m1 PASSED attempt 2]
-- Gate tags: gate/m0-foundation, gate/m1-proof-loop.
-- m0: 171 green; evaluator PASS. A1–A7, A24.
-- m1: 312 green; attempt1 FAIL (F1 hollow replay) → attempt2 fix (genuine replay
-  via CommitDecision record payloads + V-EDGE-02 wired) → evaluator PASS.
-  A8–A15 proven. Doc-syncs: docs/08 §2b record field, B6 bridge edge_claim,
-  docs/07 proof/.lock. The loop caught + closed a real green-but-hollow check.
+- Current stage: **m3-endgame** (attempt 1, cap 3). [m0,m1,m2 all PASSED]
+- Gate tags: gate/m0-foundation, gate/m1-proof-loop, gate/m2-docs.
+- m0: 171 green; PASS. A1–A7,A24.
+- m1: 312 green; attempt2 PASS (fixed hollow V-COMMIT-04 replay + V-EDGE-02). A8–A15.
+- m2: 335 green; attempt1 PASS (16 evaluator probe tests; cache/quote/dedup/cap/S3
+  all independently reproduced). A16–A18. No doc changes needed.
 
 ## m1 attempt-2 fix plan (F1 + secondary)
 F1: replay_reproduces is tautological (slices post lines, ignores action content).
@@ -62,25 +61,28 @@ Deliverables (docs/10 §3 layout, §7 M0; docs/11 §9 M0 row; contract A1–A7):
 Build order: textutil+ids+clock FIRST, then schemas, store, scoping, validate, cli.
 Gate: the m0 `feedback_signal.check` (pytest -q + 8 file-presence tests).
 
-## Next actions (M2 — docs)
-Deliverables: docsdb/ (ingest + content_hash dedup, text extraction, matcher
-[§0 tokens, score≥2 + scope_compatible], request fingerprint cache, DocsPack
-builder), V-DR rules (V-DR-01..06 incl. quote_match), docs CLI (ingest/search/
-build-pack/request/ingest-result), needs_docs loop wiring in committer (cache
-check, born-dead at cap 2). Make real the docs group + any commit paths for
-docs verdicts. Tests: test_v_dr (D01–D05 hostiles + quote_match), S2 (cache +
-born-dead cap), S3 (contradiction cascade — its contradicted verdict needs a
-non-empty DocsPack, hence M2). Gate = m2 feedback_signal.check; on_failure=restart (cap 3).
-Provides for M2: schemas (document/evidence_unit/docs_request/docs_result all
-exist), textutil scope_compatible/quote_match/tokens DONE, committer needs_docs
-verdict path exists (docs/08 B6 row) — M2 wires the DocsRequest creation + cache.
-1. dispatch M2 generator (Opus/high): emphasize matcher determinism, content_hash
-   dedup, request fingerprint cache (no work item on hit), quote_match at ingest,
-   born-dead cap at 2, S3 cascade + verify.
-2. run M2 gate → gate-reports/m2-docs-attempt1.md.
-3. fresh evaluator (probe: cache-hit truly creates NO work item; quote_match
-   rejects fabricated quotes; born-dead cap; S3 cascade tombstones + cancels).
-4. on PASS: git tag gate/m2-docs, commit, advance to m3.
+## Next actions (M3 — endgame)
+Deliverables: freeze/ (closures local/subtree/spine, V-FRZ-01..04, language-limit
+union, FreezeItem, batch-commit set_frozen, unfreeze re-open), compiler/ (dry-run:
+section-plan template single_event_mechanism + 5 gap kinds + writing_ready +
+V-CDR idempotency/auto-cancel; draft-map determinism; prose ingest V-PROSE),
+audit/ (mechanical binding/strength/scope/coverage), trace walker
+(sentence->evidence->raw), graph msa-check MSA-1..9. Make real: freeze/compiler/
+audit groups + msa-check + trace. Tests: test_v_frz, test_v_cdr, test_v_prose_aud,
+S7 (full P4: msa green->spine freeze->zero-gap dry run->draft-map->prose->ingest->
+audit passed; trace resolves every spine node; MSA-1..9 individually), S1 freeze
+coda, S3 MSA-9 coda (hollowed spine fails MSA-9). Gate=m3 check; on_failure=restart (cap 3).
+Provides: committer freeze_batch/unfreeze_batch kinds exist; CompileWorker prompt
+shipped (M0); spine walker + MSA model (M1 graph/); add FakeCompileWorker.
+1. dispatch M3 generator (Opus/high): zero-gap-by-construction dry run (docs/06
+   reachability note) + gap machinery still tested via V-CDR fixtures; MSA-9
+   vacuous-spine guard; trace chain end-to-end; annotation grammar V-PROSE; S7
+   asserts MSA-1..9 individually + audit passed + trace.
+2. run M3 gate -> gate-reports/m3-endgame-attempt1.md.
+3. fresh evaluator (probe: dry run zero-gap after clean freeze BUT each gap kind
+   caught by a V-CDR fixture; MSA-9 fails on hollowed spine; trace to raw file;
+   annotation grammar rejects mangled prose; audit catches seeded forbidden-language).
+4. on PASS: git tag gate/m3-endgame, commit, advance to m4.
 
 ## Open doc issues found during build
 (none yet)

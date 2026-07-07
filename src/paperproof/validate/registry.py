@@ -10,11 +10,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .envelope import Failure, to_envelope
-from .rules import v_commit, v_exp, v_path, v_pr, v_q, v_spec, v_task
+from .rules import v_commit, v_dr, v_exp, v_path, v_pr, v_q, v_spec, v_task
 
 __all__ = [
     "Failure", "to_envelope", "RULES", "rule_ids",
-    "v_spec", "v_path", "v_pr", "v_exp", "v_task", "v_q", "v_commit",
+    "v_spec", "v_path", "v_pr", "v_dr", "v_exp", "v_task", "v_q", "v_commit",
 ]
 
 
@@ -58,6 +58,12 @@ RULES: dict[str, Rule] = {
         _rule("V-PR-13", "pass => language_limits present; else null"),
         _rule("V-PR-14", "ladder shape: not_evaluated exactly where earlier stage stopped"),
         _rule("V-PR-15", "assumptions iff holds_only_with_assumptions (edge) / evidence gate (node)"),
+        _rule("V-DR-01", "exactly one of doc_ref/doc_id and it resolves"),
+        _rule("V-DR-02", "can_cite_for AND cannot_cite_for non-empty"),
+        _rule("V-DR-03", "no verdict/strength/lifecycle/worker-authored id fields"),
+        _rule("V-DR-04", "document source_type enum + origin; web has inline text"),
+        _rule("V-DR-05", "kind=quote => quote_match against archived text"),
+        _rule("V-DR-06", "not_found => empty lists + non-empty search_log"),
         _rule("V-EXP-01", "lane previous layer fully committed"),
         _rule("V-EXP-02", "based_on_snapshot current (whole graph)"),
         _rule("V-EXP-03", "<=12 nodes; layer = lane frontier + 1"),
