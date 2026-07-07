@@ -107,7 +107,13 @@ button { cursor:pointer; }
 var CUR = "overview";
 var POLL = null;
 
-function j(url, opts){ return fetch(url, opts).then(function(r){ return r.json(); }); }
+function j(url, opts){
+  // absolute URL against the page origin so fetch never fails to parse a
+  // relative path (e.g. when the page's base URL is unusual).
+  var origin = (window.location && window.location.origin && window.location.origin !== "null") ? window.location.origin : "";
+  var abs = (url.charAt(0) === "/" && origin) ? origin + url : url;
+  return fetch(abs, opts).then(function(r){ return r.json(); });
+}
 function esc(s){ return String(s == null ? "" : s).replace(/[&<>]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c]; }); }
 function rl(id){ return id ? '<a class="rl" data-id="'+esc(id)+'">'+esc(id)+'</a>' : "—"; }
 
@@ -239,11 +245,18 @@ function bindLinks(){
 
 var VIEWS = {overview:viewOverview, queue:viewQueue, map:viewMap, evidence:viewEvidence, compiler:viewCompiler};
 
+function refreshTop(){
+  // refresh ONLY the top bar + banner from overview — must not touch #main,
+  // or it races the currently-selected view and overwrites it.
+  return j("/api/overview").then(function(ov){ setBanner(ov); renderTop(ov); }).catch(function(){});
+}
+
 function load(){
   var fn = VIEWS[CUR] || viewOverview;
-  // always refresh the top bar + banner from overview
-  if (CUR !== "overview") viewOverview();
-  return fn();
+  if (CUR !== "overview") refreshTop();   // overview view renders the top bar itself
+  return fn().catch(function(e){
+    document.getElementById("main").innerHTML = '<div class="card">view error: '+esc(String(e && e.message || e))+'</div>';
+  });
 }
 
 function selectView(v){

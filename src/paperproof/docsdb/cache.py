@@ -1,11 +1,19 @@
 """Request-level cache (docs/04 §Memoized Search #1).
 
-Before dispatching any DocsWorker, the docs engine checks:
-  a) fingerprint equality with any previously FULFILLED request  => cache hit
-  b) the evidence matcher finds >=1 EvidenceUnit for the request's target claim
-                                                                  => cache hit
-A cache hit resolves the request as status=fulfilled, fulfilled_by="cache" and
-creates NO docs work item. A real miss becomes status=open + a docs_queue item.
+Before dispatching any DocsWorker, the docs engine checks fingerprint equality
+with any previously FULFILLED request => cache hit. A cache hit resolves the
+request as status=fulfilled, fulfilled_by="cache" and creates NO docs work item.
+A real miss becomes status=open + a docs_queue item.
+
+NOTE (r2.2, from the ai-jobs live run): the earlier "matcher finds >=1 EU for the
+target claim => cache hit" trigger was REMOVED. The v1 matcher is a deliberately
+dumb keyword matcher, so it produced FALSE cache hits — declaring a genuinely new
+evidence need "fulfilled" merely because loosely-related evidence already existed,
+silently overriding a ProofWorker's own "insufficient" judgment and blocking the
+fresh search the argument required. Sufficiency is the ProofWorker's call (from
+the matcher-populated DocsPack), not the cache's. The cache now only avoids
+RE-RUNNING an identical search (fingerprint equality); the matcher still populates
+DocsPacks exactly as before.
 """
 
 from __future__ import annotations
@@ -14,10 +22,8 @@ from typing import Any
 
 from ..paths import Paths
 from ..store import jsonl
-from . import matcher
 
 DOCS_REQUESTS = "docs/docs_requests.jsonl"
-EVIDENCE_UNITS = "docs/evidence_units.jsonl"
 
 
 def fingerprint_hit(paths: Paths, fp: str) -> bool:
@@ -28,18 +34,9 @@ def fingerprint_hit(paths: Paths, fp: str) -> bool:
     return False
 
 
-def matcher_hit(paths: Paths, target_record: dict[str, Any]) -> bool:
-    """(b) the evidence matcher finds >=1 EvidenceUnit for the target claim."""
-    if target_record is None:
-        return False
-    if "edge_id" in target_record:
-        claim, scope = target_record.get("edge_claim", "") or "", {}
-    else:
-        claim, scope = target_record.get("claim", "") or "", target_record.get("scope", {}) or {}
-    eus = jsonl.latest_records(paths.resolve(EVIDENCE_UNITS), "evidence_id")
-    return bool(matcher.match(claim, scope, eus))
-
-
 def is_cache_hit(paths: Paths, fp: str, target_record: dict[str, Any]) -> bool:
-    """Cache hit iff a fingerprint match OR a matcher hit for the target claim."""
-    return fingerprint_hit(paths, fp) or matcher_hit(paths, target_record)
+    """Cache hit iff an identical (fingerprint-equal) request was already
+    fulfilled. A matcher hit no longer short-circuits a fresh search — see the
+    module docstring. `target_record` is retained for signature compatibility
+    with the docs engine and is unused."""
+    return fingerprint_hit(paths, fp)

@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 from fastapi import FastAPI, Query
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from ..db import indexer
@@ -140,6 +140,18 @@ def create_app(root: str | Path, project: str) -> FastAPI:
         return JSONResponse({"ok": True, "manifest": data})
 
     # --- static page (mounted last so /api/* wins) -------------------------
+    # Serve index.html with no-store so a live monitor never runs stale cached
+    # JS after a redeploy (the browser must re-fetch on every load).
+    _NO_STORE = {"Cache-Control": "no-store, no-cache, must-revalidate", "Pragma": "no-cache"}
+
+    @app.get("/", include_in_schema=False)
+    def _index() -> FileResponse:
+        return FileResponse(str(STATIC_DIR / "index.html"), headers=_NO_STORE)
+
+    @app.get("/index.html", include_in_schema=False)
+    def _index_html() -> FileResponse:
+        return FileResponse(str(STATIC_DIR / "index.html"), headers=_NO_STORE)
+
     app.mount("/", StaticFiles(directory=str(STATIC_DIR), html=True), name="static")
 
     return app

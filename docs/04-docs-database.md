@@ -104,13 +104,24 @@ Two distinct memoization points, both deterministic code:
 ### 1. Request-level cache (before dispatching any DocsWorker)
 
 ```text
-On enqueue of a DocsRequest, the docs engine checks:
-a) fingerprint equality with any previously fulfilled request  ⇒ cache hit
-b) the evidence matcher (below) finds ≥1 EvidenceUnit for the request's
-   target claim                                                ⇒ cache hit
-Cache hit: request appended as status=fulfilled, fulfilled_by="cache"; no work
-item is created; the waiting re-proof item is unblocked immediately.
+On enqueue of a DocsRequest, the docs engine checks fingerprint equality with
+any previously fulfilled request ⇒ cache hit. A cache hit appends the request as
+status=fulfilled, fulfilled_by="cache", creates no work item, and unblocks the
+waiting re-proof item immediately. A miss ⇒ status=open + a docs_queue item.
 ```
+
+**r2.2 change (removed the matcher-hit cache trigger).** An earlier rule also
+declared a cache hit when the evidence matcher found ≥1 EvidenceUnit for the
+target claim. The ai-jobs live run showed this to be wrong: the v1 matcher is a
+deliberately dumb keyword matcher (below), so it produced **false cache hits** —
+a genuinely new evidence need (e.g. an aggregate-employment bridge premise) was
+declared "fulfilled" merely because loosely-related task-automation evidence
+already existed, which silently overrode a ProofWorker's own
+`evidence_check=insufficient` judgment and blocked the fresh search the argument
+required. **Sufficiency is the ProofWorker's decision** (from the
+matcher-populated DocsPack), never the cache's. The request-level cache now only
+avoids re-running a *literally identical* search (fingerprint equality); the
+matcher still assembles DocsPacks (point 2) unchanged.
 
 ### 2. Evidence matcher (DocsPack assembly, `docs build-pack`)
 

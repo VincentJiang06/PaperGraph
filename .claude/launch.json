@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "papergraph-ui",
+      "runtimeExecutable": ".venv/bin/paperproof",
+      "runtimeArgs": ["--project", "ai-jobs", "ui", "serve", "--port", "8420"],
+      "port": 8420
+    }
+  ]
+}
