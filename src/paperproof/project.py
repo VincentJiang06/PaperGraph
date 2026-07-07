@@ -59,11 +59,17 @@ def status(paths: Paths) -> dict[str, Any]:
             per_status[st] += 1
     dead_letters = per_status.get("dead", 0)
 
+    # MSA summary (docs/10 §4). Local import avoids a module-load cycle; the
+    # checklist is well-defined on an empty graph (every item simply fails).
+    from .graph import commands as _graph_commands
+
+    msa = _graph_commands.msa_check(paths)
+
     return {
         "project_id": paths.project_id,
         "contract": contract,
         "current_snapshot": snapshot.latest_snapshot_id(paths),
         "queues": per_status,
         "dead_letters": dead_letters,
-        "msa": None,
+        "msa": msa,
     }

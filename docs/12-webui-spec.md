@@ -16,7 +16,7 @@ P3  Honest staleness. The UI reads the derived DuckDB index; whenever the index
     is stale it says so, loudly, before anything else.
 P4  Never color alone. Every state/status encoding pairs color with a glyph or
     text. The palette below is CVD-validated; the pairing rule still holds.
-P5  Boring tech. One static page, vanilla JS + htmx polling + vendored
+P5  Boring tech. One static page, vanilla JS polling (fetch + setInterval) + vendored
     cytoscape.js. No build step, no npm, no client framework.
 ```
 
@@ -50,10 +50,14 @@ Banner slot  one banner max, priority order: (1) corruption — any API call
              "State corrupted — run `paperproof verify`" until reload;
              (2) stale index — warning banner with [Rebuild] button;
              (3) contract unaccepted — info banner "expansion gated".
+             Note: a canonical JSONL corrupted while the index is present reads
+             as "stale" (index-backed endpoints never parse JSONL) and escalates
+             to the corruption lock on the next rebuild attempt — so "stale" can
+             transiently mask "corrupt" until a rebuild is tried.
 Routing      hash-based: #/overview #/map #/queue #/evidence #/compiler
              #/events #/record/<id> (drawer deep-link). Filters serialize into
              the hash query so views are shareable.
-Polling      htmx polling every 5s on the active view's data containers only;
+Polling      vanilla-JS polling (fetch + setInterval) every 5s on the active view only;
              pauses when the tab is hidden; manual ⟳ always available. The
              Logic Map re-fetches on a 15s cycle and diffs before re-layout.
 ```

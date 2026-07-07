@@ -23,3 +23,4 @@
 ## [2026-07-07] m4-gen | M4 generator: 375 green (+8 db/ui/S8); shipped 4KB cytoscape stub
 ## [2026-07-07] m4-cyto | orchestrator vendored REAL cytoscape 3.30.2 (373KB, unpkg); 375 still green
 ## [2026-07-07] m4-eval | evaluator PASS (index-not-JSONL proved, idempotent rebuild, S8 exit-3 x13 readers, six questions real)
+## [2026-07-07] m4-cleanup | N1 project status real MSA (+2 guard tests, 377 green); N2/N3 doc drift aligned (docs/12 vanilla-JS, stale-masks-corrupt note)
