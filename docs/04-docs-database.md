@@ -1,0 +1,167 @@
+# 04 Docs Database
+
+The Docs Database is the memoized literature layer. Every source that enters the project is archived once, distilled into reusable EvidenceUnits, and served to proof tasks through DocsPacks. Its two jobs: make repeated search cheap, and make hallucinated citations impossible.
+
+## Objects
+
+### Document (`docs/documents.jsonl`)
+
+One record per archived source:
+
+```json
+{
+  "schema_version": "document.v1",
+  "doc_id": "DOC-001",
+  "project_id": "p4-ldi",
+  "title": "Bank of England Financial Stability Report, Nov 2022",
+  "source_type": "official_report",
+  "origin": {"kind": "user_provided", "path": "docs/raw/boe-fsr-2022.pdf"},
+  "content_hash": "sha256:…",
+  "text_path": "docs/text/DOC-001.txt",
+  "citation_key": "BoE2022FSR",
+  "ingested_from": "DRES-001",
+  "ingested_at": "2026-07-07T00:00:00Z"
+}
+```
+
+```text
+source_type    peer_reviewed | official_report | working_paper | news | dataset | user_notes
+origin.kind    user_provided (path under docs/raw/) | web (url)
+content_hash   sha256 of the raw file bytes — the dedup key: ingesting the same
+               content twice returns the existing doc_id instead of a new record.
+text_path      null when no text could be extracted.
+citation_key   unique across the project (ingestor appends -b, -c on collision).
+```
+
+Text extraction at ingest: `.txt`/`.md` are copied verbatim to `docs/text/`; `.pdf` is extracted with pypdf; extraction failure ⇒ `text_path=null` + warning. A Document without extractable text can still be indexed by metadata, but its EvidenceUnits cannot pass the quote-substring check [V-DR-05] and cannot back a BINDING_CHECK when that task type arrives in v1.1.
+
+### EvidenceUnit (`docs/evidence_units.jsonl`)
+
+The atomic, reusable evidence record — extracted once by a DocsWorker, cited many times:
+
+```json
+{
+  "schema_version": "evidence_unit.v1",
+  "evidence_id": "EU-001",
+  "project_id": "p4-ldi",
+  "doc_id": "DOC-001",
+  "location": "p.12, Section 3.2",
+  "kind": "quote",
+  "quote_or_paraphrase": "LDI funds faced collateral calls exceeding their liquid buffers within days.",
+  "summary": "Documents the speed and size of collateral calls on LDI funds in Sept 2022.",
+  "support_direction": "supports",
+  "can_cite_for": ["LDI margin calls created acute liquidity pressure in 2022"],
+  "cannot_cite_for": ["all de-risking strategies create liquidity crises"],
+  "scope": {"period": "2022", "region": "UK"},
+  "extracted_by": "docs-worker-1",
+  "ingested_from": "DRES-001",
+  "created_at": "2026-07-07T00:00:00Z"
+}
+```
+
+```text
+kind               quote | paraphrase — V-DR-05 (verbatim substring in archived
+                   text, whitespace-normalized; docs/09 §0) applies iff kind=quote
+                   and the document has a text_path.
+support_direction  supports | refutes | context
+can_cite_for / cannot_cite_for — the anti-hallucination core: an EvidenceUnit
+                   declares its own citation boundary, and Audit checks prose
+                   against it. Both must be non-empty [V-DR-02].
+```
+
+### DocsRequest (`docs/docs_requests.jsonl`)
+
+Emitted by the Committer when a proof form answers `evidence_check=insufficient` (computed verdict `needs_docs`), or created directly by the Orchestrator; consumed by the docs queue:
+
+```json
+{
+  "schema_version": "docs_request.v1",
+  "request_id": "DR-001",
+  "project_id": "p4-ldi",
+  "requested_by": "PR-001",
+  "target_id": "NODE-001",
+  "need": "Primary evidence on the size/speed of LDI collateral calls, Sept-Oct 2022.",
+  "search_hints": ["BoE FSR 2022", "gilt crisis LDI margin"],
+  "fingerprint": "sha256:…",
+  "status": "open",
+  "fulfilled_by": null
+}
+```
+
+```text
+status        open | fulfilled | not_found   (updates append a full new record, same id)
+fingerprint   sha256 over normalize(need) + "\n" + sorted normalized search_hints,
+              where normalize = NFC, lowercase, collapse whitespace.
+fulfilled_by  DRES- id, or the string "cache" for a cache hit.
+```
+
+DRES- ids number ingest events; they have no registry file of their own — a DRES id resolves (for `verify`) iff it appears as `ingested_from` on ≥1 Document/EvidenceUnit or as the `fulfilled_by` of a not_found request. `ingested_from` is null on documents ingested via the `docs ingest` CLI. Orchestrator-initiated requests are created with `paperproof docs request --target <id> --need <text> [--hint <h>]...` (code appends; C1 holds).
+
+## Memoized Search
+
+Two distinct memoization points, both deterministic code:
+
+### 1. Request-level cache (before dispatching any DocsWorker)
+
+```text
+On enqueue of a DocsRequest, the docs engine checks:
+a) fingerprint equality with any previously fulfilled request  ⇒ cache hit
+b) the evidence matcher (below) finds ≥1 EvidenceUnit for the request's
+   target claim                                                ⇒ cache hit
+Cache hit: request appended as status=fulfilled, fulfilled_by="cache"; no work
+item is created; the waiting re-proof item is unblocked immediately.
+```
+
+### 2. Evidence matcher (DocsPack assembly, `docs build-pack`)
+
+The matcher that selects EvidenceUnits for a target claim is fixed:
+
+```text
+tokens(s)   := NFC(s) → lowercase → split per docs/09 §0 (CJK chars are
+               single tokens) → drop the builtin English stopword list
+score(EU)   := |tokens(claim) ∩ (tokens(EU.summary) ∪ tokens(EU.quote_or_paraphrase)
+               ∪ tokens(join(EU.can_cite_for)))|
+include EU  iff score(EU) ≥ 2 AND scope_compatible(EU.scope, target.scope)
+               (scope compatibility: docs/09 §0)
+order       by (score desc, evidence_id asc); no cap in v1 (graphs are small).
+```
+
+No embeddings in v1. The matcher is intentionally dumb and deterministic: its misses cost one docs round-trip; its determinism buys reproducible packs.
+
+A **DocsPack** (`docs/docspacks/DOCSPACK-<task>[-rN].json`) is a frozen bundle of EvidenceUnits + document metadata assembled for one proof task. Proof workers cite only from their DocsPack, so every citation in every ProofResult resolves to an archived Document by construction. An empty DocsPack is valid.
+
+## DocsWorker Protocol
+
+DocsWorkers are Claude subagents, parallel-safe like ProofWorkers:
+
+```text
+1. Serve one DocsRequest — its fields (request_id, need, search_hints) are
+   embedded in the dispatch prompt; there is no per-request file to read.
+2. Search: user-provided sources under docs/raw/ first, then web if allowed.
+3. Write ONE DocsResult file (schema: docs/08 B7) to the declared output path
+   agent_outputs/docs_results/<request_id>.docs_result.json, containing
+   documents and evidence units. Web documents include their full extracted
+   text INLINE in the result (the worker cannot write docs/raw/ — the
+   ingestor archives).
+4. Stop. Chat text is discarded.
+```
+
+Id assignment and appending to canonical JSONL is done by the Docs ingestor (code) after validation (V-DR rules, docs/09). Inside a DocsResult, an evidence unit points at its document with exactly one of `doc_ref` (integer index into this result's `documents` list) or `doc_id` (an existing archived id) [V-DR-01].
+
+`not_found` is a legitimate terminal result: the waiting re-proof then runs with the unchanged DocsPack, and the worker must answer the form honestly for the evidence it has — typically `wellformed_check=too_broad` (⇒ a narrow repair to a claim the available evidence can carry) or `inference_check=holds_only_with_assumptions` with tighter language limits.
+
+**Docs round-trip cap:** enforced by the **Committer** at commit time — when a verdict computes to `needs_docs`, it counts the target's completed (fulfilled/not_found) DocsRequest cycles in `docs/docs_requests.jsonl`; at 2 or more, no third request is appended and the re-proof work item is **born dead** ((created)→dead, op=dead_letter — docs/05) for human review.
+
+Prohibitions:
+
+```text
+DocsWorkers never set proof verdicts and never touch the graph.
+An EvidenceUnit never contains a judgment about whether a graph edge holds —
+only what the source itself supports.
+No invented sources: every EvidenceUnit must point at an archived Document;
+quotes must appear verbatim in the archived text [V-DR-05].
+```
+
+## Derived Index
+
+For query speed a DuckDB index (`db/`) mirrors documents/evidence/queue state. It is derived only: deleting it and rebuilding from JSONL is a normal operation, and a stale index must be detectable (`db/index_manifest.json` stores source-file hashes; `paperproof db check` compares). If JSONL and DB disagree, JSONL wins.
