@@ -15,3 +15,8 @@
 ## [2026-07-07] m2-gen | M2 generator: 335 tests green (+23 docsdb/needs_docs)
 ## [2026-07-07] m2-eval | evaluator PASS (16 probe tests: cache=no-workitem, quote fabrication rejected, dedup, born-dead cap, S3 cascade)
 ## [2026-07-07] m2-gate | GATE PASS; tagging gate/m2-docs; advancing to m3
+## [2026-07-07] m3-gen | M3 generator: 363 tests green (+28 freeze/compiler/audit/trace)
+## [2026-07-07] m3-eval | evaluator PASS (independent: msa-check conditional, MSA-9 fires, gap detection real, audit earned, trace to raw file, freeze refusals); N1 non-blocking (verify crossref gap)
+## [2026-07-07] m3-n1 | closing N1: verify resolves evidence_bindings + duplicate_of (additive, docs/09 §3)
+## [2026-07-07] m3-n1-done | 367 green; verify now resolves evidence_bindings+duplicate_of (docs/09 §3); EU-999 repro exits 3; S7 clean
+## [2026-07-07] m3-gate | GATE PASS; tagging gate/m3-endgame; advancing to m4

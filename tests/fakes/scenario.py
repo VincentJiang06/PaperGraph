@@ -244,6 +244,89 @@ def seed_docs_facts(paths: Paths, fact_claims: list[str], actor: str = "test") -
     return expander.ingest(paths, str(pf), actor)
 
 
+# --- S7 full-pipeline scaffolding ------------------------------------------
+
+# Spine ids after seed_s7_layer0 + the layer-1 concept D2 (deterministic).
+S7_Q, S7_T, S7_M, S7_D = "NODE-001", "NODE-002", "NODE-003", "NODE-004"
+S7_D2 = "NODE-005"
+S7_EDGE_TQ = "EDGE-002-001"
+S7_EDGE_MT = "EDGE-003-002"
+S7_EDGE_DM = "EDGE-004-003-dep"
+S7_EDGE_D2D = "EDGE-005-004-dep"
+
+
+def ingest_expansion(
+    paths: Paths,
+    proposal_id: str,
+    bfs_id: str,
+    layer: int,
+    nodes: list[dict[str, Any]],
+    edges: list[dict[str, Any]],
+    actor: str = "test",
+) -> dict[str, Any]:
+    """Write + `expand ingest` an ExpansionProposal (used for layer 1 and the
+    empty lane-closing proposals)."""
+    proposal = {
+        "schema_version": "expansion_proposal.v1",
+        "proposal_id": proposal_id,
+        "project_id": "p4-ldi",
+        "bfs_id": bfs_id,
+        "layer": layer,
+        "based_on_snapshot": snapshot.latest_snapshot_id(paths),
+        "nodes": nodes,
+        "edges": edges,
+    }
+    pf = paths.resolve(f"agent_outputs/expansions/{proposal_id}.json")
+    pf.parent.mkdir(parents=True, exist_ok=True)
+    pf.write_text(json.dumps(proposal), encoding="utf-8")
+    return expander.ingest(paths, str(pf), actor)
+
+
+def seed_s7_layer0(paths: Paths, actor: str = "test") -> dict[str, Any]:
+    """BFS-MAIN layer 0: Q, T, M(mechanism, needs evidence), D(definition).
+    Edges: T->Q, M->T, D->M(depends_on). M's claim = FACT_CLAIM so the docs
+    matcher selects the archived BoE EvidenceUnit into M's re-proof pack."""
+    proposal = {
+        "schema_version": "expansion_proposal.v1",
+        "proposal_id": "EXP-BFS-MAIN-L0",
+        "project_id": "p4-ldi",
+        "bfs_id": "BFS-MAIN",
+        "layer": 0,
+        "based_on_snapshot": snapshot.latest_snapshot_id(paths),
+        "nodes": [
+            {"claim": "How did leveraged LDI transform solvency risk into liquidity risk in 2022?", "node_type": "question", "scope": {}, "parents": []},
+            {"claim": "Leveraged LDI converted solvency hedging into acute liquidity stress in 2022.", "node_type": "thesis", "scope": {}, "parents": []},
+            {"claim": FACT_CLAIM, "node_type": "mechanism", "scope": {}, "parents": []},
+            {"claim": "Solvency risk and liquidity risk are distinct risk categories.", "node_type": "definition", "scope": {}, "parents": []},
+        ],
+        "edges": [
+            {"source_ref": "#1", "target_ref": "#0", "edge_type": "supports", "edge_claim": "The thesis, if established, answers the research question."},
+            {"source_ref": "#2", "target_ref": "#1", "edge_type": "supports", "edge_claim": "The transmission mechanism supports the de-risking thesis."},
+            {"source_ref": "#3", "target_ref": "#2", "edge_type": "depends_on", "edge_claim": "The risk distinction underpins the transmission mechanism."},
+        ],
+    }
+    pf = paths.resolve("agent_outputs/expansions/EXP-BFS-MAIN-L0.json")
+    pf.parent.mkdir(parents=True, exist_ok=True)
+    pf.write_text(json.dumps(proposal), encoding="utf-8")
+    return expander.ingest(paths, str(pf), actor)
+
+
+def s7_script() -> dict[str, Any]:
+    """Scripted proof worker table for the whole S7 pipeline, keyed by target id."""
+    return {
+        S7_Q: node_pass_form(),
+        S7_T: node_pass_form(),
+        # mechanism M: insufficient -> needs_docs -> (docs) -> sufficient(strong).
+        S7_M: [node_insufficient_form(), node_sufficient_form(["EU-001"])],
+        S7_D: node_pass_form(),
+        S7_D2: node_pass_form(),
+        S7_EDGE_TQ: edge_pass_form("holds"),
+        S7_EDGE_MT: edge_pass_form("holds"),
+        S7_EDGE_DM: edge_pass_form("holds"),
+        S7_EDGE_D2D: edge_pass_form("holds"),
+    }
+
+
 def s1_script() -> dict[str, Any]:
     """A scripted worker table for the whole S1 loop keyed by target id."""
     return {

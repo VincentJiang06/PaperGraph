@@ -20,6 +20,8 @@ from pathlib import Path
 from typing import Any
 
 from paperproof.committer import apply as committer
+from paperproof.compiler import draft_map as draft_map_mod
+from paperproof.compiler import prose as prose_mod
 from paperproof.docsdb import ingest as docs_ingest
 from paperproof.paths import Paths
 from paperproof.prooftask import builder
@@ -122,6 +124,82 @@ class FakeDocsWorker:
         out_path = project_root / work_item["output_files"][0]
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(json.dumps(result, ensure_ascii=False), encoding="utf-8")
+
+
+class FakeCompileWorker:
+    """Scripted CompileWorker stand-in (docs/11 §5).
+
+    Reads a PROSE compile_queue item, loads its DraftMap section, and writes a
+    deterministic, annotation-grammar-conformant Markdown file: one claim sentence
+    per DraftMap claim, using the claim's first allowed_language phrase, carrying
+    "(claim: NODE-x)" plus a "(cite: EU-y)" for every bound EvidenceUnit.
+
+    Modes:
+      'script' : clean, V-PROSE-conformant prose.
+      'taint'  : additionally emit one sentence containing the section's first
+                 forbidden_language string (audit strength should flag it).
+    """
+
+    def __init__(self, mode: str = "script", taint_section: str | None = None) -> None:
+        self.mode = mode
+        self.taint_section = taint_section
+
+    def _section(self, work_item: dict[str, Any], project_root: Path) -> dict[str, Any] | None:
+        task_id = work_item.get("task_id") or ""
+        section_id = task_id[len("PROSE-"):] if task_id.startswith("PROSE-") else work_item["target_id"]
+        paths = _paths_from_root(project_root, work_item["project_id"])
+        dm = draft_map_mod.latest_draft_map(paths)
+        if dm is None:
+            return None
+        return next((s for s in dm["sections"] if s["section_id"] == section_id), None)
+
+    def run(self, work_item: dict[str, Any], project_root: Path) -> None:
+        if self.mode == "crash":
+            return
+        section = self._section(work_item, project_root)
+        section_id = (work_item.get("task_id") or "")[len("PROSE-"):]
+        sentences: list[str] = []
+        first_node = None
+        forbidden_phrase = None
+        for claim in (section or {}).get("claims", []):
+            if first_node is None:
+                first_node = claim["node_id"]
+            allowed = claim.get("allowed_language") or []
+            lead = (allowed[0].rstrip(". ") if allowed else "This section presents the claim")
+            cites = "".join(f"(cite: {eid})" for eid in claim.get("evidence_ids", []) or [])
+            sentences.append(f"{lead} (claim: {claim['node_id']}){cites}.")
+            if forbidden_phrase is None and (claim.get("forbidden_language") or []):
+                forbidden_phrase = claim["forbidden_language"][0]
+        text = "\n\n".join(sentences) if sentences else "Section overview."
+        if self.mode == "taint" and forbidden_phrase and (self.taint_section is None or self.taint_section == section_id):
+            text += f"\n\n{forbidden_phrase} (claim: {first_node})."
+        out = project_root / work_item["output_files"][0]
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(text, encoding="utf-8")
+
+
+def _paths_from_root(project_root: Path, project_id: str) -> Paths:
+    # project_root is <root>/projects/<project_id>; recover the Paths object.
+    return Paths(root=project_root.parent.parent, project_id=project_id)
+
+
+def drain_compile(paths: Paths, worker: FakeCompileWorker, max_rounds: int = 50, actor: str = "test") -> list[str]:
+    """Claim/run/complete/ingest every PROSE compile_queue item to quiescence."""
+    processed: list[str] = []
+    for _ in range(max_rounds):
+        engine.run_sweeps(paths, actor)
+        claimable = [
+            i for i in engine.load_items(paths)
+            if i["queue_name"] == "compile_queue" and i["target_type"] == "section" and engine.is_claimable(paths, i)
+        ]
+        if not claimable:
+            break
+        item = engine.claim(paths, queue_name="compile_queue", agent="compile-w", wi_id=claimable[0]["work_item_id"])
+        worker.run(item, paths.project_dir)
+        engine.complete(paths, item["work_item_id"])
+        prose_mod.ingest_prose(paths, item["output_files"][0], item["work_item_id"], actor)
+        processed.append(item["work_item_id"])
+    return processed
 
 
 def drain_docs(paths: Paths, worker: FakeDocsWorker, max_rounds: int = 50, actor: str = "test") -> list[str]:

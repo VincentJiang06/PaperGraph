@@ -273,9 +273,6 @@ def _make_stub(command: str) -> Callable[[], None]:
 
 
 _STUB_GROUPS: dict[str, list[str]] = {
-    "freeze": ["apply", "unfreeze"],
-    "compiler": ["dry-run", "draft-map", "ingest-prose"],
-    "audit": ["run"],
     "db": ["rebuild", "check"],
     "ui": ["serve"],
 }
@@ -285,9 +282,6 @@ for _group_name, _commands in _STUB_GROUPS.items():
     for _cname in _commands:
         _group_app.command(_cname)(_make_stub(f"{_group_name} {_cname}"))
     app.add_typer(_group_app, name=_group_name)
-
-# top-level stub commands (trace arrives at M3)
-app.command("trace")(_make_stub("trace"))
 
 # ---------------------------------------------------------------------------
 # M1 real command groups
@@ -565,6 +559,92 @@ def commit_apply(ctx: typer.Context, result: str = typer.Option(..., "--result")
 
 
 app.add_typer(commit_app, name="commit")
+
+
+# --- freeze (M3) ------------------------------------------------------------
+from ..freeze import apply as _freeze  # noqa: E402
+from ..compiler import draft_map as _draft_map  # noqa: E402
+from ..compiler import dry_run as _dry_run  # noqa: E402
+from ..compiler import prose as _prose  # noqa: E402
+from ..audit import run as _audit  # noqa: E402
+from ..graph import trace as _trace  # noqa: E402
+
+freeze_app = typer.Typer(no_args_is_help=False)
+
+
+@freeze_app.command("apply")
+def freeze_apply(
+    ctx: typer.Context,
+    target: str = typer.Option(..., "--target"),
+    level: str = typer.Option(..., "--level"),
+) -> None:
+    s = _state(ctx)
+    _dispatch("freeze apply", lambda: _freeze.apply(_project_paths(s), target, level))
+
+
+@freeze_app.command("unfreeze")
+def freeze_unfreeze(ctx: typer.Context, target: str = typer.Option(..., "--target")) -> None:
+    s = _state(ctx)
+    _dispatch("freeze unfreeze", lambda: _freeze.unfreeze(_project_paths(s), target))
+
+
+app.add_typer(freeze_app, name="freeze")
+
+
+# --- compiler (M3) ----------------------------------------------------------
+compiler_app = typer.Typer(no_args_is_help=False)
+
+
+@compiler_app.command("dry-run")
+def compiler_dry_run(ctx: typer.Context) -> None:
+    s = _state(ctx)
+    _dispatch("compiler dry-run", lambda: _dry_run.dry_run(_project_paths(s)))
+
+
+@compiler_app.command("draft-map")
+def compiler_draft_map(ctx: typer.Context) -> None:
+    s = _state(ctx)
+    _dispatch("compiler draft-map", lambda: _draft_map.draft_map(_project_paths(s)))
+
+
+@compiler_app.command("ingest-prose")
+def compiler_ingest_prose(
+    ctx: typer.Context,
+    file: str = typer.Argument(...),
+    work_item: str = typer.Option(..., "--work-item"),
+) -> None:
+    s = _state(ctx)
+    _dispatch("compiler ingest-prose", lambda: _prose.ingest_prose(_project_paths(s), file, work_item))
+
+
+app.add_typer(compiler_app, name="compiler")
+
+
+# --- audit (M3) -------------------------------------------------------------
+audit_app = typer.Typer(no_args_is_help=False)
+
+
+@audit_app.command("run")
+def audit_run(ctx: typer.Context, draft: str = typer.Option(..., "--draft")) -> None:
+    s = _state(ctx)
+
+    def body() -> dict[str, Any]:
+        report = _audit.run(_project_paths(s), draft)
+        if not report["passed"]:
+            raise DomainError(["audit findings present"], data=report)
+        return report
+
+    _dispatch("audit run", body)
+
+
+app.add_typer(audit_app, name="audit")
+
+
+# --- trace (M3) -------------------------------------------------------------
+@app.command("trace")
+def trace_cmd(ctx: typer.Context, node: str = typer.Option(..., "--node")) -> None:
+    s = _state(ctx)
+    _dispatch("trace", lambda: _trace.trace_node(_project_paths(s), node))
 
 
 # --- verify -----------------------------------------------------------------

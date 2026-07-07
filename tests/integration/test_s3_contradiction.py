@@ -65,3 +65,45 @@ def test_s3_contradiction(project, pp):
 
     # verify exit 0
     assert pp("verify")["ok"] is True
+
+
+def test_s3_msa9_vacuous_spine_coda(project, pp):
+    """S3 MSA-9 coda (docs/11 §8): when the contradicted fact is the thesis's only
+    support chain, the cascade leaves a vacuous spine {Q, T, T->Q}. MSA-1 and
+    MSA-3 still pass, but MSA-9 (the vacuous-spine guard) fails."""
+    paths = scenario.paths_for_pp(pp)
+    scenario.seed_docs_facts(paths, [scenario.FACT_CLAIM])
+
+    Q, T, X = "NODE-001", "NODE-002", "NODE-003"
+    EDGE_TQ, EDGE_XT = "EDGE-002-001", "EDGE-003-002"
+
+    proof_worker = FakeProofWorker({
+        Q: scenario.node_pass_form(),
+        T: scenario.node_pass_form(),
+        EDGE_TQ: scenario.edge_pass_form("holds"),
+        X: [scenario.node_insufficient_form(), scenario.node_contradicting_form(["EU-001"])],
+    })
+    docs_worker = FakeDocsWorker({"*": scenario.boe_docs_result_spec()})
+
+    # Establish an active question/thesis spine seed.
+    prove_one(paths, Q, proof_worker)
+    prove_one(paths, T, proof_worker)
+    prove_one(paths, EDGE_TQ, proof_worker)
+
+    # The only fact chain: X -> needs_docs -> contradicting -> rejected + cascade.
+    prove_one(paths, X, proof_worker)
+    drain_docs(paths, docs_worker)
+    prove_one(paths, X, proof_worker)
+
+    gv = graph_model.load(paths)
+    assert gv.node_by_id[X]["lifecycle_state"] == "rejected"
+    assert gv.edge_by_id[EDGE_XT]["lifecycle_state"] == "rejected"
+    spine_ids, _ = gv.spine()
+    assert spine_ids == {Q, T, EDGE_TQ}  # vacuous spine
+
+    env = pp("graph", "msa-check", expect=1)
+    msa = env["data"]["msa"]
+    assert msa["MSA-1"]["pass"] is True   # one active question + thesis
+    assert msa["MSA-3"]["pass"] is True   # every spine record active
+    assert msa["MSA-9"]["pass"] is False  # no active fact/mechanism => vacuous
+    assert env["data"]["all_pass"] is False

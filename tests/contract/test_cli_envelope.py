@@ -95,9 +95,9 @@ def test_every_command_emits_one_envelope(tmp_path, command, monkeypatch):
 def test_stub_commands_report_not_implemented(tmp_path, monkeypatch):
     monkeypatch.setenv("PAPERPROOF_NOW", "2026-07-07T00:00:00Z")
     runner = CliRunner()
-    # M1 implemented graph/queue/commit/verify; these remain stubs (arg-free ones)
-    # until their milestone (docs=M2, compiler/audit/trace=M3, db/ui=M4).
-    for command in ["compiler dry-run", "compiler draft-map", "db rebuild", "db check", "ui serve"]:
+    # M1 implemented graph/queue/commit/verify; M2 docs; M3 freeze/compiler/audit/
+    # trace. Only db/ui remain stubs (M4).
+    for command in ["db rebuild", "db check", "ui serve"]:
         result = runner.invoke(app, ["--root", str(tmp_path), *command.split()])
         env = _assert_valid_envelope(result)
         assert result.exit_code == 1

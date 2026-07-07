@@ -5,12 +5,14 @@ Do NOT trust a session summary.
 
 ## Loop status
 - Outer budget: 3 re-entries. Used: 0.
-- Current stage: **m3-endgame** (attempt 1, cap 3). [m0,m1,m2 all PASSED]
+- Current stage: **m3-endgame** (attempt 1 PASSED; closing N1 hardening) → next m4.
 - Gate tags: gate/m0-foundation, gate/m1-proof-loop, gate/m2-docs.
 - m0: 171 green; PASS. A1–A7,A24.
 - m1: 312 green; attempt2 PASS (fixed hollow V-COMMIT-04 replay + V-EDGE-02). A8–A15.
-- m2: 335 green; attempt1 PASS (16 evaluator probe tests; cache/quote/dedup/cap/S3
-  all independently reproduced). A16–A18. No doc changes needed.
+- m2: 335 green; attempt1 PASS (16 evaluator probes). A16–A18.
+- m3: 363 green; attempt1 PASS (evaluator broke msa preconditions, degenerate-gap
+  probes, tainted prose, trace-to-raw-file). A19–A21. Closing N1 (verify crossref
+  resolution for evidence_bindings + duplicate_of, additive, docs/09 §3) before commit.
 
 ## m1 attempt-2 fix plan (F1 + secondary)
 F1: replay_reproduces is tautological (slices post lines, ignores action content).

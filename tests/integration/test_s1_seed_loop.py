@@ -74,3 +74,29 @@ def test_s1_seed_loop(project, pp):
     # verify exit 0
     env = pp("verify")
     assert env["ok"] is True
+
+
+def test_s1_local_freeze_coda(project, pp):
+    """S1 freeze coda (docs/11 §8): after S1's pass(conditional), local_freeze the
+    edge closure. The one target edge is frozen; its endpoints are not; the
+    FreezeItem carries the union of the edge's language limits."""
+    paths = scenario.paths_for_pp(pp)
+    scenario.seed_layer0(paths)
+    drain(paths, FakeProofWorker(scenario.s1_script()))
+
+    env = pp("freeze", "apply", "--target", scenario.EDGE_AB, "--level", "local")
+    assert env["ok"] is True
+
+    gv = graph_model.load(paths)
+    assert gv.edge_by_id[scenario.EDGE_AB]["frozen"] is True
+    # local closure = the one target only; endpoints stay unfrozen.
+    assert gv.node_by_id[scenario.A]["frozen"] is False
+    assert gv.node_by_id[scenario.B]["frozen"] is False
+
+    items = jsonl.read_all(paths.resolve("freeze/frozen_items.jsonl"))
+    fi = items[-1]
+    assert fi["freeze_type"] == "local_freeze"
+    assert fi["target_ids"] == [scenario.EDGE_AB]
+    assert fi["allowed_language"] and fi["forbidden_language"]
+
+    assert pp("verify")["ok"] is True

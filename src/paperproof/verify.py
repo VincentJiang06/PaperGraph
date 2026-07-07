@@ -74,6 +74,29 @@ def _crossref(paths: Paths) -> list[Failure]:
         for key in ("based_on_snapshot", "post_snapshot"):
             if cd[key] not in snap_ids:
                 failures.append(Failure("V-XREF", f"commit {cd['commit_id']} -> missing snapshot {cd[key]}"))
+
+    # evidence ids: every non-rejected node's evidence_bindings resolve to an
+    # archived EvidenceUnit (docs/09 §3 cross-reference resolution).
+    gv = graph_model.load(paths)
+    evidence_ids = {e["evidence_id"] for e in jsonl.latest_records(paths.resolve("docs/evidence_units.jsonl"), "evidence_id")}
+    node_ids = set(gv.node_by_id)
+    for node in gv.non_rejected_nodes():
+        for eid in node.get("evidence_bindings", []) or []:
+            if eid not in evidence_ids:
+                failures.append(Failure("V-XREF", f"node {node['node_id']} -> dangling evidence_binding {eid}"))
+
+    # duplicate_of: every rejected(duplicate) node's state_detail.duplicate_of and
+    # every tombstone duplicate_of resolves to a real node/edge id.
+    for node in gv.nodes:
+        if node.get("state_reason") == "duplicate":
+            dup = (node.get("state_detail") or {}).get("duplicate_of")
+            if dup is not None and dup not in node_ids:
+                failures.append(Failure("V-XREF", f"node {node['node_id']} -> dangling duplicate_of {dup}"))
+    all_ids = node_ids | set(gv.edge_by_id)
+    for ts in graph_model.load_tombstones(paths):
+        dup = ts.get("duplicate_of")
+        if dup is not None and dup not in all_ids:
+            failures.append(Failure("V-XREF", f"tombstone {ts['tombstone_id']} -> dangling duplicate_of {dup}"))
     return failures
 
 
