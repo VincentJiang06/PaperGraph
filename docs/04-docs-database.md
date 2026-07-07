@@ -97,6 +97,38 @@ fulfilled_by  DRES- id, or the string "cache" for a cache hit.
 
 DRES- ids number ingest events; they have no registry file of their own — a DRES id resolves (for `verify`) iff it appears as `ingested_from` on ≥1 Document/EvidenceUnit or as the `fulfilled_by` of a not_found request. `ingested_from` is null on documents ingested via the `docs ingest` CLI. Orchestrator-initiated requests are created with `paperproof docs request --target <id> --need <text> [--hint <h>]...` (code appends; C1 holds).
 
+## Evidence Seeding (the sweep) — runs BEFORE proof work
+
+**r3, from the ai-jobs live run.** v1 gathered evidence only reactively — one
+DocsWorker per `needs_docs` verdict — and the run ended with 24 EvidenceUnits
+for a whole paper, most arriving too late to prevent thin packs, dead letters,
+and bridge churn. The pipeline therefore gains an explicit **seeding stage**
+between contract acceptance and layer-0 expansion (docs/05 pipeline):
+
+```text
+1. Ingest every locally available Known Source: `docs ingest <file>` per file.
+2. The Orchestrator writes a SWEEP: one DocsRequest per (seed claim × angle),
+   via `docs request`. The v1 angle set is fixed:
+     official_stats   (BLS/OECD/Eurostat-class data for the claim's period)
+     academic         (peer-reviewed / working papers)
+     industry         (adoption surveys, payroll/job-posting analytics)
+     counter          (evidence AGAINST the claim — mandatory, one per seed)
+   Not every cell is required; the sweep MUST cover every fact/mechanism seed
+   claim with ≥2 angles, one of which is `counter`.
+3. Dispatch DocsWorkers for all open sweep requests IN PARALLEL (distinct
+   request ids ⇒ distinct output files; docs/05 parallelism rules apply).
+4. Coverage floor before the first expansion beyond layer 0 [V-SWEEP-01]:
+   every fact/mechanism seed claim has ≥2 EvidenceUnits from ≥2 distinct
+   documents, or a recorded not_found for ≥2 angles. `paperproof graph
+   msa-check` reports sweep coverage informationally from day one.
+```
+
+Sweep requests are Orchestrator-initiated (`requested_by` = the orchestrator
+actor, not a PR- id) and therefore **never count toward any proof target's docs
+round-trip cap** (below). Expected steady state for a paper-scale project after
+the sweep: roughly 10–20 documents and 30–60 EvidenceUnits before the first
+proof wave — an order of magnitude above the reactive-only baseline.
+
 ## Memoized Search
 
 Two distinct memoization points, both deterministic code:
@@ -105,9 +137,13 @@ Two distinct memoization points, both deterministic code:
 
 ```text
 On enqueue of a DocsRequest, the docs engine checks fingerprint equality with
-any previously fulfilled request ⇒ cache hit. A cache hit appends the request as
-status=fulfilled, fulfilled_by="cache", creates no work item, and unblocks the
-waiting re-proof item immediately. A miss ⇒ status=open + a docs_queue item.
+any previously fulfilled request WHOSE fulfilled_by IS A DRES ID ⇒ cache hit.
+A cache hit appends the request as status=fulfilled, fulfilled_by="cache",
+creates no work item, and unblocks the waiting re-proof item immediately.
+A miss ⇒ status=open + a docs_queue item.
+Requests whose fulfilled_by is itself "cache" are NEVER cache sources — a
+false hit must not chain (r3; in the live run the pre-r2.2 false hits DR-003..
+DR-005 would otherwise satisfy future identical searches forever).
 ```
 
 **r2.2 change (removed the matcher-hit cache trigger).** An earlier rule also
@@ -134,12 +170,35 @@ score(EU)   := |tokens(claim) ∩ (tokens(EU.summary) ∪ tokens(EU.quote_or_par
                ∪ tokens(join(EU.can_cite_for)))|
 include EU  iff score(EU) ≥ 2 AND scope_compatible(EU.scope, target.scope)
                (scope compatibility: docs/09 §0)
-order       by (score desc, evidence_id asc); no cap in v1 (graphs are small).
+order       by (score desc, evidence_id asc)
 ```
 
-No embeddings in v1. The matcher is intentionally dumb and deterministic: its misses cost one docs round-trip; its determinism buys reproducible packs.
+**DocsPack composition (r3 — replaces "matcher output, no cap"):**
+
+```text
+pack(target) := REQUESTED ∪ top-K(MATCHED), where
+REQUESTED = every EU ingested from a DocsRequest whose target_id is this
+            record (traced via request → DRES → ingested_from). These are
+            included UNCONDITIONALLY — in the live run, evidence fetched FOR a
+            target only reached its pack via matcher luck (common tokens like
+            "2020"/"employment" happened to match everything).
+MATCHED   = matcher output as above, minus REQUESTED; K = 12.
+```
+
+The K-cap exists because the run showed score≥2 over-includes on period/domain
+tokens — NODE-006's pack carried all 24 project EUs. Bounded packs keep worker
+context small and deterministic. No embeddings in v1; the matcher stays dumb —
+its misses now cost nothing for requested evidence and one round-trip otherwise.
 
 A **DocsPack** (`docs/docspacks/DOCSPACK-<task>[-rN].json`) is a frozen bundle of EvidenceUnits + document metadata assembled for one proof task. Proof workers cite only from their DocsPack, so every citation in every ProofResult resolves to an archived Document by construction. An empty DocsPack is valid.
+
+**Evidence-arrival staleness (r3).** When the ingestor archives new
+EvidenceUnits, it marks stale (docs/05) every queued/blocked **proof** item
+whose target would now receive a different pack — i.e. any target the new EUs
+are REQUESTED for, plus any whose matcher output changes. In the live run the
+NODE-006 re-proof was about to run against a 10-EU pack while 24 EUs existed;
+only a manual `proof build-task` rebuilt it. Freshly relevant evidence must
+reach pending proofs without human intervention [V-TASK-04].
 
 ## DocsWorker Protocol
 
@@ -157,11 +216,39 @@ DocsWorkers are Claude subagents, parallel-safe like ProofWorkers:
 4. Stop. Chat text is discarded.
 ```
 
+**Coverage expectations per request (r3, normative for the worker prompt):**
+
+```text
+Target 2–5 documents and 4–10 EvidenceUnits per request. Padding is still
+forbidden — the floor is honesty, the ceiling is focus — but a single-document
+result for a claim with a live literature is under-searched, and the live run
+showed reactive single-shot searches leave the whole project at ~24 EUs.
+Disconfirming duty: when the searched literature contains evidence AGAINST the
+claim, the worker MUST capture it (support_direction=refutes|context) rather
+than cherry-pick — the run's honest refutes (EU-014/017/022) are what let the
+system reject a false premise.
+Fetch resilience: official-statistics sites often 403 automated fetches; the
+worker should fall back to mirrors, archived copies, or secondary sources
+citing the primary figures, and extract PDF text locally (e.g. pdftotext)
+rather than abandoning the angle. Record every query in search_log either way.
+```
+
 Id assignment and appending to canonical JSONL is done by the Docs ingestor (code) after validation (V-DR rules, docs/09). Inside a DocsResult, an evidence unit points at its document with exactly one of `doc_ref` (integer index into this result's `documents` list) or `doc_id` (an existing archived id) [V-DR-01].
 
 `not_found` is a legitimate terminal result: the waiting re-proof then runs with the unchanged DocsPack, and the worker must answer the form honestly for the evidence it has — typically `wellformed_check=too_broad` (⇒ a narrow repair to a claim the available evidence can carry) or `inference_check=holds_only_with_assumptions` with tighter language limits.
 
-**Docs round-trip cap:** enforced by the **Committer** at commit time — when a verdict computes to `needs_docs`, it counts the target's completed (fulfilled/not_found) DocsRequest cycles in `docs/docs_requests.jsonl`; at 2 or more, no third request is appended and the re-proof work item is **born dead** ((created)→dead, op=dead_letter — docs/05) for human review.
+**Docs round-trip cap (r3 semantics — the r2 rule dead-lettered a healthy target):**
+enforced by the **Committer** at commit time. The cap counts the target's prior
+`needs_docs` **verdicts** (not completed DocsRequests), and only requests with
+`requested_by = a PR- id` belong to the proof loop at all — Orchestrator-initiated
+requests (sweep or supplemental, `docs request`) NEVER count. On the **3rd**
+needs_docs verdict for the same target, and only if no new evidence for the
+target has been archived since the 2nd, the re-proof item is born dead
+((created)→dead, op=dead_letter — docs/05) for human review. Rationale from the
+live run (QE-000114): NODE-005 was dead-lettered by two *orchestrator-created*
+cycles — one of them a pre-r2.2 false cache hit — before it ever saw the
+freshly-gathered evidence; the cap must measure the proof loop's own futile
+cycles, not the human's evidence gathering.
 
 Prohibitions:
 

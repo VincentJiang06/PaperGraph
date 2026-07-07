@@ -7,6 +7,9 @@ PaperGraph is a parallel workflow with deterministic gates. Workers run concurre
 ```text
 Topic Input
   -> Scoping (spec build + human accept)  specs/paper_spec.json, specs/project_contract.json
+  -> EVIDENCE SEEDING (the sweep, r3)     docs ingest of Known Sources + parallel
+                                          DocsWorkers over (seed claim x angle)
+                                          until the V-SWEEP-01 floor (docs/04)
   -> Expander writes proposal             agent_outputs/expansions/*.json (validated, committed)
   -> ProofTasks enqueued                  proof_queue
   -> ProofWorkers run in parallel         agent_outputs/proof_results/*.json (check forms)
@@ -18,6 +21,11 @@ Topic Input
   -> Compiler prose                       the ONLY prose-producing step
   -> Audit                                binding/scope/language check on the prose
 ```
+
+The sweep runs layer-0 seeding and evidence gathering in parallel; only the
+first expansion **beyond** layer 0 is gated on the sweep floor [V-SWEEP-01] —
+proofs never again start against an empty evidence base (the live run's root
+"too little evidence" failure).
 
 ## Queues
 
@@ -83,9 +91,9 @@ Complete transition table — these are the only legal edges [V-Q-01]. Every tra
 | claimed → running | heartbeat | first `queue heartbeat` (optional state; `complete` accepts claimed or running) |
 | claimed \| running → queued | release | `queue release` (attempt unchanged) |
 | claimed \| running → queued | expire | lease past expiry (attempt+1; >3 ⇒ dead) |
-| claimed \| running → validating | complete | `queue complete` (output file exists) |
+| claimed \| running → validating | complete | `queue complete` (output file exists) — OR performed implicitly by `validate` (r3, below) |
 | validating → validated | validate-pass | `validate result/proposal/docs-result`; for prose items, `compiler ingest-prose` runs V-PROSE as its validate-pass |
-| validating → failed | validate-fail | same command; failed_rules recorded |
+| validating → failed | validate-fail | same command; failed_rules recorded **with per-rule detail incl. the offending path** (r3 — the live run's bare rule ids made 5 identical failures undiagnosable from the event log) |
 | claimed \| running \| validating → failed | fail | `queue fail` (manual: hung or hopeless worker); retry/dead per attempt as below |
 | failed → queued | retry | automatic inside validate-fail when attempt < 3 (attempt+1) |
 | failed → dead | dead-letter | automatic when attempt ≥ 3 (the docs/bridge caps use the born-dead edge above instead) |
@@ -156,28 +164,45 @@ freeze racing commit on the same target
 compiler reading mid-commit graph state
 ```
 
-Enforcement is mechanical, not honor-system — and it must not false-positive on the system's own parallelism (queue events, serial commits, and other validations legitimately append to canonical files during a worker's lease). The mechanism is the **prefix rule**, which append-only storage makes possible:
+Enforcement is mechanical, not honor-system — and it must not false-positive on the system's own parallelism. **r3 rewrite, grounded in the live run:** the r2 implementation added two checks beyond this spec — byte-identity on "committer-owned" JSONL (so every legitimate commit or docs ingest during any lease broke every in-flight validation: events QE-000048/51/64/101/104) and a new-file baseline over ALL canonical dirs (so engine-created bundle files, docs/raw|text archives, and `db rebuild` outputs tripped it too). Both are hereby ruled out; the scan is exactly this and nothing more:
 
 ```text
 1. Workers get explicit allowed_write_paths (their declared output file plus
    agent_notes/**) in their prompt.
 2. At claim time the queue engine records into lease.manifest: for every
-   canonical JSONL file, (size, sha256); for every non-JSONL canonical file
-   (specs/*.json, bundle files, compiler/prose/*), its sha256.
-3. `validate` checks the prefix rule [V-PATH-04]: each recorded JSONL file's
-   FIRST `size` bytes must still hash to the recorded sha256 — legitimate
-   concurrent actors only append, so a broken prefix means someone rewrote,
-   truncated, or edited history. Each recorded non-JSONL file must be
-   byte-identical. New appended lines and new files are the engines' business
-   and are audited by `paperproof verify`'s replay checks (V-Q-03,
-   V-COMMIT-04), not by this scan.
+   canonical JSONL file, (size, sha256); for every IMMUTABLE non-JSONL
+   canonical file — specs/*.json, existing bundle files (proof/tasks|context,
+   docs/docspacks), existing docs/raw + docs/text archives, compiler/prose/* —
+   its sha256. db/** is NEVER in the manifest (derived, legitimately rewritten
+   at any time).
+3. `validate` checks [V-PATH-04], three clauses only:
+   a. PREFIX: each recorded JSONL file's first `size` bytes still hash to the
+      recorded sha256 — concurrent engines only append; a broken prefix means
+      rewrite/truncation/history-editing. Appended lines are NOT inspected here
+      (attribution is verify's job: V-COMMIT-04 replay + V-Q-03 make an
+      unattributed append surface as corruption).
+   b. IMMUTABLE: each recorded immutable non-JSONL file is byte-identical.
+   c. STRICT-DIR NEW FILES: a file that did not exist at claim time appearing
+      under specs/, graph/, queue/, commit/, freeze/, or audit/ fails — no
+      engine ever creates new files there mid-lease. New files under
+      proof/tasks|context, docs/docspacks|raw|text, compiler/, db/,
+      agent_outputs/**, agent_notes/** are engine/worker-legitimate and pass
+      (their integrity is enforced by verify's cross-reference sweep).
+4. Every V-PATH-04 failure names the offending path in its detail.
 ```
 
 ## Gates
 
 ### Validation Gate
 
-Deterministic code. Checks path safety, JSON schema, and domain invariants against the V-* rule registry (`docs/09-verification.md`). Invalid output → work item `failed` with the violated rule IDs recorded; the worker's text output is never consulted. Retry policy: ≤2 retries with the errors included in the retry prompt, then dead letter (`docs/08` §3).
+Deterministic code. Checks path safety, JSON schema, and domain invariants against the V-* rule registry (`docs/09-verification.md`). Invalid output → work item `failed` with the violated rule IDs **and per-rule detail (offending path / field)** recorded in the queue event and echoed into the retry prompt; the worker's text output is never consulted. Retry policy: ≤2 retries, then dead letter (`docs/08` §3).
+
+**r3 ergonomic change:** `validate result|docs-result` accepts an item in
+`claimed` (or `running`) state and performs the `complete` transition itself
+(emitting both events) — the separate `queue complete` call is optional. The
+live run's claim→complete→validate ceremony left a wide window in which
+concurrent engine activity aged the lease manifest; collapsing it shrinks that
+window and removes the most common operator error.
 
 ### Commit Gate (Committer)
 
@@ -215,14 +240,15 @@ The Orchestrator's steady-state loop, in actual commands (one iteration):
 ```text
 paperproof queue expire                                  # crash recovery sweep
 paperproof proof build-tasks --frontier                  # bundles for claimable + stale items
+                                                         # (evidence-arrival staleness means
+                                                         #  this also refreshes packs, docs/04)
 for each claimable proof item (parallel, disjoint outputs):
     paperproof queue claim --queue proof_queue --agent <w>
     <dispatch ProofWorker subagent with the prompt template (docs/10 §5)>
-    paperproof queue complete <WI>
-    paperproof validate result <output> --work-item <WI> # computes verdict or fails+retries
+    paperproof validate result <output> --work-item <WI> # completes + computes verdict
 for each validated item (serial, FIFO):
     paperproof commit apply --result <verdict-record-ref>
-for each open docs item (parallel):                      # same claim/complete/validate shape
+for each open docs item (parallel):                      # same claim/validate shape
     paperproof docs ingest-result <output>               # ingest + unblock re-proof
 when a lane's layer is fully committed:
     <Expander writes proposal>  → paperproof expand ingest <file>  (empty proposal closes the lane)

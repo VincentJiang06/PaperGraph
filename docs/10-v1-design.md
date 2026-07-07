@@ -147,18 +147,18 @@ Global options: `--root <dir>` (default `./data`), `--project <id>` / `PAPERPROO
 | `docs ingest <file>` | `[--source-type --title --citation-key]` | archive user file (dedup by hash); data: doc_id, text_path |
 | `docs search` | `--query <text> [--scope <json>]` | run the matcher; data: scored EU list |
 | `docs build-pack` | `--task <task-id>` | assemble DocsPack; data: pack path, EU count |
-| `docs request` | `--target <id> --need <text> [--hint <h>]...` | Orchestrator-initiated DocsRequest (code appends; cache-checked like any request); data: request_id, status |
+| `docs request` | `--target <id> --need <text> [--hint <h>]...` | Orchestrator-initiated DocsRequest (code appends; cache-checked like any request; NEVER counts toward the target's docs cap — r3, docs/04); data: request_id, status |
 | `docs ingest-result <file>` | `--work-item <WI>` | validate V-DR + ingest + unblock; data: assigned ids, request status |
 | `queue list` | `[--queue --status]` | data: items (commit_queue = derived view of validated) |
 | `queue claim` | `--queue <q> --agent <name> [--id <WI>]` | lease + claim-time manifest; without --id, picks the claimable item with the lowest work_item_id (FIFO); data: work item incl. bundle + output paths |
 | `queue heartbeat <WI>` | `--agent` | extend lease |
 | `queue release <WI>` | — | back to queued, attempt unchanged |
-| `queue complete <WI>` | — | claimed/running → validating (output file must exist) |
+| `queue complete <WI>` | — | claimed/running → validating (output file must exist); OPTIONAL since r3 — `validate` completes implicitly |
 | `queue fail <WI>` | `--reason` | manual fail (op=fail, from claimed/running/validating — for hung or hopeless workers); auto retry/dead per attempt |
 | `queue expire` | — | sweep expired leases; data: requeued/dead ids |
 | `queue requeue <WI>` | — | dead → queued (human decision) |
 | `queue events` | `[--after <QE>]` | data: events |
-| `validate result <file>` | `--work-item <WI>` | V-PATH+V-PR, compute verdict, append verdict record, item → validated/failed; data: {proof_result_id, computed_verdict} or {failed_rules} (exit 1) |
+| `validate result <file>` | `--work-item <WI>` | accepts claimed/running/validating (completes implicitly, r3); V-PATH+V-PR, compute verdict, append verdict record, item → validated/failed; data: {proof_result_id, computed_verdict} or {failed_rules + per-rule detail} (exit 1) |
 | `validate proposal <file>` | — | V-EXP static checks; data: ok / failed_rules |
 | `validate docs-result <file>` | `--work-item <WI>` | V-PATH+V-DR; data: ok / failed_rules |
 | `commit apply` | `--result <PR-id>` | serial commit of a validated verdict (B6); data: {commit_id, actions, post_snapshot}. Proposals commit via `expand ingest` — one path each, never two |
@@ -169,7 +169,7 @@ Global options: `--root <dir>` (default `./data`), `--project <id>` / `PAPERPROO
 | `compiler ingest-prose <file>` | `--work-item <WI>` | V-PROSE as the item's validate-pass + copy to compiler/prose/ + commit (two queue events, one command); data: section_id / failed_rules |
 | `audit run` | `--draft <DRAFTMAP-id>` | mechanical audit; data: AuditReport; exit 1 if findings |
 | `db rebuild / db check` | — | data: manifest / {stale_index: bool} |
-| `ui serve` | `--port 8420` | serve the docs/07 API + static page |
+| `ui serve` | `--port 8420 [--auto-rebuild]` | serve the docs/07 API + static page; `--auto-rebuild` (r3, live-monitor convenience) rebuilds the index when a poll finds it stale instead of only flying the banner — default off, the banner stays load-bearing |
 | `verify` | — | whole-project sweep (docs/09 §3); exit 0 clean, 3 on violation |
 | `trace` | `--node <id>` | data: the full trace chain (docs/09 §3) |
 
@@ -219,6 +219,14 @@ notes ≤ 150 words; NODE forms have no inference_check field at all; never
 modify any file except the output; never cite outside the DocsPack — missing
 evidence means insufficient + docs_requests; never invent citations.
 
+SELF-CHECK before writing (r3 — each item below failed a live validation):
+- language_limits.allowed and .forbidden are ARRAYS of strings, never bare
+  strings; assumptions / evidence_used / repair_proposals / docs_requests are
+  arrays too.
+- COUNT the words in notes; over 150 fails validation (V-PR-10).
+- Every id you mention appears in your input packs.
+- The JSON parses; one object; the exact output path.
+
 Write proof_result.v1 JSON to {output_file}. Allowed writes: {output_file},
 agent_notes/**. Then stop. Your chat text is discarded.
 ```
@@ -247,6 +255,14 @@ Quotes must be verbatim from the source. Never invent sources or quotes. Never
 judge graph claims — no verdict/strength/lifecycle language. You assign NO ids.
 If nothing usable exists: not_found=true, empty lists, and record search_log
 (the queries you actually ran) — an honest not_found beats a stretched source.
+
+Coverage (r3): target 2-5 documents and 4-10 evidence units — one thin source
+for a claim with a live literature is under-searched. DISCONFIRMING DUTY: if
+the literature contains evidence AGAINST the claim, capture it
+(support_direction refutes|context); never cherry-pick. FETCH RESILIENCE:
+official-statistics sites often block automated fetches (403) — fall back to
+mirrors, archived copies, or secondary sources quoting the primary figures,
+and extract PDF text locally (e.g. pdftotext) rather than abandoning the angle.
 
 Write docs_result.v1 JSON to {output_file}. Allowed writes: {output_file},
 agent_notes/**. Then stop. Your chat text is discarded.

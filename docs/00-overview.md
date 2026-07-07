@@ -155,3 +155,59 @@ state_detail field added; stopword list frozen verbatim; CJK sentence
   splitting fixed; BFS-ALT's first layer is 1; spec build --patch shape pinned;
   milestone gates re-sequenced so no scenario needs later-milestone modules.
 ```
+
+## Spec Revision r3 (2026-07-08, from the ai-jobs live run)
+
+The first real end-to-end run (project `ai-jobs`, "AI agents & employment
+2020–2025", real Claude workers) exposed defects that made unattended operation
+impractical and left the evidence base an order of magnitude too thin. Every r3
+change below is grounded in that run's event log (`queue/events.jsonl`,
+QE- ids) and requires the implementation + test suite to catch up
+(worklist: docs/11 §10). r2.2 (shipped mid-run) already fixed the WebUI
+nav/fetch bugs and removed the matcher-hit cache trigger.
+
+```text
+EVIDENCE VOLUME (the run's core failure — 24 EUs for a whole paper):
+  Evidence Seeding sweep added as a pipeline stage (docs/01, 04, 05): after
+    contract acceptance, ingest Known Sources + parallel DocsWorkers over
+    (seed claim × angle: official_stats/academic/industry/counter);
+    V-SWEEP-01 floor gates expansion beyond layer 0.
+  DocsWorker coverage expectations pinned (docs/04, 08 B7, 10 §5): 2–5 docs,
+    4–10 EUs per request; disconfirming duty; 403/PDF fetch resilience.
+  Evidence floor raised: MSA-4 / V-FRZ-02 / missing_evidence now require ≥2
+    EUs from ≥2 distinct documents per spine fact/mechanism node — the run's
+    single-source claims were exactly the ones later evidence overturned.
+
+V-PATH-04 (5 of the run's 8 validation failures — QE-000048/51/64/101/104):
+  The r2 impl's "committer-owned byte-identity" + all-dirs new-file baseline
+  are ruled non-conformant; the scan is exactly three clauses (docs/05):
+  JSONL prefix intact, recorded IMMUTABLE files byte-identical (db/** never
+  manifested), new files only fail in strict dirs (specs/ graph/ queue/
+  commit/ freeze/ audit/). Appends are attributed by verify (V-COMMIT-04),
+  not the scan — hostile H10 re-mapped accordingly (docs/11 §6).
+
+DOCS CAP (QE-000114 dead-lettered a healthy target):
+  Cap counts needs_docs VERDICTS (3rd, with no new evidence since the 2nd),
+  scoped to PR-initiated requests only — sweep/Orchestrator `docs request`
+  never counts (docs/04, 08 B7).
+
+FRESH EVIDENCE MUST REACH PENDING PROOFS (the 10-EU-stale-pack incident):
+  Evidence-arrival staleness [V-TASK-04]: the docs ingestor marks affected
+  queued/blocked proof items stale. DocsPack composition [V-TASK-05] =
+  REQUESTED ∪ top-12 MATCHED — requested evidence lands in the target's pack
+  unconditionally; the K-cap ends the all-24-EUs-in-every-pack bloat.
+
+CACHE HYGIENE: only DRES-fulfilled requests are fingerprint-cache sources —
+  a false "cache" fulfillment can no longer chain (docs/04).
+
+BRIDGE REJECTION defined (docs/02, 08 B6): cascade normally; the repaired
+  edge's re-proof re-judges with surviving premises (cancelled blockers count
+  as resolved); renewed gap hits the bridge-round cap; prefer narrowing.
+
+OPERATOR ERGONOMICS: `validate` completes claimed items implicitly (shrinks
+  the manifest window, one less ceremony step); every failed_rules entry
+  carries per-rule detail naming the offending path (bare rule ids proved
+  undiagnosable); `ui serve --auto-rebuild` for live monitoring (banner
+  default unchanged); worker prompt templates gain a SELF-CHECK block
+  (arrays! word counts!) — the run's V-PR-01/V-PR-10 slips (QE-000017/89).
+```

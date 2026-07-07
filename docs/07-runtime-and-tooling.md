@@ -77,7 +77,11 @@ Appends take an fcntl lock on the target file; the Committer and queue engine
 Actor identity: --agent flag where present, else PAPERPROOF_ACTOR, else
   "orchestrator".
 Derived db/ may be deleted anytime; `paperproof db check` reports stale_index
-  on hash mismatch.
+  on hash mismatch. db/** is NEVER part of any lease manifest or path scan
+  (r3) — it is legitimately rewritten at any moment, including mid-lease.
+Failure observability (r3): every failed_rules entry carries per-rule detail
+  naming the offending path/field, recorded in the queue event and echoed in
+  retry prompts — a bare rule id proved undiagnosable in the live run.
 ```
 
 ### ID formats
@@ -127,7 +131,7 @@ paperproof freeze    apply | unfreeze
 paperproof compiler  dry-run | draft-map | ingest-prose
 paperproof audit     run --draft
 paperproof db        rebuild | check
-paperproof ui        serve --port 8420
+paperproof ui        serve --port 8420 [--auto-rebuild]
 paperproof verify    # whole-project invariant sweep (docs/09 §3)
 paperproof trace     --node <id>   # sentence→evidence traceability chain
 ```

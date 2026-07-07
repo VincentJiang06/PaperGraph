@@ -72,17 +72,30 @@ V-GATE-03  no operation may target a frozen record except unfreeze (human) and
            compile/audit (read)
 ```
 
+### V-SWEEP (evidence seeding, r3 — docs/04)
+
+```text
+V-SWEEP-01  the first expansion beyond layer 0 requires, for every
+            fact/mechanism seed claim: >=2 EvidenceUnits from >=2 distinct
+            documents, or recorded not_found for >=2 sweep angles.
+            (`expand ingest` enforces; msa-check reports informationally.)
+```
+
 ### V-PATH (file/path safety, applies to every worker output)
 
 ```text
 V-PATH-01  output path exactly matches the work item's declared output_files
 V-PATH-02  path is project-relative, no upward traversal, no symlink escape
 V-PATH-03  file is valid UTF-8 JSON (or .md for prose), single document
-V-PATH-04  no writes outside allowed_write_paths — the PREFIX rule (docs/05):
-           every JSONL file in lease.manifest still hash-matches on its first
-           recorded `size` bytes (concurrent engines only append; a broken
-           prefix = rewrite/truncation), every recorded non-JSONL file is
-           byte-identical
+V-PATH-04  no writes outside allowed_write_paths — exactly the three clauses of
+           docs/05 §Parallelism (r3): (a) JSONL prefix intact (rewrite/truncate
+           fails; appends never inspected here — attribution is verify's job),
+           (b) recorded IMMUTABLE non-JSONL files byte-identical (db/** never
+           in the manifest), (c) new files only in strict dirs fail (specs/
+           graph/ queue/ commit/ freeze/ audit/). Failure detail names the
+           offending path. The r2 impl's committer-owned byte-identity and
+           all-dirs new-file baseline are non-conformant (live-run events
+           QE-000048/51/64/101/104).
 ```
 
 ### V-NODE / V-EDGE / V-GRAPH (graph records, checked at commit time)
@@ -139,6 +152,12 @@ V-TASK-01  claim refuses items marked stale (Committer marks on target/1-hop
 V-TASK-02  ContextPack contains target + all 1-hop neighbors at its snapshot +
            claim_digest covering every non-rejected node
 V-TASK-03  DocsPack evidence ids all resolve to archived Documents
+V-TASK-04  (r3) evidence-arrival staleness: after a docs ingest, every
+           queued/blocked proof item whose pack composition would change
+           (docs/04) is marked stale — a re-proof may never run against a
+           pack older than the evidence gathered for it
+V-TASK-05  (r3) DocsPack composition = REQUESTED ∪ top-12 MATCHED (docs/04);
+           REQUESTED evidence for the target is present unconditionally
 ```
 
 ### V-PR (proof check forms) — the most important block
@@ -220,7 +239,10 @@ V-COMMIT-06  a proof verdict commits only onto a target in a provable state
 
 ```text
 V-FRZ-01   every record in the closure is active
-V-FRZ-02   every fact/mechanism node in the closure has ≥1 evidence binding
+V-FRZ-02   every fact/mechanism node in the closure has ≥2 evidence bindings
+           drawn from ≥2 distinct documents (r3 — one source per empirical
+           claim proved too thin in the live run; single-source spine claims
+           were the ones the later evidence overturned)
 V-FRZ-03   no work item with status ∉ {committed, cancelled} touches the closure
 V-FRZ-04   spine_freeze ⇒ MSA checklist passes and `verify` exits 0
 V-CDR-01   gap identity (kind, target_id): each new gap spawns exactly one

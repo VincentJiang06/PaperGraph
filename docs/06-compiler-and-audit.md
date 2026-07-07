@@ -21,7 +21,8 @@ Freeze preconditions (checked deterministically; rules V-FRZ-01..04 in docs/09):
 
 ```text
 every record in the closure is active (strength strong or conditional)
-every fact/mechanism node in the closure has ≥1 evidence binding
+every fact/mechanism node in the closure has ≥2 evidence bindings from ≥2
+  distinct documents (r3; matches MSA-4 / V-FRZ-02)
 no work item with status ∉ {committed, cancelled} touches the closure
   (touching: the adjacency rule in docs/02 — dead letters block)
 spine_freeze additionally requires: MSA checklist passes AND `paperproof verify`
@@ -81,7 +82,8 @@ The Compiler is the **only prose producer** in the system, and it runs in two ph
 Gap kinds (closed enum) and their mechanical triggers:
 
 ```text
-missing_evidence        spine fact/mechanism node with empty evidence_bindings
+missing_evidence        spine fact/mechanism node below the r3 evidence floor
+                        (<2 bindings or <2 distinct documents — matches V-FRZ-02)
 unhandled_alternative   alternative node not rejected and not parked(absorbed|not_needed)
 weak_spine_edge         spine edge whose strength=conditional and whose assumptions
                         are not covered by any allowed_language in the closure

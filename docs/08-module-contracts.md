@@ -116,10 +116,16 @@ Input:         one queued/stale proof work item
 Output:        ProofTask + ContextPack + DocsPack (three files; docs/03, docs/04);
                rebuilds append a -rN revision, never overwrite (bundle immutability)
 Postcondition: the bundle is self-contained — the worker needs no other file.
+               DocsPack composition (r3): REQUESTED ∪ top-12 MATCHED — evidence
+               ingested from requests targeting this record is included
+               unconditionally; the matcher fills the rest (docs/04) [V-TASK-05].
 Staleness:     bundles embed based_on_snapshot; the COMMITTER marks unclaimed
                items stale when a commit mutates their target or a 1-hop
                neighbor (claim_digest drift alone does not stale a bundle);
-               claim refuses stale items until rebuilt.  [V-TASK-01]
+               the DOCS INGESTOR marks queued/blocked proof items stale when
+               newly archived evidence changes their pack (evidence-arrival
+               staleness, r3) [V-TASK-04]; claim refuses stale items until
+               rebuilt.  [V-TASK-01]
 ```
 
 **1-hop neighborhood** (what `neighbor_nodes`/`neighbor_edges` must contain, [V-TASK-02]): for a NODE target — every non-rejected edge incident to it plus those edges' other endpoints; for an EDGE target — both endpoint nodes, every non-rejected edge incident to either endpoint, and those edges' other endpoints (this is how proven bridges become visible to an edge's re-proof).
@@ -163,15 +169,18 @@ An empty DocsPack is valid; it just means the worker cannot answer `evidence_che
 The heart of the system. The worker submits a **check form** (closed-enum answers along the evaluation ladder, `docs/03`); it never chooses a verdict. The Validator (a) checks form consistency (V-PR rules incl. ladder shape), then (b) **computes the verdict** by walking the decision table in `docs/03` (first match wins), and (c) appends the verdict record (`verdict_record.v1`, docs/03) — form + computed verdict + bundle paths — to `proof/proof_results.jsonl`, assigning the PR- id.
 
 ```text
-Precondition:  worker held a valid lease on the work item.
+Precondition:  worker held a valid lease on the work item (state claimed |
+               running | validating — `validate` performs the complete
+               transition itself when needed, r3/docs/05).
 Acceptance:    file at the declared output path, schema-valid, all V-PR-* pass,
-               post-run path scan clean [V-PATH-04].
+               post-run path scan clean [V-PATH-04, the three r3 clauses only].
 Postcondition: verdict record appended; work item -> validated; queued for commit.
                The decision table is total over ladder-valid forms: every valid
                form yields exactly one verdict.
-On failure:    work item -> failed(validation), reasons recorded as rule IDs;
-               retry ≤ 2 with the validation errors included in the retry prompt
-               (same output path, overwritten); then dead-letter for human review.
+On failure:    work item -> failed(validation), reasons recorded as rule IDs
+               WITH per-rule detail (offending path/field) in the queue event;
+               retry ≤ 2 with rules + detail in the retry prompt (same output
+               path, overwritten); then dead-letter for human review.
 Text rule:     worker chat/stdout is never parsed. File or nothing.
 ```
 
@@ -219,6 +228,14 @@ re-proof item for A→B blocked_by ALL of the above (both bridges' node AND
 This wiring is what makes the loop close mechanically: once X and X→B are active, X is a 1-hop neighbor of B — so the re-proof ContextPack contains it — and an active ancestor of the thesis through B — so it joins the spine (docs/02). Without the edge, a proven bridge would be invisible to both.
 
 **Bridge-round cap:** like the docs cap (docs/04), bridge repairs per edge are capped at 2 rounds — a third `gap` verdict on the same edge appends no new bridges and the re-proof item is born dead ((created)→dead, op=dead_letter) for human review. This is the termination bound on the gap→bridge→re-proof cycle.
+
+**Bridge rejection (r3):** when a bridge node is rejected (e.g. contradicted by
+evidence, as happened live), its wired edge cascades to rejected and its items
+cancel; the repaired edge's re-proof unblocks when its remaining blockers
+resolve (committed AND cancelled count as resolved) and re-judges with the
+surviving premises. A renewed `gap` counts toward the cap; the worker may
+propose different bridges, and should weigh narrowing the edge's claim instead
+— a falsified premise usually means the conclusion was too strong.
 
 ### B6b: Administrative commits
 
@@ -278,9 +295,11 @@ contract_reopen  batch re-open after a contract version bump. v1 ships NO CLI
 
 ```text
 Committer appends DocsRequest(status=open) — unless the request-level cache
-(fingerprint or matcher hit, docs/04) resolves it immediately as
-fulfilled/"cache" — plus a docs_queue work item for real misses.
-DocsWorker claims it, writes ONE DocsResult file:
+(fingerprint equality with a DRES-fulfilled request, docs/04 r3; matcher hits
+no longer cache) resolves it immediately as fulfilled/"cache" — plus a
+docs_queue work item for real misses.
+DocsWorker claims it, writes ONE DocsResult file (coverage expectations:
+2–5 documents, 4–10 EUs, disconfirming duty, fetch resilience — docs/04 r3):
 ```
 
 ```json
@@ -309,11 +328,14 @@ documents) or doc_id (existing archived id) [V-DR-01].
 Validator checks V-DR-*; Docs ingestor (code) archives raw/text files (writing
 docs/raw + docs/text from inline text), dedups by content_hash, assigns ids,
 appends documents + evidence_units, appends the DocsRequest status update
-(fulfilled | not_found, fulfilled_by=DRES id), and unblocks the waiting
-re-proof item.
+(fulfilled | not_found, fulfilled_by=DRES id), unblocks the waiting re-proof
+item, AND marks evidence-arrival staleness on affected pending proof items
+(r3, V-TASK-04).
 not_found is a legitimate terminal state: the re-proof runs with the unchanged
-DocsPack and the worker answers the form honestly (docs/04). Docs round-trips
-per target are capped at 2, then dead letter for human review.
+DocsPack and the worker answers the form honestly (docs/04). Docs cap (r3
+semantics, docs/04): the 3rd needs_docs VERDICT on a target with no new
+evidence since the 2nd ⇒ dead letter; PR-initiated requests only — sweep and
+Orchestrator-supplemental requests never count.
 ```
 
 ### B8: Graph → Freeze gate
@@ -322,7 +344,8 @@ per target are capped at 2, then dead letter for human review.
 Input:         freeze command (target + level: local/subtree/spine)
 Precondition:  V-FRZ-01 every record in the closure (defined per level, docs/06)
                         is active
-               V-FRZ-02 every fact/mechanism node in the closure has ≥1 evidence binding
+               V-FRZ-02 every fact/mechanism node in the closure has ≥2 evidence
+                        bindings from ≥2 distinct documents (r3)
                V-FRZ-03 no work item with status ∉ {committed, cancelled} touches
                         the closure (adjacency rule docs/02; dead letters block)
                V-FRZ-04 spine_freeze: MSA checklist passes + `verify` exits 0

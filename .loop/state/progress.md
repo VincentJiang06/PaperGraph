@@ -19,6 +19,25 @@ Do NOT trust a session summary.
   V-COMMIT-04 replay (m1), a verify/doc crossref gap (m3-N1), and a .gitignore that
   silently excluded the whole M4 db package from every commit (final-audit fresh-clone).
 
+## NEXT ITERATION — r3 worklist (spec revised 2026-07-08 from the ai-jobs live run)
+The spec (docs/, r3) is now AHEAD of the code. The next build loop re-enters at
+a maintenance milestone gated by docs/11 §10 (T-r3-1..10). Implementation order:
+1. V-PATH-04 scan rework (docs/05 three clauses; delete COMMITTER_OWNED
+   byte-identity + all-dirs baseline in validate/rules/v_path.py) — T-r3-1/2.
+2. Docs cap rework (committer/apply.py: 3rd needs_docs VERDICT, no-new-evidence,
+   PR-initiated only) — T-r3-3.
+3. Evidence-arrival staleness + pack composition REQUESTED∪top-12
+   (docsdb/ingest.py, docsdb/pack.py, prooftask/builder.py) — T-r3-6.
+4. validate-from-claimed (validate/proof.py + queue) — T-r3-7; failure detail
+   in events (queue/engine.py) — T-r3-8.
+5. Sweep stage + V-SWEEP-01 gate (expander/ingest.py + msa reporting) — T-r3-5.
+6. MSA-4/V-FRZ-02 >=2 EU / >=2 docs (graph/, freeze/) — T-r3-4.
+7. Cache source DRES-only (docsdb/cache.py) — in T-r3-3.
+8. ui serve --auto-rebuild (ui/app.py + cli) — T-r3-9; templates SELF-CHECK
+   blocks (prompts/*.txt) — T-r3-10.
+Run data for regression fixtures: data/projects/ai-jobs (24 EU, 12 docs,
+10 verdicts, 122 events — the V-PATH-04 failures are QE-000048/51/64/101/104).
+
 ## m1 attempt-2 fix plan (F1 + secondary)
 F1: replay_reproduces is tautological (slices post lines, ignores action content).
   Fix = make CommitDecision actions carry the full appended/updated record, and

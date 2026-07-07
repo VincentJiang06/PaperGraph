@@ -221,6 +221,14 @@ origin.kind=bridge) plus edge X→target (depends_on for definitions, supports
 otherwise) — they do not wait for the lane's expansion turn (docs/08 B6).
 Expansion of a bridge node's own support happens through the normal next-layer
 cycle — never recursively inside a proof task.
+Bridge REJECTION (r3, observed live: a bridge premise falsified by evidence):
+a rejected bridge cascades normally (its wired edge tombstones, its items
+cancel). The repaired edge's re-proof unblocks once every remaining blocker
+resolves (committed and cancelled both count); the re-proof judges with the
+SURVIVING premises and may propose different bridges — a second gap verdict
+counts toward the bridge-round cap (docs/08 B6). A rejected bridge often
+signals the EDGE's conclusion needs narrowing rather than more premises; the
+re-proof worker should consider wellformed/narrow before proposing new bridges.
 ```
 
 ## The Spine
@@ -248,7 +256,10 @@ spine :=  {Q, T}
 MSA-1  exactly one question node and one thesis node exist; both active
 MSA-2  the supports edge T→Q is active
 MSA-3  every record in the spine is active (strength strong | conditional)
-MSA-4  every fact/mechanism node in the spine has ≥1 evidence binding
+MSA-4  every fact/mechanism node in the spine has ≥2 evidence bindings from
+       ≥2 distinct documents (r3 — raised from ≥1: the live run showed
+       single-source empirical claims are exactly the ones later evidence
+       overturns; matches V-FRZ-02)
 MSA-5  every alternative node in the project is rejected, or parked with
        state_reason ∈ {absorbed, not_needed}
 MSA-6  no work item with status ∉ {committed, cancelled} targets a record

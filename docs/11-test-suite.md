@@ -195,7 +195,7 @@ Each hostile output is caught by a **named** rule; the mapping is asserted (`fai
 | H07 | adds `"confidence": 0.9` | V-PR-03 |
 | H08 | fact node answers evidence not_required | V-PR-05 |
 | H09 | task_id of a different work item | V-PR-02 |
-| H10 | appends a line to graph/logic_nodes.jsonl | V-PATH-04 |
+| H10 | appends a line to graph/logic_nodes.jsonl | (r3) caught by `verify`, not the lease scan: the appended record is attributable to no CommitDecision ⇒ V-COMMIT-04 replay mismatch, exit 3. The scan no longer inspects appends — that's what let legitimate concurrent commits break every live validation |
 | H11 | out_of_scope but evidence_check answered | V-PR-14 |
 | H12 | too_broad without narrow repair | V-PR-07 |
 | H13 | would-pass form, language_limits null | V-PR-13 |
@@ -249,10 +249,14 @@ S1  bridge candidates carry origin.kind=bridge with the source node's lane+
     conditional with the scripted assumptions stored on the record; C,D are in
     the spine afterwards.
 S2  after ingest, the DocsRequest fingerprint of an identical need resolves
-    fulfilled_by="cache" with NO docs work item created; the EU is served in
-    the rebuilt DocsPack (-r2); round-trip counter respects the cap of 2
-    (third needs_docs verdict on the same target ⇒ the re-proof item is BORN
-    dead: (created)→dead, op=dead_letter).
+    fulfilled_by="cache" with NO docs work item created — and (r3) only a
+    DRES-fulfilled request is a cache source (a "cache"-fulfilled one never
+    chains); the EU is served in the rebuilt DocsPack (-r2) UNCONDITIONALLY
+    (REQUESTED composition, V-TASK-05) and the pending re-proof was marked
+    stale by evidence arrival (V-TASK-04), no manual build-task; the docs cap
+    (r3) fires on the 3rd needs_docs VERDICT with no new evidence since the
+    2nd ⇒ re-proof born dead — and an Orchestrator `docs request` between
+    verdicts does NOT advance the counter.
 S3  cascade: tombstones carry reason=endpoint_rejected; cancelled items emit
     op=cancel events; verify clean. (Runs at M2 — the contradicted verdict
     requires evidence_used from a non-empty DocsPack.) M3 coda: the fixture's
@@ -290,7 +294,44 @@ The suite is cumulative — a milestone's gate is "**everything green** through 
 
 Live-smoke results are recorded by the Orchestrator as a short checklist in `agent_notes/milestones/<M>.md` (pass/fail per item + the ids involved); they gate milestone acceptance but never block `pytest`.
 
-## 10. What Is Deliberately NOT Tested
+## 10. r3 Revision Worklist (spec ahead of code — the next iteration's gate)
+
+The ai-jobs live run (2026-07-08) drove the r3 spec changes; the implementation
+and this suite must catch up. Every item below is a REQUIRED test change; the
+rule-coverage meta-test will force the fixture side automatically once the
+rules land in the registry.
+
+```text
+T-r3-1  V-PATH-04 fixtures rewritten to the three clauses (docs/05): NEW pass
+        fixtures — a commit APPENDING graph/commit JSONL during a lease passes;
+        a docs ingest appending + creating docs/raw|text files passes; a
+        `db rebuild` during a lease passes. Fail fixtures — JSONL prefix break;
+        recorded bundle file modified; new file under graph/ or queue/.
+        DELETE the committer-owned byte-identity tests (non-conformant).
+T-r3-2  H10 moves from the lease-scan mapping to a verify-level test: append an
+        unattributed graph record ⇒ verify exit 3 via V-COMMIT-04 replay.
+T-r3-3  S2 updated per §8 (cache source DRES-only; REQUESTED pack composition;
+        evidence-arrival staleness; cap = 3rd verdict + no-new-evidence +
+        PR-initiated-only).
+T-r3-4  S7 fixtures: every spine fact/mechanism node binds ≥2 EUs from ≥2
+        documents (MSA-4/V-FRZ-02 r3); msa-check fixture updated; a 1-binding
+        spine node now FAILS freeze (new refusal fixture).
+T-r3-5  V-SWEEP-01: expand-beyond-layer-0 refused while a fact/mechanism seed
+        claim lacks the sweep floor; passes after 2 angles recorded.
+T-r3-6  V-TASK-04/05 unit tests: ingest ⇒ affected queued/blocked items stale;
+        pack = REQUESTED ∪ top-12 MATCHED (a 25-EU project yields a ≤
+        12+|REQUESTED| pack; requested EU with matcher score 0 still present).
+T-r3-7  queue lifecycle: `validate result` from claimed performs complete
+        implicitly (two events, one command); V-Q-01 table updated.
+T-r3-8  failure observability: every validate_fail event carries per-rule
+        detail naming a path/field (assert in the queue tests).
+T-r3-9  `ui serve --auto-rebuild`: with the flag, a stale poll triggers rebuild
+        (endpoint test); without it, the stale banner behavior is unchanged.
+T-r3-10 worker templates: assert the shipped prompts/*.txt contain the r3
+        SELF-CHECK / coverage / disconfirming-duty blocks (template drift test).
+```
+
+## 11. What Is Deliberately NOT Tested
 
 ```text
 LLM judgment quality (whether a worker's scope_check was "right") — that is the
