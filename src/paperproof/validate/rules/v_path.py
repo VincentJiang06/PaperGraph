@@ -97,61 +97,54 @@ def check_prefix_rule(project_dir: str | Path, manifest: dict[str, dict[str, Any
     return failures
 
 
-# Files only the Committer/Freeze/Docs-ingestor write. A proof worker's lease
-# window [claim, validate] never legitimately coincides with a change to these
-# (commits run after validate in the layer loop), so any change to them during a
-# lease is worker tampering (catches H10). Legit engine appends to queue/proof
-# JSONL still pass via the prefix rule. (docs/05 §Parallelism; see OPEN DOC ISSUES.)
-COMMITTER_OWNED: frozenset[str] = frozenset(
-    {
-        "graph/logic_nodes.jsonl",
-        "graph/logic_edges.jsonl",
-        "graph/tombstones.jsonl",
-        "graph/snapshots.jsonl",
-        "commit/commit_decisions.jsonl",
-        "freeze/frozen_items.jsonl",
-        "docs/documents.jsonl",
-        "docs/evidence_units.jsonl",
-        "docs/docs_requests.jsonl",
-    }
+# V-PATH-04, the three clauses of docs/05 §Parallelism (r3):
+#   (a) JSONL prefix intact — rewrites/truncations fail; APPENDS ARE NEVER
+#       INSPECTED HERE (concurrent engines legitimately append during any
+#       lease; attribution of appended graph records is `verify`'s job via the
+#       V-COMMIT-04 replay + snapshot-EOF check).
+#   (b) recorded IMMUTABLE non-JSONL files byte-identical (bundles, specs,
+#       prose, raw/text). db/** is NEVER in the manifest — it is derived and
+#       legitimately rebuilt at any moment.
+#   (c) NEW files fail only under the strict single-writer dirs below, where a
+#       new file is never legitimate mid-run. Engine-additive dirs (bundle
+#       dirs, docs/raw|text|docspacks, db/, compiler/) create files during
+#       leases by design and are exempt.
+# The r2 impl's committer-owned byte-identity + all-dirs new-file baseline
+# were non-conformant with docs/05 and killed 5 of the live run's 8
+# validations (QE-000048/51/64/101/104).
+STRICT_NEW_FILE_DIRS: tuple[str, ...] = (
+    "specs/", "graph/", "queue/", "commit/", "freeze/", "audit/",
+)
+_MANIFEST_EXCLUDE_PREFIXES: tuple[str, ...] = (
+    "agent_outputs/", "agent_notes/", "db/",
 )
 
 
 def check_lease_scan(project_dir: str | Path, lease_manifest: dict[str, Any]) -> list[Failure]:
     """Full post-run V-PATH-04 scan from a claim-time lease manifest blob
-    (keys: files, baseline, allowed). Prefix rule on all JSONL, byte-identity on
-    non-JSONL and on committer-owned files, plus the stray-write rule."""
+    (keys: files, baseline, allowed) — exactly the three docs/05 clauses."""
     project_dir = Path(project_dir)
     files = lease_manifest.get("files", {})
+    # (a) + (b): prefix rule on JSONL, byte-identity on recorded non-JSONL.
     failures = check_prefix_rule(project_dir, files)
-    for rel, rec in files.items():
-        if rel in COMMITTER_OWNED:
-            p = project_dir / rel
-            data = p.read_bytes() if p.exists() else b""
-            if _sha(data) != rec["sha256"]:
-                failures.append(Failure("V-PATH-04", f"committer-owned file changed under a worker lease: {rel}"))
-    # Stray-write rule: a worker may only create files under agent_outputs/** or
-    # agent_notes/**. Using the broad agent area (not the item's single declared
-    # output) avoids false positives from CONCURRENT workers' own output files;
-    # V-PATH-01 separately pins this worker to its exact declared output. A new
-    # file anywhere in a canonical directory is the violation. (OPEN DOC ISSUE.)
+    # (c): new files only under the strict single-writer dirs are violations.
     baseline = set(lease_manifest.get("baseline", []))
-    failures += check_no_stray_writes(project_dir, baseline, ["agent_outputs/**", "agent_notes/**"])
+    for rel in sorted(_walk_relpaths(project_dir) - baseline):
+        if rel.startswith(STRICT_NEW_FILE_DIRS) and not rel.endswith(".lock"):
+            failures.append(Failure("V-PATH-04", f"new file in single-writer dir: {rel}"))
     return failures
 
 
 def build_lease_manifest(project_dir: str | Path, allowed_write_paths: list[str]) -> dict[str, Any]:
-    """Claim-time manifest over every canonical (non-agent) file: prefix hashes,
-    a baseline file set for the stray-write rule, and the allowed write paths."""
+    """Claim-time manifest: prefix hashes for every canonical file (db/** and
+    agent areas excluded), a baseline set for the strict-dir new-file clause,
+    and the allowed write paths."""
     project_dir = Path(project_dir)
-    baseline = sorted(_walk_relpaths(project_dir))
-    canonical = [
-        rel
-        for rel in baseline
-        if not rel.startswith("agent_outputs/")
-        and not rel.startswith("agent_notes/")
-        and not rel.endswith(".lock")
-    ]
+    baseline = sorted(
+        rel for rel in _walk_relpaths(project_dir)
+        if not rel.startswith(_MANIFEST_EXCLUDE_PREFIXES)
+    )
+    canonical = [rel for rel in baseline if not rel.endswith(".lock")]
     return {
         "files": build_manifest(project_dir, canonical),
         "baseline": baseline,

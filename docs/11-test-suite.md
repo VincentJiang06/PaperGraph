@@ -63,6 +63,13 @@ tests/
     test_v_prose_aud.py     annotation grammar, audit finding kinds
     test_cli_envelope.py    CLI conformance meta-test (§7) + subprocess smoke
     test_rule_coverage.py   rule-coverage meta-test + SCENARIO_COVERED map (§7)
+    test_verify.py          verify crossref + snapshot-EOF (H10 remap, T-r3-2)
+    test_r3_core.py         r3 core-bug regressions (cache chaining, pack
+                            composition, verdict-based cap, evidence-arrival
+                            staleness — the live run's four basic failures)
+    test_project_status.py  project status carries the real MSA summary
+    test_polish_guards.py   final-audit low findings (commit_queue order, wheel
+                            package data, trace regex, text_path null)
   integration/
     test_s1_seed_loop.py … test_s8_rebuild.py     (one file per scenario)
     test_determinism.py     same scenario twice ⇒ byte-identical canonical state

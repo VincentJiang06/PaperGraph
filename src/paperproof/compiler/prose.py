@@ -128,8 +128,9 @@ def ingest_prose(paths: Paths, output_file: str, work_item_id: str, actor: str |
 
     if failures:
         rule_ids = _dedup([f.rule_id for f in failures])
-        engine.validate_fail(paths, work_item_id, rule_ids, actor)
-        raise DomainError(rule_ids, data={"failed_rules": rule_ids, "section_id": section_id})
+        detail = {f.rule_id: f.detail for f in failures}
+        engine.validate_fail(paths, work_item_id, rule_ids, actor, detail=detail)
+        raise DomainError(rule_ids, data={"failed_rules": rule_ids, "detail": detail, "section_id": section_id})
 
     dst = paths.resolve(f"{PROSE_DIR}/{section_id}.md")
     dst.parent.mkdir(parents=True, exist_ok=True)

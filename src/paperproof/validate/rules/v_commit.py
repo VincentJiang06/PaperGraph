@@ -19,6 +19,9 @@ from ..envelope import Failure
 from ...committer import replay
 
 
+GRAPH_FILES = ("graph/logic_nodes.jsonl", "graph/logic_edges.jsonl", "graph/tombstones.jsonl")
+
+
 def verify_commits(paths: Paths) -> list[Failure]:
     failures: list[Failure] = []
     for cd in jsonl.read_all(paths.resolve("commit/commit_decisions.jsonl")):
@@ -30,4 +33,23 @@ def verify_commits(paths: Paths) -> list[Failure]:
             continue
         if not ok:
             failures.append(Failure("V-COMMIT-04", f"{cid}: replay does not reproduce post-snapshot"))
+
+    # Snapshot-EOF check (r3, remaps hostile H10): every graph append must be
+    # attributed to a commit. The per-commit replay above covers rows inside
+    # each [pre, post] window; a record appended AFTER the latest snapshot
+    # belongs to no commit — the lease scan deliberately ignores appends
+    # (docs/05 prefix rule), so THIS is where a worker's direct graph append
+    # is caught. Current row counts must equal the latest snapshot's.
+    snaps = jsonl.read_all(paths.snapshots)
+    if snaps:
+        latest = snaps[-1]["files"]
+        for rel in GRAPH_FILES:
+            recorded = (latest.get(rel) or {}).get("rows", 0)
+            actual = len(jsonl.read_all(paths.resolve(rel)))
+            if actual != recorded:
+                failures.append(Failure(
+                    "V-COMMIT-04",
+                    f"{rel}: {actual} rows on disk vs {recorded} in latest snapshot "
+                    f"{snaps[-1]['snapshot_id']} — unattributed append/removal",
+                ))
     return failures

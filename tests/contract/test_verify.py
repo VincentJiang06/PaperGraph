@@ -91,3 +91,24 @@ def test_verify_catches_dangling_node_duplicate_of(project, pp):
     assert "V-XREF" in env["errors"]
     detail = " ".join(env["data"]["detail"].values())
     assert "NODE-DANGLING" in detail
+
+
+def test_verify_catches_unattributed_graph_append(project, pp):
+    """T-r3-2 (remaps hostile H10): the lease scan deliberately ignores appends
+    (docs/05 prefix rule), so a worker's direct graph append is caught by
+    verify's snapshot-EOF check — rows on disk beyond the latest snapshot
+    belong to no CommitDecision ⇒ V-COMMIT-04, exit 3."""
+    paths = scenario.paths_for_pp(pp)
+    _clean_s1(paths)
+    assert pp("verify")["ok"] is True  # clean first
+
+    gv = graph_model.load(paths)
+    node = dict(gv.node_by_id["NODE-003"])  # schema-valid record, no commit
+    node["created_at"] = "2026-07-07T00:00:02Z"
+    jsonl.append(paths.resolve(NODES), node)
+
+    env = pp("verify", expect=3)
+    assert env["ok"] is False
+    assert "V-COMMIT-04" in env["errors"]
+    detail = str(env["data"].get("detail", ""))
+    assert "logic_nodes.jsonl" in detail and "unattributed" in detail

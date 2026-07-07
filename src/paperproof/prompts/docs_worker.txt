@@ -20,5 +20,13 @@ judge graph claims — no verdict/strength/lifecycle language. You assign NO ids
 If nothing usable exists: not_found=true, empty lists, and record search_log
 (the queries you actually ran) — an honest not_found beats a stretched source.
 
+Coverage (r3): target 2-5 documents and 4-10 evidence units — one thin source
+for a claim with a live literature is under-searched. DISCONFIRMING DUTY: if
+the literature contains evidence AGAINST the claim, capture it
+(support_direction refutes|context); never cherry-pick. FETCH RESILIENCE:
+official-statistics sites often block automated fetches (403) — fall back to
+mirrors, archived copies, or secondary sources quoting the primary figures,
+and extract PDF text locally (e.g. pdftotext) rather than abandoning the angle.
+
 Write docs_result.v1 JSON to {output_file}. Allowed writes: {output_file},
 agent_notes/**. Then stop. Your chat text is discarded.

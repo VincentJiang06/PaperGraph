@@ -201,16 +201,23 @@ def test_hostiles_vpath(tmp_path):
     bad.write_text("{not json,,,", encoding="utf-8")
     assert "V-PATH-03" in [f.rule_id for f in v_path.check_utf8_json(tmp_path, "agent_outputs/out.json")]
 
-    # H01: a second file outside allowed paths (a canonical dir)
+    # H01 (r3 clause c): a NEW file in a strict single-writer dir fails the scan
     (tmp_path / "graph").mkdir()
     (tmp_path / "graph" / "logic_nodes.jsonl").write_text("", encoding="utf-8")
     (tmp_path / "docs").mkdir()
     manifest = v_path.build_lease_manifest(tmp_path, ["agent_outputs/proof_results/PT-NODE-001.proof_result.json", "agent_notes/**"])
-    (tmp_path / "docs" / "sneaky.txt").write_text("x", encoding="utf-8")
+    (tmp_path / "graph" / "sneaky.txt").write_text("x", encoding="utf-8")
     assert "V-PATH-04" in [f.rule_id for f in v_path.check_lease_scan(tmp_path, manifest)]
+    (tmp_path / "graph" / "sneaky.txt").unlink()
 
-    # H10: append a line to a committer-owned file under a lease
+    # r3 regression (live-run QE-000048..): during a lease, an ENGINE APPEND to
+    # a canonical JSONL, a new docs/raw file (ingest), and a db/ rebuild are all
+    # legitimate -- the scan must pass. (Appends are attributed by verify.)
     manifest2 = v_path.build_lease_manifest(tmp_path, ["agent_outputs/proof_results/PT-NODE-001.proof_result.json", "agent_notes/**"])
     with (tmp_path / "graph" / "logic_nodes.jsonl").open("a", encoding="utf-8") as fh:
-        fh.write('{"node_id":"NODE-999"}\n')
-    assert "V-PATH-04" in [f.rule_id for f in v_path.check_lease_scan(tmp_path, manifest2)]
+        fh.write('{"node_id":"NODE-999"}\n')  # H10-style append: verify's job now
+    (tmp_path / "docs" / "raw").mkdir(parents=True)
+    (tmp_path / "docs" / "raw" / "DOC-001.txt").write_text("archived", encoding="utf-8")
+    (tmp_path / "db").mkdir()
+    (tmp_path / "db" / "index.duckdb").write_bytes(b"rebuilt")
+    assert [f.rule_id for f in v_path.check_lease_scan(tmp_path, manifest2)] == []

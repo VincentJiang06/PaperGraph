@@ -69,7 +69,7 @@ def validate_result(paths: Paths, output_file: str, work_item_id: str, actor: st
 
     if failures:
         env = to_envelope(failures)
-        engine.validate_fail(paths, work_item_id, env["failed_rules"], actor)
+        engine.validate_fail(paths, work_item_id, env["failed_rules"], actor, detail=env["detail"])
         raise DomainError(
             env["failed_rules"],
             data={"failed_rules": env["failed_rules"], "detail": env["detail"]},

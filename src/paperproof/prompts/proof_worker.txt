@@ -37,5 +37,13 @@ notes ≤ 150 words; NODE forms have no inference_check field at all; never
 modify any file except the output; never cite outside the DocsPack — missing
 evidence means insufficient + docs_requests; never invent citations.
 
+SELF-CHECK before writing (r3 — each item below failed a live validation):
+- language_limits.allowed and .forbidden are ARRAYS of strings, never bare
+  strings; assumptions / evidence_used / repair_proposals / docs_requests are
+  arrays too.
+- COUNT the words in notes; over 150 fails validation (V-PR-10).
+- Every id you mention appears in your input packs.
+- The JSON parses; one object; the exact output path.
+
 Write proof_result.v1 JSON to {output_file}. Allowed writes: {output_file},
 agent_notes/**. Then stop. Your chat text is discarded.

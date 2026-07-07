@@ -175,7 +175,7 @@ def ingest_result(paths: Paths, output_file: str, work_item_id: str, actor: str 
     failures = _validate(paths, wi, relpath, raw)
     if failures:
         env = to_envelope(failures)
-        engine.validate_fail(paths, work_item_id, env["failed_rules"], actor)
+        engine.validate_fail(paths, work_item_id, env["failed_rules"], actor, detail=env["detail"])
         raise DomainError(env["failed_rules"], data={"failed_rules": env["failed_rules"], "detail": env["detail"]})
 
     result = DocsResult.model_validate(raw)
@@ -242,8 +242,50 @@ def ingest_result(paths: Paths, output_file: str, work_item_id: str, actor: str 
     # terminal so its dependent proof item's blockers resolve (docs/08 B7).
     engine.validate_pass(paths, work_item_id, actor, detail={"dres_id": dres_id})
     engine.commit_item(paths, work_item_id, actor)
+
+    # Evidence-arrival staleness (docs/04 r3, V-TASK-04): freshly archived
+    # evidence must reach pending proofs without human intervention. Mark stale
+    # every queued/blocked PROOF item whose target the new EUs are REQUESTED
+    # for or whose matcher output would now change — its next build-tasks run
+    # mints a fresh -rN pack. (Live run: a re-proof nearly ran on a 10-EU pack
+    # while 24 EUs existed; only a manual build-task rebuilt it.)
+    if assigned_eus:
+        _mark_stale_on_evidence_arrival(paths, assigned_eus, dres_id, actor)
+
     return {"dres_id": dres_id, "assigned_doc_ids": assigned_docs, "assigned_evidence_ids": assigned_eus,
             "request_id": result.request_id, "status": status}
+
+
+def _mark_stale_on_evidence_arrival(paths: Paths, new_eu_ids: list[str], dres_id: str, actor: str) -> None:
+    from ..graph import model as graph_model  # local: avoid import cycle
+    from . import matcher as _matcher
+
+    new_eus = [
+        eu for eu in jsonl.latest_records(paths.resolve(EVIDENCE_UNITS), "evidence_id")
+        if eu["evidence_id"] in set(new_eu_ids)
+    ]
+    requested_targets = {
+        r.get("target_id")
+        for r in jsonl.latest_records(paths.resolve(DOCS_REQUESTS), "request_id")
+        if r.get("fulfilled_by") == dres_id
+    }
+    gv = graph_model.load(paths)
+    for item in engine.load_items(paths):
+        if item.get("queue_name") != "proof_queue" or item.get("status") not in ("queued", "blocked"):
+            continue
+        tgt_id = item.get("target_id")
+        affected = tgt_id in requested_targets
+        if not affected:
+            rec = gv.node_by_id.get(tgt_id) or gv.edge_by_id.get(tgt_id)
+            if rec is not None:
+                if "edge_id" in rec:
+                    claim, scope = rec.get("edge_claim", "") or "", {}
+                else:
+                    claim, scope = rec.get("claim", "") or "", rec.get("scope", {}) or {}
+                affected = bool(_matcher.match(claim, scope, new_eus))
+        if affected:
+            engine.invalidate(paths, item["work_item_id"], actor,
+                              detail={"reason": "evidence_arrival", "dres_id": dres_id})
 
 
 def _append_request_status(paths: Paths, request_id: str, status: str, dres_id: str) -> None:

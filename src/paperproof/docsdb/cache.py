@@ -27,9 +27,17 @@ DOCS_REQUESTS = "docs/docs_requests.jsonl"
 
 
 def fingerprint_hit(paths: Paths, fp: str) -> bool:
-    """(a) fingerprint equality with any previously fulfilled request."""
+    """Fingerprint equality with a previously fulfilled request — but only one
+    genuinely fulfilled by an ingest (fulfilled_by = a DRES id). Requests whose
+    fulfilled_by is itself "cache" are never cache sources: a false hit must
+    not chain (docs/04 r3; live-run DR-003..005 would otherwise satisfy every
+    future identical search forever)."""
     for r in jsonl.latest_records(paths.resolve(DOCS_REQUESTS), "request_id"):
-        if r.get("status") == "fulfilled" and r.get("fingerprint") == fp:
+        if (
+            r.get("status") == "fulfilled"
+            and r.get("fingerprint") == fp
+            and str(r.get("fulfilled_by") or "").startswith("DRES-")
+        ):
             return True
     return False
 

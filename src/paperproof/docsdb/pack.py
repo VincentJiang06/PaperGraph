@@ -17,6 +17,11 @@ from . import matcher
 
 EVIDENCE_UNITS = "docs/evidence_units.jsonl"
 DOCUMENTS = "docs/documents.jsonl"
+DOCS_REQUESTS = "docs/docs_requests.jsonl"
+
+# docs/04 r3: pack(target) = REQUESTED U top-K(MATCHED). K bounds the matched
+# half only -- requested evidence is unconditional.
+MATCHED_K = 12
 
 
 def _target_claim_scope(target_record: dict[str, Any]) -> tuple[str, dict[str, Any]]:
@@ -26,15 +31,39 @@ def _target_claim_scope(target_record: dict[str, Any]) -> tuple[str, dict[str, A
     return target_record.get("claim", "") or "", target_record.get("scope", {}) or {}
 
 
-def assemble(paths: Paths, target_record: dict[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """Return (evidence_units, documents_meta) for a target via the matcher.
+def _requested_eus(paths: Paths, target_id: str, eus: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Every EU ingested from a DocsRequest whose target_id is this record
+    (request -> DRES -> ingested_from). Included UNCONDITIONALLY (docs/04 r3):
+    in the live run, evidence fetched FOR a target only reached its pack via
+    matcher luck on common tokens."""
+    dres_ids = {
+        r.get("fulfilled_by")
+        for r in jsonl.latest_records(paths.resolve(DOCS_REQUESTS), "request_id")
+        if r.get("target_id") == target_id
+        and str(r.get("fulfilled_by") or "").startswith("DRES-")
+    }
+    return sorted(
+        (eu for eu in eus if eu.get("ingested_from") in dres_ids),
+        key=lambda e: e["evidence_id"],
+    )
 
-    Deterministic: matcher order is (score desc, evidence_id asc); documents_meta
-    follows first-citation order of the selected EvidenceUnits.
+
+def assemble(paths: Paths, target_record: dict[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Return (evidence_units, documents_meta) for a target (docs/04 r3):
+    pack = REQUESTED (unconditional, evidence_id asc) followed by the top-K
+    MATCHED (matcher order: score desc, evidence_id asc; minus requested).
+    documents_meta follows first-citation order of the selected units.
     """
     claim, scope = _target_claim_scope(target_record)
+    target_id = target_record.get("edge_id") or target_record.get("node_id") or ""
     eus = jsonl.latest_records(paths.resolve(EVIDENCE_UNITS), "evidence_id")
-    selected = [eu for _s, eu in matcher.match(claim, scope, eus)]
+    requested = _requested_eus(paths, target_id, eus)
+    requested_ids = {eu["evidence_id"] for eu in requested}
+    matched = [
+        eu for _s, eu in matcher.match(claim, scope, eus)
+        if eu["evidence_id"] not in requested_ids
+    ][:MATCHED_K]
+    selected = requested + matched
 
     doc_by_id = {d["doc_id"]: d for d in jsonl.latest_records(paths.resolve(DOCUMENTS), "doc_id")}
     documents_meta: list[dict[str, Any]] = []

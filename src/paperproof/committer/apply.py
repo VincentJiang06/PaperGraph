@@ -20,6 +20,7 @@ from typing import Any, Optional
 from ..clock import actor as clock_actor
 from ..clock import now as clock_now
 from ..docsdb import cache as docs_cache
+from ..docsdb import matcher as docs_matcher
 from ..docsdb.matcher import fingerprint as docs_fingerprint
 from ..errors import DomainError
 from ..graph import model as graph_model
@@ -36,6 +37,7 @@ EDGES = "graph/logic_edges.jsonl"
 TOMBSTONES = "graph/tombstones.jsonl"
 COMMITS = "commit/commit_decisions.jsonl"
 DOCS_REQUESTS = "docs/docs_requests.jsonl"
+EVIDENCE_UNITS = "docs/evidence_units.jsonl"
 PROOF_RESULTS = "proof/proof_results.jsonl"
 COMMIT_LOCK = "commit/.lock"
 
@@ -156,11 +158,41 @@ def _bridge_rounds(paths: Paths, edge_id: str) -> int:
     return rounds
 
 
-def _docs_completed_cycles(paths: Paths, target_id: str) -> int:
-    """Docs round-trip cap counter (docs/04): the target's completed
-    (fulfilled/not_found) DocsRequest cycles in docs/docs_requests.jsonl."""
-    reqs = jsonl.latest_records(paths.resolve(DOCS_REQUESTS), "request_id")
-    return sum(1 for r in reqs if r.get("target_id") == target_id and r.get("status") in ("fulfilled", "not_found"))
+def _needs_docs_verdicts(paths: Paths, target_id: str) -> list[dict[str, Any]]:
+    """The target's needs_docs VERDICT records, oldest first (docs/04 r3: the
+    cap counts verdicts, never DocsRequests -- the r2 request-counting rule
+    dead-lettered a healthy target when Orchestrator-initiated supplemental
+    requests were mistaken for exhausted proof rounds; live-run QE-000114)."""
+    return [
+        vr for vr in jsonl.read_all(paths.resolve(PROOF_RESULTS))
+        if vr.get("target_id") == target_id
+        and (vr.get("computed_verdict") or {}).get("verdict") == "needs_docs"
+    ]
+
+
+def _new_target_evidence_since(paths: Paths, target: dict[str, Any], since: str) -> bool:
+    """True iff evidence relevant to the target was archived after `since`: an
+    EU REQUESTED for it (request -> DRES -> ingested_from) or one the matcher
+    now matches. RFC3339 strings compare lexicographically."""
+    eus = [
+        eu for eu in jsonl.latest_records(paths.resolve(EVIDENCE_UNITS), "evidence_id")
+        if (eu.get("created_at") or "") > since
+    ]
+    if not eus:
+        return False
+    tgt_id = target.get("edge_id") or target.get("node_id")
+    dres_ids = {
+        r.get("fulfilled_by")
+        for r in jsonl.latest_records(paths.resolve(DOCS_REQUESTS), "request_id")
+        if r.get("target_id") == tgt_id and str(r.get("fulfilled_by") or "").startswith("DRES-")
+    }
+    if any(eu.get("ingested_from") in dres_ids for eu in eus):
+        return True
+    if "edge_id" in target:
+        claim, scope = target.get("edge_claim", "") or "", {}
+    else:
+        claim, scope = target.get("claim", "") or "", target.get("scope", {}) or {}
+    return bool(docs_matcher.match(claim, scope, eus))
 
 
 # --- the main entry: apply a proof verdict ----------------------------------
@@ -362,9 +394,14 @@ def _plan_needs_docs(paths, plan, vr, target, target_type, pr_id, commit_id, def
     _append_update(plan, target_type, new, {"lifecycle_state": "needs_docs"})
 
     tgt_id = target["edge_id"] if target_type == "edge" else target["node_id"]
-    # Docs round-trip cap (docs/04): at 2 completed cycles, no third request; the
-    # re-proof item is born dead ((created)->dead) for human review.
-    if _docs_completed_cycles(paths, tgt_id) >= 2:
+    # Docs round-trip cap (docs/04 r3): dead-letter on the 3rd needs_docs
+    # VERDICT for this target, and only if no target-relevant evidence has been
+    # archived since the 2nd -- fresh evidence means the next round is not
+    # futile. Orchestrator-initiated requests never factor in (verdict-based).
+    verdicts = _needs_docs_verdicts(paths, tgt_id)  # includes the current one
+    if len(verdicts) >= 3 and not _new_target_evidence_since(
+        paths, target, verdicts[1].get("validated_at") or ""
+    ):
         deferred_enqueues.append({"op": "dead_letter", "queue_name": "proof_queue",
                                   "target_type": target_type, "target_id": tgt_id, "reason": "docs cap reached"})
         return
@@ -377,8 +414,8 @@ def _plan_needs_docs(paths, plan, vr, target, target_type, pr_id, commit_id, def
         dr_id = next_id("DR", existing_dr)
         existing_dr.append(dr_id)
         fp = docs_fingerprint(need, hints)
-        # Request-level cache (docs/04): fingerprint match with a fulfilled
-        # request OR a matcher hit for the target claim => cache hit.
+        # Request-level cache (docs/04 r3): fingerprint match with a
+        # DRES-fulfilled identical request => cache hit. Nothing else.
         hit = docs_cache.is_cache_hit(paths, fp, target)
         record = {
             "schema_version": "docs_request.v1", "request_id": dr_id, "project_id": paths.project_id,

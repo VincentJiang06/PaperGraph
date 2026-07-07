@@ -448,15 +448,27 @@ def validate_pass(paths: Paths, wi_id: str, actor: str | None = None, detail: di
         return _transition(paths, item, op="validate_pass", to_status="validated", actor=actor, detail=detail)
 
 
-def validate_fail(paths: Paths, wi_id: str, failed_rules: list[str], actor: str | None = None) -> dict[str, Any]:
+def validate_fail(
+    paths: Paths,
+    wi_id: str,
+    failed_rules: list[str],
+    actor: str | None = None,
+    detail: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """`detail` maps rule id -> offending path/field message (docs/08 failure
+    taxonomy; T-r3-8 — the live run's V-PATH-04 events carried bare rule ids,
+    leaving the offending file undiagnosable from the event log)."""
     actor = actor or clock_actor()
+    event_detail: dict[str, Any] = {"failed_rules": failed_rules}
+    if detail:
+        event_detail["detail"] = detail
     with file_lock(paths.resolve(LOCK)):
         item = get_item(paths, wi_id)
         failed = _transition(
             paths, item, op="validate_fail", to_status="failed", actor=actor,
-            detail={"failed_rules": failed_rules},
+            detail=event_detail,
         )
-        return _after_fail(paths, failed, actor, {"failed_rules": failed_rules})
+        return _after_fail(paths, failed, actor, event_detail)
 
 
 def requeue(paths: Paths, wi_id: str, actor: str | None = None) -> dict[str, Any]:

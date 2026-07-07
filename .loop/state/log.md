@@ -30,3 +30,5 @@
 ## [2026-07-07] polish | closed 4 low findings (commit_queue FIFO-by-validation-time docs/05, wheel build, trace regex, text_path null); 381 green; wheel ships prompts+ui/static
 ## [2026-07-07] polish-note | polish subagent overstepped + reverted loop-state files; bookkeeping repaired by orchestrator; code fixes intact
 ## [2026-07-07] loop-complete | all 5 milestones + final-audit PASS; 381 green from fresh clone; wheel shippable; A26 live smoke = human node
+## [2026-07-08] r3-core | code caught up to r3 on the four basic bugs: V-PATH-04 three clauses (T-r3-1), H10->verify snapshot-EOF (T-r3-2), cache DRES-only + verdict-based cap + evidence-arrival staleness + REQUESTED-U-top12 packs (T-r3-3/6 core), event detail (T-r3-8), template sync (T-r3-10 blocks). 386 green.
+## [2026-07-08] r3-core-remaining | NOT done (deliberate, behavior upgrades): T-r3-4 (>=2-binding floors), T-r3-5 (sweep gate), T-r3-7 (validate-from-claimed), T-r3-9 (--auto-rebuild), T-r3-10 drift test.
