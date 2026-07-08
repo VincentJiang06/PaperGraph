@@ -3,28 +3,28 @@
 Resume point after any compaction/crash: re-read this file + contract.md + log.md.
 Do NOT trust a session summary.
 
-## >>> CURRENT STATE (2026-07-08, m11 MERGED — evaluator running) <<<
-Search program S1-S5 (v2) COMPLETE + gated; v2.1 consistency GATED (gate/m10-v2.1-consistency). A dry run
-proved the v2.1 wave drive chain works CLI-only. A 9-component Fable audit found the CORE ALGORITHMS ALL
-CORRECT + one theme: ENFORCEMENT-WIRING GAPS (documented+registered+tested V-rules not run at runtime).
+## >>> CURRENT STATE (2026-07-08, m11 GATED + pushed — only the live run remains) <<<
+The framework has passed a full per-component correctness audit and the enforcement-wiring fixes it surfaced.
+Chain of gates on GitHub main (0f2d6d0): S1-S5 search program (gate/m6-s1,m6b,m7,m8,m9) -> v2.1 consistency
+(gate/m10-v2.1-consistency) -> **m11 enforcement-wiring (gate/m11-enforcement-wiring, GATED + PUSHED)**.
 
-m11-enforcement-wiring is now BUILT + MERGED to main (HEAD a9f8237): Agent A (docs, v2.1.1 changelog +
-reconciliations) + Agent B (code, P1-P10 wired) both merged clean (disjoint files). GATE GREEN on merged
-main: default pytest = 587 passed, `-m semantic` = 4 passed. P1 V-EDGE-03, P2 V-EDGE-01, P3 V-NODE-04-
-rejected-parent (all in graph_record_checks); P4 spine active-source guard; P5 V-GATE-01 (expander+verify);
-P6 verify schema-sweeps specs/*.json; P7 V-COV-02 at bundle build; P8 latest_proof_result_id crossref;
-P9 +2 goldens (26 rows, N11/E15); P10 queue-fail default + dead-code cleanup. Each has a regression that
-fails pre-fix / passes post-fix; no test weakened.
+m11 outcome: a 9-component Fable audit found the CORE ALGORITHMS ALL CORRECT and one theme — documented+
+registered+unit-tested V-rules not run on the runtime path. All 8 wired + 2 goldens + cleanup (P1-P10):
+V-GATE-01 (expander+verify), V-EDGE-01/03 + V-NODE-04-rejected-parent (graph_record_checks), verify
+schema-sweeps specs/*.json + resolves latest_proof_result_id, V-COV-02 at bundle build, spine active-source
+guard, 26 decision rows (N11/E15). Gate: 587 default + 4 semantic green; a FRESH Opus adversarial evaluator
+re-ran every P1-P10 repro + weakened-test audit + doc-sync = PASS. Docs reconciled in the same change (v2.1.1
+changelog docs/00). Now the framework is not just test-green but every documented V-rule verifiably enforces
+at runtime.
 
-IN FLIGHT: fresh OPUS adversarial Evaluator (ac6b67c275f4550a7) re-running every P1-P10 repro + weakened-
-test audit + doc-sync. RESUME when it returns:
-  - PASS  -> tag gate/m11-enforcement-wiring, push main + tag to GitHub, then the live run is the only thing left.
-  - FAIL  -> Opus-fix the flagged item(s) (doc-sync in same change), re-gate, re-evaluate. Never weaken a test.
-STILL OWED after m11 gate (deferred, user-authorized autonomous): the FULL live run on ai-jobs-2 (fresh
-re-init, examples/topic-ai-employment.md, hybrid e5-small retrieval, halt-and-fix). Model policy: OPUS for
-all orchestration + debug + fix. NOTE: data/projects/{ai-jobs,ai-jobs-2} were deleted by a review agent's
-stray rm (gitignored/untracked, unrecoverable, NON-BREAKING — ai-jobs-2 regenerates from `spec build`).
-THEME 3 low follow-ups (NOT fixed): committer cross-lock; validating-stuck no-recovery; empty-Actors scope guard.
+ONLY REMAINING WORK: the FULL live run (user-authorized, autonomous, but ONLY start when the user says "run"):
+  project ai-jobs-2, fresh re-init, topic examples/topic-ai-employment.md, hybrid e5-small retrieval (stage
+  scratchpad/e5-probe -> db/semantic + db semantic rebuild), HALT-AND-FIX on any error. Pipeline (v2.1):
+  accept -> layer-0 -> evidence sweep (waves + CoverageCritic) -> proof loop -> freeze -> compile -> audit ->
+  verify exit 0. See [[papergraph-acceptance-live-testrun]]. Model policy: OPUS for all orchestration+debug+fix.
+NOTE: data/projects/{ai-jobs,ai-jobs-2} were deleted by a review agent's stray rm (gitignored/untracked,
+unrecoverable, NON-BREAKING — regenerates from `spec build`). THEME 3 low follow-ups (NOT fixed, tracked in
+docs/00 v2.1.1): committer cross-lock; validating-stuck no-recovery; empty-Actors scope guard.
 Everything below this banner is OLDER history.
 
 
