@@ -3,34 +3,27 @@
 Resume point after any compaction/crash: re-read this file + contract.md + log.md.
 Do NOT trust a session summary.
 
-## >>> CURRENT STATE (2026-07-08, wrap-up) <<<
-SEARCH PROGRAM (S1-S5, v2) COMPLETE + gated (gate/m6-s1,m6b,m7,m8,m9). THEN a Fable-led
-4-reviewer audit found ~40 defects (each set was green alone, but the cross-set PRODUCTION
-drive chain was never gated). v2.1 = m10: Agent A (docs) + Agent B (code) fixed ALL of them.
-STATUS @ HEAD f62ed3d (pushed GitHub): m10 docs+code MERGED, 574 default + 4 semantic GREEN.
-  - The v2.1 spec revision (docs/00 changelog + D1-D15 across docs/01-18) is IN.
-  - All 15 confirmed code defects fixed (F1-F15) with regression tests; new CLI drive path
-    (docs wave-member/wave-resolve/render-prompt/coverage) + human_review action landed.
-GATE NOT CLOSED: the formal m10 adversarial evaluator (re-run the 10 confirmed repro scripts +
-  CLI-only wave walkthrough) was STOPPED for session budget — so gate/m10-v2.1 is NOT tagged.
-  m10 is "merged + test-green", not yet "evaluator-passed".
+## >>> CURRENT STATE (2026-07-08) <<<
+SEARCH PROGRAM (S1-S5, v2) COMPLETE + gated, THEN v2.1 (m10) consistency+live-run-readiness pass
+COMPLETE + GATED. HEAD 9f8b264 (pushed GitHub). Gate tags: gate/m6-s1, m6b, m7, m8, m9, m10-v2.1-consistency.
+574 default + 4 semantic tests green.
+  - m10: a Fable 4-reviewer audit found ~40 cross-set production-drive defects; Agent A (docs) +
+    Agent B (code) fixed ALL of them (D1-D15 / F1-F15). Fresh adversarial evaluator independently
+    re-ran all 10 confirmed repros -> FIXED; failed only on 2 doc-sync residuals -> Orchestrator
+    reconciled (apply.py human_review detail; docs/17+00 fold source iv) -> GATE PASS.
+  - The whole search program + its cross-set production drive path is now spec-consistent and
+    CLI-complete (docs wave-member/wave-resolve/render-prompt land the drive path; no Python-API
+    workarounds; human_review a legal CommitAction; reactive-saturation livelock closed).
 
-## RESUME — NEXT SESSION (in order)
-1. Finish the m10 gate: dispatch a fresh adversarial Evaluator (prompt shape in log.md m10-eval;
-   it must re-run the 10 confirmed repros — human_review verify-exit-3, wave CLI drive, reactive
-   saturation livelock, merger quote/url crashes, 512 truncation, ingest-prose, en-dash scope,
-   V-COV-05, render-prompt/V-SRC-05, publisher independence — + weakened-test audit + doc-sync).
-   On PASS -> tag gate/m10-v2.1, push.
-2. THEN the FULL LIVE RUN (never run yet; user authorized autonomous start-to-finish, halt-and-fix):
-   project ai-jobs-2 (fresh RE-INIT for the current dir structure), topic examples/topic-ai-employment.md.
-   Pipeline (v2.1 order): accept -> LAYER-0 expansion -> evidence-seeding sweep (docs request --fan +
-   docs wave --fan; drive members via docs render-prompt -> real DocsWorker -> docs wave-member ->
-   auto merge+critic -> render-prompt critic -> real CoverageCritic -> docs wave-resolve) -> proof loop
-   (proof render-prompt -> real ProofWorker -> validate result -> commit apply) -> freeze -> compiler
-   dry-run/draft-map/prose (real CompileWorker) -> audit -> verify exit 0. Use hybrid retrieval: stage
-   the e5 model (scratchpad/e5-probe, sha ca456c06...) into ai-jobs-2 db/semantic/ + db semantic rebuild.
-   Runbook: the live-run-readiness reviewer's sequence (now CLI-complete post-m10).
-Reviews' full findings + fix mapping are in this file below + log.md. Everything below is OLDER history.
+## RESUME — ONLY THE LIVE RUN REMAINS (deferred for session budget; user authorized autonomous start-to-finish)
+Run project ai-jobs-2 (fresh RE-INIT for the current dir structure), topic examples/topic-ai-employment.md,
+halt-and-fix. Pipeline (v2.1 order): accept -> LAYER-0 expansion -> evidence-seeding sweep (docs request --fan
++ docs wave --fan; drive members via docs render-prompt -> real DocsWorker -> docs wave-member -> auto
+merge+critic -> render-prompt critic -> real CoverageCritic -> docs wave-resolve) -> proof loop (proof
+render-prompt -> real ProofWorker -> validate result -> commit apply) -> freeze -> compiler dry-run/draft-map/
+prose (real CompileWorker) -> audit -> verify exit 0. Hybrid retrieval: stage the e5 model
+(scratchpad/e5-probe, sha ca456c06...) into ai-jobs-2 db/semantic/ + db semantic rebuild. Runbook: the
+live-run-readiness reviewer's sequence (now CLI-complete). Everything below is OLDER history.
 
 
 ## Loop status — ACTIVE stage m6-s1-search-planning (2026-07-08)
