@@ -64,3 +64,25 @@ grades THIS, not the raw spec. Each assertion is machine-gradable unless marked
 Gate (m5): PASS — 399 green (386 baseline +13), independently re-run by a fresh adversarial
 Evaluator; all 5 probes reproduced with its own fixtures; weakened-test audit clean. F1
 (docs/05 stale on the docs implicit-complete path) reconciled by the Orchestrator before tagging.
+
+## Stage m6b-s3-lite (S3 source registry — Stage A-lite; docs/16, docs/00 adoption)
+
+Registry + recipes + provenance only. Stage B triangulation (V-SRC-04) NOT built.
+
+- [x] A37 schemas: source_profile.v1 (adds tier_note) + document.v2 (=v1+provenance)
+        registered + golden fixtures round-trip; document.v1 stays registered and
+        READABLE (parses + validates as v1); extra=forbid on all. · test_schemas +
+        test_v_src::test_document_v2_roundtrip_and_v1_still_valid · m6b
+- [x] A38 ingestor LEARNS + provenance: every web-domain ingest upserts (appends) a
+        SourceProfile — tier via the fixed source_type→tier table (docs/16),
+        blocked_direct read defensively from search_log OR query_log outcome=blocked
+        (S1 integration point), fetch method from provenance; ingested docs are
+        document.v2 with provenance (tier denormalized via registry, fetch_method
+        direct on the v1 path, quoted_via for secondary_quote); dispatch excerpt =
+        every T1 + every facet-matched profile [V-SRC-05]; docs_worker prompt gains a
+        read-only REGISTRY block. · test_v_src (T-S3-1/4) + test_template_drift · m6b
+- [x] A39 rules + CLI + storage + tests: V-SRC-01/02/03/05 in v_src.py, registered +
+        rule-coverage green; `docs source list|set` (subgroup of docs; set=append,
+        silent tier-lowering refused by V-SRC-03); storage docs/sources.jsonl (init +
+        verify sweep); T-S3-1/2/4 green and all prior 399 green (T-S3-back). ·
+        test_v_src + test_rule_coverage + test_cli_envelope + verify · m6b

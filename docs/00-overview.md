@@ -219,3 +219,30 @@ OPERATOR ERGONOMICS: `validate` completes claimed items implicitly (shrinks
   default unchanged); worker prompt templates gain a SELF-CHECK block
   (arrays! word counts!) — the run's V-PR-01/V-PR-10 slips (QE-000017/89).
 ```
+
+## Search Program Adoption (2026-07-08, Stage A)
+
+The design-frozen search program (docs 13–18) is adopted in stages; this is the
+first adoption entry, so the referenced sets are now **binding** (docs/13
+§Normativity). Later documents stay design-frozen until their own entry lands.
+
+```text
+ADOPTED — S1 (docs/14) search planning: deterministic SearchPlans + per-query
+  accounting (search_plan.v1; docs_result.v2 query_log).
+
+ADOPTED — S3 Stage A-lite (docs/16) source registry, tiers & provenance:
+  source_profile.v1 (docs/sources.jsonl, append-only latest-per-domain) and
+  document.v2 (= document.v1 + a provenance block; v1 stays readable). The Docs
+  ingestor LEARNS a SourceProfile per web domain on every ingest — tier from the
+  fixed source_type→tier table (docs/16), blocked_direct from the search/query
+  log's blocked notes (read defensively from whichever log the docs-result
+  carries), fetch method from provenance. `docs source list|set` (a subgroup of
+  the existing `docs` group) curates tiers/workarounds; the DocsWorker prompt
+  gains a read-only REGISTRY block (lawful public-access workarounds only). New
+  rules V-SRC-01/02/03/05 (provenance present; secondary_quote carrier exists;
+  registry appends with no silent tier-lowering; dispatch-excerpt completeness).
+
+NOT ADOPTED — S3 Stage B triangulation (V-SRC-04), S2 (docs/15), S4 (docs/17),
+  S5 (docs/18) remain design-frozen. V-SRC-04 and the docs/16 triangulation
+  section are informational until a later adoption entry.
+```

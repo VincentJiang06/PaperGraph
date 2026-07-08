@@ -14,11 +14,14 @@ from ..graph import model as graph_model
 from ..ids import next_id
 from ..paths import Paths
 from ..queue import engine
-from ..schemas.docs import DocsPack
+from ..schemas.docs import DocsPack, SourceProfile, Tier
 from ..store import jsonl
-from . import cache, ingest, matcher, pack
+from . import cache, ingest, matcher, pack, registry
+from ..validate.rules import v_src
 
 DOCS_REQUESTS = "docs/docs_requests.jsonl"
+_TIERS = set(Tier.__args__)  # type: ignore[attr-defined]
+_WORKAROUND_KINDS = {"mirror", "archive_org", "secondary_quote", "pdf_local_extract", "api"}
 
 
 def ingest_file(paths: Paths, file_path: str, source_type: str | None, title: str | None, citation_key: str | None) -> dict[str, Any]:
@@ -86,6 +89,67 @@ def request(paths: Paths, target_id: str, need: str, hints: list[str] | None, ac
 
 def ingest_result(paths: Paths, file_path: str, work_item: str) -> dict[str, Any]:
     return ingest.ingest_result(paths, file_path, work_item)
+
+
+def source_list(paths: Paths) -> dict[str, Any]:
+    """`docs source list`: the live registry (latest SourceProfile per domain)."""
+    profiles = registry.load_latest(paths)
+    return {"sources": profiles, "count": len(profiles)}
+
+
+def source_set(
+    paths: Paths,
+    domain: str,
+    tier: str | None = None,
+    publisher: str | None = None,
+    workaround: str | None = None,
+    note: str | None = None,
+    blocked: bool | None = None,
+) -> dict[str, Any]:
+    """`docs source set`: append a curated SourceProfile version for a domain
+    (docs/16). set = append — a new tier/workaround/publisher/note. A tier change
+    must carry a note or V-SRC-03 rejects it (no silent tier-lowering)."""
+    domain = registry.domain_from_url(domain) or domain.strip().lower()
+    if not domain:
+        raise UsageError(["--domain is required"])
+    if tier is not None and tier not in _TIERS:
+        raise UsageError([f"--tier must be one of {sorted(_TIERS)}"])
+    if workaround is not None and workaround not in _WORKAROUND_KINDS:
+        raise UsageError([f"--workaround must be one of {sorted(_WORKAROUND_KINDS)}"])
+
+    prev = registry._latest_by_domain(paths).get(domain)
+    existing_ids = [r["source_id"] for r in registry.load_all(paths)]
+    source_id = prev["source_id"] if prev else next_id("SRC", existing_ids)
+    fetch = dict((prev or {}).get("fetch", {}) or {})
+    workarounds = list(fetch.get("workarounds", []) or [])
+    if workaround is not None:
+        workarounds.append({"kind": workaround, "note": note or ""})
+    new_tier = tier or (prev or {}).get("tier") or "T6_other"
+    tier_changed = bool(prev) and prev.get("tier") != new_tier
+    tier_note = note if tier_changed else (prev or {}).get("tier_note")
+
+    record = SourceProfile(
+        source_id=source_id, project_id=paths.project_id, domain=domain,
+        publisher=publisher if publisher is not None else (prev or {}).get("publisher", "") or "",
+        tier=new_tier,
+        fetch={
+            "blocked_direct": blocked if blocked is not None else bool(fetch.get("blocked_direct")),
+            "workarounds": workarounds,
+        },
+        seen_count=int((prev or {}).get("seen_count", 0)),
+        last_ok_fetch_method=(prev or {}).get("last_ok_fetch_method"),
+        tier_note=tier_note, created_at=clock_now(),
+    )
+    # V-SRC-03: a tier change with no note is a silent change — refuse before write.
+    candidate_history = (registry.load_all(paths) + [record.model_dump(mode="json")])
+    failures = v_src.check_registry_history(candidate_history)
+    if failures:
+        from ..validate.envelope import to_envelope
+
+        env = to_envelope(failures)
+        raise DomainError(env["failed_rules"], data={"failed_rules": env["failed_rules"], "detail": env["detail"]})
+    jsonl.append(paths.resolve(registry.SOURCES), record)
+    return {"source_id": source_id, "domain": domain, "tier": new_tier}
 
 
 def validate_docs_result(paths: Paths, file_path: str, work_item: str) -> dict[str, Any]:

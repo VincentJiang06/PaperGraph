@@ -22,13 +22,14 @@ from .paths import Paths
 from .schemas import REGISTRY
 from .store import jsonl
 from .validate.envelope import Failure, to_envelope
-from .validate.rules import v_commit, v_node_edge, v_q
+from .validate.rules import v_commit, v_node_edge, v_q, v_src
 
 # Canonical JSONL files whose records carry a schema_version.
 _JSONL_FILES = (
     "graph/logic_nodes.jsonl", "graph/logic_edges.jsonl", "graph/tombstones.jsonl",
     "graph/snapshots.jsonl", "proof/proof_results.jsonl", "docs/documents.jsonl",
-    "docs/evidence_units.jsonl", "docs/docs_requests.jsonl", "queue/work_items.jsonl",
+    "docs/evidence_units.jsonl", "docs/docs_requests.jsonl", "docs/sources.jsonl",
+    "queue/work_items.jsonl",
     "queue/events.jsonl", "commit/commit_decisions.jsonl", "freeze/frozen_items.jsonl",
     "compiler/dry_runs.jsonl", "compiler/draft_maps.jsonl", "audit/audit_reports.jsonl",
 )
@@ -114,6 +115,7 @@ def run(paths: Paths) -> dict[str, Any]:
     failures += _verdict_recompute(paths)
     failures += v_q.verify_queue(paths)
     failures += v_commit.verify_commits(paths)
+    failures += v_src.verify_sources(paths)
     failures += _crossref(paths)
 
     if failures:

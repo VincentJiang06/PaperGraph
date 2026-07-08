@@ -571,6 +571,36 @@ def docs_ingest_result(ctx: typer.Context, file: str = typer.Argument(...), work
     _dispatch("docs ingest-result", lambda: _docs.ingest_result(_project_paths(s), file, work_item))
 
 
+# docs source (S3 Stage A-lite, docs/16): the source registry curation surface.
+docs_source_app = typer.Typer(no_args_is_help=False)
+
+
+@docs_source_app.command("list")
+def docs_source_list(ctx: typer.Context) -> None:
+    s = _state(ctx)
+    _dispatch("docs source list", lambda: _docs.source_list(_project_paths(s)))
+
+
+@docs_source_app.command("set")
+def docs_source_set(
+    ctx: typer.Context,
+    domain: str = typer.Option(..., "--domain"),
+    tier: Optional[str] = typer.Option(None, "--tier"),
+    publisher: Optional[str] = typer.Option(None, "--publisher"),
+    workaround: Optional[str] = typer.Option(None, "--workaround"),
+    note: Optional[str] = typer.Option(None, "--note"),
+    blocked: Optional[bool] = typer.Option(None, "--blocked/--no-blocked"),
+) -> None:
+    s = _state(ctx)
+    _dispatch(
+        "docs source set",
+        lambda: _docs.source_set(_project_paths(s), domain, tier, publisher, workaround, note, blocked),
+    )
+
+
+docs_app.add_typer(docs_source_app, name="source")
+
+
 app.add_typer(docs_app, name="docs")
 
 

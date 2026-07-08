@@ -49,6 +49,7 @@ EMPTY_JSONL: tuple[str, ...] = (
     "docs/documents.jsonl",
     "docs/evidence_units.jsonl",
     "docs/docs_requests.jsonl",
+    "docs/sources.jsonl",
     "queue/work_items.jsonl",
     "queue/events.jsonl",
     "commit/commit_decisions.jsonl",

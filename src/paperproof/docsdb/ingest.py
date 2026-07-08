@@ -23,10 +23,11 @@ from ..errors import DomainError, UsageError
 from ..ids import next_id
 from ..paths import Paths
 from ..queue import engine
-from ..schemas.docs import DocsResult, Document, EvidenceUnit
+from ..schemas.docs import DocsResult, DocumentV2, EvidenceUnit, Provenance
 from ..store import jsonl
 from ..validate.envelope import Failure, to_envelope
 from ..validate.rules import v_dr, v_path
+from . import registry
 
 DOCUMENTS = "docs/documents.jsonl"
 EVIDENCE_UNITS = "docs/evidence_units.jsonl"
@@ -101,12 +102,20 @@ def ingest_file(
 
     existing_keys = {d["citation_key"] for d in existing}
     ck = _unique_citation_key(citation_key or src.stem, existing_keys)
-    record = Document(
+    stype = source_type or "user_notes"
+    now = clock_now()
+    # A user-provided local file has no web domain, so no registry learning; its
+    # provenance tier comes straight from the source_type table (docs/16).
+    record = DocumentV2(
         doc_id=doc_id, project_id=paths.project_id, title=title or src.stem,
-        source_type=source_type or "user_notes",
+        source_type=stype,
         origin={"kind": "user_provided", "path": raw_rel, "url": None},
         content_hash=content_hash, text_path=text_rel, citation_key=ck,
-        ingested_from=None, ingested_at=clock_now(),
+        ingested_from=None, ingested_at=now,
+        provenance=Provenance(
+            retrieved_at=now, fetch_method="direct",
+            tier=registry.tier_for(stype), quoted_via=None,
+        ),
     )
     jsonl.append(paths.resolve(DOCUMENTS), record)
     return {"doc_id": doc_id, "text_path": text_rel, "citation_key": ck, "deduped": False, "warnings": warnings}
@@ -192,6 +201,18 @@ def ingest_result(paths: Paths, output_file: str, work_item_id: str, actor: str 
     existing_doc_ids = [d["doc_id"] for d in existing_docs]
     existing_keys = {d["citation_key"] for d in existing_docs}
 
+    # S3 Stage A-lite (docs/16): the registry LEARNS from every web document's
+    # domain (tier via the fixed table, blocked_direct from the log). Learn first
+    # so provenance.tier can be denormalized from the resulting profiles.
+    raw_result = raw if isinstance(raw, dict) else {}
+    doc_domains: list[tuple[str, str]] = [
+        (dom, doc.source_type)
+        for doc in result.documents
+        if (dom := registry.domain_from_url(doc.origin.url)) is not None
+    ]
+    now = clock_now()
+    domain_tier = registry.learn(paths, doc_domains, raw_result, now=now)
+
     assigned_docs: list[str] = []
     doc_index_to_id: dict[int, str] = {}
     for i, doc in enumerate(result.documents):
@@ -214,10 +235,18 @@ def ingest_result(paths: Paths, output_file: str, work_item_id: str, actor: str 
             paths.resolve(text_rel).write_text(text, encoding="utf-8")
         ck = _unique_citation_key(doc.citation_key, existing_keys)
         existing_keys.add(ck)
-        record = Document(
+        # provenance (docs/16): tier denormalized from the registry (worker-proposed
+        # via source_type on first sight); fetch_method defaults to "direct" on the
+        # docs_result.v1 path (no per-document fetch method until S1's query_log).
+        domain = registry.domain_from_url(doc.origin.url)
+        tier = domain_tier.get(domain) if domain else registry.tier_for(doc.source_type)
+        record = DocumentV2(
             doc_id=doc_id, project_id=paths.project_id, title=doc.title,
             source_type=doc.source_type, origin=doc.origin, content_hash=content_hash,
-            text_path=text_rel, citation_key=ck, ingested_from=dres_id, ingested_at=clock_now(),
+            text_path=text_rel, citation_key=ck, ingested_from=dres_id, ingested_at=now,
+            provenance=Provenance(
+                retrieved_at=now, fetch_method="direct", tier=tier, quoted_via=None,
+            ),
         )
         jsonl.append(paths.resolve(DOCUMENTS), record)
         hash_to_id[content_hash] = doc_id

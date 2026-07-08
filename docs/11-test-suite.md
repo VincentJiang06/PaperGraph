@@ -346,3 +346,30 @@ LLM judgment quality (whether a worker's scope_check was "right") — that is th
 WebUI pixels — only the JSON endpoints are asserted.
 Cross-platform behavior — v1 is POSIX-only by decree (docs/10 §2).
 ```
+
+## 12. S3 Stage A-lite Worklist (source registry — adopted, docs/16)
+
+Stage A-lite (registry + recipes + provenance) is adopted and BINDING (docs/00
+Search Program Adoption). These tests ship in `test_v_src.py` (rule coverage via
+SCENARIO_COVERED for V-SRC-01/02/03/05). Stage B triangulation (V-SRC-04) is NOT
+adopted — no T-S3-3.
+
+```text
+T-S3-1  ingest LEARNS blocked_direct from a blocked log entry (403/blocked/
+        forbidden/429), read defensively from search_log OR a query_log
+        outcome="blocked" (S1 forward-compat); each ingest APPENDS a new
+        SourceProfile version (never mutates), seen_count grows, source_id stable.
+T-S3-2  source_type→tier table golden (official_report→T1 … user_notes→T6); a
+        registry history that lowers a tier with no tier_note is rejected by
+        V-SRC-03 (and `docs source set --tier` refuses it at the CLI); the same
+        change WITH a note passes. Auto-learning only raises a tier + notes it.
+T-S3-4  every ingested document is document.v2 with provenance present and
+        tier ∈ enum (V-SRC-01); a secondary_quote naming a dangling/absent
+        quoted_via ⇒ V-SRC-02; the dispatch registry excerpt (every T1 + every
+        facet-matched profile) is completeness-checked by V-SRC-05; document.v2
+        round-trips and document.v1 still parses + validates as v1.
+T-S3-back  the full prior suite stays green: the ingestor writing document.v2 +
+        learning the registry does not disturb any existing docs/proof/compile
+        test (documents carry all v1 fields; sources.jsonl is a new file; `verify`
+        stays exit 0 on a project with v2 docs + a learned registry).
+```

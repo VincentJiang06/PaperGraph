@@ -15,6 +15,16 @@ SourceType = Literal[
 SupportDirection = Literal["supports", "refutes", "context"]
 EvidenceKind = Literal["quote", "paraphrase"]
 
+# S3 Stage A-lite (docs/16). Source tier enum (closed) and the fetch-recipe /
+# provenance vocabulary. WorkaroundKind is the lawful public-access recipe set;
+# FetchMethod is that set plus "direct" (how a document's text actually arrived).
+Tier = Literal[
+    "T1_official", "T2_peer_reviewed", "T3_working_paper",
+    "T4_industry_data", "T5_press", "T6_other",
+]
+WorkaroundKind = Literal["mirror", "archive_org", "secondary_quote", "pdf_local_extract", "api"]
+FetchMethod = Literal["direct", "mirror", "archive_org", "secondary_quote", "pdf_local_extract", "api"]
+
 
 class DocumentOrigin(BaseModel):
     model_config = STRICT
@@ -38,6 +48,85 @@ class Document(BaseModel):
     citation_key: str
     ingested_from: Optional[str]
     ingested_at: str
+
+
+class Provenance(BaseModel):
+    """document.v2 provenance block (docs/16): how a figure entered the project.
+
+    tier is denormalized at ingest (registry lookup, worker-proposed on first
+    sight); fetch_method is how THIS document's text arrived; quoted_via links a
+    secondary_quote document to the carrier that was actually fetched.
+    """
+
+    model_config = STRICT
+
+    retrieved_at: str
+    fetch_method: FetchMethod
+    tier: Tier
+    quoted_via: Optional[str] = None
+
+
+class DocumentV2(BaseModel):
+    """document.v2 = document.v1 + a provenance block (docs/16).
+
+    document.v1 stays registered and READABLE; the ingestor writes v2 going
+    forward. Field order appends provenance to the v1 shape.
+    """
+
+    model_config = STRICT
+
+    schema_version: Literal["document.v2"] = "document.v2"
+    doc_id: str
+    project_id: str
+    title: str
+    source_type: SourceType
+    origin: DocumentOrigin
+    content_hash: str
+    text_path: Optional[str]
+    citation_key: str
+    ingested_from: Optional[str]
+    ingested_at: str
+    provenance: Provenance
+
+
+class SourceWorkaround(BaseModel):
+    """One lawful public-access fetch recipe for a domain (docs/16)."""
+
+    model_config = STRICT
+
+    kind: WorkaroundKind
+    note: str
+
+
+class SourceFetch(BaseModel):
+    model_config = STRICT
+
+    blocked_direct: bool = False
+    workarounds: list[SourceWorkaround] = []
+
+
+class SourceProfile(BaseModel):
+    """source_profile.v1 (`docs/sources.jsonl`, docs/16): the project's durable
+    memory of where evidence lives, how to fetch it, and how much it counts.
+
+    Append-only, latest-per-domain. The ingestor LEARNS a new version on every
+    ingested Document; `docs source set` appends human curation. ``tier_note``
+    carries the reason for any tier change (V-SRC-03: no silent tier-lowering).
+    """
+
+    model_config = STRICT
+
+    schema_version: Literal["source_profile.v1"] = "source_profile.v1"
+    source_id: str
+    project_id: str
+    domain: str
+    publisher: str = ""
+    tier: Tier
+    fetch: SourceFetch = SourceFetch()
+    seen_count: int = 0
+    last_ok_fetch_method: Optional[FetchMethod] = None
+    tier_note: Optional[str] = None
+    created_at: str
 
 
 class EvidenceUnit(BaseModel):
