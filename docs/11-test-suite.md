@@ -451,3 +451,28 @@ T-S2-back  the 437-green pre-S2 suite stays green: a non-fan reactive request
         (SCENARIO_COVERED or vrules per V-WAVE rule). Baseline in this worktree
         was S1-only (437), not the parent's assumed S1+S3-lite 457.
 ```
+
+## 12b. Search Program Worklist — S4 Coverage & Saturation + S3 Triangulation (Stage B / v1.2, adopted 2026-07-08; docs/17, docs/16 V-SRC-04)
+
+S4 SUPERSEDES the r3/m5 flat floor + docs cap. Rule coverage via SCENARIO_COVERED for V-COV-01..05 and V-SRC-04.
+
+```text
+T-S4-1  coverage-ledger fold goldens: same canonical state => identical ledger [V-COV-01];
+        angles folded from S1 query_logs + S2 wave rounds; eu_counts by direction, distinct
+        docs/publishers, tiers, rounds, new_docs_last_round, saturated, floor.met.
+T-S4-2  saturation truth table: saturated iff rounds>=2 AND every mandatory angle not
+        no_attempt AND new_docs_last_round=0 (rounds/angles/new_docs combinations).
+T-S4-3  saturation REPLACES the docs cap: (a) a fresh-evidence target is NOT dead-lettered
+        pre-saturation (the old cap regression); (b) a saturated+floor-unmet target IS
+        born-dead reason=saturated [V-COV-03]. The m5 verdict-count cap is gone.
+T-S4-4  role-profile floors supersede the flat floor: MSA-4/V-FRZ-02 delegate to the table
+        (spine_fact >=2EU/>=2docs/triangulated/counter; bridge >=3 docs; non-spine >=1;
+        def/q/thesis none); a 1-binding or non-triangulated spine node FAILS msa-check AND
+        freeze; V-COV-05 narrow-inheritance (narrows inherit the parent ledger). Update the
+        m5 floor tests to the role-profile expectation (NOT weaker: triangulation is stricter).
+T-S4-tri  V-SRC-04 triangulation: same-publisher T3 pair FAILS; T1+T4 (distinct docs) passes;
+        T5-only spine binding fails; enforced at freeze + reported by msa-check.
+T-S4-back  the full prior suite stays green with the floor/cap SUPERSEDED (S7 evidence lift
+        must now satisfy the role-profile floor incl. triangulation; S2 saturation replaces
+        the born-dead cap path in test_s2/test_r3_core cap tests -- migrate, do not weaken).
+```

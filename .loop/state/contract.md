@@ -161,3 +161,26 @@ The search program's VOLUME fix (accountable plans + waves + source registry) is
 NEXT: (1) user scope fork — S4 (v1.2, supersedes m5 flat floor) / S5 (v2, needs vendored
 embedding model); (2) live test run on the ai-jobs question (halt-and-fix). A40-A43 all [x].
 FOLLOW-UP (non-blocking): dedup expected_sources names in check_critic (caught-at-rest by verify V-WAVE-01).
+
+## Stage m8-s4-coverage-saturation (S4 + S3 triangulation; Stage B/v1.2, adopted 2026-07-08; docs/17, docs/16)
+
+SUPERSEDES the m5 flat floor + docs cap. Baseline 489 @ cd8782e (Stage A). Depends on S1 query_logs
++ S2 waves (angle folding). Reworks graph/ (MSA-4), freeze/ (V-FRZ-02 + V-SRC-04), committer/ (cap->saturation),
+compiler/ (missing_evidence floor), docsdb/ (ledger), context_pack (coverage block), ui readmodel/api.
+
+- [ ] A44 (T-S4-1/2) DERIVED coverage ledger: deterministic fold over query_logs(S1)+waves(S2)+EUs+
+        bindings => identical ledger [V-COV-01]; `docs coverage [--node]` + /api/coverage; saturated =
+        rounds>=2 AND every mandatory angle not no_attempt AND new_docs_last_round=0 (truth table) · test_v_cov · m8
+- [ ] A45 (T-S4-3) SATURATION replaces the docs cap: fresh-evidence target NOT dead-lettered pre-saturation;
+        saturated+floor-unmet => born-dead reason=saturated [V-COV-03]; the m5 verdict-count cap is REMOVED
+        (migrate test_r3_core cap test to saturation, not weakened) · test_v_cov + committer · m8
+- [ ] A46 (T-S4-4) ROLE-PROFILE floors supersede the flat >=2 floor: MSA-4/V-FRZ-02/compiler delegate to the
+        docs/17 table (spine_fact >=2EU/>=2docs/TRIANGULATED/counter; bridge >=3docs; non-spine >=1; def/q/thesis
+        none); 1-binding OR non-triangulated spine node FAILS msa-check AND freeze; V-COV-05 narrow-inheritance;
+        ContextPack embeds the ledger line [V-COV-02] · test_v_cov + test_v_frz + graph msa · m8
+- [ ] A47 (T-S4-tri + back) V-SRC-04 triangulation at freeze (same-publisher T3 pair fails; T1+T4 passes;
+        T5-only fails) + msa-check report; NO REGRESSION: S7 lifted to satisfy the role-profile floor incl.
+        triangulation; full suite green with floor+cap superseded · test_v_src + test_s7 + full suite · m8
+
+Gate (m8): pytest green AND V-COV-01..05 + V-SRC-04 in registry AND test_v_cov.py present AND the m5 flat
+floor + docs cap are genuinely REMOVED (not both-present) AND no weakened assertion. On PASS -> tag gate/m8, push.

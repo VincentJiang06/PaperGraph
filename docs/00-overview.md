@@ -279,3 +279,40 @@ Stage A (S1 + S3-lite + S2) then COMPLETE. Still design-frozen: S4 (docs/17,
 v1.2 — SUPERSEDES the r3 flat floor + docs cap) and S5 (docs/18, v2 — needs a
 vendored embedding model) remain future, pending their own adoption entries.
 ```
+
+## Search Program Adoption — S4 Coverage & Saturation + S3 Triangulation (2026-07-08, Stage B / v1.2)
+
+Adopts S4 (docs/17) AND S3 Stage B triangulation (docs/16 V-SRC-04) as **binding** —
+Stage B (v1.2), which fixes STOPPING (the run's docs cap dead-lettered a healthy target
+while thin claims froze). Per docs/17 §Deltas this entry EXPLICITLY SUPERSEDES two r3/m5 rules:
+
+```text
+SUPERSEDED (replaced, not extended):
+  * the r3 flat "docs round-trip cap" (docs/04) -> SATURATION. A needs_docs verdict on a
+    target ALWAYS opens more search while NOT saturated; a saturated+floor-unmet target is
+    born-dead reason=saturated. No count-based refusal remains (committer/apply.py cap gone).
+  * the r3/m5 flat ">=2 EU / >=2 docs" floor (MSA-4, V-FRZ-02, compiler missing_evidence)
+    -> ROLE-PROFILE floors (docs/17): spine_fact/mechanism >=2 EU, >=2 docs, TRIANGULATED
+    (S3 V-SRC-04), counter angle not no_attempt; bridge = spine_fact + >=3 docs; non-spine
+    fact/mechanism >=1 EU; definition/question/thesis no floor.
+
+S4 becomes NORMATIVE (docs/17):
+  Ledger    DERIVED per-node coverage ledger (eu_counts, distinct_docs/publishers, tiers,
+            angles folded from S1 query_logs + S2 waves, rounds, new_docs_last_round,
+            saturated, floor). `docs coverage [--node]` + /api/coverage. No new canonical
+            writer -- a deterministic fold over existing records [V-COV-01].
+  Saturated rounds>=2 AND every mandatory angle not no_attempt AND new_docs_last_round=0.
+  Floors    MSA-4 / V-FRZ-02 delegate to the role-profile table; msa-check prints the
+            per-node ledger line for every miss [V-COV-04].
+  Rules     V-COV-01..05 join the registry (docs/09 §V-COV).
+  CLI       `docs coverage [--node]`; /api/coverage; msa-check output extended.
+  Schemas   none canonical (ledger derived); context_pack.v1 gains a coverage block [V-COV-02].
+
+S3 Stage B (docs/16 V-SRC-04) becomes NORMATIVE: a spine fact/mechanism binding must satisfy
+  (a) >=1 EU from a T1/T2 doc + >=1 more from a distinct doc, OR (b) >=2 EUs from distinct,
+  mutually-independent T3/T4 docs (different publishers). T5 press never carries a spine binding
+  alone. Enforced at freeze (extends V-FRZ-02), reported by msa-check.
+
+Still design-frozen: S5 (docs/18, v2 -- hybrid embedding retrieval, needs a vendored offline
+model) is the final set, adopted next.
+```

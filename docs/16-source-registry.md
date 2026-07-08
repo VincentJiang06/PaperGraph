@@ -2,9 +2,9 @@
 
 **Status: Stage A-lite (registry + recipes + provenance) is ADOPTED and BINDING
 (docs/00 "Search Program Adoption", 2026-07-08; worklist docs/11 §12). Stage B
-(triangulation, V-SRC-04) remains design-frozen and is NOT adopted — the
-triangulation section below and V-SRC-04 are informational only until a later
-adoption entry.**
+(triangulation, V-SRC-04) is ALSO NOW ADOPTED / BINDING (docs/00 "Search Program
+Adoption — S4 ... + S3 Triangulation", 2026-07-08; enforced at freeze extending
+V-FRZ-02, reported by msa-check — feeds the S4 role-profile floors).**
 
 In the live run, bls.gov and fred.stlouisfed.org 403'd every automated fetch;
 one worker independently discovered the pdftotext fallback, another lost the

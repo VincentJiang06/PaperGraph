@@ -1,6 +1,6 @@
 # 17 S4 — Coverage Ledger & Saturation (when search is DONE)
 
-**Status: design-frozen (Stage B). Binding only after a docs/00 adoption entry.**
+**Status: ADOPTED / BINDING (Stage B, v1.2) — docs/00 "Search Program Adoption — S4 Coverage & Saturation + S3 Triangulation" (2026-07-08); worklist docs/11 §12b. SUPERSEDES the r3/m5 flat floor + docs cap.**
 
 The run had two opposite stopping failures: the docs cap dead-lettered a
 target that fresh evidence was about to satisfy, while single-source spine
