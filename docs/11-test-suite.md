@@ -46,7 +46,7 @@ tests/
     test_jsonl_store.py     append-only, latest-by-id, locking, traversal
     test_snapshot.py        take/verify/current
     test_ids.py             allocation, widths, EDGE -vN reuse, PT -rN revisions
-    test_decision_table.py  24 golden rows + precedence + totality fuzz [slow]
+    test_decision_table.py  26 golden rows + precedence + totality fuzz [slow]
   contract/
     test_schemas.py         registry round-trip + unknown-field/enum rejection
     test_v_spec.py          scoping: golden build + per-rule failing topic files
@@ -80,7 +80,7 @@ tests/
   fixtures/
     schemas/                one golden example per schema_version
     topics/                 topic-input-ok.md + broken variants per V-SPEC rule
-    forms/                  the 24 decision-table golden forms (N01–N10, E01–E14)
+    forms/                  the 26 decision-table golden forms (N01–N11, E01–E15)
     vrules/<RULE-ID>/       pass_*.json / fail_*.json per validator rule
     hostile/                the hostile worker outputs (§6)
     corpus/                 two tiny .txt "sources" + one tiny .pdf for ingest
@@ -162,7 +162,7 @@ Script format (JSON, lives in `tests/fakes/scripts/`): keyed by target id so one
 
 ## 6. Golden Decision-Table Forms
 
-The 24 reachable rows. Every one is a fixture in `fixtures/forms/` and a case in `test_decision_table.py`; ids are stable (tests and docs cite them). `n/a` = field absent (NODE) — `n/e` = not_evaluated.
+The 26 reachable rows. Every one is a fixture in `fixtures/forms/` and a case in `test_decision_table.py`; ids are stable (tests and docs cite them). `n/a` = field absent (NODE) — `n/e` = not_evaluated. N11 and E15 are the `scope=out_of_scope ∧ duplicate=true` forms — ladder-valid via Stage A, reachable, and resolving to rejected(out_of_scope) by scope-outranks-duplicate precedence (table rule 1 before rule 2); they pin that precedence with a ladder-valid golden.
 
 | id | type | scope | dup | wellformed | evidence | inference | assumptions | verdict |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -176,6 +176,7 @@ The 24 reachable rows. Every one is a fixture in `fixtures/forms/` and a case in
 | N08 | NODE | in | f | single | sufficient | n/a | [a] | pass(conditional) |
 | N09 | NODE | in | f | single | not_required | n/a | [] | pass(strong) |
 | N10 | NODE | in | f | single | not_required | n/a | [a] | pass(conditional) |
+| N11 | NODE | out_of_scope | t | n/e | n/e | n/a | [] | rejected(out_of_scope) |
 | E01–E06 | EDGE | — same six pre-inference rows as N01–N06 with inference n/e — | | | | | | |
 | E07 | EDGE | in | f | single | not_required | fails | [] | rejected(contradicted) |
 | E08 | EDGE | in | f | single | not_required | gap | [] | needs_repair(bridge) |
@@ -185,6 +186,7 @@ The 24 reachable rows. Every one is a fixture in `fixtures/forms/` and a case in
 | E12 | EDGE | in | f | single | sufficient | holds_w_assum | [a] | pass(conditional) |
 | E13 | EDGE | in | f | single | sufficient | fails | [] | rejected(contradicted) |
 | E14 | EDGE | in | f | single | sufficient | gap | [] | needs_repair(bridge) |
+| E15 | EDGE | out_of_scope | t | n/e | n/e | n/e | [] | rejected(out_of_scope) |
 
 Totality fuzz (`slow`): iterate the full enum product for both task types; every combination either (a) is ladder-valid and computes exactly one verdict, or (b) violates V-PR-14/15/05 and is rejected with that rule id. No third outcome, no exception paths.
 
@@ -298,7 +300,7 @@ The suite is cumulative — a milestone's gate is "**everything green** through 
 | milestone | new tests that must pass | live smoke (manual, `-m live` + Orchestrator) |
 | --- | --- | --- |
 | M0 foundation | unit/* (textutil, store, snapshot, ids), contract/test_schemas, test_v_spec, test_v_path, CLI envelope (full stub surface) | none |
-| M1 proof loop | test_decision_table (all 24 + fuzz), test_v_pr (full fixture set), test_v_exp, test_v_task, test_v_q, test_v_commit, S1 (through re-proof pass + verify; the freeze coda joins at M3), S4, S5 (dead letter asserted via `queue list`, not the API), S6, test_determinism | one real ProofWorker on the seed edge submits a ladder-valid form computing to needs_repair(bridge); bridges + wired edges appear |
+| M1 proof loop | test_decision_table (all 26 + fuzz), test_v_pr (full fixture set), test_v_exp, test_v_task, test_v_q, test_v_commit, S1 (through re-proof pass + verify; the freeze coda joins at M3), S4, S5 (dead letter asserted via `queue list`, not the API), S6, test_determinism | one real ProofWorker on the seed edge submits a ladder-valid form computing to needs_repair(bridge); bridges + wired edges appear |
 | M2 docs | test_v_dr, docs ingest/dedup/cache tests, S2, S3 (its contradicted verdict needs a non-empty DocsPack, hence the M2 slot; its msa assertion joins at M3) | one real DocsWorker archives a BoE source; identical re-request cache-hits |
 | M3 endgame | test_v_frz, test_v_cdr, test_v_prose_aud, S7, trace assertions, S1 freeze coda + S3 msa-check coda | real workers end-to-end on P4 → audited prose |
 | M4 surface | S8, db idempotency, /api endpoint tests (FastAPI TestClient) incl. S5's dead letter in /api/overview, UI answers the six Overview questions | UI watched during an M3-style run |
@@ -569,4 +571,61 @@ T-v2.1-18  (meta) rule registration: the validate registry contains ALL 28
            V-WAVE-01..05, V-COV-01..05, V-SEM-01..05, V-SWEEP-01, V-TASK-04/05)
            — the registration count is asserted so a rule documented here can
            never silently miss the registry.
+```
+
+## 14. v2.1.1 Worklist (enforcement-wiring + doc reconciliation, 2026-07-08)
+
+A 9-component audit found the v2.1 framework correct; the confirmed defects were
+documented V-rules left UNENFORCED on the runtime path (now wired in — no
+rule-semantics change) plus doc drift (docs/00 changelog "Spec Revision v2.1.1").
+Every item below is a REQUIRED test change; each enforcement item carries a
+REGRESSION that fails against the pre-v2.1.1 impl.
+
+```text
+T-v2.1.1-1  V-GATE-01 at the expander: `graph expand` on a project whose latest
+            contract has accepted_by_user=false is REFUSED with V-GATE-01 (no
+            nodes/edges/dispatch); after acceptance it proceeds. Regression: the
+            pre-v2.1.1 expander skipped the check and mutated an unaccepted graph.
+T-v2.1.1-2  V-GATE-01 at rest: `verify` sweeps V-GATE-01 — a project with graph
+            records but accepted_by_user=false exits 3.
+T-v2.1.1-3  V-EDGE-01 in graph_record_checks: the committer rejects an edge whose
+            source or target is missing or where source=target, at record time
+            (not only at-rest verify). Regression: pre-v2.1.1 admitted it.
+T-v2.1.1-4  V-EDGE-03 in graph_record_checks: a second non-rejected edge with the
+            same (source, target, edge_type) is rejected at record time;
+            recreation after rejection with a -vN id is allowed.
+T-v2.1.1-5  V-NODE-04-rejected-parent in graph_record_checks: a node whose parent
+            is rejected (not merely missing) is rejected at record time.
+            Regression: pre-v2.1.1 only checked parent existence, not rejection.
+T-v2.1.1-6  `verify` schema-sweeps specs/*.json: a paper_spec or project_contract
+            with a schema/enum violation or unknown field exits 3 (previously
+            verify skipped the spec records). A clean pair exits 0.
+T-v2.1.1-7  `verify` resolves latest_proof_result_id: a node pointing at a
+            non-existent PR- id is corruption ⇒ exit 3; a valid pointer passes.
+T-v2.1.1-8  V-COV-02 at bundle build: building a ContextPack for a
+            fact/mechanism/bridge target WITHOUT the coverage block fails at build
+            with V-COV-02; a non-fact/mechanism/bridge target must carry
+            coverage=null. (Bundle build already checks V-TASK-02/03 — v2.1 D15.)
+T-v2.1.1-9  (D-b) scope>duplicate goldens: N11 (NODE) and E15 (EDGE),
+            scope=out_of_scope ∧ duplicate=true, are fixtures in fixtures/forms/
+            and cases in test_decision_table.py; both compute rejected(out_of_scope)
+            via decision-table rule 1 before rule 2 (ladder-valid through Stage A).
+            The golden count assertion is 26, not 24.
+T-v2.1.1-10 (D-a) counter fold breadth: the ledger marks `counter` covered from
+            (a) an executed/blocked counter qid in a v2 query_log, (b) a TERMINAL
+            counter-angle wave member, AND (c) a CoverageCritic counter verdict —
+            NOT from request completion, cache, or v1 results. Regression: a waved
+            node whose only counter signal is (b)/(c) is no longer livelocked
+            below saturation by a query_log-only reading.
+T-v2.1.1-11 (D-c) local-doc triangulation: `docs source set --publisher` on a
+            local (domainless) document is a no-op / error (no profile to key);
+            two uncurated local docs never satisfy V-SRC-04(b); the same content
+            re-ingested with a real web origin (distinct domains) DOES triangulate.
+            Supersedes the local-curation half of T-v2.1-14.
+T-v2.1.1-12 (D-g) `queue fail` default reason: omitting `--reason` records
+            detail reason "manual fail" (the doc default). Regression: the
+            pre-v2.1.1 impl wrote an empty/other default.
+T-v2.1.1-13 (meta) golden-count assertion: the meta-test asserting the
+            decision-table fixture count reads 26 and the N11/E15 ids resolve to
+            collectable cases (dangling-pointer guard, per T-v2.1-16).
 ```

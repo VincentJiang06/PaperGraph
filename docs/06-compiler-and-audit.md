@@ -208,4 +208,4 @@ AuditReport (`audit/audit_reports.jsonl`):
 }
 ```
 
-`kind` enum: `binding | strength | scope | coverage`. Every finding carries kind + location (`<section_id>:para N` or `:sentence N`) + target_id, so it can be routed as a compile_queue item mechanically [V-AUD-01] — fix the graph or re-compile the section; the loop closes without any hand-editing of state. Audit writes only `audit/`; prose files are untouched (hash-checked, V-AUD-02).
+`kind` enum: `binding | strength | scope | coverage`. Every finding carries kind + location (`<section_id>:para N` or `:sentence N`) + target_id, so it can be routed as a compile_queue item mechanically [V-AUD-01] — fix the graph or re-compile the section; the loop closes without any hand-editing of state. Audit appends only to `audit/` and never writes prose files (guaranteed by construction — no hash comparison; V-AUD-02).

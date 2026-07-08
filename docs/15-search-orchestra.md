@@ -79,12 +79,15 @@ follow-up is identifiable by round > 1).
 ## Merger (code, deterministic — runs when every member is terminal)
 
 ```text
-1. Concatenate members' documents; dedup by content_hash FIRST (identical bytes ⇒
-   one document). THEN collapse by canonical_url — but ONLY when the collapsing
-   documents share a content_hash. A canonical-URL collision whose documents have
-   DIFFERING content_hash keeps BOTH documents (v2.1 D7): re-pointing an EU from
-   one text onto another differing text breaks the V-DR-05 quote-substring check,
-   so two different captures of the "same" URL stay distinct.
+1. Concatenate members' documents; dedup by content_hash ONLY (identical bytes ⇒
+   one document). There is no second dedup key: a canonical-URL collapse is
+   SUBSUMED by content_hash dedup — it could only ever have collapsed
+   identical-content docs (already deduped), and a canonical-URL collision whose
+   documents have DIFFERING content_hash keeps BOTH documents (v2.1 D7), since
+   re-pointing an EU from one text onto another differing text breaks the V-DR-05
+   quote-substring check, so two different captures of the "same" URL stay
+   distinct. `canonical_url` is thus a NORMALIZATION helper (used by the registry
+   and for ordering/reporting), not a dedup key.
    canonical_url is a TOTAL function (never raises): default a scheme when absent,
    lowercase scheme+host, strip `www.`, strip the default port (unparseable port ⇒
    raw netloc fallback), strip fragment, strip the frozen tracking-param list
