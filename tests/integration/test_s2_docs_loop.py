@@ -2,8 +2,14 @@
 
 NODE_CHECK evidence insufficient -> needs_docs -> DocsRequest -> DocsResult
 ingested -> re-proof pass(strong); an IDENTICAL second request resolves
-fulfilled_by="cache" with NO docs work item created; the docs round-trip cap of
-2 makes a 3rd needs_docs on a target BORN DEAD. Ends with verify exit 0.
+fulfilled_by="cache" with NO docs work item created.
+
+Phase 5 MIGRATED to S4 saturation (docs/17): the r3 docs round-trip cap that
+born-dead a target on the 3rd needs_docs is SUPERSEDED. A target whose search is
+NOT saturated (a mandatory angle never attempted) keeps opening search and is
+NEVER dead-lettered -- the run's regression the cap caused. (The saturated+
+floor-unmet born-dead path is covered by test_v_cov.py::test_saturation_*.)
+Ends with verify exit 0.
 """
 
 from __future__ import annotations
@@ -76,28 +82,27 @@ def test_s2_docs_loop(project, pp):
     assert node_a["strength"] == "strong"
     assert node_a["evidence_bindings"] == ["EU-001"]
 
-    # Phase 5: docs round-trip cap = 2. Drive NODE_B through needs_docs cycles;
-    # the identical need resolves via cache each time (NO docs work items), and
-    # the 3rd needs_docs is BORN DEAD.
+    # Phase 5 (MIGRATED to saturation, docs/17): drive NODE_B through needs_docs
+    # cycles that all resolve via cache (identical need => NO docs work items).
+    # Under the SUPERSEDED cap the 3rd cycle born-dead the target; under S4 it does
+    # NOT -- NODE_B's academic angle is never attempted (cache cycles fan no wave),
+    # so the target is not saturated and search keeps opening (the cap regression).
+    from paperproof.docsdb import coverage
+
     cap_docs_before = len(_docs_items(paths))
     prove_one(paths, NODE_B, proof_worker)  # cycle 1 (cache)
     prove_one(paths, NODE_B, proof_worker)  # cycle 2 (cache)
+    prove_one(paths, NODE_B, proof_worker)  # cycle 3 -> NO born-dead under S4
     assert len(_docs_items(paths)) == cap_docs_before, "cache-resolved cycles create no docs work items"
-    completed = [r for r in _reqs(paths) if r["target_id"] == NODE_B and r["status"] == "fulfilled"]
-    assert len(completed) == 2 and all(r["fulfilled_by"] == "cache" for r in completed)
 
-    prove_one(paths, NODE_B, proof_worker)  # cycle 3 -> cap -> born dead
     dead = [i for i in engine.load_items(paths) if i["target_id"] == NODE_B and i["status"] == "dead"]
-    assert dead, "3rd needs_docs on NODE_B must be born dead (cap 2)"
-    events = jsonl.read_all(paths.resolve("queue/events.jsonl"))
-    born = [
-        e for e in events
-        if e["work_item_id"] == dead[0]["work_item_id"]
-        and e["op"] == "dead_letter" and e["from_status"] is None and e["to_status"] == "dead"
-    ]
-    assert born, "born-dead item must have a (created)->dead dead_letter event"
-    # no third DocsRequest was appended for NODE_B beyond the two completed cycles.
-    assert len([r for r in _reqs(paths) if r["target_id"] == NODE_B]) == 2
+    assert not dead, "S4: a non-saturated target must NOT be born dead (the r3 cap regression)"
+
+    # the coverage ledger confirms NODE_B is not saturated (academic no_attempt),
+    # so more search is always available -- no count-based refusal remains.
+    ledger = coverage.ledger_for(paths, NODE_B)["ledger"]
+    assert ledger["saturated"] is False
+    assert ledger["angles"]["academic"] == coverage.NO_ATTEMPT
 
     # verify exit 0
     assert pp("verify")["ok"] is True

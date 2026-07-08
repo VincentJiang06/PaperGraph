@@ -125,14 +125,22 @@ def _check_preconditions(
             failed.append("V-FRZ-01")
             break
 
-    # V-FRZ-02: every fact/mechanism node in the closure meets the r3 evidence
-    # floor (>=2 bindings from >=2 distinct documents).
-    eu_doc = graph_model.evidence_doc_map(paths)
+    # V-FRZ-02: every fact/mechanism node in the closure clears the S4 role-profile
+    # floor (docs/17) — which for a spine node folds in V-SRC-04 triangulation and
+    # a counter-angle attempt (supersedes the r3 flat >=2 floor). One function.
+    from ..docsdb import coverage as coverage_mod
+
+    spine_ids, _ = gv.spine()
+    ctx = coverage_mod.build_context(paths, spine_ids)
     for rid in closure:
         n = gv.node_by_id.get(rid)
-        if n is not None and n["node_type"] in ("fact", "mechanism") and not graph_model.meets_evidence_floor(n, eu_doc):
-            failed.append("V-FRZ-02")
-            break
+        if n is not None and n["node_type"] in ("fact", "mechanism"):
+            ledger = coverage_mod.target_ledger(n, ctx)
+            if not coverage_mod.meets_floor(ledger):
+                failed.append("V-FRZ-02")
+                if ledger["floor"]["required"] in ("spine_fact", "spine_mechanism", "bridge") and not ledger["triangulated"]:
+                    failed.append("V-SRC-04")
+                break
 
     # V-FRZ-03: no work item with status not in {committed, cancelled} touches it.
     for item in engine.load_items(paths):

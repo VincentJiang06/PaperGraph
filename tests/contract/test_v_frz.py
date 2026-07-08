@@ -22,6 +22,8 @@ pytestmark = pytest.mark.contract
 NODES = "graph/logic_nodes.jsonl"
 EDGES = "graph/logic_edges.jsonl"
 EVIDENCE_UNITS = "docs/evidence_units.jsonl"
+DOCUMENTS = "docs/documents.jsonl"
+DOCS_REQUESTS = "docs/docs_requests.jsonl"
 
 
 def _node(node_id, *, node_type="mechanism", state="active", frozen=False, evidence=None, ll=None, scope=None):
@@ -64,7 +66,8 @@ def test_v_frz_02_missing_evidence_refused(project, pp):
     assert "V-FRZ-02" in exc.value.errors
 
 
-# --- T-r3-4: the r3 floor is >=2 bindings from >=2 distinct documents ---------
+# --- S4: the spine floor is the role profile (>=2 EU, >=2 docs, TRIANGULATED,
+#     counter attempted) -- STRICTER than the superseded flat >=2 rule (docs/17).
 
 
 def _edge(edge_id, src, tgt):
@@ -77,17 +80,36 @@ def _edge(edge_id, src, tgt):
     }
 
 
-def _eu(evidence_id, doc_id):
-    return {"schema_version": "evidence_unit.v1", "evidence_id": evidence_id, "project_id": "p4-ldi", "doc_id": doc_id}
+def _eu(evidence_id, doc_id, direction="supports"):
+    return {"schema_version": "evidence_unit.v1", "evidence_id": evidence_id, "project_id": "p4-ldi",
+            "doc_id": doc_id, "support_direction": direction}
 
 
-def _seed_spine_with_mechanism(paths, *, evidence, eu_docs):
+def _doc(doc_id, source_type, url, tier):
+    return {"schema_version": "document.v2", "doc_id": doc_id, "project_id": "p4-ldi",
+            "source_type": source_type, "origin": {"kind": "web", "path": None, "url": url},
+            "provenance": {"retrieved_at": "2026-07-07T00:00:00Z", "fetch_method": "direct", "tier": tier, "quoted_via": None}}
+
+
+def _fulfilled_request(target_id, dres="DRES-001"):
+    """A completed docs search targeting the node: every S1 plan runs a counter
+    query (V-SP-02), so a fulfilled search makes the counter angle attempted."""
+    return {"schema_version": "docs_request.v1", "request_id": "DR-001", "project_id": "p4-ldi",
+            "requested_by": "orchestrator", "target_id": target_id, "need": "n", "search_hints": [],
+            "fingerprint": "fp", "status": "fulfilled", "fulfilled_by": dres, "created_at": "2026-07-07T00:00:00Z"}
+
+
+def _seed_spine_with_mechanism(paths, *, evidence, eu_docs, documents=None, searched=True):
     """A minimal active spine {Q, T, M(mechanism), T->Q, M->T} plus the given
-    EvidenceUnit->doc rows, so MSA-4 / V-FRZ-02 see a spine mechanism node whose
-    only defect is the evidence floor."""
+    EvidenceUnit->doc rows (and optional Document tier rows + a completed search),
+    so MSA-4 / V-FRZ-02 see a spine mechanism node whose only defect is the floor."""
     ll = {"allowed": ["a"], "forbidden": ["b"]}
+    for d in documents or []:
+        jsonl.append(paths.resolve(DOCUMENTS), d)
     for eid, did in eu_docs:
         jsonl.append(paths.resolve(EVIDENCE_UNITS), _eu(eid, did))
+    if searched:
+        jsonl.append(paths.resolve(DOCS_REQUESTS), _fulfilled_request("NODE-003"))
     jsonl.append(paths.resolve(NODES), _node("NODE-001", node_type="question", state="active", ll=ll))
     jsonl.append(paths.resolve(NODES), _node("NODE-002", node_type="thesis", state="active", ll=ll))
     jsonl.append(paths.resolve(NODES), _node("NODE-003", node_type="mechanism", state="active", evidence=evidence, ll=ll))
@@ -96,24 +118,38 @@ def _seed_spine_with_mechanism(paths, *, evidence, eu_docs):
     snapshot.take_snapshot(paths)
 
 
+# T1 + distinct T4 documents => triangulation rule (a) holds.
+_TRI_DOCS = [
+    _doc("DOC-001", "official_report", "https://boe.example/a", "T1_official"),
+    _doc("DOC-002", "dataset", "https://adp.example/b", "T4_industry_data"),
+]
+# Two T3 working papers from the SAME publisher (domain) => not independent.
+_SAME_PUB_T3 = [
+    _doc("DOC-001", "working_paper", "https://ssrn.example/a", "T3_working_paper"),
+    _doc("DOC-002", "working_paper", "https://ssrn.example/b", "T3_working_paper"),
+]
+
+
 @pytest.mark.parametrize(
-    "evidence, eu_docs, label",
+    "evidence, eu_docs, documents, label",
     [
-        (["EU-001"], [("EU-001", "DOC-001")], "one_binding"),
-        (["EU-001", "EU-002"], [("EU-001", "DOC-001"), ("EU-002", "DOC-001")], "two_eu_same_doc"),
+        (["EU-001"], [("EU-001", "DOC-001")], _TRI_DOCS, "one_binding"),
+        (["EU-001", "EU-002"], [("EU-001", "DOC-001"), ("EU-002", "DOC-001")], _TRI_DOCS, "two_eu_same_doc"),
+        (["EU-001", "EU-002"], [("EU-001", "DOC-001"), ("EU-002", "DOC-002")], _SAME_PUB_T3, "two_docs_not_triangulated"),
     ],
 )
-def test_v_frz_02_floor_below_two_docs_fails_msa_and_spine_freeze(project, pp, evidence, eu_docs, label):
-    """A 1-binding spine mechanism AND a 2-EU-but-same-document spine mechanism
-    each FAIL msa-check (MSA-4) and freeze apply --level spine (V-FRZ-02)."""
+def test_v_frz_02_floor_below_role_profile_fails_msa_and_spine_freeze(project, pp, evidence, eu_docs, documents, label):
+    """A 1-binding spine mechanism, a 2-EU-but-same-document one, AND a
+    2-doc-but-NOT-triangulated one (same-publisher T3 pair) each FAIL msa-check
+    (MSA-4) and freeze apply --level spine (V-FRZ-02) — triangulation is stricter."""
     paths = _paths(pp)
-    _seed_spine_with_mechanism(paths, evidence=evidence, eu_docs=eu_docs)
+    _seed_spine_with_mechanism(paths, evidence=evidence, eu_docs=eu_docs, documents=documents)
 
     # the mechanism IS in the spine (backward walk from T over M->T).
     spine_ids, _ = graph_model.load(paths).spine()
     assert "NODE-003" in spine_ids, label
 
-    # MSA-4 fails (below the r3 floor).
+    # MSA-4 fails (below the role-profile floor).
     msa = graph_commands.msa_check(paths)["msa"]
     assert msa["MSA-4"]["pass"] is False, label
 
@@ -121,16 +157,35 @@ def test_v_frz_02_floor_below_two_docs_fails_msa_and_spine_freeze(project, pp, e
     with pytest.raises(DomainError) as exc:
         freeze.apply(paths, "NODE-002", "spine")
     assert "V-FRZ-02" in exc.value.errors, label
+    # a non-triangulated 2-doc profile additionally reports V-SRC-04.
+    if label == "two_docs_not_triangulated":
+        assert "V-SRC-04" in exc.value.errors, label
 
 
-def test_v_frz_02_floor_met_two_docs_passes_msa4(project, pp):
-    """The positive side: >=2 bindings from >=2 distinct documents meets MSA-4."""
+def test_v_frz_02_floor_met_role_profile_passes_msa4(project, pp):
+    """The positive side: >=2 bindings from >=2 distinct TRIANGULATED documents
+    (T1 + a distinct T4) with the counter angle attempted meets MSA-4."""
     paths = _paths(pp)
     _seed_spine_with_mechanism(
-        paths, evidence=["EU-001", "EU-002"], eu_docs=[("EU-001", "DOC-001"), ("EU-002", "DOC-002")]
+        paths, evidence=["EU-001", "EU-002"],
+        eu_docs=[("EU-001", "DOC-001"), ("EU-002", "DOC-002")], documents=_TRI_DOCS,
     )
     msa = graph_commands.msa_check(paths)["msa"]
     assert msa["MSA-4"]["pass"] is True
+
+
+def test_v_frz_02_role_profile_needs_counter_angle(project, pp):
+    """Even a triangulated 2-doc profile FAILS the spine floor if the counter
+    angle was never attempted (no completed search) — the floor's counter
+    condition (docs/17) is genuinely part of the gate."""
+    paths = _paths(pp)
+    _seed_spine_with_mechanism(
+        paths, evidence=["EU-001", "EU-002"],
+        eu_docs=[("EU-001", "DOC-001"), ("EU-002", "DOC-002")], documents=_TRI_DOCS,
+        searched=False,
+    )
+    msa = graph_commands.msa_check(paths)["msa"]
+    assert msa["MSA-4"]["pass"] is False
 
 
 def test_v_frz_03_open_item_touches_refused(project, pp):

@@ -119,6 +119,17 @@ def ingest_result(paths: Paths, file_path: str, work_item: str) -> dict[str, Any
     return ingest.ingest_result(paths, file_path, work_item)
 
 
+def coverage(paths: Paths, node: str | None = None) -> dict[str, Any]:
+    """`docs coverage [--node <id>]` (docs/17): the DERIVED coverage ledger — a
+    deterministic fold, never a canonical write. Whole-project by default; one
+    node's ledger line with ``--node``."""
+    from . import coverage as coverage_mod
+
+    if node:
+        return coverage_mod.ledger_for(paths, node)
+    return coverage_mod.build_ledger(paths)
+
+
 def source_list(paths: Paths) -> dict[str, Any]:
     """`docs source list`: the live registry (latest SourceProfile per domain)."""
     profiles = registry.load_latest(paths)

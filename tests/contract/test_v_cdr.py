@@ -62,7 +62,9 @@ def test_gap_missing_evidence(project, pp):
     paths = _paths(pp)
     gv = _gv([_node("NODE-001", node_type="mechanism", evidence=[])], [])
     gaps = dry.detect_gaps(paths, gv, {"NODE-001"}, INTRO_PLAN)
-    assert {"kind": "missing_evidence", "target_id": "NODE-001", "note": "empirical claim without binding"} in gaps
+    # S4 (docs/17): the spine mechanism has zero bindings, so it is below the
+    # role-profile floor -> a missing_evidence gap (note reflects the new floor).
+    assert {"kind": "missing_evidence", "target_id": "NODE-001", "note": "spine claim below the role-profile floor"} in gaps
 
 
 def test_gap_unhandled_alternative(project, pp):

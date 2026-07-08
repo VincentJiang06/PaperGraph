@@ -247,7 +247,48 @@ V-SRC-03  registry updates are appends (latest-per-domain wins); a version that
 V-SRC-05  the dispatch prompt's registry excerpt contains every T1 profile + every
           profile whose domain matches a request facet (bundle completeness) —
           a dispatch-time check, not a stored-state rule
-V-SRC-04  (Stage B — NOT ADOPTED) spine-binding triangulation; not built in v1
+V-SRC-04  (Stage B — ADOPTED, docs/16/docs/17) a spine fact/mechanism binding
+          profile TRIANGULATES: (a) ≥1 EU from a T1/T2 document PLUS ≥1 more EU
+          from a distinct document, OR (b) ≥2 EUs from distinct, mutually-
+          independent T3/T4 documents (different publishers — publisher equality
+          is the mechanical check). T5 press never carries a spine binding alone.
+          Enforced at freeze (extends V-FRZ-02), reported by msa-check
+          (`docsdb.coverage.triangulated` / `v_src.check_triangulation`)
+```
+
+### V-COV (coverage ledger, saturation & role-profile floors — S4, docs/17)
+
+The coverage ledger is DERIVED — a deterministic fold over canonical records
+(graph bindings, evidence units, documents, the source registry, docs requests,
+search waves) plus the persistent per-round critic coverage reports and S1
+query_logs. No new canonical writer. It SUPERSEDES the r3/m5 flat "≥2 EU / ≥2
+docs" floor and the r3 docs round-trip cap.
+
+```text
+V-COV-01  ledger determinism: the same canonical state ⇒ a byte-identical ledger
+          (golden). eu_counts by direction, distinct docs/publishers, tiers,
+          angles (folded from S1 query_logs + S2 wave rounds + the critic
+          reports + the produced evidence tiers), rounds, new_docs_last_round,
+          saturated, floor
+V-COV-02  every ContextPack whose target is a fact/mechanism/bridge node embeds
+          the target's current ledger line (coverage block); other targets carry
+          coverage = null
+V-COV-03  the committer consults SATURATION, never a request/verdict count: a
+          needs_docs verdict ALWAYS opens more search while NOT saturated; a
+          saturated target opens no new search and the re-proof is BORN DEAD with
+          reason = "saturated" — the ONLY born-dead reason, and only when the
+          role floor is ALSO unmet. saturated := rounds ≥ 2 AND every mandatory
+          angle ∉ {no_attempt} AND new_docs_last_round = 0
+V-COV-04  the freeze (V-FRZ-02) / MSA-4 / compiler missing_evidence floors all
+          delegate to the ONE role-profile floor (docs/17): spine_fact /
+          spine_mechanism ⇒ ≥2 EU, ≥2 docs, triangulated (V-SRC-04), counter
+          angle ∉ {no_attempt}; bridge ⇒ that PLUS ≥3 docs; non-spine
+          fact/mechanism ⇒ ≥1 EU; definition/question/thesis ⇒ no floor.
+          msa-check prints the per-node ledger line for every miss
+V-COV-05  a narrowed claim inherits the parent claim's ledger (its bindings and
+          requests are keyed by node_id, so rounds and evidence carry across the
+          narrow); rounds reset to 0 only if the narrowed claim's core_terms
+          change by MORE THAN HALF
 ```
 
 ### V-WAVE (search orchestra — S2, docs/15; checked across the wave lifecycle)
@@ -290,10 +331,12 @@ V-COMMIT-06  a proof verdict commits only onto a target in a provable state
 
 ```text
 V-FRZ-01   every record in the closure is active
-V-FRZ-02   every fact/mechanism node in the closure has ≥2 evidence bindings
-           drawn from ≥2 distinct documents (r3 — one source per empirical
-           claim proved too thin in the live run; single-source spine claims
-           were the ones the later evidence overturned)
+V-FRZ-02   every fact/mechanism node in the closure clears its S4 role-profile
+           floor (docs/17) — SUPERSEDES the r3 flat "≥2 bindings from ≥2 docs"
+           rule. Delegates to the ONE coverage floor function
+           (docsdb.coverage.target_ledger + meets_floor), which for a spine node
+           folds in V-SRC-04 triangulation and a counter-angle attempt. A
+           non-triangulated spine binding additionally reports V-SRC-04
 V-FRZ-03   no work item with status ∉ {committed, cancelled} touches the closure
 V-FRZ-04   spine_freeze ⇒ MSA checklist passes and `verify` exits 0
 V-CDR-01   gap identity (kind, target_id): each new gap spawns exactly one

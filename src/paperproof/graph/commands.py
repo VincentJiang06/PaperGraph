@@ -111,13 +111,25 @@ def msa_check(paths: Paths) -> dict[str, Any]:
     msa3 = all(r is not None and r["lifecycle_state"] == "active" for r in spine_records) and bool(spine_ids)
     items.append(("MSA-3", msa3, "every spine record active"))
 
-    eu_doc = graph_model.evidence_doc_map(paths)
-    msa4 = all(
-        (n["node_type"] not in ("fact", "mechanism")) or graph_model.meets_evidence_floor(n, eu_doc)
-        for n in gv.nodes
-        if n["node_id"] in spine_ids
-    )
-    items.append(("MSA-4", msa4, "spine fact/mechanism nodes have >=2 evidence bindings from >=2 documents"))
+    # MSA-4 delegates to the S4 role-profile floor (docs/17): every spine
+    # fact/mechanism node clears its role floor (spine_fact/mechanism => >=2 EU,
+    # >=2 docs, triangulated, counter angle attempted). msa-check prints the
+    # per-node ledger line for every miss [V-COV-04].
+    from ..docsdb import coverage as coverage_mod
+
+    ctx = coverage_mod.build_context(paths, spine_ids)
+    msa4_misses: list[str] = []
+    for n in gv.nodes:
+        if n["node_id"] not in spine_ids or n["node_type"] not in ("fact", "mechanism"):
+            continue
+        ledger = coverage_mod.target_ledger(n, ctx)
+        if not coverage_mod.meets_floor(ledger):
+            msa4_misses.append(coverage_mod.floor_line(ledger))
+    msa4 = not msa4_misses
+    msa4_detail = "spine fact/mechanism nodes clear the S4 role-profile floor (docs/17)"
+    if msa4_misses:
+        msa4_detail += " | misses: " + "; ".join(msa4_misses)
+    items.append(("MSA-4", msa4, msa4_detail))
 
     msa5 = all(
         n["lifecycle_state"] == "rejected"

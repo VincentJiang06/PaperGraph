@@ -154,3 +154,113 @@ def test_non_fan_wave_runs_single_member(project, pp):
     assert len(env["data"]["members"]) == 1
     assert env["data"]["members"][0]["angle"] == "official_stats"
     assert pp("verify")["ok"] is True
+
+
+# --- data-loss regression: a follow-up must NOT overwrite a round-1 member ---
+
+
+def _distinct_member_spec(work_item):
+    """A content-DISTINCT docs_result per member, keyed by its (distinct)
+    work_item_id — so if a round-2 follow-up reused a round-1 member's output
+    path, the round-1 evidence would be silently overwritten and its unique
+    quote would go missing from the ingested merged set (V-WAVE-01)."""
+    wid = work_item["work_item_id"]
+    quote = f"member {wid} verbatim liquidity finding for LDI 2022"
+    text = f"{quote}. Background prose about the 2022 gilt crisis for member {wid}."
+    return {
+        "documents": [{
+            "title": f"Doc for {wid}", "source_type": "official_report",
+            "origin": {"kind": "web", "path": None, "url": f"https://ex.example/{wid}"},
+            "citation_key": f"CK-{wid}", "text": text,
+        }],
+        "evidence_units": [{
+            "doc_ref": 0, "doc_id": None, "location": "p.1", "kind": "quote",
+            "quote_or_paraphrase": quote, "summary": quote,
+            "support_direction": "supports",
+            "can_cite_for": [scenario.FACT_CLAIM],
+            "cannot_cite_for": ["all de-risking strategies create liquidity crises"],
+            "scope": {},
+        }],
+        "not_found": False,
+        "search_log": ["scripted distinct-per-member search"],
+    }
+
+
+def _ingested_quotes(paths):
+    return {e["quote_or_paraphrase"] for e in
+            jsonl.latest_records(paths.resolve("docs/evidence_units.jsonl"), "evidence_id")}
+
+
+def test_followup_reopening_official_stats_preserves_round1_evidence(project, pp):
+    """CONFIRMED-bug regression: a round-2 follow-up that REOPENS official_stats
+    (served from an expected_source) must land on its OWN output path, never
+    overwriting the round-1 official_stats member. Every member's DISTINCT
+    evidence must survive into the single ingested merged set (no loss)."""
+    paths = scenario.paths_for_pp(pp)
+    dr_id, _ = _open_dr(paths, pp)
+
+    docs_worker = FakeDocsWorker({}, per_member=_distinct_member_spec)
+    # round 1: all angles covered but primary missing -> followup (round<R_MAX),
+    # and an expected_source opens a round-2 official_stats member.
+    r1 = {
+        "form": {"angle_covered": {a: "yes" for a in wave_mod.MANDATORY_ANGLES},
+                 "primary_source_present": "no", "disconfirming_captured": "yes"},
+        "expected_sources": [{"name": "BLS primary series",
+                              "why": "the primary series is unqueried",
+                              "suggested_query": "bls primary 2024"}],
+        "notes": "primary source missing",
+    }
+    # round 2: primary now present -> sufficient -> ingest the merged result once.
+    r2 = {
+        "form": {"angle_covered": {a: "yes" for a in wave_mod.MANDATORY_ANGLES},
+                 "primary_source_present": "yes", "disconfirming_captured": "yes"},
+        "expected_sources": [], "notes": "now covered",
+    }
+    critic = FakeCriticWorker({"*": [r1, r2]})
+
+    result = drive_wave(paths, dr_id, fan=True, docs_worker=docs_worker, critic_worker=critic)
+    assert result["verdict"] == "sufficient" and result["status"] == "closed"
+
+    wave = wave_mod.wave_by_id(paths, result["wave_id"])
+    # a round-2 official_stats follow-up was opened for the expected_source
+    followups = [m for m in wave["members"] if m["round"] == 2]
+    assert any(m["angle"] == "official_stats" and str(m["origin"]).startswith("expected_source:")
+               for m in followups)
+    # the round-1 and round-2 official_stats members declare DISTINCT output paths
+    by_id = engine.items_by_id(paths)
+    outs = [by_id[m["work_item_id"]]["output_files"][0] for m in wave["members"]]
+    assert v_wave.check_member_paths(outs) == [] and len(set(outs)) == len(outs)
+
+    # every member's DISTINCT evidence survived into the ingested merged set —
+    # in particular the round-1 official_stats member's quote is NOT overwritten.
+    ingested = _ingested_quotes(paths)
+    for m in wave["members"]:
+        expected = f"member {m['work_item_id']} verbatim liquidity finding for LDI 2022"
+        assert expected in ingested, f"evidence for member {m['work_item_id']} was lost"
+    assert len(dres_ids(paths, dr_id)) == 1
+    assert pp("verify")["ok"] is True
+
+
+def test_verify_flags_path_colliding_wave_v_wave_01(project, pp):
+    """`paperproof verify` sweeps V-WAVE-01 across the wave lifecycle: a wave with
+    two members declaring the SAME output path is corruption (silent overwrite)
+    and must fail verify (exit 3). A clean wave verifies (exit 0)."""
+    paths = scenario.paths_for_pp(pp)
+    dr_id, _ = _open_dr(paths, pp)
+    started = pp("docs", "wave", "--request", dr_id, "--fan")["data"]
+    assert pp("verify")["ok"] is True  # the real wave is clean
+
+    members = started["members"]
+    collide_path = engine.get_item(paths, members[0]["work_item_id"])["output_files"][0]
+    dup = engine.enqueue(paths, queue_name="docs_queue", target_type="request",
+                         target_id=dr_id, task_id=members[0]["plan_id"],
+                         output_files=[collide_path], actor="test")
+    corrupt = dict(wave_mod.wave_by_id(paths, started["wave_id"]))
+    corrupt["members"] = list(members) + [{
+        "angle": members[0]["angle"], "work_item_id": dup["work_item_id"],
+        "plan_id": members[0]["plan_id"], "round": 1, "origin": None,
+    }]
+    jsonl.append(paths.resolve(WAVES), wave_mod.SearchWave.model_validate(corrupt))
+
+    env = pp("verify", expect=3)
+    assert "V-WAVE-01" in env["errors"]

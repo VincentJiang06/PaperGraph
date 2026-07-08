@@ -11,6 +11,7 @@ M1 is tolerant of absent freeze/compiler/docs state (those files exist empty fro
 
 from __future__ import annotations
 
+import json
 from typing import Any
 
 from pydantic import ValidationError
@@ -107,6 +108,46 @@ def _graph_check(paths: Paths) -> list[Failure]:
     return v_node_edge.graph_record_checks(gv.nodes, gv.edges)
 
 
+def _wave_check(paths: Paths) -> list[Failure]:
+    """V-WAVE at rest across the wave lifecycle (docs/09 §V-WAVE, docs/15). These
+    are corruption guards, not judgement:
+
+    V-WAVE-01  a wave's member output paths are pairwise distinct — a collision
+               means a follow-up round would silently overwrite (lose) a
+               committed round-1 member's ingested evidence.
+    V-WAVE-02  a CLOSED wave's stored merged result is the deterministic merge of
+               its terminal members, and every merged doc/EU traces to a member.
+    """
+    from .docsdb import wave as wave_mod
+    from .queue import engine
+    from .validate.rules import v_wave
+
+    failures: list[Failure] = []
+    by_id = engine.items_by_id(paths)
+    for w in wave_mod.load_waves(paths):
+        wid = w.get("wave_id")
+        member_paths: list[str] = []
+        for mem in w.get("members", []) or []:
+            item = by_id.get(mem.get("work_item_id"))
+            files = (item or {}).get("output_files") or []
+            if files:
+                member_paths.append(files[0])
+        for f in v_wave.check_member_paths(member_paths):
+            failures.append(Failure(f.rule_id, f"wave {wid}: {f.detail}"))
+
+        # V-WAVE-02 traceability: only a closed wave has a final merged file that
+        # reflects its whole terminal member set (mid-lifecycle a follow-up round
+        # may have added members the merged file does not yet include).
+        if w.get("status") == "closed":
+            merged_p = paths.project_dir / wave_mod.merged_relpath(w.get("request_id"))
+            if merged_p.exists():
+                merged = json.loads(merged_p.read_text(encoding="utf-8"))
+                members = wave_mod._collect_member_results(paths, w)
+                for f in v_wave.check_merge(members, merged, w.get("request_id"), paths.project_id):
+                    failures.append(Failure(f.rule_id, f"wave {wid}: {f.detail}"))
+    return failures
+
+
 def run(paths: Paths) -> dict[str, Any]:
     if not paths.project_dir.exists():
         raise CorruptStateError([f"project not found: {paths.project_id}"])
@@ -117,6 +158,7 @@ def run(paths: Paths) -> dict[str, Any]:
     failures += v_q.verify_queue(paths)
     failures += v_commit.verify_commits(paths)
     failures += v_src.verify_sources(paths)
+    failures += _wave_check(paths)
     failures += _crossref(paths)
 
     if failures:

@@ -47,12 +47,14 @@ def detect_gaps(
     spine_nodes = [gv.node_by_id[i] for i in spine_ids if i in gv.node_by_id]
     spine_edges = [gv.edge_by_id[i] for i in spine_ids if i in gv.edge_by_id]
 
-    # missing_evidence: spine fact/mechanism node below the r3 evidence floor
-    # (<2 bindings or <2 distinct documents — matches V-FRZ-02 / MSA-4).
-    eu_doc = graph_model.evidence_doc_map(paths)
+    # missing_evidence: spine fact/mechanism node below the S4 role-profile floor
+    # (docs/17 — delegates to the same coverage function as V-FRZ-02 / MSA-4).
+    from ..docsdb import coverage as coverage_mod
+
+    ctx = coverage_mod.build_context(paths, spine_ids)
     for n in spine_nodes:
-        if n["node_type"] in ("fact", "mechanism") and not graph_model.meets_evidence_floor(n, eu_doc):
-            gaps.append({"kind": "missing_evidence", "target_id": n["node_id"], "note": "empirical claim without binding"})
+        if n["node_type"] in ("fact", "mechanism") and not coverage_mod.meets_floor(coverage_mod.target_ledger(n, ctx)):
+            gaps.append({"kind": "missing_evidence", "target_id": n["node_id"], "note": "spine claim below the role-profile floor"})
 
     # unhandled_alternative: any alternative node not rejected and not parked(absorbed|not_needed).
     for n in gv.nodes:

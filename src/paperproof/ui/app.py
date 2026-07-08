@@ -108,6 +108,10 @@ def create_app(root: str | Path, project: str, auto_rebuild: bool = False) -> Fa
     def api_compiler() -> Any:
         return _guarded(lambda r, p: readmodel.compiler(r, p))
 
+    @app.get("/api/coverage")
+    def api_coverage(node: Optional[str] = Query(None)) -> Any:
+        return _guarded(lambda r, p: readmodel.coverage(r, p, node))
+
     @app.get("/api/trace/{node}")
     def api_trace(node: str) -> Any:
         return _guarded(lambda r, p: readmodel.trace(r, p, node))

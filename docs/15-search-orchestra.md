@@ -24,6 +24,21 @@ wave(DR-x) := one sub-search per angle in {official_stats, academic, industry,
 Distinct outputs ⇒ members run fully parallel (docs/05 rules).
 ```
 
+A round>1 follow-up member (a reopened `no_attempt` angle or an
+`expected_source`) is opened at the SAME angle as a round-1 member, so its
+output path carries a round+origin discriminator and NEVER reuses — hence never
+silently overwrites — the round-1 member's already-committed result:
+
+```text
+output (round>1)  agent_outputs/docs_results/DR-x.<angle>.r<round>.<origin-slug>.docs_result.json
+```
+
+`<origin-slug>` is the member's `origin` (`angle:<name>` / `expected_source:<name>`)
+lowercased to `[a-z0-9-]`. Origins are pairwise-distinct within a round, so the
+paths are too — every member across the whole wave lifecycle owns a distinct
+output file [V-WAVE-01]. The merger reads each member's own committed file, so
+round-1 and round-2 evidence both survive into the single ingested merged set.
+
 ## Wave record (`docs/waves.jsonl`, producer: docs engine)
 
 ```json
@@ -148,7 +163,12 @@ Tests    T-S2-1 merger goldens (dup content_hash, tracking params, dup EUs)
   the merge → critic → verdict rounds are driven by code (deterministic merger +
   verdict; the bounded critic is the only LLM). A wave supersedes any pending
   single docs item for the DR (cancelled) so the wave owns the search.
-* WaveMember carries `round` + `origin` (see the wave record above).
+* WaveMember carries `round` + `origin` (see the wave record above). A round>1
+  member's output path carries a `.r<round>.<origin-slug>` discriminator (see
+  §Wave expansion) so a follow-up never overwrites a round-1 member's committed
+  result; `paperproof verify` sweeps V-WAVE-01 (pairwise-distinct member output
+  paths) + V-WAVE-02 (closed-wave merge determinism/traceability) at rest, so a
+  path collision at rest is caught (exit 3), not merely test-only.
 * The critic rides `critic_queue` (target_type=`wave`); its coverage_report.v1
   lands in agent_outputs/coverage_reports/ and is V-WAVE-03-validated.
 * `fan=false` (reactive/`docs request`) runs as a single official_stats member —

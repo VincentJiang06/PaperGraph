@@ -173,14 +173,13 @@ def load(paths: Paths) -> GraphView:
     return GraphView(nodes, edges)
 
 
-# --- r3 evidence floor (docs/08 A28; MSA-4 / V-FRZ-02 / compiler missing_evidence) ---
+# --- evidence resolution (docs/04) ------------------------------------------
 #
-# A node's ``evidence_bindings`` are evidence_ids; each resolves to its
-# EvidenceUnit's doc_id via ``docs/evidence_units.jsonl``. The r3 floor (from the
-# ai-jobs live run: single-source spine claims were the ones later evidence
-# overturned) is: >=2 bindings drawn from >=2 DISTINCT documents. This ONE helper
-# is used at all three enforcement sites so they can never diverge (docs/06
-# reachability note relies on V-FRZ-02 and the compiler gap agreeing).
+# The r3/m5 flat "at-least-two bindings from two documents" floor that lived here
+# is SUPERSEDED by the S4 role-profile floors (docs/17): MSA-4, V-FRZ-02 and the
+# compiler's missing_evidence gap now all delegate to
+# ``docsdb.coverage.target_ledger`` + ``coverage.meets_floor``. This module keeps
+# only the evidence-id -> doc-id read the ledger builds on.
 
 
 def evidence_doc_map(paths: Paths) -> dict[str, str]:
@@ -190,20 +189,6 @@ def evidence_doc_map(paths: Paths) -> dict[str, str]:
         for eu in jsonl.latest_records(paths.resolve(EVIDENCE_UNITS_FILE), "evidence_id")
         if eu.get("doc_id")
     }
-
-
-def evidence_binding_counts(node: dict[str, Any], eu_doc_by_id: dict[str, str]) -> tuple[int, int]:
-    """Return ``(binding_count, distinct_doc_count)`` for a node's evidence
-    bindings, resolving each binding to its document via ``eu_doc_by_id``."""
-    bindings = node.get("evidence_bindings", []) or []
-    docs = {eu_doc_by_id[b] for b in bindings if b in eu_doc_by_id}
-    return len(bindings), len(docs)
-
-
-def meets_evidence_floor(node: dict[str, Any], eu_doc_by_id: dict[str, str]) -> bool:
-    """The r3 floor: >=2 evidence bindings from >=2 distinct documents."""
-    binding_count, distinct_docs = evidence_binding_counts(node, eu_doc_by_id)
-    return binding_count >= 2 and distinct_docs >= 2
 
 
 def load_tombstones(paths: Paths) -> list[dict[str, Any]]:

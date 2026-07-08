@@ -59,6 +59,12 @@ SCENARIO_COVERED = {
     "V-WAVE-03": "test_s2_wave.py::test_critic_* (closed-enum complete; smuggled evidence rejected)",
     "V-WAVE-04": "test_s2_wave.py::test_wave_rounds_* (round cap + follow-up origin)",
     "V-WAVE-05": "test_s2_wave.py::test_single_dres_* + test_wave_rmax_close",
+    "V-SRC-04": "test_v_cov.py::test_triangulation_* (same-publisher T3 fails; T1+T4 passes; T5-only fails; freeze + msa-check)",
+    "V-COV-01": "test_v_cov.py::test_ledger_fold_determinism (golden fold + rebuild identity)",
+    "V-COV-02": "test_v_cov.py::test_context_pack_embeds_coverage",
+    "V-COV-03": "test_v_cov.py::test_saturation_* (fresh not dead-lettered; saturated+floor-unmet born-dead reason=saturated)",
+    "V-COV-04": "test_v_cov.py::test_role_profile_floor_* (msa-check + freeze delegate; per-node ledger line)",
+    "V-COV-05": "test_v_cov.py::test_narrow_inherits_ledger",
 }
 
 

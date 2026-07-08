@@ -108,15 +108,24 @@ class FakeDocsWorker:
     legitimate terminal output.
     """
 
-    def __init__(self, script: dict[str, Any], mode: str = "script") -> None:
+    def __init__(self, script: dict[str, Any], mode: str = "script",
+                 per_member: Any = None) -> None:
         self.script = script
         self.mode = mode
+        # Optional callable(work_item)->spec: lets a wave test give every member
+        # (keyed by its distinct work_item_id) content-DISTINCT output, so a
+        # silent overwrite across wave rounds is detectable (docs/15 V-WAVE-01).
+        # None => the request_id/"*" script lookup, unchanged for every caller.
+        self.per_member = per_member
 
     def run(self, work_item: dict[str, Any], project_root: Path) -> None:
         if self.mode == "crash":
             return
         request_id = work_item["target_id"]
-        spec = self.script.get(request_id) or self.script.get("*") or {}
+        if self.per_member is not None:
+            spec = self.per_member(work_item)
+        else:
+            spec = self.script.get(request_id) or self.script.get("*") or {}
         documents = spec.get("documents", [])
         evidence_units = spec.get("evidence_units", [])
         not_found = spec.get("not_found", False)

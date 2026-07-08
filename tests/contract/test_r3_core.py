@@ -5,8 +5,10 @@ Each test pins one of the run's basic failures:
      identical search (docs/04: fingerprint sources are DRES-fulfilled only);
   2. pack composition — REQUESTED evidence lands unconditionally, matched half
      capped at K=12 (docs/04 r3; the run's packs carried all 24 EUs by luck);
-  3. docs cap — verdict-based, never request-based; fresh target-relevant
-     evidence since the 2nd verdict defuses the dead-letter (QE-000114);
+  3. saturation (S4, docs/17) SUPERSEDES the r3 docs cap — a pile of completed
+     Orchestrator single requests must NOT dead-letter a healthy target
+     (QE-000114): rounds accrue but a mandatory angle stays no_attempt, so the
+     target is NOT saturated and search keeps opening;
   4. evidence-arrival staleness — newly ingested evidence marks pending proof
      items stale so re-proofs never run on pre-evidence packs (V-TASK-04).
 """
@@ -18,7 +20,7 @@ import json
 import pytest
 
 from paperproof.committer import apply as committer_apply
-from paperproof.docsdb import cache, pack
+from paperproof.docsdb import cache, coverage, pack
 from paperproof.paths import paths_for
 from paperproof.queue import engine
 from paperproof.store import jsonl
@@ -88,41 +90,39 @@ def test_pack_requested_unconditional_and_matched_capped(project, pp):
     assert len(set(ids)) == len(ids)
 
 
-# --- 3. docs cap: verdicts only; fresh evidence defuses it -------------------
+# --- 3. saturation supersedes the docs cap (QE-000114) -----------------------
 
 
-def _verdict(pr: str, target_id: str, validated_at: str) -> dict:
-    return {
-        "schema_version": "verdict_record.v1", "proof_result_id": pr, "project_id": "p4-ldi",
-        "work_item_id": "WI-000001", "task_id": f"PT-{target_id}", "target_type": "node",
-        "target_id": target_id, "form": {}, "assumptions": [], "evidence_used": [],
-        "language_limits": None, "repair_proposals": [], "docs_requests": [], "notes": "",
-        "computed_verdict": {"verdict": "needs_docs", "repair_kind": None, "strength": None, "reason": None},
-        "bundle": {"task_file": "", "context_pack": "", "docs_pack": ""},
-        "validated_at": validated_at,
-    }
-
-
-def test_cap_counts_verdicts_and_fresh_evidence_defuses(project, pp):
+def test_orchestrator_requests_do_not_saturate_a_healthy_target(project, pp):
+    """SUPERSEDES the r3 verdict-count cap (migrated to saturation). A pile of
+    completed Orchestrator single requests accrues rounds but never attempts the
+    academic angle, so the target is NOT saturated -- exactly the QE-000114
+    regression: a healthy target must keep opening search, never dead-letter."""
     paths = _paths(pp)
-    target = {"node_id": "NODE-C", "claim": "gilt collateral pressure statistics", "scope": {}}
-    jsonl.append(paths.resolve(PROOF_RESULTS), _verdict("PR-901", "NODE-C", "2026-07-08T01:00:00Z"))
-    jsonl.append(paths.resolve(PROOF_RESULTS), _verdict("PR-902", "NODE-C", "2026-07-08T02:00:00Z"))
-    # a pile of completed ORCHESTRATOR requests must not count (QE-000114 repro):
-    for i in range(920, 925):
+    node = {"node_id": "NODE-C", "node_type": "fact", "claim": "gilt collateral pressure statistics",
+            "scope": {}, "evidence_bindings": []}
+    jsonl.append(paths.resolve(DOCS_REQUESTS), _request("DR-920", "fp-920", "DRES-002", target_id="NODE-C"))
+    for i in range(921, 925):
         jsonl.append(paths.resolve(DOCS_REQUESTS), _request(f"DR-{i}", f"fp-{i}", "DRES-002", target_id="NODE-C"))
-    assert len(committer_apply._needs_docs_verdicts(paths, "NODE-C")) == 2
 
-    # no target-relevant evidence since the 2nd verdict => a 3rd would dead-letter
-    assert committer_apply._new_target_evidence_since(paths, target, "2026-07-08T02:00:00Z") is False
-    # fresh MATCHING evidence after the 2nd verdict defuses the cap
-    jsonl.append(paths.resolve(EVIDENCE_UNITS), _eu("EU-200", "gilt collateral pressure dataset", created_at="2026-07-08T03:00:00Z"))
-    assert committer_apply._new_target_evidence_since(paths, target, "2026-07-08T02:00:00Z") is True
-    # non-matching late evidence does not
-    jsonl.append(paths.resolve(EVIDENCE_UNITS), _eu("EU-201", "unrelated employment survey", created_at="2026-07-08T03:30:00Z"))
-    assert committer_apply._new_target_evidence_since(
-        paths, {"node_id": "NODE-C", "claim": "zzz qqq", "scope": {}}, "2026-07-08T03:15:00Z"
-    ) is False
+    ctx = coverage.build_context(paths, spine_ids=set())
+    ledger = coverage.target_ledger(node, ctx)
+    # rounds accrue (5 completed single requests) but a mandatory angle never
+    # attempted => NOT saturated => the committer keeps opening search (no cap).
+    assert ledger["rounds"] >= 2
+    assert ledger["angles"]["academic"] == coverage.NO_ATTEMPT
+    assert ledger["saturated"] is False
+
+
+def test_saturation_is_a_pure_function_of_rounds_angles_new_docs(project, pp):
+    """The saturation stop criterion (docs/17): rounds>=2 AND every mandatory
+    angle not no_attempt AND new_docs_last_round=0."""
+    prod = {a: coverage.PRODUCTIVE for a in coverage.BASE_MANDATORY}
+    assert coverage.is_saturated(2, prod, 0, coverage.BASE_MANDATORY) is True
+    assert coverage.is_saturated(1, prod, 0, coverage.BASE_MANDATORY) is False
+    assert coverage.is_saturated(2, prod, 3, coverage.BASE_MANDATORY) is False
+    missing = {**prod, "academic": coverage.NO_ATTEMPT}
+    assert coverage.is_saturated(2, missing, 0, coverage.BASE_MANDATORY) is False
 
 
 # --- 4. evidence arrival marks pending proof items stale (V-TASK-04) ---------

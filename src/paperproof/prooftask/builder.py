@@ -99,6 +99,19 @@ def build_bundle(paths: Paths, work_item: dict[str, Any]) -> dict[str, Any]:
     contract = _contract(paths)
     based_on = snapshot.latest_snapshot_id(paths) or "GS-000001"
 
+    # S4 (docs/17, V-COV-02): embed the target's coverage ledger line for a
+    # fact/mechanism/bridge target so the worker sees whether search is exhausted.
+    coverage_block = None
+    if target_type == "node" and (
+        target_record.get("node_type") in ("fact", "mechanism")
+        or (target_record.get("origin") or {}).get("kind") == "bridge"
+    ):
+        from ..docsdb import coverage as coverage_mod
+
+        spine_ids, _ = gv.spine()
+        cov_ctx = coverage_mod.build_context(paths, spine_ids)
+        coverage_block = coverage_mod.target_ledger(target_record, cov_ctx)
+
     ctx = ContextPack(
         pack_id=ctx_id,
         task_id=pt_id,
@@ -111,6 +124,7 @@ def build_bundle(paths: Paths, work_item: dict[str, Any]) -> dict[str, Any]:
         contract_scope=contract.get("scope", {}) or {},
         forbidden_claims=list(contract.get("forbidden_claims", []) or []),
         prior_results=_prior_results(paths, target_id),
+        coverage=coverage_block,
     )
 
     # DocsPack assembled by the matcher (docs/04): the EvidenceUnits selected for

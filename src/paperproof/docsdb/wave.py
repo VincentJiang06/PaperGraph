@@ -301,11 +301,30 @@ def _cancel_pending_single_items(paths: Paths, request_id: str, keep: set[str], 
             engine.cancel(paths, item["work_item_id"], actor, detail={"reason": "superseded_by_wave"})
 
 
+_SLUG_RE = re.compile(r"[^a-z0-9]+")
+
+
+def member_output(request_id: str, angle: str, round: int, origin: str | None) -> str:
+    """A wave member's declared output path (docs/15 §Wave expansion). Round-1
+    members keep the bare per-angle path
+    ``agent_outputs/docs_results/DR-x.<angle>.docs_result.json``; a round>1
+    follow-up gets a ``.r<round>.<origin-slug>`` discriminator so it NEVER
+    reuses — and silently overwrites — a round-1 member's committed result, and
+    two follow-ups (a reopened angle vs an expected_source) never collide either
+    [V-WAVE-01]. The origin (``angle:<name>`` / ``expected_source:<name>``) is
+    pairwise-distinct within a round, so the path is too."""
+    stem = f"{request_id}.{angle}"
+    if round > 1:
+        token = _SLUG_RE.sub("-", (origin or angle).lower()).strip("-") or angle
+        stem = f"{stem}.r{round}.{token}"
+    return f"agent_outputs/docs_results/{stem}.docs_result.json"
+
+
 def _open_member(paths: Paths, request_id: str, angle: str, round: int, origin: str | None,
                  hint: str | None, actor: str) -> dict[str, Any]:
     plan = planner.plan_for_wave_member(paths, request_id, angle,
                                         extra_hints=[hint] if hint else None)
-    output = f"agent_outputs/docs_results/{request_id}.{angle}.docs_result.json"
+    output = member_output(request_id, angle, round, origin)
     item = engine.enqueue(paths, queue_name=DOCS_QUEUE, target_type="request", target_id=request_id,
                           task_id=plan["plan_id"], output_files=[output], actor=actor)
     return {"angle": angle, "work_item_id": item["work_item_id"], "plan_id": plan["plan_id"],
