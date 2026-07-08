@@ -18,6 +18,7 @@ from ..errors import DomainError, UsageError
 from ..graph import model as graph_model
 from ..paths import Paths
 from ..schemas.graph import ExpansionProposal
+from ..store import jsonl
 from ..validate.envelope import to_envelope
 from ..validate.rules import v_exp, v_sweep
 
@@ -46,8 +47,20 @@ def validate(paths: Paths, proposal_file: str | Path) -> dict[str, Any]:
     return {"ok": True, "failed_rules": []}
 
 
+def _require_accepted_contract(paths: Paths) -> None:
+    """V-GATE-01 (docs/09): the graph may not be expanded until the user has
+    accepted the latest ProjectContract. Human acceptance gates every mutation."""
+    contract = jsonl.read_json(paths.project_contract) if paths.project_contract.exists() else {}
+    if not contract.get("accepted_by_user"):
+        raise DomainError(
+            ["V-GATE-01: contract not accepted"],
+            data={"failed_rules": ["V-GATE-01"]},
+        )
+
+
 def ingest(paths: Paths, proposal_file: str | Path, actor: str | None = None) -> dict[str, Any]:
     """`expand ingest`: validate (V-EXP) then commit (kind=expansion)."""
+    _require_accepted_contract(paths)
     raw = _load(proposal_file)
     try:
         ExpansionProposal.model_validate(raw)

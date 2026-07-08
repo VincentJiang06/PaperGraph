@@ -96,3 +96,49 @@ def test_v_graph_03_strength_and_frozen_consistency():
     assert "V-GRAPH-03" in _run({"nodes": [bad_strength], "edges": []})
     frozen_pending = _n("NODE-001", "question", state="pending_proof", frozen=True)
     assert "V-GRAPH-03" in _run({"nodes": [frozen_pending], "edges": []})
+
+
+# --- P1: V-EDGE-03 (no duplicate live edge) ----------------------------------
+
+
+def test_v_edge_03_duplicate_live_edge_fires():
+    """A SECOND non-rejected edge over the same (source, target, edge_type) is a
+    duplicate; recreation is legal only when the prior edge is rejected."""
+    nodes = [_n("NODE-001", "question"), _n("NODE-002", parents=["NODE-001"])]
+    e1 = _e("EDGE-001-002-a", "NODE-001", "NODE-002")
+    e2 = _e("EDGE-001-002-b", "NODE-001", "NODE-002")  # same triple, both active
+    assert "V-EDGE-03" in _run({"nodes": nodes, "edges": [e1, e2]})
+    # a rejected prior + a live recreation over the same triple PASSES.
+    e1_rejected = _e("EDGE-001-002-a", "NODE-001", "NODE-002", state="rejected")
+    assert "V-EDGE-03" not in _run({"nodes": nodes, "edges": [e1_rejected, e2]})
+
+
+# --- P2: V-EDGE-01 (endpoints resolve; no self-loop) -------------------------
+
+
+def test_v_edge_01_self_loop_and_dangling_endpoint_fire():
+    nodes = [_n("NODE-001", "question"), _n("NODE-002", parents=["NODE-001"])]
+    self_loop = _e("EDGE-002-002", "NODE-002", "NODE-002", "refutes")
+    assert "V-EDGE-01" in _run({"nodes": nodes, "edges": [self_loop]})
+    dangling = _e("EDGE-002-999", "NODE-002", "NODE-999")
+    assert "V-EDGE-01" in _run({"nodes": nodes, "edges": [dangling]})
+    # a resolving, non-self edge does NOT fire V-EDGE-01.
+    good = _e("EDGE-001-002", "NODE-001", "NODE-002")
+    assert "V-EDGE-01" not in _run({"nodes": nodes, "edges": [good]})
+
+
+# --- P3: V-NODE-04 (parents not rejected) ------------------------------------
+
+
+def test_v_node_04_rejected_parent_fires():
+    """A non-rejected node whose parent maps to a REJECTED node fails V-NODE-04 —
+    existence alone is not enough (a rejected node still 'exists')."""
+    rejected_parent = _n("NODE-002", "fact", state="rejected", parents=["NODE-001"])
+    child = _n("NODE-003", "fact", parents=["NODE-002"])
+    nodes = [_n("NODE-001", "question"), rejected_parent, child]
+    assert "V-NODE-04" in _run({"nodes": nodes, "edges": []})
+    # the same child under a non-rejected parent passes V-NODE-04.
+    ok_parent = _n("NODE-002", "fact", parents=["NODE-001"])
+    assert "V-NODE-04" not in _run(
+        {"nodes": [_n("NODE-001", "question"), ok_parent, child], "edges": []}
+    )

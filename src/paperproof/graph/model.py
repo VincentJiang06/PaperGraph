@@ -157,11 +157,15 @@ class GraphView:
         while stack:
             cur = stack.pop()
             for e in by_target.get(cur, []):
-                ids.add(e["edge_id"])
                 src = e["source_node_id"]
-                if src in active:
-                    ids.add(src)
-                if src not in seen_nodes and src in active:
+                # active ancestor closure (docs/02): an active edge joins the
+                # spine only when its SOURCE node is also active — an active edge
+                # dangling off a reverted (pending/rejected) source is NOT spine.
+                if src not in active:
+                    continue
+                ids.add(e["edge_id"])
+                ids.add(src)
+                if src not in seen_nodes:
                     seen_nodes.add(src)
                     stack.append(src)
         return ids, detail

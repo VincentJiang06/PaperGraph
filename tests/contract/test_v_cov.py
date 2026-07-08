@@ -558,6 +558,20 @@ def test_context_pack_embeds_coverage(project, pp):
     assert v_cov.check_context_pack_coverage(def_ctx) == []
 
 
+def test_build_bundle_guards_coverage_block(project, pp, monkeypatch):
+    """P7 [V-COV-02]: the build-time bundle guard now runs V-COV-02 — a
+    fact/mechanism ContextPack whose coverage block names the wrong node is
+    rejected at build (previously the check was never invoked on the build path)."""
+    paths = scenario.paths_for_pp(pp)
+    scenario.seed_s7_layer0(paths)  # mechanism S7_M needs a coverage ledger line
+
+    # force a malformed coverage block (wrong node_id) for every ledger target.
+    monkeypatch.setattr(coverage, "target_ledger", lambda rec, ctx: {"node_id": "NODE-BOGUS"})
+    with pytest.raises(DomainError) as exc:
+        builder.build_frontier(paths, "test")
+    assert "V-COV-02" in exc.value.errors
+
+
 # --- T-S4-tri / V-SRC-04: triangulation -------------------------------------
 
 

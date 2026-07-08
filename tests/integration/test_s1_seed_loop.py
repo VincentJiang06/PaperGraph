@@ -76,6 +76,37 @@ def test_s1_seed_loop(project, pp):
     assert env["ok"] is True
 
 
+def test_spine_excludes_edge_with_reverted_source(project, pp):
+    """P4 (docs/02 active ancestor closure): an active edge whose SOURCE node has
+    been reverted to pending_proof drops OUT of the spine. Reopening a node
+    without its incident edge must not leave a dangling edge over-included in the
+    spine (and msa-check's reported spine must exclude it)."""
+    from paperproof.graph import commands as graph_commands
+
+    paths = scenario.paths_for_pp(pp)
+    scenario.seed_layer0(paths)
+    drain(paths, FakeProofWorker(scenario.s1_script()))
+
+    gv = graph_model.load(paths)
+    spine_before, _ = gv.spine()
+    assert scenario.EDGE_BT in spine_before and scenario.B in spine_before
+
+    # reopen node B (source of B->T) to pending_proof; leave B->T active.
+    b = dict(gv.node_by_id[scenario.B])
+    b.update({
+        "lifecycle_state": "pending_proof", "state_reason": None, "state_detail": None,
+        "strength": "unassessed", "created_at": "2026-07-07T01:00:00Z",
+    })
+    jsonl.append(paths.resolve("graph/logic_nodes.jsonl"), b)
+
+    gv2 = graph_model.load(paths)
+    assert gv2.edge_by_id[scenario.EDGE_BT]["lifecycle_state"] == "active"
+    spine_after, _ = gv2.spine()
+    assert scenario.EDGE_BT not in spine_after, "active edge off a pending source must leave the spine"
+    assert scenario.B not in spine_after
+    assert scenario.EDGE_BT not in graph_commands.msa_check(paths)["spine"]
+
+
 def test_s1_local_freeze_coda(project, pp):
     """S1 freeze coda (docs/11 §8): after S1's pass(conditional), local_freeze the
     edge closure. The one target edge is frozen; its endpoints are not; the

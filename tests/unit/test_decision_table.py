@@ -1,4 +1,4 @@
-"""Decision table: 24 golden rows + precedence + totality fuzz (docs/03, docs/11 §6).
+"""Decision table: 26 golden rows + precedence + totality fuzz (docs/03, docs/11 §6).
 
 The decision table is a pure function ``(form, task_type, assumptions) -> verdict``
 that walks the 8-row table top-down, first match wins. It is total over
@@ -29,14 +29,16 @@ pytestmark = pytest.mark.unit
 
 FORMS = Path(__file__).resolve().parent.parent / "fixtures" / "forms"
 
-GOLDEN_IDS = [f"N{i:02d}" for i in range(1, 11)] + [f"E{i:02d}" for i in range(1, 15)]
+# The reachable-row set is 26: N01..N11 (NODE) + E01..E15 (EDGE). N11/E15 add the
+# scope=out_of_scope ∧ duplicate=true precedence rows (Row 1 wins) for both kinds.
+GOLDEN_IDS = [f"N{i:02d}" for i in range(1, 12)] + [f"E{i:02d}" for i in range(1, 16)]
 
 
 def _load(fixture_id: str) -> dict:
     return json.loads((FORMS / f"{fixture_id}.json").read_bytes())
 
 
-def test_all_24_golden_fixtures_exist():
+def test_all_26_golden_fixtures_exist():
     on_disk = {p.stem for p in FORMS.glob("*.json")}
     assert on_disk == set(GOLDEN_IDS), {
         "missing": sorted(set(GOLDEN_IDS) - on_disk),
@@ -60,7 +62,7 @@ def test_golden_rows_are_ladder_valid(fixture_id: str):
 
 
 def test_golden_rows_cover_every_verdict_class():
-    """Non-vacuity: the 24 rows exercise all eight distinct verdict classes."""
+    """Non-vacuity: the 26 rows exercise all eight distinct verdict classes."""
     classes = set()
     for fixture_id in GOLDEN_IDS:
         v = _load(fixture_id)["expected"]

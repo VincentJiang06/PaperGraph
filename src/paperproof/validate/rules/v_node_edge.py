@@ -75,8 +75,8 @@ def no_supports_cycle(edges: list[dict[str, Any]]) -> tuple[bool, str]:
 
 
 def graph_record_checks(nodes: list[dict[str, Any]], edges: list[dict[str, Any]]) -> list[Failure]:
-    """V-EDGE-02 + V-GRAPH-01..03 over the whole graph (used by verify + the
-    commit-time V-COMMIT-05 post-graph check)."""
+    """V-EDGE-01/02/03/04 + V-NODE-04 + V-GRAPH-01..03 over the whole graph (used
+    by verify + the commit-time V-COMMIT-05 post-graph check)."""
     failures: list[Failure] = []
     node_claim = {n["node_id"]: n.get("claim", "") for n in nodes}
     ok, detail = no_supports_cycle(edges)
@@ -96,15 +96,49 @@ def graph_record_checks(nodes: list[dict[str, Any]], edges: list[dict[str, Any]]
         if not ok2:
             failures.append(Failure("V-EDGE-02", f"{e['edge_id']}: {detail2}"))
 
-    # V-NODE-04 (existence half — the "not rejected" half applies at the commit
-    # that APPENDS the node, and a later parent rejection must not corrupt an
-    # at-rest graph): every parent resolves to a known node id.
+    # V-EDGE-01: a non-rejected edge's endpoints must resolve to existing nodes
+    # and may not coincide (no self-loop). A rejected edge is exempt (its
+    # endpoints may since have been tombstoned/removed).
+    node_ids = set(node_claim)
+    for e in edges:
+        if e["lifecycle_state"] == "rejected":
+            continue
+        if e["source_node_id"] == e["target_node_id"]:
+            failures.append(Failure("V-EDGE-01", f"{e['edge_id']}: self-loop at {e['source_node_id']}"))
+        for ep_key in ("source_node_id", "target_node_id"):
+            if e[ep_key] not in node_ids:
+                failures.append(Failure("V-EDGE-01", f"{e['edge_id']}: endpoint {e[ep_key]} does not resolve to a node"))
+
+    # V-EDGE-03: at most one non-rejected edge per (source, target, edge_type).
+    # Recreation after a rejection (a fresh edge id) is legal because the prior
+    # is rejected; a SECOND live edge over the same triple is a duplicate.
+    seen_triples: dict[tuple[str, str, str], str] = {}
+    for e in edges:
+        if e["lifecycle_state"] == "rejected":
+            continue
+        key = (e["source_node_id"], e["target_node_id"], e["edge_type"])
+        prior = seen_triples.get(key)
+        if prior is not None:
+            failures.append(Failure(
+                "V-EDGE-03",
+                f"{e['edge_id']}: duplicate live edge of {prior} ({key[2]} {key[0]}->{key[1]})",
+            ))
+        else:
+            seen_triples[key] = e["edge_id"]
+
+    # V-NODE-04: a non-rejected node's every parent must resolve to a known node
+    # id (existence half) AND that parent must not itself be rejected — a
+    # non-rejected node may not hang off a rejected parent. (The existence half
+    # also guards an at-rest graph against a parent removed after the append.)
+    rejected_node_ids = {n["node_id"] for n in nodes if n["lifecycle_state"] == "rejected"}
     for n in nodes:
         if n["lifecycle_state"] == "rejected":
             continue
         for pid in n.get("parents") or []:
             if pid not in node_claim:
                 failures.append(Failure("V-NODE-04", f"{n['node_id']}: parent {pid} does not exist"))
+            elif pid in rejected_node_ids:
+                failures.append(Failure("V-NODE-04", f"{n['node_id']}: parent {pid} is rejected"))
 
     # V-EDGE-04 (v1 restriction, docs/02): a non-rejected refutes edge may only
     # target an alternative node.
