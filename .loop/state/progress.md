@@ -226,3 +226,15 @@ db/semantic/ + hash-pinned in model.json (NOT committed — sidesteps GitHub 100
 Cross-lingual golden (T-S5-2) gated behind model presence so the default suite passes without it.
 Network confirmed reachable (HF+PyPI HTTP 200). Deps to add: onnxruntime, numpy, pyarrow, tokenizers.
 Build S5 (m9) after S4 (m8) gates.
+
+## S5 model VENDORED-PROBE (2026-07-08): multilingual-e5-small ONNX downloaded OK.
+- model.onnx 470268510 B, sha256=ca456c06b3a9505ddfd9131408916dd79290368331e7d76bb621f1cba6bc8665
+- + tokenizer.json (17MB) + config.json. Staged at scratchpad/e5-probe/ for S5 to reuse (avoid re-download).
+- model.json pin: name="intfloat/multilingual-e5-small", weights_sha256 above, dim=384.
+
+## S5 onnx PROBE PASSED (2026-07-08) — premise validated before build:
+- onnxruntime CPU runs e5-small: inputs [input_ids, attention_mask, token_type_ids] -> [last_hidden_state];
+  embedding = mean-pool(last_hidden_state, attention_mask) then L2-normalize. e5 prefix "query:"/"passage:".
+- Cross-lingual ZH<->EN cos=0.8787 > unrelated 0.7359 (τ=0.35 floor well below both) — CJK<->EN recall WORKS.
+- DETERMINISTIC: byte-identical re-embed = True (fp32 CPU). Deps proven installable: onnxruntime, numpy, tokenizers.
+- S5 generator gets: the staged model+hash, this signature, and this proof. Build S5 after S4 gates.
