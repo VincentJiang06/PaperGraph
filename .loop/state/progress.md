@@ -3,6 +3,17 @@
 Resume point after any compaction/crash: re-read this file + contract.md + log.md.
 Do NOT trust a session summary.
 
+## >>> CURRENT STATE (2026-07-08, most recent — read the BOTTOM of this file for S4/S5 detail) <<<
+Search program build via the gated loop. Stage A (v1.1) COMPLETE + pushed: S1 (gate/m6-s1),
+S3-lite (gate/m6b), S2 (gate/m7). HEAD ~c070611, 489 green. User chose FULL build through v2.
+NOW: m8-s4-coverage-saturation generator RUNNING (worktree; supersedes m5 flat floor + docs cap
+with role-profile floors + saturation + S3 triangulation V-SRC-04; contract A44-A47).
+NEXT: m9-s5-semantic-retrieval (model = multilingual-e5-small via onnxruntime; see bottom).
+THEN: live test run on examples/topic-ai-employment.md (fresh project id, halt-and-fix).
+Roles: Orchestrator(me)=planner+driver; Generator subagent(worktree)=impl; fresh Evaluator=gate.
+Everything below this banner is OLDER history; the newest stage detail is at the FILE BOTTOM.
+
+
 ## Loop status — ACTIVE stage m6-s1-search-planning (2026-07-08)
 - Directive: complete the whole project. Search program S1-S5 (docs/13-18) is the
   remaining work; adopting + building SET-BY-SET in dependency order via the gated loop.
@@ -208,3 +219,10 @@ shipped (M0); spine walker + MSA model (M1 graph/); add FakeCompileWorker.
 
 ## Open doc issues found during build
 (none yet)
+
+## S5 (v2) DECISION (user, 2026-07-08): model = multilingual-e5-small (~470MB, 384-dim).
+Runtime = onnxruntime (deterministic fp32 CPU, NO torch). Model fetched-once into gitignored
+db/semantic/ + hash-pinned in model.json (NOT committed — sidesteps GitHub 100MB limit).
+Cross-lingual golden (T-S5-2) gated behind model presence so the default suite passes without it.
+Network confirmed reachable (HF+PyPI HTTP 200). Deps to add: onnxruntime, numpy, pyarrow, tokenizers.
+Build S5 (m9) after S4 (m8) gates.
