@@ -112,6 +112,42 @@ Triangulation (V-SRC-04) is Stage B — NOT in this stage.
 Gate (m6b): pytest green AND V-SRC-01/02/03/05 ∈ registry AND test_v_src.py present AND no weakened
 assertion. On PASS → tag gate/m6b-s3-lite-source-registry, push GitHub.
 
+## Stage m7-s2-search-orchestra (Search Program S2, adopted 2026-07-08; docs/15, worklist docs/11 §12)
+
+Wave 2 of Stage A (needs S1). Turns a DocsRequest into a WAVE: parallel per-angle
+members (each executing its S1 plan), a DETERMINISTIC merger (code, no LLM), a
+fresh adversarial coverage critic (bounded worker, closed form) — CODE computes
+the verdict over ≤2 rounds. NOTE: this worktree branched from an S1-only base
+(437 green), NOT the parent's assumed S1+S3-lite 457 — S3-lite (test_v_src.py)
+is absent here; the merge onto main must re-verify the shared-file hunks land
+alongside whatever S3 state main carries.
+
+- [x] A40 (T-S2-1) merger goldens: dup content_hash + tracking-param URL variant +
+        dup EU collapse to a deterministic merged docs_result.v2 (byte-identical on
+        re-merge); every merged doc/EU traces to a member (V-WAVE-02); canonical_url
+        strips {utm_*,gclid,fbclid,ref}+default port+fragment, collapses //, strips one
+        trailing / · test_s2_wave (contract) · m7
+- [x] A41 (T-S2-2) wave-verdict table: sufficient|followup|closed over every
+        angle_covered combo × primary × disconfirming × round; R_MAX=2 never followup
+        (no infinite loop); followup opens one member per no_attempt angle + per
+        expected_source (suggested_query→hint). CODE computes it, never the critic ·
+        test_s2_wave (contract) · m7
+- [x] A42 (T-S2-3) hostile critic smuggling documents/evidence_units ⇒ V-WAVE-03;
+        closed-enum-incomplete form + >3 expected_sources ⇒ V-WAVE-03; V-WAVE-01/04/05
+        pass+fail; FakeCriticWorker added · test_s2_wave (contract) + test_rule_coverage · m7
+- [x] A43 (T-S2-4) `docs wave --fan` fans all angles (distinct outputs; single item
+        superseded); a never-covered angle CLOSES at R_MAX recording it (no infinite
+        loop) + exactly one DRES per wave [V-WAVE-05]; all-covered ⇒ sufficient round 1;
+        non-fan ⇒ single member unchanged; verify exit 0 · test_s2_wave (integration) · m7
+- [x] A43-back  467 green (437 baseline + 30); no weakened pre-S2 assertion
+        (test_s2_docs_loop untouched; test_cli_envelope + test_rule_coverage only
+        ADDED entries); docs 15/09/10/11 amended same change · full suite · m7
+
+Gate (m7): `.venv/bin/python -m pytest -q` green AND V-WAVE-01..05 ∈ registry AND
+tests/{contract,integration}/test_s2_wave.py present AND FakeCriticWorker in
+tests/fakes/workers.py AND no weakened pre-S2 assertion. Doc-sync: any deviation
+ships the doc amendment same change. On PASS → tag gate/m7-s2-search-orchestra.
+
 ## PARALLEL BUILD STRATEGY (Stage A / v1.1)
 Wave 1 (parallel worktrees, NOW): m6-s1 + m6b-s3-lite. Integrate S1 first, then S3 (merge the ~4
 shared files: registry.py, schema registry, prompts/docs_worker.txt, docsdb ingest); gate + fresh

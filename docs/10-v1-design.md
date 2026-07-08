@@ -152,6 +152,8 @@ Global options: `--root <dir>` (default `./data`), `--project <id>` / `PAPERPROO
 | `docs build-pack` | `--task <task-id>` | assemble DocsPack; data: pack path, EU count |
 | `docs request` | `--target <id> --need <text> [--hint <h>]...` | Orchestrator-initiated DocsRequest (code appends; cache-checked like any request; NEVER counts toward the target's docs cap — r3, docs/04); data: request_id, status |
 | `docs ingest-result <file>` | `--work-item <WI>` | validate V-DR + ingest + unblock (accepts claimed/running, completing implicitly — r3, docs/05); data: assigned ids, request status |
+| `docs plan` | `--request <DR>` | compile/reprint the immutable SearchPlan for a request (S1, docs/14); byte-identical on re-emit; data: plan, plan_path |
+| `docs wave` | `--request <DR> [--fan]` | start a wave (S2, docs/15): one member per angle (each a docs_queue item + angle plan + distinct output), append search_wave.v1; `--fan` (or the DR's fan flag) fans all angles, else a single member; supersedes any pending single docs item; data: wave_id, members |
 | `queue list` | `[--queue --status]` | data: items (commit_queue = derived view of validated) |
 | `queue claim` | `--queue <q> --agent <name> [--id <WI>]` | lease + claim-time manifest; without --id, picks the claimable item with the lowest work_item_id (FIFO); data: work item incl. bundle + output paths |
 | `queue heartbeat <WI>` | `--agent` | extend lease |

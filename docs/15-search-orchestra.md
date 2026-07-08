@@ -1,6 +1,7 @@
 # 15 S2 — Search Orchestra (waves, merger, coverage critic)
 
-**Status: design-frozen (Stage A). Binding only after a docs/00 adoption entry.**
+**Status: ADOPTED / BINDING (Stage A, S2) — docs/00 "Search Program Adoption —
+S2 Search Orchestra (2026-07-08)"; worklist docs/11 §12 T-S2-1..4.**
 
 One worker per request serializes angles and lets whatever that worker didn't
 think of stay unsearched forever. S2 turns a request into a **wave**: parallel
@@ -32,7 +33,7 @@ Distinct outputs ⇒ members run fully parallel (docs/05 rules).
   "request_id": "DR-006",
   "project_id": "ai-jobs",
   "round": 1,
-  "members": [{"angle": "official_stats", "work_item_id": "WI-000016", "plan_id": "SP-DR-006-official_stats"}],
+  "members": [{"angle": "official_stats", "work_item_id": "WI-000016", "plan_id": "SP-DR-006-official_stats", "round": 1, "origin": null}],
   "status": "open",
   "created_at": "…"
 }
@@ -40,6 +41,12 @@ Distinct outputs ⇒ members run fully parallel (docs/05 rules).
 
 `status` enum: `open | merging | critic | followup | closed`. Updates append
 full records (latest-per-id, as everywhere).
+
+Each member also carries `round` (the round it was opened in; the initial fan is
+round 1) and `origin` — null for round-1 members, and for a follow-up member the
+gap it repairs (`angle:<name>` or `expected_source:<name>`). Both operationalize
+V-WAVE-04 (a follow-up member must cite its origin *in the wave record*, and a
+follow-up is identifiable by round > 1).
 
 ## Merger (code, deterministic — runs when every member is terminal)
 
@@ -57,7 +64,20 @@ full records (latest-per-id, as everywhere).
 Same member set ⇒ byte-identical merged file.
 ```
 
+The merged result is code-produced from already-validated members, so its ingest
+runs V-DR (a corruption guard) but NOT V-SP: the query-plan accounting is a
+per-member check (each member validated against its own SP-DR-x-<angle> plan at
+`complete_member`). The merged query_log is the concatenation of the members'
+query_logs, so a fully-empty (not_found) merge still carries a non-empty search
+record for V-DR-06.
+
 ## Coverage critic (fresh context, adversarial, read-only)
+
+The critic is a **distinct bounded worker** (fresh context, adversarial,
+read-only): the same maker/checker separation as ProofWorker/DocsWorker. It
+rides its own `critic_queue` (WorkItem target_type=`wave`), its output lands in
+`agent_outputs/coverage_reports/`, and it is validated (V-WAVE-03) then
+committed like any other worker output — no evidence is written.
 
 The critic never searches and never adds evidence. It reads: the claim, the
 plans, the merged result, the per-member query_logs — and fills a closed form:
@@ -113,9 +133,24 @@ CLI      docs wave --request <DR-id> [--fan]; queue list shows wave grouping
 Schemas  search_wave.v1, coverage_report.v1, docs_request.v1 + fan flag
 Roles    the critic is a distinct bounded worker (fresh context, adversarial)
          — same maker/checker separation as everywhere else in the system
-Storage  docs/waves.jsonl, docs/merged/
+Storage  docs/waves.jsonl, docs/merged/, agent_outputs/coverage_reports/;
+         work_item.v1 queue_name gains `critic_queue`, target_type gains `wave`
 Tests    T-S2-1 merger goldens (dup content_hash, tracking params, dup EUs)
          T-S2-2 verdict computation table (every angle_covered combination)
          T-S2-3 hostile critic (smuggles evidence_units ⇒ V-WAVE-03)
          T-S2-4 R_MAX close with uncovered angle recorded, no infinite loop
+```
+
+## Operationalization (S2 build — pinned here per CLAUDE.md doc-sync)
+
+```text
+* `docs wave --request <DR> [--fan]` STARTS the wave (members + wave record);
+  the merge → critic → verdict rounds are driven by code (deterministic merger +
+  verdict; the bounded critic is the only LLM). A wave supersedes any pending
+  single docs item for the DR (cancelled) so the wave owns the search.
+* WaveMember carries `round` + `origin` (see the wave record above).
+* The critic rides `critic_queue` (target_type=`wave`); its coverage_report.v1
+  lands in agent_outputs/coverage_reports/ and is V-WAVE-03-validated.
+* `fan=false` (reactive/`docs request`) runs as a single official_stats member —
+  the pre-S2 single-search behaviour, unchanged.
 ```

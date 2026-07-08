@@ -391,3 +391,36 @@ T-S3-back  no regression (399 baseline + S1): document.v2 + registry learning mu
         (triangulation) is Stage B — NOT built now; msa-check/freeze floors are
         unchanged from m5 until S4.
 ```
+
+S2 (Search Orchestra, Stage A; docs/15, adopted 2026-07-08) — worklist:
+
+```text
+T-S2-1  merger goldens: crafted per-angle member results with (a) a duplicate
+        content_hash across members, (b) a tracking-param URL variant that
+        canonicalizes onto another member's page, (c) a duplicate EU (same doc,
+        same normalized quote) collapse to the deterministic merged
+        docs_result.v2 — byte-identical on re-merge of the same member set; every
+        merged document/EU traces to a member (V-WAVE-02). canonical_url strips
+        the frozen tracking list + default port + fragment, collapses duplicate
+        slashes, strips one trailing slash.
+T-S2-2  wave-verdict computation table: sufficient / followup / closed over the
+        angle_covered combinations + primary_source_present + disconfirming +
+        round; R_MAX=2 is never `followup` (no infinite loop); the follow-up
+        round opens one member per no_attempt angle + one per expected_source
+        (suggested_query → hint). CODE computes the verdict; the critic never does.
+T-S2-3  hostile critic: a coverage_report smuggling documents/evidence_units is
+        rejected with V-WAVE-03 (read-only); a closed-enum-incomplete form and
+        >3 expected_sources also fire V-WAVE-03. Distinct member paths (V-WAVE-01),
+        round cap + follow-up origin (V-WAVE-04), one DRES (V-WAVE-05) each have
+        pass+fail assertions; a FakeCriticWorker joins tests/fakes/workers.py.
+T-S2-4  `docs wave --fan` fans a DocsRequest into one member per angle (distinct
+        outputs; the pre-existing single docs item is superseded); a wave that
+        never covers an angle CLOSES at R_MAX recording the uncovered angle (no
+        infinite loop) and ingests exactly ONE merged result (one DRES per wave);
+        an all-covered wave is sufficient in round 1. `verify` exits 0 throughout.
+T-S2-back  the 437-green pre-S2 suite stays green: a non-fan reactive request
+        still runs as a single member unchanged; the S2 docs loop / cache / cap
+        (test_s2_docs_loop) is untouched; the rule-coverage meta-test stays green
+        (SCENARIO_COVERED or vrules per V-WAVE rule). Baseline in this worktree
+        was S1-only (437), not the parent's assumed S1+S3-lite 457.
+```

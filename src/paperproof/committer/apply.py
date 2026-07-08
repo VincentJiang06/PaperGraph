@@ -423,6 +423,7 @@ def _plan_needs_docs(paths, plan, vr, target, target_type, pr_id, commit_id, def
             "fingerprint": fp,
             "status": "fulfilled" if hit else "open",
             "fulfilled_by": "cache" if hit else None, "created_at": clock_now(),
+            "fan": False,  # reactive needs_docs requests default single (docs/15)
         }
         plan.graph_appends.append((DOCS_REQUESTS, record))
         plan._action("docs_request", dr_id, {"target_id": tgt_id, "status": record["status"]})

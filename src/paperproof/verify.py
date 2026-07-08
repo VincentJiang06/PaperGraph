@@ -28,7 +28,8 @@ from .validate.rules import v_commit, v_node_edge, v_q
 _JSONL_FILES = (
     "graph/logic_nodes.jsonl", "graph/logic_edges.jsonl", "graph/tombstones.jsonl",
     "graph/snapshots.jsonl", "proof/proof_results.jsonl", "docs/documents.jsonl",
-    "docs/evidence_units.jsonl", "docs/docs_requests.jsonl", "queue/work_items.jsonl",
+    "docs/evidence_units.jsonl", "docs/docs_requests.jsonl", "docs/waves.jsonl",
+    "queue/work_items.jsonl",
     "queue/events.jsonl", "commit/commit_decisions.jsonl", "freeze/frozen_items.jsonl",
     "compiler/dry_runs.jsonl", "compiler/draft_maps.jsonl", "audit/audit_reports.jsonl",
 )

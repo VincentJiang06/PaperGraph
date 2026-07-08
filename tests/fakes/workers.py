@@ -125,8 +125,13 @@ class FakeDocsWorker:
         # The real DocsWorker now EMITS docs_result.v2 with a query_log accounting
         # for every planned qid (docs/14). When the immutable plan is attached at
         # dispatch, the fake mirrors that; with no plan it falls back to v1 (still
-        # ingestible — the schema registry keeps v1 readable).
-        plan_file = project_root / "docs" / "plans" / f"SP-{request_id}.json"
+        # ingestible — the schema registry keeps v1 readable). A wave member's item
+        # names its ANGLE plan via task_id (SP-<DR>-<angle>) — prefer it (docs/15).
+        task_plan = work_item.get("task_id")
+        if task_plan and str(task_plan).startswith("SP-"):
+            plan_file = project_root / "docs" / "plans" / f"{task_plan}.json"
+        else:
+            plan_file = project_root / "docs" / "plans" / f"SP-{request_id}.json"
         if plan_file.exists() and spec.get("force_v1") is not True:
             plan = json.loads(plan_file.read_text(encoding="utf-8"))
             result = {"schema_version": "docs_result.v2", **base,
@@ -208,6 +213,88 @@ class FakeCompileWorker:
         out = project_root / work_item["output_files"][0]
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(text, encoding="utf-8")
+
+
+class FakeCriticWorker:
+    """Scripted coverage-critic stand-in (docs/15, docs/11 §5).
+
+    The critic is a FRESH, adversarial, READ-ONLY worker: same maker/checker
+    separation as FakeDocsWorker/FakeProofWorker. It reads a critic_queue item
+    (target_id = wave_id), and writes a schema-valid coverage_report.v1 at the
+    declared output path. It NEVER writes documents or evidence_units — code
+    computes the wave verdict from its closed form.
+
+    The script maps ``wave_id`` (or "*") -> either a single form spec or, for
+    multi-round waves, a LIST consumed one form per round. Each spec provides
+    ``form`` (angle_covered/primary_source_present/disconfirming_captured),
+    optional ``expected_sources`` (<=3) and ``notes``. A ``hostile`` key emits
+    the smuggled documents/evidence_units V-WAVE-03 must reject.
+    """
+
+    def __init__(self, script: dict[str, Any], mode: str = "script") -> None:
+        self.script = script
+        self.mode = mode
+        self._counts: dict[str, int] = {}
+
+    def run(self, work_item: dict[str, Any], project_root: Path) -> None:
+        if self.mode == "crash":
+            return
+        wave_id = work_item["target_id"]
+        entry = self.script.get(wave_id) or self.script.get("*") or {}
+        if isinstance(entry, list):
+            idx = min(self._counts.get(wave_id, 0), len(entry) - 1)
+            self._counts[wave_id] = self._counts.get(wave_id, 0) + 1
+            spec = dict(entry[idx])
+        else:
+            spec = dict(entry)
+        report: dict[str, Any] = {
+            "schema_version": "coverage_report.v1",
+            "wave_id": wave_id,
+            "form": spec["form"],
+            "expected_sources": spec.get("expected_sources", []),
+            "notes": spec.get("notes", "scripted critic"),
+        }
+        if spec.get("hostile") == "smuggle_evidence":
+            report["documents"] = [{"title": "sneaked"}]
+            report["evidence_units"] = [{"quote_or_paraphrase": "sneaked evidence"}]
+        out = project_root / work_item["output_files"][0]
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(report, ensure_ascii=False), encoding="utf-8")
+
+
+def drive_wave(paths, request_id, fan, docs_worker: FakeDocsWorker, critic_worker: FakeCriticWorker,
+               max_rounds: int = 8, actor: str = "test") -> dict[str, Any]:
+    """Drive a whole wave to closure (docs/15): start it, then for each round
+    drain the member docs items (validate-only; no per-member ingest), merge,
+    dispatch + run the critic, and let CODE compute the verdict — ingesting the
+    merged result once at closure or opening a bounded follow-up round.
+
+    Returns {wave_id, rounds, verdict, status, dres_id?}.
+    """
+    from paperproof.docsdb import wave as wave_mod
+
+    started = wave_mod.start_wave(paths, request_id, fan=fan, actor=actor)
+    wave_id = started["wave_id"]
+    last: dict[str, Any] = {"wave_id": wave_id}
+    for _ in range(max_rounds):
+        wave = wave_mod.wave_by_id(paths, wave_id)
+        # drain this wave's member docs items (validate, commit; NOT ingest)
+        member_ids = {m["work_item_id"] for m in wave["members"]}
+        engine.run_sweeps(paths, actor)
+        for item in engine.load_items(paths):
+            if item["work_item_id"] in member_ids and engine.is_claimable(paths, item):
+                claimed = engine.claim(paths, queue_name="docs_queue", agent="docs-w", wi_id=item["work_item_id"])
+                docs_worker.run(claimed, paths.project_dir)
+                wave_mod.complete_member(paths, wave_id, claimed["work_item_id"], actor)
+        # merge + critic + verdict
+        wave_mod.merge(paths, wave_id)
+        critic_item = wave_mod.open_critic(paths, wave_id, actor)
+        critic_claimed = engine.claim(paths, queue_name="critic_queue", agent="critic-w", wi_id=critic_item["work_item_id"])
+        critic_worker.run(critic_claimed, paths.project_dir)
+        last = wave_mod.resolve_critic(paths, wave_id, critic_claimed["work_item_id"], actor)
+        if last.get("status") == "closed":
+            break
+    return {"wave_id": wave_id, **last}
 
 
 def _paths_from_root(project_root: Path, project_id: str) -> Paths:

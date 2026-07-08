@@ -577,6 +577,16 @@ def docs_plan(ctx: typer.Context, request: str = typer.Option(..., "--request"))
     _dispatch("docs plan", lambda: _docs.plan(_project_paths(s), request))
 
 
+@docs_app.command("wave")
+def docs_wave(
+    ctx: typer.Context,
+    request: str = typer.Option(..., "--request"),
+    fan: bool = typer.Option(False, "--fan"),
+) -> None:
+    s = _state(ctx)
+    _dispatch("docs wave", lambda: _docs.wave(_project_paths(s), request, fan))
+
+
 app.add_typer(docs_app, name="docs")
 
 

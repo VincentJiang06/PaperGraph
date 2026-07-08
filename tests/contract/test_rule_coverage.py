@@ -50,6 +50,11 @@ SCENARIO_COVERED = {
     "V-COMMIT-04": "test_v_commit.py (replay.replay_reproduces per row)",
     "V-COMMIT-05": "test_v_commit.py (post-graph V-GRAPH checks) + verify",
     "V-COMMIT-06": "test_v_commit.py::test_v_commit_06_noop_cancel",
+    "V-WAVE-01": "test_s2_wave.py::test_wave_member_paths_distinct (pass+fail)",
+    "V-WAVE-02": "test_s2_wave.py::test_merge_* (goldens + determinism + traceability fail)",
+    "V-WAVE-03": "test_s2_wave.py::test_critic_* (closed-enum complete; smuggled evidence rejected)",
+    "V-WAVE-04": "test_s2_wave.py::test_wave_rounds_* (round cap + follow-up origin)",
+    "V-WAVE-05": "test_s2_wave.py::test_single_dres_* + test_wave_rmax_close",
 }
 
 

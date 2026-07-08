@@ -232,6 +232,23 @@ V-SP-04  not_found=true requires every entry executed|blocked and 0 productive
 V-SP-05  the plan file referenced by the result exists and matches request_id
 ```
 
+### V-WAVE (search orchestra — S2, docs/15; checked across the wave lifecycle)
+
+```text
+V-WAVE-01  a wave's member outputs are pairwise-distinct declared paths
+V-WAVE-02  merger determinism: the same terminal member set ⇒ a byte-identical
+           merged result; every merged document/EU traces to exactly one member
+V-WAVE-03  the critic's coverage form is closed-enum complete for every mandatory
+           angle; expected_sources ≤3 per round; the critic's output contains NO
+           documents/evidence_units (read-only — same maker/checker separation as
+           ProofWorker/DocsWorker)
+V-WAVE-04  rounds ≤ 2 (R_MAX); every follow-up member (round > 1) cites its
+           origin (`angle:<name>` gap or `expected_source:<name>`) in the wave
+           record
+V-WAVE-05  only the merged result is ingested — exactly one DRES per wave
+           (per-member results stay in agent_outputs as provenance)
+```
+
 ### V-COMMIT
 
 ```text

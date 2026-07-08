@@ -8,7 +8,9 @@ from pydantic import BaseModel
 
 from ._common import STRICT
 
-QueueName = Literal["proof_queue", "docs_queue", "compile_queue"]
+# critic_queue (docs/15 — S2): the coverage critic is a distinct bounded worker
+# (fresh context, adversarial, read-only), so it rides its own queue.
+QueueName = Literal["proof_queue", "docs_queue", "compile_queue", "critic_queue"]
 WorkStatus = Literal[
     "queued", "claimed", "running", "validating", "validated", "committed",
     "blocked", "stale", "failed", "dead", "cancelled",
@@ -37,7 +39,7 @@ class WorkItem(BaseModel):
     project_id: str
     queue_name: QueueName
     status: WorkStatus
-    target_type: Literal["node", "edge", "request", "gap", "section"]
+    target_type: Literal["node", "edge", "request", "gap", "section", "wave"]
     target_id: str
     task_id: Optional[str]
     bundle: Optional[dict[str, Any]]
