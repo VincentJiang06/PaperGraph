@@ -64,3 +64,54 @@ grades THIS, not the raw spec. Each assertion is machine-gradable unless marked
 Gate (m5): PASS — 399 green (386 baseline +13), independently re-run by a fresh adversarial
 Evaluator; all 5 probes reproduced with its own fixtures; weakened-test audit clean. F1
 (docs/05 stale on the docs implicit-complete path) reconciled by the Orchestrator before tagging.
+GATE PASSED, tagged gate/m5-r3-behavior, pushed to GitHub.
+
+## Stage m6-s1-search-planning (Search Program S1, adopted 2026-07-08; docs/14, worklist docs/11 §12)
+
+First set of the search program's Stage A (v1.1). Makes evidence search ACCOUNTABLE:
+code compiles a deterministic SearchPlan; the worker accounts for every planned query.
+Baseline: 399 green @ gate/m5-r3-behavior. Blast radius includes the core docs schema
+(docs_result v1→v2) — back-compat is a graded assertion.
+
+- [ ] A33 (T-S1-1) plan compiler is deterministic & doc-faithful: a fixed DocsRequest need +
+        target/contract scope compiles to a BYTE-EXACT search_plan.v1 (golden under the
+        determinism harness), incl. a CJK need; facets (core/scope/counter_terms) and per-angle
+        query templates exactly per docs/14; the counter query is present in EVERY plan · golden test · m6
+- [ ] A34 (T-S1-2) V-SP-01..05 registered + covered (pass_+fail_ each): unaccounted qid,
+        skipped counter, docs_taken>urls_seen, dishonest not_found, unresolved plan ref;
+        docs_result.v2 (query_log) round-trips; a v1 result still validates against v1 · test_v_sp + rule_coverage · m6
+- [ ] A35 (T-S1-3) hostile worker fabricating outcome counts rejected with V-SP-03; `docs plan
+        --request <DR>` emits the compiled plan and re-emits byte-identically · test_v_sp + cli · m6
+- [ ] A36 (T-S1-back) NO REGRESSION: all 399 prior tests stay green (or migrate to v2 with the
+        SAME assertion strength — never weakened); the DocsWorker dispatch path attaches a
+        compiled plan; V-DR/ingest/cache/S2/S3 docs flows intact · full suite + evaluator diff · m6
+
+Gate (m6): `.venv/bin/python -m pytest -q` green AND V-SP-01..05 ∈ registry AND
+tests/contract/test_v_sp.py present AND no weakened pre-S1 docs assertion. Doc-sync:
+any deviation ships the doc amendment same change. On PASS → tag gate/m6-s1-search-planning, push GitHub.
+
+## Stage m6b-s3-lite-source-registry (Search Program S3-lite, adopted 2026-07-08; docs/16, worklist docs/11 §12)
+
+Runs in PARALLEL with m6-s1 (worktree-isolated). Source tiers + fetch recipes + provenance;
+durable memory of where evidence lives and how to fetch it. Baseline 399 @ gate/m5-r3-behavior.
+Coupling: `blocked_direct` learning reads S1's query_log — code it defensively; reconcile at merge.
+Triangulation (V-SRC-04) is Stage B — NOT in this stage.
+
+- [ ] A37 (T-S3-1/2) ingest LEARNS a SourceProfile per domain: blocked_direct + workaround from a
+        blocked query_log entry; tier via the fixed source_type→tier table (golden); updates are
+        appends (latest-per-domain), silent tier-lowering rejected (V-SRC-03) · test_v_src · m6b
+- [ ] A38 (T-S3-4) provenance on every ingested doc (retrieved_at, fetch_method∈enum, tier∈enum)
+        [V-SRC-01]; secondary_quote names an existing quoted_via carrier, dangling ⇒ V-SRC-02;
+        dispatch registry excerpt = all T1 + facet-domain matches [V-SRC-05]; document.v2 round-trips,
+        v1 still validates v1 · test_v_src + rule_coverage · m6b
+- [ ] A39 (T-S3-back) NO REGRESSION (399 + S1): document.v2 + `docs source list|set` CLI + registry
+        prompt block added without weakening any ingest/V-DR/cascade assertion; V-SRC-04 NOT built;
+        msa/freeze floors unchanged from m5 · full suite + evaluator diff · m6b
+
+Gate (m6b): pytest green AND V-SRC-01/02/03/05 ∈ registry AND test_v_src.py present AND no weakened
+assertion. On PASS → tag gate/m6b-s3-lite-source-registry, push GitHub.
+
+## PARALLEL BUILD STRATEGY (Stage A / v1.1)
+Wave 1 (parallel worktrees, NOW): m6-s1 + m6b-s3-lite. Integrate S1 first, then S3 (merge the ~4
+shared files: registry.py, schema registry, prompts/docs_worker.txt, docsdb ingest); gate + fresh
+Evaluator per set. Wave 2: m7-s2 (needs S1). Then Stage A done → user fork on S4(v1.2)/S5(v2).

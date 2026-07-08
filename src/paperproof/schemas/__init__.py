@@ -15,9 +15,11 @@ from .docs import (
     DocsPack,
     DocsRequest,
     DocsResult,
+    DocsResultV2,
     Document,
     EvidenceUnit,
 )
+from .search import SearchPlan
 from .freeze import FreezeItem
 from .graph import (
     ExpansionProposal,
@@ -46,6 +48,8 @@ REGISTRY: dict[str, type[BaseModel]] = {
     "evidence_unit.v1": EvidenceUnit,
     "docs_request.v1": DocsRequest,
     "docs_result.v1": DocsResult,
+    "docs_result.v2": DocsResultV2,
+    "search_plan.v1": SearchPlan,
     "docs_pack.v1": DocsPack,
     "work_item.v1": WorkItem,
     "queue_event.v1": QueueEvent,

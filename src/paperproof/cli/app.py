@@ -571,6 +571,12 @@ def docs_ingest_result(ctx: typer.Context, file: str = typer.Argument(...), work
     _dispatch("docs ingest-result", lambda: _docs.ingest_result(_project_paths(s), file, work_item))
 
 
+@docs_app.command("plan")
+def docs_plan(ctx: typer.Context, request: str = typer.Option(..., "--request")) -> None:
+    s = _state(ctx)
+    _dispatch("docs plan", lambda: _docs.plan(_project_paths(s), request))
+
+
 app.add_typer(docs_app, name="docs")
 
 

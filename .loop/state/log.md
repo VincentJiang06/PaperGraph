@@ -37,3 +37,7 @@
 ## [2026-07-08] m5-eval | fresh Evaluator PASS: 399 re-run clean, 5 probes reproduced with own fixtures, weakened-test audit clean, T-r3-7 docs-path sound; F1 = docs/05 stale on docs implicit-complete path
 ## [2026-07-08] m5-f1 | Orchestrator reconciled docs/05 §Validation Gate + complete row (validate result=proof, docs ingest-result=docs, validate docs-result=dry check); 399 still green
 ## [2026-07-08] m5-gate | GATE PASS; code now fully caught up to spec r3; tagging gate/m5-r3-behavior
+## [2026-07-08] m5-push | pushed main 6072f39..4e5860a + tag gate/m5-r3-behavior to GitHub origin (VincentJiang06/PaperGraph)
+## [2026-07-08] m6-adopt | user directive: complete whole project. Adopted search program S1 (docs/00 entry, docs/14 status→binding, docs/11 §12 worklist). Building set-by-set: m6=S1, m7=S2, m8=S3-lite (Stage A/v1.1); S4/S5 scope fork deferred to Stage A gate.
+## [2026-07-08] m6-start | stage m6-s1-search-planning planned (A33-A36); baseline 399 @ gate/m5-r3-behavior; key risk docs_result v1->v2; dispatching Generator (Opus/high)
+## [2026-07-08] m6-parallel | user: go faster w/ parallel subagents. Read docs/17(S4)/18(S5): S4 supersedes m5 flat floor (v1.2), S5 needs vendored embedding model (v2 escalation). Target = Stage A (S1+S2+S3-lite, v1.1, no new deps). Adopted S3-lite (docs/00,16,11). Wave 1 = S1 || S3-lite in worktrees; Wave 2 = S2; then S4/S5 fork to user.

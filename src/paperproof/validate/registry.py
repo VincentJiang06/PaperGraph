@@ -10,11 +10,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .envelope import Failure, to_envelope
-from .rules import v_commit, v_dr, v_exp, v_path, v_pr, v_q, v_spec, v_sweep, v_task
+from .rules import v_commit, v_dr, v_exp, v_path, v_pr, v_q, v_sp, v_spec, v_sweep, v_task
 
 __all__ = [
     "Failure", "to_envelope", "RULES", "rule_ids",
-    "v_spec", "v_path", "v_pr", "v_dr", "v_exp", "v_task", "v_q", "v_commit", "v_sweep",
+    "v_spec", "v_path", "v_pr", "v_dr", "v_exp", "v_task", "v_q", "v_commit", "v_sweep", "v_sp",
 ]
 
 
@@ -64,7 +64,12 @@ RULES: dict[str, Rule] = {
         _rule("V-DR-03", "no verdict/strength/lifecycle/worker-authored id fields"),
         _rule("V-DR-04", "document source_type enum + origin; web has inline text"),
         _rule("V-DR-05", "kind=quote => quote_match against archived text"),
-        _rule("V-DR-06", "not_found => empty lists + non-empty search_log"),
+        _rule("V-DR-06", "not_found => empty lists + non-empty search_log (v1) / query_log (v2)"),
+        _rule("V-SP-01", "every plan qid accounted once; executed=false only with blocked+note"),
+        _rule("V-SP-02", "the plan's counter query was executed or blocked, never skipped"),
+        _rule("V-SP-03", "docs_taken <= urls_seen; documents present => a productive entry"),
+        _rule("V-SP-04", "not_found => every entry executed|blocked and none productive"),
+        _rule("V-SP-05", "the referenced plan file exists and matches request_id"),
         _rule("V-EXP-01", "lane previous layer fully committed"),
         _rule("V-EXP-02", "based_on_snapshot current (whole graph)"),
         _rule("V-EXP-03", "<=12 nodes; layer = lane frontier + 1"),

@@ -16,7 +16,7 @@ from ..paths import Paths
 from ..queue import engine
 from ..schemas.docs import DocsPack
 from ..store import jsonl
-from . import cache, ingest, matcher, pack
+from . import cache, ingest, matcher, pack, planner
 
 DOCS_REQUESTS = "docs/docs_requests.jsonl"
 
@@ -81,7 +81,19 @@ def request(paths: Paths, target_id: str, need: str, hints: list[str] | None, ac
     output = f"agent_outputs/docs_results/{dr_id}.docs_result.json"
     item = engine.enqueue(paths, queue_name="docs_queue", target_type="request", target_id=dr_id,
                           output_files=[output], actor=actor)
+    # Dispatch attaches the compiled plan as an immutable bundle artifact (docs/14).
+    planner.plan_for_request(paths, dr_id)
     return {"request_id": dr_id, "status": "open", "fulfilled_by": None, "work_item_id": item["work_item_id"]}
+
+
+def plan(paths: Paths, request_id: str) -> dict[str, Any]:
+    """`docs plan --request <DR>`: compile (or reprint) the immutable SearchPlan
+    for a DocsRequest and emit it. A second call is byte-identical (docs/14)."""
+    req = jsonl.latest_by_id(paths.resolve(DOCS_REQUESTS), "request_id").get(request_id)
+    if req is None:
+        raise DomainError([f"docs request not found: {request_id}"])
+    plan_obj = planner.plan_for_request(paths, request_id)
+    return {"plan": plan_obj, "plan_path": planner.plan_relpath(request_id)}
 
 
 def ingest_result(paths: Paths, file_path: str, work_item: str) -> dict[str, Any]:

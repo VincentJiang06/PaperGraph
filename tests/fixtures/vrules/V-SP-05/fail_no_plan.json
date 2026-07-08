@@ -1,0 +1,49 @@
+{
+  "result": {
+    "schema_version": "docs_result.v2",
+    "request_id": "DR-001",
+    "project_id": "p4-ldi",
+    "documents": [
+      {
+        "title": "T",
+        "source_type": "official_report",
+        "origin": {
+          "kind": "web",
+          "path": null,
+          "url": "https://example.org"
+        },
+        "citation_key": "K",
+        "text": "full text"
+      }
+    ],
+    "evidence_units": [],
+    "not_found": false,
+    "query_log": [
+      {
+        "qid": "Q1",
+        "executed": true,
+        "outcome": "productive",
+        "urls_seen": 6,
+        "docs_taken": 1,
+        "note": ""
+      },
+      {
+        "qid": "Q2",
+        "executed": true,
+        "outcome": "empty",
+        "urls_seen": 3,
+        "docs_taken": 0,
+        "note": ""
+      },
+      {
+        "qid": "Q3",
+        "executed": true,
+        "outcome": "empty",
+        "urls_seen": 2,
+        "docs_taken": 0,
+        "note": ""
+      }
+    ]
+  },
+  "plan": null
+}

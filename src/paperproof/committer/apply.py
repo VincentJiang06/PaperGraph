@@ -525,12 +525,18 @@ def _wire_bridges(paths: Paths, plan: _CommitPlan, op: dict[str, Any], actor: st
 
 
 def _wire_docs(paths: Paths, plan: _CommitPlan, op: dict[str, Any], actor: str) -> None:
+    from ..docsdb import planner as docs_planner  # local: avoid import cycle
+
     docs_wis: list[str] = []
     for dr_id in op["miss_dr_ids"]:
         output = f"agent_outputs/docs_results/{dr_id}.docs_result.json"
         item = engine.enqueue(paths, queue_name="docs_queue", target_type="request", target_id=dr_id,
                               output_files=[output], actor=actor)
         plan._action("enqueue", item["work_item_id"], {"queue": "docs_queue", "target": dr_id})
+        # Dispatch attaches the compiled plan as an immutable bundle artifact
+        # (docs/14). It is NOT a graph mutation and not tracked in the
+        # CommitDecision — same input+snapshot still yields identical decisions.
+        docs_planner.plan_for_request(paths, dr_id)
         docs_wis.append(item["work_item_id"])
     reproof = engine.enqueue(paths, queue_name="proof_queue", target_type=op["target_type"], target_id=op["target_id"], blocked_by=docs_wis, actor=actor)
     plan._action("enqueue", reproof["work_item_id"], {"queue": "proof_queue", "target": op["target_id"], "reproof": True})

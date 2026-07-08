@@ -6,6 +6,13 @@ Need: {need}    Hints: {search_hints}
 Search docs/raw/ (user-provided sources — reading it is part of your task
 inputs) first, then the web if available.
 
+THE PLAN ({plan_id}, immutable): execute EVERY query in the attached SearchPlan.
+Account for each qid in query_log exactly once: {qid, executed, outcome ∈
+productive|empty|blocked|offtopic, urls_seen, docs_taken, note}. A query you could
+not run is executed=false, outcome=blocked, with a reason in note (never silently
+skip one). The plan's counter query is MANDATORY — run it or record it blocked.
+Extra queries you run beyond the plan are welcome; log them with qid "X1", "X2"…
+
 For each useful source add a documents[] entry: {title, source_type ∈
 peer_reviewed|official_report|working_paper|news|dataset|user_notes,
 origin {kind: user_provided|web, path or url}, citation_key, and for web
@@ -17,8 +24,9 @@ cannot_cite_for (≥1), scope {period?, region?}}.
 
 Quotes must be verbatim from the source. Never invent sources or quotes. Never
 judge graph claims — no verdict/strength/lifecycle language. You assign NO ids.
-If nothing usable exists: not_found=true, empty lists, and record search_log
-(the queries you actually ran) — an honest not_found beats a stretched source.
+If nothing usable exists: not_found=true, empty lists, and a query_log whose
+every entry is executed or blocked with none productive — an honest not_found
+beats a stretched source.
 
 Coverage (r3): target 2-5 documents and 4-10 evidence units — one thin source
 for a claim with a live literature is under-searched. DISCONFIRMING DUTY: if
@@ -28,5 +36,6 @@ official-statistics sites often block automated fetches (403) — fall back to
 mirrors, archived copies, or secondary sources quoting the primary figures,
 and extract PDF text locally (e.g. pdftotext) rather than abandoning the angle.
 
-Write docs_result.v1 JSON to {output_file}. Allowed writes: {output_file},
-agent_notes/**. Then stop. Your chat text is discarded.
+Write docs_result.v2 JSON (documents, evidence_units, not_found, query_log) to
+{output_file}. Allowed writes: {output_file}, agent_notes/**. Then stop. Your
+chat text is discarded.

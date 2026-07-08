@@ -3,7 +3,48 @@
 Resume point after any compaction/crash: re-read this file + contract.md + log.md.
 Do NOT trust a session summary.
 
-## Loop status — stage m5-r3-behavior COMPLETE (2026-07-08), gate PASS
+## Loop status — ACTIVE stage m6-s1-search-planning (2026-07-08)
+- Directive: complete the whole project. Search program S1-S5 (docs/13-18) is the
+  remaining work; adopting + building SET-BY-SET in dependency order via the gated loop.
+  Adopted S1 (docs/00 entry + docs/11 §12). NOW building S1 as stage m6-s1. Contract A33–A36.
+- Sequence: m6=S1 → m7=S2 → m8=S3-lite  (= Stage A / v1.1, fixes VOLUME) → then the
+  v1.2 (S4) / v2 (S5) SCOPE FORK goes to the user (raise it at the Stage A gate).
+- Baseline: 399 green @ gate/m5-r3-behavior (pushed GitHub). Roles unchanged.
+- S1 KEY RISK: docs_result v1→v2 (query_log replaces search_log) touches the core docs
+  pipeline the 399 tests exercise — back-compat / no-weakening is graded (A36).
+
+## ACTIVE STAGE — m6-s1-search-planning (build plan for the Generator)
+Pattern plan_execute_verify; cap 3; on_failure=restart-from-baseline. Docs: docs/14 (S1
+spec, now binding), docs/09 §0 (tokens/CJK), docs/11 §12 (worklist), docs/08 (bundle
+contract), docs/00 adoption entry. Grade A33–A36.
+
+Build order:
+1. Schemas: `search_plan.v1` (new) + `docs_result.v2` (query_log replaces search_log) in
+   src/paperproof/schemas/; register both (registry keeps v1 readable). extra=forbid.
+2. Plan compiler (deterministic, NO LLM) per docs/14 §"plan compiler": facets.core_terms
+   (≤6 highest-freq non-stopword need tokens, tie=first-occurrence, minus scope tokens);
+   facets.scope_terms (period + casefolded region, target scope else contract); frozen
+   counter_terms; per-angle query templates in fixed order, dedup, cap stop.max_queries;
+   ANGLE_SUFFIX table; counter query MANDATORY every plan. Same request ⇒ byte-identical
+   (use textutil ONLY for tokens; golden-test).
+3. Storage + CLI: write immutable docs/plans/SP-<request>.json; `docs plan --request <DR>`
+   emits/reprints (option on existing `docs` group — NOT a new command family; keep the
+   docs/10 §4 closed surface — if a genuinely new command is needed, ESCALATE).
+4. Rules V-SP-01..05 (new module validate/rules/v_sp.py + registry); wire into the docs
+   validate path (validate docs-result / docs ingest-result). Re-express V-DR-06 for v2
+   (query_log non-empty) while a v1 result still checks search_log.
+5. Worker wiring: the DocsWorker dispatch attaches the compiled plan; prompts/docs_worker.txt
+   gains the "execute every planned query; account each qid; blocked needs a reason; extras
+   as X-ids" block (doc-synced with docs/14).
+6. Tests: T-S1-1 compiler goldens (incl. CJK), T-S1-2 V-SP pass_/fail_ fixtures +
+   docs_result.v2 round-trip, T-S1-3 hostile fabricated-counts + CLI reprint determinism.
+   T-S1-back: keep all 399 prior green; migrate docs_result fixtures to v2 ONLY with equal
+   assertion strength; add SCENARIO_COVERED or vrules for each V-SP rule.
+
+DO NOT weaken/delete existing docs tests to absorb the v2 migration (evaluator diffs vs
+gate/m5-r3-behavior). No new CLI/schema surface beyond docs/14's deltas + this plan.
+
+## Stage m5-r3-behavior COMPLETE (2026-07-08), gate PASS — history
 - ALL r3 worklist items now landed: r3-core (T-r3-1/2/3/6/8) + m5 (T-r3-4/5/7/9/10).
   Code has fully caught up to spec r3. Contract A28–A32 all [x] (gate PASS).
 - m5 result: Generator 399 green (386 +13); fresh Evaluator PASS — 5 probes re-run

@@ -16,7 +16,7 @@ from typing import Any
 
 from pydantic import ValidationError
 
-from ...schemas.docs import DocsResult
+from ...schemas.docs import DocsResult, DocsResultV2
 from ...textutil import quote_match
 from ..envelope import Failure
 
@@ -73,9 +73,13 @@ def check(
     archived_doc_ids = archived_doc_ids or set()
     archived_texts = archived_texts or {}
 
-    # V-DR-01: schema parse.
+    # V-DR-01: schema parse. docs_result.v2 carries a structured query_log in
+    # place of v1's free-string search_log; both share every other field, so the
+    # V-DR-02/04/05 checks below are version-agnostic (docs/14).
+    is_v2 = result_dict.get("schema_version") == "docs_result.v2"
+    model = DocsResultV2 if is_v2 else DocsResult
     try:
-        result = DocsResult.model_validate(result_dict)
+        result = model.model_validate(result_dict)
     except ValidationError as exc:
         return [Failure("V-DR-01", f"schema invalid: {exc.errors()[:2]}")]
 
@@ -83,12 +87,15 @@ def check(
     documents = result.documents
     n_docs = len(documents)
 
-    # V-DR-06: not_found terminal shape.
+    # V-DR-06: not_found terminal shape. The activity log that must be non-empty
+    # is search_log (v1) or query_log (v2) — re-expressed per docs/14 adoption.
     if result.not_found:
         if documents or result.evidence_units:
             failures.append(Failure("V-DR-06", "not_found=true requires empty documents + evidence_units"))
-        if not result.search_log:
-            failures.append(Failure("V-DR-06", "not_found=true requires a non-empty search_log"))
+        activity_log = result.query_log if is_v2 else result.search_log
+        if not activity_log:
+            log_name = "query_log" if is_v2 else "search_log"
+            failures.append(Failure("V-DR-06", f"not_found=true requires a non-empty {log_name}"))
 
     # V-DR-04: document source_type + origin; web documents include inline text.
     for i, doc in enumerate(documents):

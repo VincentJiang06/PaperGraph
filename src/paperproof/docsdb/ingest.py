@@ -23,10 +23,11 @@ from ..errors import DomainError, UsageError
 from ..ids import next_id
 from ..paths import Paths
 from ..queue import engine
-from ..schemas.docs import DocsResult, Document, EvidenceUnit
+from ..schemas.docs import DocsResult, DocsResultV2, Document, EvidenceUnit
 from ..store import jsonl
 from ..validate.envelope import Failure, to_envelope
-from ..validate.rules import v_dr, v_path
+from ..validate.rules import v_dr, v_path, v_sp
+from . import planner
 
 DOCUMENTS = "docs/documents.jsonl"
 EVIDENCE_UNITS = "docs/evidence_units.jsonl"
@@ -161,6 +162,12 @@ def _validate(paths: Paths, wi: dict[str, Any], relpath: str, raw: dict[str, Any
             if p.exists():
                 archived_texts[d["doc_id"]] = p.read_text(encoding="utf-8")
     failures += v_dr.check(raw, archived_doc_ids=archived_ids, archived_texts=archived_texts)
+    # V-SP (docs/14): a v2 result must account for every planned query against the
+    # immutable plan compiled at dispatch. A v1 result carries no query_log and is
+    # not subject to V-SP (v_sp.check no-ops on v1).
+    if raw.get("schema_version") == "docs_result.v2":
+        plan = planner.load_plan(paths, raw.get("request_id"))
+        failures += v_sp.check(raw, plan)
     return failures
 
 
@@ -183,7 +190,8 @@ def ingest_result(paths: Paths, output_file: str, work_item_id: str, actor: str 
         engine.validate_fail(paths, work_item_id, env["failed_rules"], actor, detail=env["detail"])
         raise DomainError(env["failed_rules"], data={"failed_rules": env["failed_rules"], "detail": env["detail"]})
 
-    result = DocsResult.model_validate(raw)
+    model = DocsResultV2 if raw.get("schema_version") == "docs_result.v2" else DocsResult
+    result = model.model_validate(raw)
     dres_id = _next_dres_id(paths)
     extracted_by = (wi.get("lease") or {}).get("claimed_by") or "docs-worker"
 

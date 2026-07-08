@@ -24,6 +24,7 @@ DIRS: tuple[str, ...] = (
     "docs/raw",
     "docs/text",
     "docs/docspacks",
+    "docs/plans",
     "agent_outputs",
     "agent_outputs/expansions",
     "agent_outputs/proof_results",

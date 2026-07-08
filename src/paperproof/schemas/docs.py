@@ -113,6 +113,39 @@ class DocsResult(BaseModel):
     search_log: list[str]
 
 
+QueryOutcome = Literal["productive", "empty", "blocked", "offtopic"]
+
+
+class QueryLogEntry(BaseModel):
+    """One accounted query line (docs/14). ``qid`` refers to a plan query (or an
+    ``X<n>`` worker-initiated extra); the worker records what actually happened."""
+
+    model_config = STRICT
+
+    qid: str
+    executed: bool
+    outcome: QueryOutcome
+    urls_seen: int
+    docs_taken: int
+    note: str
+
+
+class DocsResultV2(BaseModel):
+    """docs_result.v2 (docs/14 adoption): identical to v1 but the structured
+    ``query_log`` replaces the free-string ``search_log``. The DocsWorker now
+    EMITS v2; v1 stays readable (schema registry keeps both)."""
+
+    model_config = STRICT
+
+    schema_version: Literal["docs_result.v2"] = "docs_result.v2"
+    request_id: str
+    project_id: str
+    documents: list[DocsResultDocument]
+    evidence_units: list[DocsResultEvidence]
+    not_found: bool
+    query_log: list[QueryLogEntry]
+
+
 class DocsPack(BaseModel):
     model_config = STRICT
 

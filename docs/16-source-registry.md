@@ -1,6 +1,6 @@
 # 16 S3 — Source Registry, Tiers & Provenance
 
-**Status: design-frozen (Stage A-lite: registry+recipes; Stage B: triangulation).**
+**Status: Stage A-lite (registry+recipes) ADOPTED / BINDING — docs/00 "Search Program Adoption" (2026-07-08); worklist docs/11 §12. Stage B triangulation (V-SRC-04) remains design-frozen.**
 
 In the live run, bls.gov and fred.stlouisfed.org 403'd every automated fetch;
 one worker independently discovered the pdftotext fallback, another lost the

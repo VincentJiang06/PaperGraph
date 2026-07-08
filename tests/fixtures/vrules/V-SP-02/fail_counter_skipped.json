@@ -1,0 +1,94 @@
+{
+  "result": {
+    "schema_version": "docs_result.v2",
+    "request_id": "DR-001",
+    "project_id": "p4-ldi",
+    "documents": [
+      {
+        "title": "T",
+        "source_type": "official_report",
+        "origin": {
+          "kind": "web",
+          "path": null,
+          "url": "https://example.org"
+        },
+        "citation_key": "K",
+        "text": "full text"
+      }
+    ],
+    "evidence_units": [],
+    "not_found": false,
+    "query_log": [
+      {
+        "qid": "Q1",
+        "executed": true,
+        "outcome": "productive",
+        "urls_seen": 6,
+        "docs_taken": 1,
+        "note": ""
+      },
+      {
+        "qid": "Q2",
+        "executed": true,
+        "outcome": "empty",
+        "urls_seen": 3,
+        "docs_taken": 0,
+        "note": ""
+      },
+      {
+        "qid": "Q3",
+        "executed": false,
+        "outcome": "empty",
+        "urls_seen": 0,
+        "docs_taken": 0,
+        "note": ""
+      }
+    ]
+  },
+  "plan": {
+    "schema_version": "search_plan.v1",
+    "plan_id": "SP-DR-001",
+    "request_id": "DR-001",
+    "project_id": "p4-ldi",
+    "angle": "official_stats",
+    "facets": {
+      "core_terms": [
+        "ldi",
+        "liquidity"
+      ],
+      "scope_terms": [
+        "2022",
+        "uk"
+      ],
+      "counter_terms": [
+        "decline",
+        "criticism",
+        "contrary",
+        "evidence against",
+        "refute"
+      ]
+    },
+    "queries": [
+      {
+        "qid": "Q1",
+        "kind": "core",
+        "text": "ldi liquidity 2022 uk"
+      },
+      {
+        "qid": "Q2",
+        "kind": "angle",
+        "text": "ldi liquidity 2022 uk official statistics"
+      },
+      {
+        "qid": "Q3",
+        "kind": "counter",
+        "text": "ldi liquidity 2022 uk decline criticism"
+      }
+    ],
+    "stop": {
+      "max_queries": 8,
+      "min_docs": 2,
+      "min_eus": 4
+    }
+  }
+}

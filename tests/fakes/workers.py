@@ -112,18 +112,50 @@ class FakeDocsWorker:
             return
         request_id = work_item["target_id"]
         spec = self.script.get(request_id) or self.script.get("*") or {}
-        result = {
-            "schema_version": "docs_result.v1",
+        documents = spec.get("documents", [])
+        evidence_units = spec.get("evidence_units", [])
+        not_found = spec.get("not_found", False)
+        base = {
             "request_id": request_id,
             "project_id": work_item["project_id"],
-            "documents": spec.get("documents", []),
-            "evidence_units": spec.get("evidence_units", []),
-            "not_found": spec.get("not_found", False),
-            "search_log": spec.get("search_log", ["scripted search"]),
+            "documents": documents,
+            "evidence_units": evidence_units,
+            "not_found": not_found,
         }
+        # The real DocsWorker now EMITS docs_result.v2 with a query_log accounting
+        # for every planned qid (docs/14). When the immutable plan is attached at
+        # dispatch, the fake mirrors that; with no plan it falls back to v1 (still
+        # ingestible — the schema registry keeps v1 readable).
+        plan_file = project_root / "docs" / "plans" / f"SP-{request_id}.json"
+        if plan_file.exists() and spec.get("force_v1") is not True:
+            plan = json.loads(plan_file.read_text(encoding="utf-8"))
+            result = {"schema_version": "docs_result.v2", **base,
+                      "query_log": self._query_log(spec, plan, documents, not_found)}
+        else:
+            result = {"schema_version": "docs_result.v1", **base,
+                      "search_log": spec.get("search_log", ["scripted search"])}
         out_path = project_root / work_item["output_files"][0]
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(json.dumps(result, ensure_ascii=False), encoding="utf-8")
+
+    @staticmethod
+    def _query_log(spec: dict[str, Any], plan: dict[str, Any], documents: list,
+                   not_found: bool) -> list[dict[str, Any]]:
+        if "query_log" in spec:  # a scripted (e.g. hostile) query_log wins verbatim
+            return spec["query_log"]
+        n = len(documents)
+        log: list[dict[str, Any]] = []
+        for i, q in enumerate(plan.get("queries", [])):
+            productive = (i == 0 and n > 0 and not not_found)
+            log.append({
+                "qid": q["qid"],
+                "executed": True,
+                "outcome": "productive" if productive else "empty",
+                "urls_seen": n if productive else 0,
+                "docs_taken": n if productive else 0,
+                "note": "",
+            })
+        return log
 
 
 class FakeCompileWorker:

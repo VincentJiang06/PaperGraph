@@ -346,3 +346,48 @@ LLM judgment quality (whether a worker's scope_check was "right") — that is th
 WebUI pixels — only the JSON endpoints are asserted.
 Cross-platform behavior — v1 is POSIX-only by decree (docs/10 §2).
 ```
+
+## 12. Search Program Worklist — S1 (Stage A, adopted 2026-07-08; docs/14)
+
+S1 (Search Planning) is now binding (docs/00 adoption entry). Every item below is
+a REQUIRED test change; once V-SP-* lands in the registry the rule-coverage
+meta-test forces the fixture side automatically.
+
+```text
+T-S1-1  plan-compiler goldens: a fixed DocsRequest need + target scope compiles
+        to a BYTE-EXACT search_plan.v1 under the determinism harness, incl. a CJK
+        need (tokens() CJK-aware, docs/09 §0); the counter query is present in
+        EVERY plan regardless of angle; facets/query templates exactly per docs/14.
+T-S1-2  V-SP fixtures (one pass_ + one fail_ per rule): unaccounted qid (V-SP-01),
+        skipped counter query (V-SP-02), docs_taken > urls_seen (V-SP-03),
+        dishonest not_found with a productive entry (V-SP-04), plan ref that does
+        not resolve / mismatches request (V-SP-05). docs_result.v2 round-trips
+        (query_log replaces search_log); a v1 result still validates against v1.
+T-S1-3  hostile: a worker that fabricates outcome counts (docs_taken > urls_seen)
+        is rejected with V-SP-03 in failed_rules; `docs plan --request <DR>` emits
+        the compiled plan and re-emits it byte-identically on a second call.
+T-S1-back  the pre-S1 docs suite (V-DR, S2 docs loop, S3 cascade, ingest, cache)
+        stays green: introducing docs_result.v2 + the plan compiler must not
+        weaken or delete any existing docs assertion (evaluator diffs vs the gate
+        tag). The DocsWorker dispatch path now attaches a compiled plan.
+```
+
+S3-lite (Source Registry, Stage A-lite; docs/16) — worklist:
+
+```text
+T-S3-1  ingest LEARNS: a Document ingested with a blocked query_log entry for its
+        domain upserts a SourceProfile with blocked_direct=true and the workaround
+        note; a second ingest appends a new profile version (latest-per-domain wins).
+T-S3-2  tier mapping table golden (source_type → tier); a silent tier-lowering
+        (new version lowers tier with no note) is rejected (V-SRC-03).
+T-S3-4  provenance: every ingested doc carries provenance (retrieved_at,
+        fetch_method ∈ enum, tier ∈ enum) [V-SRC-01]; a secondary_quote doc names
+        quoted_via and the carrier exists, dangling quoted_via ⇒ V-SRC-02; the
+        dispatch prompt's registry excerpt contains every T1 profile + every
+        profile matching a plan-facet domain [V-SRC-05]. document.v2 round-trips;
+        a v1 document still validates against v1.
+T-S3-back  no regression (399 baseline + S1): document.v2 + registry learning must
+        not weaken any existing ingest/V-DR/cascade assertion. V-SRC-04
+        (triangulation) is Stage B — NOT built now; msa-check/freeze floors are
+        unchanged from m5 until S4.
+```

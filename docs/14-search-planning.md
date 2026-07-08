@@ -1,6 +1,6 @@
 # 14 S1 — Search Planning & Query Compilation
 
-**Status: design-frozen (Stage A). Binding only after a docs/00 adoption entry.**
+**Status: ADOPTED / BINDING (Stage A, S1) — docs/00 "Search Program Adoption — Stage A begins with S1 (2026-07-08)"; worklist docs/11 §12.**
 
 The live run's DocsRequests carried a free-text `need` and two hints; each
 worker improvised queries and nobody could verify what was *not* tried. S1
