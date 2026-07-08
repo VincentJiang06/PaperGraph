@@ -14,6 +14,9 @@ build/
 
 # derived index (per-project, under data/) — NOT the src/paperproof/db package
 data/**/db/
+# S5 semantic index: vendored weights (470MB) + derived vectors are never committed
+# (rebuildable from JSONL; already under db/ above, listed explicitly for safety)
+**/db/semantic/
 
 # local tool state
 .claude/settings.local.json

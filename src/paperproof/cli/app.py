@@ -281,6 +281,37 @@ def db_check(ctx: typer.Context) -> None:
     _dispatch("db check", lambda: _indexer.check(_project_paths(s)))
 
 
+# db semantic (S5, docs/18): the pinned embedding index — rebuild / check.
+db_semantic_app = typer.Typer(no_args_is_help=False)
+
+
+@db_semantic_app.command("rebuild")
+def db_semantic_rebuild(ctx: typer.Context) -> None:
+    s = _state(ctx)
+
+    def body() -> dict[str, Any]:
+        from ..docsdb import commands as _docs_cmds
+
+        return _docs_cmds.semantic_rebuild(_project_paths(s))
+
+    _dispatch("db semantic rebuild", body)
+
+
+@db_semantic_app.command("check")
+def db_semantic_check(ctx: typer.Context) -> None:
+    s = _state(ctx)
+
+    def body() -> dict[str, Any]:
+        from ..docsdb import commands as _docs_cmds
+
+        return _docs_cmds.semantic_check(_project_paths(s))
+
+    _dispatch("db semantic check", body)
+
+
+db_app.add_typer(db_semantic_app, name="semantic")
+
+
 app.add_typer(db_app, name="db")
 
 
@@ -543,9 +574,10 @@ def docs_search(
     ctx: typer.Context,
     query: str = typer.Option(..., "--query"),
     scope: Optional[str] = typer.Option(None, "--scope"),
+    semantic: bool = typer.Option(False, "--semantic", help="hybrid keyword+embedding ranking (S5, docs/18)"),
 ) -> None:
     s = _state(ctx)
-    _dispatch("docs search", lambda: _docs.search(_project_paths(s), query, scope))
+    _dispatch("docs search", lambda: _docs.search(_project_paths(s), query, scope, semantic))
 
 
 @docs_app.command("build-pack")

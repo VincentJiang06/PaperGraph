@@ -13,6 +13,7 @@ from .commit import CommitDecision
 from .compiler import CompilerDryRun, DraftMap
 from .docs import (
     DocsPack,
+    DocsPackV2,
     DocsRequest,
     DocsResult,
     DocsResultV2,
@@ -57,6 +58,7 @@ REGISTRY: dict[str, type[BaseModel]] = {
     "search_wave.v1": SearchWave,
     "coverage_report.v1": CoverageReport,
     "docs_pack.v1": DocsPack,
+    "docs_pack.v2": DocsPackV2,
     "work_item.v1": WorkItem,
     "queue_event.v1": QueueEvent,
     "commit_decision.v1": CommitDecision,

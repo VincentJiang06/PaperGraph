@@ -19,7 +19,7 @@ from ..ids import bundle_id, next_bundle_revision
 from ..paths import Paths
 from ..queue import engine
 from ..store import jsonl, snapshot
-from ..schemas.docs import DocsPack
+from ..schemas.docs import DocsPackV2
 from ..schemas.proof import ContextPack, ProofTask
 
 PROOF_RESULTS = "proof/proof_results.jsonl"
@@ -127,16 +127,20 @@ def build_bundle(paths: Paths, work_item: dict[str, Any]) -> dict[str, Any]:
         coverage=coverage_block,
     )
 
-    # DocsPack assembled by the matcher (docs/04): the EvidenceUnits selected for
-    # this target claim + their documents' metadata. Empty when nothing archived
-    # yet (M1 behaviour) — an empty DocsPack is valid.
-    evidence_units, documents_meta = docs_pack_builder.assemble(paths, target_record)
-    docspack = DocsPack(
+    # DocsPack assembled by the matcher (docs/04) with S5 hybrid retrieval when the
+    # pinned model is present, else keyword.v1 (docs/18). The EvidenceUnits selected
+    # for this target claim + their documents' metadata + a retrieval audit block.
+    # Empty when nothing archived yet (M1 behaviour) — an empty DocsPack is valid.
+    evidence_units, documents_meta, retrieval, _pack_warnings = docs_pack_builder.assemble_v2(
+        paths, target_record
+    )
+    docspack = DocsPackV2(
         pack_id=dp_id,
         task_id=pt_id,
         project_id=paths.project_id,
         evidence_units=evidence_units,
         documents_meta=documents_meta,
+        retrieval=retrieval,
     )
 
     jsonl.write_json(paths.resolve(task_file), task)

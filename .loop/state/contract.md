@@ -191,16 +191,16 @@ Hybrid keyword+embedding retrieval, cross-lingual. Semantic = optional upgrade (
 Baseline 510 @ 7052ae4. Model = multilingual-e5-small (onnxruntime, sha ca456c06...8665, staged at
 scratchpad/e5-probe/). PROBE-VALIDATED: ZH<->EN cos 0.88>0.74 unrelated, byte-identical re-embed.
 
-- [ ] A48 (T-S5-1) determinism + model pin: same corpus embedded twice => identical vectors
+- [x] A48 (T-S5-1) determinism + model pin: same corpus embedded twice => identical vectors
         (byte-identical parquet) [V-SEM-01]; model.json pins name/revision/weights_sha256 + every hybrid
         pack names it; embedding = mean-pool(last_hidden_state,mask)+L2-norm, e5 prefixes · test_v_sem [semantic] · m9
-- [ ] A49 (T-S5-2/3) semantic recall (marker-gated): cross-lingual ZH-topic->EN-EU above tau=0.35;
+- [x] A49 (T-S5-2/3) semantic recall (marker-gated): cross-lingual ZH-topic->EN-EU above tau=0.35;
         paraphrase pair zero-keyword-overlap >= tau; hybrid score=0.6*sscore+0.4*kscore, include iff
         sscore>=0.35 OR kscore>=2; pack = REQUESTED U top-12 (r3 UNCHANGED) · test_v_sem [semantic] · m9
-- [ ] A50 (T-S5-4/5) degrade + advisory-only (DEFAULT suite): model absent => keyword.v1 + warning in
+- [x] A50 (T-S5-4/5) degrade + advisory-only (DEFAULT suite): model absent => keyword.v1 + warning in
         envelope, NEVER silent [V-SEM-03]; similarity NEVER auto-fulfills (cache fingerprint-only), leads
         prompt-only [V-SEM-04]; near-dup clustering within-doc only, deterministic rep [V-SEM-05] · test_v_sem · m9
-- [ ] A51 (T-S5-back) NO REGRESSION: DEFAULT suite (no [semantic]) green — 510 + S5 non-model tests;
+- [x] A51 (T-S5-back) NO REGRESSION: DEFAULT suite (no [semantic]) green — 510 + S5 non-model tests;
         docs_pack.v2 round-trips (v1 readable); V-SEM-01..05 registered; verify recomputes retrieval only
         when model present (warning, never hard fail) · full suite + evaluator · m9
 

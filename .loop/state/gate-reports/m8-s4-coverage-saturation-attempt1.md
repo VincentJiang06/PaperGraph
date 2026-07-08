@@ -77,3 +77,35 @@ Worktree branch: `worktree-agent-adba6a64c9007b8cb` (branched from `c070611`).
 
 ## Escalations
 None.
+
+---
+
+## Evaluator verdict
+
+**PASS** (fresh adversarial evaluation, HEAD `7052ae4`).
+
+### Independently verified
+- **Suite: 510 passed, 0 skipped / 0 xfailed / 0 xpassed** (`.venv/bin/python -m pytest -q -rsxX`; 510 collected). NOTE: the report prose above says "508 passed" — that was the worktree-branch number; on merged `main` it is **510** (matches the mandate). Stale prose only, not a defect.
+- **S7 end-to-end under the new floors**: independently rebuilt an S7 project in a persistent dir and ran the REAL CLI binary: `freeze apply --level spine` exit 0 (`ok=true, errors=[]`), `paperproof verify` exit 0, `docs coverage --node NODE-003` returns floor `{required: spine_mechanism, met: true}`. S7 mechanism M **genuinely triangulates**: 2 distinct docs, 2 distinct publishers (BoE T1 + IMF T1 — not two docs from one publisher). No fixture was loosened to pass.
+
+### Supersession (the central risk) — proven GONE
+- `grep -rn "meets_evidence_floor|>= *2" src/paperproof/graph src/paperproof/freeze` → **zero code hits** (only explanatory comments). `meets_evidence_floor` / `evidence_binding_counts` absent from all of src/ and tests/.
+- MSA-4 (`graph/commands.py:118-128`), V-FRZ-02 (`freeze/apply.py:131-143`), and compiler missing_evidence (`compiler/dry_run.py:52-57`) all delegate to the **single** floor fn `docsdb/coverage.py:_role_floor_met` (via `target_ledger`+`meets_floor`). No duplicated/divergent floor logic.
+- Committer verdict-count docs cap **removed**: no `_needs_docs_verdicts` / `_new_target_evidence_since` / `len(verdicts) >= 3` anywhere. `_plan_needs_docs` (`committer/apply.py:346-403`) consults `coverage.target_ledger(...).saturated`. Only committer born-dead reasons are `"saturated"` (V-COV-03 path) and `"bridge cap reached"` (the SEPARATE bridge round cap `_bridge_rounds`, `rounds>=2` — correctly retained).
+
+### Adversarial probes (own fixtures, 20/20 green; drove coverage + msa-check + freeze directly)
+- **Role floors**: spine mech with 1 binding → FAILS floor + MSA-4 + freeze(V-FRZ-02). Same-publisher T3/T3 → `triangulated=false`, FAILS floor, freeze reports BOTH V-FRZ-02 and V-SRC-04. T1+distinct-T4 → `triangulated=true`, PASSES floor + MSA-4. Triangulated-but-no-completed-search → counter `no_attempt`, FAILS floor + MSA-4 (proves the counter condition has teeth). Bridge: 2 docs FAILS, 3 distinct docs PASSES. Non-spine fact: 1 EU PASSES, 0 EU FAILS.
+- **Saturation vs cap**: fresh (pre-saturation) needs_docs opens a real docs work item and is never born-dead; saturated+floor-unmet → born-dead reason=`saturated` (only reason `check_born_dead_reason` accepts); `is_saturated` matches the docs/17 formula (truth-table probe + fold).
+- **Ledger determinism [V-COV-01]**: `build_ledger` byte-identical across two calls on identical canonical state.
+
+### Judgment: the "counter-angle-from-completed-search" derivation
+Sound **by delegation to V-SP-02**, with a narrow over-report. `_angle_outcomes` step 1 marks `counter := tried_empty` for ANY completed (fulfilled/not_found) request targeting the node — it does NOT inspect the query_log for an executed/blocked counter qid. For genuine **v2** DocsResults this is safe: `v_sp.check` rejects a v2 result whose plan skips the mandatory counter query (planner always emits one), so "completed v2 request ⟹ counter executed-or-blocked" is a hard, ingestion-enforced invariant. The gap: **cache-fulfilled** (`fulfilled_by="cache"`, zero queries) and **legacy v1** results are NOT covered by V-SP-02, yet still flip counter to `tried_empty`. Proven directly (probe E1): a spine mechanism whose only completed request is a cache hit passes the counter floor; and S7 itself earns its counter floor from a **v1 fake result with no counter query** (`angles.counter=tried_empty`, `academic=no_attempt`). This does NOT let a bogus claim freeze — the floor's real teeth (≥2 bindings, ≥2 distinct docs, independent-publisher triangulation) require genuine evidence a cache hit cannot fabricate, and the counter sub-condition still forces the node to own a completed request. But the ledger's "counter attempted" is a request-existence proxy, not a query_log fact, so it **overstates counter coverage** for non-v2 completions. **Non-blocking.** Recommended hardening (before or after gate/m8, Orchestrator's call): derive counter-attempt from an executed/blocked counter qid in a v2 query_log (or the critic coverage report), and exclude `fulfilled_by="cache"` from the counter derivation.
+
+### Weakened-test audit (diff vs gate/m7-s2-search-orchestra)
+No weakening. `test_v_frz` STRICTER (+triangulation, +counter-angle FAIL case, +same-pub-T3 FAIL case). `test_r3_core` test 3 and `test_s2_docs_loop` phase 5 migrated from the removed cap to saturation — the born-dead assertions became the corrected NOT-born-dead behavior (the supersession), plus added ledger/pure-function assertions; old cap tests migrated in place, none silently deleted. `test_v_cdr` note-text only. `test_cli_envelope` (+`docs coverage` to closed surface) and `test_rule_coverage` (+V-COV/V-SRC-04 entries) are additive-stricter. `FakeDocsWorker.per_member` is an opt-in kwarg defaulting to None → prior behavior byte-identical.
+
+### Doc-sync
+docs/09 has the `### V-COV` block (V-COV-01..05), V-FRZ-02 rewritten to delegate to the role floor + report V-SRC-04, and V-SRC-04 flipped to ADOPTED. docs/16 triangulation + V-SRC-04 flipped to ADOPTED/BINDING and matches the shipped `triangulated` (branch a: T1/T2 + distinct doc; branch b: 2 independent T3/T4). docs/17 matches shipped code. Surface: `docs coverage [--node]` (CLI, in closed-command test), `/api/coverage` (route + test), ContextPack coverage block (V-COV-02) — nothing beyond docs/17.
+
+### Defect the Orchestrator must fix before tagging gate/m8
+None blocking. One non-blocking finding to log: **counter-angle over-report on cache/v1 completions** (see judgment above) — hardening recommended, not gate-blocking.

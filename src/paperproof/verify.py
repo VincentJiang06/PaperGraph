@@ -12,7 +12,7 @@ M1 is tolerant of absent freeze/compiler/docs state (those files exist empty fro
 from __future__ import annotations
 
 import json
-from typing import Any
+from typing import Any, Optional
 
 from pydantic import ValidationError
 
@@ -23,7 +23,7 @@ from .paths import Paths
 from .schemas import REGISTRY
 from .store import jsonl
 from .validate.envelope import Failure, to_envelope
-from .validate.rules import v_commit, v_node_edge, v_q, v_src
+from .validate.rules import v_commit, v_node_edge, v_q, v_sem, v_src
 
 # Canonical JSONL files whose records carry a schema_version.
 _JSONL_FILES = (
@@ -148,6 +148,87 @@ def _wave_check(paths: Paths) -> list[Failure]:
     return failures
 
 
+def _semantic_warnings(paths: Paths) -> list[str]:
+    """S5 (docs/18, V-SEM-01/02): verify recomputes RETRIEVAL only when the pinned
+    model is present and flags drift as a WARNING — never a hard fail. Semantic is
+    an upgrade, so a keyword.v1 pack (or an absent model) is first-class here.
+
+    Structural pack-audit issues (a hybrid pack missing its model pin, a score not
+    a fixed-6-decimal string) are reported as warnings too: a derived pack under
+    docs/docspacks/ is rebuildable and never corruption of canonical state."""
+    warnings: list[str] = []
+    pack_dir = paths.resolve("docs/docspacks")
+    if not pack_dir.exists():
+        return warnings
+
+    from .db import semantic as sem
+
+    model_here = sem.model_present(paths)
+    eu_vectors = sem.load_vectors(paths) if model_here else {}
+    for p in sorted(pack_dir.glob("*.json")):
+        try:
+            pk = json.loads(p.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        if pk.get("schema_version") != "docs_pack.v2":
+            continue
+        for f in v_sem.check_pack(pk):
+            warnings.append(f"{p.name}: {f.rule_id} {f.detail}")
+        retrieval = pk.get("retrieval") or {}
+        if retrieval.get("matcher") != "hybrid.v1":
+            continue
+        model = retrieval.get("model") or {}
+        if model.get("weights_sha256") != sem.WEIGHTS_SHA256:
+            warnings.append(f"{p.name}: retrieval model drift (pack weights_sha256 != pin)")
+            continue
+        if not model_here:
+            continue
+        # Recompute sscore against the stored vectors + a re-embedded claim; a
+        # divergence beyond the 6-dp serialization means the index moved under the
+        # pack (rebuild it). Skip silently if any piece is missing.
+        try:
+            claim = _pack_claim(paths, pk)
+            if claim is None:
+                continue
+            claim_vec = sem.embed_claim(paths, claim)
+        except Exception:
+            continue
+        from .docsdb import matcher as _m
+
+        for sc in retrieval.get("scores", []) or []:
+            eid = sc.get("evidence_id")
+            vec = eu_vectors.get(eid)
+            if vec is None:
+                continue
+            recomputed = f"{_m._clamp01(_m._cosine(claim_vec, vec)):.6f}"
+            if sc.get("sscore") != recomputed:
+                warnings.append(
+                    f"{p.name}: retrieval sscore drift for {eid} "
+                    f"(pack {sc.get('sscore')} vs recomputed {recomputed}) — run `db semantic rebuild`"
+                )
+    return warnings
+
+
+def _pack_claim(paths: Paths, pack: dict[str, Any]) -> Optional[str]:
+    """The target claim a pack was built for, via pack.task_id -> proof task."""
+    task_id = pack.get("task_id")
+    if not task_id:
+        return None
+    task_path = paths.resolve(f"proof/tasks/{task_id}.json")
+    if not task_path.exists():
+        return None
+    task = json.loads(task_path.read_text(encoding="utf-8"))
+    target = task.get("target") or {}
+    if "edge_id" in target:
+        return target.get("edge_claim", "") or ""
+    tid = target.get("node_id")
+    if tid:
+        rec = graph_model.load(paths).record(tid)
+        if rec is not None:
+            return rec.get("claim", "") or ""
+    return None
+
+
 def run(paths: Paths) -> dict[str, Any]:
     if not paths.project_dir.exists():
         raise CorruptStateError([f"project not found: {paths.project_id}"])
@@ -159,6 +240,12 @@ def run(paths: Paths) -> dict[str, Any]:
     failures += v_commit.verify_commits(paths)
     failures += v_src.verify_sources(paths)
     failures += _wave_check(paths)
+    # V-SEM-04 (docs/18): similarity never auto-fulfills — a DocsRequest's
+    # fulfilled_by is only ever None | "cache" | a DRES id. A stray value is
+    # corruption (exit 3), like any other cross-reference invariant.
+    failures += v_sem.check_no_similarity_fulfillment(
+        jsonl.latest_records(paths.resolve("docs/docs_requests.jsonl"), "request_id")
+    )
     failures += _crossref(paths)
 
     if failures:
@@ -176,5 +263,7 @@ def run(paths: Paths) -> dict[str, Any]:
     if paths.resolve(_indexer.MANIFEST_FILE).exists():
         if _indexer.check(paths)["stale_index"]:
             warnings.append("db index is stale (run `paperproof db rebuild`)")
+
+    warnings += _semantic_warnings(paths)
 
     return {"ok": True, "checked": True, "warnings": warnings}

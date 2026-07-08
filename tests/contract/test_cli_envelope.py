@@ -37,7 +37,7 @@ CLOSED_COMMANDS = {
     "freeze apply", "freeze unfreeze",
     "compiler dry-run", "compiler draft-map", "compiler ingest-prose",
     "audit run",
-    "db rebuild", "db check",
+    "db rebuild", "db check", "db semantic rebuild", "db semantic check",
     "ui serve",
     "verify", "trace",
 }
