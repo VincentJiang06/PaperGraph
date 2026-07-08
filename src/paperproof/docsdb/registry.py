@@ -161,7 +161,11 @@ def learn(
         )
         workarounds = list((prev or {}).get("fetch", {}).get("workarounds", []) or [])
         seen_count = int((prev or {}).get("seen_count", 0)) + encounters[domain]
-        publisher = (prev or {}).get("publisher", "") or ""
+        # F12/D12: a web domain's default publisher identity is the domain itself
+        # (the docs/16 mechanical proxy) unless a human already curated one —
+        # an empty publisher is reserved for "unknown" (local docs) and never
+        # counts toward triangulation independence.
+        publisher = ((prev or {}).get("publisher", "") or "").strip() or domain
         tier_note = None
         if prev and prev["tier"] != new_tier:
             tier_note = f"auto: raised {prev['tier']} -> {new_tier} (source_type seen from {domain})"

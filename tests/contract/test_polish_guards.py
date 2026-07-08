@@ -108,6 +108,7 @@ def test_wheel_ships_prompts_and_ui_static(tmp_path):
         "paperproof/prompts/docs_worker.txt",
         "paperproof/prompts/compile_worker.txt",
         "paperproof/prompts/retry_suffix.txt",
+        "paperproof/prompts/critic_worker.txt",
         "paperproof/ui/static/index.html",
         "paperproof/ui/static/vendor/cytoscape.min.js",
     }

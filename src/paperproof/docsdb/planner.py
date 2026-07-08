@@ -228,6 +228,22 @@ def wave_plan_relpath(request_id: str, angle: str) -> str:
     return f"{PLANS_DIR}/SP-{request_id}-{angle}.json"
 
 
+def plan_id_relpath(plan_id: str) -> str:
+    """Every plan file lives at docs/plans/<plan_id>.json (SP-DR-x, SP-DR-x-<angle>,
+    and the round/origin-discriminated follow-up ids — F6/D8)."""
+    return f"{PLANS_DIR}/{plan_id}.json"
+
+
+def load_plan_by_id(paths: Paths, plan_id: str) -> dict[str, Any] | None:
+    """Resolve a member's OWN plan from its task_id (F2/D2): a follow-up member
+    carries a round/origin-discriminated plan id, so a request-id/angle lookup
+    would return the wrong (round-1) plan."""
+    p = paths.resolve(plan_id_relpath(plan_id))
+    if not p.exists():
+        return None
+    return json.loads(p.read_text(encoding="utf-8"))
+
+
 def load_wave_plan(paths: Paths, request_id: str, angle: str) -> dict[str, Any] | None:
     p = paths.resolve(wave_plan_relpath(request_id, angle))
     if not p.exists():
@@ -236,13 +252,17 @@ def load_wave_plan(paths: Paths, request_id: str, angle: str) -> dict[str, Any] 
 
 
 def plan_for_wave_member(
-    paths: Paths, request_id: str, angle: str, extra_hints: list[str] | None = None
+    paths: Paths, request_id: str, angle: str, extra_hints: list[str] | None = None,
+    plan_id: str | None = None,
 ) -> dict[str, Any]:
     """Compile (once) or reprint the immutable angle-specific plan for a wave
-    member (docs/15). ``plan_id = SP-<request>-<angle>``; the file is distinct
-    per angle so members run fully parallel [V-WAVE-01]. ``extra_hints`` feed a
-    follow-up member's expected_source suggested_query into the query facets."""
-    p = paths.resolve(wave_plan_relpath(request_id, angle))
+    member (docs/15). Round-1 ``plan_id = SP-<request>-<angle>``; a follow-up
+    member passes its round/origin-discriminated ``plan_id`` (F6/D8) so the
+    round-2 plan is a DISTINCT file compiled WITH the critic's suggested_query
+    ``extra_hints`` — never a byte-identical reuse of the round-1 plan. The file
+    is distinct per member so members run fully parallel [V-WAVE-01]."""
+    plan_id = plan_id or f"SP-{request_id}-{angle}"
+    p = paths.resolve(plan_id_relpath(plan_id))
     if not p.exists():
         req = jsonl.latest_by_id(paths.resolve(DOCS_REQUESTS), "request_id").get(request_id)
         if req is None:
@@ -256,6 +276,6 @@ def plan_for_wave_member(
             request_id, paths.project_id, angle, req.get("need", ""), hints,
             target_scope, _contract_scope(paths),
         )
-        plan = plan.model_copy(update={"plan_id": f"SP-{request_id}-{angle}"})
+        plan = plan.model_copy(update={"plan_id": plan_id})
         jsonl.write_json(p, plan)
     return json.loads(p.read_text(encoding="utf-8"))

@@ -15,6 +15,10 @@ CommitKind = Literal[
 CommitAction = Literal[
     "append_node", "update_node", "append_edge", "update_edge", "tombstone",
     "enqueue", "cancel_item", "mark_stale", "docs_request", "set_frozen",
+    # A saturated needs_docs whose role floor IS met: no more search can be
+    # opened, so the re-proof is surfaced for human review (docs/17, D1). The
+    # committer also born-deads the re-proof item alongside this action.
+    "human_review",
 ]
 
 

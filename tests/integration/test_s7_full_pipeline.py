@@ -115,8 +115,10 @@ def test_s7_full_pipeline(project, pp):
     ]
     item = _engine.claim(paths, queue_name="compile_queue", agent="cw", wi_id=claimable[0]["work_item_id"])
     FakeCompileWorker().run(item, paths.project_dir)
-    _engine.complete(paths, item["work_item_id"])
-    ip = pp("compiler", "ingest-prose", item["output_files"][0], "--work-item", item["work_item_id"])
+    # F8/D14: ingest-prose implicit-completes a CLAIMED item (no separate `queue
+    # complete` ceremony) and accepts the ABSOLUTE spelling of the declared path.
+    abs_path = str(paths.project_dir / item["output_files"][0])
+    ip = pp("compiler", "ingest-prose", abs_path, "--work-item", item["work_item_id"])
     assert ip["ok"] is True and ip["data"]["section_id"] == item["target_id"]
     assert _engine.get_item(paths, item["work_item_id"])["status"] == "committed"
 

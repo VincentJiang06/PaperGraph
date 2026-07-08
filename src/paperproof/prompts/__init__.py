@@ -1,14 +1,15 @@
 """Worker prompt templates (docs/10 §5). Static assets shipped with the package.
 
-The four templates are the ONLY prompts used to dispatch workers, so behavior is
-reproducible. In M0 they are shipped, not executed.
+The five templates are the ONLY prompts used to dispatch workers, so behavior is
+reproducible (S2 adds the coverage critic — docs/15). In M0 they are shipped, not
+executed.
 """
 
 from __future__ import annotations
 
 from importlib import resources
 
-TEMPLATES = ("proof_worker", "docs_worker", "compile_worker", "retry_suffix")
+TEMPLATES = ("proof_worker", "docs_worker", "compile_worker", "retry_suffix", "critic_worker")
 
 
 def load(name: str) -> str:

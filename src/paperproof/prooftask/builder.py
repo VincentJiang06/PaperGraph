@@ -14,6 +14,7 @@ from typing import Any
 
 from ..clock import actor as clock_actor
 from ..docsdb import pack as docs_pack_builder
+from ..errors import DomainError
 from ..graph import model as graph_model
 from ..ids import bundle_id, next_bundle_revision
 from ..paths import Paths
@@ -143,6 +144,19 @@ def build_bundle(paths: Paths, work_item: dict[str, Any]) -> dict[str, Any]:
         retrieval=retrieval,
     )
 
+    # F13: the bundle is checked by the CANONICAL V-TASK fns at build time — a
+    # malformed pack never reaches a worker.
+    from ..validate.rules import v_task
+
+    ctx_dict = ctx.model_dump(mode="json")
+    failures = v_task.check_context_pack(paths, ctx_dict)
+    failures += v_task.check_docs_pack(paths, docspack.model_dump(mode="json"))
+    if failures:
+        from ..validate.envelope import to_envelope
+
+        env = to_envelope(failures)
+        raise DomainError(env["failed_rules"], data={"failed_rules": env["failed_rules"], "detail": env["detail"]})
+
     jsonl.write_json(paths.resolve(task_file), task)
     jsonl.write_json(paths.resolve(context_pack), ctx)
     jsonl.write_json(paths.resolve(docs_pack), docspack)
@@ -153,6 +167,9 @@ def build_bundle(paths: Paths, work_item: dict[str, Any]) -> dict[str, Any]:
         "output_files": [output_file],
         "revision": revision,
         "based_on_snapshot": based_on,
+        # F15: assemble_v2 degrade warnings (e.g. V-SEM-03 keyword fallback) ride
+        # up into the build-tasks envelope instead of being silently dropped.
+        "warnings": list(_pack_warnings or []),
     }
 
 
@@ -164,6 +181,7 @@ def build_frontier(paths: Paths, actor: str | None = None) -> dict[str, Any]:
     actor = actor or clock_actor()
     engine.run_sweeps(paths, actor)
     built: list[dict[str, Any]] = []
+    warnings: list[str] = []
     gv = graph_model.load(paths)
     by_id = engine.items_by_id(paths)
     for item in list(by_id.values()):
@@ -173,6 +191,7 @@ def build_frontier(paths: Paths, actor: str | None = None) -> dict[str, Any]:
             info = build_bundle(paths, item)
             engine.attach_bundle(paths, item["work_item_id"], info["task_id"], info["bundle"], info["output_files"])
             built.append({"work_item_id": item["work_item_id"], "task_id": info["task_id"], "revision": info["revision"]})
+            warnings += [f"{info['task_id']}: {w}" for w in info.get("warnings", [])]
         elif item["status"] == "stale":
             info = build_bundle(paths, item)
             to_blocked = _should_block(paths, item, gv, by_id)
@@ -184,7 +203,11 @@ def build_frontier(paths: Paths, actor: str | None = None) -> dict[str, Any]:
                 changes={"task_id": info["task_id"], "bundle": info["bundle"], "output_files": info["output_files"]},
             )
             built.append({"work_item_id": item["work_item_id"], "task_id": info["task_id"], "revision": info["revision"]})
-    return {"bundles_built": built, "count": len(built)}
+            warnings += [f"{info['task_id']}: {w}" for w in info.get("warnings", [])]
+    # F15: degrade warnings surface in the envelope (deduped, order-stable).
+    seen: set[str] = set()
+    warnings = [w for w in warnings if not (w in seen or seen.add(w))]
+    return {"bundles_built": built, "count": len(built), "warnings": warnings}
 
 
 def build_one(paths: Paths, target_id: str, actor: str | None = None) -> dict[str, Any]:
@@ -199,7 +222,7 @@ def build_one(paths: Paths, target_id: str, actor: str | None = None) -> dict[st
         and i["status"] in ("queued", "blocked", "stale")
     ]
     if not candidates:
-        raise ValueError(f"no open proof work item for target {target_id}")
+        raise DomainError([f"no open proof work item for target {target_id}"])
     item = min(candidates, key=lambda i: i["work_item_id"])
     info = build_bundle(paths, item)
     if item["status"] == "stale":

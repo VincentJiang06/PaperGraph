@@ -84,20 +84,36 @@ def _member_b():
 
 
 def test_canonical_url_strips_tracking_port_fragment_and_slashes():
+    # MIGRATED for F5/D7: canonical_url now ALSO strips "www." (consistent with
+    # registry.domain_from_url) — the old expectations kept www. and were part
+    # of the buggy identity that re-pointed quote EUs across differing texts.
     cu = wave_mod.canonical_url
-    assert cu("https://www.BLS.gov:443/cps//data/?utm_source=n&gclid=z&ref=a#frag") == "https://www.bls.gov/cps/data"
+    assert cu("https://www.BLS.gov:443/cps//data/?utm_source=n&gclid=z&ref=a#frag") == "https://bls.gov/cps/data"
     assert cu("http://h.example:80/a/") == "http://h.example/a"
     # a real query param survives; only the frozen tracking list is stripped
     assert cu("https://h.example/p?q=1&utm_medium=x&fbclid=y") == "https://h.example/p?q=1"
     assert cu(None) is None
 
 
-def test_merge_dedups_content_url_and_dup_eu():
+def test_canonical_url_total_on_malformed_port_and_schemeless():
+    """F5/D7: canonical_url is TOTAL — a malformed port (the live ValueError
+    crash) falls back to the raw netloc; a scheme-less URL gets a default
+    scheme like the registry's domain parser."""
+    cu = wave_mod.canonical_url
+    assert cu("https://example.com:8o8/path") == "https://example.com:8o8/path"  # no crash
+    assert cu("https://www.example.com:8o8/path") == "https://example.com:8o8/path"
+    assert cu("example.com/path") == "https://example.com/path"
+
+
+def test_merge_dedups_content_and_dup_eu_keeps_url_collision():
+    """MIGRATED for F5/D7: the OLD behavior (URL-collision dedup with DIFFERING
+    content_hash) WAS the bug — it re-pointed B's quote EU onto A's text and
+    broke V-DR-05 at ingest_merged. Docs now dedup by content_hash ONLY: T3
+    (same canonical URL as T1, different text) is KEPT as its own document."""
     merged = wave_mod.merge_results("DR-001", "p", [_member_a(), _member_b()])
-    # content_hash dup (T1 twice) + URL dup (T3 canonicalizes onto T1's page) =>
-    # two unique documents: T1 and T2 (T3 collapses onto T1's representative).
+    # content_hash dup (T1 twice) collapses; the same-URL-different-text T3 stays.
     texts = sorted(d["text"] for d in merged["documents"])
-    assert texts == sorted([T1, T2])
+    assert texts == sorted([T1, T2, T3])
     # the dup EU (same doc, same normalized quote) is dropped -> 3 unique EUs.
     quotes = sorted(normalize(e["quote_or_paraphrase"]) for e in merged["evidence_units"])
     assert quotes == sorted([
@@ -105,9 +121,14 @@ def test_merge_dedups_content_url_and_dup_eu():
         normalize("Automation displaced two percent of roles."),
         normalize("Industry data corroborate the decline."),
     ])
-    # every EU re-points to a real merged doc index.
+    # every EU re-points to a real merged doc index — and B's "industry" EU
+    # points at ITS OWN member's T3 text, never another member's.
+    docs = merged["documents"]
     for e in merged["evidence_units"]:
-        assert 0 <= e["doc_ref"] < len(merged["documents"])
+        assert 0 <= e["doc_ref"] < len(docs)
+    industry_eu = next(e for e in merged["evidence_units"]
+                       if normalize(e["quote_or_paraphrase"]) == normalize("Industry data corroborate the decline."))
+    assert docs[industry_eu["doc_ref"]]["text"] == T3
     assert merged["not_found"] is False
     assert merged["schema_version"] == "docs_result.v2"
 

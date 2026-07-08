@@ -115,31 +115,46 @@ def touches(gv: graph_model.GraphView, closure: set[str], target_id: str) -> boo
 
 def _check_preconditions(
     paths: Paths, gv: graph_model.GraphView, freeze_type: str, closure: set[str]
-) -> list[str]:
+) -> tuple[list[str], dict[str, str]]:
+    """Returns (failed_rules, per-rule detail). Every failed rule names the
+    offending record / floor line (F15 — the r3 per-rule-detail principle:
+    bare rule ids proved undiagnosable in the live run)."""
     failed: list[str] = []
+    detail: dict[str, str] = {}
 
     # V-FRZ-01: every record in the closure is active.
-    for rid in closure:
+    for rid in sorted(closure):
         rec = gv.record(rid)
         if rec is None or rec["lifecycle_state"] != "active":
             failed.append("V-FRZ-01")
+            state = "missing" if rec is None else rec["lifecycle_state"]
+            detail["V-FRZ-01"] = f"{rid}: not active ({state})"
             break
 
     # V-FRZ-02: every fact/mechanism node in the closure clears the S4 role-profile
     # floor (docs/17) — which for a spine node folds in V-SRC-04 triangulation and
     # a counter-angle attempt (supersedes the r3 flat >=2 floor). One function.
     from ..docsdb import coverage as coverage_mod
+    from ..validate.rules import v_src as _v_src
 
     spine_ids, _ = gv.spine()
     ctx = coverage_mod.build_context(paths, spine_ids)
-    for rid in closure:
+    for rid in sorted(closure):
         n = gv.node_by_id.get(rid)
         if n is not None and n["node_type"] in ("fact", "mechanism"):
             ledger = coverage_mod.target_ledger(n, ctx)
             if not coverage_mod.meets_floor(ledger):
                 failed.append("V-FRZ-02")
-                if ledger["floor"]["required"] in ("spine_fact", "spine_mechanism", "bridge") and not ledger["triangulated"]:
-                    failed.append("V-SRC-04")
+                detail["V-FRZ-02"] = coverage_mod.floor_line(ledger)
+                # F13: the triangulation verdict comes from the ONE canonical fn
+                # (v_src.check_triangulation -> coverage.triangulated) over the
+                # same binding docmeta the ledger folded — no duplicate logic.
+                if ledger["floor"]["required"] in ("spine_fact", "spine_mechanism", "bridge"):
+                    docmeta = coverage_mod.binding_docmeta(n, ctx)
+                    tri = _v_src.check_triangulation(docmeta)
+                    if tri:
+                        failed.append("V-SRC-04")
+                        detail["V-SRC-04"] = f"{rid}: {tri[0].detail}"
                 break
 
     # V-FRZ-03: no work item with status not in {committed, cancelled} touches it.
@@ -148,6 +163,9 @@ def _check_preconditions(
             continue
         if touches(gv, closure, item["target_id"]):
             failed.append("V-FRZ-03")
+            detail["V-FRZ-03"] = (
+                f"open work item {item['work_item_id']} ({item['status']}) touches {item['target_id']}"
+            )
             break
 
     # V-FRZ-04: spine_freeze requires MSA checklist pass AND verify exit 0.
@@ -157,12 +175,15 @@ def _check_preconditions(
         msa = graph_commands.msa_check(paths)
         if not msa["all_pass"]:
             failed.append("V-FRZ-04")
+            missing = sorted(k for k, v in msa["msa"].items() if not v.get("pass"))
+            detail["V-FRZ-04"] = f"msa-check failed: {', '.join(missing)}"
         else:
             try:
                 verify_run(paths)
-            except CorruptStateError:
+            except CorruptStateError as exc:
                 failed.append("V-FRZ-04")
-    return failed
+                detail["V-FRZ-04"] = f"verify exit 3: {', '.join(exc.errors)}"
+    return failed, detail
 
 
 # --- freeze / unfreeze ------------------------------------------------------
@@ -191,9 +212,9 @@ def apply(paths: Paths, target: str, level: str, actor: str | None = None) -> di
     if not closure and freeze_type != "spine_freeze":
         raise DomainError(["freeze closure empty"], data={"failed_rules": ["V-FRZ-01"]})
 
-    failed = _check_preconditions(paths, gv, freeze_type, closure)
+    failed, detail = _check_preconditions(paths, gv, freeze_type, closure)
     if failed:
-        raise DomainError(failed, data={"failed_rules": failed})
+        raise DomainError(failed, data={"failed_rules": failed, "detail": detail})
 
     allowed: set[str] = set()
     forbidden: set[str] = set()

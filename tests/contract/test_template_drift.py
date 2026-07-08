@@ -31,3 +31,18 @@ def test_docs_worker_carries_coverage_and_disconfirming_duty():
     assert "4-10 evidence units" in text
     # the disconfirming duty (capturing evidence AGAINST the claim).
     assert "DISCONFIRMING" in text
+
+
+def test_critic_worker_template_pinned(project=None):
+    """F3 (docs/10 §5, docs/15): the coverage-critic template ships and is the
+    5th registered template, carrying its READ-ONLY + closed-form contract and a
+    SELF-CHECK block; its {output_file}/{inputs} placeholders are present."""
+    assert "critic_worker" in prompts.TEMPLATES
+    text = prompts.load("critic_worker")
+    assert text.startswith("You are a PaperGraph CoverageCritic.")
+    assert "coverage_report.v1 JSON file to {output_file}" in text
+    assert "{inputs}" in text
+    assert "READ-ONLY" in text
+    assert "NO\ndocuments and NO evidence_units keys" in text
+    assert "SELF-CHECK before writing" in text
+    assert "you never state a verdict" in text

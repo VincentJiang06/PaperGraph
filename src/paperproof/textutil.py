@@ -145,10 +145,25 @@ def quote_match(text: str, q: str) -> bool:
 
 _YEAR_RANGE_RE = re.compile(r"^\s*(\d{4})\s*(?:-\s*(\d{4}))?\s*$")
 
+# Unicode dash/tilde variants a human types in a period range that mean "-"
+# (docs/09 §0, D10): en dash, em dash, figure/horizontal/non-breaking hyphens,
+# minus sign, fullwidth hyphen, and the fullwidth "~" range marker. Normalized to
+# a plain ASCII hyphen-minus before year-range parsing so "2020–2025" (en dash)
+# reads as "2020-2025" (the live run rejected 7/8 nodes on this alone).
+_DASH_VARIANTS = "‐‑‒–—―−－～〜~"
+_DASH_RE = re.compile(f"[{re.escape(_DASH_VARIANTS)}]")
+
+
+def normalize_dashes(s: str) -> str:
+    """Map every Unicode dash/range-tilde variant to a plain ASCII '-' (docs/09
+    §0, D10). Used before year-range parsing so an en/em-dashed period is
+    compatible with a hyphenated one."""
+    return _DASH_RE.sub("-", s or "")
+
 
 def _parse_year_range(v: str) -> tuple[int, int] | None:
     """Parse 'YYYY' or 'YYYY-YYYY' into an inclusive (lo, hi) range."""
-    m = _YEAR_RANGE_RE.match(v)
+    m = _YEAR_RANGE_RE.match(normalize_dashes(v))
     if not m:
         return None
     lo = int(m.group(1))

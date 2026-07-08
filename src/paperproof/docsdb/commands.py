@@ -91,10 +91,12 @@ def semantic_check(paths: Paths) -> dict[str, Any]:
     return sem.check(paths)
 
 
-def request(paths: Paths, target_id: str, need: str, hints: list[str] | None, actor: str | None = None) -> dict[str, Any]:
-    """`docs request`: an Orchestrator-initiated DocsRequest (cache-checked like
-    any request). Cache hit => fulfilled/"cache", no work item; miss => open + a
-    docs_queue item."""
+def request(paths: Paths, target_id: str, need: str, hints: list[str] | None, actor: str | None = None,
+            fan: bool = False) -> dict[str, Any]:
+    """`docs request [--fan]`: an Orchestrator-initiated DocsRequest (cache-checked
+    like any request). Cache hit => fulfilled/"cache", no work item; miss => open +
+    a docs_queue item. ``--fan`` records fan=true (F15/D5) so a later `docs wave`
+    fans one member per angle without repeating the flag."""
     actor = actor or clock_actor()
     hints = list(hints or [])
     rec = graph_model.load(paths).record(target_id)
@@ -108,8 +110,8 @@ def request(paths: Paths, target_id: str, need: str, hints: list[str] | None, ac
         "requested_by": "orchestrator", "target_id": target_id, "need": need,
         "search_hints": hints, "fingerprint": fp, "created_at": clock_now(),
         # reactive / Orchestrator-initiated requests default single (docs/15);
-        # a wave is opened explicitly with `docs wave`.
-        "fan": False,
+        # `--fan` records the wave intent (F15/D5).
+        "fan": bool(fan),
     }
     if hit:
         jsonl.append(paths.resolve(DOCS_REQUESTS), {**base, "status": "fulfilled", "fulfilled_by": "cache"})
@@ -148,6 +150,19 @@ def wave(paths: Paths, request_id: str, fan: bool = False, actor: str | None = N
 
 def ingest_result(paths: Paths, file_path: str, work_item: str) -> dict[str, Any]:
     return ingest.ingest_result(paths, file_path, work_item)
+
+
+def wave_member(paths: Paths, file_path: str, work_item: str) -> dict[str, Any]:
+    """`docs wave-member <output_file> --work-item <WI>` (F2/D2): complete +
+    validate ONE wave member (its own plan, no ingest); auto merge + critic when
+    the wave's member set goes terminal."""
+    return wave_mod.wave_member_ingest(paths, file_path, work_item)
+
+
+def wave_resolve(paths: Paths, file_path: str, work_item: str) -> dict[str, Any]:
+    """`docs wave-resolve <coverage_report_file> --work-item <WI>` (F2/D2):
+    validate the critic form (V-WAVE-03) and let CODE route the wave verdict."""
+    return wave_mod.wave_resolve(paths, file_path, work_item)
 
 
 def coverage(paths: Paths, node: str | None = None) -> dict[str, Any]:

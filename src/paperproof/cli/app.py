@@ -437,7 +437,14 @@ proof_app = typer.Typer(no_args_is_help=False)
 
 
 @proof_app.command("build-tasks")
-def proof_build_tasks(ctx: typer.Context, frontier: bool = typer.Option(False, "--frontier")) -> None:
+def proof_build_tasks(
+    ctx: typer.Context,
+    frontier: bool = typer.Option(
+        True, "--frontier",
+        help="build/rebuild bundles for every claimable or stale proof item — "
+             "the required (and only) v1 mode, so it is also the default (docs/10 §4)",
+    ),
+) -> None:
     s = _state(ctx)
     _dispatch("proof build-tasks", lambda: _prooftask.build_frontier(_project_paths(s)))
 
@@ -446,6 +453,20 @@ def proof_build_tasks(ctx: typer.Context, frontier: bool = typer.Option(False, "
 def proof_build_task(ctx: typer.Context, target_id: str = typer.Argument(...)) -> None:
     s = _state(ctx)
     _dispatch("proof build-task", lambda: _prooftask.build_one(_project_paths(s), target_id))
+
+
+@proof_app.command("render-prompt")
+def proof_render_prompt(ctx: typer.Context, work_item: str = typer.Option(..., "--work-item")) -> None:
+    """Emit the fully-filled proof_worker dispatch prompt for a bundled proof
+    item as envelope data (F11/D11)."""
+    s = _state(ctx)
+
+    def body() -> dict:
+        from ..prompts import render as _render
+
+        return _render.render_proof_prompt(_project_paths(s), work_item)
+
+    _dispatch("proof render-prompt", body)
 
 
 app.add_typer(proof_app, name="proof")
@@ -592,9 +613,10 @@ def docs_request(
     target: str = typer.Option(..., "--target"),
     need: str = typer.Option(..., "--need"),
     hint: list[str] = typer.Option(None, "--hint"),
+    fan: bool = typer.Option(False, "--fan", help="record fan=true so `docs wave` fans one member per angle (D5)"),
 ) -> None:
     s = _state(ctx)
-    _dispatch("docs request", lambda: _docs.request(_project_paths(s), target, need, list(hint or [])))
+    _dispatch("docs request", lambda: _docs.request(_project_paths(s), target, need, list(hint or []), fan=fan))
 
 
 @docs_app.command("ingest-result")
@@ -617,6 +639,45 @@ def docs_wave(
 ) -> None:
     s = _state(ctx)
     _dispatch("docs wave", lambda: _docs.wave(_project_paths(s), request, fan))
+
+
+@docs_app.command("render-prompt")
+def docs_render_prompt(ctx: typer.Context, work_item: str = typer.Option(..., "--work-item")) -> None:
+    """Emit the fully-filled docs_worker / critic_worker dispatch prompt for a
+    docs single item, wave member, or critic item (F11/D11): request fields,
+    embedded plan JSON, the V-SRC-05-checked registry excerpt, advisory leads."""
+    s = _state(ctx)
+
+    def body() -> dict:
+        from ..prompts import render as _render
+
+        return _render.render_docs_prompt(_project_paths(s), work_item)
+
+    _dispatch("docs render-prompt", body)
+
+
+@docs_app.command("wave-member")
+def docs_wave_member(
+    ctx: typer.Context,
+    file: str = typer.Argument(...),
+    work_item: str = typer.Option(..., "--work-item"),
+) -> None:
+    """Complete + validate ONE wave member (its own plan; NO ingest - V-WAVE-05);
+    auto-runs merge + critic dispatch when all members are terminal (F2/D2)."""
+    s = _state(ctx)
+    _dispatch("docs wave-member", lambda: _docs.wave_member(_project_paths(s), file, work_item))
+
+
+@docs_app.command("wave-resolve")
+def docs_wave_resolve(
+    ctx: typer.Context,
+    file: str = typer.Argument(...),
+    work_item: str = typer.Option(..., "--work-item"),
+) -> None:
+    """Validate the critic's coverage_report (V-WAVE-03) and let CODE compute +
+    route the wave verdict (close-and-ingest one DRES, or follow-up round)."""
+    s = _state(ctx)
+    _dispatch("docs wave-resolve", lambda: _docs.wave_resolve(_project_paths(s), file, work_item))
 
 
 @docs_app.command("coverage")

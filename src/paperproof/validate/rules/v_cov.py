@@ -53,12 +53,23 @@ def check_context_pack_coverage(ctx_pack: dict[str, Any]) -> list[Failure]:
 
 # --- V-COV-03: born-dead reason -> saturated only ---------------------------
 
+# The single born-dead reason S4 assigns a saturated needs_docs re-proof (D1).
+# The committer builds its dead_letter detail from this constant so the string
+# is never hand-typed (F13); floor_met (a second detail key) distinguishes the
+# floor-unmet stop from the floor-met human-review case.
+SATURATED = "saturated"
 
-def check_born_dead_reason(reason: str) -> list[Failure]:
-    """V-COV-03: the committer's only born-dead reason under S4 is 'saturated'."""
-    if reason != "saturated":
-        return [Failure("V-COV-03", f"born-dead reason {reason!r} is not the saturated stop reason")]
-    return []
+
+def check_born_dead_reason(reason: str, floor_met: bool | None = None) -> list[Failure]:
+    """V-COV-03: the committer's only born-dead reason under S4 is 'saturated'
+    (D1). ``floor_met`` (when supplied) must be a bool — it is the sole
+    distinguisher between the two saturated stops, never a distinct reason."""
+    failures: list[Failure] = []
+    if reason != SATURATED:
+        failures.append(Failure("V-COV-03", f"born-dead reason {reason!r} is not the saturated stop reason"))
+    if floor_met is not None and not isinstance(floor_met, bool):
+        failures.append(Failure("V-COV-03", f"born-dead floor_met {floor_met!r} is not a bool"))
+    return failures
 
 
 # --- V-COV-05: narrow-inheritance -------------------------------------------

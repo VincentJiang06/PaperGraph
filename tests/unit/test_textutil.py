@@ -100,3 +100,15 @@ def test_stopwords_frozen_verbatim():
         assert w in tu.STOPWORDS
     for w in ("liquidity", "pension", "risk"):
         assert w not in tu.STOPWORDS
+
+
+def test_scope_compatible_endash_period_range():
+    """F9 (docs/09 §0, D10): a contract period written with an en dash
+    ("2020–2025") is compatible with a node period written with an ASCII hyphen
+    ("2020-2025") — the live run rejected 7/8 nodes on this normalization gap."""
+    assert tu.normalize_dashes("2020–2025") == "2020-2025"
+    assert tu.scope_compatible({"period": "2020–2025"}, {"period": "2020-2025"})
+    # em dash, minus sign and fullwidth tilde variants normalize too.
+    assert tu.scope_compatible({"period": "2020—2025"}, {"period": "2022"})
+    assert tu.scope_compatible({"period": "2020−2025"}, {"period": "2024-2030"})
+    assert not tu.scope_compatible({"period": "2010–2015"}, {"period": "2020-2025"})
