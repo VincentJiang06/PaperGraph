@@ -1,0 +1,15 @@
+{"schema":"event.v1","event_id":"EV-000001","at":"2026-07-08T18:48:00Z","actor":"main","command":"init","mutating":true,"touched":["ai-jobs"],"summary":"init: AI agents 在2020-2025年对就业的净效应是什么?"}
+{"schema":"event.v1","event_id":"EV-000002","at":"2026-07-08T18:48:00Z","actor":"main","command":"add","mutating":true,"touched":["N-0001"],"summary":"add 1 under root: N-0001"}
+{"schema":"event.v1","event_id":"EV-000003","at":"2026-07-08T18:48:20Z","actor":"main","command":"add","mutating":true,"touched":["N-0002","N-0003","N-0004","N-0005"],"summary":"add 4 under N-0001: N-0002, N-0003, N-0004, N-0005"}
+{"schema":"event.v1","event_id":"EV-000004","at":"2026-07-08T18:48:35Z","actor":"main","command":"promote","mutating":true,"touched":["N-0003"],"summary":"promote N-0003 -> claim"}
+{"schema":"event.v1","event_id":"EV-000005","at":"2026-07-08T18:48:35Z","actor":"main","command":"promote","mutating":true,"touched":["N-0004"],"summary":"promote N-0004 -> claim"}
+{"schema":"event.v1","event_id":"EV-000006","at":"2026-07-08T18:48:35Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0003"],"summary":"N-0003 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000007","at":"2026-07-08T18:48:35Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0004"],"summary":"N-0004 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000008","at":"2026-07-08T18:49:13Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (579 chars)"}
+{"schema":"event.v1","event_id":"EV-000009","at":"2026-07-08T18:50:49Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0001","N-0003"],"summary":"conclude N-0003 [supports]"}
+{"schema":"event.v1","event_id":"EV-000010","at":"2026-07-08T18:51:48Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0002","N-0004"],"summary":"conclude N-0004 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000011","at":"2026-07-08T18:51:48Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0003","N-0001"],"summary":"conclude N-0001 [supports]"}
+{"schema":"event.v1","event_id":"EV-000012","at":"2026-07-08T18:52:18Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000013","at":"2026-07-08T18:52:18Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (617 chars)"}
+{"schema":"event.v1","event_id":"EV-000014","at":"2026-07-08T18:52:18Z","actor":"main","command":"export","mutating":false,"touched":[],"summary":"export md"}
+{"schema":"event.v1","event_id":"EV-000015","at":"2026-07-08T18:52:18Z","actor":"main","command":"log","mutating":false,"touched":[],"summary":"log tail=50"}

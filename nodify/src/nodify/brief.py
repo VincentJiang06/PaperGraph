@@ -20,7 +20,10 @@ def _line_node(nodes: dict, n: dict[str, Any], max_stmt: int = 140) -> str:
         stmt = stmt[: max_stmt - 1] + "…"
     path = ">".join(tree.path_of(nodes, n["node_id"])[:-1]) or "root"
     extra = f" [{n['orientation']}]" if n["orientation"] == "adversarial" else ""
-    return f"- {n['node_id']} ({n['kind']}, {n['status']}){extra} — {stmt} | at {path}"
+    # the latest record's created_at is when this node last CHANGED — a fresh
+    # reader can tell a just-dispatched claim from one stalled for days
+    since = f" | since {n['created_at']}" if n["status"] == "investigating" else ""
+    return f"- {n['node_id']} ({n['kind']}, {n['status']}){extra} — {stmt} | at {path}{since}"
 
 
 def _sections(paths: Paths, session: dict[str, Any]) -> list[tuple[str, list[str]]]:
@@ -37,7 +40,7 @@ def _sections(paths: Paths, session: dict[str, Any]) -> list[tuple[str, list[str
         *( [f"BOUNDARY: {session['boundary_note']}"] if session.get("boundary_note") else [] ),
         (f"BUDGETS: depth {max((tree.depth_of(nodes, i) for i in nodes), default=0)}"
          f"/{budgets['max_depth']} · open claims {tree._open_claims(nodes)}"
-         f"/{budgets['max_open_claims']} · nodes {len(nodes)}"),
+         f"/{budgets['max_open_claims']} · total nodes {len(nodes)} (uncapped)"),
     ]
 
     conclusions = []

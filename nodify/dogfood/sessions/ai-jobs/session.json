@@ -1,0 +1,14 @@
+{
+  "schema": "session.v1",
+  "session_id": "ai-jobs",
+  "question": "AI agents 在2020-2025年对就业的净效应是什么?",
+  "boundary_note": "只看2020-2025;区分任务替代与岗位净增减",
+  "language": "zh",
+  "budgets": {
+    "max_depth": 4,
+    "max_children": 5,
+    "max_open_claims": 12
+  },
+  "schema_set_hash": "sha256:ae854e6c5c26fdd86f6f3978058365a9d8af5ff2a0ac0bd4539aed2e6aeb64c4",
+  "created_at": "2026-07-08T18:48:00Z"
+}
