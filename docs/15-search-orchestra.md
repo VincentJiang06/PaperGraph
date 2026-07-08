@@ -1,6 +1,6 @@
 # 15 S2 — Search Orchestra (waves, merger, coverage critic)
 
-**Status: design-frozen (Stage A). Binding only after a docs/00 adoption entry.**
+**Status: ADOPTED / BINDING (Stage A, S2) — docs/00 "Search Program Adoption — S2 Search Orchestra" (2026-07-08); worklist docs/11 §12.**
 
 One worker per request serializes angles and lets whatever that worker didn't
 think of stay unsearched forever. S2 turns a request into a **wave**: parallel

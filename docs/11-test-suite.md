@@ -395,4 +395,26 @@ T-S3-back  the full prior suite stays green: the ingestor writing document.v2 +
         test (documents carry all v1 fields; sources.jsonl is a new file; `verify`
         stays exit 0 on a project with v2 docs + a learned registry).
 ```
+
+S2 (Search Orchestra, docs/15) — worklist (rule coverage via SCENARIO_COVERED for
+V-WAVE-01..05):
+
+```text
+T-S2-1  merger goldens: a member set with a duplicate content_hash, a
+        tracking-param URL variant, and a duplicate EU dedups to a BYTE-IDENTICAL
+        merged docs_result.v2 (canonical-URL normalization per docs/15); every
+        merged doc/EU traces to exactly one member [V-WAVE-02].
+T-S2-2  wave-verdict computation table: CODE computes sufficient|followup|closed
+        from the critic's closed form over every angle_covered combination;
+        R_MAX=2; a followup round opens one member per no_attempt angle + one per
+        expected_source; member outputs are pairwise-distinct paths [V-WAVE-01].
+T-S2-3  hostile critic that smuggles documents/evidence_units into its report is
+        rejected [V-WAVE-03]; expected_sources ≤3 per round; the critic writes no
+        evidence (read-only).
+T-S2-4  R_MAX close with an uncovered angle recorded, no infinite loop [V-WAVE-04];
+        only the merged result is ingested — exactly one DRES per wave [V-WAVE-05];
+        `docs wave --request [--fan]` fans the members.
+T-S2-back  no regression (457 + S2 green): waves coexist with S1 plans (each
+        member carries an angle-specific plan) and S3 registry learning; a
+        non-fan reactive request still runs as a single member unchanged.
 ```

@@ -45,3 +45,6 @@
 ## [2026-07-08] m6-s1-merge | merged worktree S1 agent's test_v_sp.py (V-SP fixtures were INERT — rule-coverage only checks files exist); 437 green, 17 V-SP tests now run.
 ## [2026-07-08] m6-s1-eval | fresh Evaluator: impl fully correct (A33-A36 re-proven, no interruption leftovers in code), but FAIL on F1 doc-sync: docs/09 missing ### V-SP block + V-DR-06 not v2-expressed (both promised by docs/00). Fixed docs/09 (doc-only, 437 stays green) → PASS.
 ## [2026-07-08] m6b-s3-done | S3-lite generator PASS in worktree (419, +20). Base was 4e5860a (stale) so it wrote its own adoption docs → conflicts w/ main's on merge. Manifest received; merging next.
+## [2026-07-08] m6-s1-gate | S1 doc-sync F1 fixed (docs/09 V-SP block + V-DR-06 v2); 437 green; tagged gate/m6-s1-search-planning; pushed GitHub (c51792a).
+## [2026-07-08] m6b-merge | merged S3-lite onto main (10 conflicts, all keep-both). SEAM FIX: S1's v2 DocsWorker dropped the v1 search_log 403 note S3's registry-learning needs -> FakeDocsWorker now carries a search_log block note into the v2 query_log as a blocked X-id extra. 457 green. Merge ed04781 (NOT yet gated/pushed).
+## [2026-07-08] m7-adopt | adopted S2 (docs/00 entry, docs/15 status, docs/11 §12 worklist, contract A40-A43). Launching S2 generator (worktree) + S3 evaluator in parallel.

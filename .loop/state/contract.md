@@ -116,3 +116,25 @@ assertion. On PASS → tag gate/m6b-s3-lite-source-registry, push GitHub.
 Wave 1 (parallel worktrees, NOW): m6-s1 + m6b-s3-lite. Integrate S1 first, then S3 (merge the ~4
 shared files: registry.py, schema registry, prompts/docs_worker.txt, docsdb ingest); gate + fresh
 Evaluator per set. Wave 2: m7-s2 (needs S1). Then Stage A done → user fork on S4(v1.2)/S5(v2).
+STATUS: S1 gated+pushed (gate/m6-s1). S3 merged (457 green @ ed04781), evaluator running. S2 launched.
+
+## Stage m7-s2-search-orchestra (Search Program S2, adopted 2026-07-08; docs/15, worklist docs/11 §12)
+
+Completes Stage A. Waves (parallel per-angle members) + deterministic merger + fresh adversarial
+coverage critic -> code computes the wave verdict (<=2 rounds). Baseline 457 @ ed04781 (S1+S3).
+Built in a worktree from the S2-adoption commit; needs S1 (members execute S1 plans), coexists with S3.
+
+- [ ] A40 (T-S2-1) merger determinism: same terminal member set => BYTE-identical merged docs_result.v2;
+        dedup by content_hash then canonical URL (frozen tracking-param strip); dup EUs dropped; every
+        merged doc/EU traces to exactly one member (V-WAVE-02) · test_v_wave · m7
+- [ ] A41 (T-S2-2) CODE computes the wave verdict (sufficient|followup|closed) from the critic's CLOSED
+        form over every angle_covered combo; R_MAX=2; followup opens one member per no_attempt angle +
+        per expected_source; member outputs pairwise-distinct (V-WAVE-01/04) · test_v_wave · m7
+- [ ] A42 (T-S2-3/4) hostile critic smuggling documents/evidence_units rejected (V-WAVE-03); only the
+        merged result ingested, one DRES per wave (V-WAVE-05); `docs wave --request [--fan]` fans members ·
+        test_v_wave + cli · m7
+- [ ] A43 (T-S2-back) NO REGRESSION (457 + S2 green): waves coexist with S1 plans + S3 registry; a non-fan
+        reactive request still runs as a single member unchanged · full suite + evaluator diff · m7
+
+Gate (m7): pytest green AND V-WAVE-01..05 in registry AND test_v_wave.py present AND no weakened assertion.
+On PASS -> tag gate/m7-s2-search-orchestra, push GitHub. Then Stage A COMPLETE -> raise S4/S5 fork to user.

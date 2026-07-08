@@ -242,7 +242,40 @@ ADOPTED — S3 Stage A-lite (docs/16) source registry, tiers & provenance:
   rules V-SRC-01/02/03/05 (provenance present; secondary_quote carrier exists;
   registry appends with no silent tier-lowering; dispatch-excerpt completeness).
 
-NOT ADOPTED — S3 Stage B triangulation (V-SRC-04), S2 (docs/15), S4 (docs/17),
-  S5 (docs/18) remain design-frozen. V-SRC-04 and the docs/16 triangulation
-  section are informational until a later adoption entry.
+NOT ADOPTED — S3 Stage B triangulation (V-SRC-04), S4 (docs/17), S5 (docs/18)
+  remain design-frozen. V-SRC-04 and the docs/16 triangulation section are
+  informational until a later adoption entry.
+```
+
+## Search Program Adoption — S2 Search Orchestra (2026-07-08)
+
+Adopts S2 (docs/15) as **binding**, completing Stage A (v1.1). S2 turns a single
+DocsRequest into a **wave**: parallel per-angle members (each executing its S1
+plan), a deterministic merger, and a fresh adversarial coverage critic whose
+closed form drives ≤2 bounded follow-up rounds — the multi-modal-sweep +
+completeness-critic pattern applied to evidence.
+
+```text
+S2 becomes NORMATIVE (docs/15 status → binding):
+  Schemas   search_wave.v1, coverage_report.v1 (new); docs_request.v1 gains a
+            `fan` flag (r3 sweep requests default fan=true).
+  Engine    wave(DR) fans one member per angle {official_stats, academic,
+            industry, counter} (news only when the claim period touches the last
+            18 months); each member = a docs_queue item + an angle-specific S1
+            plan + a distinct output. Merger (code, deterministic): dedup by
+            content_hash then canonical URL (frozen tracking-param strip), drop
+            dup EUs, emit ONE merged docs_result.v2 at docs/merged/; only the
+            merged result is ingested (one DRES per wave).
+  Critic    a fresh, adversarial, read-only coverage worker fills a closed form
+            (angle_covered/primary_source_present/disconfirming_captured); CODE
+            computes the wave verdict (sufficient | followup | closed), R_MAX=2.
+  Rules     V-WAVE-01..05 join the registry (docs/09 §V-WAVE).
+  CLI       `docs wave --request <DR-id> [--fan]` on the existing `docs` group;
+            queue list shows wave grouping.
+  Storage   docs/waves.jsonl, docs/merged/.
+  Tests     docs/11 §12 carries T-S2-1..4.
+
+Stage A (S1 + S3-lite + S2) then COMPLETE. Still design-frozen: S4 (docs/17,
+v1.2 — SUPERSEDES the r3 flat floor + docs cap) and S5 (docs/18, v2 — needs a
+vendored embedding model) remain future, pending their own adoption entries.
 ```
