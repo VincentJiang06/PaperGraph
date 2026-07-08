@@ -230,9 +230,12 @@ def dead_letter_born(
     blocked_by: list[str] | None = None,
     reason: str,
     actor: str,
+    detail: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """(created) -> dead (op=dead_letter): a re-proof item born dead for human
-    review when the docs or bridge round cap is hit (docs/08)."""
+    review when the docs or bridge round cap is hit (docs/08). ``detail`` merges
+    extra keys into the QueueEvent detail (e.g. saturation carries floor_met so a
+    later `queue requeue` can resume — D1)."""
     now = clock_now()
     item = {
         "schema_version": "work_item.v1",
@@ -252,6 +255,9 @@ def dead_letter_born(
         "updated_at": now,
     }
     jsonl.append(paths.resolve(WORK_ITEMS), item)
+    event_detail: dict[str, Any] = {"reason": reason}
+    if detail:
+        event_detail.update(detail)
     _append_event(
         paths,
         work_item_id=item["work_item_id"],
@@ -259,7 +265,7 @@ def dead_letter_born(
         from_status=None,
         to_status="dead",
         actor=actor,
-        detail={"reason": reason},
+        detail=event_detail,
     )
     return item
 

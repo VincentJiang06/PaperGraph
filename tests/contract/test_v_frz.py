@@ -99,6 +99,25 @@ def _fulfilled_request(target_id, dres="DRES-001"):
             "fingerprint": "fp", "status": "fulfilled", "fulfilled_by": dres, "created_at": "2026-07-07T00:00:00Z"}
 
 
+def _seed_counter_query_log(paths, rid="DR-001"):
+    """Migrated for D6: a fulfilled search now EARNS the counter angle only from an
+    EXECUTED counter qid in a v2 query_log (never mere completion). Write DR-001's
+    immutable plan (a counter query) + its docs_result.v2 query_log executing it."""
+    plan = {"schema_version": "search_plan.v1", "plan_id": f"SP-{rid}", "request_id": rid,
+            "queries": [{"qid": "Q1", "kind": "core", "text": "core"},
+                        {"qid": "Q5", "kind": "counter", "text": "evidence against"}]}
+    pp = paths.resolve(f"docs/plans/SP-{rid}.json")
+    pp.parent.mkdir(parents=True, exist_ok=True)
+    pp.write_text(__import__("json").dumps(plan), encoding="utf-8")
+    result = {"schema_version": "docs_result.v2", "request_id": rid, "project_id": "p4-ldi",
+              "documents": [], "evidence_units": [], "not_found": True,
+              "query_log": [{"qid": "Q1", "executed": True, "outcome": "empty", "urls_seen": 0, "docs_taken": 0, "note": ""},
+                            {"qid": "Q5", "executed": True, "outcome": "empty", "urls_seen": 0, "docs_taken": 0, "note": ""}]}
+    rp = paths.resolve(f"agent_outputs/docs_results/{rid}.docs_result.json")
+    rp.parent.mkdir(parents=True, exist_ok=True)
+    rp.write_text(__import__("json").dumps(result), encoding="utf-8")
+
+
 def _seed_spine_with_mechanism(paths, *, evidence, eu_docs, documents=None, searched=True):
     """A minimal active spine {Q, T, M(mechanism), T->Q, M->T} plus the given
     EvidenceUnit->doc rows (and optional Document tier rows + a completed search),
@@ -110,6 +129,7 @@ def _seed_spine_with_mechanism(paths, *, evidence, eu_docs, documents=None, sear
         jsonl.append(paths.resolve(EVIDENCE_UNITS), _eu(eid, did))
     if searched:
         jsonl.append(paths.resolve(DOCS_REQUESTS), _fulfilled_request("NODE-003"))
+        _seed_counter_query_log(paths, "DR-001")
     jsonl.append(paths.resolve(NODES), _node("NODE-001", node_type="question", state="active", ll=ll))
     jsonl.append(paths.resolve(NODES), _node("NODE-002", node_type="thesis", state="active", ll=ll))
     jsonl.append(paths.resolve(NODES), _node("NODE-003", node_type="mechanism", state="active", evidence=evidence, ll=ll))
@@ -246,3 +266,18 @@ def test_v_frz_unfreeze_reopens_proof(project, pp):
     # a re-proof work item was enqueued for the re-opened record.
     reopened = [i for i in engine.load_items(paths) if i["target_id"] == "NODE-001" and i["status"] in ("queued", "blocked")]
     assert reopened, "unfreeze must re-open the affected proof"
+
+
+def test_freeze_refusal_carries_per_rule_detail(project, pp):
+    """F15 (r3 per-rule-detail principle): a refused freeze names the offending
+    record / floor line per failed rule — bare rule ids proved undiagnosable."""
+    paths = _paths(pp)
+    _seed_spine_with_mechanism(
+        paths, evidence=["EU-001"], eu_docs=[("EU-001", "DOC-001")], documents=_TRI_DOCS,
+    )
+    with pytest.raises(DomainError) as exc:
+        freeze.apply(paths, "NODE-002", "spine")
+    detail = exc.value.data.get("detail") or {}
+    assert "V-FRZ-02" in exc.value.errors
+    assert "NODE-003" in detail.get("V-FRZ-02", ""), detail
+    assert "role=spine_mechanism" in detail["V-FRZ-02"]

@@ -99,10 +99,33 @@ def _section_of(wi: dict[str, Any]) -> str:
     return wi["target_id"]
 
 
+def _to_relpath(paths: Paths, output_file: str) -> str:
+    """Normalize an absolute path under the project dir to its declared relpath
+    (F8/D14, mirroring `validate result`): the V-PATH-01 check is a PATH-IDENTITY
+    check, not a string-spelling check."""
+    from pathlib import Path
+
+    p = Path(output_file)
+    if p.is_absolute():
+        try:
+            return str(p.resolve().relative_to(paths.project_dir.resolve()))
+        except ValueError:
+            return output_file
+    return output_file
+
+
 def ingest_prose(paths: Paths, output_file: str, work_item_id: str, actor: str | None = None) -> dict[str, Any]:
     actor = actor or clock_actor()
     wi = engine.get_item(paths, work_item_id)
+    # F8/D14: implicit-complete like `validate result` (docs/05 §Validation Gate)
+    # — without this, validate_pass/fail from `claimed` was an illegal V-Q-01
+    # transition that MASKED the real V-PROSE failure and burned retries.
+    if wi["status"] in ("claimed", "running"):
+        wi = engine.complete(paths, work_item_id, actor)
+    elif wi["status"] != "validating":
+        raise DomainError([f"prose work item not in validating state: {work_item_id} ({wi['status']})"])
     section_id = _section_of(wi)
+    output_file = _to_relpath(paths, output_file)
 
     failures: list[Failure] = []
     declared = list(wi.get("output_files") or [])

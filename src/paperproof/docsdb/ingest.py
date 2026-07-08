@@ -182,6 +182,16 @@ def _validate(paths: Paths, wi: dict[str, Any], relpath: str, raw: dict[str, Any
 def ingest_result(paths: Paths, output_file: str, work_item_id: str, actor: str | None = None) -> dict[str, Any]:
     actor = actor or clock_actor()
     wi = engine.get_item(paths, work_item_id)
+    # F2/D2: a wave-member docs item must NEVER be ingested per-member — only the
+    # wave's merged result is ingested, exactly once [V-WAVE-05]. Refuse and name
+    # the lawful command. (Local import: wave.py imports this module.)
+    from . import wave as _wave
+
+    if _wave.wave_for_member(paths, work_item_id) is not None:
+        raise DomainError([
+            f"work item {work_item_id} is a wave member: per-member ingest is illegal "
+            f"(V-WAVE-05) — use `docs wave-member {output_file} --work-item {work_item_id}`"
+        ])
     # r3 (docs/05 §Validation Gate): the docs validate-and-ingest path likewise
     # completes an item still in claimed/running itself, against its claim-time
     # lease manifest, so no separate `queue complete` call is required.

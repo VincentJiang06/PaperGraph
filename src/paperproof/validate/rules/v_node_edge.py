@@ -1,10 +1,9 @@
 """Graph-record static checks (docs/09 V-NODE / V-EDGE / V-GRAPH).
 
-These are NOT registered as top-level registry rules in M1 (the coverage
-meta-test covers only V-SPEC/V-PATH/V-PR/V-EXP/V-TASK/V-Q/V-COMMIT). They are
-reusable helpers: the Expander reports them under V-EXP-05, and the Committer /
-verify report structural violations under V-COMMIT-05. Keeping them here means
-one implementation of "single proposition", "reachability", and "no cycles".
+Registered top-level rules (F14): the Expander reports V-NODE-02/03 under
+V-EXP-05, and the Committer / verify report structural violations under
+V-COMMIT-05. Keeping them here means one implementation of "single
+proposition", "reachability", and "no cycles".
 """
 
 from __future__ import annotations
@@ -96,6 +95,28 @@ def graph_record_checks(nodes: list[dict[str, Any]], edges: list[dict[str, Any]]
         )
         if not ok2:
             failures.append(Failure("V-EDGE-02", f"{e['edge_id']}: {detail2}"))
+
+    # V-NODE-04 (existence half — the "not rejected" half applies at the commit
+    # that APPENDS the node, and a later parent rejection must not corrupt an
+    # at-rest graph): every parent resolves to a known node id.
+    for n in nodes:
+        if n["lifecycle_state"] == "rejected":
+            continue
+        for pid in n.get("parents") or []:
+            if pid not in node_claim:
+                failures.append(Failure("V-NODE-04", f"{n['node_id']}: parent {pid} does not exist"))
+
+    # V-EDGE-04 (v1 restriction, docs/02): a non-rejected refutes edge may only
+    # target an alternative node.
+    node_type = {n["node_id"]: n.get("node_type") for n in nodes}
+    for e in edges:
+        if e["lifecycle_state"] == "rejected" or e["edge_type"] != "refutes":
+            continue
+        tgt_type = node_type.get(e["target_node_id"])
+        if tgt_type != "alternative":
+            failures.append(Failure(
+                "V-EDGE-04", f"{e['edge_id']}: refutes targets {tgt_type!r} (must be alternative)"
+            ))
 
     # V-GRAPH-03: strength iff active; frozen only on active.
     for rec in list(nodes) + list(edges):

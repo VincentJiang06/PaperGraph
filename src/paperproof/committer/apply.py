@@ -29,7 +29,7 @@ from ..ids import next_id
 from ..paths import Paths
 from ..queue import engine
 from ..store import file_lock, jsonl, snapshot
-from ..validate.rules import v_node_edge
+from ..validate.rules import v_cov, v_node_edge
 
 NODES = "graph/logic_nodes.jsonl"
 EDGES = "graph/logic_edges.jsonl"
@@ -368,10 +368,16 @@ def _plan_needs_docs(paths, plan, vr, target, target_type, pr_id, commit_id, def
     ctx = coverage_mod.build_context(paths, spine_ids)
     ledger = coverage_mod.target_ledger(target, ctx)
     if ledger["saturated"]:
-        if not coverage_mod.meets_floor(ledger):
-            deferred_enqueues.append({"op": "dead_letter", "queue_name": "proof_queue",
-                                      "target_type": target_type, "target_id": tgt_id, "reason": "saturated"})
-        else:
+        # D1: BOTH saturated branches born-dead the re-proof (queue trace; a later
+        # `queue requeue` resumes). reason is ALWAYS the v_cov constant "saturated";
+        # floor_met distinguishes the stops [V-COV-03]. When the floor IS met the
+        # committer additionally records a human_review action (the worker's
+        # "insufficient" conflicts with a met floor — surface it, no more search).
+        floor_met = coverage_mod.meets_floor(ledger)
+        deferred_enqueues.append({"op": "dead_letter", "queue_name": "proof_queue",
+                                  "target_type": target_type, "target_id": tgt_id,
+                                  "reason": v_cov.SATURATED, "floor_met": floor_met})
+        if floor_met:
             deferred_enqueues.append({"op": "human_review", "target_type": target_type,
                                       "target_id": tgt_id, "ledger": ledger["floor"]})
         return
@@ -470,9 +476,10 @@ def _run_deferred(paths: Paths, plan: _CommitPlan, deferred: list[dict[str, Any]
             )
             plan._action("enqueue", item["work_item_id"], {"queue": op["queue_name"], "target": op["target_id"]})
         elif kind == "dead_letter":
+            extra = {"floor_met": op["floor_met"]} if "floor_met" in op else None
             item = engine.dead_letter_born(
                 paths, queue_name=op["queue_name"], target_type=op["target_type"],
-                target_id=op["target_id"], reason=op["reason"], actor=actor,
+                target_id=op["target_id"], reason=op["reason"], actor=actor, detail=extra,
             )
             plan._action("enqueue", item["work_item_id"], {"queue": op["queue_name"], "dead": True})
         elif kind == "bridge_wiring":

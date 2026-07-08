@@ -264,3 +264,41 @@ def test_verify_flags_path_colliding_wave_v_wave_01(project, pp):
 
     env = pp("verify", expect=3)
     assert "V-WAVE-01" in env["errors"]
+
+
+def test_verify_sweeps_v_wave_04_round_cap(project, pp):
+    """F13: `verify` sweeps V-WAVE-04 at rest — a stored wave whose round exceeds
+    R_MAX (or a follow-up member with no origin) is corruption (exit 3)."""
+    paths = scenario.paths_for_pp(pp)
+    dr_id, _ = _open_dr(paths, pp)
+    started = pp("docs", "wave", "--request", dr_id, "--fan")["data"]
+    assert pp("verify")["ok"] is True
+
+    corrupt = dict(wave_mod.wave_by_id(paths, started["wave_id"]))
+    corrupt["round"] = 3  # past R_MAX=2
+    jsonl.append(paths.resolve(WAVES), wave_mod.SearchWave.model_validate(corrupt))
+    env = pp("verify", expect=3)
+    assert "V-WAVE-04" in env["errors"]
+
+
+def test_verify_sweeps_v_wave_05_double_dres(project, pp):
+    """F13: `verify` sweeps V-WAVE-05 at rest — a wave request fulfilled by TWO
+    DRES ids (the per-member-ingest corruption) is exit 3."""
+    paths = scenario.paths_for_pp(pp)
+    dr_id, _ = _open_dr(paths, pp)
+
+    docs_worker = FakeDocsWorker({"*": scenario.boe_docs_result_spec()})
+    covered = {
+        "form": {"angle_covered": {a: "yes" for a in wave_mod.MANDATORY_ANGLES},
+                 "primary_source_present": "yes", "disconfirming_captured": "yes"},
+        "expected_sources": [], "notes": "covered",
+    }
+    result = drive_wave(paths, dr_id, fan=True, docs_worker=docs_worker,
+                        critic_worker=FakeCriticWorker({"*": covered}))
+    assert result["status"] == "closed"
+    assert pp("verify")["ok"] is True
+
+    latest = [r for r in _reqs(paths) if r["request_id"] == dr_id][-1]
+    jsonl.append(paths.resolve(DR), {**latest, "fulfilled_by": "DRES-000099"})
+    env = pp("verify", expect=3)
+    assert "V-WAVE-05" in env["errors"]

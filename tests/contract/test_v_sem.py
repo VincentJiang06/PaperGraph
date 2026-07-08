@@ -432,3 +432,24 @@ def test_paraphrase_golden(semantic_env):
     assert matcher.score(claim, eus["EU-PARA"]) == 0
     sscore = matcher._cosine(cvec, vecs["EU-PARA"])
     assert sscore >= matcher.TAU
+
+
+@pytest.mark.semantic
+def test_long_text_truncates_without_crash(semantic_env):
+    """F7: an EU whose passage exceeds the model's 512-token positional table
+    embeds without crashing ONNX, and re-embeds byte-identically (deterministic
+    right-truncation at 512). Before the fix this overran the position input and
+    raised inside onnxruntime."""
+    import numpy as np
+
+    paths = semantic_env
+    # >512 tokens: 900 space-separated words prefixed with the e5 "passage: ".
+    long_text = " ".join(f"word{i}" for i in range(900))
+    assert len(long_text.split()) > semantic.MAX_TOKENS
+
+    first = semantic.embed_texts(paths, [long_text], semantic.PASSAGE_PREFIX)
+    second = semantic.embed_texts(paths, [long_text], semantic.PASSAGE_PREFIX)
+    assert first.shape == (1, semantic.EMBED_DIM)
+    assert float(np.linalg.norm(first[0])) == pytest.approx(1.0, abs=1e-4)
+    # deterministic: same text truncates to the same ids ⇒ identical vector.
+    assert np.array_equal(first, second)

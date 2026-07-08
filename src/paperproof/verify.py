@@ -117,6 +117,9 @@ def _wave_check(paths: Paths) -> list[Failure]:
                committed round-1 member's ingested evidence.
     V-WAVE-02  a CLOSED wave's stored merged result is the deterministic merge of
                its terminal members, and every merged doc/EU traces to a member.
+    V-WAVE-04  rounds ≤ 2 and every follow-up member cites its origin (F13).
+    V-WAVE-05  exactly one DRES fulfils a wave's request — a second DRES means a
+               per-member ingest corrupted the request record (F13).
     """
     from .docsdb import wave as wave_mod
     from .queue import engine
@@ -124,6 +127,7 @@ def _wave_check(paths: Paths) -> list[Failure]:
 
     failures: list[Failure] = []
     by_id = engine.items_by_id(paths)
+    request_history = jsonl.read_all(paths.resolve("docs/docs_requests.jsonl"))
     for w in wave_mod.load_waves(paths):
         wid = w.get("wave_id")
         member_paths: list[str] = []
@@ -133,6 +137,12 @@ def _wave_check(paths: Paths) -> list[Failure]:
             if files:
                 member_paths.append(files[0])
         for f in v_wave.check_member_paths(member_paths):
+            failures.append(Failure(f.rule_id, f"wave {wid}: {f.detail}"))
+
+        # V-WAVE-04/05 (F13): the canonical fns sweep every stored wave at rest.
+        for f in v_wave.check_wave_rounds(w):
+            failures.append(Failure(f.rule_id, f"wave {wid}: {f.detail}"))
+        for f in v_wave.check_single_dres(w.get("request_id"), request_history):
             failures.append(Failure(f.rule_id, f"wave {wid}: {f.detail}"))
 
         # V-WAVE-02 traceability: only a closed wave has a final merged file that

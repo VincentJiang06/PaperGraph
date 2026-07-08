@@ -58,6 +58,64 @@ def test_v_prose_mangled_rejected(text, rule):
     assert rule in fired, (rule, fired)
 
 
+# --- F8/D14: ingest-prose implicit-complete + absolute paths -----------------
+
+
+def _enqueue_prose_item(paths, section_id, agent="cw"):
+    from paperproof.queue import engine
+
+    out = f"agent_outputs/prose/{section_id}.md"
+    item = engine.enqueue(paths, queue_name="compile_queue", target_type="section",
+                          target_id=section_id, task_id=f"PROSE-{section_id}",
+                          output_files=[out], actor="test")
+    return engine.claim(paths, queue_name="compile_queue", agent=agent, wi_id=item["work_item_id"])
+
+
+def test_ingest_prose_from_claimed_with_absolute_path(project, pp):
+    """F8/D14: `compiler ingest-prose` implicit-completes a CLAIMED item and
+    accepts the ABSOLUTE spelling of the declared output path (V-PATH-01 is a
+    path-identity check, not a string compare)."""
+    from paperproof.queue import engine
+
+    paths = _paths(pp)
+    _setup(paths)
+    item = _enqueue_prose_item(paths, "SEC-mechanism")
+    out = paths.project_dir / item["output_files"][0]
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text("Mech wording (claim: NODE-003)(cite: EU-001).", encoding="utf-8")
+
+    res = prose_mod.ingest_prose(paths, str(out), item["work_item_id"])  # absolute path, claimed item
+    assert res["section_id"] == "SEC-mechanism"
+    assert engine.get_item(paths, item["work_item_id"])["status"] == "committed"
+    # two queue events on the validate leg: complete + validate_pass (docs/05).
+    events = [e for e in jsonl.read_all(paths.resolve("queue/events.jsonl"))
+              if e["work_item_id"] == item["work_item_id"]]
+    assert [e["op"] for e in events[-3:]] == ["complete", "validate_pass", "commit"]
+
+
+def test_ingest_prose_real_failure_surfaces_its_own_rule(project, pp):
+    """F8/D14: a genuine V-PROSE violation on a CLAIMED item surfaces V-PROSE-*
+    — the old path died on the illegal claimed→validated transition and masked
+    everything as V-Q-01 while burning retries."""
+    from paperproof.errors import DomainError
+    from paperproof.queue import engine
+
+    paths = _paths(pp)
+    _setup(paths)
+    item = _enqueue_prose_item(paths, "SEC-mechanism")
+    out = paths.project_dir / item["output_files"][0]
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text("A transition with no annotations at all.", encoding="utf-8")
+
+    with pytest.raises(DomainError) as exc:
+        prose_mod.ingest_prose(paths, item["output_files"][0], item["work_item_id"])
+    assert any(r.startswith("V-PROSE-") for r in exc.value.errors)
+    assert "V-Q-01" not in exc.value.errors
+    # the item took the honest validate_fail path (failed -> retry), not a crash.
+    assert engine.get_item(paths, item["work_item_id"])["status"] == "queued"
+    assert engine.get_item(paths, item["work_item_id"])["attempt"] == 2
+
+
 # --- audit finding kinds ----------------------------------------------------
 
 NODES = "graph/logic_nodes.jsonl"

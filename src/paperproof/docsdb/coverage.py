@@ -69,14 +69,6 @@ _MARKET_TERMS = re.compile(
     re.IGNORECASE,
 )
 
-_DRES_RE = re.compile(r"DRES-0*(\d+)")
-
-
-def _dres_num(dres: str) -> int:
-    m = _DRES_RE.search(dres or "")
-    return int(m.group(1)) if m else -1
-
-
 def _best(current: str, candidate: str) -> str:
     return candidate if _ANGLE_RANK[candidate] > _ANGLE_RANK[current] else current
 
@@ -95,6 +87,16 @@ class CoverageContext:
     coverage_reports_by_wave: dict[str, list[dict[str, Any]]]
     single_query_logs: dict[str, list[dict[str, Any]]]  # request_id -> query_log
     docs_by_dres: dict[str, list[str]] = field(default_factory=dict)
+    # D6: a wave member's angle counts as attempted ONLY when its work item has
+    # reached a terminal state (committed|cancelled) — never at enqueue.
+    terminal_member_ids: set[str] = field(default_factory=set)
+    # D6: the counter-kind qid of each single request's plan, so the fold can read
+    # counter from an EXECUTED/BLOCKED counter qid in the v2 query_log (never from
+    # mere completion, cache, or a v1 result).
+    plan_counter_qid: dict[str, str] = field(default_factory=dict)
+    # D13 [V-COV-05]: target_id -> created_at of the latest >half-core-terms
+    # narrow commit; requests/waves appended BEFORE it do not count toward rounds.
+    rounds_reset_at: dict[str, str] = field(default_factory=dict)
 
 
 def build_context(paths: Paths, spine_ids: set[str]) -> CoverageContext:
@@ -149,12 +151,63 @@ def build_context(paths: Paths, spine_ids: set[str]) -> CoverageContext:
             if isinstance(ql, list) and ql:
                 single_query_logs[rid] = ql
 
+    # D6(i): terminal wave members only. A member's angle counts as attempted iff
+    # its work item is committed/cancelled — read from the queue at rest.
+    from ..queue import engine as _engine  # local: avoid import cycle
+
+    terminal_member_ids = {
+        i["work_item_id"] for i in _engine.load_items(paths)
+        if i.get("status") in ("committed", "cancelled")
+    }
+
+    # D6: the counter qid of each single request's immutable plan (SP-<rid>), so
+    # counter is folded ONLY from an executed/blocked counter query in a v2 log.
+    plan_counter_qid: dict[str, str] = {}
+    plans_dir = paths.resolve("docs/plans")
+    if plans_dir.exists():
+        for r in requests:
+            rid = r.get("request_id")
+            if rid in wave_by_request:
+                continue
+            pf = plans_dir / f"SP-{rid}.json"
+            if not pf.exists():
+                continue
+            try:
+                plan = json.loads(pf.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                continue
+            for q in plan.get("queries", []):
+                if q.get("kind") == "counter":
+                    plan_counter_qid[rid] = q.get("qid")
+                    break
+
+    # D13 [V-COV-05]: the fold consults the CANONICAL narrow-reset fn — when a
+    # target's claim history contains a >half-core-terms narrow, its search
+    # rounds reset at that commit (a materially different search target).
+    from ..validate.rules import v_cov as _v_cov
+
+    rounds_reset_at: dict[str, str] = {}
+    prev_claim: dict[str, str] = {}
+    for rel, id_field, claim_field in (
+        ("graph/logic_nodes.jsonl", "node_id", "claim"),
+        ("graph/logic_edges.jsonl", "edge_id", "edge_claim"),
+    ):
+        for rec in jsonl.read_all(paths.resolve(rel)):
+            tid = rec.get(id_field)
+            claim = rec.get(claim_field) or ""
+            prev = prev_claim.get(tid)
+            if prev is not None and claim != prev and _v_cov.rounds_reset_on_narrow(prev, claim):
+                rounds_reset_at[tid] = rec.get("created_at") or ""
+            prev_claim[tid] = claim
+
     return CoverageContext(
         spine_ids=set(spine_ids), eus_by_id=eus_by_id, docs_by_id=docs_by_id,
         sources_by_domain=sources_by_domain, requests_latest=requests,
         wave_by_request=wave_by_request,
         coverage_reports_by_wave=coverage_reports_by_wave,
         single_query_logs=single_query_logs, docs_by_dres=docs_by_dres,
+        terminal_member_ids=terminal_member_ids, plan_counter_qid=plan_counter_qid,
+        rounds_reset_at=rounds_reset_at,
     )
 
 
@@ -171,15 +224,19 @@ def _doc_tier(doc: dict[str, Any]) -> str:
 
 
 def _publisher_of(doc: dict[str, Any], sources_by_domain: dict[str, dict[str, Any]]) -> str:
-    """Mechanical publisher identity for triangulation independence (docs/16): the
-    registry publisher for the doc's domain if known, else the domain itself, else
-    the doc id (a local file is its own publisher)."""
+    """Mechanical publisher identity for triangulation independence (docs/16,
+    F12/D12): the registry publisher for the doc's domain when a profile exists
+    (curated, or domain-defaulted by ``registry.learn``); the domain itself when
+    no profile was ever learned; and "" (UNKNOWN — never independent) for a
+    local doc with no domain. The old ``local:<doc_id>`` fabricated a distinct
+    publisher per local file, making any two local docs 'independent'."""
     domain = _doc_domain(doc)
     if domain:
         prof = sources_by_domain.get(domain)
-        pub = (prof or {}).get("publisher") or ""
-        return pub.strip().lower() if pub.strip() else domain
-    return f"local:{doc.get('doc_id')}"
+        if prof is not None:
+            return ((prof.get("publisher") or "").strip().lower())
+        return domain
+    return ""
 
 
 # --- triangulation (V-SRC-04) ----------------------------------------------
@@ -189,7 +246,8 @@ def triangulated(binding_docmeta: list[tuple[str, str, str]]) -> bool:
     """A spine binding profile satisfies triangulation (docs/16 V-SRC-04) iff:
       (a) >=1 EU from a T1/T2 document PLUS >=1 more EU from a DISTINCT document, or
       (b) >=2 EUs from distinct, mutually-independent T3/T4 documents (different
-          publishers — publisher equality is the mechanical check).
+          publishers — publisher equality is the mechanical check; an EMPTY
+          publisher means UNKNOWN and never establishes independence, F12/D12).
     ``binding_docmeta`` = (tier, publisher, doc_id) per binding EU. T5 press never
     carries a spine binding alone (it fails both branches)."""
     distinct_docs = {doc_id for _t, _p, doc_id in binding_docmeta}
@@ -197,12 +255,14 @@ def triangulated(binding_docmeta: list[tuple[str, str, str]]) -> bool:
     has_t1t2 = any(tier in _T1T2 for tier, _p, _d in binding_docmeta)
     if has_t1t2 and len(distinct_docs) >= 2:
         return True
-    # (b): >=2 distinct T3/T4 documents from >=2 distinct publishers.
+    # (b): >=2 distinct T3/T4 documents from >=2 distinct NON-EMPTY publishers —
+    # a pair with unknown publishers cannot be shown mutually independent.
     t34_pub_by_doc: dict[str, str] = {}
     for tier, pub, doc_id in binding_docmeta:
         if tier in _T3T4:
             t34_pub_by_doc[doc_id] = pub
-    if len(t34_pub_by_doc) >= 2 and len(set(t34_pub_by_doc.values())) >= 2:
+    known_pubs = {p for p in t34_pub_by_doc.values() if p}
+    if len(t34_pub_by_doc) >= 2 and len(known_pubs) >= 2:
         return True
     return False
 
@@ -249,68 +309,103 @@ def _binding_eus(node: dict[str, Any], ctx: CoverageContext) -> list[dict[str, A
     return [ctx.eus_by_id[b] for b in (node.get("evidence_bindings") or []) if b in ctx.eus_by_id]
 
 
+def binding_docmeta(node: dict[str, Any], ctx: CoverageContext) -> list[tuple[str, str, str]]:
+    """(tier, publisher, doc_id) per binding EU — the ONE input both the ledger
+    and the freeze gate's V-SRC-04 check consume (F13: de-duplicated logic)."""
+    out: list[tuple[str, str, str]] = []
+    for eu in _binding_eus(node, ctx):
+        doc = ctx.docs_by_id.get(eu.get("doc_id"))
+        if doc is not None:
+            out.append((_doc_tier(doc), _publisher_of(doc, ctx.sources_by_domain), doc["doc_id"]))
+    return out
+
+
+def _requested_docs(target_id: str, ctx: CoverageContext) -> list[dict[str, Any]]:
+    """The documents actually ARCHIVED for this target: docs whose ingested_from
+    DRES fulfilled one of the target's requests (D6(iii))."""
+    dres_ids = {
+        r.get("fulfilled_by") for r in ctx.requests_latest
+        if r.get("target_id") == target_id and str(r.get("fulfilled_by") or "").startswith("DRES-")
+    }
+    docs: list[dict[str, Any]] = []
+    for dres in dres_ids:
+        for doc_id in ctx.docs_by_dres.get(dres, []):
+            doc = ctx.docs_by_id.get(doc_id)
+            if doc is not None:
+                docs.append(doc)
+    return docs
+
+
 def _angle_outcomes(
     target_id: str, node: Optional[dict[str, Any]], ctx: CoverageContext,
-    binding_eus: list[dict[str, Any]],
 ) -> dict[str, str]:
-    """Fold per-angle outcomes from S2 wave rounds (member angles + the critic's
-    per-round coverage reports), S1 query_logs (single requests), and the evidence
-    the searches actually produced (tier -> angle, refutes -> counter). Best
-    outcome wins."""
+    """Fold per-angle outcomes from honest, EARNED signals only (D6 — fixes the
+    reactive-saturation livelock + the S4 counter over-report):
+
+      (i)   TERMINAL wave members  -> their angle attempted (never at enqueue);
+      (ii)  single-request v2 query_logs -> official_stats attempt/productive/
+            blocked, and counter ONLY from an executed/blocked counter qid;
+      (iii) archived docs REQUESTED for the target, by tier
+            (T1->official_stats, T2/T3->academic, T4->industry) -> productive;
+      (iv)  S2 critic coverage reports -> the authoritative per-angle verdict.
+
+    A mere completion, a cache fulfilment, or a v1 result NEVER flips an angle
+    (they carry no v2 query_log and archive no tiered docs unless a real search
+    ran)."""
     angles = {a: NO_ATTEMPT for a in DISPLAY_ANGLES}
-    if node is not None and "industry" not in _mandatory_angles(node):
-        # industry stays displayed but is not mandatory unless market/firm.
-        pass
-
     reqs = [r for r in ctx.requests_latest if r.get("target_id") == target_id]
-    completed = [r for r in reqs if r.get("status") in ("fulfilled", "not_found")]
 
-    # 1. any completed search round attempts the mandatory counter query (V-SP-02:
-    #    the plan's counter query is executed or blocked, never skipped) and, for a
-    #    single default-angle request, the official_stats angle.
-    for r in completed:
-        angles["counter"] = _best(angles["counter"], TRIED_EMPTY)
-        if r.get("request_id") not in ctx.wave_by_request:
-            angles["official_stats"] = _best(angles["official_stats"], TRIED_EMPTY)
-
-    # 2. wave members: every fanned angle was attempted this wave.
+    # (i) TERMINAL wave members only: an angle is attempted iff a member for it
+    #     reached a terminal work-item state.
     for r in reqs:
         wave = ctx.wave_by_request.get(r.get("request_id"))
         if wave is None:
             continue
         for mem in wave.get("members", []):
+            if mem.get("work_item_id") not in ctx.terminal_member_ids:
+                continue
             a = mem.get("angle")
             if a in angles:
                 angles[a] = _best(angles[a], TRIED_EMPTY)
 
-    # 3. evidence the searches produced (bindings): tier -> productive angle.
-    for eu in binding_eus:
-        doc = ctx.docs_by_id.get(eu.get("doc_id"))
-        if doc is not None:
-            tier = _doc_tier(doc)
-            if tier == T1:
-                angles["official_stats"] = _best(angles["official_stats"], PRODUCTIVE)
-            elif tier in (T2, T3):
-                angles["academic"] = _best(angles["academic"], PRODUCTIVE)
-            elif tier == T4:
-                angles["industry"] = _best(angles["industry"], PRODUCTIVE)
-        if eu.get("support_direction") == "refutes":
-            angles["counter"] = _best(angles["counter"], PRODUCTIVE)
+    # (iii) archived docs requested for the target: tier -> productive angle.
+    for doc in _requested_docs(target_id, ctx):
+        tier = _doc_tier(doc)
+        if tier == T1:
+            angles["official_stats"] = _best(angles["official_stats"], PRODUCTIVE)
+        elif tier in (T2, T3):
+            angles["academic"] = _best(angles["academic"], PRODUCTIVE)
+        elif tier == T4:
+            angles["industry"] = _best(angles["industry"], PRODUCTIVE)
 
-    # 4. S1 query_logs for single requests: overall productivity -> the request's
-    #    default angle + the counter query.
+    # (ii) single-request v2 query_logs: the request's default (official_stats)
+    #      angle from executed/productive/blocked outcomes, and counter ONLY from
+    #      the plan's counter qid being executed or blocked.
     for r in reqs:
         rid = r.get("request_id")
         ql = ctx.single_query_logs.get(rid)
         if not ql:
             continue
         outcomes = {e.get("outcome") for e in ql}
+        if any(e.get("executed") for e in ql) or "blocked" in outcomes:
+            angles["official_stats"] = _best(angles["official_stats"], TRIED_EMPTY)
         if "productive" in outcomes:
             angles["official_stats"] = _best(angles["official_stats"], PRODUCTIVE)
         elif outcomes == {"blocked"}:
             angles["official_stats"] = _best(angles["official_stats"], TRIED_BLOCKED)
+        cqid = ctx.plan_counter_qid.get(rid)
+        if cqid:
+            for e in ql:
+                if e.get("qid") != cqid:
+                    continue
+                if e.get("outcome") == "productive":
+                    angles["counter"] = _best(angles["counter"], PRODUCTIVE)
+                elif e.get("outcome") == "blocked":
+                    angles["counter"] = _best(angles["counter"], TRIED_BLOCKED)
+                elif e.get("executed"):
+                    angles["counter"] = _best(angles["counter"], TRIED_EMPTY)
 
-    # 5. S2 critic coverage reports: the authoritative per-angle verdict.
+    # (iv) S2 critic coverage reports: the authoritative per-angle verdict.
     for r in reqs:
         wave = ctx.wave_by_request.get(r.get("request_id"))
         if wave is None:
@@ -325,19 +420,35 @@ def _angle_outcomes(
     return angles
 
 
+_DR_NUM_RE = re.compile(r"DR-0*(\d+)")
+
+
+def _dr_num(rid: str) -> int:
+    m = _DR_NUM_RE.search(rid or "")
+    return int(m.group(1)) if m else -1
+
+
 def _rounds_and_new_docs(target_id: str, ctx: CoverageContext) -> tuple[int, int]:
     """rounds = completed search rounds for the node (each closed wave contributes
     its round count; each completed single request contributes 1). new_docs_last_
-    round = distinct NEW documents first-archived by the most recent DRES."""
+    round = distinct NEW documents first-archived by the MOST RECENT completed
+    round — a cache-fulfilled round archived nothing, so it counts 0 (D6: a
+    fingerprint-identical needs_docs loop must reach saturation, never livelock).
+
+    D13 [V-COV-05]: requests appended BEFORE the target's latest >half-core-terms
+    narrow commit do not count — a materially different claim starts at rounds 0
+    instead of inheriting saturation."""
     reqs = [r for r in ctx.requests_latest if r.get("target_id") == target_id]
+    cutoff = ctx.rounds_reset_at.get(target_id)
+    if cutoff:
+        reqs = [r for r in reqs if (r.get("created_at") or "") >= cutoff]
     rounds = 0
     counted_wave_reqs: set[str] = set()
-    dres_ids: set[str] = set()
+    completed: list[dict[str, Any]] = []
     for r in reqs:
         rid = r.get("request_id")
-        fb = r.get("fulfilled_by")
-        if isinstance(fb, str) and fb.startswith("DRES-"):
-            dres_ids.add(fb)
+        if r.get("status") in ("fulfilled", "not_found"):
+            completed.append(r)
         wave = ctx.wave_by_request.get(rid)
         if wave is not None:
             if wave.get("status") == "closed" and rid not in counted_wave_reqs:
@@ -345,11 +456,13 @@ def _rounds_and_new_docs(target_id: str, ctx: CoverageContext) -> tuple[int, int
                 counted_wave_reqs.add(rid)
         elif r.get("status") in ("fulfilled", "not_found"):
             rounds += 1
-    if not dres_ids:
+    if not completed:
         return rounds, 0
-    last_dres = max(dres_ids, key=_dres_num)
-    new_docs_last_round = len(ctx.docs_by_dres.get(last_dres, []))
-    return rounds, new_docs_last_round
+    last = max(completed, key=lambda r: _dr_num(r.get("request_id")))
+    fb = last.get("fulfilled_by")
+    if isinstance(fb, str) and fb.startswith("DRES-"):
+        return rounds, len(ctx.docs_by_dres.get(fb, []))
+    return rounds, 0  # cache-fulfilled last round archived nothing
 
 
 def is_saturated(rounds: int, angles: dict[str, str], new_docs_last_round: int,
@@ -371,24 +484,16 @@ def target_ledger(target_record: dict[str, Any], ctx: CoverageContext) -> dict[s
 
     binding_eus = _binding_eus(node, ctx) if node is not None else []
     eu_counts = {"supports": 0, "refutes": 0, "context": 0}
-    binding_docmeta: list[tuple[str, str, str]] = []
-    docs_seen: set[str] = set()
-    publishers: set[str] = set()
-    tiers: set[str] = set()
     for eu in binding_eus:
         direction = eu.get("support_direction", "context")
         if direction in eu_counts:
             eu_counts[direction] += 1
-        doc = ctx.docs_by_id.get(eu.get("doc_id"))
-        if doc is not None:
-            tier = _doc_tier(doc)
-            pub = _publisher_of(doc, ctx.sources_by_domain)
-            binding_docmeta.append((tier, pub, doc["doc_id"]))
-            docs_seen.add(doc["doc_id"])
-            publishers.add(pub)
-            tiers.add(tier)
+    docmeta = binding_docmeta(node, ctx) if node is not None else []
+    docs_seen = {doc_id for _t, _p, doc_id in docmeta}
+    publishers = {pub for _t, pub, _d in docmeta}
+    tiers = {tier for tier, _p, _d in docmeta}
 
-    angles = _angle_outcomes(target_id, node, ctx, binding_eus)
+    angles = _angle_outcomes(target_id, node, ctx)
     rounds, new_docs_last_round = _rounds_and_new_docs(target_id, ctx)
     mandatory = _mandatory_angles(node) if node is not None else BASE_MANDATORY
     saturated = is_saturated(rounds, angles, new_docs_last_round, mandatory)
@@ -396,7 +501,7 @@ def target_ledger(target_record: dict[str, Any], ctx: CoverageContext) -> dict[s
     role = classify_role(node, ctx.spine_ids) if node is not None else "none"
     binding_count = len(node.get("evidence_bindings") or []) if node is not None else 0
     distinct_docs = len(docs_seen)
-    is_triangulated = triangulated(binding_docmeta)
+    is_triangulated = triangulated(docmeta)
     met = _role_floor_met(role, binding_count, distinct_docs, is_triangulated, angles)
 
     ledger: dict[str, Any] = {

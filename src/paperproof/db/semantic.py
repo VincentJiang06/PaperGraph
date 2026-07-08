@@ -199,6 +199,13 @@ def _session(paths: Paths):
     return sess
 
 
+# e5's positional table is 512; a longer sequence overruns the ONNX position
+# input and crashes (F7 — confirmed on a >512-token EU). Deterministic truncation
+# at 512 keeps the model in-range; the same text always truncates to the same
+# ids, so re-embedding stays byte-identical (V-SEM-01).
+MAX_TOKENS = 512
+
+
 def _tokenizer(paths: Paths):
     from tokenizers import Tokenizer
 
@@ -206,6 +213,8 @@ def _tokenizer(paths: Paths):
     tok = _TOKENIZERS.get(key)
     if tok is None:
         tok = Tokenizer.from_file(key)
+        # deterministic right-truncation at the model's 512-token limit (F7).
+        tok.enable_truncation(max_length=MAX_TOKENS)
         _TOKENIZERS[key] = tok
     return tok
 

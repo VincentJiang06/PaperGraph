@@ -76,6 +76,39 @@ def test_s8_rebuild_idempotent_and_api_stable(project, pp):
     # A freshly-rebuilt index is not stale.
     assert indexer.check(paths)["stale_index"] is False
 
+    # F15: the S1/S2 canonical files are INDEXED sources — sources/waves tables
+    # exist (queryable) and their JSONL is manifest-tracked for staleness.
+    assert {"sources", "waves"} <= set(m1["tables"])
+    assert "docs/sources.jsonl" in m1["sources"]
+    assert "docs/waves.jsonl" in m1["sources"]
+
+
+def test_s8_wave_and_registry_records_are_indexed(project, pp):
+    """F15: after a real wave lifecycle, `db rebuild` indexes docs/waves.jsonl and
+    docs/sources.jsonl (one row per append), and a post-rebuild wave append flips
+    `db check` to stale."""
+    from paperproof.store import jsonl as _jsonl
+
+    paths = scenario.paths_for_pp(pp)
+    scenario.seed_docs_facts(paths, [scenario.FACT_CLAIM])
+    pp("docs", "request", "--target", "NODE-003", "--need", "Evidence on LDI calls.", "--fan")
+    reqs = _jsonl.latest_records(paths.resolve("docs/docs_requests.jsonl"), "request_id")
+    pp("docs", "wave", "--request", reqs[-1]["request_id"])
+
+    m = indexer.rebuild(paths)
+    assert m["tables"]["waves"] >= 1
+    reader = IndexReader(paths.resolve(indexer.DB_FILE))
+    try:
+        waves = reader.current("waves")
+    finally:
+        reader.close()
+    assert waves and waves[0]["request_id"] == reqs[-1]["request_id"]
+    assert indexer.check(paths)["stale_index"] is False
+    # an append to a newly-tracked source is DRIFT until the next rebuild.
+    _jsonl.append(paths.resolve("docs/waves.jsonl"), {**waves[0], "status": "merging"})
+    chk = indexer.check(paths)
+    assert chk["stale_index"] is True and "docs/waves.jsonl" in chk["changed_sources"]
+
 
 def test_s8_corrupt_line_makes_every_reader_exit_3(project, pp):
     paths = scenario.paths_for_pp(pp)
