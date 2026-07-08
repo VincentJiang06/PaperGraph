@@ -121,6 +121,10 @@ between contract acceptance and layer-0 expansion (docs/05 pipeline):
    every fact/mechanism seed claim has ≥2 EvidenceUnits from ≥2 distinct
    documents, or a recorded not_found for ≥2 angles. `paperproof graph
    msa-check` reports sweep coverage informationally from day one.
+   (Operationalization, r3: a "fact/mechanism seed claim" is enforced as a
+   **layer-0 fact/mechanism node** — seed claims become the layer-0 nodes, and a
+   raw seed string carries no node_type to test mechanically. "REQUESTED-for-N"
+   evidence is traced request→DRES→ingested_from, as for DocsPacks.)
 ```
 
 Sweep requests are Orchestrator-initiated (`requested_by` = the orchestrator

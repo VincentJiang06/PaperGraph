@@ -41,3 +41,26 @@ grades THIS, not the raw spec. Each assertion is machine-gradable unless marked
 - [x] A25 suite passes from fresh clone in clean venv · fresh-clone gate · final-audit
 - [ ] A26 human-verify: live smoke (real workers) run by human, recorded in agent_notes/milestones/ · cross-cutting
 - [ ] A27 human-verify: doc-first — any src deviation from docs/ ships doc amendment same commit · cross-cutting
+
+## Stage m5-r3-behavior (r3 behavior upgrades — the 5 items r3-core deferred; gated by docs/11 §10 T-r3-4/5/7/9/10)
+
+- [x] A28 (T-r3-4) evidence floor ≥2 EU from ≥2 distinct documents — ONE floor fn (graph/model.py:203)
+        called by MSA-4 (graph/commands.py:117), V-FRZ-02 (freeze/apply.py:133), compiler
+        missing_evidence (dry_run.py:54) + UI mirror (readmodel.py:187); evaluator proved 1-binding
+        AND 2-EU-same-doc each fail msa-check AND spine freeze; 2-EU/2-doc passes; S7 lifted
+        (BoE+IMF), still zero-gap + audit + trace · test_v_frz + test_s7 · m5 ✓
+- [x] A29 (T-r3-5) V-SWEEP-01 registered + SCENARIO_COVERED; expand ingest refuses first layer>=1
+        proposal while a fact/mechanism layer-0 node lacks the floor, passes once met; fires ONLY on
+        first beyond-layer-0; msa-check still exactly 9 items + informational sweep_coverage · test_v_sweep · m5 ✓
+- [x] A30 (T-r3-7) implicit complete from claimed/running: validate result (proof) emits
+        [complete, validate_pass] one command; docs ingest-result (docs loop) same; validate docs-result
+        stays a stateless dry check by design; verify exit 0, no illegal V-Q-01 · test_v_q · m5 ✓
+        (F1 doc-sync: docs/05 §Validation Gate + complete row reconciled to name the real paths)
+- [x] A31 (T-r3-9) ui serve --auto-rebuild rebuilds a stale index on poll; OFF path byte-unchanged
+        (flag-guarded branch); option on existing ui serve, no new command/schema · test_api · m5 ✓
+- [x] A32 (T-r3-10) drift test asserts shipped bytes (proof SELF-CHECK; docs "2-5 documents"/"4-10
+        evidence units" hyphen + DISCONFIRMING); removing the block fails the test · test_template_drift · m5 ✓
+
+Gate (m5): PASS — 399 green (386 baseline +13), independently re-run by a fresh adversarial
+Evaluator; all 5 probes reproduced with its own fixtures; weakened-test audit clean. F1
+(docs/05 stale on the docs implicit-complete path) reconciled by the Orchestrator before tagging.

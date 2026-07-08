@@ -10,11 +10,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .envelope import Failure, to_envelope
-from .rules import v_commit, v_dr, v_exp, v_path, v_pr, v_q, v_spec, v_task
+from .rules import v_commit, v_dr, v_exp, v_path, v_pr, v_q, v_spec, v_sweep, v_task
 
 __all__ = [
     "Failure", "to_envelope", "RULES", "rule_ids",
-    "v_spec", "v_path", "v_pr", "v_dr", "v_exp", "v_task", "v_q", "v_commit",
+    "v_spec", "v_path", "v_pr", "v_dr", "v_exp", "v_task", "v_q", "v_commit", "v_sweep",
 ]
 
 
@@ -38,6 +38,7 @@ RULES: dict[str, Rule] = {
         _rule("V-SPEC-03", "bfs_plan is a DAG"),
         _rule("V-SPEC-04", "hard_exclusions and forbidden_claims non-empty"),
         _rule("V-SPEC-05", "3-10 seed claims; each <= 2 sentences"),
+        _rule("V-SWEEP-01", "first expansion beyond layer 0 requires the sweep evidence floor"),
         _rule("V-PATH-01", "output path exactly matches declared output_files"),
         _rule("V-PATH-02", "project-relative, no traversal, no symlink escape"),
         _rule("V-PATH-03", "valid UTF-8 JSON (or .md), single document"),

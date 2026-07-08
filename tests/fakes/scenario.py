@@ -182,11 +182,18 @@ def node_contradicting_form(evidence_ids: list[str]) -> dict[str, Any]:
 
 
 def boe_docs_result_spec() -> dict[str, Any]:
-    """A scripted DocsResult (web source, inline text) whose EvidenceUnit's quote
-    is verbatim in the text (V-DR-05) and whose can_cite_for matches FACT_CLAIM."""
-    text = (
+    """A scripted DocsResult with TWO documents, each carrying one EvidenceUnit
+    whose quote is verbatim in its text (V-DR-05) and whose can_cite_for matches
+    FACT_CLAIM. Two EUs from two distinct documents satisfy the r3 evidence floor
+    (MSA-4 / V-FRZ-02: >=2 bindings from >=2 documents), so the mechanism node can
+    be frozen (docs/08 A28)."""
+    boe_text = (
         "In September 2022 LDI margin calls created acute liquidity pressure as "
         "collateral calls exceeded liquid buffers within days."
+    )
+    imf_text = (
+        "During the 2022 gilt crisis, forced deleveraging by LDI funds intensified "
+        "the liquidity squeeze across the sterling market."
     )
     return {
         "documents": [
@@ -195,8 +202,15 @@ def boe_docs_result_spec() -> dict[str, Any]:
                 "source_type": "official_report",
                 "origin": {"kind": "web", "path": None, "url": "https://boe.example/fsr-2022"},
                 "citation_key": "BoE2022FSR",
-                "text": text,
-            }
+                "text": boe_text,
+            },
+            {
+                "title": "IMF Global Financial Stability Report, Oct 2022",
+                "source_type": "official_report",
+                "origin": {"kind": "web", "path": None, "url": "https://imf.example/gfsr-2022"},
+                "citation_key": "IMF2022GFSR",
+                "text": imf_text,
+            },
         ],
         "evidence_units": [
             {
@@ -210,10 +224,22 @@ def boe_docs_result_spec() -> dict[str, Any]:
                 "can_cite_for": [FACT_CLAIM],
                 "cannot_cite_for": ["all de-risking strategies create liquidity crises"],
                 "scope": {},
-            }
+            },
+            {
+                "doc_ref": 1,
+                "doc_id": None,
+                "location": "p.28, Box 1.3",
+                "kind": "quote",
+                "quote_or_paraphrase": "forced deleveraging by LDI funds intensified the liquidity squeeze",
+                "summary": "Forced LDI deleveraging intensified the 2022 liquidity squeeze",
+                "support_direction": "supports",
+                "can_cite_for": [FACT_CLAIM],
+                "cannot_cite_for": ["all de-risking strategies create liquidity crises"],
+                "scope": {},
+            },
         ],
         "not_found": False,
-        "search_log": ["boe fsr 2022 ldi margin calls"],
+        "search_log": ["boe fsr 2022 ldi margin calls", "imf gfsr 2022 ldi deleveraging"],
     }
 
 
@@ -316,8 +342,9 @@ def s7_script() -> dict[str, Any]:
     return {
         S7_Q: node_pass_form(),
         S7_T: node_pass_form(),
-        # mechanism M: insufficient -> needs_docs -> (docs) -> sufficient(strong).
-        S7_M: [node_insufficient_form(), node_sufficient_form(["EU-001"])],
+        # mechanism M: insufficient -> needs_docs -> (docs) -> sufficient(strong),
+        # binding BOTH archived EUs (two documents) to meet the r3 evidence floor.
+        S7_M: [node_insufficient_form(), node_sufficient_form(["EU-001", "EU-002"])],
         S7_D: node_pass_form(),
         S7_D2: node_pass_form(),
         S7_EDGE_TQ: edge_pass_form("holds"),

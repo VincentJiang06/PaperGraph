@@ -292,13 +292,17 @@ ui_app = typer.Typer(no_args_is_help=False)
 
 
 @ui_app.command("serve")
-def ui_serve(ctx: typer.Context, port: int = typer.Option(8420, "--port")) -> None:
+def ui_serve(
+    ctx: typer.Context,
+    port: int = typer.Option(8420, "--port"),
+    auto_rebuild: bool = typer.Option(False, "--auto-rebuild"),
+) -> None:
     s = _state(ctx)
 
     def body() -> dict[str, Any]:
         from ..ui import app as ui_module
 
-        return ui_module.serve(_project_paths(s), port)
+        return ui_module.serve(_project_paths(s), port, auto_rebuild)
 
     _dispatch("ui serve", body)
 

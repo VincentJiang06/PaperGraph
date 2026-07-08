@@ -133,6 +133,44 @@ def test_stale_flips_and_endpoint_reads_index_not_jsonl(monitor):
     assert "worker-1" not in ov2["working"]["by_agent"]
 
 
+# --- T-r3-9: `ui serve --auto-rebuild` reconciles a stale index on poll -------
+
+
+def test_auto_rebuild_clears_stale_on_poll(project, pp):
+    """With --auto-rebuild, a poll that finds the index stale rebuilds it (stale
+    clears + the endpoint serves fresh data); WITHOUT the flag the stale banner
+    behavior is byte-for-byte the OFF case above (stale stays true)."""
+    paths = scenario.paths_for_pp(pp)
+    scenario.monitor_fixture(paths)
+    indexer.rebuild(paths)
+
+    # --auto-rebuild ON.
+    client = TestClient(create_app(pp.tmp_path, "p4-ldi", auto_rebuild=True))
+    ov0 = client.get("/api/overview").json()
+    assert ov0["stale_index"] is False
+    wi = ov0["working"]["by_agent"]["worker-1"][0]["work_item_id"]
+
+    # Mutate a canonical JSONL WITHOUT an explicit rebuild.
+    engine.release(paths, wi)
+    assert "queue/work_items.jsonl" in indexer.check(paths)["changed_sources"]
+
+    # The next poll auto-rebuilds: stale clears AND the served data is fresh
+    # (NODE-007 back to queued, no longer claimed by worker-1).
+    ov1 = client.get("/api/overview").json()
+    assert ov1["stale_index"] is False
+    assert "worker-1" not in ov1["working"]["by_agent"]
+
+    # OFF (default): the same mutation on a fresh index leaves stale=true.
+    indexer.rebuild(paths)
+    off = TestClient(create_app(pp.tmp_path, "p4-ldi"))
+    assert off.get("/api/overview").json()["stale_index"] is False
+    wi2 = off.get("/api/overview").json()["working"]["by_agent"]["worker-2"][0]["work_item_id"]
+    engine.release(paths, wi2)
+    off_ov = off.get("/api/overview").json()
+    assert off_ov["stale_index"] is True  # banner stays load-bearing
+    assert "worker-2" in off_ov["working"]["by_agent"]  # served value still indexed
+
+
 # --- POST write actions call the same code paths as the CLI -----------------
 
 

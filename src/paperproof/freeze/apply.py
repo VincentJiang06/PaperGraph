@@ -125,10 +125,12 @@ def _check_preconditions(
             failed.append("V-FRZ-01")
             break
 
-    # V-FRZ-02: every fact/mechanism node in the closure has >=1 evidence binding.
+    # V-FRZ-02: every fact/mechanism node in the closure meets the r3 evidence
+    # floor (>=2 bindings from >=2 distinct documents).
+    eu_doc = graph_model.evidence_doc_map(paths)
     for rid in closure:
         n = gv.node_by_id.get(rid)
-        if n is not None and n["node_type"] in ("fact", "mechanism") and len(n.get("evidence_bindings", [])) < 1:
+        if n is not None and n["node_type"] in ("fact", "mechanism") and not graph_model.meets_evidence_floor(n, eu_doc):
             failed.append("V-FRZ-02")
             break
 

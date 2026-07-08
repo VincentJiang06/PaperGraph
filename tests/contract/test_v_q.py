@@ -13,7 +13,7 @@ from paperproof.queue import engine
 from paperproof.validate.rules import v_q
 
 from tests.fakes import scenario
-from tests.fakes.workers import FakeProofWorker
+from tests.fakes.workers import FakeDocsWorker, FakeProofWorker, prove_one
 
 pytestmark = pytest.mark.contract
 
@@ -36,6 +36,61 @@ def test_full_lifecycle_walk_emits_one_event_per_transition(project, pp, clock):
 
     ops = [e["op"] for e in engine.load_events(paths) if e["work_item_id"] == wi]
     assert ops == ["enqueue", "claim", "heartbeat", "complete"]
+    assert v_q.verify_queue(paths) == []
+
+
+# --- T-r3-7: `validate` completes a claimed/running item implicitly -----------
+
+
+def test_validate_result_completes_implicitly_from_claimed(project, pp, clock):
+    """claim -> (NO explicit complete) -> validate result performs `complete`
+    itself, so one command emits two events (complete + validate_pass) and the
+    item reaches validated with no illegal V-Q-01 transition."""
+    from paperproof.validate import proof as validate_proof
+
+    paths = scenario.paths_for_pp(pp)
+    scenario.seed_layer0(paths)
+    builder.build_frontier(paths)
+    wi = next(i["work_item_id"] for i in engine.load_items(paths) if i["target_id"] == scenario.Q)
+
+    claimed = engine.claim(paths, queue_name="proof_queue", agent="w", wi_id=wi)
+    assert claimed["status"] == "claimed"
+    FakeProofWorker({scenario.Q: scenario.node_pass_form()}).run(claimed, paths.project_dir)
+
+    res = validate_proof.validate_result(paths, claimed["output_files"][0], wi, "w")
+    assert res["proof_result_id"]
+    assert engine.get_item(paths, wi)["status"] == "validated"
+
+    ops = [e["op"] for e in engine.load_events(paths) if e["work_item_id"] == wi]
+    assert ops == ["enqueue", "claim", "complete", "validate_pass"]
+    assert v_q.verify_queue(paths) == []
+    assert pp("verify")["ok"] is True
+
+
+def test_docs_ingest_result_completes_implicitly_from_claimed(project, pp, clock):
+    """The docs validate-and-ingest path (`docs ingest-result`) likewise completes
+    a claimed item itself: complete + validate_pass + commit, one command."""
+    from paperproof.docsdb import ingest as docs_ingest
+
+    paths = scenario.paths_for_pp(pp)
+    scenario.seed_docs_facts(paths, [scenario.FACT_CLAIM])
+    # NODE-003 (fact) -> needs_docs creates a DocsRequest + a docs_queue item.
+    prove_one(paths, "NODE-003", FakeProofWorker({"NODE-003": scenario.node_insufficient_form()}))
+
+    engine.run_sweeps(paths, "test")
+    docs_item = next(
+        i for i in engine.load_items(paths)
+        if i["queue_name"] == "docs_queue" and engine.is_claimable(paths, i)
+    )
+    claimed = engine.claim(paths, queue_name="docs_queue", agent="dw", wi_id=docs_item["work_item_id"])
+    FakeDocsWorker({"*": scenario.boe_docs_result_spec()}).run(claimed, paths.project_dir)
+
+    # NO explicit complete before ingest-result.
+    docs_ingest.ingest_result(paths, claimed["output_files"][0], claimed["work_item_id"], "test")
+    assert engine.get_item(paths, claimed["work_item_id"])["status"] == "committed"
+
+    ops = [e["op"] for e in engine.load_events(paths) if e["work_item_id"] == claimed["work_item_id"]]
+    assert ops == ["enqueue", "claim", "complete", "validate_pass", "commit"]
     assert v_q.verify_queue(paths) == []
 
 

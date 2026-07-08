@@ -167,7 +167,12 @@ def _validate(paths: Paths, wi: dict[str, Any], relpath: str, raw: dict[str, Any
 def ingest_result(paths: Paths, output_file: str, work_item_id: str, actor: str | None = None) -> dict[str, Any]:
     actor = actor or clock_actor()
     wi = engine.get_item(paths, work_item_id)
-    if wi["status"] != "validating":
+    # r3 (docs/05 §Validation Gate): the docs validate-and-ingest path likewise
+    # completes an item still in claimed/running itself, against its claim-time
+    # lease manifest, so no separate `queue complete` call is required.
+    if wi["status"] in ("claimed", "running"):
+        wi = engine.complete(paths, work_item_id, actor)
+    elif wi["status"] != "validating":
         raise DomainError([f"docs work item not in validating state: {work_item_id} ({wi['status']})"])
     relpath = _to_relpath(paths, output_file)
 

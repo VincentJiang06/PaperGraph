@@ -25,20 +25,27 @@ from . import readmodel
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 
 
-def _ensure_index(paths: Paths) -> None:
+def _ensure_index(paths: Paths, auto_rebuild: bool = False) -> None:
     """Build the index if it is missing (rebuild-or-report, docs/12 P3).
 
     A merely *stale* index is left as-is so the stale banner stays meaningful — we
     never silently rebuild-on-read, which would hide drift. Only a fully absent
     index is materialized so endpoints have data to serve.
+
+    r3 (`--auto-rebuild`, docs/10 §4): when the flag is on, a poll that finds the
+    index stale rebuilds it here instead of only flying the banner. Default off —
+    the stale banner stays load-bearing and its behavior is byte-for-byte
+    unchanged.
     """
     db_path = paths.resolve(indexer.DB_FILE)
     manifest = paths.resolve(indexer.MANIFEST_FILE)
     if not db_path.exists() or not manifest.exists():
         indexer.rebuild(paths)
+    elif auto_rebuild and indexer.check(paths)["stale_index"]:
+        indexer.rebuild(paths)
 
 
-def create_app(root: str | Path, project: str) -> FastAPI:
+def create_app(root: str | Path, project: str, auto_rebuild: bool = False) -> FastAPI:
     app = FastAPI(title="PaperGraph Monitor", docs_url=None, redoc_url=None, openapi_url=None)
 
     def _paths() -> Paths:
@@ -49,7 +56,7 @@ def create_app(root: str | Path, project: str) -> FastAPI:
         corruption as a locked-banner payload (docs/12 banner priority 1)."""
         paths = _paths()
         try:
-            _ensure_index(paths)
+            _ensure_index(paths, auto_rebuild)
             reader = IndexReader(paths.resolve(indexer.DB_FILE))
             try:
                 return JSONResponse(fn(reader, paths))
@@ -157,10 +164,10 @@ def create_app(root: str | Path, project: str) -> FastAPI:
     return app
 
 
-def serve(paths: Paths, port: int = 8420) -> dict[str, Any]:
+def serve(paths: Paths, port: int = 8420, auto_rebuild: bool = False) -> dict[str, Any]:
     """Blocking: build the app for one project and run uvicorn (docs/10 §4)."""
     import uvicorn
 
-    app = create_app(paths.root, paths.project_id)
+    app = create_app(paths.root, paths.project_id, auto_rebuild)
     uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
-    return {"served": True, "port": port, "project": paths.project_id}
+    return {"served": True, "port": port, "project": paths.project_id, "auto_rebuild": auto_rebuild}

@@ -15,10 +15,11 @@ from pydantic import ValidationError
 
 from ..committer import apply as committer
 from ..errors import DomainError, UsageError
+from ..graph import model as graph_model
 from ..paths import Paths
 from ..schemas.graph import ExpansionProposal
 from ..validate.envelope import to_envelope
-from ..validate.rules import v_exp
+from ..validate.rules import v_exp, v_sweep
 
 
 def _load(proposal_file: str | Path) -> dict[str, Any]:
@@ -60,6 +61,15 @@ def ingest(paths: Paths, proposal_file: str | Path, actor: str | None = None) ->
         env = to_envelope(failures)
         raise DomainError(env["failed_rules"], data={"failed_rules": env["failed_rules"], "detail": env["detail"]})
 
+    # V-SWEEP-01: the FIRST expansion beyond layer 0 is gated on the sweep floor
+    # (docs/04 step 4, docs/05 pipeline) — proofs never again start against an
+    # empty evidence base. Fires once, when a layer>=1 proposal arrives while no
+    # layer>=1 node exists yet.
+    sweep_failures = _check_sweep_gate(paths, raw)
+    if sweep_failures:
+        env = to_envelope(sweep_failures)
+        raise DomainError(env["failed_rules"], data={"failed_rules": env["failed_rules"], "detail": env["detail"]})
+
     result = committer.apply_expansion(paths, raw, actor)
     return {
         "commit_id": result["commit_id"],
@@ -67,3 +77,14 @@ def ingest(paths: Paths, proposal_file: str | Path, actor: str | None = None) ->
         "work_item_ids": result["work_item_ids"],
         "closing": result["closing"],
     }
+
+
+def _check_sweep_gate(paths: Paths, proposal: dict[str, Any]) -> list:
+    """V-SWEEP-01 fires only on the first expansion beyond layer 0 (the first
+    layer>=1 proposal while the graph has no layer>=1 node yet)."""
+    if proposal.get("layer", 0) < 1:
+        return []
+    gv = graph_model.load(paths)
+    if any(n.get("layer", 0) >= 1 for n in gv.nodes):
+        return []
+    return v_sweep.check_sweep_floor(paths, gv)

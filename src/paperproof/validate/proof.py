@@ -40,7 +40,14 @@ def _to_relpath(paths: Paths, output_file: str) -> str:
 def validate_result(paths: Paths, output_file: str, work_item_id: str, actor: str | None = None) -> dict[str, Any]:
     actor = actor or clock_actor()
     wi = engine.get_item(paths, work_item_id)
-    if wi["status"] != "validating":
+    # r3 ergonomic change (docs/05 §Validation Gate): an item still in claimed or
+    # running has its `complete` transition performed here (emitting the complete
+    # event) so one command yields two events (complete + validate_pass/fail). The
+    # V-PATH-04 lease scan below still runs against the claim-time lease.manifest,
+    # which `complete` preserves.
+    if wi["status"] in ("claimed", "running"):
+        wi = engine.complete(paths, work_item_id, actor)
+    elif wi["status"] != "validating":
         raise DomainError([f"work item not in validating state: {work_item_id} ({wi['status']})"])
 
     relpath = _to_relpath(paths, output_file)

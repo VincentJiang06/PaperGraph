@@ -32,3 +32,8 @@
 ## [2026-07-07] loop-complete | all 5 milestones + final-audit PASS; 381 green from fresh clone; wheel shippable; A26 live smoke = human node
 ## [2026-07-08] r3-core | code caught up to r3 on the four basic bugs: V-PATH-04 three clauses (T-r3-1), H10->verify snapshot-EOF (T-r3-2), cache DRES-only + verdict-based cap + evidence-arrival staleness + REQUESTED-U-top12 packs (T-r3-3/6 core), event detail (T-r3-8), template sync (T-r3-10 blocks). 386 green.
 ## [2026-07-08] r3-core-remaining | NOT done (deliberate, behavior upgrades): T-r3-4 (>=2-binding floors), T-r3-5 (sweep gate), T-r3-7 (validate-from-claimed), T-r3-9 (--auto-rebuild), T-r3-10 drift test.
+## [2026-07-08] m5-start | loop re-entered at stage m5-r3-behavior; planned A28-A32 (T-r3-4/5/7/9/10); baseline 386 green @ 6072f39; dispatching Generator (Opus/high)
+## [2026-07-08] m5-gen | Generator: 399 green (+13 additive); ONE shared floor fn (A28), V-SWEEP-01 rule+gate (A29), implicit-complete proof+docs (A30), ui --auto-rebuild (A31), template drift test (A32); doc-synced docs/04/09/10
+## [2026-07-08] m5-eval | fresh Evaluator PASS: 399 re-run clean, 5 probes reproduced with own fixtures, weakened-test audit clean, T-r3-7 docs-path sound; F1 = docs/05 stale on docs implicit-complete path
+## [2026-07-08] m5-f1 | Orchestrator reconciled docs/05 §Validation Gate + complete row (validate result=proof, docs ingest-result=docs, validate docs-result=dry check); 399 still green
+## [2026-07-08] m5-gate | GATE PASS; code now fully caught up to spec r3; tagging gate/m5-r3-behavior

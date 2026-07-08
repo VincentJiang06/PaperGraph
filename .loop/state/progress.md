@@ -3,7 +3,18 @@
 Resume point after any compaction/crash: re-read this file + contract.md + log.md.
 Do NOT trust a session summary.
 
-## Loop status — COMPLETE
+## Loop status — stage m5-r3-behavior COMPLETE (2026-07-08), gate PASS
+- ALL r3 worklist items now landed: r3-core (T-r3-1/2/3/6/8) + m5 (T-r3-4/5/7/9/10).
+  Code has fully caught up to spec r3. Contract A28–A32 all [x] (gate PASS).
+- m5 result: Generator 399 green (386 +13); fresh Evaluator PASS — 5 probes re-run
+  independently, weakened-test audit clean, T-r3-7 docs-path judged sound. Evaluator
+  found F1 (docs/05 stale on the docs implicit-complete path) → Orchestrator reconciled
+  docs/05 §Validation Gate + complete row before tagging. Tag: gate/m5-r3-behavior.
+- Spec-vs-code: NOW ALIGNED at r3. Next staged work = search program S1-S5 (docs/13-18,
+  design-frozen) as the v1.1 milestone — adopt via a docs/00 changelog entry first.
+- Roles: Orchestrator(me)=planner+driver; Generator subagent=impl; fresh Evaluator=gate.
+
+## v1 loop status — COMPLETE (history)
 - All milestones gated, committed, tagged, pushed. Automated definition-of-done MET.
 - Gate tags: gate/m0-foundation, gate/m1-proof-loop, gate/m2-docs, gate/m3-endgame, gate/m4-surface.
 - Final state: 381 tests green from a FRESH CLONE in a clean 3.12 venv; wheel builds
@@ -19,28 +30,59 @@ Do NOT trust a session summary.
   V-COMMIT-04 replay (m1), a verify/doc crossref gap (m3-N1), and a .gitignore that
   silently excluded the whole M4 db package from every commit (final-audit fresh-clone).
 
-## NEXT ITERATION — r3 worklist (spec revised 2026-07-08 from the ai-jobs live run)
-The spec (docs/, r3) is now AHEAD of the code. The next build loop re-enters at
-a maintenance milestone gated by docs/11 §10 (T-r3-1..10). Implementation order:
-1. V-PATH-04 scan rework (docs/05 three clauses; delete COMMITTER_OWNED
-   byte-identity + all-dirs baseline in validate/rules/v_path.py) — T-r3-1/2.
-2. Docs cap rework (committer/apply.py: 3rd needs_docs VERDICT, no-new-evidence,
-   PR-initiated only) — T-r3-3.
-3. Evidence-arrival staleness + pack composition REQUESTED∪top-12
-   (docsdb/ingest.py, docsdb/pack.py, prooftask/builder.py) — T-r3-6.
-4. validate-from-claimed (validate/proof.py + queue) — T-r3-7; failure detail
-   in events (queue/engine.py) — T-r3-8.
-5. Sweep stage + V-SWEEP-01 gate (expander/ingest.py + msa reporting) — T-r3-5.
-6. MSA-4/V-FRZ-02 >=2 EU / >=2 docs (graph/, freeze/) — T-r3-4.
-7. Cache source DRES-only (docsdb/cache.py) — in T-r3-3.
-8. ui serve --auto-rebuild (ui/app.py + cli) — T-r3-9; templates SELF-CHECK
-   blocks (prompts/*.txt) — T-r3-10.
-Run data for regression fixtures: data/projects/ai-jobs (24 EU, 12 docs,
-STAGED AFTER r3: the search program S1-S5 (docs/13-18, design-frozen).
-Stage A (S1 planning + S2 orchestra + S3-lite registry) is the intended
-v1.1 milestone after the r3 maintenance items land; adopt via a docs/00
-changelog entry + a docs/11 worklist, per docs/13 SSNormativity.
-10 verdicts, 122 events — the V-PATH-04 failures are QE-000048/51/64/101/104).
+## ACTIVE STAGE — m5-r3-behavior (the 5 deferred r3 behavior upgrades)
+Pattern plan_execute_verify; cap 3; on_failure=restart-from-baseline. Gate = full
+`pytest -q` green + V-SWEEP-01 in registry + test_v_sweep.py present. Grade A28–A32.
+DONE already in r3-core (do NOT redo): T-r3-1/2/3/6/8 + T-r3-10 template blocks.
+
+Build order (each item cites its authoritative doc; generator re-reads the doc,
+never implements from memory — spec-drift guard):
+
+1. T-r3-4  Evidence floor ≥2 EU from ≥2 DISTINCT documents. Bindings are evidence_ids;
+   resolve each → EvidenceUnit.doc_id via docs/evidence_units.jsonl (shared helper).
+   Sites: graph/commands.py MSA-4 (line ~114, `>=1` → floor); freeze/apply.py V-FRZ-02
+   (line ~128, `<1` → floor); compiler/dry_run.py missing_evidence gap (docs/06 §85-86).
+   ALL THREE must use ONE floor fn so they stay consistent (docs/06 reachability note).
+   Fixtures: S7 lifted — its docs ingest yields ≥2 EU from ≥2 docs and node_sufficient_form
+   binds both (tests/fakes/scenario.py S7_M ~line 320 binds ["EU-001"] today; DocsResult
+   ~line 203 has one doc). NEW negative: a 1-binding (and a 2-EU-same-doc) spine node
+   FAILS msa-check AND spine freeze. Docs: docs/02 MSA-4, docs/06 §85-96, docs/09 V-FRZ-02.
+
+2. T-r3-5  V-SWEEP-01 (NEW rule). Register in validate/registry.py; new rule module
+   validate/rules/v_sweep.py; enforced by expander/ingest.py on the FIRST proposal whose
+   layer ≥ 1 ("beyond layer 0"). Floor per fact/mechanism LAYER-0 node N: (≥2 EU from ≥2
+   docs REQUESTED-for-N, trace request→DRES→ingested_from — reuse docsdb/pack.py `_requested_eus`)
+   OR (≥2 sweep DocsRequests targeting N with status=not_found). graph msa-check adds an
+   INFORMATIONAL sweep-coverage line (not a pass/fail MSA item). Cover via SCENARIO_COVERED
+   → test_v_sweep.py (refuse-then-pass). DOC-SYNC: "fact/mechanism seed claim" is
+   operationalized as "layer-0 fact/mechanism node" — add a one-line clarification to
+   docs/04 §Evidence Seeding step 4 (or docs/09 V-SWEEP-01) in the SAME commit. Docs:
+   docs/04 §Evidence Seeding, docs/05 pipeline, docs/09 V-SWEEP.
+
+3. T-r3-7  validate-from-claimed. validate/proof.py:43 rejects non-"validating"; change so
+   claimed|running performs `complete` first (emit the complete event via queue engine, then
+   proceed) — two events, one command. Same for validate docs-result (docsdb path). Manifest/
+   lease scan (V-PATH-04) must still run against the claim-time lease.manifest. Docs: docs/05
+   §Validation Gate (r3), docs/10 §4 rows validate result/docs-result, V-Q-01 table docs/05.
+
+4. T-r3-9  ui serve --auto-rebuild. Thread the flag from cli app → ui/app.py factory; when a
+   poll (e.g. /api/overview) finds stale_index true AND flag on, run db rebuild then serve
+   fresh; flag OFF → banner behavior byte-identical. Docs: docs/07 §WebUI (`ui serve`),
+   docs/10 §4 `ui serve` row, docs/12 P3/stale banner.
+
+5. T-r3-10 drift test. Assert prompts/proof_worker.txt contains "SELF-CHECK"; docs_worker.txt
+   contains the coverage numbers (2–5 docs / 4–10 EUs, en-dash) + "DISCONFIRMING". Add to
+   tests/contract/test_polish_guards.py (or new test_template_drift.py). Templates already
+   shipped in r3-core — this is the drift guard only.
+
+Doc-sync discipline (CLAUDE.md): any deviation ships the doc edit in the same commit; flag
+each doc edit in log.md. Do NOT add CLI/schema surface beyond docs/10 §4 / docs/08 (escalate).
+
+## STAGED AFTER m5: search program S1-S5 (docs/13-18, design-frozen) — the v1.1 milestone;
+adopt via a docs/00 changelog entry + a docs/11 worklist, per docs/13 §Normativity. NOT this stage.
+
+## ai-jobs run data (regression reference): data/projects/ai-jobs (24 EU, 12 docs, 10
+verdicts, 122 events — the V-PATH-04 failures were QE-000048/51/64/101/104).
 
 ## m1 attempt-2 fix plan (F1 + secondary)
 F1: replay_reproduces is tautological (slices post lines, ignores action content).

@@ -27,6 +27,7 @@ SCENARIO_COVERED = {
     "V-SPEC-03": "test_v_spec.py",
     "V-SPEC-04": "test_v_spec.py",
     "V-SPEC-05": "test_v_spec.py",
+    "V-SWEEP-01": "test_v_sweep.py (expand ingest refuse-then-pass; enforced by expand ingest, not a per-file validator)",
     "V-PR-12": "test_s1_seed_loop.py verify recompute (_verdict_recompute)",
     "V-EXP-01": "test_v_exp.py::test_v_exp_01_previous_layer_open",
     "V-EXP-02": "test_v_exp.py::test_v_exp_02_stale_snapshot",

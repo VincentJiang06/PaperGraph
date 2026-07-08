@@ -79,6 +79,9 @@ V-SWEEP-01  the first expansion beyond layer 0 requires, for every
             fact/mechanism seed claim: >=2 EvidenceUnits from >=2 distinct
             documents, or recorded not_found for >=2 sweep angles.
             (`expand ingest` enforces; msa-check reports informationally.)
+            Operationalization (r3): a "fact/mechanism seed claim" is a
+            layer-0 fact/mechanism node; REQUESTED-for-N is traced
+            request→DRES→ingested_from (docs/04).
 ```
 
 ### V-PATH (file/path safety, applies to every worker output)

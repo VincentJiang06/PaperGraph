@@ -16,6 +16,7 @@ from ..store import jsonl
 NODES_FILE = "graph/logic_nodes.jsonl"
 EDGES_FILE = "graph/logic_edges.jsonl"
 TOMBSTONES_FILE = "graph/tombstones.jsonl"
+EVIDENCE_UNITS_FILE = "docs/evidence_units.jsonl"
 
 
 class GraphView:
@@ -170,6 +171,39 @@ def load(paths: Paths) -> GraphView:
     nodes = jsonl.latest_records(paths.resolve(NODES_FILE), "node_id")
     edges = jsonl.latest_records(paths.resolve(EDGES_FILE), "edge_id")
     return GraphView(nodes, edges)
+
+
+# --- r3 evidence floor (docs/08 A28; MSA-4 / V-FRZ-02 / compiler missing_evidence) ---
+#
+# A node's ``evidence_bindings`` are evidence_ids; each resolves to its
+# EvidenceUnit's doc_id via ``docs/evidence_units.jsonl``. The r3 floor (from the
+# ai-jobs live run: single-source spine claims were the ones later evidence
+# overturned) is: >=2 bindings drawn from >=2 DISTINCT documents. This ONE helper
+# is used at all three enforcement sites so they can never diverge (docs/06
+# reachability note relies on V-FRZ-02 and the compiler gap agreeing).
+
+
+def evidence_doc_map(paths: Paths) -> dict[str, str]:
+    """evidence_id -> doc_id for every archived EvidenceUnit (docs/04)."""
+    return {
+        eu["evidence_id"]: eu["doc_id"]
+        for eu in jsonl.latest_records(paths.resolve(EVIDENCE_UNITS_FILE), "evidence_id")
+        if eu.get("doc_id")
+    }
+
+
+def evidence_binding_counts(node: dict[str, Any], eu_doc_by_id: dict[str, str]) -> tuple[int, int]:
+    """Return ``(binding_count, distinct_doc_count)`` for a node's evidence
+    bindings, resolving each binding to its document via ``eu_doc_by_id``."""
+    bindings = node.get("evidence_bindings", []) or []
+    docs = {eu_doc_by_id[b] for b in bindings if b in eu_doc_by_id}
+    return len(bindings), len(docs)
+
+
+def meets_evidence_floor(node: dict[str, Any], eu_doc_by_id: dict[str, str]) -> bool:
+    """The r3 floor: >=2 evidence bindings from >=2 distinct documents."""
+    binding_count, distinct_docs = evidence_binding_counts(node, eu_doc_by_id)
+    return binding_count >= 2 and distinct_docs >= 2
 
 
 def load_tombstones(paths: Paths) -> list[dict[str, Any]]:

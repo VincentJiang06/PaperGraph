@@ -93,7 +93,7 @@ def _touches_spine(gv: graph_model.GraphView, spine_ids: set[str], target_id: st
 
 def msa_check(paths: Paths) -> dict[str, Any]:
     from ..queue import engine
-    from ..validate.rules import v_exp
+    from ..validate.rules import v_exp, v_sweep
 
     gv = graph_model.load(paths)
     spine_ids, _ = gv.spine()
@@ -111,12 +111,13 @@ def msa_check(paths: Paths) -> dict[str, Any]:
     msa3 = all(r is not None and r["lifecycle_state"] == "active" for r in spine_records) and bool(spine_ids)
     items.append(("MSA-3", msa3, "every spine record active"))
 
+    eu_doc = graph_model.evidence_doc_map(paths)
     msa4 = all(
-        (n["node_type"] not in ("fact", "mechanism")) or len(n.get("evidence_bindings", [])) >= 1
+        (n["node_type"] not in ("fact", "mechanism")) or graph_model.meets_evidence_floor(n, eu_doc)
         for n in gv.nodes
         if n["node_id"] in spine_ids
     )
-    items.append(("MSA-4", msa4, "spine fact/mechanism nodes have >=1 evidence binding"))
+    items.append(("MSA-4", msa4, "spine fact/mechanism nodes have >=2 evidence bindings from >=2 documents"))
 
     msa5 = all(
         n["lifecycle_state"] == "rejected"
@@ -155,4 +156,7 @@ def msa_check(paths: Paths) -> dict[str, Any]:
 
     checklist = {rid: {"pass": bool(ok), "detail": detail} for rid, ok, detail in items}
     all_pass = all(v["pass"] for v in checklist.values())
-    return {"msa": checklist, "all_pass": all_pass, "spine": sorted(spine_ids)}
+    # Informational only (V-SWEEP-01, docs/04): sweep coverage over the layer-0
+    # fact/mechanism seed claims — NOT a pass/fail MSA item, does not gate.
+    sweep_coverage = v_sweep.coverage(paths, gv)
+    return {"msa": checklist, "all_pass": all_pass, "spine": sorted(spine_ids), "sweep_coverage": sweep_coverage}

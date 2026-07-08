@@ -15,7 +15,7 @@ from __future__ import annotations
 from typing import Any, Optional
 
 from ..db.indexer import TABLE_MAP, check as db_check
-from ..graph.model import GraphView
+from ..graph.model import GraphView, meets_evidence_floor
 from ..paths import Paths
 from ..store import jsonl
 from ..textutil import contains, sentence_split
@@ -182,11 +182,12 @@ def _msa(reader, paths: Paths) -> dict[str, Any]:
     msa3 = bool(spine_ids) and all(r is not None and r["lifecycle_state"] == "active" for r in spine_records)
     items.append(("MSA-3", msa3, "every spine record active"))
 
+    eu_doc = {e["evidence_id"]: e["doc_id"] for e in reader.current("evidence_units") if e.get("doc_id")}
     msa4 = all(
-        (n["node_type"] not in ("fact", "mechanism")) or len(n.get("evidence_bindings", [])) >= 1
+        (n["node_type"] not in ("fact", "mechanism")) or meets_evidence_floor(n, eu_doc)
         for n in gv.nodes if n["node_id"] in spine_ids
     )
-    items.append(("MSA-4", msa4, "spine fact/mechanism nodes have >=1 evidence binding"))
+    items.append(("MSA-4", msa4, "spine fact/mechanism nodes have >=2 evidence bindings from >=2 documents"))
 
     msa5 = all(
         n["lifecycle_state"] == "rejected"

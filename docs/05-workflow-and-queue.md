@@ -91,7 +91,7 @@ Complete transition table — these are the only legal edges [V-Q-01]. Every tra
 | claimed → running | heartbeat | first `queue heartbeat` (optional state; `complete` accepts claimed or running) |
 | claimed \| running → queued | release | `queue release` (attempt unchanged) |
 | claimed \| running → queued | expire | lease past expiry (attempt+1; >3 ⇒ dead) |
-| claimed \| running → validating | complete | `queue complete` (output file exists) — OR performed implicitly by `validate` (r3, below) |
+| claimed \| running → validating | complete | `queue complete` (output file exists) — OR performed implicitly by `validate result` (proof items) or `docs ingest-result` (docs items) (r3, below); `validate docs-result` stays a stateless V-PATH+V-DR dry check (no transition) |
 | validating → validated | validate-pass | `validate result/proposal/docs-result`; for prose items, `compiler ingest-prose` runs V-PROSE as its validate-pass |
 | validating → failed | validate-fail | same command; failed_rules recorded **with per-rule detail incl. the offending path** (r3 — the live run's bare rule ids made 5 identical failures undiagnosable from the event log) |
 | claimed \| running \| validating → failed | fail | `queue fail` (manual: hung or hopeless worker); retry/dead per attempt as below |
@@ -197,12 +197,15 @@ Enforcement is mechanical, not honor-system — and it must not false-positive o
 
 Deterministic code. Checks path safety, JSON schema, and domain invariants against the V-* rule registry (`docs/09-verification.md`). Invalid output → work item `failed` with the violated rule IDs **and per-rule detail (offending path / field)** recorded in the queue event and echoed into the retry prompt; the worker's text output is never consulted. Retry policy: ≤2 retries, then dead letter (`docs/08` §3).
 
-**r3 ergonomic change:** `validate result|docs-result` accepts an item in
-`claimed` (or `running`) state and performs the `complete` transition itself
-(emitting both events) — the separate `queue complete` call is optional. The
-live run's claim→complete→validate ceremony left a wide window in which
-concurrent engine activity aged the lease manifest; collapsing it shrinks that
-window and removes the most common operator error.
+**r3 ergonomic change:** the state-advancing validate paths accept an item in
+`claimed` (or `running`) state and perform the `complete` transition themselves
+(emitting both events) — the separate `queue complete` call is optional. This is
+`validate result` for proof items and `docs ingest-result` for docs items (which
+thus emits complete + validate_pass + commit in one call, docs/10 §4); the
+standalone `validate docs-result` is a stateless V-PATH+V-DR dry check and
+performs no transition. The live run's claim→complete→validate ceremony left a
+wide window in which concurrent engine activity aged the lease manifest;
+collapsing it shrinks that window and removes the most common operator error.
 
 ### Commit Gate (Committer)
 

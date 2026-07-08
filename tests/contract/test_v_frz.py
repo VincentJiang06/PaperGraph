@@ -11,6 +11,7 @@ import pytest
 
 from paperproof.errors import DomainError
 from paperproof.freeze import apply as freeze
+from paperproof.graph import commands as graph_commands
 from paperproof.graph import model as graph_model
 from paperproof.paths import paths_for
 from paperproof.queue import engine
@@ -20,6 +21,7 @@ pytestmark = pytest.mark.contract
 
 NODES = "graph/logic_nodes.jsonl"
 EDGES = "graph/logic_edges.jsonl"
+EVIDENCE_UNITS = "docs/evidence_units.jsonl"
 
 
 def _node(node_id, *, node_type="mechanism", state="active", frozen=False, evidence=None, ll=None, scope=None):
@@ -60,6 +62,75 @@ def test_v_frz_02_missing_evidence_refused(project, pp):
     with pytest.raises(DomainError) as exc:
         freeze.apply(paths, "NODE-001", "local")
     assert "V-FRZ-02" in exc.value.errors
+
+
+# --- T-r3-4: the r3 floor is >=2 bindings from >=2 distinct documents ---------
+
+
+def _edge(edge_id, src, tgt):
+    return {
+        "schema_version": "logic_edge.v1", "edge_id": edge_id, "project_id": "p4-ldi",
+        "source_node_id": src, "target_node_id": tgt, "edge_type": "supports",
+        "edge_claim": f"{src} supports {tgt}.", "claim_version": 1, "lifecycle_state": "active",
+        "state_reason": None, "state_detail": None, "strength": "strong", "language_limits": {"allowed": ["a"], "forbidden": ["b"]},
+        "assumptions": [], "frozen": False, "latest_proof_result_id": "PR-001", "created_at": "2026-07-07T00:00:00Z",
+    }
+
+
+def _eu(evidence_id, doc_id):
+    return {"schema_version": "evidence_unit.v1", "evidence_id": evidence_id, "project_id": "p4-ldi", "doc_id": doc_id}
+
+
+def _seed_spine_with_mechanism(paths, *, evidence, eu_docs):
+    """A minimal active spine {Q, T, M(mechanism), T->Q, M->T} plus the given
+    EvidenceUnit->doc rows, so MSA-4 / V-FRZ-02 see a spine mechanism node whose
+    only defect is the evidence floor."""
+    ll = {"allowed": ["a"], "forbidden": ["b"]}
+    for eid, did in eu_docs:
+        jsonl.append(paths.resolve(EVIDENCE_UNITS), _eu(eid, did))
+    jsonl.append(paths.resolve(NODES), _node("NODE-001", node_type="question", state="active", ll=ll))
+    jsonl.append(paths.resolve(NODES), _node("NODE-002", node_type="thesis", state="active", ll=ll))
+    jsonl.append(paths.resolve(NODES), _node("NODE-003", node_type="mechanism", state="active", evidence=evidence, ll=ll))
+    jsonl.append(paths.resolve(EDGES), _edge("EDGE-002-001", "NODE-002", "NODE-001"))
+    jsonl.append(paths.resolve(EDGES), _edge("EDGE-003-002", "NODE-003", "NODE-002"))
+    snapshot.take_snapshot(paths)
+
+
+@pytest.mark.parametrize(
+    "evidence, eu_docs, label",
+    [
+        (["EU-001"], [("EU-001", "DOC-001")], "one_binding"),
+        (["EU-001", "EU-002"], [("EU-001", "DOC-001"), ("EU-002", "DOC-001")], "two_eu_same_doc"),
+    ],
+)
+def test_v_frz_02_floor_below_two_docs_fails_msa_and_spine_freeze(project, pp, evidence, eu_docs, label):
+    """A 1-binding spine mechanism AND a 2-EU-but-same-document spine mechanism
+    each FAIL msa-check (MSA-4) and freeze apply --level spine (V-FRZ-02)."""
+    paths = _paths(pp)
+    _seed_spine_with_mechanism(paths, evidence=evidence, eu_docs=eu_docs)
+
+    # the mechanism IS in the spine (backward walk from T over M->T).
+    spine_ids, _ = graph_model.load(paths).spine()
+    assert "NODE-003" in spine_ids, label
+
+    # MSA-4 fails (below the r3 floor).
+    msa = graph_commands.msa_check(paths)["msa"]
+    assert msa["MSA-4"]["pass"] is False, label
+
+    # spine freeze is refused with V-FRZ-02 in failed_rules.
+    with pytest.raises(DomainError) as exc:
+        freeze.apply(paths, "NODE-002", "spine")
+    assert "V-FRZ-02" in exc.value.errors, label
+
+
+def test_v_frz_02_floor_met_two_docs_passes_msa4(project, pp):
+    """The positive side: >=2 bindings from >=2 distinct documents meets MSA-4."""
+    paths = _paths(pp)
+    _seed_spine_with_mechanism(
+        paths, evidence=["EU-001", "EU-002"], eu_docs=[("EU-001", "DOC-001"), ("EU-002", "DOC-002")]
+    )
+    msa = graph_commands.msa_check(paths)["msa"]
+    assert msa["MSA-4"]["pass"] is True
 
 
 def test_v_frz_03_open_item_touches_refused(project, pp):
