@@ -3,15 +3,12 @@
 Resume point after any compaction/crash: re-read this file + contract.md + log.md.
 Do NOT trust a session summary.
 
-## >>> CURRENT STATE (2026-07-08, most recent — read the BOTTOM of this file for S4/S5 detail) <<<
-Search program build via the gated loop. Stage A (v1.1) COMPLETE + pushed: S1 (gate/m6-s1),
-S3-lite (gate/m6b), S2 (gate/m7). HEAD ~c070611, 489 green. User chose FULL build through v2.
-NOW: m8-s4-coverage-saturation generator RUNNING (worktree; supersedes m5 flat floor + docs cap
-with role-profile floors + saturation + S3 triangulation V-SRC-04; contract A44-A47).
-NEXT: m9-s5-semantic-retrieval (model = multilingual-e5-small via onnxruntime; see bottom).
-THEN: live test run on examples/topic-ai-employment.md (fresh project id, halt-and-fix).
-Roles: Orchestrator(me)=planner+driver; Generator subagent(worktree)=impl; fresh Evaluator=gate.
-Everything below this banner is OLDER history; the newest stage detail is at the FILE BOTTOM.
+## >>> CURRENT STATE (2026-07-08) <<<
+SEARCH PROGRAM (S1-S5, v2) COMPLETE + pushed: gate/m6-s1, m6b, m7, m8, m9. HEAD b6b6ccc, 531 default
+tests green (+3 semantic goldens with the e5 model). NOW: LIVE TEST RUN (A26) on examples/topic-ai-employment.md
+(fresh project ai-jobs-2, halt-and-fix). Non-blocking follow-ups deferred: S2 expected_sources dedup, S4
+counter over-report (cache/v1), S5 advisory_leads unused, S5 build_bundle transient warning.
+Roles: Orchestrator(me) drives the paperproof CLI + dispatches REAL Claude workers (Proof/Docs/Critic/Compile).
 
 
 ## Loop status — ACTIVE stage m6-s1-search-planning (2026-07-08)
