@@ -8,20 +8,27 @@ predicate — a plan is *accounted for*, a wave is *merged and criticized*,
 sources are *tiered*, coverage is *measured to saturation*, and recall is
 *semantic, not string-lucky*.
 
-**Normativity.** These documents are DESIGN-FROZEN, not yet binding. docs/10
-remains the authority on what is implemented. A set becomes binding only via a
-docs/00 changelog entry plus a docs/11 worklist (as r3 did). Until then,
-implementers build against docs/00–12; these docs answer "what comes next."
+**Normativity.** These documents were design-frozen and adopted in stages; **all
+five sets (S1–S5) are now ADOPTED and BINDING** (2026-07-08). A set became binding
+via a docs/00 changelog entry plus a docs/11 worklist (as r3 did): S1/S2/S3-lite
+at Stage A ("Search Program Adoption — Stage A" / "S2 Search Orchestra"), S3
+triangulation + S4 at Stage B, S5 at Stage C, and the v2.1 consistency pass
+reconciled every surface. docs/10 remains the authority on the concrete CLI/build
+surface; docs/08 remains authoritative on boundaries; these docs are binding on
+their own subject matter.
 
 ## The five sets
 
 | set | doc | one line | adoption |
 | --- | --- | --- | --- |
-| S1 Search Planning | docs/14 | a claim compiles into a deterministic query plan the worker must account for, query by query | Stage A (v1.1) |
-| S2 Search Orchestra | docs/15 | one request fans into parallel angle-workers, a deterministic merger, and a fresh coverage critic | Stage A (v1.1) |
-| S3 Source Registry | docs/16 | sources get tiers, fetch recipes (403/PDF workarounds), provenance, and a triangulation rule | Stage A-lite / B (v1.1–1.2) |
-| S4 Coverage & Saturation | docs/17 | per-claim coverage ledger + a saturation stop criterion that replaces the crude docs cap | Stage B (v1.2) |
-| S5 Semantic Retrieval | docs/18 | hybrid keyword+embedding matching, cross-lingual (CJK↔EN), near-dup clustering — recall stops depending on token luck | Stage C (v2) |
+| S1 Search Planning | docs/14 | a claim compiles into a deterministic query plan the worker must account for, query by query | ADOPTED — Stage A (v1.1) |
+| S2 Search Orchestra | docs/15 | one request fans into parallel angle-workers, a deterministic merger, and a fresh coverage critic | ADOPTED — Stage A (v1.1) |
+| S3 Source Registry | docs/16 | sources get tiers, fetch recipes (403/PDF workarounds), provenance, and a triangulation rule | ADOPTED — Stage A-lite (v1.1) + Stage B triangulation (v1.2) |
+| S4 Coverage & Saturation | docs/17 | per-claim coverage ledger + a saturation stop criterion that replaces the crude docs cap | ADOPTED — Stage B (v1.2) |
+| S5 Semantic Retrieval | docs/18 | hybrid keyword+embedding matching, cross-lingual (CJK↔EN), near-dup clustering — recall stops depending on token luck | ADOPTED — Stage C (v2) |
+
+All five sets are adopted (docs/00 changelog: Stage A, S2, Stage B, Stage C, and
+the v2.1 consistency pass, all 2026-07-08).
 
 ## Why five, and why these
 

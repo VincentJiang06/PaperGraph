@@ -7,10 +7,15 @@ PaperGraph is a parallel workflow with deterministic gates. Workers run concurre
 ```text
 Topic Input
   -> Scoping (spec build + human accept)  specs/paper_spec.json, specs/project_contract.json
-  -> EVIDENCE SEEDING (the sweep, r3)     docs ingest of Known Sources + parallel
-                                          DocsWorkers over (seed claim x angle)
-                                          until the V-SWEEP-01 floor (docs/04)
-  -> Expander writes proposal             agent_outputs/expansions/*.json (validated, committed)
+  -> LAYER-0 EXPANSION                     first BFS-MAIN proposal: question,
+                                          thesis, thesis->question edge, seed
+                                          fact/mechanism nodes (validated, committed)
+  -> EVIDENCE SEEDING (the sweep, r3/v2.1) per fact/mechanism layer-0 node:
+                                          docs request --target N ... --fan, then
+                                          docs wave --request DR-x --fan
+                                          (docs/04, docs/15) until V-SWEEP-01
+  -> Expander writes deeper proposals      agent_outputs/expansions/*.json (validated, committed;
+                                          first expansion BEYOND layer 0 gated by V-SWEEP-01)
   -> ProofTasks enqueued                  proof_queue
   -> ProofWorkers run in parallel         agent_outputs/proof_results/*.json (check forms)
   -> Validator                            form consistency + COMPUTES the verdict (docs/03)
@@ -22,10 +27,12 @@ Topic Input
   -> Audit                                binding/scope/language check on the prose
 ```
 
-The sweep runs layer-0 seeding and evidence gathering in parallel; only the
-first expansion **beyond** layer 0 is gated on the sweep floor [V-SWEEP-01] —
-proofs never again start against an empty evidence base (the live run's root
-"too little evidence" failure).
+**Order matters (v2.1, D4).** The sweep runs AFTER the layer-0 expansion, not
+before it: sweep targets are layer-0 fact/mechanism *nodes* and
+`docs request --target N` requires node N to exist. Only the first expansion
+**beyond** layer 0 is gated on the sweep floor [V-SWEEP-01] — proofs never start
+against an empty evidence base (the live run's root "too little evidence"
+failure). (The pre-v2.1 "sweep before the expander" diagram was wrong.)
 
 ## Queues
 
@@ -33,7 +40,9 @@ All work is visible as WorkItems in `queue/work_items.jsonl`.
 
 ```text
 proof_queue      NODE_CHECK / EDGE_CHECK tasks
-docs_queue       open DocsRequests
+docs_queue       open DocsRequests (incl. S2 wave members, target_type="request")
+critic_queue     S2 CoverageCritic items (target_type="wave", docs/15) — one per
+                 wave once its members are terminal; a bounded read-only worker
 compile_queue    compiler gap-repair items and prose section tasks
 commit_queue     a DERIVED VIEW, not stored items: work items in status
                  `validated`, FIFO by validation time, awaiting serial
@@ -68,7 +77,7 @@ WorkItem:
 }
 ```
 
-`bundle` is null until `proof build-tasks` fills it. Per-queue item shapes: docs items carry `target_type="request"`, `target_id=DR-…`, `bundle=null` (the request's fields are embedded in the dispatch prompt — there is no per-request file); gap items carry `target_type="gap"`, `target_id="<kind>:<id>"`; prose items carry `target_type="section"`, `target_id=SEC-…`, `bundle={"draft_map": …}`. For MSA-6 / V-FRZ-03 "touching" purposes, a docs item counts as targeting its request's `target_id` record. `lease.manifest` is the claim-time canonical-directory hash map used by the post-run scan (V-PATH-04, §Parallelism). Status updates append a full new record per id, like every JSONL file.
+`bundle` is null until `proof build-tasks` fills it. Per-queue item shapes: docs items carry `target_type="request"`, `target_id=DR-…`, `bundle=null` (the request's fields are embedded in the dispatch prompt — there is no per-request file); a **wave member** is a docs_queue item (`target_type="request"`) whose `task_id` is `SP-DR-x-<angle>[-rN-<origin-slug>]` — the angle plan id, from which the wave and angle resolve (docs/15, D2/D8); a **critic** item rides `critic_queue` with `target_type="wave"`, `target_id=WV-…`, `bundle=null` (its inputs — claim, plans, merged result, query_logs — are embedded by `docs render-prompt`); gap items carry `target_type="gap"`, `target_id="<kind>:<id>"`; prose items carry `target_type="section"`, `target_id=SEC-…`, `bundle={"draft_map": …}`. For MSA-6 / V-FRZ-03 "touching" purposes, a docs item counts as targeting its request's `target_id` record; a critic item does not touch the graph. `lease.manifest` is the claim-time canonical-directory hash map used by the post-run scan (V-PATH-04, §Parallelism). Status updates append a full new record per id, like every JSONL file.
 
 ## Status Machine
 
@@ -85,23 +94,23 @@ Complete transition table — these are the only legal edges [V-Q-01]. Every tra
 | --- | --- | --- |
 | (created) → queued | enqueue | Committer — or Compiler for gap/prose items — side effect (blocked_by empty) |
 | (created) → blocked | enqueue | same actors (blocked_by non-empty) |
-| (created) → dead | dead_letter | Committer: docs round-trip cap or bridge-round cap reached — the re-proof item is born dead for human review |
+| (created) → dead | dead_letter | Committer: S4 SATURATION (docs/17, detail `{reason:"saturated", floor_met:…}`) or bridge-round cap reached — the re-proof item is born dead for human review. On a saturated+floor-MET conflict the same commit also records a `human_review` action (D1). The r3 docs round-trip cap is SUPERSEDED |
 | blocked → queued | unblock | queue engine sweep: all blockers resolved |
 | queued → claimed | claim | `queue claim --agent <name>` (writes lease) |
 | claimed → running | heartbeat | first `queue heartbeat` (optional state; `complete` accepts claimed or running) |
 | claimed \| running → queued | release | `queue release` (attempt unchanged) |
 | claimed \| running → queued | expire | lease past expiry (attempt+1; >3 ⇒ dead) |
-| claimed \| running → validating | complete | `queue complete` (output file exists) — OR performed implicitly by `validate result` (proof items) or `docs ingest-result` (docs items) (r3, below); `validate docs-result` stays a stateless V-PATH+V-DR dry check (no transition) |
+| claimed \| running → validating | complete | `queue complete` (output file exists) — OR performed implicitly by `validate result` (proof items), `docs ingest-result` / `docs wave-member` / `docs wave-resolve` (docs, wave-member, critic items), or `compiler ingest-prose` (prose items, v2.1 D14) (r3, below); `validate docs-result` stays a stateless V-PATH+V-DR dry check (no transition) |
 | validating → validated | validate-pass | `validate result/proposal/docs-result`; for prose items, `compiler ingest-prose` runs V-PROSE as its validate-pass |
 | validating → failed | validate-fail | same command; failed_rules recorded **with per-rule detail incl. the offending path** (r3 — the live run's bare rule ids made 5 identical failures undiagnosable from the event log) |
 | claimed \| running \| validating → failed | fail | `queue fail` (manual: hung or hopeless worker); retry/dead per attempt as below |
 | failed → queued | retry | automatic inside validate-fail when attempt < 3 (attempt+1) |
 | failed → dead | dead-letter | automatic when attempt ≥ 3 (the docs/bridge caps use the born-dead edge above instead) |
-| validated → committed | commit | proof items: `commit apply`; docs items: `docs ingest-result`; prose items: `compiler ingest-prose` (which thus emits validate_pass AND commit, two events in one command). Only proof/graph commits produce a CommitDecision; ingest commits are recorded by their QueueEvent + the ingested records themselves |
+| validated → committed | commit | proof items: `commit apply`; docs items: `docs ingest-result` (wave members: `docs wave-member`; critic items: `docs wave-resolve` — D2); prose items: `compiler ingest-prose` (the ingest commands thus emit validate_pass AND commit in one command). Only proof/graph commits produce a CommitDecision; ingest commits are recorded by their QueueEvent + the ingested records themselves |
 | queued \| blocked → stale | invalidate | Committer: commit mutated target or 1-hop neighbor (proof items only) |
 | validated → stale | invalidate | Committer refusal: target/1-hop mutated since the verdict's bundle snapshot (proof items only; rebuild + re-prove) |
 | stale → queued \| blocked | rebuild | `proof build-tasks` (new bundle revision -rN) |
-| queued \| blocked \| stale \| failed → cancelled | cancel | Committer: target tombstoned (e.g. endpoint_rejected cascade); Compiler dry-run: gap resolved |
+| queued \| blocked \| stale \| failed → cancelled | cancel | Committer: target tombstoned (e.g. endpoint_rejected cascade); Compiler dry-run: gap resolved; docs engine: `docs wave` supersedes a pending single docs item for the same DR — the wave owns the search (docs/15) |
 | validated → cancelled | cancel | Committer: target tombstoned while the item was in flight (V-COMMIT-06) |
 | dead → queued | requeue | `queue requeue` (human decision) |
 
@@ -172,9 +181,10 @@ Enforcement is mechanical, not honor-system — and it must not false-positive o
 2. At claim time the queue engine records into lease.manifest: for every
    canonical JSONL file, (size, sha256); for every IMMUTABLE non-JSONL
    canonical file — specs/*.json, existing bundle files (proof/tasks|context,
-   docs/docspacks), existing docs/raw + docs/text archives, compiler/prose/* —
-   its sha256. db/** is NEVER in the manifest (derived, legitimately rewritten
-   at any time).
+   docs/docspacks), existing docs/plans/* SearchPlans and docs/merged/* merged
+   results (S1/S2 immutable artifacts, docs/14/15), existing docs/raw +
+   docs/text archives, compiler/prose/* — its sha256. db/** (incl. db/semantic/**)
+   is NEVER in the manifest (derived, legitimately rewritten at any time).
 3. `validate` checks [V-PATH-04], three clauses only:
    a. PREFIX: each recorded JSONL file's first `size` bytes still hash to the
       recorded sha256 — concurrent engines only append; a broken prefix means
@@ -185,9 +195,9 @@ Enforcement is mechanical, not honor-system — and it must not false-positive o
    c. STRICT-DIR NEW FILES: a file that did not exist at claim time appearing
       under specs/, graph/, queue/, commit/, freeze/, or audit/ fails — no
       engine ever creates new files there mid-lease. New files under
-      proof/tasks|context, docs/docspacks|raw|text, compiler/, db/,
-      agent_outputs/**, agent_notes/** are engine/worker-legitimate and pass
-      (their integrity is enforced by verify's cross-reference sweep).
+      proof/tasks|context, docs/docspacks|raw|text|plans|merged, compiler/,
+      db/, agent_outputs/**, agent_notes/** are engine/worker-legitimate and
+      pass (their integrity is enforced by verify's cross-reference sweep).
 4. Every V-PATH-04 failure names the offending path in its detail.
 ```
 
@@ -197,11 +207,13 @@ Enforcement is mechanical, not honor-system — and it must not false-positive o
 
 Deterministic code. Checks path safety, JSON schema, and domain invariants against the V-* rule registry (`docs/09-verification.md`). Invalid output → work item `failed` with the violated rule IDs **and per-rule detail (offending path / field)** recorded in the queue event and echoed into the retry prompt; the worker's text output is never consulted. Retry policy: ≤2 retries, then dead letter (`docs/08` §3).
 
-**r3 ergonomic change:** the state-advancing validate paths accept an item in
-`claimed` (or `running`) state and perform the `complete` transition themselves
-(emitting both events) — the separate `queue complete` call is optional. This is
-`validate result` for proof items and `docs ingest-result` for docs items (which
-thus emits complete + validate_pass + commit in one call, docs/10 §4); the
+**r3 ergonomic change (extended by v2.1):** the state-advancing validate paths
+accept an item in `claimed` (or `running`) state and perform the `complete`
+transition themselves (emitting both events) — the separate `queue complete` call
+is optional. This is `validate result` for proof items; `docs ingest-result` for
+single docs items (which thus emits complete + validate_pass + commit in one
+call, docs/10 §4); `docs wave-member` / `docs wave-resolve` for wave-member and
+critic items (D2); and `compiler ingest-prose` for prose items (D14). The
 standalone `validate docs-result` is a stateless V-PATH+V-DR dry check and
 performs no transition. The live run's claim→complete→validate ceremony left a
 wide window in which concurrent engine activity aged the lease manifest;
@@ -238,7 +250,11 @@ See `06-compiler-and-audit.md`. Freeze locks structures; frozen items are immune
 
 ## Layer Loop
 
-The Orchestrator's steady-state loop, in actual commands (one iteration):
+The Orchestrator's steady-state loop, in actual commands (one iteration). After
+the layer-0 expansion the sweep runs first (D4/D5): for each fact/mechanism
+layer-0 node, `docs request --target N ... --fan` then `docs wave --request DR-x
+--fan` (the wave sub-loop below), until V-SWEEP-01 clears the first expansion
+beyond layer 0.
 
 ```text
 paperproof queue expire                                  # crash recovery sweep
@@ -247,15 +263,35 @@ paperproof proof build-tasks --frontier                  # bundles for claimable
                                                          #  this also refreshes packs, docs/04)
 for each claimable proof item (parallel, disjoint outputs):
     paperproof queue claim --queue proof_queue --agent <w>
-    <dispatch ProofWorker subagent with the prompt template (docs/10 §5)>
+    paperproof proof render-prompt --work-item <WI>      # fully-filled ProofWorker prompt (D11)
+    <dispatch ProofWorker subagent>
     paperproof validate result <output> --work-item <WI> # completes + computes verdict
 for each validated item (serial, FIFO):
     paperproof commit apply --result <verdict-record-ref>
-for each open docs item (parallel):                      # same claim/validate shape
-    paperproof docs ingest-result <output>               # ingest + unblock re-proof
+
+# DOCS — a needs_docs re-proof opens a wave (or the sweep does). The S2 sub-loop:
+paperproof docs wave --request DR-x [--fan]              # opens members (+ supersedes any single item)
+for each wave member (docs_queue, parallel, disjoint outputs):
+    paperproof queue claim --queue docs_queue --agent <w>
+    paperproof docs render-prompt --work-item <WI>       # member prompt: angle plan + registry (D11)
+    <dispatch DocsWorker subagent>
+    paperproof docs wave-member <output> --work-item <WI># validate vs the angle plan + complete_member
+# when EVERY member is terminal the engine AUTO-runs merge + opens the critic item (D2)
+paperproof queue claim --queue critic_queue --agent <w>
+paperproof docs render-prompt --work-item <WI>           # critic prompt: claim, plans, merged, query_logs
+<dispatch CoverageCritic subagent>
+paperproof docs wave-resolve <report> --work-item <WI>   # V-WAVE-03 + code computes the wave verdict
+# followup verdict with a non-empty spec list opens round-2 members (loop); empty list closes now;
+# sufficient/closed ⇒ merged result ingested (one DRES) + re-proof unblocked
+# (a plain `docs ingest-result` REFUSES a wave-member item — it names `docs wave-member`)
+
 when a lane's layer is fully committed:
     <Expander writes proposal>  → paperproof expand ingest <file>  (empty proposal closes the lane)
 paperproof graph msa-check                               # loop exit test
 ```
+
+A reactive `docs request` with no `--fan` still runs as a single DocsWorker
+served by `docs ingest-result` (the pre-S2 path, unchanged); `docs ingest-result`
+is only ever refused for a wave *member*.
 
 After MSA: `freeze apply --level spine` → `compiler dry-run` → (gap repairs loop back into the queues) → `compiler draft-map` → CompileWorkers → `compiler ingest-prose` → `audit run`.

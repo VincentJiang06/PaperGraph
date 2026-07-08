@@ -33,6 +33,11 @@ text_path      null when no text could be extracted.
 citation_key   unique across the project (ingestor appends -b, -c on collision).
 ```
 
+Since S3 (docs/16) the ingestor writes **`document.v2`** — `document.v1` plus a
+`provenance` block (retrieved_at, fetch_method, tier, quoted_via) — going forward;
+`document.v1` stays registered and readable. The example above is the v1 core every
+v2 record still carries.
+
 Text extraction at ingest: `.txt`/`.md` are copied verbatim to `docs/text/`; `.pdf` is extracted with pypdf; extraction failure ⇒ `text_path=null` + warning. A Document without extractable text can still be indexed by metadata, but its EvidenceUnits cannot pass the quote-substring check [V-DR-05] and cannot back a BINDING_CHECK when that task type arrives in v1.1.
 
 ### EvidenceUnit (`docs/evidence_units.jsonl`)
@@ -93,6 +98,9 @@ status        open | fulfilled | not_found   (updates append a full new record, 
 fingerprint   sha256 over normalize(need) + "\n" + sorted normalized search_hints,
               where normalize = NFC, lowercase, collapse whitespace.
 fulfilled_by  DRES- id, or the string "cache" for a cache hit.
+fan           bool (S2, docs/15; default false). `--fan` on `docs request` records
+              fan=true; a subsequent `docs wave --request DR-x` then fans one
+              member per angle. The r3 sweep sets it on every seed request (D5).
 ```
 
 DRES- ids number ingest events; they have no registry file of their own — a DRES id resolves (for `verify`) iff it appears as `ingested_from` on ≥1 Document/EvidenceUnit or as the `fulfilled_by` of a not_found request. `ingested_from` is null on documents ingested via the `docs ingest` CLI. Orchestrator-initiated requests are created with `paperproof docs request --target <id> --need <text> [--hint <h>]...` (code appends; C1 holds).
@@ -102,36 +110,44 @@ DRES- ids number ingest events; they have no registry file of their own — a DR
 **r3, from the ai-jobs live run.** v1 gathered evidence only reactively — one
 DocsWorker per `needs_docs` verdict — and the run ended with 24 EvidenceUnits
 for a whole paper, most arriving too late to prevent thin packs, dead letters,
-and bridge churn. The pipeline therefore gains an explicit **seeding stage**
-between contract acceptance and layer-0 expansion (docs/05 pipeline):
+and bridge churn. The pipeline therefore gains an explicit **seeding stage**.
+
+**Pipeline order (v2.1, D4 — corrected).** The sweep needs targets that exist:
+`docs request --target N` requires node N, and the sweep's coverage floor is keyed
+to layer-0 fact/mechanism *nodes*, not raw seed strings. So the order is:
+contract accept → **LAYER-0 EXPANSION** → **evidence-seeding sweep** → proof loop
+(docs/05 pipeline). V-SWEEP-01 still gates the first expansion *beyond* layer 0.
+(The pre-v2.1 "sweep before the expander" ordering was wrong — there were no
+target nodes to request against yet.)
 
 ```text
 1. Ingest every locally available Known Source: `docs ingest <file>` per file.
-2. The Orchestrator writes a SWEEP: one DocsRequest per (seed claim × angle),
-   via `docs request`. The v1 angle set is fixed:
-     official_stats   (BLS/OECD/Eurostat-class data for the claim's period)
-     academic         (peer-reviewed / working papers)
-     industry         (adoption surveys, payroll/job-posting analytics)
-     counter          (evidence AGAINST the claim — mandatory, one per seed)
-   Not every cell is required; the sweep MUST cover every fact/mechanism seed
-   claim with ≥2 angles, one of which is `counter`.
-3. Dispatch DocsWorkers for all open sweep requests IN PARALLEL (distinct
-   request ids ⇒ distinct output files; docs/05 parallelism rules apply).
+2. Commit the layer-0 expansion (question + thesis + seed fact/mechanism nodes).
+3. The Orchestrator SWEEPS via ONE mechanism (v2.1, D5): for every fact/mechanism
+   layer-0 node N,
+     paperproof docs request --target N --need <text> [--hint <h>]... --fan
+   then
+     paperproof docs wave --request DR-x --fan
+   The wave (docs/15) provides the four-angle coverage
+   {official_stats, academic, industry, counter}; there is no per-(seed×angle)
+   single-request procedure any more. `docs request` gains `--fan` (records
+   fan=true on the DocsRequest; the sweep always sets it so the follow-up
+   `docs wave` fans every angle).
 4. Coverage floor before the first expansion beyond layer 0 [V-SWEEP-01]:
-   every fact/mechanism seed claim has ≥2 EvidenceUnits from ≥2 distinct
-   documents, or a recorded not_found for ≥2 angles. `paperproof graph
+   every fact/mechanism layer-0 node has ≥2 EvidenceUnits from ≥2 distinct
+   documents, or a recorded not_found for ≥2 sweep angles. `paperproof graph
    msa-check` reports sweep coverage informationally from day one.
-   (Operationalization, r3: a "fact/mechanism seed claim" is enforced as a
-   **layer-0 fact/mechanism node** — seed claims become the layer-0 nodes, and a
-   raw seed string carries no node_type to test mechanically. "REQUESTED-for-N"
-   evidence is traced request→DRES→ingested_from, as for DocsPacks.)
+   ("REQUESTED-for-N" evidence is traced request→DRES→ingested_from, as for
+   DocsPacks.)
 ```
 
 Sweep requests are Orchestrator-initiated (`requested_by` = the orchestrator
-actor, not a PR- id) and therefore **never count toward any proof target's docs
-round-trip cap** (below). Expected steady state for a paper-scale project after
-the sweep: roughly 10–20 documents and 30–60 EvidenceUnits before the first
-proof wave — an order of magnitude above the reactive-only baseline.
+actor, not a PR- id). The old r3 docs round-trip cap they were exempt from is
+gone (SUPERSEDED by S4 saturation, docs/17 — see below); saturation is per-node
+and never punishes the human's evidence gathering. Expected steady state for a
+paper-scale project after the sweep: roughly 10–20 documents and 30–60
+EvidenceUnits before the first proof wave — an order of magnitude above the
+reactive-only baseline.
 
 ## Memoized Search
 
@@ -191,8 +207,11 @@ MATCHED   = matcher output as above, minus REQUESTED; K = 12.
 
 The K-cap exists because the run showed score≥2 over-includes on period/domain
 tokens — NODE-006's pack carried all 24 project EUs. Bounded packs keep worker
-context small and deterministic. No embeddings in v1; the matcher stays dumb —
-its misses now cost nothing for requested evidence and one round-trip otherwise.
+context small and deterministic. The keyword matcher above is the base; **S5
+(docs/18) replaces the matcher SCORE at pack build with a hybrid keyword+embedding
+score when the pinned model is present**, degrading to this keyword score loudly
+when it is absent (V-SEM-03). `pack = REQUESTED ∪ top-12 MATCHED` is unchanged —
+semantic feeds the MATCHED half's ranking only.
 
 A **DocsPack** (`docs/docspacks/DOCSPACK-<task>[-rN].json`) is a frozen bundle of EvidenceUnits + document metadata assembled for one proof task. Proof workers cite only from their DocsPack, so every citation in every ProofResult resolves to an archived Document by construction. An empty DocsPack is valid.
 
@@ -220,6 +239,14 @@ DocsWorkers are Claude subagents, parallel-safe like ProofWorkers:
 4. Stop. Chat text is discarded.
 ```
 
+Since S1/S2 (docs/14, docs/15) the DocsWorker executes a compiled **SearchPlan**
+and writes **`docs_result.v2`** (a structured `query_log` replaces `search_log`);
+under S2 the worker is a **wave member** on one angle with its own angle-specific
+plan and its result is ingested per-member (`docs wave-member`), not via
+`docs ingest-result`. The prompt is emitted by `docs render-prompt --work-item`
+(D11) with the plan embedded and the S3 registry excerpt filled. See docs/14/15
+for plan/wave mechanics; the fields here are the doc/EU core every version carries.
+
 **Coverage expectations per request (r3, normative for the worker prompt):**
 
 ```text
@@ -241,18 +268,22 @@ Id assignment and appending to canonical JSONL is done by the Docs ingestor (cod
 
 `not_found` is a legitimate terminal result: the waiting re-proof then runs with the unchanged DocsPack, and the worker must answer the form honestly for the evidence it has — typically `wellformed_check=too_broad` (⇒ a narrow repair to a claim the available evidence can carry) or `inference_check=holds_only_with_assumptions` with tighter language limits.
 
-**Docs round-trip cap (r3 semantics — the r2 rule dead-lettered a healthy target):**
-enforced by the **Committer** at commit time. The cap counts the target's prior
-`needs_docs` **verdicts** (not completed DocsRequests), and only requests with
-`requested_by = a PR- id` belong to the proof loop at all — Orchestrator-initiated
-requests (sweep or supplemental, `docs request`) NEVER count. On the **3rd**
-needs_docs verdict for the same target, and only if no new evidence for the
-target has been archived since the 2nd, the re-proof item is born dead
-((created)→dead, op=dead_letter — docs/05) for human review. Rationale from the
-live run (QE-000114): NODE-005 was dead-lettered by two *orchestrator-created*
-cycles — one of them a pre-r2.2 false cache hit — before it ever saw the
-freshly-gathered evidence; the cap must measure the proof loop's own futile
-cycles, not the human's evidence gathering.
+**Docs round-trip cap — SUPERSEDED by S4 saturation (docs/17, V-COV-03).** The r3
+count-based cap (3rd needs_docs verdict ⇒ dead letter) is GONE; no count-based
+refusal remains. Stopping is now **saturation**, computed per node from the
+coverage ledger: a needs_docs verdict ALWAYS opens more search while the target is
+NOT saturated (`rounds ≥ 2 AND every mandatory angle ∉ {no_attempt} AND
+new_docs_last_round = 0` is false); a **saturated** target opens no new search.
+Born-dead has exactly one reason, `saturated`, and fires only when the role-profile
+floor (docs/17) is ALSO unmet: (created)→dead, op=dead_letter, detail
+`{reason:"saturated", floor_met:false}`. If the floor IS met but the worker still
+answered insufficient, the two facts conflict (floors are necessary, not
+sufficient): the Committer records a `human_review` CommitDecision action AND
+still enqueues the re-proof item born dead with detail `{reason:"saturated",
+floor_met:true}`, so humans get a queue trace and `queue requeue` resumes after
+review (v2.1 D1). This lets the human's evidence gathering (sweep / `docs request`)
+never punish a target — saturation measures whether the *world's literature*
+keeps producing, not how many cycles ran.
 
 Prohibitions:
 

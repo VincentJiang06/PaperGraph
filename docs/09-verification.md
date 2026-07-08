@@ -32,11 +32,14 @@ contains(hay, ndl)  casefold(ndl) is a substring of casefold(hay).
 quote_match(text, q)  normalize with case PRESERVED; q must be a substring of
                   text after both are whitespace-normalized. (V-DR-05)
 scope_compatible(a, b)  for every key present in BOTH objects:
-                  period — compatible iff the year-ranges intersect (parse
-                  "YYYY" and "YYYY-YYYY"; unparseable ⇒ substring test either
-                  direction); region — equal after casefold; actors/mechanisms —
-                  non-empty intersection after casefold() of each element.
-                  Missing keys never conflict.
+                  period — FIRST normalize Unicode dashes (en "–" U+2013, em "—"
+                  U+2014, fullwidth "－" U+FF0D, minus "−" U+2212) to ASCII "-"
+                  (v2.1 D10 — the live topic's "2020–2025" en dash made ASCII
+                  "2020-2025" proposals fail V-NODE-03); THEN compatible iff the
+                  year-ranges intersect (parse "YYYY" and "YYYY-YYYY"; unparseable
+                  ⇒ substring test either direction); region — equal after
+                  casefold; actors/mechanisms — non-empty intersection after
+                  casefold() of each element. Missing keys never conflict.
 stopwords         the frozen list, exactly: a an the and or but if then else
                   when while of at by for with about against between into
                   through during before after above below to from up down in
@@ -81,7 +84,9 @@ V-SWEEP-01  the first expansion beyond layer 0 requires, for every
             (`expand ingest` enforces; msa-check reports informationally.)
             Operationalization (r3): a "fact/mechanism seed claim" is a
             layer-0 fact/mechanism node; REQUESTED-for-N is traced
-            request→DRES→ingested_from (docs/04).
+            request→DRES→ingested_from (docs/04). This gate is DELIBERATELY FLAT
+            (a pre-proof volume floor) — distinct from, and NOT superseded by, the
+            docs/17 S4 role-profile floors, which gate freeze/MSA later.
 ```
 
 ### V-PATH (file/path safety, applies to every worker output)
@@ -275,10 +280,13 @@ V-COV-02  every ContextPack whose target is a fact/mechanism/bridge node embeds
           coverage = null
 V-COV-03  the committer consults SATURATION, never a request/verdict count: a
           needs_docs verdict ALWAYS opens more search while NOT saturated; a
-          saturated target opens no new search and the re-proof is BORN DEAD with
-          reason = "saturated" — the ONLY born-dead reason, and only when the
-          role floor is ALSO unmet. saturated := rounds ≥ 2 AND every mandatory
-          angle ∉ {no_attempt} AND new_docs_last_round = 0
+          saturated target opens no new search and the re-proof is BORN DEAD. The
+          born-dead reason is ALWAYS "saturated"; `detail.floor_met` distinguishes
+          the two cases (v2.1 D1): floor_met=false is the ordinary saturated dead
+          letter; floor_met=true is the worker/floor CONFLICT, which additionally
+          records a `human_review` CommitDecision action (floors are necessary,
+          not sufficient). saturated := rounds ≥ 2 AND every mandatory angle ∉
+          {no_attempt} AND new_docs_last_round = 0
 V-COV-04  the freeze (V-FRZ-02) / MSA-4 / compiler missing_evidence floors all
           delegate to the ONE role-profile floor (docs/17): spine_fact /
           spine_mechanism ⇒ ≥2 EU, ≥2 docs, triangulated (V-SRC-04), counter
@@ -288,7 +296,9 @@ V-COV-04  the freeze (V-FRZ-02) / MSA-4 / compiler missing_evidence floors all
 V-COV-05  a narrowed claim inherits the parent claim's ledger (its bindings and
           requests are keyed by node_id, so rounds and evidence carry across the
           narrow); rounds reset to 0 only if the narrowed claim's core_terms
-          change by MORE THAN HALF
+          change by MORE THAN HALF. The ledger's rounds/new-docs FOLD applies this
+          narrow-reset rule itself — the canonical rule fn is consulted by the
+          fold, not by a separate pass (v2.1 D13)
 ```
 
 ### V-SEM (semantic retrieval — S5, docs/18; hybrid pack build + degrade)

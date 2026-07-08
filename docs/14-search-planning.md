@@ -1,6 +1,6 @@
 # 14 S1 — Search Planning & Query Compilation
 
-**Status: ADOPTED / BINDING (Stage A, S1) — docs/00 "Search Program Adoption — Stage A begins with S1 (2026-07-08)"; worklist docs/11 §12.**
+**Status: ADOPTED / BINDING (Stage A, S1) — docs/00 "Search Program Adoption (2026-07-08, Stage A)"; worklist docs/11 §12.**
 
 The live run's DocsRequests carried a free-text `need` and two hints; each
 worker improvised queries and nobody could verify what was *not* tried. S1

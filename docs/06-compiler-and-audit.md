@@ -21,8 +21,10 @@ Freeze preconditions (checked deterministically; rules V-FRZ-01..04 in docs/09):
 
 ```text
 every record in the closure is active (strength strong or conditional)
-every fact/mechanism node in the closure has ≥2 evidence bindings from ≥2
-  distinct documents (r3; matches MSA-4 / V-FRZ-02)
+every fact/mechanism node in the closure clears its S4 role-profile floor
+  (docs/17, via V-COV-04 / V-FRZ-02 — SUPERSEDES the r3 flat "≥2 bindings from
+  ≥2 docs" rule: a spine fact/mechanism needs ≥2 EU, ≥2 docs, triangulated
+  (V-SRC-04) and counter angle ∉ {no_attempt}; bridges additionally ≥3 docs)
 no work item with status ∉ {committed, cancelled} touches the closure
   (touching: the adjacency rule in docs/02 — dead letters block)
 spine_freeze additionally requires: MSA checklist passes AND `paperproof verify`
@@ -82,8 +84,9 @@ The Compiler is the **only prose producer** in the system, and it runs in two ph
 Gap kinds (closed enum) and their mechanical triggers:
 
 ```text
-missing_evidence        spine fact/mechanism node below the r3 evidence floor
-                        (<2 bindings or <2 distinct documents — matches V-FRZ-02)
+missing_evidence        spine fact/mechanism node below its S4 role-profile floor
+                        (docs/17, via V-COV-04 — matches V-FRZ-02; SUPERSEDES the
+                        r3 flat "<2 bindings / <2 docs" trigger)
 unhandled_alternative   alternative node not rejected and not parked(absorbed|not_needed)
 weak_spine_edge         spine edge whose strength=conditional and whose assumptions
                         are not covered by any allowed_language in the closure
@@ -159,7 +162,7 @@ Only when `writing_ready` is true, `compiler draft-map` emits:
 
 `edge_order` lists the spine edges whose both endpoints sit in this section, ordered `(source_node_id, target_node_id)` — the compile worker uses it to sequence argumentative moves. Claims appear in section-plan order. The DraftMap is fully derived: same dry run + same graph ⇒ byte-identical DraftMap.
 
-Prose generation walks the DraftMap. `compiler draft-map` enqueues one compile_queue item per section (task_id `PROSE-<section_id>`); one CompileWorker per section claims it and writes **`agent_outputs/prose/<section_id>.md`** (workers never write `compiler/`); `paperproof compiler ingest-prose <file> --work-item <WI>` runs the V-PROSE rules as the item's validate-pass, copies the accepted file to `compiler/prose/<section_id>.md`, and commits the item — one command, two queue events (validate_pass + commit; the ingest-commit exception, docs/05). On V-PROSE failure it fails the item with the normal retry policy.
+Prose generation walks the DraftMap. `compiler draft-map` enqueues one compile_queue item per section (task_id `PROSE-<section_id>`); one CompileWorker per section claims it and writes **`agent_outputs/prose/<section_id>.md`** (workers never write `compiler/`); `paperproof compiler ingest-prose <file> --work-item <WI>` accepts the item in claimed/running, performing the `complete` transition implicitly like `validate result` / `docs ingest-result` (v2.1 D14), and accepts an absolute `<file>` path (normalized to project-relative); it runs the V-PROSE rules as the item's validate-pass, copies the accepted file to `compiler/prose/<section_id>.md`, and commits the item — one command (complete when needed + validate_pass + commit events; the ingest-commit exception, docs/05). On V-PROSE failure it fails the item with the normal retry policy.
 
 **Annotation grammar** (mechanical, checked by regexes in docs/09 §0):
 

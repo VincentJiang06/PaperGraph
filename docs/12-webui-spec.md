@@ -180,7 +180,7 @@ Empty state: "Graph is empty — commit a layer-0 proposal" + command.
 
 ### 5.3 Queue (`#/queue`, data: `/api/queue?queue=&status=`)
 
-Tabs: `proof · docs · compile · commit (derived)`. Dead letters, when present, are pinned as a critical-tinted section above the table in every tab.
+Tabs: `proof · docs · critic · compile · commit (derived)`. The `docs` tab groups its members by wave (one collapsible group per WV- id, its members and the wave status shown together — S2, docs/15); the `critic` tab lists critic_queue items (target_type=`wave`). Dead letters, when present, are pinned as a critical-tinted section above the table in every tab (a saturated dead letter shows its `detail.floor_met`).
 
 ```text
 │ WI-000038  ◑ claimed  PT-EDGE-001-002 → EDGE-001-002  worker-2  ⏱ 11:32  a1 │
@@ -206,7 +206,7 @@ Master-detail. Left: document list (title, source_type badge, citation_key, text
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-`can/cannot_cite_for` render as good/critical-tinted boundary lists (with ✓/✕ glyphs). "Bound to" backlinks are computed from node `evidence_bindings` (index join). Toolbar: search (matcher-backed via `/api/evidence?q=` passthrough of `docs search`), direction filter, **orphans** toggle (EUs bound to nothing). Empty state: "no documents — `paperproof docs ingest <file>`".
+`can/cannot_cite_for` render as good/critical-tinted boundary lists (with ✓/✕ glyphs). "Bound to" backlinks are computed from node `evidence_bindings` (index join). Toolbar: search (matcher-backed via `/api/evidence?q=` passthrough of `docs search`), direction filter, **orphans** toggle (EUs bound to nothing). A **Coverage** panel (data: `/api/coverage` — part of docs/07's amended HTTP surface) shows the S4 ledger line for a selected fact/mechanism node — angles, rounds, saturated flag, floor met — read-only, the same data as `docs coverage`. Empty state: "no documents — `paperproof docs ingest <file>`".
 
 ### 5.5 Compiler (`#/compiler`, data: `/api/compiler`)
 

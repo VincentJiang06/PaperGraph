@@ -22,6 +22,8 @@ non-rejected fact/mechanism node (and per bridge):
   "tiers_present": ["T1_official", "T3_working_paper", "T4_industry_data"],
   "angles": {"official_stats": "productive", "academic": "productive",
              "industry": "productive", "counter": "productive"},
+  "mandatory_angles": ["official_stats", "academic", "counter", "industry"],
+  "triangulated": true,
   "rounds": 2,
   "new_docs_last_round": 0,
   "saturated": true,
@@ -30,18 +32,43 @@ non-rejected fact/mechanism node (and per bridge):
 ```
 
 ```text
-angles[a]   := productive | tried_empty | tried_blocked | no_attempt —
-               folded from every wave/query_log that targeted this node (S1/S2).
-rounds      := completed search rounds for this node (waves + single requests).
+angles[a]   := productive | tried_empty | tried_blocked | no_attempt.
+Angle folding (v2.1 D6 — fixes the reactive-saturation livelock + the counter
+over-report). angles[a] folds ONLY from:
+  (i)   TERMINAL wave members' plans + query_logs (a member still running does
+        not count — otherwise saturation could latch on an in-flight round);
+  (ii)  single-request docs_result.v2 query_logs;
+  (iii) archived documents REQUESTED-for-this-target, mapped to an angle by the
+        producing document's tier:
+             T1_official      -> official_stats
+             T2_peer_reviewed -> academic
+             T3_working_paper -> academic
+             T4_industry_data -> industry
+        (so `academic` becomes attemptable on the single-request path — the old
+        fold left it unreachable and saturation could never be met, livelocking
+        the loop).
+`counter` is special: it folds ONLY from an executed-or-blocked counter-kind qid
+  in a docs_result.v2 query_log — NEVER from mere request completion, cache
+  fulfillments, or v1 results. This keeps the counter angle honest (the run
+  over-reported it as covered just because a request completed).
+rounds      := completed search rounds for this node (terminal waves + completed
+               single requests), with the V-COV-05 narrow-reset applied by the
+               fold itself (D13).
+mandatory_angles := official_stats, academic, counter; industry is added for an
+               empirical claim whose scope names market/firm actors (the
+               industry-mandatory heuristic — the operationalization of "an
+               empirical claim about the labour market must consult industry
+               data"). Recorded on the ledger line.
+triangulated := whether the node's bindings satisfy S3 V-SRC-04 (docs/16) — part
+               of the ledger line, consumed by the spine floor.
 saturated   := rounds ≥ 2
-               AND every MANDATORY angle ∉ {no_attempt}   (official_stats,
-                   academic, counter; industry mandatory for empirical claims
-                   whose scope names market/firm actors)
+               AND every angle in mandatory_angles ∉ {no_attempt}
                AND new_docs_last_round = 0.
 ```
 
 Everything above is a fold over existing canonical records (requests, waves,
-query_logs, EUs, bindings) — deterministic, rebuildable, no new writer.
+query_logs, EUs, bindings, the source registry) — deterministic, rebuildable, no
+new writer. `triangulated` and `mandatory_angles` are fields of the ledger line.
 
 ## Floors (replace flat "≥2 EUs/2 docs" with role profiles)
 
@@ -65,12 +92,17 @@ flat rule). `msa-check` prints the per-node ledger line for every miss.
 needs_docs verdict on target T:
   if NOT saturated(T):   append requests / open the next wave round — ALWAYS.
                          No count-based refusal exists anymore.
-  if saturated(T):       no new search. The re-proof item is born dead with
-                         reason="saturated" ONLY IF the floor is also unmet;
-                         if the floor IS met, the worker's insufficient answer
-                         conflicts with a met floor — route to human review
-                         with both facts (the form may be right: floors are
-                         necessary, not sufficient).
+  if saturated(T):       no new search. Two sub-cases (v2.1 D1):
+    floor UNMET  the re-proof item is born dead ((created)->dead, op=dead_letter)
+                 with detail {reason:"saturated", floor_met:false}. This is the
+                 ONLY born-dead reason on the docs path.
+    floor MET    the worker's insufficient answer CONFLICTS with a met floor
+                 (floors are necessary, not sufficient). The Committer records a
+                 CommitDecision `human_review` action (this action JOINS the
+                 closed CommitAction enum, docs/08) AND still enqueues the
+                 re-proof item born dead with detail {reason:"saturated",
+                 floor_met:true} — so humans get a queue trace and `queue requeue`
+                 resumes the item after review.
 ContextPack gains a per-target "coverage" block (the ledger line) so the
 worker KNOWS search is exhausted and answers the honest endgame instead:
 narrow the claim to what the evidence carries, or pass conditionally with

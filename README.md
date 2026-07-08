@@ -11,10 +11,19 @@ It is not an autonomous paper writer and not a RAG chatbot. It makes arguments v
 
 ## Repository State
 
-Spec-only. `docs/` is the complete, current specification; implementation starts from `docs/10-v1-design.md` milestone M0.
+Implementation complete through **v2**: milestones M0–M4 plus the full search
+program S1–S5 (docs/13–18) are built, adopted, and BINDING. `src/paperproof/`
+implements the spec; `tests/` carries the docs/11 suite (several hundred tests —
+counts are approximate; the gates in docs/11 are what bind). `docs/` 00→18 are
+all binding; the docs/00 changelog records every adoption, latest entry "Spec
+Revision v2.1" (post-adoption consistency + live-run readiness).
 
 ```text
-docs/        the specification (read 00 → 12 in order)
+docs/        the specification (read 00 → 18 in order; 13–18 = the ADOPTED
+             search program)
+src/         the paperproof package (schemas, gates, queue, committer, docs
+             engine, CLI, WebUI)
+tests/       the executable suite per docs/11
 examples/    topic-input-p4.md — the test topic used by milestone acceptance
 product/     product form, usage patterns, go-to-market planning (not build spec)
 archive/     legacy documentation, superseded, do not use
@@ -43,10 +52,10 @@ docs/11-test-suite.md           AUTHORITATIVE test plan: fixtures, FakeWorkers, 
                                 decision rows, hostile catalog, meta-tests, milestone gates
 docs/12-webui-spec.md           AUTHORITATIVE WebUI design: shell, tokens, views,
                                 components, accessibility, test hooks
-docs/13..18                     the SEARCH PROGRAM (S1-S5): design-frozen, staged
-                                specs for thorough evidence search — planning,
-                                waves+critic, source tiers, saturation, semantic
-                                retrieval; binding only on adoption (docs/13)
+docs/13..18                     the SEARCH PROGRAM (S1-S5): thorough evidence
+                                search — planning, waves+critic, source tiers,
+                                saturation, semantic retrieval. ALL FIVE SETS
+                                ADOPTED AND BINDING (docs/00 changelog; docs/13)
 ```
 
 ## Core Loop (first thing to build)

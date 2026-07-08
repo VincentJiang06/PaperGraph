@@ -9,7 +9,9 @@ Orchestrator      the main Claude Code session. Runs scoping, expands layers,
                   dispatches workers, drives the loop. Uses CLI commands for all
                   state changes — never edits JSONL by hand.
 ProofWorker       Claude subagent; one bounded proof task; writes one output file.
-DocsWorker        Claude subagent; one DocsRequest; returns docs + evidence in one file.
+DocsWorker        Claude subagent; one DocsRequest (or S2 wave member); returns docs + evidence in one file.
+CoverageCritic    Claude subagent (S2, docs/15); audits ONE wave read-only, writes one
+                  coverage_report.v1 — fresh context, adversarial, adds no evidence.
 CompileWorker     Claude subagent; prose for one section from a DraftMap.
 paperproof (code) deterministic Python package: schemas, validator, queue, committer,
                   freeze, compiler dry-run, DB indexer, CLI, WebUI server.
@@ -32,10 +34,11 @@ graph/
 proof/
   tasks/  context/  proof_results.jsonl  .lock
 docs/
-  raw/  text/  docspacks/
+  raw/  text/  docspacks/  plans/  merged/
   documents.jsonl  evidence_units.jsonl  docs_requests.jsonl
+  sources.jsonl  waves.jsonl                (S2/S3, docs/15/16)
 agent_outputs/
-  expansions/  proof_results/  docs_results/  prose/
+  expansions/  proof_results/  docs_results/  coverage_reports/  prose/
 agent_notes/                                 scratch space workers may write
 queue/
   work_items.jsonl  events.jsonl  .lock
@@ -49,9 +52,15 @@ audit/
   audit_reports.jsonl
 db/
   index.duckdb  index_manifest.json          (derived, rebuildable)
+  semantic/                                   (S5, docs/18 — model.json +
+                                              eu_vectors.parquet; derived,
+                                              gitignored, fetched-once)
 ```
 
-`paperproof project init <id>` creates exactly this tree (empty JSONL files included) plus nothing else.
+`paperproof project init <id>` creates this tree (empty JSONL files — including
+`docs/sources.jsonl` and `docs/waves.jsonl` — and the empty `docs/plans/`,
+`docs/merged/`, `agent_outputs/coverage_reports/` dirs). `db/semantic/` is created
+on first `db semantic rebuild`, not by `init`.
 
 Conventions:
 
@@ -106,6 +115,12 @@ DOC-001  EU-001  DRES-001   docs objects                DR-001    docs requests
 WI-000001  QE-000001        queue                       FRZ-001   freeze items
 GS-000001  CD-000001        snapshots / commits         CDR-001   dry runs
 TS-001                      tombstones                  DRAFTMAP-001  AUD-001
+SP-DR-x[-<angle>][-rN-<origin-slug>]  SearchPlans (S1/S2, docs/14/15): the base
+                            plan is SP-<request>; a wave member's angle plan is
+                            SP-DR-x-<angle>, and a round>1 follow-up member's plan
+                            carries the round+origin discriminator (D8) so it is
+                            distinct from — and never re-executes — the round-1 plan
+WV-001                      search waves                 SRC-001   source profiles
 ```
 
 ### Snapshots
@@ -121,8 +136,10 @@ paperproof project   init | status
 paperproof spec      build [--patch] | accept | show
 paperproof graph     list-nodes | list-edges | show | msa-check | park | unpark
 paperproof expand    ingest <proposal-file>
-paperproof proof     build-tasks --frontier | build-task <target-id>
-paperproof docs      ingest | search | build-pack | request | ingest-result
+paperproof proof     build-tasks [--frontier] | build-task <target-id> | render-prompt
+paperproof docs      ingest | search | build-pack | request | ingest-result |
+                     source (list|set) | plan | wave | wave-member | wave-resolve |
+                     coverage | render-prompt
 paperproof queue     list | claim | heartbeat | release | complete | fail |
                      expire | requeue | events
 paperproof validate  result | proposal | docs-result
@@ -130,7 +147,7 @@ paperproof commit    apply --result <ref>
 paperproof freeze    apply | unfreeze
 paperproof compiler  dry-run | draft-map | ingest-prose
 paperproof audit     run --draft
-paperproof db        rebuild | check
+paperproof db        rebuild | check | semantic (rebuild|check)
 paperproof ui        serve --port 8420 [--auto-rebuild]
 paperproof verify    # whole-project invariant sweep (docs/09 §3)
 paperproof trace     --node <id>   # sentence→evidence traceability chain
@@ -143,13 +160,17 @@ The Orchestrator dispatches a worker by:
 ```text
 1. paperproof queue claim --queue <q> --agent <worker-name>
    → envelope.data carries the work item incl. bundle paths + output file.
-2. Launch a Claude subagent from the fixed prompt template (docs/10 §5), filled
-   with: the bundle file paths, allowed_write_paths, and the output file path.
+2. paperproof {proof|docs} render-prompt --work-item <WI> emits the fully-filled
+   canonical template (docs/10 §5) — bundle/plan/registry filled in (D11); launch a
+   Claude subagent on it.
 3. Worker writes its output file and stops (its chat text is discarded).
-4. paperproof queue complete <WI>; paperproof validate result <output> --work-item <WI>.
-   On failure the item auto-retries (≤2 retries, violated V-* rules appended to
-   the retry prompt via the retry suffix template) then dead-letters.
-5. paperproof commit apply for validated results (serial).
+4. paperproof validate result <output> --work-item <WI> (proof) / docs wave-member
+   / docs wave-resolve / docs ingest-result (docs) / compiler ingest-prose (prose)
+   — each accepts a claimed/running item and performs the `complete` transition
+   IMPLICITLY (r3/v2.1 D14; the separate `queue complete` is optional). On failure
+   the item auto-retries (≤2 retries, violated V-* rules appended to the retry
+   prompt via the retry suffix template) then dead-letters.
+5. paperproof commit apply for validated proof results (serial).
 ```
 
 Multiple workers run simultaneously whenever their task_ids and output files are disjoint. Heartbeats are optional for subagent workers (they normally finish inside one lease); long docs searches should heartbeat.
@@ -168,6 +189,8 @@ GET  /api/record/{id}  the full latest canonical record behind any id
 GET  /api/queue        work items with lease/attempt/blocked_by
 GET  /api/events       queue events, newest first (paged ?after=QE-…)
 GET  /api/evidence     documents joined with their EvidenceUnits
+GET  /api/coverage     the S4 coverage ledger (docs/17) per fact/mechanism/bridge
+                       node; ?node=<id> for one — same data as `docs coverage`
 GET  /api/compiler     latest dry run + draft map + prose file list
 GET  /api/trace/{node} the trace chain (same data as `paperproof trace`)
 POST /api/queue/{id}/claim   body {agent}     (same semantics as CLI)
@@ -187,4 +210,4 @@ What can be committed? What is frozen? Is the index stale?
 
 ### Derived DB
 
-`paperproof db rebuild` drops and recreates one DuckDB table per canonical JSONL file (`nodes, edges, tombstones, snapshots, verdict_records, documents, evidence_units, docs_requests, work_items, queue_events, commit_decisions, freeze_items, dry_runs, draft_maps, audit_reports`). Each table: `id`, `seq` (line number), `json` (full record), plus extracted hot columns (state/status/strength/queue_name/kind as applicable). Only the latest record per id appears in `*_current` views; full history stays in the base tables. `index_manifest.json` stores `{built_at, sources: {relpath: sha256}}`.
+`paperproof db rebuild` drops and recreates one DuckDB table per canonical JSONL file (`nodes, edges, tombstones, snapshots, verdict_records, documents, evidence_units, docs_requests, sources, waves, work_items, queue_events, commit_decisions, freeze_items, dry_runs, draft_maps, audit_reports`). Each table: `id`, `seq` (line number), `json` (full record), plus extracted hot columns (state/status/strength/queue_name/kind as applicable). Only the latest record per id appears in `*_current` views; full history stays in the base tables. `index_manifest.json` stores `{built_at, sources: {relpath: sha256}}`.

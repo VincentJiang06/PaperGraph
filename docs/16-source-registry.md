@@ -33,6 +33,7 @@ much it counts*.
   },
   "seen_count": 3,
   "last_ok_fetch_method": "secondary_quote",
+  "tier_note": null,
   "created_at": "…"
 }
 ```
@@ -106,6 +107,16 @@ Press (T5) never carries a spine binding alone; it corroborates.
 This replaces "any 2 documents" with "2 documents that could actually be wrong
 independently" — the run's Stanford-paper-plus-its-own-press-release pattern
 (DOC-009/DOC-012) is exactly what (b)'s publisher check catches.
+
+**Publisher defaulting + empty-publisher independence (v2.1 D12).** A SourceProfile's
+`publisher` defaults to its `domain` for **web** documents (so two web sources on
+different domains are independent by default). **Local (user_provided)** documents
+have an EMPTY publisher — there is no domain to stand in — and an empty-publisher
+PAIR is **NOT mutually independent** for V-SRC-04(b): two uncurated local uploads
+can no longer triangulate a spine claim on their own. A human makes them
+independent by curating real publishers via `docs source set --publisher`. This
+closes the "upload two files, call it triangulated" hole while keeping the
+publisher-equality mechanical check.
 
 ## Rules (V-SRC)
 

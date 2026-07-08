@@ -26,7 +26,11 @@ fetches the weights (once) and verifies the sha256, then embeds. Embedding =
 mean-pool(last_hidden_state, attention_mask) then L2-normalize; texts carry the
 e5 prefixes — "query: " for a claim, "passage: " for an EU (required for
 cross-lingual quality). Per EU: normalize(summary + " " + join(can_cite_for));
-per claim at query time: normalize(claim). Vectors live in
+per claim at query time: normalize(claim). The prefixed input is
+DETERMINISTICALLY TRUNCATED at 512 model tokens (v2.1 D9 — the tokenizer enforces
+the cap; a longer summary+can_cite_for is truncated to the first 512 tokens
+BEFORE embedding, so two runs on the same text always see the same input and
+produce byte-identical vectors). Vectors live in
 db/semantic/eu_vectors.parquet — derived and rebuildable like all of db/; JSONL
 remains the only source of truth. A missing/mismatched model file degrades to
 keyword matching, loudly (below), never silently.
@@ -73,7 +77,10 @@ triangulation depends on it).
 Scores serialize as fixed-6-decimal strings (byte-determinism across
 platforms). `verify` recomputes retrieval when the pinned model is present and
 flags drift as a warning; when absent, packs built with `matcher:"keyword.v1"`
-are first-class — semantic is an upgrade, not a dependency.
+are first-class — semantic is an upgrade, not a dependency. The degrade is LOUD on
+the builder path too: `docs build-pack` and the `proof build-tasks` bundle build
+surface the "model absent — degraded to keyword.v1" warning in their JSON envelope
+`warnings[]` (v2.1 D15/V-SEM-03), so an operator sees it, never a silent fallback.
 
 ## What semantics may NOT do (the r2.2 lesson, made permanent)
 

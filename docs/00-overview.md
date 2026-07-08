@@ -64,7 +64,7 @@ WebUI monitor: read-only view over all of the above, at every stage.
                                milestone gates
 12-webui-spec.md               the WebUI design: shell, tokens, views, components
 
-— search program (DESIGN-FROZEN, staged; not yet binding — see 13) —
+— search program (ADOPTED — see the changelog entries below) —
 13-search-program.md           S1–S5 overview, composition, dependency, staging
 14-search-planning.md          S1: deterministic SearchPlans + per-query accounting
 15-search-orchestra.md         S2: parallel angle waves, merger, coverage critic
@@ -73,7 +73,7 @@ WebUI monitor: read-only view over all of the above, at every stage.
 18-semantic-retrieval.md       S5: hybrid keyword+embedding matching, cross-lingual
 ```
 
-Documents 01–07 describe modules; 08–12 bind them. On any boundary question (who writes what, what a gate accepts), `08-module-contracts.md` is authoritative. On any check, the rule IDs in `09-verification.md` are authoritative. On what v1 includes, `10-v1-design.md` is authoritative. On test structure, `11-test-suite.md` is authoritative. On WebUI design, `12-webui-spec.md` is authoritative (within the scope docs/10 §6 allows). Documents 13–18 are the **search program**: fully designed, adoption-staged, and binding only once a docs/00 changelog entry adopts a set (docs/13 §Normativity).
+Documents 01–07 describe modules; 08–12 bind them. On any boundary question (who writes what, what a gate accepts), `08-module-contracts.md` is authoritative. On any check, the rule IDs in `09-verification.md` are authoritative. On what v1 includes, `10-v1-design.md` is authoritative. On test structure, `11-test-suite.md` is authoritative. On WebUI design, `12-webui-spec.md` is authoritative (within the scope docs/10 §6 allows). Documents 13–18 are the **search program**: fully designed and adoption-staged; **all five sets (S1–S5) are now adopted and binding** (the changelog entries below; docs/13 §Normativity).
 
 ## Non-Negotiables
 
@@ -346,4 +346,115 @@ S5 becomes NORMATIVE (docs/18):
             fixed-6-decimal strings for byte-determinism); docs_pack.v1 stays readable.
 
 After S5, the SEARCH PROGRAM (S1-S5) is fully adopted and implemented -- v2 complete.
+```
+
+## Spec Revision v2.1 (2026-07-08, post-adoption consistency + live-run readiness)
+
+With S1–S5 all adopted (the four entries above), four adversarial reviews audited
+the whole v2 project end-to-end. v2.1 is the consistency + live-run-readiness
+pass: it reconciles the surfaces the staged adoptions left inconsistent, drives
+the S2 wave from the CLI as a closed surface, and fixes the defects a real run
+hits first. Every change is pinned; the spec and the code move together. What a
+v2 reader must re-learn:
+
+```text
+SATURATION HUMAN-REVIEW BRANCH (D1): a saturated + floor-MET needs_docs is a
+  worker/floor CONFLICT, not a dead search. The Committer records a CommitDecision
+  action `human_review` (this action JOINS the closed CommitAction enum) AND
+  enqueues the re-proof item born dead — (created)→dead, op=dead_letter, detail
+  {reason:"saturated", floor_met:true} — so humans get a queue trace and
+  `queue requeue` resumes after review. V-COV-03 reworded: born-dead reason is
+  ALWAYS `saturated`; detail.floor_met distinguishes the conflict case (worker
+  said insufficient though the floor is met).
+
+WAVE DRIVING IS A CLOSED CLI SURFACE (D2): `docs ingest-result` REFUSES a
+  wave-member item (a clear error naming the right command). New commands:
+  `docs wave-member <output_file> --work-item <WI>` (validates the member against
+  ITS angle plan — plan resolved from the item's task_id
+  SP-DR-x-<angle>[-rN-...] — implicit-completes from claimed, then
+  wave.complete_member; when ALL members are terminal the engine AUTO-runs merge +
+  open_critic, doc-faithful to docs/15 "runs when every member is terminal") and
+  `docs wave-resolve <coverage_report_file> --work-item <WI>` (V-WAVE-03 validate,
+  implicit-complete, resolve_critic; code computes the verdict). A `followup`
+  verdict whose follow-up spec list is EMPTY closes the wave immediately (no idle
+  round).
+
+CRITIC WORKER (D3): the CoverageCritic is a contracted bounded worker on
+  `critic_queue` (WorkItem target_type=`wave`), output agent_outputs/coverage_reports/;
+  its canonical dispatch template joins docs/10 §5 (templates stay the ONLY
+  dispatch prompts). prompts/critic_worker.txt ships the identical text.
+
+PIPELINE ORDER FIXED (D4): contract accept → LAYER-0 EXPANSION → evidence-seeding
+  sweep → proof loop. Sweep targets are layer-0 nodes and `docs request --target`
+  requires the node to exist, so the old "sweep before expander" diagram was
+  wrong. V-SWEEP-01 still gates the first expansion BEYOND layer 0.
+
+ONE SWEEP MECHANISM (D5): sweep = one DocsRequest per fact/mechanism layer-0 node
+  (`docs request --target N --need ... --hint ... --fan`) then `docs wave --request
+  DR-x --fan` (the wave provides the 4-angle coverage). `docs request` gains a
+  `--fan` flag (records fan=true; sweep uses it). The old per-(seed×angle)
+  single-request procedure (docs/04) is replaced.
+
+ANGLE FOLDING (D6, fixes the reactive-saturation livelock + the counter
+  over-report): the coverage ledger folds `angles` from (i) TERMINAL wave members'
+  plans+query_logs only, (ii) single-request v2 query_logs, and (iii) archived
+  documents REQUESTED-for-the-target by tier (T1→official_stats, T2/T3→academic,
+  T4→industry); `counter` folds ONLY from an executed-or-blocked counter qid in a
+  v2 query_log — never from mere request completion, never from cache fulfillments
+  or v1 results. `academic` is now attemptable on the single-request path
+  (saturation reachable) and counter is honest.
+
+MERGER QUOTE-INTEGRITY (D7): dedup by content_hash; a canonical-URL collision with
+  DIFFERING content_hash keeps BOTH documents (re-pointing EUs across differing
+  texts broke V-DR-05). canonical_url is TOTAL (unparseable port → raw netloc
+  fallback), strips `www.`, defaults a scheme — consistent with the registry's
+  domain normalization.
+
+FOLLOW-UP MEMBER PLANS (D8): a round>1 member's plan id/file is round+origin-
+  discriminated (like its output path), compiled WITH the critic's suggested_query
+  as a hint — round 2 must not re-execute a byte-identical round-1 plan. Duplicate
+  expected_source names are de-duplicated/indexed so origins (and thus paths/plans)
+  stay unique.
+
+SEMANTIC TRUNCATION (D9): embedding input is deterministically truncated at 512
+  model tokens (tokenizer-enforced); pinned in docs/18 as part of the embedding
+  contract.
+
+scope_compatible DASH-NORMALIZATION (D10): docs/09 §0 `scope_compatible` period
+  parsing normalizes Unicode dashes (en/em/fullwidth ~) to ASCII "-" before
+  year-range parsing (the live topic's "2020–2025" en dash made ASCII "2020-2025"
+  proposals fail V-NODE-03).
+
+PROMPT RENDERING + V-SRC-05 ENFORCEMENT (D11): new CLI `docs render-prompt
+  --work-item <WI>` (docs items incl. wave members and critic items) and `proof
+  render-prompt --work-item <WI>` emit the fully-filled canonical template (plan
+  embedded; `{registry}` = the V-SRC-05 excerpt via the registry renderer, checked
+  by check_registry_excerpt at render time; S5 advisory top-3 similar-request leads
+  included here — prompt-only). This is WHERE V-SRC-05 is enforced.
+
+PUBLISHER INDEPENDENCE (D12): a SourceProfile's publisher defaults to its domain
+  for web documents; local (user_provided) documents have empty publisher, and an
+  empty-publisher PAIR is NOT mutually independent for V-SRC-04(b) unless a human
+  curates publishers via `docs source set` — two uncurated local uploads can no
+  longer triangulate a spine claim.
+
+V-COV-05 WIRING (D13): the ledger's rounds/new-docs fold applies the narrow-reset
+  rule (rounds reset to 0 when the narrowed claim's core_terms change by more than
+  half) — the canonical rule fn is consulted by the fold itself.
+
+COMPILER ingest-prose (D14): performs the implicit complete from claimed/running
+  (like `validate result` / `docs ingest-result`) and accepts absolute paths
+  (normalized to project-relative). Prose items JOIN the r3 implicit-complete list
+  everywhere it is described.
+
+VERIFY COVERAGE (D15): `verify` sweeps V-WAVE-04/05 in addition to 01/02;
+  V-TASK-02/03 are checked at bundle build; V-SRC-04 at freeze uses the single
+  canonical triangulation fn.
+
+SUPERSESSION LEFTOVERS CLEANED: every place that still described the r3 flat docs
+  cap / flat ≥2 floor as live (docs/02 MSA-4, docs/04 cap section, docs/05
+  born-dead row, docs/06, docs/08 B6/B7/B8) now delegates to the docs/17
+  role-profile floors + saturation. Adoption status made consistent across
+  docs/00, docs/13, docs/10, docs/11, docs/14, README, AGENTS, CLAUDE.md — all
+  five sets (S1–S5) are ADOPTED.
 ```
