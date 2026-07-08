@@ -65,6 +65,11 @@ class ContextPack(BaseModel):
     contract_scope: Scope
     forbidden_claims: list[str]
     prior_results: list[dict[str, Any]]
+    # S4 (docs/17, V-COV-02): the target's current DERIVED coverage ledger line for
+    # a fact/mechanism/bridge target, so the worker KNOWS whether search is
+    # exhausted and answers the honest endgame (narrow / pass-conditional) instead
+    # of asking for docs the world does not have. null for targets with no floor.
+    coverage: Optional[dict[str, Any]] = None
 
 
 class DuplicateCheck(BaseModel):

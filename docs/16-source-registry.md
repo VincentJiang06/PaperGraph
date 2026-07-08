@@ -92,7 +92,7 @@ ingest (registry lookup, worker-proposed on first sight). `quoted_via` links a
 secondary_quote document to the carrier that was actually fetched — the trace
 chain then shows *how* every figure entered the project.
 
-## Triangulation rule (Stage B — NOT ADOPTED; informational)
+## Triangulation rule (Stage B — ADOPTED / BINDING, V-SRC-04)
 
 ```text
 A spine fact/mechanism node's binding profile must satisfy ONE of:
@@ -116,17 +116,21 @@ V-SRC-02  secondary_quote documents name quoted_via, and the carrier document
           exists in the archive
 V-SRC-03  registry updates are appends (latest-per-domain wins); the ingestor
           never lowers a tier silently (tier changes carry a note)
-V-SRC-04  (Stage B — NOT ADOPTED) spine bindings satisfy the triangulation
-          rule — enforced at freeze (extends V-FRZ-02) and reported by msa-check
+V-SRC-04  (Stage B — ADOPTED, docs/17) spine fact/mechanism bindings satisfy the
+          triangulation rule above — enforced at freeze (extends V-FRZ-02) and
+          reported by msa-check; feeds the S4 role-profile spine floor
 V-SRC-05  the dispatch prompt's registry excerpt contains every T1 profile +
           every profile matching a plan facet domain (bundle completeness)
 ```
 
 Stage A-lite adopts V-SRC-01/02/03/05 (`src/paperproof/validate/rules/v_src.py`,
-registered in the validate registry, swept by `paperproof verify`). V-SRC-04 is
-not built. V-SRC-05 is a dispatch-time completeness check on the registry
-excerpt (`registry.matched_profiles` + `v_src.check_registry_excerpt`), not a
-stored-state rule.
+registered in the validate registry, swept by `paperproof verify`). Stage B
+adopts V-SRC-04 triangulation (`v_src.check_triangulation` delegating to
+`docsdb.coverage.triangulated`); it is enforced at freeze (extends V-FRZ-02) and
+reported by msa-check, and feeds the S4 role-profile spine floor (docs/17).
+V-SRC-05 is a dispatch-time completeness check on the registry excerpt
+(`registry.matched_profiles` + `v_src.check_registry_excerpt`), not a stored-
+state rule.
 
 ## Deltas at adoption
 
@@ -147,5 +151,7 @@ Tests    T-S3-1 ingest learns blocked_direct from a blocked log entry (+ append-
          T-S3-4 provenance present (V-SRC-01); dangling quoted_via ⇒ V-SRC-02;
                 dispatch excerpt completeness (V-SRC-05); document.v2 round-trip
                 (+ document.v1 still valid v1)
-         (T-S3-3 triangulation is Stage B — NOT adopted, not built)
+         T-S3-3 triangulation (Stage B, V-SRC-04): same-publisher T3 pair fails;
+                T1+T4 passes; T5-only fails; enforced at freeze + msa-check
+                (tests/contract/test_v_cov.py::test_triangulation_*)
 ```

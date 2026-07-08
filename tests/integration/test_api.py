@@ -56,6 +56,9 @@ def test_every_api_route_responds(monitor):
     assert client.get("/api/events?limit=5").json()["count"] == 5
     assert client.get("/api/evidence").status_code == 200
     assert client.get("/api/compiler").status_code == 200
+    # S4 (docs/17): the coverage ledger read endpoint.
+    cov = client.get("/api/coverage").json()
+    assert "ledger" in cov and isinstance(cov["ledger"], list)
     tr = client.get(f"/api/trace/{frozen_id}").json()
     assert tr["found"] is True and tr["node_id"] == frozen_id
 

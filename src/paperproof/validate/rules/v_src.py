@@ -1,8 +1,4 @@
-"""V-SRC: source registry, provenance & tiers (docs/16 S3 Stage A-lite).
-
-Stage A-lite rules only (V-SRC-01/02/03/05). Stage B triangulation (V-SRC-04) is
-NOT adopted in this build (docs/16, docs/00 adoption entry) and is not defined
-here.
+"""V-SRC: source registry, provenance & tiers (docs/16 S3 Stage A-lite + Stage B).
 
     V-SRC-01  every ingested document carries provenance (retrieved_at,
               fetch_method, tier); tier in enum
@@ -10,6 +6,9 @@ here.
               document exists in the archive
     V-SRC-03  registry updates are appends (latest-per-domain wins); the ingestor
               never lowers a tier silently — a tier change carries a note
+    V-SRC-04  (Stage B — ADOPTED, docs/16/docs/17) a spine fact/mechanism binding
+              profile satisfies the triangulation rule; enforced at freeze
+              (extends V-FRZ-02) and reported by msa-check
     V-SRC-05  the dispatch prompt's registry excerpt contains every T1 profile +
               every profile matching a plan facet domain (bundle completeness)
 
@@ -95,6 +94,22 @@ def check_registry_history(profile_records: list[dict[str, Any]]) -> list[Failur
                 )
         prev_by_domain[domain] = rec
     return failures
+
+
+# --- V-SRC-04 spine-binding triangulation (Stage B, docs/16) ----------------
+
+
+def check_triangulation(binding_docmeta: list[tuple[str, str, str]]) -> list[Failure]:
+    """V-SRC-04 for one spine fact/mechanism binding profile. ``binding_docmeta``
+    is (tier, publisher, doc_id) per binding EU. Returns a Failure iff the profile
+    does not triangulate (docs/16): (a) >=1 EU from a T1/T2 doc + >=1 more from a
+    distinct doc, OR (b) >=2 EUs from distinct independent T3/T4 docs (different
+    publishers). T5 press never carries a spine binding alone."""
+    from ...docsdb import coverage as _coverage
+
+    if _coverage.triangulated(binding_docmeta):
+        return []
+    return [Failure("V-SRC-04", "spine binding profile does not triangulate (docs/16)")]
 
 
 # --- V-SRC-05 dispatch excerpt completeness ---------------------------------

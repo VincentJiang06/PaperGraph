@@ -10,11 +10,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .envelope import Failure, to_envelope
-from .rules import v_commit, v_dr, v_exp, v_path, v_pr, v_q, v_sp, v_spec, v_src, v_sweep, v_task, v_wave
+from .rules import v_commit, v_cov, v_dr, v_exp, v_path, v_pr, v_q, v_sp, v_spec, v_src, v_sweep, v_task, v_wave
 
 __all__ = [
     "Failure", "to_envelope", "RULES", "rule_ids",
-    "v_spec", "v_path", "v_pr", "v_dr", "v_exp", "v_task", "v_q", "v_commit", "v_sweep", "v_sp", "v_src", "v_wave",
+    "v_spec", "v_path", "v_pr", "v_dr", "v_exp", "v_task", "v_q", "v_commit", "v_sweep", "v_sp", "v_src", "v_wave", "v_cov",
 ]
 
 
@@ -99,7 +99,13 @@ RULES: dict[str, Rule] = {
         _rule("V-SRC-01", "every ingested document carries provenance; tier in enum"),
         _rule("V-SRC-02", "secondary_quote names quoted_via; carrier document exists"),
         _rule("V-SRC-03", "registry updates append, latest-per-domain; no silent tier change"),
+        _rule("V-SRC-04", "spine binding profile triangulates (T1/T2 + distinct, or 2 independent T3/T4); enforced at freeze"),
         _rule("V-SRC-05", "dispatch registry excerpt has every T1 + facet-matched profile"),
+        _rule("V-COV-01", "coverage ledger determinism: same canonical state => identical ledger"),
+        _rule("V-COV-02", "every ContextPack for a fact/mechanism/bridge target embeds its ledger line"),
+        _rule("V-COV-03", "committer consults saturation not a count; born-dead reason=saturated only, floor unmet"),
+        _rule("V-COV-04", "freeze/MSA-4/compiler floors follow the role-profile table; msa-check reports per-node"),
+        _rule("V-COV-05", "narrowed claim inherits the parent ledger; rounds reset only if core_terms change >half"),
     ]
 }
 

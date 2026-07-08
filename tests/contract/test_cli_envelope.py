@@ -29,7 +29,7 @@ CLOSED_COMMANDS = {
     "expand ingest",
     "proof build-tasks", "proof build-task",
     "docs ingest", "docs search", "docs build-pack", "docs request", "docs ingest-result", "docs plan", "docs wave",
-    "docs source list", "docs source set",
+    "docs coverage", "docs source list", "docs source set",
     "queue list", "queue claim", "queue heartbeat", "queue release", "queue complete",
     "queue fail", "queue expire", "queue requeue", "queue events",
     "validate result", "validate proposal", "validate docs-result",

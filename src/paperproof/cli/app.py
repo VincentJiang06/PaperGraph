@@ -587,6 +587,17 @@ def docs_wave(
     _dispatch("docs wave", lambda: _docs.wave(_project_paths(s), request, fan))
 
 
+@docs_app.command("coverage")
+def docs_coverage(
+    ctx: typer.Context,
+    node: Optional[str] = typer.Option(None, "--node"),
+) -> None:
+    """The DERIVED coverage ledger (S4, docs/17): saturation + role-profile floor
+    per non-rejected fact/mechanism node (and per bridge)."""
+    s = _state(ctx)
+    _dispatch("docs coverage", lambda: _docs.coverage(_project_paths(s), node))
+
+
 # docs source (S3 Stage A-lite, docs/16): the source registry curation surface.
 docs_source_app = typer.Typer(no_args_is_help=False)
 

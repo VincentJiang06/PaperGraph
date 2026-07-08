@@ -15,7 +15,7 @@ from __future__ import annotations
 from typing import Any, Optional
 
 from ..db.indexer import TABLE_MAP, check as db_check
-from ..graph.model import GraphView, meets_evidence_floor
+from ..graph.model import GraphView
 from ..paths import Paths
 from ..store import jsonl
 from ..textutil import contains, sentence_split
@@ -182,12 +182,17 @@ def _msa(reader, paths: Paths) -> dict[str, Any]:
     msa3 = bool(spine_ids) and all(r is not None and r["lifecycle_state"] == "active" for r in spine_records)
     items.append(("MSA-3", msa3, "every spine record active"))
 
-    eu_doc = {e["evidence_id"]: e["doc_id"] for e in reader.current("evidence_units") if e.get("doc_id")}
+    # MSA-4 delegates to the S4 role-profile floor (docs/17) — the same coverage
+    # function the CLI msa-check / V-FRZ-02 use, folded over the docs-side records.
+    from ..docsdb import coverage as coverage_mod
+
+    cov_ctx = coverage_mod.build_context(paths, spine_ids)
     msa4 = all(
-        (n["node_type"] not in ("fact", "mechanism")) or meets_evidence_floor(n, eu_doc)
+        (n["node_type"] not in ("fact", "mechanism"))
+        or coverage_mod.meets_floor(coverage_mod.target_ledger(n, cov_ctx))
         for n in gv.nodes if n["node_id"] in spine_ids
     )
-    items.append(("MSA-4", msa4, "spine fact/mechanism nodes have >=2 evidence bindings from >=2 documents"))
+    items.append(("MSA-4", msa4, "spine fact/mechanism nodes clear the S4 role-profile floor (docs/17)"))
 
     msa5 = all(
         n["lifecycle_state"] == "rejected"
@@ -323,6 +328,17 @@ def evidence(reader, q: str | None = None) -> dict[str, Any]:
                 continue
         documents.append({"document": d, "evidence_units": units, "eu_count": len(units)})
     return {"documents": documents, "count": len(documents)}
+
+
+def coverage(reader, paths: Paths, node: Optional[str] = None) -> dict[str, Any]:
+    """/api/coverage (docs/17): the DERIVED coverage ledger read endpoint —
+    saturation + role-profile floor per non-rejected fact/mechanism node (and per
+    bridge). A deterministic fold over canonical state, computed on read."""
+    from ..docsdb import coverage as coverage_mod
+
+    if node:
+        return coverage_mod.ledger_for(paths, node)
+    return coverage_mod.build_ledger(paths)
 
 
 def compiler(reader, paths: Paths) -> dict[str, Any]:
