@@ -396,10 +396,12 @@ ONE SWEEP MECHANISM (D5): sweep = one DocsRequest per fact/mechanism layer-0 nod
   single-request procedure (docs/04) is replaced.
 
 ANGLE FOLDING (D6, fixes the reactive-saturation livelock + the counter
-  over-report): the coverage ledger folds `angles` from (i) TERMINAL wave members'
-  plans+query_logs only, (ii) single-request v2 query_logs, and (iii) archived
+  over-report): the coverage ledger folds `angles` from (i) TERMINAL wave members
+  (angle marked ATTEMPTED only), (ii) single-request v2 query_logs, (iii) archived
   documents REQUESTED-for-the-target by tier (T1→official_stats, T2/T3→academic,
-  T4→industry); `counter` folds ONLY from an executed-or-blocked counter qid in a
+  T4→industry), and (iv) the wave's CoverageCritic report — the AUTHORITATIVE
+  per-angle verdict, the only path to `productive` for a waved node (docs/17);
+  `counter` folds ONLY from an executed-or-blocked counter qid in a
   v2 query_log — never from mere request completion, never from cache fulfillments
   or v1 results. `academic` is now attemptable on the single-request path
   (saturation reachable) and counter is honest.

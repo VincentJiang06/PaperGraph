@@ -492,7 +492,7 @@ def _run_deferred(paths: Paths, plan: _CommitPlan, deferred: list[dict[str, Any]
             # case). Surface it for human review — the ContextPack coverage block
             # tells the worker search is exhausted so it answers the honest endgame.
             plan._action("human_review", op["target_id"],
-                         {"reason": "saturated_floor_met", "floor": op.get("ledger")})
+                         {"reason": "saturated", "floor_met": True})
         elif kind == "cancel_incident":
             _cancel_open_items(paths, plan, op["target_id"], actor)
 

@@ -35,8 +35,10 @@ non-rejected fact/mechanism node (and per bridge):
 angles[a]   := productive | tried_empty | tried_blocked | no_attempt.
 Angle folding (v2.1 D6 — fixes the reactive-saturation livelock + the counter
 over-report). angles[a] folds ONLY from:
-  (i)   TERMINAL wave members' plans + query_logs (a member still running does
-        not count — otherwise saturation could latch on an in-flight round);
+  (i)   TERMINAL wave members (a member still running does not count — otherwise
+        saturation could latch on an in-flight round): a terminal member marks
+        its angle only ATTEMPTED (tried_empty); `productive`/`yes` for a waved
+        node comes from the critic verdict (iv), not from (i) alone;
   (ii)  single-request docs_result.v2 query_logs;
   (iii) archived documents REQUESTED-for-this-target, mapped to an angle by the
         producing document's tier:
@@ -46,7 +48,12 @@ over-report). angles[a] folds ONLY from:
              T4_industry_data -> industry
         (so `academic` becomes attemptable on the single-request path — the old
         fold left it unreachable and saturation could never be met, livelocking
-        the loop).
+        the loop);
+  (iv)  the wave's CoverageCritic report (coverage_report.v1) — the AUTHORITATIVE
+        per-angle verdict: form.angle_covered maps yes->productive,
+        tried_empty->tried_empty, tried_blocked->tried_blocked,
+        no_attempt->no_attempt, and may RAISE an angle above what (i) shows. For
+        a waved node this is the only path to `productive`.
 `counter` is special: it folds ONLY from an executed-or-blocked counter-kind qid
   in a docs_result.v2 query_log — NEVER from mere request completion, cache
   fulfillments, or v1 results. This keeps the counter angle honest (the run
