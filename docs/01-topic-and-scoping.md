@@ -133,6 +133,8 @@ The binding agreement every later stage checks against:
 
 Derivation: `fixed_question` = core_question; `outcome_direction` = intended_thesis; `scope` = structured spec scope (this copy is what mechanical scope checks use — V-NODE-03, docs/09 §0); `in_scope` = all Scope items verbatim (human/worker-readable); `out_of_scope` = `[]` in v1 (the structured scope is the boundary authority); `forbidden_claims` = hard_exclusions.
 
+`in_scope` is the raw topic's Scope lines **verbatim**, not a render of the structured scope. A `paper_spec.scope` patch (period/region/actors/mechanisms) updates the machine-authoritative STRUCTURED `scope` — the V-NODE-03 authority — but does NOT rewrite the human-readable `in_scope` list; to keep the two in step, patch `project_contract.in_scope` separately in the same patch file.
+
 Rules (binding contract: docs/08 B1–B2; checks: V-SPEC, V-GATE-01 in docs/09):
 
 ```text

@@ -54,10 +54,14 @@ over-report). angles[a] folds ONLY from:
         tried_empty->tried_empty, tried_blocked->tried_blocked,
         no_attempt->no_attempt, and may RAISE an angle above what (i) shows. For
         a waved node this is the only path to `productive`.
-`counter` is special: it folds ONLY from an executed-or-blocked counter-kind qid
-  in a docs_result.v2 query_log — NEVER from mere request completion, cache
-  fulfillments, or v1 results. This keeps the counter angle honest (the run
-  over-reported it as covered just because a request completed).
+`counter` is special: it folds from (a) an executed-or-blocked counter-kind qid
+  in a docs_result.v2 query_log (the single-request path), (b) a TERMINAL
+  counter-angle wave member (fold source i), or (c) the CoverageCritic's
+  authoritative per-angle verdict (fold source iv) — NEVER from mere request
+  completion, cache fulfillments, or v1 results. This keeps the counter angle
+  honest (the run over-reported it as covered just because a request completed).
+  (A literal "ONLY a v2 query_log" reading would livelock waved nodes — the
+  bug S4 exists to prevent — so counter honours the wave/critic fold too.)
 rounds      := completed search rounds for this node (terminal waves + completed
                single requests), with the V-COV-05 narrow-reset applied by the
                fold itself (D13).

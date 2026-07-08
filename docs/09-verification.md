@@ -394,7 +394,7 @@ V-PROSE-03 no forbidden_language string of the section appears in its prose
            (contains, §0)
 V-PROSE-04 every DraftMap claim of the section is annotated ≥1 time
 V-AUD-01   audit findings carry kind + location + target_id (routable)
-V-AUD-02   audit writes only audit/; prose files untouched (hash check)
+V-AUD-02   audit appends only to audit/ and never writes prose files (guaranteed by construction — no hash comparison)
 ```
 
 ### V-Q (queue engine)

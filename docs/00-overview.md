@@ -460,3 +460,70 @@ SUPERSESSION LEFTOVERS CLEANED: every place that still described the r3 flat doc
   docs/00, docs/13, docs/10, docs/11, docs/14, README, AGENTS, CLAUDE.md — all
   five sets (S1–S5) are ADOPTED.
 ```
+
+## Spec Revision v2.1.1 (2026-07-08, enforcement-wiring + doc reconciliation)
+
+A 9-component audit found the v2.1 framework CORRECT: the confirmed defects were
+documented V-rules left UNENFORCED on the runtime path (now wired in — NO
+rule-semantics change) plus doc/code wording drift (reconciled here). Spec and
+code move together (code fixes: docs/11 §14).
+
+```text
+ENFORCEMENT WIRED IN (rules already in docs/09; the runtime now actually calls
+them — no wording, precedence, or verdict change):
+  * V-GATE-01 (no expansion/proof/dispatch while the latest contract's
+    accepted_by_user=false) is now enforced AT the expander AND swept by `verify`
+    — the gate existed only on paper before.
+  * V-EDGE-01 / V-EDGE-03 / V-NODE-04-rejected-parent now run inside the
+    committer's graph_record_checks (source+target exist, source≠target; no
+    duplicate (source,target,edge_type) among non-rejected edges; parents exist
+    and are not rejected) — record-time enforcement, not only at-rest verify.
+  * `verify` now schema-sweeps specs/*.json (paper_spec + project_contract were
+    the canonical records it skipped) AND resolves latest_proof_result_id as a
+    cross-reference (a dangling pointer is now corruption ⇒ exit 3).
+  * V-COV-02 (a fact/mechanism/bridge ContextPack embeds the coverage block;
+    other targets carry coverage=null) is now enforced AT bundle build, beside
+    V-TASK-02/03.
+
+DOC RECONCILIATIONS (docs corrected to match the audited-correct code):
+  * D-a (docs/17) counter fold: `counter` folds from (a) an executed/blocked
+    counter qid in a v2 query_log (single-request path), (b) a TERMINAL
+    counter-angle wave member, OR (c) the CoverageCritic's authoritative verdict
+    — NEVER from mere request completion, cache, or v1 results. The old "ONLY a
+    v2 query_log" wording, read literally, would livelock waved nodes (the exact
+    bug S4 exists to prevent).
+  * D-b (docs/03, docs/11) golden count 24→26: the scope=out_of_scope ∧
+    duplicate=true form for NODE (N11) and EDGE (E15) is ladder-valid (Stage A)
+    and reachable, resolving to rejected(out_of_scope) by scope-outranks-duplicate
+    precedence (table rule 1 before rule 2). The 2 goldens now pin that precedence
+    (Agent B adds the fixtures + cases).
+  * D-c (docs/16) local-doc independence: local (user_provided) docs are
+    domainless and `docs source set` is domain-keyed, so `--publisher` CANNOT
+    attach to a local pair. The safe direction (an uncurated empty-publisher pair
+    never triangulates) holds; to make local evidence count toward V-SRC-04(b),
+    re-ingest it with a real web origin. `--publisher` is a web-domain remedy only.
+  * D-d (docs/15) merger dedup: dedup is by content_hash ONLY; the canonical-URL
+    collapse is subsumed (it could only ever collapse identical-content docs,
+    already deduped) and canonical_url is a normalization helper, not a second
+    dedup key (per D7 a same-URL/different-content collision KEEPS both docs).
+  * D-e (docs/09 V-AUD-02, docs/06): audit appends only to audit/ and never
+    writes prose files — guaranteed BY CONSTRUCTION, not by a hash comparison
+    (there is none).
+  * D-f (docs/01) in_scope vs structured scope: `in_scope` is the raw topic's
+    Scope lines verbatim; a `paper_spec.scope` patch updates the
+    machine-authoritative STRUCTURED scope (the V-NODE-03 authority) but NOT the
+    human-readable `in_scope` list — patch `project_contract.in_scope` separately.
+  * D-g (docs/10 §4): confirmed `queue fail --reason` defaults to "manual fail"
+    (doc already correct; Agent B aligns the code) — no doc change.
+
+KNOWN LOW-SEVERITY FOLLOW-UPS (documented, NOT fixed now):
+  * the committer runs queue side-effects under commit/.lock while `queue claim`
+    uses queue/.lock — a truly-concurrent commit+claim is a detectable RMW race
+    (surfaces via verify replay), unreachable under the serial single-Orchestrator
+    model; harden later by taking queue/.lock around the committer's queue
+    side-effects.
+  * an item that crashes between `complete` and `validate_pass/fail` stays
+    `validating` with no auto-recovery (manual `queue fail` only).
+  * a malformed `Actors:`-empty topic yields an empty structured actor list that
+    scope_compatible treats as unsatisfiable — add a V-SPEC guard later.
+```

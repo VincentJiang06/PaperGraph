@@ -386,7 +386,7 @@ Implementation notes that keep Opus out of the weeds:
 ```text
 Build textutil + ids + clock FIRST — nearly every module imports them.
 The decision table is a pure function (form, task_type) → verdict; write it and
-  its 24 goldens before any queue/committer code.
+  its 26 goldens before any queue/committer code.
 The Committer is the hardest module: implement replay (V-COMMIT-04) as a test
   helper from day one, or determinism bugs surface late.
 Never hand-roll JSON writing; everything goes through the canonical serializer.

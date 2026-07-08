@@ -171,7 +171,7 @@ needs_docs
 rejected     (reason: contradicted | out_of_scope | duplicate)
 ```
 
-Because the table is total and deterministic over ladder-valid forms, the same form always yields the same verdict; golden tests enumerate every reachable row and a fuzz test proves totality (`docs/11` §6).
+Because the table is total and deterministic over ladder-valid forms, the same form always yields the same verdict; golden tests enumerate every reachable row (**26** — including the `scope=out_of_scope ∧ duplicate=true` form for NODE and for EDGE, which is ladder-valid via Stage A and resolves to rejected(out_of_scope) by scope-outranks-duplicate precedence, table rule 1 before rule 2) and a fuzz test proves totality (`docs/11` §6).
 
 ## The Verdict Record
 

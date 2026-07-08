@@ -113,10 +113,14 @@ independently" — the run's Stanford-paper-plus-its-own-press-release pattern
 different domains are independent by default). **Local (user_provided)** documents
 have an EMPTY publisher — there is no domain to stand in — and an empty-publisher
 PAIR is **NOT mutually independent** for V-SRC-04(b): two uncurated local uploads
-can no longer triangulate a spine claim on their own. A human makes them
-independent by curating real publishers via `docs source set --publisher`. This
-closes the "upload two files, call it triangulated" hole while keeping the
-publisher-equality mechanical check.
+can no longer triangulate a spine claim on their own. This safe direction is the
+one that matters and always holds. Note `docs source set --publisher` CANNOT fix
+a local pair: SourceProfiles are domain-keyed and local docs are domainless, so
+no publisher can attach to them — the `--publisher` remedy applies only to
+web-domain documents. To make local evidence count toward triangulation,
+re-ingest it with a real web origin (a domain). This closes the "upload two
+files, call it triangulated" hole while keeping the publisher-equality
+mechanical check.
 
 ## Rules (V-SRC)
 
