@@ -21,7 +21,13 @@ Every canonical artifact has exactly one producer. Nobody else may create or mut
 | Verdict record | `proof/proof_results.jsonl` | Validator (computes verdict from form) | Committer, WebUI, trace |
 | Document / EvidenceUnit | `docs/documents.jsonl`, `docs/evidence_units.jsonl` | Docs ingestor (code, from DocsWorker output) | DocsPack builder, Freeze, Compiler, Audit |
 | DocsRequest | `docs/docs_requests.jsonl` | Committer or Orchestrator (create); docs engine (status updates) | DocsWorker |
-| DocsResult | `agent_outputs/docs_results/*.json` | DocsWorker | Validator → Docs ingestor |
+| DocsResult | `agent_outputs/docs_results/*.json` | DocsWorker (wave member) | Validator → merger / Docs ingestor |
+| SearchPlan | `docs/plans/*.json` | Plan compiler (code, `docs plan` / wave start) | DocsWorker, `docs render-prompt` |
+| SearchWave | `docs/waves.jsonl` | Docs engine (code) | Merger, critic, Orchestrator, WebUI |
+| Merged docs result | `docs/merged/*.json` | Merger (code, deterministic) | Docs ingestor, CoverageCritic |
+| CoverageReport | `agent_outputs/coverage_reports/*.json` | CoverageCritic worker | Validator → docs engine (`docs wave-resolve`) |
+| SourceProfile | `docs/sources.jsonl` | Docs ingestor + `docs source set` | DocsWorker prompt (registry excerpt), Freeze (V-SRC-04) |
+| Semantic index | `db/semantic/*` | `db semantic rebuild` (code, derived) | DocsPack builder (hybrid score) |
 | WorkItem / QueueEvent | `queue/work_items.jsonl`, `queue/events.jsonl` | Queue engine (code) | Orchestrator, WebUI |
 | CommitDecision | `commit/commit_decisions.jsonl` | Committer | Audit, WebUI |
 | FreezeItem | `freeze/frozen_items.jsonl` | Freeze gate (code) | Compiler, Audit |
@@ -149,7 +155,7 @@ ContextPack schema:
 }
 ```
 
-`target` is the full latest node/edge record at the bundle snapshot, verbatim (the worker judges the claim text and reads nothing outside the bundle). `claim_digest` covers every non-rejected node in the project (duplicate detection needs global sight; v1 graphs are small). `prior_results` = verdict records for the same target (all revisions). DocsPack schema:
+`target` is the full latest node/edge record at the bundle snapshot, verbatim (the worker judges the claim text and reads nothing outside the bundle). `claim_digest` covers every non-rejected node in the project (duplicate detection needs global sight; v1 graphs are small). `prior_results` = verdict records for the same target (all revisions). Since S4 (docs/17) the ContextPack for a fact/mechanism/bridge target embeds a `coverage` block (the target's current ledger line) so the worker knows when search is saturated [V-COV-02]; other targets carry `coverage = null`. DocsPack schema (since S5, docs/18, the builder emits `docs_pack.v2` — a `retrieval` block naming the matcher (hybrid.v1 | keyword.v1) and, when hybrid, per-EU scores; `docs_pack.v1` stays readable):
 
 ```json
 {
@@ -194,7 +200,7 @@ The Committer applies this table deterministically over the 4-verdict space. Sam
 | pass (conditional) | active | conditional | as above + assumptions stored on target |
 | needs_repair (bridge) | needs_repair (reason=bridge) | unassessed | bridge candidates created AND wired (see "Bridge wiring" below); re-proof item for the edge, blocked_by every bridge item |
 | needs_repair (narrow) | needs_repair (reason=narrow) | unassessed | claim text replaced per proposal (`claim` on nodes, `edge_claim` on edges), claim_version+1; re-proof item enqueued (unblocked) |
-| needs_docs | needs_docs | unassessed | DocsRequests appended (or cache-hit resolved, docs/04), docs_queue items enqueued; re-proof item blocked_by them; round-trip cap enforced (docs/04) |
+| needs_docs | needs_docs | unassessed | DocsRequests appended (or cache-hit resolved, docs/04), docs_queue items / wave enqueued; re-proof item blocked_by them; SATURATION consulted [V-COV-03], never a count: not saturated ⇒ always open more search; saturated+floor-unmet ⇒ re-proof born dead reason=saturated; saturated+floor-MET ⇒ `human_review` action + born-dead trace `{reason:"saturated", floor_met:true}` (D1) |
 | rejected (contradicted) | rejected (reason=contradicted) | unassessed | tombstone; CASCADE: every non-rejected incident edge → rejected(endpoint_rejected) + tombstone; its items in {queued, blocked, stale, failed} are cancelled now, and in-flight items (claimed/running/validating) finish their path and are cancelled at commit time by V-COMMIT-06 |
 | rejected (out_of_scope) | rejected (reason=out_of_scope) | unassessed | tombstone with contract reference; same cascade |
 | rejected (duplicate) | rejected (reason=duplicate) | unassessed | tombstone pointing at duplicate_of; same cascade |
@@ -227,7 +233,7 @@ re-proof item for A→B blocked_by ALL of the above (both bridges' node AND
 
 This wiring is what makes the loop close mechanically: once X and X→B are active, X is a 1-hop neighbor of B — so the re-proof ContextPack contains it — and an active ancestor of the thesis through B — so it joins the spine (docs/02). Without the edge, a proven bridge would be invisible to both.
 
-**Bridge-round cap:** like the docs cap (docs/04), bridge repairs per edge are capped at 2 rounds — a third `gap` verdict on the same edge appends no new bridges and the re-proof item is born dead ((created)→dead, op=dead_letter) for human review. This is the termination bound on the gap→bridge→re-proof cycle.
+**Bridge-round cap:** bridge repairs per edge are capped at 2 rounds — a third `gap` verdict on the same edge appends no new bridges and the re-proof item is born dead ((created)→dead, op=dead_letter) for human review. This is the termination bound on the gap→bridge→re-proof cycle. (The docs side no longer has a count cap — evidence stopping is S4 saturation, docs/17/04.)
 
 **Bridge rejection (r3):** when a bridge node is rejected (e.g. contradicted by
 evidence, as happened live), its wired edge cascades to rejected and its items
@@ -273,7 +279,7 @@ contract_reopen  batch re-open after a contract version bump. v1 ships NO CLI
 }
 ```
 
-`kind` enum: `proof_verdict | expansion | park | unpark | freeze_batch | unfreeze_batch | contract_reopen`. `action` enum: `append_node | update_node | append_edge | update_edge | tombstone | enqueue | cancel_item | mark_stale | docs_request | set_frozen`. Each **graph-mutating** action (`append_node | update_node | append_edge | update_edge | tombstone | set_frozen`) carries `record` = the exact graph record it appended to `graph/*.jsonl`; non-graph actions set `record` to null. `detail` stays a human-readable summary. Replaying `actions` against the pre-snapshot must reproduce the post-snapshot exactly [V-COMMIT-04]: the replay reconstructs post-graph-state from **pre-state + the actions' `record` payloads only** (it never reads the appended lines), so a CommitDecision whose actions do not faithfully manifest the commit fails the check — the audit trail is genuinely replayable, not tautologically.
+`kind` enum: `proof_verdict | expansion | park | unpark | freeze_batch | unfreeze_batch | contract_reopen`. `action` enum: `append_node | update_node | append_edge | update_edge | tombstone | enqueue | cancel_item | mark_stale | docs_request | set_frozen | human_review`. `human_review` (v2.1 D1) is a non-graph action recording a saturated+floor-MET conflict that the born-dead re-proof surfaces for a human; its `detail` carries the target and `{reason:"saturated", floor_met:true}`, `record` null. Each **graph-mutating** action (`append_node | update_node | append_edge | update_edge | tombstone | set_frozen`) carries `record` = the exact graph record it appended to `graph/*.jsonl`; non-graph actions set `record` to null. `detail` stays a human-readable summary. Replaying `actions` against the pre-snapshot must reproduce the post-snapshot exactly [V-COMMIT-04]: the replay reconstructs post-graph-state from **pre-state + the actions' `record` payloads only** (it never reads the appended lines), so a CommitDecision whose actions do not faithfully manifest the commit fails the check — the audit trail is genuinely replayable, not tautologically.
 
 ```json
 {
@@ -322,6 +328,10 @@ DocsWorker claims it, writes ONE DocsResult file (coverage expectations:
 ```
 
 ```text
+Since S1 (docs/14) the binding form is docs_result.v2: a structured query_log
+(per-qid accounting against the compiled SearchPlan, V-SP) replaces the free-text
+search_log shown above. docs_result.v1 stays registered/readable; the fields here
+are the doc/EU core both versions carry.
 No id fields anywhere in a DocsResult (the ingestor assigns DOC-/EU-/DRES- ids).
 Each evidence unit carries exactly one of doc_ref (index into this result's
 documents) or doc_id (existing archived id) [V-DR-01].
@@ -332,10 +342,35 @@ appends documents + evidence_units, appends the DocsRequest status update
 item, AND marks evidence-arrival staleness on affected pending proof items
 (r3, V-TASK-04).
 not_found is a legitimate terminal state: the re-proof runs with the unchanged
-DocsPack and the worker answers the form honestly (docs/04). Docs cap (r3
-semantics, docs/04): the 3rd needs_docs VERDICT on a target with no new
-evidence since the 2nd ⇒ dead letter; PR-initiated requests only — sweep and
-Orchestrator-supplemental requests never count.
+DocsPack and the worker answers the form honestly (docs/04). Stopping is S4
+SATURATION, not a count (docs/17, V-COV-03 — SUPERSEDES the r3 docs cap): a
+needs_docs verdict always opens more search while the target is not saturated;
+a saturated target opens none and the re-proof is born dead reason=saturated only
+when the role floor is also unmet; a saturated+floor-MET conflict routes to human
+review (the `human_review` action + born-dead trace, D1).
+```
+
+### B7b: Wave engine → CoverageCritic (S2, docs/15)
+
+The coverage critic is a bounded worker with the same maker/checker separation as
+ProofWorker/DocsWorker — it judges nothing, fills a closed form, and code computes
+the verdict.
+
+```text
+Input:         a critic_queue item (target_type="wave"); the prompt (emitted by
+               `docs render-prompt`, D11) embeds the claim under search, the wave's
+               SearchPlans, the merged docs_result, and the per-member query_logs.
+Precondition:  every wave member is terminal and the merge has produced the merged
+               result (the engine opens the critic item automatically, D2).
+Output:        one coverage_report.v1 at agent_outputs/coverage_reports/*.json —
+               a closed form (angle_covered / primary_source_present /
+               disconfirming_captured) + ≤3 expected_sources + notes; NO documents
+               and NO evidence_units (read-only).
+Postcondition: `docs wave-resolve` validates V-WAVE-03 and CODE computes the wave
+               verdict (sufficient | followup | closed, R_MAX=2); a followup with a
+               non-empty spec list opens round-2 members, an empty list closes now.
+On failure:    V-WAVE-03 fail ⇒ item failed, retry ≤2 then dead-letter (same policy
+               as B5/B7).
 ```
 
 ### B8: Graph → Freeze gate
@@ -344,8 +379,10 @@ Orchestrator-supplemental requests never count.
 Input:         freeze command (target + level: local/subtree/spine)
 Precondition:  V-FRZ-01 every record in the closure (defined per level, docs/06)
                         is active
-               V-FRZ-02 every fact/mechanism node in the closure has ≥2 evidence
-                        bindings from ≥2 distinct documents (r3)
+               V-FRZ-02 every fact/mechanism node in the closure clears its S4
+                        role-profile floor (docs/17, via V-COV-04: spine needs ≥2
+                        EU, ≥2 docs, triangulated V-SRC-04, counter angle ∉
+                        {no_attempt}; bridge +≥3 docs — SUPERSEDES the r3 flat rule)
                V-FRZ-03 no work item with status ∉ {committed, cancelled} touches
                         the closure (adjacency rule docs/02; dead letters block)
                V-FRZ-04 spine_freeze: MSA checklist passes + `verify` exits 0

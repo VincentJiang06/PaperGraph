@@ -148,10 +148,11 @@ forbidden_claims feed directly into Proof's scope_check and the final Audit.
 The Orchestrator must get explicit user confirmation before graph expansion
   starts — no expansion, proof task, or worker dispatch may run while the latest
   contract has accepted_by_user=false  [V-GATE-01].
-Immediately after acceptance the EVIDENCE SEEDING sweep runs (r3, docs/04):
-  ingest every locally available Known Source, then parallel DocsWorkers over
-  (seed claim × angle) until the V-SWEEP-01 floor — proofs never start against
-  an empty evidence base.
+After acceptance the LAYER-0 EXPANSION commits first, THEN the EVIDENCE
+  SEEDING sweep runs (r3/v2.1 D4-D5, docs/04): ingest every locally available
+  Known Source, then per fact/mechanism layer-0 node one fanned request + wave
+  (`docs request --target N ... --fan` → `docs wave --request DR-x --fan`)
+  until the V-SWEEP-01 floor — proofs never start against an empty evidence base.
 ```
 
 ## Why This Stage Exists

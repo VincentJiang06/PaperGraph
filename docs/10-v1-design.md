@@ -14,11 +14,15 @@ topic input file → scoping → contract acceptance
 BFS expansion (single lane BFS-MAIN + one BFS-ALT lane)
 NODE_CHECK / EDGE_CHECK proof tasks (BINDING_CHECK deferred to v1.1)
 docs ingest of user-provided files + web search by DocsWorkers
-memoized evidence search (keyword/scope match; no embeddings)
+memoized evidence search (keyword/scope match; hybrid embedding is S5, below)
 commit / freeze / compiler dry-run / draft map / prose / mechanical audit
 queue with leases, retries, dead letters
 CLI (JSON output) + read-mostly WebUI
 paperproof verify + paperproof trace
+the SEARCH PROGRAM S1–S5, all ADOPTED (docs/13–18 via the docs/00 changelog):
+  S1 planning (v1.1), S2 waves+critic (v1.1), S3-lite registry (v1.1) + S3
+  triangulation (v1.2), S4 coverage+saturation (v1.2), S5 semantic retrieval
+  (v2, an optional upgrade — degrades to keyword loudly when the model is absent)
 ```
 
 Out (deferred, with the doc that specs them for later):
@@ -32,10 +36,6 @@ contract re-versioning automation      docs/08   → v1.1 (v1: no CLI trigger;
 multi-case merge lanes + comparison node type / contrasts_with edges   docs/02 → v2
 other paper patterns                   docs/01   → v2
 grill-me topic interviewer             docs/01   → v2
-embedding/semantic evidence search     docs/18 (S5) → v2
-search program S1–S4 (planning, waves+critic, source tiers, saturation)
-                                       docs/13–17 → staged v1.1/v1.2 (adoption
-                                       via a docs/00 entry; design-frozen now)
 multi-project concurrency, remote workers, Neo4j/GraphRAG, agent debate: not planned
 ```
 
@@ -145,23 +145,28 @@ Global options: `--root <dir>` (default `./data`), `--project <id>` / `PAPERPROO
 | `graph park <id>` | `--reason absorbed\|not_needed [--into <id>]` | administrative commit; data: commit_id |
 | `graph unpark <id>` | — | administrative commit; data: commit_id |
 | `expand ingest <file>` | — | validate V-EXP + commit; data: {commit_id, assigned_ids, work_item_ids} |
-| `proof build-tasks` | `--frontier` | build/rebuild bundles for every claimable or stale proof item, minting the next -rN revision per target; `--frontier` is the required (and only) mode in v1; data: bundles built |
+| `proof build-tasks` | `[--frontier]` | build/rebuild bundles for every claimable or stale proof item, minting the next -rN revision per target; `--frontier` is the only mode in v1 and the default (may be omitted); data: bundles built |
 | `proof build-task <target-id>` | — | one bundle; data: bundle paths |
+| `proof render-prompt` | `--work-item <WI>` | emit the fully-filled canonical ProofWorker prompt for a proof item (D11): the bundle paths, allowed_write_paths, output path filled in; data: prompt text |
 | `docs ingest <file>` | `[--source-type --title --citation-key]` | archive user file (dedup by hash); data: doc_id, text_path |
 | `docs search` | `--query <text> [--scope <json>] [--semantic]` | run the matcher; `--semantic` (S5, docs/18) ranks by the hybrid keyword+embedding score when the pinned model is present, else degrades to keyword with a warning; data: {matcher, results, count} |
 | `docs build-pack` | `--task <task-id>` | assemble DocsPack; data: pack path, EU count |
-| `docs request` | `--target <id> --need <text> [--hint <h>]...` | Orchestrator-initiated DocsRequest (code appends; cache-checked like any request; NEVER counts toward the target's docs cap — r3, docs/04); data: request_id, status |
-| `docs ingest-result <file>` | `--work-item <WI>` | validate V-DR + ingest + unblock (accepts claimed/running, completing implicitly — r3, docs/05); data: assigned ids, request status |
+| `docs request` | `--target <id> --need <text> [--hint <h>]... [--fan]` | Orchestrator-initiated DocsRequest (code appends; cache-checked like any request). `--fan` records `fan=true` so a following `docs wave` fans every angle; the r3 sweep sets it (D5). No docs count cap exists — stopping is S4 saturation (docs/17); data: request_id, status |
+| `docs ingest-result <file>` | `--work-item <WI>` | validate V-DR + ingest + unblock (accepts claimed/running, completing implicitly — r3, docs/05); REFUSES a wave-member item with an error naming `docs wave-member` (D2); data: assigned ids, request status |
 | `docs source list` | — | the live source registry — latest SourceProfile per domain (S3 Stage A-lite, docs/16); data: {sources, count} |
 | `docs source set` | `--domain <d> [--tier <T> --publisher <p> --workaround <kind> --note <text> --blocked/--no-blocked]` | append a curated SourceProfile version (set = append); a tier change needs `--note` or V-SRC-03 rejects it; data: {source_id, domain, tier} |
 | `docs plan` | `--request <DR>` | compile/reprint the immutable SearchPlan for a request (S1, docs/14); byte-identical on re-emit; data: plan, plan_path |
 | `docs wave` | `--request <DR> [--fan]` | start a wave (S2, docs/15): one member per angle (each a docs_queue item + angle plan + distinct output), append search_wave.v1; `--fan` (or the DR's fan flag) fans all angles, else a single member; supersedes any pending single docs item; data: wave_id, members |
+| `docs wave-member <file>` | `--work-item <WI>` | ingest ONE wave member (D2): validate vs the member's angle plan (V-SP/V-DR), accept claimed/running (complete implicitly), `wave.complete_member`; when EVERY member is terminal the engine AUTO-runs merge + opens the critic item; data: member status, wave status |
+| `docs wave-resolve <file>` | `--work-item <WI>` | ingest the CoverageReport for a wave's critic item (D2): validate V-WAVE-03, complete implicitly, `resolve_critic`; CODE computes the wave verdict (sufficient\|followup\|closed); a followup with an empty spec list closes the wave now; data: verdict, next round / DRES |
+| `docs coverage` | `[--node <id>]` | the DERIVED S4 coverage ledger (docs/17): per fact/mechanism/bridge node eu_counts, distinct docs/publishers, tiers, angles, rounds, new_docs_last_round, saturated, floor; data: ledger line(s) |
+| `docs render-prompt` | `--work-item <WI>` | emit the fully-filled canonical dispatch prompt for a docs / wave-member / critic item (D11): plan embedded, `{registry}` = the V-SRC-05 excerpt (checked at render), S5 advisory similar-request leads included — prompt-only; data: prompt text |
 | `queue list` | `[--queue --status]` | data: items (commit_queue = derived view of validated) |
 | `queue claim` | `--queue <q> --agent <name> [--id <WI>]` | lease + claim-time manifest; without --id, picks the claimable item with the lowest work_item_id (FIFO); data: work item incl. bundle + output paths |
 | `queue heartbeat <WI>` | `--agent` | extend lease |
 | `queue release <WI>` | — | back to queued, attempt unchanged |
 | `queue complete <WI>` | — | claimed/running → validating (output file must exist); OPTIONAL since r3 — `validate` completes implicitly |
-| `queue fail <WI>` | `--reason` | manual fail (op=fail, from claimed/running/validating — for hung or hopeless workers); auto retry/dead per attempt |
+| `queue fail <WI>` | `[--reason <text>]` | manual fail (op=fail, from claimed/running/validating — for hung or hopeless workers); `--reason` optional, defaults to `"manual fail"` in the event detail; auto retry/dead per attempt |
 | `queue expire` | — | sweep expired leases; data: requeued/dead ids |
 | `queue requeue <WI>` | — | dead → queued (human decision) |
 | `queue events` | `[--after <QE>]` | data: events |
@@ -173,7 +178,7 @@ Global options: `--root <dir>` (default `./data`), `--project <id>` / `PAPERPROO
 | `freeze unfreeze` | `--target <id>` | human-only; revoke + re-open; data: {freeze_id, commit_id} |
 | `compiler dry-run` | — | data: full CompilerDryRun (+ gap items enqueued/cancelled) |
 | `compiler draft-map` | — | requires writing_ready; enqueues one compile_queue prose item per section (task_id PROSE-<section_id>, output agent_outputs/prose/<section_id>.md); data: DraftMap |
-| `compiler ingest-prose <file>` | `--work-item <WI>` | V-PROSE as the item's validate-pass + copy to compiler/prose/ + commit (two queue events, one command); data: section_id / failed_rules |
+| `compiler ingest-prose <file>` | `--work-item <WI>` | V-PROSE as the item's validate-pass + copy to compiler/prose/ + commit; accepts claimed/running, performing the complete transition implicitly like `validate result` / `docs ingest-result` (v2.1 D14); accepts an ABSOLUTE `<file>` path (normalized to project-relative); data: section_id / failed_rules |
 | `audit run` | `--draft <DRAFTMAP-id>` | mechanical audit; data: AuditReport; exit 1 if findings |
 | `db rebuild / db check` | — | data: manifest / {stale_index: bool} |
 | `db semantic rebuild / db semantic check` | — | S5 (docs/18): (re)build the pinned embedding index (fetch+hash-verify the model, embed every EU ⇒ db/semantic/eu_vectors.parquet + model.json) / report present + hash-match + index coverage. Semantic is an optional upgrade — absent deps/model ⇒ retrieval degrades to keyword.v1 loudly |
@@ -183,7 +188,7 @@ Global options: `--root <dir>` (default `./data`), `--project <id>` / `PAPERPROO
 
 ## 5. Worker Prompt Templates
 
-Templates live at `src/paperproof/prompts/` and are the **only** prompts used to dispatch workers, so behavior is reproducible. `{placeholders}` are filled from the work item/bundle; `{target_summary}` = task_type + target id + the claim/edge_claim text truncated to 200 characters. The texts below are canonical — the template files carry them verbatim.
+Templates live at `src/paperproof/prompts/` and are the **only** prompts used to dispatch workers, so behavior is reproducible. `{placeholders}` are filled from the work item/bundle; `{target_summary}` = task_type + target id + the claim/edge_claim text truncated to 200 characters. The texts below are canonical — the template files carry them verbatim. **The canonical renderer is `proof render-prompt` / `docs render-prompt --work-item <WI>` (v2.1 D11):** it emits the fully-filled template (the SearchPlan embedded for docs items; `{registry}` = the V-SRC-05 excerpt via the registry renderer, checked by `check_registry_excerpt` at render time — render time is WHERE V-SRC-05 is enforced; the S5 advisory top-3 similar-request leads are appended here, prompt-only per V-SEM-04).
 
 ### ProofWorker (`proof_worker.txt`)
 
@@ -250,6 +255,12 @@ Need: {need}    Hints: {search_hints}
 Search docs/raw/ (user-provided sources — reading it is part of your task
 inputs) first, then the web if available.
 
+THE PLAN ({plan_id}, immutable): execute EVERY query in the attached SearchPlan.
+Account for each qid in query_log exactly once: {qid, executed, outcome ∈
+productive|empty|blocked|offtopic, urls_seen, docs_taken, note}. A query you could
+not run is executed=false, outcome=blocked, with a reason in note (never silently
+skip one). The plan's counter query is MANDATORY — run it or record it blocked.
+Extra queries you run beyond the plan are welcome; log them with qid "X1", "X2"…
 REGISTRY (read-only intel — what the project already learned about these
 sources; you assign no tiers and write nothing here):
 {registry}
@@ -269,8 +280,9 @@ cannot_cite_for (≥1), scope {period?, region?}}.
 
 Quotes must be verbatim from the source. Never invent sources or quotes. Never
 judge graph claims — no verdict/strength/lifecycle language. You assign NO ids.
-If nothing usable exists: not_found=true, empty lists, and record search_log
-(the queries you actually ran) — an honest not_found beats a stretched source.
+If nothing usable exists: not_found=true, empty lists, and a query_log whose
+every entry is executed or blocked with none productive — an honest not_found
+beats a stretched source.
 
 Coverage (r3): target 2-5 documents and 4-10 evidence units — one thin source
 for a claim with a live literature is under-searched. DISCONFIRMING DUTY: if
@@ -280,8 +292,33 @@ official-statistics sites often block automated fetches (403) — fall back to
 mirrors, archived copies, or secondary sources quoting the primary figures,
 and extract PDF text locally (e.g. pdftotext) rather than abandoning the angle.
 
-Write docs_result.v1 JSON to {output_file}. Allowed writes: {output_file},
-agent_notes/**. Then stop. Your chat text is discarded.
+Write docs_result.v2 JSON (documents, evidence_units, not_found, query_log) to
+{output_file}. Allowed writes: {output_file}, agent_notes/**. Then stop. Your
+chat text is discarded.
+```
+
+### CoverageCritic (`critic_worker.txt`, v2.1 D3)
+
+```text
+You are a PaperGraph CoverageCritic. You audit ONE search wave and write exactly ONE
+coverage_report.v1 JSON file to {output_file}. You are adversarial, fresh, and READ-ONLY:
+you never search, never fetch, and never add evidence — your output must contain NO
+documents and NO evidence_units keys.
+Read ONLY these inputs: the claim under search, the wave's SearchPlans, the merged
+docs_result, and the per-member query_logs:
+{inputs}
+Fill the closed form exactly:
+  angle_covered: one entry per angle, each ∈ yes|tried_empty|tried_blocked|no_attempt
+  primary_source_present ∈ yes|no|n/a
+  disconfirming_captured ∈ yes|no|n/a
+expected_sources (at most 3): concrete sources a domain expert would expect for this
+claim that no executed query touched — each {name, why, suggested_query}.
+notes: ≤ 100 words. No prose anywhere else.
+CODE computes the wave verdict from your form — you never state a verdict.
+SELF-CHECK before writing: every angle key present; every enum value exact; ≤3
+expected_sources; no documents/evidence_units keys anywhere; notes ≤ 100 words;
+valid JSON, single object.
+Write the file and stop. Chat text is discarded.
 ```
 
 ### CompileWorker (`compile_worker.txt`)

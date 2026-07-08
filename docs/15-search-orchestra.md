@@ -11,8 +11,10 @@ the multi-modal sweep + completeness critic pattern applied to evidence.
 
 ## Wave expansion
 
-A DocsRequest carries `fan` (r3 sweep requests default `fan=true`; reactive
-needs_docs requests default single unless the Orchestrator sets it):
+A DocsRequest carries `fan` (default false). The r3/v2.1 sweep sets it
+explicitly via `docs request --fan` (D5); a reactive needs_docs request stays
+single unless the Orchestrator passes `--fan` (on the request) or `docs wave
+--fan`:
 
 ```text
 wave(DR-x) := one sub-search per angle in {official_stats, academic, industry,
@@ -34,10 +36,21 @@ output (round>1)  agent_outputs/docs_results/DR-x.<angle>.r<round>.<origin-slug>
 ```
 
 `<origin-slug>` is the member's `origin` (`angle:<name>` / `expected_source:<name>`)
-lowercased to `[a-z0-9-]`. Origins are pairwise-distinct within a round, so the
-paths are too — every member across the whole wave lifecycle owns a distinct
-output file [V-WAVE-01]. The merger reads each member's own committed file, so
-round-1 and round-2 evidence both survive into the single ingested merged set.
+lowercased to `[a-z0-9-]`. Origins are pairwise-distinct within a round (v2.1 D8:
+duplicate `expected_source` NAMES from the critic are de-duplicated and
+index-suffixed — `expected_source:bls-cps`, `expected_source:bls-cps-2` — so
+origins, and thus paths and plans, stay unique), so the paths are too — every
+member across the whole wave lifecycle owns a distinct output file [V-WAVE-01].
+The merger reads each member's own committed file, so round-1 and round-2 evidence
+both survive into the single ingested merged set.
+
+**Follow-up plans get their own id/file (v2.1 D8).** A round>1 member's SearchPlan
+is round+origin-discriminated exactly like its output path —
+`SP-DR-x-<angle>-r<round>-<origin-slug>` at `docs/plans/…` — and is COMPILED WITH
+the critic's `suggested_query` as an extra hint. So round 2 never re-executes a
+byte-identical round-1 plan (which would just re-fetch the same empty result and
+livelock); the discriminated plan id also lets `docs wave-member` resolve the
+member from its `task_id`.
 
 ## Wave record (`docs/waves.jsonl`, producer: docs engine)
 
@@ -66,10 +79,17 @@ follow-up is identifiable by round > 1).
 ## Merger (code, deterministic — runs when every member is terminal)
 
 ```text
-1. Concatenate members' documents; dedup by content_hash, then by canonical
-   URL: lowercase scheme+host, strip default port, strip fragment, strip the
-   frozen tracking-param list {utm_*, gclid, fbclid, ref}, collapse duplicate
-   slashes, strip one trailing slash.
+1. Concatenate members' documents; dedup by content_hash FIRST (identical bytes ⇒
+   one document). THEN collapse by canonical_url — but ONLY when the collapsing
+   documents share a content_hash. A canonical-URL collision whose documents have
+   DIFFERING content_hash keeps BOTH documents (v2.1 D7): re-pointing an EU from
+   one text onto another differing text breaks the V-DR-05 quote-substring check,
+   so two different captures of the "same" URL stay distinct.
+   canonical_url is a TOTAL function (never raises): default a scheme when absent,
+   lowercase scheme+host, strip `www.`, strip the default port (unparseable port ⇒
+   raw netloc fallback), strip fragment, strip the frozen tracking-param list
+   {utm_*, gclid, fbclid, ref}, collapse duplicate slashes, strip one trailing
+   slash — consistent with the registry's domain normalization (docs/16).
 2. Concatenate EUs; re-point doc_refs to the deduped table; drop exact-dup EUs
    (same doc, same normalized quote); order docs by content_hash asc, EUs by
    (doc order, location, quote hash).
@@ -123,7 +143,9 @@ sufficient   iff every mandatory angle ∈ {yes, tried_empty, tried_blocked}
              AND (primary_source_present = yes OR round = R_MAX)
 followup     otherwise, while round < R_MAX (=2): the engine opens one
              follow-up member per no_attempt angle + one per expected_source
-             (its suggested_query becomes a hint), round += 1.
+             (its suggested_query becomes a hint), round += 1. If that follow-up
+             spec list is EMPTY (no no_attempt angle and no expected_source), the
+             wave CLOSES immediately — no idle round is opened (v2.1 D2).
 closed       at R_MAX regardless — the ledger (S4) records what stayed uncovered;
              unbounded search is not a virtue, unmeasured search is the sin.
 ```
@@ -159,18 +181,27 @@ Tests    T-S2-1 merger goldens (dup content_hash, tracking params, dup EUs)
 ## Operationalization (S2 build — pinned here per CLAUDE.md doc-sync)
 
 ```text
-* `docs wave --request <DR> [--fan]` STARTS the wave (members + wave record);
-  the merge → critic → verdict rounds are driven by code (deterministic merger +
-  verdict; the bounded critic is the only LLM). A wave supersedes any pending
-  single docs item for the DR (cancelled) so the wave owns the search.
+* `docs wave --request <DR> [--fan]` STARTS the wave (members + wave record) and
+  supersedes any pending single docs item for the DR (cancelled) so the wave owns
+  the search. The wave is then DRIVEN as a closed CLI surface (v2.1 D2): each
+  member is ingested by `docs wave-member <output> --work-item <WI>` (validate vs
+  the angle plan, implicit-complete, `wave.complete_member`); when EVERY member is
+  terminal the engine AUTO-runs the deterministic merger + opens the critic item;
+  the critic report is ingested by `docs wave-resolve <report> --work-item <WI>`,
+  which computes the verdict (the bounded critic is the only LLM). A `followup`
+  with an empty spec list closes the wave immediately.
 * WaveMember carries `round` + `origin` (see the wave record above). A round>1
-  member's output path carries a `.r<round>.<origin-slug>` discriminator (see
-  §Wave expansion) so a follow-up never overwrites a round-1 member's committed
-  result; `paperproof verify` sweeps V-WAVE-01 (pairwise-distinct member output
-  paths) + V-WAVE-02 (closed-wave merge determinism/traceability) at rest, so a
-  path collision at rest is caught (exit 3), not merely test-only.
+  member's output path AND its SearchPlan id both carry a `.r<round>.<origin-slug>`
+  discriminator (§Wave expansion, D8), so a follow-up never overwrites a round-1
+  member's committed result and never re-executes a byte-identical plan;
+  `paperproof verify` sweeps V-WAVE-01 (pairwise-distinct member output paths),
+  V-WAVE-02 (closed-wave merge determinism/traceability), AND V-WAVE-04/05 (round
+  cap + follow-up origin; one DRES per wave — v2.1 D15) at rest, so a violation at
+  rest is caught (exit 3), not merely test-only.
 * The critic rides `critic_queue` (target_type=`wave`); its coverage_report.v1
-  lands in agent_outputs/coverage_reports/ and is V-WAVE-03-validated.
-* `fan=false` (reactive/`docs request`) runs as a single official_stats member —
-  the pre-S2 single-search behaviour, unchanged.
+  lands in agent_outputs/coverage_reports/, is emitted by `docs render-prompt`
+  (D11), and is V-WAVE-03-validated by `docs wave-resolve`.
+* `fan=false` (reactive/`docs request` with no `--fan`) runs as a single
+  official_stats member served by `docs ingest-result` — the pre-S2 single-search
+  behaviour, unchanged.
 ```

@@ -74,7 +74,8 @@ tests/
     test_s1_seed_loop.py … test_s8_rebuild.py     (one file per scenario)
     test_determinism.py     same scenario twice ⇒ byte-identical canonical state
   fakes/
-    workers.py              FakeProofWorker / FakeDocsWorker / FakeCompileWorker
+    workers.py              FakeProofWorker / FakeDocsWorker / FakeCriticWorker /
+                            FakeCompileWorker
     scripts/                per-scenario worker scripts (JSON)
   fixtures/
     schemas/                one golden example per schema_version
@@ -260,10 +261,13 @@ S2  after ingest, the DocsRequest fingerprint of an identical need resolves
     DRES-fulfilled request is a cache source (a "cache"-fulfilled one never
     chains); the EU is served in the rebuilt DocsPack (-r2) UNCONDITIONALLY
     (REQUESTED composition, V-TASK-05) and the pending re-proof was marked
-    stale by evidence arrival (V-TASK-04), no manual build-task; the docs cap
-    (r3) fires on the 3rd needs_docs VERDICT with no new evidence since the
-    2nd ⇒ re-proof born dead — and an Orchestrator `docs request` between
-    verdicts does NOT advance the counter.
+    stale by evidence arrival (V-TASK-04), no manual build-task; STOPPING is
+    SATURATION (S4, supersedes the r3 cap): a needs_docs verdict on a
+    NOT-saturated target always opens more search; a saturated+floor-unmet
+    target's re-proof is born dead detail {reason:"saturated",
+    floor_met:false}; saturated+floor-MET additionally records the
+    `human_review` action (D1) — and no count of verdicts or requests is ever
+    consulted.
 S3  cascade: tombstones carry reason=endpoint_rejected; cancelled items emit
     op=cancel events; verify clean. (Runs at M2 — the contradicted verdict
     requires evidence_used from a non-empty DocsPack.) M3 coda: the fixture's
@@ -374,7 +378,8 @@ T-S1-back  the pre-S1 docs suite (V-DR, S2 docs loop, S3 cascade, ingest, cache)
 ```
 
 S3-lite (Source Registry, docs/16) — worklist (rule coverage via SCENARIO_COVERED
-for V-SRC-01/02/03/05; Stage B triangulation V-SRC-04 is NOT adopted — no T-S3-3):
+for V-SRC-01/02/03/05; Stage B triangulation V-SRC-04 is adopted separately — its
+fixture is T-S3-3, listed under §12b):
 
 ```text
 T-S3-1  ingest LEARNS blocked_direct from a blocked log entry (403/blocked/
@@ -396,30 +401,9 @@ T-S3-back  the full prior suite stays green: the ingestor writing document.v2 +
         stays exit 0 on a project with v2 docs + a learned registry).
 ```
 
-S2 (Search Orchestra, docs/15) — worklist (rule coverage via SCENARIO_COVERED for
-V-WAVE-01..05):
-
-```text
-T-S2-1  merger goldens: a member set with a duplicate content_hash, a
-        tracking-param URL variant, and a duplicate EU dedups to a BYTE-IDENTICAL
-        merged docs_result.v2 (canonical-URL normalization per docs/15); every
-        merged doc/EU traces to exactly one member [V-WAVE-02].
-T-S2-2  wave-verdict computation table: CODE computes sufficient|followup|closed
-        from the critic's closed form over every angle_covered combination;
-        R_MAX=2; a followup round opens one member per no_attempt angle + one per
-        expected_source; member outputs are pairwise-distinct paths [V-WAVE-01].
-T-S2-3  hostile critic that smuggles documents/evidence_units into its report is
-        rejected [V-WAVE-03]; expected_sources ≤3 per round; the critic writes no
-        evidence (read-only).
-T-S2-4  R_MAX close with an uncovered angle recorded, no infinite loop [V-WAVE-04];
-        only the merged result is ingested — exactly one DRES per wave [V-WAVE-05];
-        `docs wave --request [--fan]` fans the members.
-T-S2-back  no regression (457 + S2 green): waves coexist with S1 plans (each
-        member carries an angle-specific plan) and S3 registry learning; a
-        non-fan reactive request still runs as a single member unchanged.
-```
-
-S2 (Search Orchestra, Stage A; docs/15, adopted 2026-07-08) — worklist:
+S2 (Search Orchestra, Stage A; docs/15, adopted 2026-07-08) — worklist (rule
+coverage via SCENARIO_COVERED or vrules per V-WAVE-01..05 rule; v2.1 merged the
+two previously duplicated S2 blocks into this one):
 
 ```text
 T-S2-1  merger goldens: crafted per-angle member results with (a) a duplicate
@@ -496,4 +480,93 @@ T-S5-5  advisory-only: a semantically-similar previously-fulfilled request must 
 T-S5-back  the DEFAULT suite stays green WITHOUT the semantic deps: hybrid-scoring math runs on
         synthetic vectors; docs_pack.v2 round-trips; keyword.v1 packs are first-class; verify
         recomputes retrieval only when the pinned model is present (warning), never a hard fail.
+```
+
+## 13. v2.1 Worklist (post-adoption consistency + live-run readiness, 2026-07-08)
+
+Four adversarial reviews of the whole v2 project drove the v2.1 spec revision
+(docs/00 changelog "Spec Revision v2.1"). Every item below is a REQUIRED test
+change mirroring the pinned decisions D1–D15; the rule-coverage meta-test forces
+the fixture side where a rule's wording changed.
+
+```text
+T-v2.1-1   (D1) saturated+floor-met needs_docs: the commit records a
+           `human_review` action (now in the closed CommitAction enum — schema
+           round-trip + committer golden) AND the re-proof is born dead with
+           detail {reason:"saturated", floor_met:true}; `queue requeue` resumes
+           it. Saturated+floor-UNMET stays detail {reason:"saturated",
+           floor_met:false} with NO human_review action. V-COV-03 fixtures
+           updated to the reworded rule.
+T-v2.1-2   (regression) illegal-action corruption: a CommitDecision carrying an
+           action outside the closed enum makes `verify` exit 3 (the pre-v2.1
+           impl let an unknown action pass replay silently).
+T-v2.1-3   (D2) wave CLI drive path end-to-end: `docs wave` → claim member →
+           `docs render-prompt` → `docs wave-member` per member (implicit
+           complete + per-angle-plan validation) → AUTO merge + open_critic when
+           the last member lands → claim critic → `docs wave-resolve` → verdict.
+           `docs ingest-result` on a wave-member item is REFUSED with an error
+           naming `docs wave-member`.
+T-v2.1-4   (D2/D8) member plan lookup: `docs wave-member` resolves the member's
+           OWN angle plan from the item's task_id SP-DR-x-<angle>[-rN-...] —
+           incl. a round-2 origin-discriminated member; a round-2 plan is
+           compiled WITH the critic's suggested_query hint and is NOT
+           byte-identical to the round-1 plan; duplicate expected_source names
+           de-duplicate/index into distinct origins, paths, and plan ids.
+T-v2.1-5   (D2) empty-followup auto-close: a `followup` verdict whose follow-up
+           spec list is empty CLOSES the wave immediately — no idle round, no
+           member items created.
+T-v2.1-6   (D6) angle folding: the ledger folds angles from TERMINAL wave
+           members only (an in-flight member never latches saturation),
+           single-request v2 query_logs, and REQUESTED-for-target documents by
+           tier (T1→official_stats, T2/T3→academic, T4→industry); `counter`
+           folds ONLY from an executed-or-blocked counter qid in a v2 query_log
+           — never from request completion, cache fulfillments, or v1 results.
+           Regression: the single-request path can now reach saturation
+           (academic attemptable — the pre-v2.1 livelock), and a completed
+           request without a counter qid does NOT mark counter covered.
+T-v2.1-7   (D7) merger quote integrity: a canonical-URL collision with
+           DIFFERING content_hash keeps BOTH documents and every quote still
+           passes V-DR-05 against its own text; same content_hash still dedups.
+T-v2.1-8   (D7) canonical_url totality: unparseable port ⇒ raw netloc fallback
+           (no exception); `www.` stripped; missing scheme defaulted; result
+           consistent with the registry's domain normalization.
+T-v2.1-9   (D9) truncation: an EU text longer than 512 model tokens embeds
+           deterministically (tokenizer-enforced cap; byte-identical vectors on
+           re-embed). [semantic marker]
+T-v2.1-10  (D14) `compiler ingest-prose` performs the implicit complete from
+           claimed/running (two events + commit, one command) and accepts an
+           ABSOLUTE output path (normalized to project-relative); the prose item
+           joins the implicit-complete assertions of T-r3-7.
+T-v2.1-11  (D10) dash periods: scope_compatible parses "2020–2025" (en dash),
+           "2020—2025" (em dash), and fullwidth variants as year ranges; an
+           ASCII "2020-2025" proposal against an en-dash contract scope passes
+           V-NODE-03 (the live-run regression).
+T-v2.1-12  (D13) V-COV-05 fold wiring: the ledger fold itself applies the
+           narrow-reset rule (core_terms change > half ⇒ rounds reset to 0;
+           otherwise inherited) — asserted through `docs coverage` output, not
+           just the rule fn.
+T-v2.1-13  (D11) V-SRC-05 at render: `docs render-prompt` / `proof
+           render-prompt` emit the fully-filled template; a registry excerpt
+           missing a T1 profile or a facet-matched profile fails AT RENDER TIME
+           with V-SRC-05; the S5 advisory leads appear in the prompt only.
+T-v2.1-14  (D12) publisher independence: web SourceProfiles default publisher =
+           domain; two uncurated local (empty-publisher) documents do NOT
+           satisfy V-SRC-04(b); after `docs source set --publisher` curation
+           with distinct publishers they do.
+T-v2.1-15  (D15) `verify` sweeps V-WAVE-04/05 (round cap + follow-up origin;
+           exactly one DRES per wave) in addition to 01/02 — a violating
+           at-rest fixture exits 3; V-TASK-02/03 are checked at bundle build;
+           V-SRC-04 at freeze delegates to the single canonical triangulation
+           fn (freeze and msa-check agree by construction).
+T-v2.1-16  (meta) SCENARIO_COVERED pointer existence: every scenario/test id
+           named in the SCENARIO_COVERED map must exist as a collectable test —
+           a dangling pointer fails the meta-test (previously only the rule-id
+           side was checked).
+T-v2.1-17  (indexer) `db rebuild` creates the `sources` and `waves` tables
+           (docs/07 list); S8 asserts identical /api answers over them too.
+T-v2.1-18  (meta) rule registration: the validate registry contains ALL 28
+           search-program-era rule ids (V-SP-01..05, V-SRC-01..05,
+           V-WAVE-01..05, V-COV-01..05, V-SEM-01..05, V-SWEEP-01, V-TASK-04/05)
+           — the registration count is asserted so a rule documented here can
+           never silently miss the registry.
 ```

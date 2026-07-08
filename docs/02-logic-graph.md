@@ -256,10 +256,12 @@ spine :=  {Q, T}
 MSA-1  exactly one question node and one thesis node exist; both active
 MSA-2  the supports edge T→Q is active
 MSA-3  every record in the spine is active (strength strong | conditional)
-MSA-4  every fact/mechanism node in the spine has ≥2 evidence bindings from
-       ≥2 distinct documents (r3 — raised from ≥1: the live run showed
-       single-source empirical claims are exactly the ones later evidence
-       overturns; matches V-FRZ-02)
+MSA-4  every fact/mechanism node in the spine clears its S4 role-profile floor
+       (docs/17, via V-COV-04 — SUPERSEDES the r3 flat "≥2 bindings from ≥2
+       docs" rule): a spine fact/mechanism needs ≥2 EU, ≥2 distinct docs,
+       TRIANGULATED (S3 V-SRC-04) and counter angle ∉ {no_attempt}; bridges
+       additionally ≥3 docs. Delegates to the one coverage floor fn; matches
+       V-FRZ-02. msa-check prints the per-node ledger line for every miss
 MSA-5  every alternative node in the project is rejected, or parked with
        state_reason ∈ {absorbed, not_needed}
 MSA-6  no work item with status ∉ {committed, cancelled} targets a record
