@@ -98,14 +98,14 @@ durable memory of where evidence lives and how to fetch it. Baseline 399 @ gate/
 Coupling: `blocked_direct` learning reads S1's query_log — code it defensively; reconcile at merge.
 Triangulation (V-SRC-04) is Stage B — NOT in this stage.
 
-- [ ] A37 (T-S3-1/2) ingest LEARNS a SourceProfile per domain: blocked_direct + workaround from a
+- [x] A37 (T-S3-1/2) ingest LEARNS a SourceProfile per domain: blocked_direct + workaround from a
         blocked query_log entry; tier via the fixed source_type→tier table (golden); updates are
         appends (latest-per-domain), silent tier-lowering rejected (V-SRC-03) · test_v_src · m6b
-- [ ] A38 (T-S3-4) provenance on every ingested doc (retrieved_at, fetch_method∈enum, tier∈enum)
+- [x] A38 (T-S3-4) provenance on every ingested doc (retrieved_at, fetch_method∈enum, tier∈enum)
         [V-SRC-01]; secondary_quote names an existing quoted_via carrier, dangling ⇒ V-SRC-02;
         dispatch registry excerpt = all T1 + facet-domain matches [V-SRC-05]; document.v2 round-trips,
         v1 still validates v1 · test_v_src + rule_coverage · m6b
-- [ ] A39 (T-S3-back) NO REGRESSION (399 + S1): document.v2 + `docs source list|set` CLI + registry
+- [x] A39 (T-S3-back) NO REGRESSION (399 + S1): document.v2 + `docs source list|set` CLI + registry
         prompt block added without weakening any ingest/V-DR/cascade assertion; V-SRC-04 NOT built;
         msa/freeze floors unchanged from m5 · full suite + evaluator diff · m6b
 

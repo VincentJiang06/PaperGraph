@@ -48,3 +48,4 @@
 ## [2026-07-08] m6-s1-gate | S1 doc-sync F1 fixed (docs/09 V-SP block + V-DR-06 v2); 437 green; tagged gate/m6-s1-search-planning; pushed GitHub (c51792a).
 ## [2026-07-08] m6b-merge | merged S3-lite onto main (10 conflicts, all keep-both). SEAM FIX: S1's v2 DocsWorker dropped the v1 search_log 403 note S3's registry-learning needs -> FakeDocsWorker now carries a search_log block note into the v2 query_log as a blocked X-id extra. 457 green. Merge ed04781 (NOT yet gated/pushed).
 ## [2026-07-08] m7-adopt | adopted S2 (docs/00 entry, docs/15 status, docs/11 §12 worklist, contract A40-A43). Launching S2 generator (worktree) + S3 evaluator in parallel.
+## [2026-07-08] m6b-gate | fresh Evaluator PASS: 457 verified, 8 probes reproduced, seam fix judged LEGITIMATE (mirrors real DocsWorker X-id contract, flows through prod code), 0 regressions, V-SRC-04 absent, no defects. Marking A37-A39; tagging gate/m6b; pushing.
