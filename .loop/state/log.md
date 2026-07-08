@@ -74,3 +74,15 @@
 ## [2026-07-08] LIVE RUN ai-jobs-2 | Stage0: init(GS-000001)+spec build OK. Stage1: user ACCEPTED ProjectContract v1 (fixed_question = AI-agent task-substitution vs net job destruction, 2020-2025 US+OECD). Proceeding to accept+semantic+layer-0. Halt-and-fix, Opus orchestration.
 ## [2026-07-08] LIVE RUN ai-jobs-2 — Stage4 evidence sweep STARTED
 Web research CONFIRMED available (WebSearch/WebFetch return real OECD/BLS/academic results) — DocsWorkers do genuine, verbatim, non-fabricated evidence retrieval. Layer-0: CD-000001, 8 nodes (Q=001, T=002, facts 003/004/007/008, mechanism 006, definition 005) + 7 edges + 15 proof WIs. Semantic index provisioned (e5-small sha ca456c06, dim384). Empirical nodes to sweep: 003(routine automation), 004(complementary demand), 006(relative-pace mechanism), 007(restructuring not net loss), 008(stats lag). NODE-003 wave WV-001/DR-001 round1: 5 members (official_stats/academic/industry/counter/news) claimed + dispatched as parallel Opus DocsWorkers → wave-member ingest each → auto merge+critic → wave-resolve. THEN nodes 004/006/007/008 waves, then 15 proofs, freeze, compile, audit, verify. Halt-and-fix. CLI-only, never hand-edit JSONL.
+
+## 2026-07-09 contract audit (user-ordered, Fable 5 direct)
+- User: 契约和文档有巨大问题,停止 subagent,由主会话全面修复。
+- Four-way audit (template × schema × validator × docs) of all 5 templates:
+  - proof_worker: no output layout, misleading "no id fields" → exact 12-key contract.
+  - critic_worker: no top-level keys, no "form" wrapper, wave_id unknowable → exact 5-key contract + {wave_id} render fill.
+  - retry_suffix: specified in docs/07 but NEVER wired → render auto-appends after validate_fail.
+  - compile_worker: no renderer/CLI at all → `compiler render-prompt` + DraftMap embed.
+  - docs/10 §5 canonical blocks had drifted → re-synced + byte-for-byte drift guard.
+- Root guards added: template↔schema field pins (proof/critic/docs), docs10↔file sync pin.
+- 595 passed. Commit 2c70c6d (+ 807050a earlier for docs_worker root fix).
+- Wave WV-001 state: official_stats/academic/news committed; industry/counter to re-dispatch under fixed contracts.

@@ -16,7 +16,6 @@ from ..store import jsonl
 NODES_FILE = "graph/logic_nodes.jsonl"
 EDGES_FILE = "graph/logic_edges.jsonl"
 TOMBSTONES_FILE = "graph/tombstones.jsonl"
-EVIDENCE_UNITS_FILE = "docs/evidence_units.jsonl"
 
 
 class GraphView:
@@ -182,17 +181,8 @@ def load(paths: Paths) -> GraphView:
 # The r3/m5 flat "at-least-two bindings from two documents" floor that lived here
 # is SUPERSEDED by the S4 role-profile floors (docs/17): MSA-4, V-FRZ-02 and the
 # compiler's missing_evidence gap now all delegate to
-# ``docsdb.coverage.target_ledger`` + ``coverage.meets_floor``. This module keeps
-# only the evidence-id -> doc-id read the ledger builds on.
-
-
-def evidence_doc_map(paths: Paths) -> dict[str, str]:
-    """evidence_id -> doc_id for every archived EvidenceUnit (docs/04)."""
-    return {
-        eu["evidence_id"]: eu["doc_id"]
-        for eu in jsonl.latest_records(paths.resolve(EVIDENCE_UNITS_FILE), "evidence_id")
-        if eu.get("doc_id")
-    }
+# ``docsdb.coverage.target_ledger`` + ``coverage.meets_floor`` (which read the
+# evidence JSONL themselves).
 
 
 def load_tombstones(paths: Paths) -> list[dict[str, Any]]:

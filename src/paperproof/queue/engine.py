@@ -14,7 +14,7 @@ from typing import Any, Optional
 
 from ..clock import actor as clock_actor
 from ..clock import now as clock_now
-from ..errors import DomainError, UsageError
+from ..errors import DomainError
 from ..graph import model as graph_model
 from ..ids import next_id
 from ..paths import Paths

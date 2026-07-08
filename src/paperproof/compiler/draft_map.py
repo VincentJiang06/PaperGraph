@@ -18,7 +18,6 @@ from ..ids import next_id
 from ..paths import Paths
 from ..queue import engine
 from ..store import jsonl
-from . import section_plan as sp
 
 DRAFT_MAPS = "compiler/draft_maps.jsonl"
 DRY_RUNS = "compiler/dry_runs.jsonl"

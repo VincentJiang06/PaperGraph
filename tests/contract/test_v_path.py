@@ -98,27 +98,6 @@ def test_v_path_04_non_jsonl_modification(tmp_path):
     assert "V-PATH-04" in _rule_ids(failures)
 
 
-def test_v_path_04_stray_write_outside_allowed(tmp_path):
-    _make_graph_files(tmp_path)
-    baseline = {
-        str(p.relative_to(tmp_path))
-        for p in tmp_path.rglob("*")
-        if p.is_file()
-    }
-    allowed = ["agent_outputs/proof_results/PT-NODE-001.proof_result.json", "agent_notes/**"]
-    # a legit output write + a legit scratch note pass
-    (tmp_path / "agent_outputs" / "proof_results").mkdir(parents=True)
-    (tmp_path / "agent_outputs" / "proof_results" / "PT-NODE-001.proof_result.json").write_text("{}", encoding="utf-8")
-    (tmp_path / "agent_notes").mkdir()
-    (tmp_path / "agent_notes" / "scratch.txt").write_text("notes", encoding="utf-8")
-    assert v_path.check_no_stray_writes(tmp_path, baseline, allowed) == []
-
-    # a write into graph/ (outside allowed) is a stray write (H10-style)
-    (tmp_path / "graph" / "sneaky.jsonl").write_text('{"x":1}\n', encoding="utf-8")
-    failures = v_path.check_no_stray_writes(tmp_path, baseline, allowed)
-    assert "V-PATH-04" in _rule_ids(failures)
-
-
 # --- fixture-driven coverage over tests/fixtures/vrules/V-PATH-* (docs/11 §4) ---
 
 

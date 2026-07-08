@@ -14,7 +14,7 @@ from ..graph import model as graph_model
 from ..ids import next_id
 from ..paths import Paths
 from ..queue import engine
-from ..schemas.docs import DocsPack, DocsPackV2, SourceProfile, Tier
+from ..schemas.docs import DocsPackV2, SourceProfile, Tier
 from ..store import jsonl
 from . import cache, ingest, matcher, pack, planner, registry, wave as wave_mod
 from ..validate.rules import v_src

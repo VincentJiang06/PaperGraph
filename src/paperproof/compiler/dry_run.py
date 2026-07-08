@@ -17,6 +17,7 @@ from typing import Any
 
 from ..clock import actor as clock_actor
 from ..clock import now as clock_now
+from ..errors import DomainError
 from ..graph import model as graph_model
 from ..ids import next_id
 from ..paths import Paths
@@ -164,6 +165,18 @@ def dry_run(paths: Paths, actor: str | None = None) -> dict[str, Any]:
     gv = graph_model.load(paths)
     spine_ids, _ = gv.spine()
     plan = sp.build(gv, spine_ids)
+    # V-CDR-03: the plan must cover every spine NODE exactly once (spine_ids
+    # also holds edge ids — those never carry sections). A node_type outside
+    # the template buckets would otherwise be dropped silently.
+    covered = [nid for section in plan for nid in section["nodes"]]
+    uncovered = sorted(i for i in spine_ids if i in gv.node_by_id and i not in covered)
+    if uncovered or len(covered) != len(set(covered)):
+        dupes = sorted({i for i in covered if covered.count(i) > 1})
+        raise DomainError(
+            [f"V-CDR-03: spine node not covered exactly once by the section plan: {i}"
+             for i in (uncovered + dupes)],
+            data={"failed_rules": ["V-CDR-03"], "uncovered": uncovered, "duplicated": dupes},
+        )
     gaps = detect_gaps(paths, gv, spine_ids, plan)
 
     snapshot_id = snapshot.latest_snapshot_id(paths) or "GS-000001"

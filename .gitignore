@@ -24,3 +24,6 @@ data/**/db/
 
 # agent worktrees (harness-managed, never commit)
 .claude/worktrees/
+
+# reorganize-logic: legacy compaction (context only)
+docs/contracts/_legacy-context.md

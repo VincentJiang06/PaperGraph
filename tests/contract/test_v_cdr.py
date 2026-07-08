@@ -161,3 +161,37 @@ def test_v_cdr_03_section_plan_covers_every_spine_node_once(project, pp):
     covered = [nid for entry in plan for nid in entry["nodes"]]
     assert sorted(covered) == sorted(spine)
     assert len(covered) == len(set(covered))  # exactly once
+
+
+def test_v_cdr_03_uncoverable_spine_node_refused_by_dry_run(project, pp):
+    """Enforcement (rebuild wiring fix): spine() walks active supports/depends_on
+    ancestors WITHOUT filtering node_type, so an active `alternative` wired into
+    the thesis's ancestor closure joins the spine — but the section-plan template
+    has no bucket for it. dry_run must refuse with V-CDR-03, never silently drop
+    the node from the plan."""
+    from paperproof.errors import DomainError
+
+    paths = _paths(pp)
+    for rec in (
+        _node("NODE-001", node_type="question", layer=0),
+        _node("NODE-002", node_type="thesis", layer=0),
+        _node("NODE-009", node_type="alternative", state="active"),
+    ):
+        jsonl.append(paths.resolve(NODES), rec)
+    for rec in (
+        _edge("EDGE-002-001", "NODE-002", "NODE-001"),
+        _edge("EDGE-009-002", "NODE-009", "NODE-002"),
+    ):
+        jsonl.append(paths.resolve("graph/logic_edges.jsonl"), rec)
+
+    gv = graph_model.load(paths)
+    spine_ids, _ = gv.spine()
+    assert "NODE-009" in spine_ids  # the hole is reachable, not hypothetical
+
+    with pytest.raises(DomainError) as exc:
+        dry.dry_run(paths, actor="test")
+    assert any("V-CDR-03" in e for e in exc.value.errors)
+    assert exc.value.data["failed_rules"] == ["V-CDR-03"]
+    assert exc.value.data["uncovered"] == ["NODE-009"]
+    # V-CDR-02 corollary: the refused run appended no dry-run record.
+    assert jsonl.read_all(paths.resolve("compiler/dry_runs.jsonl")) == []

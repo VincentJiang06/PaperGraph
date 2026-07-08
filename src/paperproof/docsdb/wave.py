@@ -34,7 +34,6 @@ WAVES = "docs/waves.jsonl"
 MERGED_DIR = "docs/merged"
 COVERAGE_DIR = "agent_outputs/coverage_reports"
 DOCS_REQUESTS = "docs/docs_requests.jsonl"
-CONTRACT = "specs/project_contract.json"
 
 DOCS_QUEUE = "docs_queue"
 CRITIC_QUEUE = "critic_queue"

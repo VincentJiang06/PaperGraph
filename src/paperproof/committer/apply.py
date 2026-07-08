@@ -36,7 +36,6 @@ EDGES = "graph/logic_edges.jsonl"
 TOMBSTONES = "graph/tombstones.jsonl"
 COMMITS = "commit/commit_decisions.jsonl"
 DOCS_REQUESTS = "docs/docs_requests.jsonl"
-EVIDENCE_UNITS = "docs/evidence_units.jsonl"
 PROOF_RESULTS = "proof/proof_results.jsonl"
 COMMIT_LOCK = "commit/.lock"
 

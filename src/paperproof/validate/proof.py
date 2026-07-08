@@ -15,7 +15,7 @@ from typing import Any
 
 from ..clock import actor as clock_actor
 from ..clock import now as clock_now
-from ..errors import DomainError, UsageError
+from ..errors import DomainError
 from ..ids import next_id
 from ..paths import Paths
 from ..queue import engine

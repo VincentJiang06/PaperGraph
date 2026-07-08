@@ -152,35 +152,9 @@ def build_lease_manifest(project_dir: str | Path, allowed_write_paths: list[str]
     }
 
 
-def _is_allowed(rel: str, allowed_write_paths: list[str]) -> bool:
-    for allowed in allowed_write_paths:
-        if allowed.endswith("/**"):
-            prefix = allowed[:-2]  # keep trailing slash
-            if rel.startswith(prefix):
-                return True
-        elif rel == allowed:
-            return True
-    return False
-
-
 def _walk_relpaths(project_dir: Path) -> set[str]:
     out: set[str] = set()
     for p in project_dir.rglob("*"):
         if p.is_file():
             out.add(str(p.relative_to(project_dir)))
     return out
-
-
-def check_no_stray_writes(
-    project_dir: str | Path,
-    baseline_files: set[str],
-    allowed_write_paths: list[str],
-) -> list[Failure]:
-    """V-PATH-04 (scope): any file present now that was absent at claim time and
-    is not under allowed_write_paths is a stray write."""
-    project_dir = Path(project_dir)
-    failures: list[Failure] = []
-    for rel in sorted(_walk_relpaths(project_dir) - baseline_files):
-        if not _is_allowed(rel, allowed_write_paths):
-            failures.append(Failure("V-PATH-04", f"write outside allowed paths: {rel}"))
-    return failures

@@ -50,7 +50,6 @@ _HF_FILES = {
 SEMANTIC_DIR = "db/semantic"
 MODEL_ONNX = "db/semantic/model.onnx"
 TOKENIZER_JSON = "db/semantic/tokenizer.json"
-CONFIG_JSON = "db/semantic/config.json"
 MODEL_JSON = "db/semantic/model.json"
 EU_VECTORS = "db/semantic/eu_vectors.parquet"
 
