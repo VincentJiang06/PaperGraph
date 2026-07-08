@@ -154,23 +154,10 @@ shared files: registry.py, schema registry, prompts/docs_worker.txt, docsdb inge
 Evaluator per set. Wave 2: m7-s2 (needs S1). Then Stage A done → user fork on S4(v1.2)/S5(v2).
 STATUS: S1 gated+pushed (gate/m6-s1). S3 merged (457 green @ ed04781), evaluator running. S2 launched.
 
-## Stage m7-s2-search-orchestra (Search Program S2, adopted 2026-07-08; docs/15, worklist docs/11 §12)
-
-Completes Stage A. Waves (parallel per-angle members) + deterministic merger + fresh adversarial
-coverage critic -> code computes the wave verdict (<=2 rounds). Baseline 457 @ ed04781 (S1+S3).
-Built in a worktree from the S2-adoption commit; needs S1 (members execute S1 plans), coexists with S3.
-
-- [x] A40 (T-S2-1) merger determinism: same terminal member set => BYTE-identical merged docs_result.v2;
-        dedup by content_hash then canonical URL (frozen tracking-param strip); dup EUs dropped; every
-        merged doc/EU traces to exactly one member (V-WAVE-02) · test_v_wave · m7
-- [x] A41 (T-S2-2) CODE computes the wave verdict (sufficient|followup|closed) from the critic's CLOSED
-        form over every angle_covered combo; R_MAX=2; followup opens one member per no_attempt angle +
-        per expected_source; member outputs pairwise-distinct (V-WAVE-01/04) · test_v_wave · m7
-- [x] A42 (T-S2-3/4) hostile critic smuggling documents/evidence_units rejected (V-WAVE-03); only the
-        merged result ingested, one DRES per wave (V-WAVE-05); `docs wave --request [--fan]` fans members ·
-        test_v_wave + cli · m7
-- [x] A43 (T-S2-back) NO REGRESSION (457 + S2 green): waves coexist with S1 plans + S3 registry; a non-fan
-        reactive request still runs as a single member unchanged · full suite + evaluator diff · m7
-
-Gate (m7): pytest green AND V-WAVE-01..05 in registry AND test_v_wave.py present AND no weakened assertion.
-On PASS -> tag gate/m7-s2-search-orchestra, push GitHub. Then Stage A COMPLETE -> raise S4/S5 fork to user.
+## STAGE A COMPLETE (v1.1) — 2026-07-08
+S1 + S3-lite + S2 all gated & pushed to GitHub: gate/m6-s1-search-planning,
+gate/m6b-s3-lite-source-registry, gate/m7-s2-search-orchestra. HEAD cd8782e, 489 green.
+The search program's VOLUME fix (accountable plans + waves + source registry) is live.
+NEXT: (1) user scope fork — S4 (v1.2, supersedes m5 flat floor) / S5 (v2, needs vendored
+embedding model); (2) live test run on the ai-jobs question (halt-and-fix). A40-A43 all [x].
+FOLLOW-UP (non-blocking): dedup expected_sources names in check_critic (caught-at-rest by verify V-WAVE-01).
