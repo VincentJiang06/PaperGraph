@@ -9,14 +9,24 @@ from nodify.cli import app
 CLOSED_COMMANDS = {
     "init", "add", "promote", "set-status", "conclude",
     "brief", "show", "tree", "log", "check", "export",
+    "upgrade", "recall", "docs ingest", "docs for-node",
 }
 
 ENVELOPE_KEYS = {"ok", "command", "data", "errors", "warnings"}
 
 
+def _walk(cmd, prefix):
+    subs = getattr(cmd, "commands", None)
+    if not subs:
+        return {" ".join(prefix)}
+    out = set()
+    for name, sub in subs.items():
+        out |= _walk(sub, prefix + [name])
+    return out
+
+
 def test_command_set_matches_closed_list_both_directions():
-    exposed = {c.name for c in typer.main.get_command(app).commands.values()} \
-        if hasattr(typer.main.get_command(app), "commands") else set()
+    exposed = _walk(typer.main.get_command(app), [])
     assert exposed == CLOSED_COMMANDS, {
         "unexpected": sorted(exposed - CLOSED_COMMANDS),
         "missing": sorted(CLOSED_COMMANDS - exposed)}

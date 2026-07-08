@@ -32,13 +32,19 @@ JSON envelope;所有落盘记录被 schema 严格校验,trace 自动记录)。
    `nd promote N --note "尝试过的方向/为何不成立/反事实探针/预期证据形态"`。
    论点必须是**最小的、可直接投入调查的明确问题**。太大就先
    `nd add --parent <claim>` 拆解成子论点。
-3. **调查(论证层)**:`nd set-status N investigating`,然后**大量派 subagent**
-   ——搜索、精读、数据分析各派各的,并行,上下文互相隔离(模板见附录)。
-   你是树主人:收报告、判断充分性、蒸馏,自己不淹在原文里。
-4. **蒸馏(阅后即焚)**:每个 subagent 报告读完立即写结论,原文丢弃:
-   `nd conclude --file syn.json` —— {node_id, lean, summary, confidence,
-   based_on:{children, evidence:[{title, url?, locator?, quote?, tool?}]},
-   open_questions}。**每条证据必须带 url 或 locator**(check 会点名)。
+3. **调查(论证层)**:**先召回再搜索**——`nd recall --node N --query "…"`,
+   命中的条目把 text_file 直接喂给工人("先读这个,再决定搜什么");然后
+   `nd set-status N investigating`,**大量派 subagent**——搜索、精读、数据
+   分析各派各的,并行,上下文互相隔离(模板见附录)。工人须把实际引用的
+   页面文本存到 notes/ 供归档。你是树主人:收报告、判断充分性、蒸馏,
+   自己不淹在原文里。
+4. **蒸馏(焚前入库)**:每个 subagent 报告读完立即处理,原文丢弃。
+   结论**实际依赖**的来源先归档:让工人把抓到的页面文本存 notes/,然后
+   `nd docs ingest --file entry.json`({kind,title,url?,text_file,summary≤500,
+   bindings:[{node_id,relation}]})——同文自动去重,只加绑定。再写结论:
+   `nd conclude --file syn.json` —— evidence 条目用 **doc_id 指向归档条目**,
+   quote 必须逐字(不逐字会被自动降级并告警;宁可 paraphrase 别编);
+   没归档的次要来源至少带 url 或 locator(check 会点名)。
    证据不足→细化方向重派(≤2 轮),再不行
    `nd set-status N stuck --note "缺什么" --reason evidence`,让缺口回流。
 5. **收束(向上回流)**:一个观点的子节点足够回答它时,写观点级结论

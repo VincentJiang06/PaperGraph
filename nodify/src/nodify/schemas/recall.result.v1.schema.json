@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nodify.dev/schemas/v1/recall.result.v1.json",
+  "title": "recall.result.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "recall.result.v1"
+    },
+    "node_id": {
+      "type": "string",
+      "pattern": "^N-\\d{4}$"
+    },
+    "query": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "doc_id": {
+            "type": "string",
+            "pattern": "^DOC-\\d{4}$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1
+          },
+          "text_file": {
+            "type": "string",
+            "minLength": 1
+          },
+          "distance": {
+            "enum": [
+              "self",
+              "descendant",
+              "ancestor",
+              "sibling",
+              "global"
+            ]
+          },
+          "why": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "doc_id",
+          "title",
+          "summary",
+          "text_file",
+          "distance",
+          "why"
+        ]
+      },
+      "minItems": 0,
+      "maxItems": 16
+    }
+  },
+  "required": [
+    "schema",
+    "node_id",
+    "query",
+    "hits"
+  ]
+}

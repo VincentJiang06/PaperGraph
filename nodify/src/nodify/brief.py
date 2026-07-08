@@ -34,13 +34,16 @@ def _sections(paths: Paths, session: dict[str, Any]) -> list[tuple[str, list[str
         latest_syn[s["node_id"]] = s
     referenced_children = {c for s in syns for c in s["based_on"]["children"]}
     budgets = session["budgets"]
+    from . import docsdb
+    ndocs = len(docsdb.entries_by_id(paths))
 
     head = [
         f"QUESTION: {session['question']}",
         *( [f"BOUNDARY: {session['boundary_note']}"] if session.get("boundary_note") else [] ),
         (f"BUDGETS: depth {max((tree.depth_of(nodes, i) for i in nodes), default=0)}"
          f"/{budgets['max_depth']} · open claims {tree._open_claims(nodes)}"
-         f"/{budgets['max_open_claims']} · total nodes {len(nodes)} (uncapped)"),
+         f"/{budgets['max_open_claims']} · total nodes {len(nodes)} (uncapped)"
+         + (f" · docs {ndocs}" if ndocs else "")),
     ]
 
     conclusions = []

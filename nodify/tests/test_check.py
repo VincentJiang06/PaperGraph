@@ -55,4 +55,4 @@ def test_evidence_without_pointer_is_soft(session, tmp_path):
     })
     session("conclude", "--file", f)
     soft = session("check")["data"]["soft"]
-    assert any("neither url nor locator" in w for w in soft)
+    assert any("neither doc_id nor url nor locator" in w for w in soft)

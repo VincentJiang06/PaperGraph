@@ -12,10 +12,13 @@ from .paths import Paths
 
 def as_json(paths: Paths, session: dict[str, Any]) -> dict[str, Any]:
     nodes = tree.nodes_by_id(paths)
+    from . import docsdb
+    entries = docsdb.entries_by_id(paths)
     return {
         "session": session,
         "nodes": [nodes[k] for k in sorted(nodes)],
         "syntheses": tree.syntheses(paths),
+        "docs": [entries[k] for k in sorted(entries)],
     }
 
 

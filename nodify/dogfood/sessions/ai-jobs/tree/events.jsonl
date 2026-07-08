@@ -13,3 +13,4 @@
 {"schema":"event.v1","event_id":"EV-000013","at":"2026-07-08T18:52:18Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (617 chars)"}
 {"schema":"event.v1","event_id":"EV-000014","at":"2026-07-08T18:52:18Z","actor":"main","command":"export","mutating":false,"touched":[],"summary":"export md"}
 {"schema":"event.v1","event_id":"EV-000015","at":"2026-07-08T18:52:18Z","actor":"main","command":"log","mutating":false,"touched":[],"summary":"log tail=50"}
+{"schema":"event.v1","event_id":"EV-000016","at":"2026-07-08T19:11:48Z","actor":"main","command":"upgrade","mutating":true,"touched":[],"summary":"upgrade schema set v1 -> v2"}

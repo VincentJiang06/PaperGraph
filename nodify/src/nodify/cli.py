@@ -41,7 +41,9 @@ def _run(command: str, root: Optional[str], session_id: Optional[str],
     try:
         paths = paths_for(root, session_id)
         session = session_mod.load(paths) if needs_session else None
-        data, touched, summary = fn(paths, session)
+        result = fn(paths, session)
+        data, touched, summary = result[:3]
+        warnings = list(result[3]) if len(result) > 3 else []
     except NodifyError as exc:
         try:
             paths = paths_for(root, session_id)
@@ -53,7 +55,7 @@ def _run(command: str, root: Optional[str], session_id: Optional[str],
         _emit(command, {}, errors=exc.errors, exit_code=exc.exit_code)
         return
     events.log(paths, command, mutating=mutating, touched=touched, summary=summary)
-    _emit(command, data)
+    _emit(command, data, warnings=warnings)
 
 
 @app.command()
@@ -132,10 +134,10 @@ def set_status(node_id: str = typer.Argument(...),
 @app.command()
 def conclude(file: Path = typer.Option(..., "--file"),
              root: Optional[str] = _ROOT_OPT, session: Optional[str] = _SESSION_OPT) -> None:
-    def go(paths: Paths, _sess):
-        record = tree.conclude(paths, store.read_json(file))
+    def go(paths: Paths, sess):
+        record, warns = tree.conclude(paths, sess, store.read_json(file))
         return ({"synthesis": record}, [record["synthesis_id"], record["node_id"]],
-                f"conclude {record['node_id']} [{record['lean']}]")
+                f"conclude {record['node_id']} [{record['lean']}]", warns)
     _run("conclude", root, session, go, mutating=True)
 
 
@@ -207,6 +209,64 @@ def export_cmd(format: str = typer.Option("json", "--format"),
             return {"export_md": export.as_markdown(paths, sess)}, [], "export md"
         raise UsageError([f"unknown format: {format} (json|md)"])
     _run("export", root, session, go, mutating=False)
+
+
+@app.command()
+def upgrade(root: Optional[str] = _ROOT_OPT, session: Optional[str] = _SESSION_OPT) -> None:
+    def go(paths: Paths, sess):
+        from .session import set_name
+        before = set_name(sess)
+        record = session_mod.upgrade(paths)
+        after = set_name(record)
+        return ({"session": record, "from": before, "to": after}, [],
+                f"upgrade schema set {before} -> {after}")
+    _run("upgrade", root, session, go, mutating=True)
+
+
+@app.command()
+def recall(node: str = typer.Option(..., "--node"),
+           query: str = typer.Option(..., "--query"),
+           k: int = typer.Option(8, "--k"),
+           root: Optional[str] = _ROOT_OPT, session: Optional[str] = _SESSION_OPT) -> None:
+    def go(paths: Paths, sess):
+        from . import docsdb
+        session_mod.require_set(sess, "v2")
+        result = docsdb.recall(paths, node, query, k=k)
+        return ({"recall": result}, [],
+                f"recall {node}: {len(result['hits'])} hits")
+    _run("recall", root, session, go, mutating=False)
+
+
+docs_app = typer.Typer(add_completion=False, no_args_is_help=True)
+app.add_typer(docs_app, name="docs")
+
+
+@docs_app.command("ingest")
+def docs_ingest(file: Path = typer.Option(..., "--file"),
+                root: Optional[str] = _ROOT_OPT, session: Optional[str] = _SESSION_OPT) -> None:
+    def go(paths: Paths, sess):
+        from . import docsdb
+        session_mod.require_set(sess, "v2")
+        entry, warns = docsdb.ingest(paths, store.read_json(file))
+        return ({"entry": entry}, [entry["doc_id"]],
+                f"ingest {entry['doc_id']}: {entry['title'][:80]}", warns)
+    _run("docs ingest", root, session, go, mutating=True)
+
+
+@docs_app.command("for-node")
+def docs_for_node(node_id: str = typer.Argument(...),
+                  all: bool = typer.Option(False, "--all", help="ignore ancestors filter: list every entry"),
+                  root: Optional[str] = _ROOT_OPT, session: Optional[str] = _SESSION_OPT) -> None:
+    def go(paths: Paths, sess):
+        from . import docsdb
+        session_mod.require_set(sess, "v2")
+        if all:
+            entries = [docsdb.entries_by_id(paths)[k]
+                       for k in sorted(docsdb.entries_by_id(paths))]
+        else:
+            entries = docsdb.for_node(paths, node_id)
+        return ({"entries": entries}, [], f"docs for-node {node_id}: {len(entries)}")
+    _run("docs for-node", root, session, go, mutating=False)
 
 
 def main() -> None:

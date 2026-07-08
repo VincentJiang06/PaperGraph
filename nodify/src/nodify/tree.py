@@ -210,10 +210,19 @@ def set_status(paths: Paths, node_id: str, status: str, *,
     return record
 
 
-def conclude(paths: Paths, payload: dict[str, Any], *,
-             actor: str | None = None) -> dict[str, Any]:
-    """Write a synthesis record. Payload = synthesis.v1 minus schema /
-    synthesis_id / created_at (code assigns those; evidence ref_ids too)."""
+def conclude(paths: Paths, session: dict[str, Any], payload: dict[str, Any], *,
+             actor: str | None = None) -> tuple[dict[str, Any], list[str]]:
+    """Write a synthesis record. Payload = the synthesis schema minus schema /
+    synthesis_id / created_at (code assigns those; evidence ref_ids too).
+    On a v2 session: evidence.doc_id must resolve to an archived entry, and a
+    quote given with a doc_id is verified verbatim against the archived text —
+    a miss degrades the quote to null with a warning (P7: hallucinated quotes
+    never land; honest paraphrase does). Returns (record, warnings)."""
+    from . import docsdb
+    from .session import set_name
+
+    warnings: list[str] = []
+    v2 = set_name(session) != "v1"
     nodes = nodes_by_id(paths)
     node_id = payload.get("node_id")
     if node_id not in nodes:
@@ -226,12 +235,31 @@ def conclude(paths: Paths, payload: dict[str, Any], *,
     for child in based_on.get("children", []):
         if child not in nodes:
             raise DomainError([f"based_on.children references unknown node: {child}"])
+    entries = docsdb.entries_by_id(paths) if v2 else {}
     evidence = []
     for i, ref in enumerate(based_on.get("evidence", []), 1):
         ref = dict(ref)
         ref.setdefault("ref_id", f"E-{i:02d}")
         for key in ("url", "locator", "quote", "tool", "note"):
             ref.setdefault(key, None)
+        if not v2:
+            if ref.get("doc_id"):
+                raise DomainError(["evidence.doc_id needs schema set v2 — "
+                                   "run `nd upgrade` first"])
+            ref.pop("doc_id", None)
+        else:
+            ref.setdefault("doc_id", None)
+            if ref["doc_id"] is not None:
+                if ref["doc_id"] not in entries:
+                    raise DomainError([f"evidence references unknown doc: {ref['doc_id']}"])
+                if ref["quote"] and not docsdb.quote_ok(paths, entries[ref["doc_id"]],
+                                                        ref["quote"]):
+                    warnings.append(
+                        f"{ref['ref_id']}: quote is not a verbatim match in "
+                        f"{ref['doc_id']} — degraded to paraphrase (quote dropped)")
+                    if ref["note"] is None:
+                        ref["note"] = "paraphrase (quote failed verbatim check)"
+                    ref["quote"] = None
         evidence.append(ref)
 
     all_syn = syntheses(paths)
@@ -240,7 +268,7 @@ def conclude(paths: Paths, payload: dict[str, Any], *,
         raise DomainError([f"revises references unknown synthesis: {revises}"])
 
     record = {
-        "schema": "synthesis.v1",
+        "schema": "synthesis.v2" if v2 else "synthesis.v1",
         "synthesis_id": next_id("SYN", [s["synthesis_id"] for s in all_syn]),
         "node_id": node_id,
         "lean": payload.get("lean"),
@@ -261,4 +289,4 @@ def conclude(paths: Paths, payload: dict[str, Any], *,
         updated = {**node, "status": new_status, "created_at": clock_now(),
                    "created_by": clock_actor(actor)}
         _append_node(paths, updated)
-    return record
+    return record, warnings

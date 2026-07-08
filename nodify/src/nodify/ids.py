@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 from typing import Iterable
 
-WIDTHS = {"N": 4, "SYN": 4, "EV": 6}
+WIDTHS = {"N": 4, "SYN": 4, "EV": 6, "DOC": 4}
 
 
 def next_id(prefix: str, existing: Iterable[str]) -> str:

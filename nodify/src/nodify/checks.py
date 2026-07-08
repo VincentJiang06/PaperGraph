@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from . import store, tree
+from . import docsdb, store, tree
 from .paths import NODES, SYNTHESES, Paths
 from .schemas import validate
 
@@ -17,7 +17,8 @@ def run(paths: Paths, session: dict[str, Any]) -> tuple[list[str], list[str]]:
 
     node_records = store.read_all(paths.resolve(NODES))
     syn_records = store.read_all(paths.resolve(SYNTHESES))
-    for rec in node_records + syn_records:
+    doc_records = store.read_all(paths.resolve(docsdb.INDEX))
+    for rec in node_records + syn_records + doc_records:
         hard += validate(rec)
 
     nodes = store.latest_by_id(paths.resolve(NODES), "node_id")
@@ -58,6 +59,26 @@ def run(paths: Paths, session: dict[str, Any]) -> tuple[list[str], list[str]]:
         hard.append(f"{open_claims} open claims exceeds "
                     f"max_open_claims={budgets['max_open_claims']}")
 
+    # --- docs store (V2): archives must stay whole and referenced ---
+    entries = store.latest_by_id(paths.resolve(docsdb.INDEX), "doc_id")
+    for e in entries.values():
+        if not paths.resolve(e["text_file"]).is_file():
+            hard.append(f"{e['doc_id']}: archived text missing: {e['text_file']}")
+        for b in e["bindings"]:
+            if b["node_id"] not in nodes:
+                hard.append(f"{e['doc_id']}: binding to unknown node {b['node_id']}")
+    for s in syn_records:
+        for ref in s["based_on"]["evidence"]:
+            doc_id = ref.get("doc_id")
+            if doc_id is None:
+                continue
+            if doc_id not in entries:
+                hard.append(f"{s['synthesis_id']}/{ref['ref_id']}: dangling doc_id {doc_id}")
+            elif ref.get("quote") and paths.resolve(entries[doc_id]["text_file"]).is_file() \
+                    and not docsdb.quote_ok(paths, entries[doc_id], ref["quote"]):
+                hard.append(f"{s['synthesis_id']}/{ref['ref_id']}: stored quote no longer "
+                            f"matches the archived text of {doc_id} (tampering?)")
+
     # --- soft: laziness made visible ---
     for n in nodes.values():
         kids = tree.children_of(nodes, n["node_id"])
@@ -74,7 +95,7 @@ def run(paths: Paths, session: dict[str, Any]) -> tuple[list[str], list[str]]:
         if not b["children"] and not b["evidence"]:
             soft.append(f"{s['synthesis_id']}: based_on is empty (conclusion from nothing?)")
         for ref in b["evidence"]:
-            if ref["url"] is None and ref["locator"] is None:
+            if ref["url"] is None and ref["locator"] is None and ref.get("doc_id") is None:
                 soft.append(f"{s['synthesis_id']}/{ref['ref_id']}: evidence has "
-                            "neither url nor locator")
+                            "neither doc_id nor url nor locator")
     return sorted(hard), sorted(soft)
