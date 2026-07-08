@@ -13,6 +13,15 @@ Do NOT trust a session summary.
 - S1 KEY RISK: docs_result v1→v2 (query_log replaces search_log) touches the core docs
   pipeline the 399 tests exercise — back-compat / no-weakening is graded (A36).
 
+## POST-BUILD ACCEPTANCE (user directive 2026-07-08) — do AFTER the whole search-program build is gated
+Live end-to-end test run (A26 live-smoke; real Claude workers, Orchestrator drives the paperproof CLI).
+- REUSE the previous run's question: topic file examples/topic-ai-employment.md (project ai-jobs,
+  single_event_mechanism). Topic-input format unchanged by S1-S3, so reuse verbatim.
+- Use a FRESH project id (e.g. ai-jobs-2) so data/projects/ai-jobs stays as the regression reference.
+- HALT-AND-FIX: on ANY error (CLI/gate/pipeline/worker-protocol) STOP immediately, fix root cause in
+  code or spec (doc-sync), then resume. Do not push through errors. (Mirrors the original ai-jobs run.)
+- Do NOT start until Stage A (+ any further adopted stages) is complete + gated + pushed.
+
 ## ACTIVE STAGE — m6-s1-search-planning (build plan for the Generator)
 Pattern plan_execute_verify; cap 3; on_failure=restart-from-baseline. Docs: docs/14 (S1
 spec, now binding), docs/09 §0 (tokens/CJK), docs/11 §12 (worklist), docs/08 (bundle
