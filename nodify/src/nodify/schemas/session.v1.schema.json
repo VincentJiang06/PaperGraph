@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nodify.dev/schemas/v1/session.v1.json",
+  "title": "session.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "session.v1"
+    },
+    "session_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,40}$"
+    },
+    "question": {
+      "type": "string",
+      "minLength": 1
+    },
+    "boundary_note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "language": {
+      "enum": [
+        "zh",
+        "en"
+      ]
+    },
+    "budgets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_depth": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "max_children": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "max_open_claims": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
+        }
+      },
+      "required": [
+        "max_depth",
+        "max_children",
+        "max_open_claims"
+      ]
+    },
+    "schema_set_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "created_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    }
+  },
+  "required": [
+    "schema",
+    "session_id",
+    "question",
+    "boundary_note",
+    "language",
+    "budgets",
+    "schema_set_hash",
+    "created_at"
+  ]
+}

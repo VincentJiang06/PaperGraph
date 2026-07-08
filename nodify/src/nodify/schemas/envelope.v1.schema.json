@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nodify.dev/schemas/v1/envelope.v1.json",
+  "title": "envelope.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "envelope.v1"
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "command": {
+      "type": "string",
+      "minLength": 1
+    },
+    "data": {
+      "type": "object"
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "schema",
+    "ok",
+    "command",
+    "data",
+    "errors",
+    "warnings"
+  ]
+}

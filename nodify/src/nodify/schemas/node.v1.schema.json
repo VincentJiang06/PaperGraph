@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nodify.dev/schemas/v1/node.v1.json",
+  "title": "node.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "node.v1"
+    },
+    "node_id": {
+      "type": "string",
+      "pattern": "^N-\\d{4}$"
+    },
+    "parent_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^N-\\d{4}$"
+    },
+    "kind": {
+      "enum": [
+        "viewpoint",
+        "claim"
+      ]
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "why_helps_parent": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "orientation": {
+      "enum": [
+        "neutral",
+        "adversarial",
+        null
+      ]
+    },
+    "status": {
+      "enum": [
+        "closed",
+        "concluded",
+        "expanding",
+        "investigating",
+        "open",
+        "pending",
+        "retired",
+        "stuck",
+        "synthesized"
+      ]
+    },
+    "status_note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "promotion_note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "stuck_reason": {
+      "enum": [
+        "evidence",
+        "protocol",
+        null
+      ]
+    },
+    "revises": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^N-\\d{4}$"
+    },
+    "created_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "created_by": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "schema",
+    "node_id",
+    "parent_id",
+    "kind",
+    "statement",
+    "why_helps_parent",
+    "orientation",
+    "status",
+    "status_note",
+    "promotion_note",
+    "stuck_reason",
+    "revises",
+    "created_at",
+    "created_by"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "viewpoint"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "enum": [
+              "open",
+              "expanding",
+              "synthesized",
+              "closed",
+              "retired"
+            ]
+          },
+          "promotion_note": {
+            "type": "null"
+          },
+          "stuck_reason": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "claim"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "enum": [
+              "pending",
+              "investigating",
+              "concluded",
+              "stuck",
+              "retired"
+            ]
+          },
+          "promotion_note": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "stuck"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "stuck_reason": {
+            "enum": [
+              "evidence",
+              "protocol"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
