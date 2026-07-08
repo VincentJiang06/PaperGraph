@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nodify.dev/schemas/v1/article.outline.v1.json",
+  "title": "article.outline.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "article.outline.v1"
+    },
+    "outline_id": {
+      "type": "string",
+      "pattern": "^OL-\\d{2}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "thesis": {
+      "type": "string",
+      "minLength": 1
+    },
+    "grounded_in": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^SYN-\\d{4}$"
+      },
+      "minItems": 1,
+      "maxItems": 16
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "section_id": {
+            "type": "string",
+            "pattern": "^S-\\d{2}$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "enum": [
+              "introduction",
+              "background",
+              "argument",
+              "evidence",
+              "counterpoints",
+              "discussion",
+              "conclusion",
+              "other"
+            ]
+          },
+          "node_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^N-\\d{4}$"
+            },
+            "minItems": 0,
+            "maxItems": 16
+          },
+          "intent": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "section_id",
+          "title",
+          "role",
+          "node_ids",
+          "intent"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 12
+    },
+    "excluded": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "node_id": {
+            "type": "string",
+            "pattern": "^N-\\d{4}$"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "node_id",
+          "reason"
+        ]
+      },
+      "minItems": 0,
+      "maxItems": 32
+    },
+    "created_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    }
+  },
+  "required": [
+    "schema",
+    "outline_id",
+    "title",
+    "thesis",
+    "grounded_in",
+    "sections",
+    "excluded",
+    "created_at"
+  ]
+}

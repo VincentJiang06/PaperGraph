@@ -50,7 +50,14 @@ JSON envelope;所有落盘记录被 schema 严格校验,trace 自动记录)。
 5. **收束(向上回流)**:一个观点的子节点足够回答它时,写观点级结论
    (based_on.children 列上依据的子节点)。根观点的 synthesis 就是调查的
    最终答案。中途认识变了就写新版(revises 旧 SYN id)。
-6. **交付**:`nd export --format md|json` 给下游(写文、决策备忘、复盘)。
+6. **成文(学术写作时)**:树收束后进入 article 层——
+   `nd article outline --file ol.json`({title, thesis, grounded_in:[SYN…],
+   sections:[{section_id S-01, title, role, node_ids, intent}], excluded:
+   [{node_id, reason}]}):论题必须扎根已有 synthesis,**被排除的枝要给理由**。
+   逐节写草稿(正文引用处写 `(cite: DOC-xxxx)`,只能引已归档条目),
+   `nd article section --id S-01 --file draft.md` 注册(悬空引用会被硬拒),
+   最后 `nd article assemble` 拼装 final.md(References 自动生成)。
+7. **交付**:`nd export --format md|json` 给下游(决策备忘、复盘)。
 
 ## 纪律(check 会盯着)
 

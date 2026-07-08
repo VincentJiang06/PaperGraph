@@ -17,12 +17,14 @@ VALID_NODE = {
 def test_schema_sets_are_frozen_and_named():
     assert schemas.SCHEMA_NAMES == (
         "envelope.v1", "session.v1", "node.v1", "synthesis.v1", "event.v1",
-        "docs.entry.v1", "recall.result.v1", "synthesis.v2")
-    assert set(schemas.SETS) == {"v1", "v2"}
-    assert schemas.CURRENT_SET == "v2"
-    h1, h2 = schemas.schema_set_hash("v1"), schemas.schema_set_hash("v2")
-    assert h1 != h2 and h1.startswith("sha256:")
-    assert schemas.set_name_of(h1) == "v1" and schemas.set_name_of(h2) == "v2"
+        "docs.entry.v1", "recall.result.v1", "synthesis.v2",
+        "article.outline.v1", "article.section.v1")
+    assert set(schemas.SETS) == {"v1", "v2", "v3"}
+    assert schemas.CURRENT_SET == "v3"
+    hashes = {name: schemas.schema_set_hash(name) for name in schemas.SETS}
+    assert len(set(hashes.values())) == 3
+    for name, h in hashes.items():
+        assert schemas.set_name_of(h) == name
     assert schemas.set_name_of("sha256:" + "0" * 64) is None
 
 

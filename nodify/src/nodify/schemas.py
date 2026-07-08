@@ -19,6 +19,7 @@ import jsonschema
 SCHEMA_NAMES = (
     "envelope.v1", "session.v1", "node.v1", "synthesis.v1", "event.v1",
     "docs.entry.v1", "recall.result.v1", "synthesis.v2",
+    "article.outline.v1", "article.section.v1",
 )
 
 # named frozen sets — order matters for the hash; never edit a released set
@@ -26,8 +27,11 @@ SETS: dict[str, tuple[str, ...]] = {
     "v1": ("envelope.v1", "session.v1", "node.v1", "synthesis.v1", "event.v1"),
     "v2": ("envelope.v1", "session.v1", "node.v1", "synthesis.v1", "event.v1",
             "synthesis.v2", "docs.entry.v1", "recall.result.v1"),
+    "v3": ("envelope.v1", "session.v1", "node.v1", "synthesis.v1", "event.v1",
+            "synthesis.v2", "docs.entry.v1", "recall.result.v1",
+            "article.outline.v1", "article.section.v1"),
 }
-CURRENT_SET = "v2"
+CURRENT_SET = "v3"
 
 
 @cache

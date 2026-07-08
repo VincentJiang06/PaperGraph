@@ -43,9 +43,9 @@ def test_v1_session_is_gated_and_upgrade_unlocks(session, tmp_path):
     assert any("nd upgrade" in e for e in env["errors"])
 
     env = session("upgrade")
-    assert env["data"]["from"] == "v1" and env["data"]["to"] == "v2"
+    assert env["data"]["from"] == "v1" and env["data"]["to"] == "v3"
     env = session("upgrade")            # idempotent
-    assert env["data"]["from"] == "v2"
+    assert env["data"]["from"] == "v3"
     _ingest(session, tmp_path)          # now allowed
 
 

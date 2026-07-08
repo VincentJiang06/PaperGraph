@@ -65,7 +65,7 @@ def set_name(session: dict[str, Any]) -> str:
 
 
 def require_set(session: dict[str, Any], minimum: str) -> None:
-    order = ["v1", "v2"]
+    order = ["v1", "v2", "v3"]
     if order.index(set_name(session)) < order.index(minimum):
         raise DomainError(
             [f"this capability needs schema set {minimum}; the session is on "

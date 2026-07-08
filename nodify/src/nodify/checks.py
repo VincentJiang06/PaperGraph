@@ -79,6 +79,13 @@ def run(paths: Paths, session: dict[str, Any]) -> tuple[list[str], list[str]]:
                 hard.append(f"{s['synthesis_id']}/{ref['ref_id']}: stored quote no longer "
                             f"matches the archived text of {doc_id} (tampering?)")
 
+    # --- article layer (V3) ---
+    from . import article
+    syn_ids = {s["synthesis_id"] for s in syn_records}
+    a_hard, a_soft = article.check(paths, nodes, syn_ids, entries)
+    hard += a_hard
+    soft += a_soft
+
     # --- soft: laziness made visible ---
     for n in nodes.values():
         kids = tree.children_of(nodes, n["node_id"])

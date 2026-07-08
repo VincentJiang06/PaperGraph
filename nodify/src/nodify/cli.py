@@ -269,6 +269,46 @@ def docs_for_node(node_id: str = typer.Argument(...),
     _run("docs for-node", root, session, go, mutating=False)
 
 
+article_app = typer.Typer(add_completion=False, no_args_is_help=True)
+app.add_typer(article_app, name="article")
+
+
+@article_app.command("outline")
+def article_outline(file: Path = typer.Option(..., "--file"),
+                    root: Optional[str] = _ROOT_OPT, session: Optional[str] = _SESSION_OPT) -> None:
+    def go(paths: Paths, sess):
+        from . import article
+        session_mod.require_set(sess, "v3")
+        record = article.set_outline(paths, store.read_json(file))
+        return ({"outline": record}, [record["outline_id"]],
+                f"outline: {record['title'][:80]} ({len(record['sections'])} sections)")
+    _run("article outline", root, session, go, mutating=True)
+
+
+@article_app.command("section")
+def article_section(id: str = typer.Option(..., "--id"),
+                    file: Path = typer.Option(..., "--file"),
+                    root: Optional[str] = _ROOT_OPT, session: Optional[str] = _SESSION_OPT) -> None:
+    def go(paths: Paths, sess):
+        from . import article
+        session_mod.require_set(sess, "v3")
+        record, warns = article.register_section(paths, id, file)
+        return ({"section": record}, [id],
+                f"section {id}: {record['word_count']} words, "
+                f"{len(record['cites'])} cites", warns)
+    _run("article section", root, session, go, mutating=True)
+
+
+@article_app.command("assemble")
+def article_assemble(root: Optional[str] = _ROOT_OPT, session: Optional[str] = _SESSION_OPT) -> None:
+    def go(paths: Paths, sess):
+        from . import article
+        session_mod.require_set(sess, "v3")
+        data, warns = article.assemble(paths)
+        return (data, [], f"assemble -> {data['file']}", warns)
+    _run("article assemble", root, session, go, mutating=True)
+
+
 def main() -> None:
     try:
         app(standalone_mode=False)
