@@ -16,7 +16,7 @@ from ..paths import Paths
 from ..queue import engine
 from ..schemas.docs import DocsPack, SourceProfile, Tier
 from ..store import jsonl
-from . import cache, ingest, matcher, pack, planner, registry
+from . import cache, ingest, matcher, pack, planner, registry, wave as wave_mod
 from ..validate.rules import v_src
 
 DOCS_REQUESTS = "docs/docs_requests.jsonl"
@@ -76,6 +76,9 @@ def request(paths: Paths, target_id: str, need: str, hints: list[str] | None, ac
         "schema_version": "docs_request.v1", "request_id": dr_id, "project_id": paths.project_id,
         "requested_by": "orchestrator", "target_id": target_id, "need": need,
         "search_hints": hints, "fingerprint": fp, "created_at": clock_now(),
+        # reactive / Orchestrator-initiated requests default single (docs/15);
+        # a wave is opened explicitly with `docs wave`.
+        "fan": False,
     }
     if hit:
         jsonl.append(paths.resolve(DOCS_REQUESTS), {**base, "status": "fulfilled", "fulfilled_by": "cache"})
@@ -97,6 +100,19 @@ def plan(paths: Paths, request_id: str) -> dict[str, Any]:
         raise DomainError([f"docs request not found: {request_id}"])
     plan_obj = planner.plan_for_request(paths, request_id)
     return {"plan": plan_obj, "plan_path": planner.plan_relpath(request_id)}
+
+
+def wave(paths: Paths, request_id: str, fan: bool = False, actor: str | None = None) -> dict[str, Any]:
+    """`docs wave --request <DR> [--fan]` (docs/15): turn a DocsRequest into a
+    wave — one member per angle, each a docs_queue item + angle plan + distinct
+    output — and append the search_wave.v1 record."""
+    rec = wave_mod.start_wave(paths, request_id, fan=fan, actor=actor)
+    return {
+        "wave_id": rec["wave_id"], "request_id": rec["request_id"], "round": rec["round"],
+        "status": rec["status"],
+        "members": [{"angle": m["angle"], "work_item_id": m["work_item_id"], "plan_id": m["plan_id"]}
+                    for m in rec["members"]],
+    }
 
 
 def ingest_result(paths: Paths, file_path: str, work_item: str) -> dict[str, Any]:

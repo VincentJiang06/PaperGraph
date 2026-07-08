@@ -219,3 +219,43 @@ def plan_for_request(paths: Paths, request_id: str, angle: str = DEFAULT_ANGLE) 
         )
         jsonl.write_json(p, plan)
     return json.loads(p.read_text(encoding="utf-8"))
+
+
+# --- S2 wave member plans (docs/15): angle-specific, distinct plan file ------
+
+
+def wave_plan_relpath(request_id: str, angle: str) -> str:
+    return f"{PLANS_DIR}/SP-{request_id}-{angle}.json"
+
+
+def load_wave_plan(paths: Paths, request_id: str, angle: str) -> dict[str, Any] | None:
+    p = paths.resolve(wave_plan_relpath(request_id, angle))
+    if not p.exists():
+        return None
+    return json.loads(p.read_text(encoding="utf-8"))
+
+
+def plan_for_wave_member(
+    paths: Paths, request_id: str, angle: str, extra_hints: list[str] | None = None
+) -> dict[str, Any]:
+    """Compile (once) or reprint the immutable angle-specific plan for a wave
+    member (docs/15). ``plan_id = SP-<request>-<angle>``; the file is distinct
+    per angle so members run fully parallel [V-WAVE-01]. ``extra_hints`` feed a
+    follow-up member's expected_source suggested_query into the query facets."""
+    p = paths.resolve(wave_plan_relpath(request_id, angle))
+    if not p.exists():
+        req = jsonl.latest_by_id(paths.resolve(DOCS_REQUESTS), "request_id").get(request_id)
+        if req is None:
+            raise DomainError([f"docs request not found: {request_id}"])
+        from ..graph import model as graph_model  # local: avoid import cycle
+
+        rec = graph_model.load(paths).record(req.get("target_id"))
+        target_scope = (rec.get("scope") or {}) if (rec and "node_id" in rec) else {}
+        hints = list(req.get("search_hints", []) or []) + list(extra_hints or [])
+        plan = compile_plan(
+            request_id, paths.project_id, angle, req.get("need", ""), hints,
+            target_scope, _contract_scope(paths),
+        )
+        plan = plan.model_copy(update={"plan_id": f"SP-{request_id}-{angle}"})
+        jsonl.write_json(p, plan)
+    return json.loads(p.read_text(encoding="utf-8"))

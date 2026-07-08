@@ -30,7 +30,24 @@ def list_items(paths: Paths, queue: str | None = None, status: str | None = None
             items = [i for i in items if i["queue_name"] == queue]
         if status:
             items = [i for i in items if i["status"] == status]
-    return {"items": items, "count": len(items)}
+    return {"items": items, "count": len(items), "waves": _wave_groups(paths)}
+
+
+def _wave_groups(paths: Paths) -> list[dict[str, Any]]:
+    """S2 (docs/15): `queue list` shows wave grouping — each wave's members
+    (docs_queue work items) plus its round/status, so an operator sees fanned
+    searches grouped, not as loose docs items."""
+    from ..docsdb import wave as wave_mod
+
+    groups: list[dict[str, Any]] = []
+    for w in wave_mod.load_waves(paths):
+        groups.append({
+            "wave_id": w["wave_id"], "request_id": w["request_id"], "round": w["round"],
+            "status": w["status"],
+            "members": [{"angle": m["angle"], "work_item_id": m["work_item_id"], "round": m.get("round", 1)}
+                        for m in w.get("members", [])],
+        })
+    return groups
 
 
 def claim(paths: Paths, queue: str, agent: str, wi_id: str | None = None) -> dict[str, Any]:

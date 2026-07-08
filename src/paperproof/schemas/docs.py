@@ -163,6 +163,9 @@ class DocsRequest(BaseModel):
     status: Literal["open", "fulfilled", "not_found"]
     fulfilled_by: Optional[str]
     created_at: str
+    # S2 (docs/15): fan the request into a per-angle wave. r3 sweep requests
+    # default fan=true; reactive needs_docs / `docs request` default single.
+    fan: bool = False
 
 
 class DocsResultDocument(BaseModel):

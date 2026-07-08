@@ -203,6 +203,35 @@ def ingest_result(paths: Paths, output_file: str, work_item_id: str, actor: str 
     dres_id = _next_dres_id(paths)
     extracted_by = (wi.get("lease") or {}).get("claimed_by") or "docs-worker"
 
+    assigned_docs, assigned_eus = _archive_result(paths, result, dres_id, extracted_by, raw)
+
+    status = "not_found" if result.not_found else "fulfilled"
+    _append_request_status(paths, result.request_id, status, dres_id)
+
+    # unblock the waiting re-proof: validated -> committed marks the docs item
+    # terminal so its dependent proof item's blockers resolve (docs/08 B7).
+    engine.validate_pass(paths, work_item_id, actor, detail={"dres_id": dres_id})
+    engine.commit_item(paths, work_item_id, actor)
+
+    # Evidence-arrival staleness (docs/04 r3, V-TASK-04): freshly archived
+    # evidence must reach pending proofs without human intervention. Mark stale
+    # every queued/blocked PROOF item whose target the new EUs are REQUESTED
+    # for or whose matcher output would now change — its next build-tasks run
+    # mints a fresh -rN pack. (Live run: a re-proof nearly ran on a 10-EU pack
+    # while 24 EUs existed; only a manual build-task rebuilt it.)
+    if assigned_eus:
+        _mark_stale_on_evidence_arrival(paths, assigned_eus, dres_id, actor)
+
+    return {"dres_id": dres_id, "assigned_doc_ids": assigned_docs, "assigned_evidence_ids": assigned_eus,
+            "request_id": result.request_id, "status": status}
+
+
+def _archive_result(paths: Paths, result: Any, dres_id: str, extracted_by: str, raw_result: dict[str, Any]) -> tuple[list[str], list[str]]:
+    """Archive a validated DocsResult(V1|V2)'s documents + evidence_units under
+    one DRES id: dedup documents by content_hash, write raw/text, assign DOC-/
+    EU- ids. Shared by ``ingest_result`` (one docs work item) and the S2
+    ``ingest_merged`` (one merged wave result). Returns (assigned_doc_ids,
+    assigned_evidence_ids)."""
     existing_docs = jsonl.latest_records(paths.resolve(DOCUMENTS), "doc_id")
     hash_to_id = {d["content_hash"]: d["doc_id"] for d in existing_docs}
     existing_doc_ids = [d["doc_id"] for d in existing_docs]
@@ -211,7 +240,7 @@ def ingest_result(paths: Paths, output_file: str, work_item_id: str, actor: str 
     # S3 Stage A-lite (docs/16): the registry LEARNS from every web document's
     # domain (tier via the fixed table, blocked_direct from the log). Learn first
     # so provenance.tier can be denormalized from the resulting profiles.
-    raw_result = raw if isinstance(raw, dict) else {}
+    raw_result = raw_result if isinstance(raw_result, dict) else {}
     doc_domains: list[tuple[str, str]] = [
         (dom, doc.source_type)
         for doc in result.documents
@@ -275,26 +304,44 @@ def ingest_result(paths: Paths, output_file: str, work_item_id: str, actor: str 
         )
         jsonl.append(paths.resolve(EVIDENCE_UNITS), record)
         assigned_eus.append(eid)
+    return assigned_docs, assigned_eus
 
+
+def ingest_merged(paths: Paths, request_id: str, merged_relpath: str, actor: str,
+                  extracted_by: str = "docs-merger") -> dict[str, Any]:
+    """S2 (docs/15): ingest the ONE merged docs_result.v2 a wave's merger emits.
+
+    Only the merged result is ingested — exactly one DRES per wave [V-WAVE-05];
+    per-member results stay in agent_outputs as provenance. The merged file is
+    code-produced from already-validated member results, so V-DR still runs (as
+    a corruption guard) but V-SP does NOT — the members already accounted for
+    their angle plans (V-SP is a per-member check). No queue transition happens
+    here: the member items are already terminal; fresh evidence reaches pending
+    proofs via V-TASK-04 evidence-arrival staleness."""
+    p = paths.project_dir / merged_relpath
+    raw = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+    failures = list(v_dr.raw_scan(raw))
+    existing = jsonl.latest_records(paths.resolve(DOCUMENTS), "doc_id")
+    archived_ids = {d["doc_id"] for d in existing}
+    archived_texts: dict[str, str] = {}
+    for d in existing:
+        tp = d.get("text_path")
+        if tp and paths.resolve(tp).exists():
+            archived_texts[d["doc_id"]] = paths.resolve(tp).read_text(encoding="utf-8")
+    failures += v_dr.check(raw, archived_doc_ids=archived_ids, archived_texts=archived_texts)
+    if failures:
+        env = to_envelope(failures)
+        raise DomainError(env["failed_rules"], data={"failed_rules": env["failed_rules"], "detail": env["detail"]})
+
+    result = DocsResultV2.model_validate(raw)
+    dres_id = _next_dres_id(paths)
+    assigned_docs, assigned_eus = _archive_result(paths, result, dres_id, extracted_by, raw)
     status = "not_found" if result.not_found else "fulfilled"
-    _append_request_status(paths, result.request_id, status, dres_id)
-
-    # unblock the waiting re-proof: validated -> committed marks the docs item
-    # terminal so its dependent proof item's blockers resolve (docs/08 B7).
-    engine.validate_pass(paths, work_item_id, actor, detail={"dres_id": dres_id})
-    engine.commit_item(paths, work_item_id, actor)
-
-    # Evidence-arrival staleness (docs/04 r3, V-TASK-04): freshly archived
-    # evidence must reach pending proofs without human intervention. Mark stale
-    # every queued/blocked PROOF item whose target the new EUs are REQUESTED
-    # for or whose matcher output would now change — its next build-tasks run
-    # mints a fresh -rN pack. (Live run: a re-proof nearly ran on a 10-EU pack
-    # while 24 EUs existed; only a manual build-task rebuilt it.)
+    _append_request_status(paths, request_id, status, dres_id)
     if assigned_eus:
         _mark_stale_on_evidence_arrival(paths, assigned_eus, dres_id, actor)
-
     return {"dres_id": dres_id, "assigned_doc_ids": assigned_docs, "assigned_evidence_ids": assigned_eus,
-            "request_id": result.request_id, "status": status}
+            "request_id": request_id, "status": status}
 
 
 def _mark_stale_on_evidence_arrival(paths: Paths, new_eu_ids: list[str], dres_id: str, actor: str) -> None:

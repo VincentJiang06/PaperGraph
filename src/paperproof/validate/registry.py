@@ -10,11 +10,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .envelope import Failure, to_envelope
-from .rules import v_commit, v_dr, v_exp, v_path, v_pr, v_q, v_sp, v_spec, v_src, v_sweep, v_task
+from .rules import v_commit, v_dr, v_exp, v_path, v_pr, v_q, v_sp, v_spec, v_src, v_sweep, v_task, v_wave
 
 __all__ = [
     "Failure", "to_envelope", "RULES", "rule_ids",
-    "v_spec", "v_path", "v_pr", "v_dr", "v_exp", "v_task", "v_q", "v_commit", "v_sweep", "v_sp", "v_src",
+    "v_spec", "v_path", "v_pr", "v_dr", "v_exp", "v_task", "v_q", "v_commit", "v_sweep", "v_sp", "v_src", "v_wave",
 ]
 
 
@@ -70,6 +70,11 @@ RULES: dict[str, Rule] = {
         _rule("V-SP-03", "docs_taken <= urls_seen; documents present => a productive entry"),
         _rule("V-SP-04", "not_found => every entry executed|blocked and none productive"),
         _rule("V-SP-05", "the referenced plan file exists and matches request_id"),
+        _rule("V-WAVE-01", "wave member outputs are pairwise-distinct declared paths"),
+        _rule("V-WAVE-02", "merger determinism; every merged doc/EU traces to a member"),
+        _rule("V-WAVE-03", "critic form closed-enum complete; expected_sources <=3; no documents/evidence_units"),
+        _rule("V-WAVE-04", "rounds <=2; every follow-up member cites its origin"),
+        _rule("V-WAVE-05", "only the merged result is ingested; exactly one DRES per wave"),
         _rule("V-EXP-01", "lane previous layer fully committed"),
         _rule("V-EXP-02", "based_on_snapshot current (whole graph)"),
         _rule("V-EXP-03", "<=12 nodes; layer = lane frontier + 1"),

@@ -54,6 +54,11 @@ SCENARIO_COVERED = {
     "V-SRC-02": "test_v_src.py::test_vsrc02_dangling_quoted_via",
     "V-SRC-03": "test_v_src.py::test_silent_tier_lowering_rejected_vsrc03 (+ CLI source set refusal)",
     "V-SRC-05": "test_v_src.py::test_vsrc05_dispatch_excerpt_completeness",
+    "V-WAVE-01": "test_s2_wave.py::test_wave_member_paths_distinct (pass+fail)",
+    "V-WAVE-02": "test_s2_wave.py::test_merge_* (goldens + determinism + traceability fail)",
+    "V-WAVE-03": "test_s2_wave.py::test_critic_* (closed-enum complete; smuggled evidence rejected)",
+    "V-WAVE-04": "test_s2_wave.py::test_wave_rounds_* (round cap + follow-up origin)",
+    "V-WAVE-05": "test_s2_wave.py::test_single_dres_* + test_wave_rmax_close",
 }
 
 
