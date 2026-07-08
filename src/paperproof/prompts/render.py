@@ -122,6 +122,7 @@ def _docs_member_prompt(paths: Paths, wi: dict[str, Any]) -> dict[str, Any]:
 
     text = _fill(load_template("docs_worker"), {
         "request_id": request_id,
+        "project_id": paths.project_id,
         "need": need,
         "search_hints": json.dumps(hints, ensure_ascii=False),
         "plan_id": plan.get("plan_id", ""),

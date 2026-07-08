@@ -63,9 +63,17 @@ def check(result_dict: dict[str, Any], plan: dict[str, Any] | None) -> list[Fail
             failures.append(Failure("V-SP-02", f"counter query {cq!r} was skipped (not executed and not blocked)"))
 
     # V-SP-03: docs_taken <= urls_seen per entry; documents present ⇒ ≥1 productive.
+    # urls_seen/docs_taken are integer counts (schema QueryLogEntry); a worker that
+    # emits a non-int (e.g. urls_seen as a list of URLs) is a clean V-SP-03 failure,
+    # never an INTERNAL crash in the comparison.
     for e in query_log:
-        dt = e.get("docs_taken") or 0
-        us = e.get("urls_seen") or 0
+        dt = e.get("docs_taken")
+        us = e.get("urls_seen")
+        dt_ok = isinstance(dt, int) and not isinstance(dt, bool)
+        us_ok = isinstance(us, int) and not isinstance(us, bool)
+        if not dt_ok or not us_ok:
+            failures.append(Failure("V-SP-03", f"query_log {e.get('qid')!r} urls_seen/docs_taken must be integer counts (got urls_seen:{type(us).__name__}, docs_taken:{type(dt).__name__})"))
+            continue
         if dt > us:
             failures.append(Failure("V-SP-03", f"query_log {e.get('qid')!r} docs_taken {dt} > urls_seen {us}"))
     if documents and not any(e.get("outcome") == "productive" for e in query_log):

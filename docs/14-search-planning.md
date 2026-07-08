@@ -84,7 +84,9 @@ V-SP-01  every plan qid appears exactly once in query_log; executed=false only
          with outcome=blocked + non-empty note
 V-SP-02  the plan's counter query was executed or blocked — never skipped
 V-SP-03  docs_taken ≤ urls_seen per entry; Σdocs_taken ≥ |documents| is not
-         required (dedup) but |documents| > 0 requires ≥1 productive entry
+         required (dedup) but |documents| > 0 requires ≥1 productive entry.
+         urls_seen/docs_taken are integer counts — a non-integer (e.g. a worker
+         that logs urls_seen as a list of URLs) is a V-SP-03 fail, not a crash
 V-SP-04  not_found=true requires every entry executed|blocked and 0 productive
 V-SP-05  the plan file referenced by the result exists and matches request_id
 ```

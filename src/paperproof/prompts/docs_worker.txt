@@ -8,7 +8,9 @@ inputs) first, then the web if available.
 
 THE PLAN ({plan_id}, immutable): execute EVERY query in the attached SearchPlan.
 Account for each qid in query_log exactly once: {qid, executed, outcome ∈
-productive|empty|blocked|offtopic, urls_seen, docs_taken, note}. A query you could
+productive|empty|blocked|offtopic, urls_seen, docs_taken, note}. urls_seen and
+docs_taken are INTEGER COUNTS (e.g. urls_seen: 9, docs_taken: 2) — NOT lists; put
+any URL list in note if you want it. A query you could
 not run is executed=false, outcome=blocked, with a reason in note (never silently
 skip one). The plan's counter query is MANDATORY — run it or record it blocked.
 Extra queries you run beyond the plan are welcome; log them with qid "X1", "X2"…
@@ -20,29 +22,63 @@ its recorded workaround. Workarounds are lawful public access ONLY — mirrors,
 web archives, secondary sources that quote the primary verbatim, local PDF text
 extraction. Never bypass a paywall or login.
 
-For each useful source add a documents[] entry: {title, source_type ∈
-peer_reviewed|official_report|working_paper|news|dataset|user_notes,
-origin {kind: user_provided|web, path or url}, citation_key, and for web
-sources the full extracted text INLINE as "text"}.
-Extract evidence_units[]: {doc_ref: <index into your documents> OR doc_id:
-<existing archived id>, location, kind: quote|paraphrase, quote_or_paraphrase,
-summary, support_direction ∈ supports|refutes|context, can_cite_for (≥1),
-cannot_cite_for (≥1), scope {period?, region?}}.
+OUTPUT — write ONE docs_result.v2 JSON object to {output_file}. It has EXACTLY
+these 7 top-level keys and NO others (do NOT echo dispatch metadata such as
+plan_id, angle, or work_item_id, and add no *_detail helper keys):
+  schema_version : "docs_result.v2"
+  request_id     : "{request_id}"
+  project_id     : "{project_id}"
+  documents      : [ … ]        # sources you used (shape below)
+  evidence_units : [ … ]        # extracted evidence (shape below)
+  not_found      : true | false
+  query_log      : [ … ]        # one entry per plan qid (see THE PLAN above)
 
-Quotes must be verbatim from the source. Never invent sources or quotes. Never
-judge graph claims — no verdict/strength/lifecycle language. You assign NO ids.
-If nothing usable exists: not_found=true, empty lists, and a query_log whose
+documents[] — one object per useful source, EXACTLY these keys. You assign NO
+ids/hashes: the ingestor mints doc_id, content_hash, text_path — so do NOT add
+doc_id, doc_index, content_hash, retrieved, or note here:
+  title        : str
+  source_type  : peer_reviewed|official_report|working_paper|news|dataset|user_notes
+  origin       : {kind: user_provided|web, path|url: str}
+  citation_key : str
+  text         : str            # REQUIRED for web sources: full extracted text, inline
+
+evidence_units[] — one object per unit, EXACTLY these keys. NO eu_id /
+evidence_id — the ingestor assigns them. Reference a NEW document by its 0-based
+index in documents[] via doc_ref; reference an ALREADY-ARCHIVED one by doc_id —
+give EXACTLY ONE of the two:
+  doc_ref | doc_id     : int (index into documents[]) | str (existing archived id)
+  location             : str        # page / section / paragraph
+  kind                 : quote | paraphrase
+  quote_or_paraphrase  : str        # VERBATIM when kind=quote
+  summary              : str
+  support_direction    : supports | refutes | context
+  can_cite_for         : [str, …]   # ≥1
+  cannot_cite_for      : [str, …]   # ≥1
+  scope                : {period?: str, region?: str}
+
+query_log[] — one entry per plan qid (plus your extras X1,X2…), EXACTLY:
+  {qid: str, executed: bool, outcome: productive|empty|blocked|offtopic,
+   urls_seen: int, docs_taken: int, note: str}
+
+A kind=quote is a CONTIGUOUS verbatim span copied character-for-character from
+that document's own text — the ingestor rejects (V-DR-05) any quote it cannot
+find verbatim in the text. Do NOT stitch passages with "…"/"..." and do NOT
+condense: if you need to elide or join separate passages, use kind=paraphrase.
+Never invent sources or quotes. Never
+judge graph claims — no verdict/strength/lifecycle language. If nothing usable
+exists: not_found=true, empty documents/evidence_units, and a query_log whose
 every entry is executed or blocked with none productive — an honest not_found
 beats a stretched source.
 
 Coverage (r3): target 2-5 documents and 4-10 evidence units — one thin source
-for a claim with a live literature is under-searched. DISCONFIRMING DUTY: if
-the literature contains evidence AGAINST the claim, capture it
-(support_direction refutes|context); never cherry-pick. FETCH RESILIENCE:
-official-statistics sites often block automated fetches (403) — fall back to
-mirrors, archived copies, or secondary sources quoting the primary figures,
-and extract PDF text locally (e.g. pdftotext) rather than abandoning the angle.
+for a claim with a live literature is under-searched. DISCONFIRMING DUTY: if the
+literature contains evidence AGAINST the claim, capture it (support_direction
+refutes|context); never cherry-pick. FETCH RESILIENCE: official-statistics sites
+often block automated fetches (403) — fall back to mirrors, archived copies, or
+secondary sources quoting the primary figures, and extract PDF text locally
+(e.g. pdftotext) rather than abandoning the angle.
 
-Write docs_result.v2 JSON (documents, evidence_units, not_found, query_log) to
-{output_file}. Allowed writes: {output_file}, agent_notes/**. Then stop. Your
-chat text is discarded.
+{output_file} is RELATIVE TO THE PROJECT DIRECTORY (data/projects/{project_id}/),
+NOT your shell's current working directory; resolve it against the project dir.
+Allowed writes: {output_file}, agent_notes/**. Then stop. Your chat text is
+discarded.

@@ -148,6 +148,29 @@ def test_hostile_fabricated_counts_rejected_by_v_sp_03():
     assert fired == ["V-SP-03"], fired
 
 
+def test_non_int_counts_are_clean_v_sp_03_not_a_crash():
+    """Live-run regression (ai-jobs-2 wave WV-001): a DocsWorker emitted
+    ``urls_seen`` as a LIST of URLs, but QueryLogEntry.urls_seen is an int. The
+    ``dt > us`` compare used to raise an INTERNAL ``TypeError: '>' not supported
+    between 'int' and 'list'`` at ingest; it must instead surface a clean V-SP-03
+    validate_fail so the member takes the honest retry path."""
+    result = {
+        "schema_version": "docs_result.v2",
+        "request_id": "DR-001",
+        "project_id": "p4-ldi",
+        "documents": [],
+        "evidence_units": [],
+        "not_found": False,
+        "query_log": [
+            {"qid": "Q1", "executed": True, "outcome": "productive",
+             "urls_seen": ["https://a.example", "https://b.example"],
+             "docs_taken": 1, "note": ""}
+        ],
+    }
+    fired = [f.rule_id for f in v_sp.check(result, _counter_plan())]  # must NOT raise
+    assert fired == ["V-SP-03"], fired
+
+
 # --- T-S1-3: `docs plan` emits and re-emits the plan byte-identically -------
 
 

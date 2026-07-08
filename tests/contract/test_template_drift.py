@@ -33,6 +33,35 @@ def test_docs_worker_carries_coverage_and_disconfirming_duty():
     assert "DISCONFIRMING" in text
 
 
+def test_docs_worker_enumerates_the_exact_docs_result_v2_contract():
+    """Root guard (live-run ai-jobs-2 WV-001): five DocsWorkers wrote schema-INVALID
+    results — they echoed dispatch metadata (plan_id/angle/work_item_id) and invented
+    ids (eu_id, doc_index) — because the template never enumerated the exact output
+    keys. This pins the docs_worker template TO the schema: every key the worker must
+    emit at each level is named, and the envelope-echo + id-forgery keys are named as
+    forbidden. If the docs_result.v2 schema gains/loses a field, this test fails until
+    the template is re-synced (docs/03 / docs/08 boundary contract)."""
+    from paperproof.schemas.docs import (
+        DocsResultV2, DocsResultDocument, QueryLogEntry,
+    )
+
+    text = prompts.load("docs_worker")
+    for field in DocsResultV2.model_fields:            # 7 top-level keys
+        assert field in text, f"docs_worker omits top-level key {field!r}"
+    for field in DocsResultDocument.model_fields:      # documents[] keys
+        assert field in text, f"docs_worker omits document key {field!r}"
+    for field in QueryLogEntry.model_fields:           # query_log[] keys
+        assert field in text, f"docs_worker omits query_log key {field!r}"
+    # evidence_unit keys the worker authors (doc_ref/doc_id are the XOR reference).
+    for field in ("doc_ref", "doc_id", "location", "kind", "quote_or_paraphrase",
+                  "summary", "support_direction", "can_cite_for", "cannot_cite_for",
+                  "scope"):
+        assert field in text, f"docs_worker omits evidence_unit key {field!r}"
+    # the exact fields the live-run workers wrongly emitted must be named+forbidden.
+    for forbidden in ("plan_id", "angle", "work_item_id", "eu_id", "doc_index"):
+        assert forbidden in text, f"docs_worker must name+forbid {forbidden!r}"
+
+
 def test_critic_worker_template_pinned(project=None):
     """F3 (docs/10 §5, docs/15): the coverage-critic template ships and is the
     5th registered template, carrying its READ-ONLY + closed-form contract and a
