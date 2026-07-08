@@ -3,17 +3,35 @@
 Resume point after any compaction/crash: re-read this file + contract.md + log.md.
 Do NOT trust a session summary.
 
-## >>> CURRENT STATE (2026-07-08) <<<
-SEARCH PROGRAM (S1-S5, v2) COMPLETE + gated, THEN v2.1 (m10) consistency+live-run-readiness pass
-COMPLETE + GATED. HEAD 9f8b264 (pushed GitHub). Gate tags: gate/m6-s1, m6b, m7, m8, m9, m10-v2.1-consistency.
-574 default + 4 semantic tests green.
-  - m10: a Fable 4-reviewer audit found ~40 cross-set production-drive defects; Agent A (docs) +
-    Agent B (code) fixed ALL of them (D1-D15 / F1-F15). Fresh adversarial evaluator independently
-    re-ran all 10 confirmed repros -> FIXED; failed only on 2 doc-sync residuals -> Orchestrator
-    reconciled (apply.py human_review detail; docs/17+00 fold source iv) -> GATE PASS.
-  - The whole search program + its cross-set production drive path is now spec-consistent and
-    CLI-complete (docs wave-member/wave-resolve/render-prompt land the drive path; no Python-API
-    workarounds; human_review a legal CommitAction; reactive-saturation livelock closed).
+## >>> CURRENT STATE (2026-07-08, post-audit, m11 in flight) <<<
+Search program S1-S5 (v2) COMPLETE + gated (gate/m6-s1,m6b,m7,m8,m9); v2.1 consistency pass GATED
+(gate/m10-v2.1-consistency). A dry run drove the real CLI end-to-end (init->accept->layer-0->wave
+(request --fan / wave --fan / wave-member / auto merge+critic / wave-resolve)->proof->triangulated
+spine fact->verify exit0) — the v2.1 wave drive chain WORKS via CLI (only 2 halt-and-fix were my own
+input typos, no product bug). THEN a 9-component Fable audit (all Opus/Fable) verified the CORE
+ALGORITHMS ALL CORRECT and found ONE coherent theme: ENFORCEMENT-WIRING GAPS — documented+registered
++unit-tested V-rules NOT run on the runtime path.
+
+NOW IN FLIGHT — stage m11-enforcement-wiring (2 parallel Opus worktree agents):
+  Agent B (code, a63c8aa50897199dd): wire P1 V-EDGE-03, P2 V-EDGE-01, P3 V-NODE-04-rejected-parent (all
+    into graph_record_checks), P4 spine inactive-source guard (graph/model.py), P5 V-GATE-01 (expander +
+    verify), P6 verify schema-sweeps specs/*.json, P7 V-COV-02 at bundle build, P8 latest_proof_result_id
+    crossref, P9 +2 decision-table goldens (26 rows), P10 trivial (queue fail default, dead _stub). Each +
+    a regression test; keep 574 default + 4 semantic green; no weakened tests.
+  Agent A (docs, aa4458642cac0cb29): docs/00 v2.1.1 changelog + docs/11 §14 worklist + reconciliations
+    D-a docs/17 counter clause, D-b 24->26 rows, D-c docs/16 local-curation, D-d docs/15 canonical_url,
+    D-e V-AUD-02 wording, D-f docs/01 in_scope, D-g queue fail; Theme-3 lows recorded as follow-ups.
+
+RESUME when both m11 agents complete (they are BACKGROUND; a task-notification re-invokes me):
+  1. Merge Agent A (docs) then Agent B (code) — files disjoint, expect clean; run full gate (default + semantic).
+  2. Dispatch a fresh OPUS adversarial Evaluator (re-run each P1-P10 repro: unaccepted-expand blocked,
+     dup-edge caught, verify exit-3 on bad contract + dangling ptr, self-loop caught, spine guard, etc.)
+     + weakened-test audit + doc-sync. On PASS -> tag gate/m11-enforcement-wiring, push GitHub.
+  3. THEN still owed (deferred, user-authorized autonomous): the FULL live run (see below). Model policy:
+     use OPUS for all orchestration + debug + fix agents.
+THEME 3 follow-ups (NOT fixed, low): committer cross-lock hazard; item stuck in validating (no auto-recovery);
+empty-Actors scope guard. Everything below this banner is OLDER history.
+
 
 ## RESUME — ONLY THE LIVE RUN REMAINS (deferred for session budget; user authorized autonomous start-to-finish)
 Run project ai-jobs-2 (fresh RE-INIT for the current dir structure), topic examples/topic-ai-employment.md,
