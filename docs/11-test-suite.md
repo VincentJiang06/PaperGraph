@@ -476,3 +476,24 @@ T-S4-back  the full prior suite stays green with the floor/cap SUPERSEDED (S7 ev
         must now satisfy the role-profile floor incl. triangulation; S2 saturation replaces
         the born-dead cap path in test_s2/test_r3_core cap tests -- migrate, do not weaken).
 ```
+
+## 12c. Search Program Worklist — S5 Semantic Retrieval (Stage C / v2, adopted 2026-07-08; docs/18)
+
+Semantic is an upgrade: the DEFAULT suite (no `[semantic]` extra) must stay green on keyword;
+model-requiring tests carry the `semantic` marker and skip when onnxruntime/model are absent.
+
+```text
+T-S5-1  determinism: same corpus embedded twice => identical vectors (byte-identical parquet)
+        [V-SEM-01]; model pinned (name, revision, weights_sha256) in model.json + every hybrid
+        pack; embedding = mean-pool+L2-normalize with the e5 prefixes. [semantic marker]
+T-S5-2  cross-lingual golden: the ai-jobs Chinese topic sentence retrieves an English
+        reinstatement EU above tau=0.35. [semantic marker]
+T-S5-3  paraphrase golden: a paraphrase pair with ZERO keyword overlap scores >= tau. [semantic]
+T-S5-4  degrade labeling: model absent => pack marked keyword.v1 + a warning in the build
+        envelope (NEVER a silent fallback) [V-SEM-03]. (Runs in the DEFAULT suite.)
+T-S5-5  advisory-only: a semantically-similar previously-fulfilled request must NOT fulfill a
+        new one (cache stays fingerprint-only) [V-SEM-04]. (Default suite.)
+T-S5-back  the DEFAULT suite stays green WITHOUT the semantic deps: hybrid-scoring math runs on
+        synthetic vectors; docs_pack.v2 round-trips; keyword.v1 packs are first-class; verify
+        recomputes retrieval only when the pinned model is present (warning), never a hard fail.
+```

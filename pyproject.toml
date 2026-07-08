@@ -18,6 +18,10 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "httpx>=0.27"]
+# S5 semantic retrieval (docs/18): an UPGRADE, not a base dependency — the code
+# degrades to keyword matching (loudly) when these are absent. Deterministic
+# fp32 CPU embeddings via onnxruntime (no torch).
+semantic = ["onnxruntime>=1.17", "numpy>=1.26", "pyarrow>=15", "tokenizers>=0.15"]
 
 [project.scripts]
 paperproof = "paperproof.cli.app:main"
@@ -38,4 +42,5 @@ markers = [
   "integration: multi-module scenario tests (S1-S8)",
   "live: real Claude workers - milestone acceptance only, never CI/default",
   "slow: concurrency/fuzz tests (>5s)",
+  "semantic: S5 tests needing the vendored embedding model + onnxruntime (skipped when absent)",
 ]

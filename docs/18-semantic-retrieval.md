@@ -1,6 +1,6 @@
 # 18 S5 — Semantic Retrieval (hybrid matching, cross-lingual recall)
 
-**Status: design-frozen (Stage C / v2). Binding only after a docs/00 adoption entry.**
+**Status: ADOPTED / BINDING (Stage C, v2) — docs/00 "Search Program Adoption — S5 Semantic Retrieval" (2026-07-08); worklist docs/11 §12c. Model pin: multilingual-e5-small (onnxruntime, 384-dim). COMPLETES the search program.**
 
 The keyword matcher is deterministic and cheap, but the run showed both failure
 modes: it over-matched on period/domain tokens (every pack got all 24 EUs

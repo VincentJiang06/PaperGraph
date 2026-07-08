@@ -316,3 +316,34 @@ S3 Stage B (docs/16 V-SRC-04) becomes NORMATIVE: a spine fact/mechanism binding 
 Still design-frozen: S5 (docs/18, v2 -- hybrid embedding retrieval, needs a vendored offline
 model) is the final set, adopted next.
 ```
+
+## Search Program Adoption — S5 Semantic Retrieval (2026-07-08, Stage C / v2) — COMPLETES the program
+
+Adopts S5 (docs/18) as **binding** — the final set. Hybrid keyword+embedding retrieval with
+cross-lingual (CJK<->EN) recall. Semantic is an UPGRADE, not a base dependency: the code
+degrades to keyword matching LOUDLY when the model/deps are absent (V-SEM-03).
+
+```text
+S5 becomes NORMATIVE (docs/18):
+  Model     multilingual-e5-small (384-dim), run via onnxruntime (deterministic fp32 CPU,
+            NO torch). Pinned in db/semantic/model.json (name, revision, weights_sha256);
+            fetched-once into gitignored db/semantic/ + hash-verified (NOT committed --
+            sidesteps GitHub 100MB). Embedding = mean-pool(last_hidden_state, attention_mask)
+            then L2-normalize; e5 "query:"/"passage:" prefixes. (Probe-validated: ZH<->EN
+            cos 0.88 > unrelated 0.74; byte-identical re-embed.)
+  Hybrid    score = 0.6*sscore + 0.4*kscore; include iff sscore>=0.35 OR kscore>=2-tokens;
+            order (score desc, id asc); pack = REQUESTED U top-12 (r3 rule UNCHANGED --
+            semantic feeds the MATCHED half only). tau=0.35, alpha=0.6 are contract constants.
+  Cluster   near-dup EUs (cosine>=0.92) cluster ONLY within a document; representative
+            deterministic (longest can_cite_for, tie=lowest id) [V-SEM-05].
+  Deps      OPTIONAL extra `semantic` = onnxruntime,numpy,pyarrow,tokenizers (pyproject).
+            db/semantic/eu_vectors.parquet is derived/rebuildable like all db/.
+  No-auto   similarity NEVER auto-fulfills a DocsRequest (cache stays fingerprint-only);
+            advisory top-3-similar leads are prompt-only [V-SEM-04].
+  Rules     V-SEM-01..05 join the registry (docs/09 §V-SEM).
+  CLI       `db semantic rebuild|check`; `docs search --semantic`.
+  Schemas   docs_pack.v2 (retrieval block: matcher, model, alpha/tau, per-EU scores as
+            fixed-6-decimal strings for byte-determinism); docs_pack.v1 stays readable.
+
+After S5, the SEARCH PROGRAM (S1-S5) is fully adopted and implemented -- v2 complete.
+```
