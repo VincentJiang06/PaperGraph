@@ -168,17 +168,17 @@ SUPERSEDES the m5 flat floor + docs cap. Baseline 489 @ cd8782e (Stage A). Depen
 + S2 waves (angle folding). Reworks graph/ (MSA-4), freeze/ (V-FRZ-02 + V-SRC-04), committer/ (cap->saturation),
 compiler/ (missing_evidence floor), docsdb/ (ledger), context_pack (coverage block), ui readmodel/api.
 
-- [ ] A44 (T-S4-1/2) DERIVED coverage ledger: deterministic fold over query_logs(S1)+waves(S2)+EUs+
+- [x] A44 (T-S4-1/2) DERIVED coverage ledger: deterministic fold over query_logs(S1)+waves(S2)+EUs+
         bindings => identical ledger [V-COV-01]; `docs coverage [--node]` + /api/coverage; saturated =
         rounds>=2 AND every mandatory angle not no_attempt AND new_docs_last_round=0 (truth table) · test_v_cov · m8
-- [ ] A45 (T-S4-3) SATURATION replaces the docs cap: fresh-evidence target NOT dead-lettered pre-saturation;
+- [x] A45 (T-S4-3) SATURATION replaces the docs cap: fresh-evidence target NOT dead-lettered pre-saturation;
         saturated+floor-unmet => born-dead reason=saturated [V-COV-03]; the m5 verdict-count cap is REMOVED
         (migrate test_r3_core cap test to saturation, not weakened) · test_v_cov + committer · m8
-- [ ] A46 (T-S4-4) ROLE-PROFILE floors supersede the flat >=2 floor: MSA-4/V-FRZ-02/compiler delegate to the
+- [x] A46 (T-S4-4) ROLE-PROFILE floors supersede the flat >=2 floor: MSA-4/V-FRZ-02/compiler delegate to the
         docs/17 table (spine_fact >=2EU/>=2docs/TRIANGULATED/counter; bridge >=3docs; non-spine >=1; def/q/thesis
         none); 1-binding OR non-triangulated spine node FAILS msa-check AND freeze; V-COV-05 narrow-inheritance;
         ContextPack embeds the ledger line [V-COV-02] · test_v_cov + test_v_frz + graph msa · m8
-- [ ] A47 (T-S4-tri + back) V-SRC-04 triangulation at freeze (same-publisher T3 pair fails; T1+T4 passes;
+- [x] A47 (T-S4-tri + back) V-SRC-04 triangulation at freeze (same-publisher T3 pair fails; T1+T4 passes;
         T5-only fails) + msa-check report; NO REGRESSION: S7 lifted to satisfy the role-profile floor incl.
         triangulation; full suite green with floor+cap superseded · test_v_src + test_s7 + full suite · m8
 
