@@ -220,61 +220,29 @@ OPERATOR ERGONOMICS: `validate` completes claimed items implicitly (shrinks
   (arrays! word counts!) — the run's V-PR-01/V-PR-10 slips (QE-000017/89).
 ```
 
-## Search Program Adoption — Stage A begins with S1 (2026-07-08)
+## Search Program Adoption (2026-07-08, Stage A)
 
-Per docs/13 §Normativity, a search-program set becomes binding only via a docs/00
-changelog entry plus a docs/11 worklist. This entry **adopts S1 (docs/14) as
-binding** — the first set of Stage A (v1.1), which fixes the ai-jobs run's core
-"too little, unaccountable search" failure. S1 makes evidence search *accountable*:
-code compiles a deterministic SearchPlan from a DocsRequest and the worker must
-account for every planned query.
+The design-frozen search program (docs 13–18) is adopted in stages; this is the
+first adoption entry, so the referenced sets are now **binding** (docs/13
+§Normativity). Later documents stay design-frozen until their own entry lands.
 
 ```text
-S1 becomes NORMATIVE (docs/14 status → binding):
-  Schemas   search_plan.v1 (new); docs_result.v2 (query_log replaces the v1
-            search_log). The schema registry keeps v1 readable; the DocsWorker now
-            EMITS v2. V-DR-06's "search_log non-empty" is re-expressed on v2 as
-            "query_log non-empty" (a v1 result still validates against the v1 rule).
-  Compiler  the deterministic plan compiler (docs/14): facets from the request
-            need + target/contract scope; fixed per-angle query templates; the
-            counter query is MANDATORY in every plan; same request ⇒ byte-identical
-            plan (golden-testable).
-  Rules     V-SP-01..05 join the registry (docs/09 gains a V-SP block); the
-            rule-coverage meta-test then demands their fixtures.
-  CLI       `docs plan --request <DR-id>` (emit/reprint the compiled plan) — an
-            option-free addition to the existing `docs` group, no new top-level
-            command family.
-  Storage   docs/plans/SP-<request>.json, immutable, embedded in the dispatch
-            prompt like every other bundle artifact.
-  Prompts   the docs_worker template gains the "execute every planned query;
-            account for each qid; blocked needs a reason; extras welcome as X-ids"
-            block (docs/14).
-  Tests     docs/11 §12 (new) carries the T-S1-1/2/3 worklist.
+ADOPTED — S1 (docs/14) search planning: deterministic SearchPlans + per-query
+  accounting (search_plan.v1; docs_result.v2 query_log).
 
-ALSO ADOPTED in the same push — S3-lite (docs/16, registry + recipes only):
-```text
-S3-lite becomes NORMATIVE (docs/16 Stage A-lite → binding; Stage B triangulation
-V-SRC-04 stays frozen):
-  Schemas   source_profile.v1 (new); document.v1 → document.v2 (adds a
-            `provenance` block: retrieved_at, fetch_method ∈ workaround-kinds+direct,
-            tier ∈ enum, quoted_via). Registry keeps v1 readable; ingestor writes v2.
-  Learning  the ingestor upserts a domain's SourceProfile on every ingest — tier
-            via the fixed source_type→tier table, blocked_direct from the query_log's
-            blocked notes (S1 artifact — the two Stage-A sets integrate here), fetch
-            method from provenance. Workers RECEIVE matched profiles in the prompt.
-  Rules     V-SRC-01/02/03/05 join the registry (V-SRC-04 triangulation is Stage B,
-            NOT adopted). docs/09 gains a V-SRC block.
-  CLI       `docs source list|set` (human tier/workaround curation; set = append) on
-            the existing `docs` group.
-  Storage   docs/sources.jsonl.
-  Prompts   docs_worker gains a read-only REGISTRY block (lawful public-access
-            workarounds only — mirrors/archives/secondary-quote/local-PDF; never
-            paywall bypass).
-  Tests     docs/11 §12 carries T-S3-1..4 (minus triangulation).
+ADOPTED — S3 Stage A-lite (docs/16) source registry, tiers & provenance:
+  source_profile.v1 (docs/sources.jsonl, append-only latest-per-domain) and
+  document.v2 (= document.v1 + a provenance block; v1 stays readable). The Docs
+  ingestor LEARNS a SourceProfile per web domain on every ingest — tier from the
+  fixed source_type→tier table (docs/16), blocked_direct from the search/query
+  log's blocked notes (read defensively from whichever log the docs-result
+  carries), fetch method from provenance. `docs source list|set` (a subgroup of
+  the existing `docs` group) curates tiers/workarounds; the DocsWorker prompt
+  gains a read-only REGISTRY block (lawful public-access workarounds only). New
+  rules V-SRC-01/02/03/05 (provenance present; secondary_quote carrier exists;
+  registry appends with no silent tier-lowering; dispatch-excerpt completeness).
 
-STILL design-frozen (NOT binding): S2 (docs/15) is the next sub-stage of Stage A
-(built after S1); S4 (docs/17, v1.2 — SUPERSEDES the r3 flat floor + docs cap with
-role-profile floors + saturation) and S5 (docs/18, v2 — needs a vendored embedding
-model) remain future and get explicit adoption entries when built. Until each is
-adopted, docs/10 stays the authority on what is implemented.
+NOT ADOPTED — S3 Stage B triangulation (V-SRC-04), S2 (docs/15), S4 (docs/17),
+  S5 (docs/18) remain design-frozen. V-SRC-04 and the docs/16 triangulation
+  section are informational until a later adoption entry.
 ```

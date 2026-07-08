@@ -232,6 +232,24 @@ V-SP-04  not_found=true requires every entry executed|blocked and 0 productive
 V-SP-05  the plan file referenced by the result exists and matches request_id
 ```
 
+### V-SRC (source registry & provenance — S3 Stage A-lite, docs/16)
+
+```text
+V-SRC-01  every ingested document carries provenance (retrieved_at, fetch_method,
+          tier); tier ∈ enum. Structural on document.v2 (the ingestor writes v2
+          going forward); document.v1 is legacy and exempt. Swept by `verify`.
+V-SRC-02  a secondary_quote document names quoted_via, and the carrier document
+          exists in the archive; any quoted_via must resolve
+V-SRC-03  registry updates are appends (latest-per-domain wins); a version that
+          changes a domain's tier carries a tier_note — no silent tier-lowering.
+          Auto-learning only ever RAISES a tier (keeps the most authoritative
+          source_type seen); `docs source set` may lower only WITH a note
+V-SRC-05  the dispatch prompt's registry excerpt contains every T1 profile + every
+          profile whose domain matches a request facet (bundle completeness) —
+          a dispatch-time check, not a stored-state rule
+V-SRC-04  (Stage B — NOT ADOPTED) spine-binding triangulation; not built in v1
+```
+
 ### V-COMMIT
 
 ```text

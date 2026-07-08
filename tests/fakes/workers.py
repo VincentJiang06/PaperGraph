@@ -15,9 +15,14 @@ queue/commit locks (S4).
 from __future__ import annotations
 
 import json
+import re
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any
+
+# Block-signal regex mirroring docsdb/registry.py — a fake worker that hit a 403
+# carries the note into its v2 query_log so registry learning sees it.
+_BLOCK_RE = re.compile(r"\b(403|blocked|block|forbidden|denied|captcha|429)\b", re.IGNORECASE)
 
 from paperproof.committer import apply as committer
 from paperproof.compiler import draft_map as draft_map_mod
@@ -155,6 +160,13 @@ class FakeDocsWorker:
                 "docs_taken": n if productive else 0,
                 "note": "",
             })
+        # A worker that hit a blocked fetch records it in its accounting; carry any
+        # v1-style search_log block note into the v2 query_log as a blocked extra
+        # (docs/14 X-ids) so the registry's blocked-signal learning sees it.
+        blocked = [str(s) for s in (spec.get("search_log") or []) if _BLOCK_RE.search(str(s))]
+        for j, note in enumerate(blocked, start=1):
+            log.append({"qid": f"X{j}", "executed": False, "outcome": "blocked",
+                        "urls_seen": 0, "docs_taken": 0, "note": note})
         return log
 
 

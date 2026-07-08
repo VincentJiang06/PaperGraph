@@ -84,3 +84,106 @@ post-merge gate `.venv/bin/python -m pytest -q` from the main worktree will coll
 and run test_v_sp.py against identical src → 437 green. In-worktree I ran it as
 `PYTHONPATH=src .venv/bin/python -m pytest -q` (and confirmed the same result via
 the shared editable install).
+
+---
+
+## Evaluator verdict
+
+Fresh adversarial Evaluator, main working tree @ HEAD 6072f39 (437 tests). I did
+not trust the shipped fixtures — every probe below uses inputs I constructed.
+
+**Verdict: FAIL — one doc-sync defect (doc-only fix). The S1 *implementation* is
+fully correct: I independently re-proved A33–A36 end to end. The gate cannot
+close as-is because a binding deviation from `docs/` was shipped undocumented,
+and the m6 gate + CLAUDE.md both require the doc amendment in the same change.
+The maker report's "Doc-sync: None required" is wrong.**
+
+### Independently verified (all green)
+- `.venv/bin/python -m pytest -q` in a clean shell → **437 passed**, 1 warning.
+  `--collect-only` → **437 collected**, nothing skipped/xfailed. S1 subset
+  (test_search_plan + test_v_sp + test_rule_coverage) = 35 passed.
+- `.venv/bin/python -m paperproof verify` on a project I built through the full
+  v2 flow (init → spec → seed → `docs request` → claim → `docs ingest-result` a
+  not_found docs_result.v2) → **exit 0, ok:true**.
+
+### Per-probe (my own inputs, not shipped fixtures)
+- **Compiler determinism**: same request compiled twice → byte-identical (ASCII
+  and CJK). PASS.
+- **CJK need**: `人工智能 就业 人工智能` → core `['人','工','智','能','就','业']`
+  (per-char, freq-ranked, ≤6 cap), region `中国` casefolded into scope, counter
+  present, recompile byte-identical. PASS.
+- **Core facet law**: ≤6 cap honored (8 distinct tokens → first 6); tie =
+  first-occurrence; scope token `usa` removed from core; freq-then-firstocc order
+  (`beta beta alpha…` → `['beta','alpha',…]`). Matches docs/14 formula + planner.py
+  operationalization block. PASS.
+- **Change one need token** → plan bytes differ. PASS.
+- **Counter mandatory**: present + correct suffix (`decline criticism`) for ALL
+  five angles incl. non-counter (news/academic/industry). With 12 hints the plan
+  caps at 8 queries and the counter is FORCED into Q8 (planner.py:144-156) — it
+  survives the cap, texts stay distinct. PASS.
+- **Each V-SP rule truly enforces** (hand-crafted violating + clean v2, run
+  through the REAL `v_sp.check`): V-SP-01 (missing qid / dup qid / exec=false
+  w/o blocked+note), V-SP-02 (counter skipped, counter exec=false-not-blocked),
+  V-SP-03 (docs>urls; docs present w/o productive), V-SP-04 (not_found w/
+  unexecuted; not_found w/ productive), V-SP-05 (plan=None; request_id mismatch).
+  Every violation returns THAT rule id; every clean case returns []. Extra `X1`
+  entries allowed; v1 result no-ops. PASS.
+- **Rule wired into the docs validate path (not just registry)**: driving the CLI,
+  a hostile v2 (docs_taken 9 > urls_seen 2) is rejected with `['V-SP-03']` through
+  BOTH `validate docs-result` AND `docs ingest-result` (ingest.py:168-170 gates
+  v_sp on v2 only); a clean v2 passes; deleting the plan file → `['V-SP-05']`. PASS.
+- **Plan attached at dispatch**: compiled + written to the deterministic
+  `docs/plans/SP-<DR>.json` at BOTH dispatch sites — `docs request`
+  (commands.py:85) and the Committer needs_docs path (`_wire_docs`,
+  apply.py:539). Enforced at ingest by V-SP-05, so an unplanned v2 cannot pass.
+  (Note: `work_item.bundle` stays None — the plan is discovered by canonical path,
+  same convention as every other worker prompt, which no code renders; the teeth
+  are V-SP-05. Acceptable, matches the codebase pattern.) PASS.
+- **v2 back-compat**: docs_result.v1 still validates under the v1 model; v2↔v1 log
+  fields can't cross (extra=forbid). **V-DR-06 both branches**: v1 not_found w/
+  empty `search_log` → V-DR-06; v2 not_found w/ empty `query_log` → V-DR-06;
+  each clean when its log is non-empty (v_dr.py:92-98). PASS.
+- **CLI reprint**: `docs plan --request` twice → byte-identical stored file AND
+  envelope data. PASS.
+- **Re-derived goldens by hand from docs/14 §Rules**: V-SP-01 and V-SP-03 code
+  matches text exactly; the official_stats golden in test_search_plan.py is
+  byte-correct when re-derived from the formula block + docs/09 §0 tokenizer.
+- **Weakened-test audit** (diff vs 4e5860a == gate/m5-r3-behavior): only two
+  pre-existing test files touched — test_cli_envelope.py (+`docs plan` to the
+  closed list, additive) and tests/fakes/workers.py (additive v2 emission; honest
+  query_log by default, hostile still scriptable). test_v_dr / test_s2 / test_s3 /
+  test_rule_coverage byte-unchanged. No docs assertion weakened. PASS.
+
+### FAIL finding — F1 (doc-sync, blocking; doc-only remediation)
+**Assertion**: CLAUDE.md — "checks are the V-* rules in docs/09-verification.md"
+and "Any deviation from docs/ requires updating the doc in the same change"; the
+m6 gate's Doc-sync clause. docs/00's own binding adoption entry promises the
+docs/09 amendments.
+
+**Defect 1** — `docs/09-verification.md` has **no `### V-SP` block**. `grep -c
+'^### V-SP ' docs/09-verification.md` → **0**, while `registry.py:68-72` +
+`validate/rules/v_sp.py` ship and enforce V-SP-01..05. Every other registered
+family has a docs/09 block, including V-SWEEP which correctly got one when added
+in m5 (docs/09:75). `docs/00-overview.md:242` explicitly states "V-SP-01..05 join
+the registry (**docs/09 gains a V-SP block**)" — the promise was not kept. The
+five enforced rules are absent from the doc CLAUDE.md names as authoritative for
+checks. (Repro: `grep -c '^### V-SP ' docs/09-verification.md` → 0.)
+
+**Defect 2** — `docs/09-verification.md:219` V-DR-06 still reads only
+"…search_log non-empty", not re-expressed for v2's query_log, although
+`docs/00-overview.md:236` promises "V-DR-06's 'search_log non-empty' is
+re-expressed on v2 as 'query_log non-empty'" and `v_dr.py:95-98` implements the
+v2 branch. The authoritative check text no longer matches the code for a v2
+result. (Repro: read docs/09:219 vs v_dr.py:92-98.)
+
+**Minimal remediation** (no src/test change): add a `### V-SP (search-plan
+accounting, S1 — docs/14)` block to docs/09 with V-SP-01..05, and amend the
+docs/09:219 V-DR-06 line to note "search_log (v1) / query_log (v2) non-empty".
+Both are pure doc amendments; re-run is unaffected (437 stays green).
+
+### Bottom line
+Behaviour is sound — A33–A36 all independently reproduced with adversarial
+inputs; no regression; no weakened assertion; verify green. The single blocker is
+the undocumented deviation in docs/09 (an interruption leftover: code enforces
+rules the authoritative check doc omits, and docs/00 promised the block). Fix
+docs/09 (F1) in the same change, then this gate is a PASS.

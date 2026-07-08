@@ -50,6 +50,10 @@ SCENARIO_COVERED = {
     "V-COMMIT-04": "test_v_commit.py (replay.replay_reproduces per row)",
     "V-COMMIT-05": "test_v_commit.py (post-graph V-GRAPH checks) + verify",
     "V-COMMIT-06": "test_v_commit.py::test_v_commit_06_noop_cancel",
+    "V-SRC-01": "test_v_src.py::test_vsrc01_provenance_present_v2_only (+ verify_sources sweep)",
+    "V-SRC-02": "test_v_src.py::test_vsrc02_dangling_quoted_via",
+    "V-SRC-03": "test_v_src.py::test_silent_tier_lowering_rejected_vsrc03 (+ CLI source set refusal)",
+    "V-SRC-05": "test_v_src.py::test_vsrc05_dispatch_excerpt_completeness",
 }
 
 

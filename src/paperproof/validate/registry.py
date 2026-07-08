@@ -10,11 +10,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .envelope import Failure, to_envelope
-from .rules import v_commit, v_dr, v_exp, v_path, v_pr, v_q, v_sp, v_spec, v_sweep, v_task
+from .rules import v_commit, v_dr, v_exp, v_path, v_pr, v_q, v_sp, v_spec, v_src, v_sweep, v_task
 
 __all__ = [
     "Failure", "to_envelope", "RULES", "rule_ids",
-    "v_spec", "v_path", "v_pr", "v_dr", "v_exp", "v_task", "v_q", "v_commit", "v_sweep", "v_sp",
+    "v_spec", "v_path", "v_pr", "v_dr", "v_exp", "v_task", "v_q", "v_commit", "v_sweep", "v_sp", "v_src",
 ]
 
 
@@ -91,6 +91,10 @@ RULES: dict[str, Rule] = {
         _rule("V-COMMIT-04", "CommitDecision lists every append; replay reproduces post"),
         _rule("V-COMMIT-05", "post-commit graph passes V-GRAPH-01..03"),
         _rule("V-COMMIT-06", "proof verdict commits only onto a provable target"),
+        _rule("V-SRC-01", "every ingested document carries provenance; tier in enum"),
+        _rule("V-SRC-02", "secondary_quote names quoted_via; carrier document exists"),
+        _rule("V-SRC-03", "registry updates append, latest-per-domain; no silent tier change"),
+        _rule("V-SRC-05", "dispatch registry excerpt has every T1 + facet-matched profile"),
     ]
 }
 

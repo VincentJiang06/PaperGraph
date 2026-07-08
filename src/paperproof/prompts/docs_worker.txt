@@ -12,6 +12,13 @@ productive|empty|blocked|offtopic, urls_seen, docs_taken, note}. A query you cou
 not run is executed=false, outcome=blocked, with a reason in note (never silently
 skip one). The plan's counter query is MANDATORY — run it or record it blocked.
 Extra queries you run beyond the plan are welcome; log them with qid "X1", "X2"…
+REGISTRY (read-only intel — what the project already learned about these
+sources; you assign no tiers and write nothing here):
+{registry}
+Use it to save round-trips: if a domain is marked blocks-direct, go straight to
+its recorded workaround. Workarounds are lawful public access ONLY — mirrors,
+web archives, secondary sources that quote the primary verbatim, local PDF text
+extraction. Never bypass a paywall or login.
 
 For each useful source add a documents[] entry: {title, source_type ∈
 peer_reviewed|official_report|working_paper|news|dataset|user_notes,

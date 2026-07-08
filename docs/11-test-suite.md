@@ -347,11 +347,12 @@ WebUI pixels — only the JSON endpoints are asserted.
 Cross-platform behavior — v1 is POSIX-only by decree (docs/10 §2).
 ```
 
-## 12. Search Program Worklist — S1 (Stage A, adopted 2026-07-08; docs/14)
+## 12. Search Program Worklist — Stage A (adopted 2026-07-08; docs/14, docs/16)
 
-S1 (Search Planning) is now binding (docs/00 adoption entry). Every item below is
-a REQUIRED test change; once V-SP-* lands in the registry the rule-coverage
-meta-test forces the fixture side automatically.
+S1 (Search Planning, docs/14) and S3-lite (Source Registry, docs/16) are binding
+(docs/00 adoption entry). Every item below is a REQUIRED test change; once V-SP-*
+and V-SRC-* land in the registry the rule-coverage meta-test forces the fixture
+side automatically.
 
 ```text
 T-S1-1  plan-compiler goldens: a fixed DocsRequest need + target scope compiles
@@ -372,22 +373,26 @@ T-S1-back  the pre-S1 docs suite (V-DR, S2 docs loop, S3 cascade, ingest, cache)
         tag). The DocsWorker dispatch path now attaches a compiled plan.
 ```
 
-S3-lite (Source Registry, Stage A-lite; docs/16) — worklist:
+S3-lite (Source Registry, docs/16) — worklist (rule coverage via SCENARIO_COVERED
+for V-SRC-01/02/03/05; Stage B triangulation V-SRC-04 is NOT adopted — no T-S3-3):
 
 ```text
-T-S3-1  ingest LEARNS: a Document ingested with a blocked query_log entry for its
-        domain upserts a SourceProfile with blocked_direct=true and the workaround
-        note; a second ingest appends a new profile version (latest-per-domain wins).
-T-S3-2  tier mapping table golden (source_type → tier); a silent tier-lowering
-        (new version lowers tier with no note) is rejected (V-SRC-03).
-T-S3-4  provenance: every ingested doc carries provenance (retrieved_at,
-        fetch_method ∈ enum, tier ∈ enum) [V-SRC-01]; a secondary_quote doc names
-        quoted_via and the carrier exists, dangling quoted_via ⇒ V-SRC-02; the
-        dispatch prompt's registry excerpt contains every T1 profile + every
-        profile matching a plan-facet domain [V-SRC-05]. document.v2 round-trips;
-        a v1 document still validates against v1.
-T-S3-back  no regression (399 baseline + S1): document.v2 + registry learning must
-        not weaken any existing ingest/V-DR/cascade assertion. V-SRC-04
-        (triangulation) is Stage B — NOT built now; msa-check/freeze floors are
-        unchanged from m5 until S4.
+T-S3-1  ingest LEARNS blocked_direct from a blocked log entry (403/blocked/
+        forbidden/429), read defensively from search_log OR a query_log
+        outcome="blocked" (S1 forward-compat); each ingest APPENDS a new
+        SourceProfile version (never mutates), seen_count grows, source_id stable.
+T-S3-2  source_type→tier table golden (official_report→T1 … user_notes→T6); a
+        registry history that lowers a tier with no tier_note is rejected by
+        V-SRC-03 (and `docs source set --tier` refuses it at the CLI); the same
+        change WITH a note passes. Auto-learning only raises a tier + notes it.
+T-S3-4  every ingested document is document.v2 with provenance present and
+        tier ∈ enum (V-SRC-01); a secondary_quote naming a dangling/absent
+        quoted_via ⇒ V-SRC-02; the dispatch registry excerpt (every T1 + every
+        facet-matched profile) is completeness-checked by V-SRC-05; document.v2
+        round-trips and document.v1 still parses + validates as v1.
+T-S3-back  the full prior suite stays green: the ingestor writing document.v2 +
+        learning the registry does not disturb any existing docs/proof/compile
+        test (documents carry all v1 fields; sources.jsonl is a new file; `verify`
+        stays exit 0 on a project with v2 docs + a learned registry).
+```
 ```

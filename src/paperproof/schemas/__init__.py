@@ -17,7 +17,9 @@ from .docs import (
     DocsResult,
     DocsResultV2,
     Document,
+    DocumentV2,
     EvidenceUnit,
+    SourceProfile,
 )
 from .search import SearchPlan
 from .freeze import FreezeItem
@@ -45,6 +47,8 @@ REGISTRY: dict[str, type[BaseModel]] = {
     "proof_result.v1": ProofResult,
     "verdict_record.v1": VerdictRecord,
     "document.v1": Document,
+    "document.v2": DocumentV2,
+    "source_profile.v1": SourceProfile,
     "evidence_unit.v1": EvidenceUnit,
     "docs_request.v1": DocsRequest,
     "docs_result.v1": DocsResult,

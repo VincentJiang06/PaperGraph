@@ -152,6 +152,8 @@ Global options: `--root <dir>` (default `./data`), `--project <id>` / `PAPERPROO
 | `docs build-pack` | `--task <task-id>` | assemble DocsPack; data: pack path, EU count |
 | `docs request` | `--target <id> --need <text> [--hint <h>]...` | Orchestrator-initiated DocsRequest (code appends; cache-checked like any request; NEVER counts toward the target's docs cap — r3, docs/04); data: request_id, status |
 | `docs ingest-result <file>` | `--work-item <WI>` | validate V-DR + ingest + unblock (accepts claimed/running, completing implicitly — r3, docs/05); data: assigned ids, request status |
+| `docs source list` | — | the live source registry — latest SourceProfile per domain (S3 Stage A-lite, docs/16); data: {sources, count} |
+| `docs source set` | `--domain <d> [--tier <T> --publisher <p> --workaround <kind> --note <text> --blocked/--no-blocked]` | append a curated SourceProfile version (set = append); a tier change needs `--note` or V-SRC-03 rejects it; data: {source_id, domain, tier} |
 | `queue list` | `[--queue --status]` | data: items (commit_queue = derived view of validated) |
 | `queue claim` | `--queue <q> --agent <name> [--id <WI>]` | lease + claim-time manifest; without --id, picks the claimable item with the lowest work_item_id (FIFO); data: work item incl. bundle + output paths |
 | `queue heartbeat <WI>` | `--agent` | extend lease |
@@ -244,6 +246,14 @@ REQUEST: {request_id}
 Need: {need}    Hints: {search_hints}
 Search docs/raw/ (user-provided sources — reading it is part of your task
 inputs) first, then the web if available.
+
+REGISTRY (read-only intel — what the project already learned about these
+sources; you assign no tiers and write nothing here):
+{registry}
+Use it to save round-trips: if a domain is marked blocks-direct, go straight to
+its recorded workaround. Workarounds are lawful public access ONLY — mirrors,
+web archives, secondary sources that quote the primary verbatim, local PDF text
+extraction. Never bypass a paywall or login.
 
 For each useful source add a documents[] entry: {title, source_type ∈
 peer_reviewed|official_report|working_paper|news|dataset|user_notes,

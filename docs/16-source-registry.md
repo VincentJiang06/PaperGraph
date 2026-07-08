@@ -1,6 +1,10 @@
 # 16 S3 — Source Registry, Tiers & Provenance
 
-**Status: Stage A-lite (registry+recipes) ADOPTED / BINDING — docs/00 "Search Program Adoption" (2026-07-08); worklist docs/11 §12. Stage B triangulation (V-SRC-04) remains design-frozen.**
+**Status: Stage A-lite (registry + recipes + provenance) is ADOPTED and BINDING
+(docs/00 "Search Program Adoption", 2026-07-08; worklist docs/11 §12). Stage B
+(triangulation, V-SRC-04) remains design-frozen and is NOT adopted — the
+triangulation section below and V-SRC-04 are informational only until a later
+adoption entry.**
 
 In the live run, bls.gov and fred.stlouisfed.org 403'd every automated fetch;
 one worker independently discovered the pdftotext fallback, another lost the
@@ -43,12 +47,34 @@ tier enum (closed):  T1_official      government/central-bank/statistical agency
 workaround.kind:     mirror | archive_org | secondary_quote | pdf_local_extract | api
 ```
 
+`source_type → tier` is a **fixed table** (pinned here so learning is
+deterministic; `src/paperproof/docsdb/registry.py:TIER_TABLE`):
+
+```text
+official_report → T1_official      peer_reviewed → T2_peer_reviewed
+working_paper   → T3_working_paper dataset       → T4_industry_data
+news            → T5_press         user_notes    → T6_other
+```
+
+The profile also carries a `tier_note` (nullable): the ingestor writes it
+whenever a version changes a domain's tier, so V-SRC-03 can distinguish a
+recorded change from a silent one. Auto-learning only ever RAISES a tier (it
+keeps the most authoritative `source_type` seen for a domain) and stamps a note;
+`docs source set` may lower a tier only WITH a note.
+
 The ingestor **learns**: every ingested Document upserts (appends a new
 version of) its domain's profile — tier from the worker's `source_type` mapped
-through a fixed table, `blocked_direct` from the query_log's blocked notes,
-fetch method from provenance. Workers RECEIVE the registry's relevant profiles
-(matched by plan facets' domains + all T1 profiles) in the dispatch prompt:
-the second worker to face bls.gov starts with the first one's workaround.
+through the fixed table above, `blocked_direct` from the search/query log's
+blocked notes, fetch method from provenance. The blocked signal is read
+DEFENSIVELY from whichever log the docs-result carries: `search_log` strings
+matching a block pattern (403/blocked/forbidden/429/captcha) OR — once S1's
+`docs_result.v2` lands — `query_log` entries with `outcome="blocked"`. On the
+current `docs_result.v1` path the worker declares no per-document fetch method,
+so provenance `fetch_method` defaults to `direct` (upgraded to the real recipe
+once the query_log carries it); `blocked_direct` is still learned from the log.
+Workers RECEIVE the registry's relevant profiles (matched by plan facets'
+domains + all T1 profiles) in the dispatch prompt: the second worker to face
+bls.gov starts with the first one's workaround.
 
 ## Document provenance (`document.v1` → `document.v2`)
 
@@ -66,7 +92,7 @@ ingest (registry lookup, worker-proposed on first sight). `quoted_via` links a
 secondary_quote document to the carrier that was actually fetched — the trace
 chain then shows *how* every figure entered the project.
 
-## Triangulation rule (Stage B; feeds S4 floors and MSA/freeze)
+## Triangulation rule (Stage B — NOT ADOPTED; informational)
 
 ```text
 A spine fact/mechanism node's binding profile must satisfy ONE of:
@@ -90,23 +116,36 @@ V-SRC-02  secondary_quote documents name quoted_via, and the carrier document
           exists in the archive
 V-SRC-03  registry updates are appends (latest-per-domain wins); the ingestor
           never lowers a tier silently (tier changes carry a note)
-V-SRC-04  (Stage B) spine bindings satisfy the triangulation rule — enforced
-          at freeze (extends V-FRZ-02) and reported by msa-check
+V-SRC-04  (Stage B — NOT ADOPTED) spine bindings satisfy the triangulation
+          rule — enforced at freeze (extends V-FRZ-02) and reported by msa-check
 V-SRC-05  the dispatch prompt's registry excerpt contains every T1 profile +
           every profile matching a plan facet domain (bundle completeness)
 ```
 
+Stage A-lite adopts V-SRC-01/02/03/05 (`src/paperproof/validate/rules/v_src.py`,
+registered in the validate registry, swept by `paperproof verify`). V-SRC-04 is
+not built. V-SRC-05 is a dispatch-time completeness check on the registry
+excerpt (`registry.matched_profiles` + `v_src.check_registry_excerpt`), not a
+stored-state rule.
+
 ## Deltas at adoption
 
 ```text
-CLI      docs source list|set (human tier/workaround curation; set = append)
-Schemas  source_profile.v1; document.v2 (provenance); worker prompt gains a
-         REGISTRY block (read-only intel, never instructions to bypass paywalls
-         — workarounds are limited to lawful public access: mirrors, archives,
-         secondary quotation, local PDF extraction)
-Storage  docs/sources.jsonl
-Tests    T-S3-1 ingest learns blocked_direct from a blocked query_log entry
-         T-S3-2 tier mapping table golden; silent tier-lowering rejected
-         T-S3-3 triangulation: same-publisher T3 pair fails, T1+T4 passes
-         T-S3-4 quoted_via dangling ⇒ V-SRC-02
+CLI      docs source list|set — a SUBGROUP of the existing `docs` command group
+         (human tier/workaround curation; set = append). `set` refuses a silent
+         tier-lowering (V-SRC-03: a tier change needs --note).
+Schemas  source_profile.v1 (adds tier_note); document.v2 (= document.v1 +
+         provenance); document.v1 stays registered + readable. worker prompt
+         gains a REGISTRY block (read-only intel, never instructions to bypass
+         paywalls — workarounds are limited to lawful public access: mirrors,
+         archives, secondary quotation, local PDF extraction)
+Storage  docs/sources.jsonl (append-only, latest-per-domain; created by
+         `project init`, schema-swept by `paperproof verify`)
+Tests    T-S3-1 ingest learns blocked_direct from a blocked log entry (+ append-
+                versioning)
+         T-S3-2 tier mapping table golden; silent tier-lowering rejected (V-SRC-03)
+         T-S3-4 provenance present (V-SRC-01); dangling quoted_via ⇒ V-SRC-02;
+                dispatch excerpt completeness (V-SRC-05); document.v2 round-trip
+                (+ document.v1 still valid v1)
+         (T-S3-3 triangulation is Stage B — NOT adopted, not built)
 ```
