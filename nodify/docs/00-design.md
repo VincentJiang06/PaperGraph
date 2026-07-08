@@ -125,12 +125,16 @@ subagent 只写 `notes/` 草稿,汇报由主会话蒸馏后落树(P12 的 V1 简
 
 确定性渲染,优先级装箱,超预算从低优先级截断并如实标注 `[truncated: …]`:
 
-1. session 的 question/boundary + 预算余量;
-2. 根链结论:每个 synthesized 观点的最新 synthesis(lean + summary 单行);
-3. **前沿**:所有 open/expanding 观点、pending/investigating 论点(带
-   statement + 一行血统路径);
-4. stuck 论点及原因;
-5. 纪律警告摘要(来自 check)。
+1. session 的 question/boundary + 预算余量(+docs 计数);
+2. **前沿**:所有 open/expanding 观点、pending/investigating 论点(带
+   statement + 一行血统路径;investigating 带 since 时间戳);
+3. 根链结论:每个 synthesized 观点的最新 synthesis(lean + summary 单行);
+4. 已答未上折的论点结论;
+5. stuck 论点及原因;
+6. **TREE MAP**:全树骨架一行一节点(id·kind·status·parent·✓syn)——
+   实测 #2 G1:冷接管者需要结构,不只是结论;
+7. **ARTIFACTS**:大纲/已注册节/final.md 指针;
+8. 纪律警告摘要(来自 check)。
 
 树本身被预算约束(max_depth × max_children × max_open_claims),所以 brief
 天然有界——这是"树取代长上下文"成立的数学前提。

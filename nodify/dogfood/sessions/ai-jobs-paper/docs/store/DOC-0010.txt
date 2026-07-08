@@ -1,0 +1,81 @@
+SOURCE: OECD Employment Outlook 2023 — 'Artificial Intelligence and the Labour Market' (Chapter 3)
+URL: https://www.oecd.org/content/dam/oecd/en/publications/reports/2023/07/oecd-employment-outlook-2023_904bcef3/08785bba-en.pdf
+Landing page: https://www.oecd.org/en/publications/oecd-employment-outlook-2023_08785bba-en/full-report/artificial-intelligence-and-the-labour-market-introduction_ea35d1c5.html
+Fetched: 2026-07-09. Excerpted verbatim (pdftotext -layout) from the full report PDF; page/line markers below refer to the converted text stream, not printed page numbers.
+========================================================================
+
+--- EXCERPT A: Executive summary / introduction (source lines ~135-155) ---
+
+
+
+                                                                 OECD EMPLOYMENT OUTLOOK 2023 © OECD 2023
+                                                                                                             5
+
+What emerged was a nuanced picture of the early impact of AI which – even before the more recent wave
+of generative AI – showed strong opinions and sharp divisions on the benefits and risks.
+Despite the renewed worries about a jobless future, the impact of AI on job levels has been limited so far.
+We are at a very early stage of AI adoption that is generally concentrated in the largest firms that are often
+still experimenting with these new technologies. Among these early adopters, many appear reluctant to
+dismiss staff, preferring to adjust the workforce through slowed hiring, voluntary quits and retirement. Some
+companies even told us that, in the face of an ageing population and labour shortages, AI could help relieve
+some skills needs.
+However, it is also clear that the potential for substitution remains significant, raising fears of decreasing
+wages and job losses. Taking the effect of AI into account, occupations at highest risk of automation
+account for about 27% of employment. And a significant share of workers (three in five) is worried about
+losing their jobs entirely to AI in the next ten years, particularly those who actually work with AI. The advent
+of the latest generative AI technologies is sure to heighten such concerns across a wide range of job
+categories.
+Although AI is not currently tied to any major changes in wages, positive or negative, across the labour
+
+--- EXCERPT B: Section 3.2.1 'In the aggregate, negative employment effects due to artificial intelligence are (so far) hard to find' (source lines ~6080-6100) ---
+
+
+OECD EMPLOYMENT OUTLOOK 2023 © OECD 2023
+112 
+
+3.2.1. In the aggregate, negative employment effects due to artificial intelligence are (so
+far) hard to find
+
+Studies examining the effect of AI on aggregate employment have so far found little to no effect on
+employment. Using their AI occupational impact exposure measure (AIOI, see above) and variation in
+occupational exposure within U.S. states, Felten, Raj and Seamans, (2019[23]) find no effect of AI exposure
+on employment growth between 2010 and 2016. Georgieff and Hyee, (2021[24]) use data from PIAAC to
+extend AIOI and allow for within-country variation in the AI exposure measures of Felten, Raj and
+Seamans, (2019[23]). They find positive but insignificant effects of AI exposure on aggregate employment
+using variation in occupation exposure to AI within a sample of OECD countries.
+Even at lower levels of aggregation, there is currently no detectable effect of AI on aggregate employment.
+Acemoglu et al. (2022[16]) examine employment changes from AI using differences in AI exposure by U.S.
+commuting zones by industry, and separately, variation by detailed occupation. In all specifications they
+find no statistically significant effect of AI exposure on employment between 2010 and 2017 (industry) and
+2018 (occupation). Fossen and Sorgner (2022[37]) estimate the effect of AI exposure on the probability of
+leaving employment using short panels of individual workers in the United States between 2011 and 2018.
+
+--- EXCERPT C: on AI-skills demand vs. aggregate employment (source lines ~6470-6480) ---
+Source: Lassébie and Quintini (2022[22]), “What skills and abilities can automation technologies replicate and what does it mean for workers?:
+New evidence”, https://doi.org/10.1787/646aad77-en, based on OECD Expert Survey on Skills and Abilities Automatability and O*NET.
+                                                                                                     StatLink 2 https://stat.link/xkr98z
+
+
+The strong demand for workers with AI skills, but otherwise negligible aggregate employment changes, is
+characteristic of the dynamics of the introduction of new automation technologies. Writing about general
+purpose technologies in general, and AI in particular, Brynjolfsson, Rock and Syverson (2019[54]; 2021[55])
+argue that firms need time to restructure and adapt to new technologies before harnessing their full
+potential. Specifically, firms will spend heavily in the early adoption period on complementary investments
+including workers with AI skills, and other workers such as managers and computer engineers. These early
+
+--- EXCERPT D: framing of the two key aggregate-employment questions (source lines ~5786-5800) ---
+To summarise, there are two key questions concerning the effect of AI on aggregate employment. Broadly,
+is AI increasing or decreasing labour demand in the aggregate with all channels (productivity, displacement
+and reinstatement) included?8 More narrowly, when tasks are automated with AI, which effect is dominant:
+the productivity or displacement effect?9 Although the first question is often the first order point of concern,
+policy makers should pay careful attention to which effect is driving the results. The effects that are
+dominating point to which groups’ employment prospects may be most harmed by AI and suggest specific
+points where policy makers may wish to intervene to ensure that the cost savings from AI do not result in
+lower demand for labour (see Section 3.3 for a discussion of policies).
+
+3.1.2. AI has made the most progress performing non-routine, cognitive tasks
+
+AI has made the most progress in automating non-routine, cognitive tasks. Figure 3.1 shows the abilities
+where AI has made the most progress in replicating human performance as of 2015. The most progress
+has been made in the abilities “Information ordering”, “Memorisation”, and “Perceptual Speed”. The overlap
+of these abilities with AI is straightforward. For example, “Speed of Closure” is the ability to quickly make

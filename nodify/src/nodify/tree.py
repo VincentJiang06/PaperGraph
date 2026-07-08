@@ -23,7 +23,7 @@ LEGAL = {
     ("open", "expanding"), ("open", "retired"),
     ("expanding", "retired"),
     ("synthesized", "expanding"), ("synthesized", "closed"), ("synthesized", "retired"),
-    ("pending", "investigating"), ("pending", "retired"),
+    ("pending", "investigating"), ("pending", "retired"), ("pending", "stuck"),
     ("investigating", "stuck"), ("investigating", "retired"),
     ("stuck", "investigating"), ("stuck", "retired"),
     ("concluded", "retired"),
@@ -195,8 +195,10 @@ def set_status(paths: Paths, node_id: str, status: str, *,
         raise DomainError([f"unknown node: {node_id}"])
     node = nodes[node_id]
     if (node["status"], status) not in LEGAL:
+        legal = sorted(to for frm, to in LEGAL if frm == node["status"])
         raise DomainError([f"illegal transition {node['status']} -> {status} "
-                           f"for {node_id}"])
+                           f"for {node_id} (legal from {node['status']}: "
+                           f"{legal or ['none — use conclude/promote']})"])
     if status in NOTE_REQUIRED_STATUSES and not (note and note.strip()):
         raise UsageError([f"--note is required when setting {status} "
                           "(the tree history must stay readable)"])

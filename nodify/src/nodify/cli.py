@@ -286,7 +286,7 @@ _PAYLOAD_EXAMPLES = {
     "ingest": {
         "_for": "nd docs ingest --file <this>",
         "kind": "web", "title": "来源标题", "url": "https://…",
-        "text_file": "sessions/<id>/notes/saved.txt",
+        "text_file": "notes/saved.txt  (session-relative, or absolute)",
         "summary": "≤500字符摘要",
         "bindings": [{"node_id": "N-0002", "relation": "supports",
                        "note": None}]},
@@ -336,9 +336,12 @@ def article_outline(file: Path = typer.Option(..., "--file"),
     def go(paths: Paths, sess):
         from . import article
         session_mod.require_set(sess, "v3")
+        had = article.latest_outline(paths) is not None
         record = article.set_outline(paths, store.read_json(file))
-        return ({"outline": record}, [record["outline_id"]],
-                f"outline: {record['title'][:80]} ({len(record['sections'])} sections)")
+        warns = ["OL-01 revised in place (append-only; latest record wins)"] if had else []
+        return ({"outline": record, "revised": had}, [record["outline_id"]],
+                f"outline: {record['title'][:80]} ({len(record['sections'])} sections)",
+                warns)
     _run("article outline", root, session, go, mutating=True)
 
 
@@ -354,6 +357,22 @@ def article_section(id: str = typer.Option(..., "--id"),
                 f"section {id}: {record['word_count']} words, "
                 f"{len(record['cites'])} cites", warns)
     _run("article section", root, session, go, mutating=True)
+
+
+@article_app.command("show")
+def article_show(root: Optional[str] = _ROOT_OPT, session: Optional[str] = _SESSION_OPT) -> None:
+    def go(paths: Paths, sess):
+        from . import article
+        session_mod.require_set(sess, "v3")
+        outline = article.latest_outline(paths)
+        sections = article.latest_sections(paths)
+        final = paths.resolve("article/final.md")
+        return ({"outline": outline,
+                 "sections": [sections[k] for k in sorted(sections)],
+                 "final_md": str(final) if final.is_file() else None},
+                [], f"article show: outline={'yes' if outline else 'no'}, "
+                    f"{len(sections)} sections")
+    _run("article show", root, session, go, mutating=False)
 
 
 @article_app.command("assemble")

@@ -10,7 +10,7 @@ CLOSED_COMMANDS = {
     "init", "add", "promote", "set-status", "conclude",
     "brief", "show", "tree", "log", "check", "export",
     "upgrade", "recall", "docs ingest", "docs for-node",
-    "article outline", "article section", "article assemble",
+    "article outline", "article section", "article assemble", "article show",
     "schema",
 }
 

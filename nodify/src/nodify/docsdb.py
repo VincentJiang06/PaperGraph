@@ -56,9 +56,15 @@ def ingest(paths: Paths, payload: dict[str, Any]) -> tuple[dict[str, Any], list[
     relation, note?}], origin?}. Returns (entry, warnings). Same content_hash
     ⇒ the existing entry gains the new bindings instead of a duplicate doc."""
     warnings: list[str] = []
-    src = Path(payload.get("text_file") or "")
+    raw_path = payload.get("text_file") or ""
+    src = Path(raw_path)
+    if not src.is_absolute() and not src.is_file():
+        candidate = paths.resolve(raw_path)   # session-relative works too
+        if candidate.is_file():
+            src = candidate
     if not src.is_file():
-        raise UsageError([f"text_file not found: {src}"])
+        raise UsageError([f"text_file not found: {raw_path} (absolute or "
+                          "session-relative, e.g. notes/saved.txt)"])
     text = src.read_text(encoding="utf-8", errors="replace")
     if not text.strip():
         raise DomainError(["text_file is empty — nothing to archive"])

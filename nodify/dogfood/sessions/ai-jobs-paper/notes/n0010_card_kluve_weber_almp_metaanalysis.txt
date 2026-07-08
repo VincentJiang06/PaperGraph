@@ -1,0 +1,15 @@
+SOURCE: Card, David; Kluve, Jochen; Weber, Andrea — "What Works? A Meta Analysis of Recent Active Labor Market Program Evaluations"
+IZA Discussion Paper No. 9236 (published Journal of the European Economic Association, 2018, 16(3):894-931).
+URL: https://www.iza.org/publications/dp/9236/what-works-a-meta-analysis-of-recent-active-labor-market-program-evaluations
+Retrieved: 2026-07-08 (LIVE TEST #2, node N-0010 / N-0009 reskilling & youth-intervention efficacy)
+
+ABSTRACT (verbatim):
+"We present a meta-analysis of impact estimates from over 200 recent econometric evaluations of active labor market programs from around the world. We classify estimates by program type and participant group, and distinguish between three different post-program time horizons. Using meta-analytic models for the effect size of a given estimate (for studies that model the probability of employment) and for the sign and significance of the estimate (for all the studies in our sample) we conclude that: (1) average impacts are close to zero in the short run, but become more positive 2-3 years after completion of the program; (2) the time profile of impacts varies by type of program, with larger gains for programs that emphasize human capital accumulation; (3) there is systematic heterogeneity across participant groups, with larger impacts for females and participants who enter from long term unemployment; (4) active labor market programs are more likely to show positive impacts in a recession."
+
+KEY FINDINGS (verbatim fragments):
+- "average impacts are close to zero in the short run, but become more positive 2-3 years after completion"
+- "larger gains for programs that emphasize human capital accumulation" (i.e., training / reskilling)
+- "larger impacts for females and participants who enter from long term unemployment"
+- "active labor market programs are more likely to show positive impacts in a recession"
+
+NOTE ON SCOPE / LIMITS (my read, not quoted): This is general ALMP evidence, not specific to AI-driven displacement of clerical/customer-service workers. It says reskilling/training CAN work but effects are modest, delayed (medium-run 2-3 yrs), and heterogeneous. It does NOT evaluate any AI-displacement-targeted program. Youth are not singled out as high-benefit in the abstract (the high-benefit groups named are women and the long-term unemployed).

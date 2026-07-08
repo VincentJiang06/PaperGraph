@@ -77,12 +77,33 @@ def _sections(paths: Paths, session: dict[str, Any]) -> list[tuple[str, list[str
     if len(soft) > 6:
         warnings.append(f"- [+{len(soft) - 6} more — nd check]")
 
+    # working-state map (live-test-2 G1): a cold agent extending a CONVERGED
+    # session sees structure, not just conclusions — tree skeleton + artifacts
+    tree_map = []
+    for n in sorted(nodes.values(), key=lambda x: x["node_id"]):
+        syn_mark = " ✓syn" if n["node_id"] in latest_syn else ""
+        tree_map.append(f"- {n['node_id']} {n['kind']}/{n['status']}"
+                        f" ← {n['parent_id'] or 'ROOT'}{syn_mark}")
+    from . import article as article_mod
+    artifacts = []
+    outline = article_mod.latest_outline(paths)
+    if outline is not None:
+        secs = article_mod.latest_sections(paths)
+        final = paths.resolve("article/final.md")
+        artifacts.append(
+            f"- article: outline OL ({len(outline['sections'])} sections, "
+            f"{len(secs)} registered)"
+            + (", final.md assembled" if final.is_file() else "")
+            + " — nd article show")
+
     return [  # priority order: earlier sections survive truncation longer
         ("SESSION", head),
         ("FRONTIER (act here)", frontier),
         ("CONCLUSIONS (synthesized viewpoints)", conclusions),
         ("ANSWERED, NOT YET FOLDED UP", unfolded),
         ("STUCK", stuck),
+        ("TREE MAP", tree_map),
+        ("ARTIFACTS", artifacts),
         ("DISCIPLINE WARNINGS", warnings),
     ]
 

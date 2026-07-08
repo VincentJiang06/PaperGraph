@@ -146,3 +146,42 @@ def test_live_test_1_quote_unicode_fold(session, tmp_path):
              "quote": "The lab's data - released in 2025 - shows it."}]}}))
     assert env["warnings"] == []
     assert env["data"]["synthesis"]["based_on"]["evidence"][0]["quote"] is not None
+
+
+def test_live_test_2_fixes(session, tmp_path):
+    """Audit #2 regressions: G1 brief map, G2 session-relative ingest path,
+    G3 pending->stuck + helpful error, G5 article show, G6 revision note."""
+    _prepared(session, tmp_path)
+
+    # G3: pending->stuck now legal; illegal errors name legal targets
+    session("promote", "N-0002", "--note", "n")
+    session("set-status", "N-0002", "stuck", "--note", "无证据路径",
+            "--reason", "evidence")
+    env = session("set-status", "N-0002", "concluded", expect=1)
+    assert any("legal from stuck" in e for e in env["errors"])
+
+    # G2: text_file relative to the session dir works
+    notes = session.root / "sessions" / "t" / "notes"
+    notes.mkdir(exist_ok=True)
+    (notes / "rel.txt").write_text("session relative content", encoding="utf-8")
+    env = session("docs", "ingest", "--file", write_json(tmp_path / "rel.json", {
+        "kind": "web", "title": "Rel", "url": None, "text_file": "notes/rel.txt",
+        "summary": "s", "bindings": [{"node_id": "N-0001", "relation": "context"}]}))
+    assert env["ok"]
+
+    # G6: outline re-registration warns about in-place revision
+    session("article", "outline", "--file", _outline(tmp_path))
+    env = session("article", "outline", "--file", _outline(tmp_path))
+    assert env["data"]["revised"] is True
+    assert any("revised in place" in w for w in env["warnings"])
+
+    # G5: article show is a read path
+    env = session("article", "show")
+    assert env["data"]["outline"]["outline_id"] == "OL-01"
+    assert env["data"]["final_md"] is None
+
+    # G1: brief carries the tree map + artifacts even when frontier is empty
+    text = session("brief")["data"]["brief"]
+    assert "## TREE MAP" in text
+    assert "N-0002 claim/stuck ← N-0001" in text
+    assert "## ARTIFACTS" in text and "nd article show" in text

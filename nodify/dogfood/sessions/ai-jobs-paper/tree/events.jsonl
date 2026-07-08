@@ -45,3 +45,47 @@
 {"schema":"event.v1","event_id":"EV-000045","at":"2026-07-08T19:30:16Z","actor":"main","command":"article assemble","mutating":true,"touched":[],"summary":"assemble -> article/final.md"}
 {"schema":"event.v1","event_id":"EV-000046","at":"2026-07-08T19:30:32Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
 {"schema":"event.v1","event_id":"EV-000047","at":"2026-07-08T19:34:36Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000048","at":"2026-07-08T19:35:34Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (588 chars)"}
+{"schema":"event.v1","event_id":"EV-000049","at":"2026-07-08T19:35:40Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (5 nodes)"}
+{"schema":"event.v1","event_id":"EV-000050","at":"2026-07-08T19:36:07Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0001"}
+{"schema":"event.v1","event_id":"EV-000051","at":"2026-07-08T19:36:14Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000052","at":"2026-07-08T19:36:19Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0001: 8"}
+{"schema":"event.v1","event_id":"EV-000053","at":"2026-07-08T19:36:55Z","actor":"main","command":"add","mutating":true,"touched":["N-0006"],"summary":"add 1 under N-0001: N-0006"}
+{"schema":"event.v1","event_id":"EV-000054","at":"2026-07-08T19:37:07Z","actor":"main","command":"add","mutating":true,"touched":["N-0007"],"summary":"add 1 under N-0006: N-0007"}
+{"schema":"event.v1","event_id":"EV-000055","at":"2026-07-08T19:37:07Z","actor":"main","command":"add","mutating":true,"touched":["N-0008"],"summary":"add 1 under N-0006: N-0008"}
+{"schema":"event.v1","event_id":"EV-000056","at":"2026-07-08T19:37:16Z","actor":"main","command":"promote","mutating":true,"touched":["N-0007"],"summary":"promote N-0007 -> claim"}
+{"schema":"event.v1","event_id":"EV-000057","at":"2026-07-08T19:37:28Z","actor":"main","command":"add","mutating":true,"touched":["N-0009"],"summary":"add 1 under N-0007: N-0009"}
+{"schema":"event.v1","event_id":"EV-000058","at":"2026-07-08T19:37:28Z","actor":"main","command":"add","mutating":true,"touched":["N-0010"],"summary":"add 1 under N-0007: N-0010"}
+{"schema":"event.v1","event_id":"EV-000059","at":"2026-07-08T19:37:40Z","actor":"main","command":"recall","mutating":false,"touched":[],"summary":"recall N-0009: 6 hits"}
+{"schema":"event.v1","event_id":"EV-000060","at":"2026-07-08T19:37:40Z","actor":"main","command":"recall","mutating":false,"touched":[],"summary":"recall N-0010: 6 hits"}
+{"schema":"event.v1","event_id":"EV-000061","at":"2026-07-08T19:37:40Z","actor":"main","command":"recall","mutating":false,"touched":[],"summary":"recall N-0008: 6 hits"}
+{"schema":"event.v1","event_id":"EV-000062","at":"2026-07-08T19:40:30Z","actor":"main","command":"docs ingest","mutating":false,"touched":[],"summary":"FAILED: text_file not found: notes/n0010_card_kluve_weber_almp_metaanalysis.txt"}
+{"schema":"event.v1","event_id":"EV-000063","at":"2026-07-08T19:40:37Z","actor":"main","command":"docs ingest","mutating":false,"touched":[],"summary":"FAILED: text_file not found: sessions/ai-jobs-paper/notes/n0010_card_kluve_weber_almp_metaanalysis.txt"}
+{"schema":"event.v1","event_id":"EV-000064","at":"2026-07-08T19:40:48Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0009"],"summary":"ingest DOC-0009: Card, Kluve & Weber — What Works? A Meta Analysis of Recent Active Labor Market "}
+{"schema":"event.v1","event_id":"EV-000065","at":"2026-07-08T19:41:14Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0010"],"summary":"ingest DOC-0010: OECD Employment Outlook 2023 — Artificial Intelligence and the Labour Market (Ch"}
+{"schema":"event.v1","event_id":"EV-000066","at":"2026-07-08T19:41:14Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0011"],"summary":"ingest DOC-0011: Yale Budget Lab — Evaluating the Impact of AI on the Labor Market: Current State"}
+{"schema":"event.v1","event_id":"EV-000067","at":"2026-07-08T19:41:14Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0012"],"summary":"ingest DOC-0012: WEF/LinkedIn — AI has already added 1.3 million jobs (LinkedIn Economic Graph); "}
+{"schema":"event.v1","event_id":"EV-000068","at":"2026-07-08T19:41:14Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0013"],"summary":"ingest DOC-0013: Stanford Digital Economy Lab — Canaries in the Coal Mine? Six Facts about the Re"}
+{"schema":"event.v1","event_id":"EV-000069","at":"2026-07-08T19:41:46Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0006","N-0010"],"summary":"conclude N-0010 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000070","at":"2026-07-08T19:41:57Z","actor":"main","command":"set-status","mutating":false,"touched":[],"summary":"FAILED: illegal transition pending -> stuck for N-0009"}
+{"schema":"event.v1","event_id":"EV-000071","at":"2026-07-08T19:42:06Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0009"],"summary":"N-0009 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000072","at":"2026-07-08T19:42:06Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0009"],"summary":"N-0009 -> stuck"}
+{"schema":"event.v1","event_id":"EV-000073","at":"2026-07-08T19:42:31Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0007","N-0008"],"summary":"conclude N-0008 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000074","at":"2026-07-08T19:42:53Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0008","N-0007"],"summary":"conclude N-0007 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000075","at":"2026-07-08T19:43:11Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0009","N-0006"],"summary":"conclude N-0006 [supports]"}
+{"schema":"event.v1","event_id":"EV-000076","at":"2026-07-08T19:43:29Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0010","N-0001"],"summary":"conclude N-0001 [supports]"}
+{"schema":"event.v1","event_id":"EV-000077","at":"2026-07-08T19:43:35Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (10 nodes)"}
+{"schema":"event.v1","event_id":"EV-000078","at":"2026-07-08T19:43:35Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000079","at":"2026-07-08T19:43:58Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0002"}
+{"schema":"event.v1","event_id":"EV-000080","at":"2026-07-08T19:43:58Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0003"}
+{"schema":"event.v1","event_id":"EV-000081","at":"2026-07-08T19:43:58Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0004"}
+{"schema":"event.v1","event_id":"EV-000082","at":"2026-07-08T19:43:58Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0005"}
+{"schema":"event.v1","event_id":"EV-000083","at":"2026-07-08T19:43:58Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0006"}
+{"schema":"event.v1","event_id":"EV-000084","at":"2026-07-08T19:43:58Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0007"}
+{"schema":"event.v1","event_id":"EV-000085","at":"2026-07-08T19:43:58Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0010"}
+{"schema":"event.v1","event_id":"EV-000086","at":"2026-07-08T19:44:44Z","actor":"main","command":"article outline","mutating":true,"touched":["OL-01"],"summary":"outline: 任务重组而非岗位消失:AI agents 2020-2025年就业净效应的证据与政策含义 (6 sections)"}
+{"schema":"event.v1","event_id":"EV-000087","at":"2026-07-08T19:45:25Z","actor":"main","command":"article section","mutating":true,"touched":["S-06"],"summary":"section S-06: 597 words, 5 cites"}
+{"schema":"event.v1","event_id":"EV-000088","at":"2026-07-08T19:45:25Z","actor":"main","command":"article assemble","mutating":true,"touched":[],"summary":"assemble -> article/final.md"}
+{"schema":"event.v1","event_id":"EV-000089","at":"2026-07-08T19:45:32Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000090","at":"2026-07-08T19:48:08Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000091","at":"2026-07-08T19:48:08Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (1840 chars)"}
