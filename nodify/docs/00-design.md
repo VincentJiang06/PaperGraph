@@ -172,7 +172,7 @@ subagent 只写 `notes/` 草稿,汇报由主会话蒸馏后落树(P12 的 V1 简
 | P14 磁盘状态 | hard(brief 恢复测试:删上下文仅凭 brief 续跑) |
 | P1/P3 契约与接线 | 缩面后 hard(5 schema 各有产/销/贯穿测试) |
 | P6 自评 / P11 自主性 / P12 并行 | discipline(技能层)+ check 软警告 |
-| P7 防幻觉三件套 / P8 缓存零决策 | **V2**(docs 库随身实现;V1 只保证引用结构完整) |
+| P7 防幻觉三件套 / P8 缓存零决策 | hard(V2 已落地:quote 逐字/hash 去重/cite 回溯;recall 纯读) |
 | P15 spec 瘦身 | hard(session.v1 五字段,无消费路径的字段不准进) |
 
 ## 10. 里程碑
