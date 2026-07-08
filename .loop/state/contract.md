@@ -73,18 +73,19 @@ code compiles a deterministic SearchPlan; the worker accounts for every planned 
 Baseline: 399 green @ gate/m5-r3-behavior. Blast radius includes the core docs schema
 (docs_result v1→v2) — back-compat is a graded assertion.
 
-- [ ] A33 (T-S1-1) plan compiler is deterministic & doc-faithful: a fixed DocsRequest need +
-        target/contract scope compiles to a BYTE-EXACT search_plan.v1 (golden under the
-        determinism harness), incl. a CJK need; facets (core/scope/counter_terms) and per-angle
-        query templates exactly per docs/14; the counter query is present in EVERY plan · golden test · m6
-- [ ] A34 (T-S1-2) V-SP-01..05 registered + covered (pass_+fail_ each): unaccounted qid,
-        skipped counter, docs_taken>urls_seen, dishonest not_found, unresolved plan ref;
-        docs_result.v2 (query_log) round-trips; a v1 result still validates against v1 · test_v_sp + rule_coverage · m6
-- [ ] A35 (T-S1-3) hostile worker fabricating outcome counts rejected with V-SP-03; `docs plan
-        --request <DR>` emits the compiled plan and re-emits byte-identically · test_v_sp + cli · m6
-- [ ] A36 (T-S1-back) NO REGRESSION: all 399 prior tests stay green (or migrate to v2 with the
-        SAME assertion strength — never weakened); the DocsWorker dispatch path attaches a
-        compiled plan; V-DR/ingest/cache/S2/S3 docs flows intact · full suite + evaluator diff · m6
+- [x] A33 (T-S1-1) plan compiler deterministic & doc-faithful — byte-exact golden incl. CJK; core ≤6
+        cap/tie=firstocc/minus-scope; counter in EVERY plan (survives max_queries cap). Evaluator re-proved
+        with own inputs · test_search_plan · m6 ✓
+- [x] A34 (T-S1-2) V-SP-01..05 registered + ENFORCED (each fail_ fixture → that rule id; wired into
+        validate docs-result AND docs ingest-result, v2-only); docs_result.v2 round-trips, v1 valid v1 ·
+        test_v_sp (17) · m6 ✓
+- [x] A35 (T-S1-3) hostile docs_taken>urls_seen → ['V-SP-03']; `docs plan --request` byte-identical reprint ·
+        test_v_sp · m6 ✓
+- [x] A36 (T-S1-back) 437 green, no weakened prior assertion (evaluator diff vs gate/m5); plan attached at
+        BOTH dispatch sites (commands.py:85, committer _wire_docs apply.py:539); V-DR-06 works v1+v2 · full suite · m6 ✓
+        PROVENANCE: S1 impl authored by an INTERRUPTED m6-s1 generator, swept into 967a8cf ("no code yet" msg
+        inaccurate); worktree agent added the missing test_v_sp.py; fresh Evaluator gated the whole thing.
+        F1 (evaluator FAIL→fix): docs/09 got the ### V-SP block + V-DR-06 v2 re-expression (were promised, undone).
 
 Gate (m6): `.venv/bin/python -m pytest -q` green AND V-SP-01..05 ∈ registry AND
 tests/contract/test_v_sp.py present AND no weakened pre-S1 docs assertion. Doc-sync:

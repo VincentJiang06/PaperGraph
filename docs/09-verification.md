@@ -216,7 +216,20 @@ V-DR-04  every document has source_type ∈ enum and an origin (path or url);
          web documents include inline text
 V-DR-05  kind=quote ⇒ quote_or_paraphrase passes quote_match (§0) against the
          archived text (checked at ingest, when text exists)
-V-DR-06  not_found=true ⇒ documents=[] and evidence_units=[]; search_log non-empty
+V-DR-06  not_found=true ⇒ documents=[] and evidence_units=[]; the search record
+         is non-empty — search_log (docs_result.v1) or query_log (docs_result.v2)
+```
+
+### V-SP (search planning — S1, docs/14; checked on docs_result.v2 at the docs validate path)
+
+```text
+V-SP-01  every plan qid appears exactly once in query_log; executed=false only
+         with outcome=blocked + a non-empty note
+V-SP-02  the plan's counter query was executed or blocked — never skipped
+V-SP-03  docs_taken ≤ urls_seen per query_log entry; |documents| > 0 requires
+         ≥1 productive entry
+V-SP-04  not_found=true requires every entry executed|blocked and 0 productive
+V-SP-05  the plan file referenced by the result exists and matches request_id
 ```
 
 ### V-COMMIT
