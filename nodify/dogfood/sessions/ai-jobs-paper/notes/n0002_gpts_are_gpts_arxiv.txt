@@ -1,0 +1,21 @@
+SOURCE: Eloundou, T., Manning, S., Mishkin, P., Rock, D. (2023). "GPTs are GPTs: An Early Look at the Labor Market Impact Potential of Large Language Models." arXiv:2303.10130.
+URL: https://arxiv.org/abs/2303.10130
+Also published (peer-reviewed) as: Eloundou et al., Science 384(6702), 2024, https://www.science.org/doi/10.1126/science.adj0998
+OpenAI summary page: https://openai.com/index/gpts-are-gpts/
+Fetched: 2026-07-09. Full abstract reproduced verbatim below (matches published/arXiv abstract text).
+========================================================================
+
+ABSTRACT (verbatim):
+
+"We investigate the potential implications of large language models (LLMs), such as Generative Pre-trained Transformers (GPTs), on the U.S. labor market, focusing on the increased capabilities arising from LLM-powered software compared to LLMs on their own. Using a new rubric, we assess occupations based on their alignment with LLM capabilities, integrating both human expertise and GPT-4 classifications. Our findings reveal that around 80% of the U.S. workforce could have at least 10% of their work tasks affected by the introduction of LLMs, while approximately 19% of workers may see at least 50% of their tasks impacted. We do not make predictions about the development or adoption timeline of such LLMs. The projected effects span all wage levels, with higher-income jobs potentially facing greater exposure to LLM capabilities and LLM-powered software. Significantly, these impacts are not restricted to industries with higher recent productivity growth. Our analysis suggests that, with access to an LLM, about 15% of all worker tasks in the US could be completed significantly faster at the same level of quality. When incorporating software and tooling built on top of LLMs, this share increases to between 47 and 56% of all tasks. This finding implies that LLM-powered software will have a substantial effect on scaling the economic impacts of the underlying models. We conclude that LLMs such as GPTs exhibit traits of general-purpose technologies, indicating that they could have considerable economic, social, and policy implications."
+
+KEY QUANTITATIVE FIGURES (extracted from the abstract above):
+- ~80% of the U.S. workforce could have >=10% of work tasks affected by LLMs.
+- ~19% of workers may see >=50% of tasks impacted.
+- ~15% of all US worker tasks completable significantly faster with LLM access alone.
+- 47-56% of all tasks affected when LLM-powered software/tooling is included (not just the raw model).
+- Effects span all wage levels; higher-income jobs face somewhat greater exposure.
+- Methodology: new "exposure" rubric applied per-occupation, combining human annotator judgment + GPT-4 self-classification of task alignment with LLM capabilities; occupation-level rollup uses O*NET task data.
+- Explicitly: exposure/task-alignment measure, NOT a prediction of job loss, adoption timeline, or automation outcome. Paper explicitly disclaims timeline/adoption predictions.
+
+NOTE ON SCOPE: This paper measures "exposure" (task-capability overlap) under LLM access, not realized job displacement, automation, or employment change. Authors are explicit that exposure != adoption != job loss.

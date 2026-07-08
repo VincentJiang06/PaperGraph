@@ -74,7 +74,10 @@ def init(session_id: str = typer.Argument(...),
             budgets[k] = v
         record = session_mod.init(paths, question, boundary_note=boundary,
                                   language=language, budgets=budgets)
-        return {"session": record}, [record["session_id"]], f"init: {question[:120]}"
+        return ({"session": record,
+                 "session_dir": str(paths.session_dir),
+                 "notes_dir": str(paths.resolve("notes"))},
+                [record["session_id"]], f"init: {question[:120]}")
     _run("init", root, session_id, go, mutating=True, needs_session=False)
 
 
@@ -146,7 +149,8 @@ def brief(max_chars: int = typer.Option(8000, "--max-chars"),
           root: Optional[str] = _ROOT_OPT, session: Optional[str] = _SESSION_OPT) -> None:
     def go(paths: Paths, sess):
         text = brief_mod.render(paths, sess, max_chars=max_chars)
-        return {"brief": text}, [], f"brief ({len(text)} chars)"
+        return ({"brief": text, "session_dir": str(paths.session_dir)},
+                [], f"brief ({len(text)} chars)")
     _run("brief", root, session, go, mutating=False)
 
 
@@ -267,6 +271,59 @@ def docs_for_node(node_id: str = typer.Argument(...),
             entries = docsdb.for_node(paths, node_id)
         return ({"entries": entries}, [], f"docs for-node {node_id}: {len(entries)}")
     _run("docs for-node", root, session, go, mutating=False)
+
+
+_PAYLOAD_EXAMPLES = {
+    "conclude": {
+        "_for": "nd conclude --file <this>",
+        "node_id": "N-0002", "lean": "supports", "summary": "一句话结论",
+        "confidence": "medium",
+        "based_on": {"children": [], "evidence": [
+            {"title": "来源标题", "doc_id": "DOC-0001",
+             "quote": "从归档文本原样复制的句子(或 null)",
+             "url": None, "locator": None, "tool": "web_search", "note": None}]},
+        "open_questions": []},
+    "ingest": {
+        "_for": "nd docs ingest --file <this>",
+        "kind": "web", "title": "来源标题", "url": "https://…",
+        "text_file": "sessions/<id>/notes/saved.txt",
+        "summary": "≤500字符摘要",
+        "bindings": [{"node_id": "N-0002", "relation": "supports",
+                       "note": None}]},
+    "outline": {
+        "_for": "nd article outline --file <this>",
+        "title": "文章标题", "thesis": "论题(须扎根 grounded_in 的 synthesis)",
+        "grounded_in": ["SYN-0001"],
+        "sections": [{"section_id": "S-01", "title": "引言",
+                       "role": "introduction", "node_ids": ["N-0001"],
+                       "intent": "一句话意图"}],
+        "excluded": [{"node_id": "N-0005", "reason": "为何不入文"}]},
+    "expand": {
+        "_for": "nd add --file <this>",
+        "parent_id": "N-0001",
+        "children": [{"statement": "新方向子观点",
+                       "why_helps_parent": "为何有助判断父观点",
+                       "orientation": "adversarial"}]},
+}
+_SCHEMA_ALIASES = {"conclude": "synthesis.v2", "ingest": "docs.entry.v1",
+                   "outline": "article.outline.v1", "expand": "node.v1"}
+
+
+@app.command("schema")
+def schema_cmd(name: str = typer.Argument(..., help="record name or alias: "
+               "conclude|ingest|outline|expand|<schema file name>"),
+               root: Optional[str] = _ROOT_OPT, session: Optional[str] = _SESSION_OPT) -> None:
+    from .schemas import SCHEMA_NAMES, load as load_schema
+    resolved = _SCHEMA_ALIASES.get(name, name)
+    if resolved not in SCHEMA_NAMES:
+        _emit("schema", {}, errors=[f"unknown schema: {name!r} (aliases: "
+              f"{sorted(_SCHEMA_ALIASES)}; records: {list(SCHEMA_NAMES)})"],
+              exit_code=2)
+        return
+    data = {"name": resolved, "schema": load_schema(resolved)}
+    if name in _PAYLOAD_EXAMPLES:
+        data["payload_example"] = _PAYLOAD_EXAMPLES[name]
+    _emit("schema", data)
 
 
 article_app = typer.Typer(add_completion=False, no_args_is_help=True)

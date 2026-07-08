@@ -1,0 +1,98 @@
+SOURCE 1
+Title: AI has already added 1.3 million jobs, LinkedIn data says (World Economic Forum, citing
+       LinkedIn Economic Graph / "Labor Market Report: Building a Future of Work That Works", Jan 2026)
+URL: https://www.weforum.org/stories/2026/01/ai-has-already-added-1-3-million-new-jobs-according-to-linkedin-data/
+Related primary source (LinkedIn PDF, not yet fetched): https://economicgraph.linkedin.com/content/dam/me/economicgraph/en-us/PDF/linkedIn-labor-market-report-building-a-future-of-work-that-works-jan-2026.pdf
+Fetched via: r.jina.ai proxy (2026-07-09), original weforum.org blocks WebFetch/bots with 403
+Fetch prompt: Extract the full text verbatim, especially sentences with numbers about AI jobs added,
+timeframe, AI Engineer roles, complementary labor demand, data/annotation/oversight roles.
+
+--- VERBATIM / KEY EXTRACTED TEXT ---
+
+"1.3 million new roles like AI Engineers, Forward-Deployed Engineers and Data Annotators" have been
+created, according to LinkedIn data. [REALIZED, not projected — explicitly names Data Annotators,
+directly on-point for "annotation/data roles" complementary demand]
+
+Timeframe: "in just two years" (article does not spell out exact calendar years in the extracted
+text; likely refers to the AI hiring surge since ChatGPT-era adoption, i.e. roughly 2023-2025/2026 —
+needs primary-source PDF confirmation of exact window).
+
+"AI Engineer is one of the fastest-growing jobs on LinkedIn over the past three years" — sustained
+demand across AI-centric positions.
+
+Additional/adjacent job growth cited in the same piece: "more than 600,000 new, AI-enabled data
+centre jobs."
+
+New positions span organizational levels, including "Directors of AI" and "Machine Learning
+Researchers."
+
+Labor-market context / caveat (important for balanced claim assessment): despite overall hiring
+slowdown (described as "20% below pre-pandemic levels globally"), the article states "AI isn't
+driving the hiring slowdown – economic uncertainty, monetary policy shifts and post-pandemic hiring
+rebalancing are the biggest culprits." I.e., LinkedIn/WEF explicitly disentangle AI-driven net job
+creation from broader macro hiring weakness — supports the "complementary demand exists alongside,
+not necessarily net-dominant over, other labor-market forces" framing.
+
+==================================================================================================
+
+SOURCE 2
+Title: New Lightcast Report: AI Skills Command 28% Salary Premium as Demand Shifts Beyond Tech
+       Industry (Lightcast / PR Newswire, "Beyond the Buzz" report, Jul 2025)
+URL: https://www.prnewswire.com/news-releases/new-lightcast-report-ai-skills-command-28-salary-premium-as-demand-shifts-beyond-tech-industry-302511141.html
+Related: https://lightcast.io/resources/blog/beyond-the-buzz-press-release-2025-07-23
+Fetched directly via WebFetch (prnewswire.com not blocked), 2026-07-09
+Fetch prompt: Extract full text verbatim — AI job postings growth, salary premium, generative AI
+roles growth, data annotation, industries.
+
+--- VERBATIM / KEY EXTRACTED TEXT ---
+
+"job postings including AI skills offer 28% higher salaries—nearly $18,000 more per year" than
+positions without such capabilities. [quantified wage/demand premium — indirect evidence of labor
+demand for AI-complementary skills]
+
+As of 2024, more than half of positions requiring AI skills exist outside traditional tech fields:
+"800% growth in generative AI roles across non-tech industries since 2022."
+
+Sector-specific annual growth rates (AI-skill job postings): Human Resources +66% (leads adoption),
+Finance +40% (from lower baseline), Education +200% (generative AI demand), Marketing/PR 8% current
+adoption with +50% annual growth.
+
+Research scope: analysis examined "over 1.3 billion job postings" (Lightcast's labor-market
+database) to identify AI competencies employers require across career fields.
+
+Report introduces an "AI Skills Disruption Matrix," evaluating skills across growth rates,
+workforce importance, and AI exposure.
+
+==================================================================================================
+
+SOURCE 3
+Title: The Generative AI Job Market: 2025 Data Insights (Lightcast blog)
+URL: https://lightcast.io/resources/blog/the-generative-ai-job-market-2025-data-insights
+Fetched directly via WebFetch, 2026-07-09
+Fetch prompt: Extract full text verbatim — generative AI job postings growth 2023-2025, data
+annotation roles, AI oversight roles.
+
+--- VERBATIM / KEY EXTRACTED TEXT ---
+
+"Unique job postings for generative AI skills have grown from 55 in January 2021 to nearly 10,000
+by May 2025." [realized time series, most quantitatively precise growth curve found]
+
+Acceleration notably intensified in early 2023 following ChatGPT's adoption, continuing through
+2025.
+
+Growth rates by role category, 2022-2024:
+- Non-IT roles requiring generative AI skills: 9x growth
+- Generative AI Engineer positions: 7x growth
+- Other IT roles with generative AI requirements: 35x growth
+
+Top AI positions by posting volume: Data Scientists (3,301 postings), Machine Learning Engineers
+(2,951 postings); Solutions Architects, Product Managers, and Enterprise Architects also
+substantial.
+
+Cross-industry adoption: "51% of AI job postings are for jobs outside of the IT and Computer
+Science career area." Shift from 2019, when 61% of AI postings were concentrated in tech roles.
+
+NOTE: This document explicitly does NOT contain data on data-annotation roles or AI-oversight
+positions specifically (checked — absent from this particular blog post; the WEF/LinkedIn source
+above (Source 1 in the companion file n0004_wef_future_jobs... actually this file) DOES name "Data
+Annotators" explicitly as a realized-growth role category).

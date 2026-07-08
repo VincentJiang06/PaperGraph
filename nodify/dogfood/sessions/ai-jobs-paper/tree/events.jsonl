@@ -1,0 +1,47 @@
+{"schema":"event.v1","event_id":"EV-000001","at":"2026-07-08T19:18:27Z","actor":"main","command":"init","mutating":true,"touched":["ai-jobs-paper"],"summary":"init: AI agents 在2020-2025年对就业的净效应是什么?"}
+{"schema":"event.v1","event_id":"EV-000002","at":"2026-07-08T19:18:53Z","actor":"main","command":"add","mutating":true,"touched":["N-0001"],"summary":"add 1 under root: N-0001"}
+{"schema":"event.v1","event_id":"EV-000003","at":"2026-07-08T19:19:13Z","actor":"main","command":"add","mutating":true,"touched":["N-0002"],"summary":"add 1 under N-0001: N-0002"}
+{"schema":"event.v1","event_id":"EV-000004","at":"2026-07-08T19:19:13Z","actor":"main","command":"add","mutating":true,"touched":["N-0003"],"summary":"add 1 under N-0001: N-0003"}
+{"schema":"event.v1","event_id":"EV-000005","at":"2026-07-08T19:19:13Z","actor":"main","command":"add","mutating":true,"touched":["N-0004"],"summary":"add 1 under N-0001: N-0004"}
+{"schema":"event.v1","event_id":"EV-000006","at":"2026-07-08T19:19:13Z","actor":"main","command":"add","mutating":true,"touched":["N-0005"],"summary":"add 1 under N-0001: N-0005"}
+{"schema":"event.v1","event_id":"EV-000007","at":"2026-07-08T19:19:28Z","actor":"main","command":"promote","mutating":true,"touched":["N-0002"],"summary":"promote N-0002 -> claim"}
+{"schema":"event.v1","event_id":"EV-000008","at":"2026-07-08T19:19:28Z","actor":"main","command":"promote","mutating":true,"touched":["N-0003"],"summary":"promote N-0003 -> claim"}
+{"schema":"event.v1","event_id":"EV-000009","at":"2026-07-08T19:19:28Z","actor":"main","command":"promote","mutating":true,"touched":["N-0004"],"summary":"promote N-0004 -> claim"}
+{"schema":"event.v1","event_id":"EV-000010","at":"2026-07-08T19:19:28Z","actor":"main","command":"promote","mutating":true,"touched":["N-0005"],"summary":"promote N-0005 -> claim"}
+{"schema":"event.v1","event_id":"EV-000011","at":"2026-07-08T19:19:40Z","actor":"main","command":"recall","mutating":false,"touched":[],"summary":"recall N-0002: 0 hits"}
+{"schema":"event.v1","event_id":"EV-000012","at":"2026-07-08T19:19:40Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0002"],"summary":"N-0002 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000013","at":"2026-07-08T19:19:40Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0003"],"summary":"N-0003 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000014","at":"2026-07-08T19:19:40Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0004"],"summary":"N-0004 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000015","at":"2026-07-08T19:19:40Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0005"],"summary":"N-0005 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000016","at":"2026-07-08T19:22:24Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (820 chars)"}
+{"schema":"event.v1","event_id":"EV-000017","at":"2026-07-08T19:23:21Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0001"],"summary":"ingest DOC-0001: OECD Employment Outlook 2023 — Artificial Intelligence and the Labour Market (Ch"}
+{"schema":"event.v1","event_id":"EV-000018","at":"2026-07-08T19:23:21Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0002"],"summary":"ingest DOC-0002: Yale Budget Lab — Evaluating the Impact of AI on the Labor Market: Current State"}
+{"schema":"event.v1","event_id":"EV-000019","at":"2026-07-08T19:24:15Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0001","N-0003"],"summary":"conclude N-0003 [refutes]"}
+{"schema":"event.v1","event_id":"EV-000020","at":"2026-07-08T19:24:38Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0003"],"summary":"ingest DOC-0003: Stanford Digital Economy Lab — Canaries in the Coal Mine? Six Facts about the Re"}
+{"schema":"event.v1","event_id":"EV-000021","at":"2026-07-08T19:24:38Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0004"],"summary":"ingest DOC-0004: Challenger, Gray & Christmas — Challenger Report: March Cuts Rise 25% From Febru"}
+{"schema":"event.v1","event_id":"EV-000022","at":"2026-07-08T19:24:59Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0002","N-0005"],"summary":"conclude N-0005 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000023","at":"2026-07-08T19:25:58Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0005"],"summary":"ingest DOC-0005: WEF Future of Jobs Report 2023 & 2025 (jobs outlook excerpts)"}
+{"schema":"event.v1","event_id":"EV-000024","at":"2026-07-08T19:25:58Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0006"],"summary":"ingest DOC-0006: WEF/LinkedIn — AI has already added 1.3 million jobs (LinkedIn Economic Graph); "}
+{"schema":"event.v1","event_id":"EV-000025","at":"2026-07-08T19:26:22Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0003","N-0004"],"summary":"conclude N-0004 [supports]"}
+{"schema":"event.v1","event_id":"EV-000026","at":"2026-07-08T19:26:48Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0007"],"summary":"ingest DOC-0007: Eloundou et al. — GPTs are GPTs: An Early Look at the Labor Market Impact Potent"}
+{"schema":"event.v1","event_id":"EV-000027","at":"2026-07-08T19:26:48Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0008"],"summary":"ingest DOC-0008: ILO WP96 — Generative AI and Jobs: A Global Analysis of Potential Effects on Job"}
+{"schema":"event.v1","event_id":"EV-000028","at":"2026-07-08T19:27:06Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0004","N-0002"],"summary":"conclude N-0002 [supports]"}
+{"schema":"event.v1","event_id":"EV-000029","at":"2026-07-08T19:27:15Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (5 nodes)"}
+{"schema":"event.v1","event_id":"EV-000030","at":"2026-07-08T19:27:34Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0005","N-0001"],"summary":"conclude N-0001 [supports]"}
+{"schema":"event.v1","event_id":"EV-000031","at":"2026-07-08T19:27:41Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000032","at":"2026-07-08T19:28:01Z","actor":"main","command":"article outline","mutating":true,"touched":["OL-01"],"summary":"outline: 任务重组而非岗位消失:AI agents 2020-2025年就业净效应的证据 (5 sections)"}
+{"schema":"event.v1","event_id":"EV-000033","at":"2026-07-08T19:29:41Z","actor":"main","command":"article section","mutating":true,"touched":["S-01"],"summary":"section S-01: 7 words, 0 cites"}
+{"schema":"event.v1","event_id":"EV-000034","at":"2026-07-08T19:29:41Z","actor":"main","command":"article section","mutating":true,"touched":["S-02"],"summary":"section S-02: 38 words, 2 cites"}
+{"schema":"event.v1","event_id":"EV-000035","at":"2026-07-08T19:29:41Z","actor":"main","command":"article section","mutating":true,"touched":["S-03"],"summary":"section S-03: 60 words, 4 cites"}
+{"schema":"event.v1","event_id":"EV-000036","at":"2026-07-08T19:29:41Z","actor":"main","command":"article section","mutating":true,"touched":["S-04"],"summary":"section S-04: 38 words, 2 cites"}
+{"schema":"event.v1","event_id":"EV-000037","at":"2026-07-08T19:29:42Z","actor":"main","command":"article section","mutating":true,"touched":["S-05"],"summary":"section S-05: 22 words, 7 cites"}
+{"schema":"event.v1","event_id":"EV-000038","at":"2026-07-08T19:29:52Z","actor":"main","command":"article assemble","mutating":true,"touched":[],"summary":"assemble -> article/final.md"}
+{"schema":"event.v1","event_id":"EV-000039","at":"2026-07-08T19:30:01Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000040","at":"2026-07-08T19:30:15Z","actor":"main","command":"article section","mutating":true,"touched":["S-01"],"summary":"section S-01: 5 words, 0 cites"}
+{"schema":"event.v1","event_id":"EV-000041","at":"2026-07-08T19:30:15Z","actor":"main","command":"article section","mutating":true,"touched":["S-02"],"summary":"section S-02: 36 words, 2 cites"}
+{"schema":"event.v1","event_id":"EV-000042","at":"2026-07-08T19:30:15Z","actor":"main","command":"article section","mutating":true,"touched":["S-03"],"summary":"section S-03: 58 words, 4 cites"}
+{"schema":"event.v1","event_id":"EV-000043","at":"2026-07-08T19:30:16Z","actor":"main","command":"article section","mutating":true,"touched":["S-04"],"summary":"section S-04: 36 words, 2 cites"}
+{"schema":"event.v1","event_id":"EV-000044","at":"2026-07-08T19:30:16Z","actor":"main","command":"article section","mutating":true,"touched":["S-05"],"summary":"section S-05: 20 words, 7 cites"}
+{"schema":"event.v1","event_id":"EV-000045","at":"2026-07-08T19:30:16Z","actor":"main","command":"article assemble","mutating":true,"touched":[],"summary":"assemble -> article/final.md"}
+{"schema":"event.v1","event_id":"EV-000046","at":"2026-07-08T19:30:32Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000047","at":"2026-07-08T19:34:36Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}

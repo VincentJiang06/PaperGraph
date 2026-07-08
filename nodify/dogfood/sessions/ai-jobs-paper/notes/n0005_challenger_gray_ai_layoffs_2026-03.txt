@@ -1,0 +1,128 @@
+SOURCE: Challenger, Gray & Christmas, Inc. — "Challenger Report: March Cuts Rise 25% From February, AI Leads Reasons" (published Apr 02, presumably 2026 based on YTD figures referencing "2026")
+URL: https://www.challengergray.com/blog/challenger-report-march-cuts-rise-25-from-february-ai-leads-reasons/
+Fetched: 2026-07-09. Excerpted verbatim (curl + HTML tag strip) from the blog post. Contains historical 2025 full-year AI-cited layoff total (54,836) plus 2026 monthly/YTD figures.
+========================================================================
+
+Challenger Report: March Cuts Rise 25% From February, AI Leads Reasons | Challenger, Gray & Christmas, Inc. | Outplacement & Career Transitioning Services
+Sign In
+Get Started
+Outplacement
+For Companies
+For Individuals
+Executive Coaching
+News & Insights
+About
+About Us
+Our Team
+Outplacement
+For Companies
+For Individuals
+Executive Coaching
+News & Insights
+About
+About Us
+Our Team
+Sign In
+Get Started
+Apr 02
+Challenger Report: March Cuts Rise 25% From February, AI Leads Reasons
+U.S.-based employers announced 60,620 job cuts in March, up 25% from 48,307 cuts announced in February. It is down 78% from the 275,240 cuts announced during the same month last year, according to a report released Thursday from global outplacement and executive coaching firm Challenger, Gray & Christmas.
+“Removing the wave of federal layoffs announced in February and March of last year, job cut announcements in 2026 are closely following the pattern of 2025. Last year it was Government, Retail, and Technology. This year, it’s Technology, Transportation, and Healthcare,” said Andy Challenger, workplace expert and chief revenue officer for Challenger, Gray & Christmas.
+In the first quarter, employers announced 217,362 job cuts, the lowest Q1 total since 2022, when 55,696 cuts were recorded. It is down 16% from the 259,948 recorded in the fourth quarter of 2025, and down 56% from the 497,052 cuts announced in the first quarter of 2025.
+WHICH INDUSTRIES Are CUt The Most in Q1?
+Technology
+announced 18,720 job cuts in March for a total of 52,050 in 2026. That is an increase of 40% from the 37,097 cuts in this sector announced in the same period last year. It is the highest year-to-date total for the sector since 2023 when 102,391 Technology cuts were recorded.
+More layoffs are likely to come from Technology companies in 2026. Last month’s total was made up primarily on a workforce reduction at Dell Inc., according to their latest annual filing. Oracle reportedly began layoffs late last month, though the company has not released a total figure. Meta, meanwhile, is undergoing layoffs in its Reality Labs division as it focuses on pivoting to artificial intelligence.
+“Companies are shifting budgets toward AI investments at the expense of jobs. The actual replacing of roles can be seen in Technology companies, where AI can replace coding functions. Other industries are testing the limits of this new technology, and while it can’t replace jobs completely, it is costing jobs,” said Challenger.
+The importance of upskilling and reskilling cannot be overstated. Workers need to familiarize themselves with AI, including prompting and generating assets. Many companies are now including goals for their workers on AI use and redefining job descriptions based on what AI can do.
+“One thing that is clear is that AI is changing work and the workforce. Workers will need to be more strategic as they lead AI-powered agents that handle increasingly complex tasks. Human workers will need strong decision making and judgment skills in the age of AI,” he added.
+Transportation
+has announced the second-most job cuts this year with 32,241, up 703% from the 4,017 cuts announced during the same period in 2025. Transportation industries, including airlines and shipping, will likely be squeezed by an ongoing war in Iran. It is the highest Q1 total for the sector on record.
+Healthcare
+companies and health products manufacturers, including
+Hospitals
+, have announced 23,520 job cuts this year, the highest Q1 total on record. The previous high occurred in 2023, when 22,950 job cuts were recorded for the sector in the first quarter.
+Education
+followed with 11,467 job cuts in the first quarter, a 170% increase from the 4,242 cuts announced through the first quarter of last year.
+Financial
+institutions have cut 9,397 jobs so far this year, down 41% from the 15,982 cuts announced during the same period in 2025.
+“Financial institutions are being impacted by AI, but these companies are also undertaking traditional cost-cutting initiatives, particularly during a time of uncertainty and volatility in the markets,” said Challenger.
+The
+Media
+industry announced 352 cuts in March for a total of 1,492, down 18% from the 1,820 cuts announced through Q1 2025.
+News
+, which Challenger tracks as a subset of Media and includes broadcast, digital, and print, has announced 250 job cuts in March. So far this year, News has announced 639 job cuts, up 12% from the 573 cuts announced during the same period last year.
+WHY ARE COMPANIES CUTTING?
+In March,
+Artificial Intelligence (AI)
+led all reasons for job cuts, with 15,341 announced during the month, 25% of total cuts.
+Closings
+followed with 13,931,
+Restructuring
+was cited for 8,726, and
+Market and Economic Conditions
+accounted for 6,597 planned layoffs.
+So far in 2026,
+Market and Economic Conditions
+lead all reasons year-to-date with 45,103 cuts, followed by
+Restructuring
+with 37,916,
+Closings
+with 37,405, and
+Contract Loss
+with 31,817.
+AI
+ranks fifth year-to-date with 27,645 cuts, or roughly
+13% of all job cut plans
+.
+Artificial Intelligence (AI)
+was cited for 4,680 job cuts in February, approximately 10% of total cuts for the month. So far in 2026, AI has been cited for 12,304 job cut announcements, or 8% of job cut plans.
+In 2025, companies referenced AI for 54,836 announced layoff plans, 5% of total cuts during the year. Since 2023, when this reason was first tracked, AI has now been cited in 99,470 job cut announcements, 3.5% of all layoff plans that occurred during that period, up from 3% in February.
+HIRING PLANS IN 2026
+Hiring plans rose 157% in March to 32,826 from 12,755 in February. They are up 149% from the 13,198 hiring plans in March 2025. So far this year, employers have announced plans to hire 50,887 workers, down 6% from 53,867 new hires announced during the same period in 2025.
+Just over 21% of last month’s announced hiring plans were seasonal summer jobs. So far in 2026, Automotive leads all industries in hiring plans with 12,258, followed by Entertainment/Leisure with 8,261.
+Download the Full Report With Tables
+Search for:
+Categories
+Best Practices for Companies
+Blog
+CEO Turnover Report
+Challenger COVID Coverage
+Challenger Survey
+Economy & Workplace
+Executive Coaching
+Featured
+Job Search Tips
+News
+Press Release
+Seasonal Hiring
+TeamChallenger
+Teen Employment
+The Challenger Report
+When careers shift,
+we step in.
+Get started with outplacement solutions that get you where you want to go.
+Start the conversation
+Bounce back. Move forward.
+Connect With Us
+Contact Us
+Get Started
+Locations
+Chicago | Headquarters
+Dallas
+New York City
+Atlanta
+Los Angeles
+Houston
+Washington, DC
+Newsletter Signup
+Stay ahead with our monthly report on
+job market trends.
+LinkedIn
+X
+Instagram
+Facebook
+Link
+©2026 Challenger, Gray & Christmas, Inc.
+Privacy Policy
+Site map

@@ -11,6 +11,7 @@ CLOSED_COMMANDS = {
     "brief", "show", "tree", "log", "check", "export",
     "upgrade", "recall", "docs ingest", "docs for-node",
     "article outline", "article section", "article assemble",
+    "schema",
 }
 
 ENVELOPE_KEYS = {"ok", "command", "data", "errors", "warnings"}

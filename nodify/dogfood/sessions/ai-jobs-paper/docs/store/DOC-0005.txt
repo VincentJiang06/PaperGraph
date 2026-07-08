@@ -1,0 +1,78 @@
+SOURCE 1
+Title: The Future of Jobs Report 2023 (World Economic Forum) — "3. Jobs outlook" section
+URL: https://www.weforum.org/publications/the-future-of-jobs-report-2023/in-full/3-jobs-outlook/
+Fetched via: r.jina.ai proxy (2026-07-09), original weforum.org blocks WebFetch/bots with 403
+Fetch prompt: Extract the full text verbatim, especially sentences with numbers about jobs created,
+jobs destroyed, AI and machine learning specialists growth rate, data analysts and scientists growth.
+
+--- VERBATIM / KEY EXTRACTED TEXT ---
+
+"69 million jobs will be created and 83 million jobs destroyed, leading to a contraction of global
+labour markets of 14 million jobs" [projection for 2023-2027, among the 673 million jobs covered by
+surveyed companies]
+
+This represents structural labor-market churn of approximately 23% of the current global workforce
+covered by the survey data (growth of 10.2% and decline of 12.3%).
+
+AI and Machine Learning Specialists — strongest growth trajectory:
+"demand for AI and Machine Learning Specialists is expected to grow by 40%, or 1 million jobs."
+
+Data Analysts and Scientists (incl. related roles like Business Intelligence Analysts):
+"a 30-35% increase (1.4 million) in demand."
+
+Fastest-declining roles are primarily clerical positions (data entry clerks, cashiers, accounting
+clerks), expected to contract by 25-35% depending on industry and region.
+
+NOTE: A separate, frequently-confused figure — "85 million jobs displaced, 97 million new roles
+emerge" by 2025 — belongs to the EARLIER Future of Jobs Report 2020 (Oct 2020), NOT the 2023 report.
+Source for that 2020 figure: https://www.weforum.org/press/2020/10/recession-and-automation-changes-our-future-of-work-but-there-are-jobs-coming-report-says-52c5162fce/
+("displacing 85 million jobs in the next five years... the robot revolution will create 97 million
+new jobs, with new roles emerging across the care economy, in technology fields (such as artificial
+intelligence) and in content creation careers"). Do not attribute 85M/97M to the 2023 report.
+
+==================================================================================================
+
+SOURCE 2
+Title: Future of Jobs Report 2025: 78 Million New Job Opportunities by 2030 but Urgent Upskilling
+       Needed to Prepare Workforces (WEF press release)
+URL: https://www.weforum.org/press/2025/01/future-of-jobs-report-2025-78-million-new-job-opportunities-by-2030-but-urgent-upskilling-needed-to-prepare-workforces/
+Fetched via: r.jina.ai proxy (2026-07-09), original weforum.org blocks WebFetch/bots with 403
+Fetch prompt: Extract the full text verbatim, especially sentences with numbers about jobs created,
+jobs displaced, net job growth, AI specialist roles, and complementary labor demand.
+
+--- VERBATIM / KEY EXTRACTED TEXT ---
+
+Job Market Projections by 2030 (survey-based, ~1000+ global employers):
+"170 million new roles set to be created and 92 million displaced, resulting in a net increase of
+78 million jobs." (= 22% of today's total employment being disrupted)
+
+Fastest Growing Roles: "Technology roles like AI specialists and big data analysts are the
+fastest-growing" — specifically Big Data Specialists, FinTech Engineers, AI and Machine Learning
+Specialists, Software and Application Developers, Security Management Specialists, and Autonomous
+and Electric Vehicle Specialists. [via WebSearch summary of weforum.org/stories page, cross-checked]
+
+"Frontline roles, including farmworkers, delivery drivers and construction workers, are poised to
+see the largest job growth in absolute terms by 2030." Care professions and education roles are
+also expanding due to demographic shifts. (i.e., AI/tech is not the only or largest driver in
+absolute headcount terms — demographic/green-transition trends dominate in absolute numbers.)
+
+Skills gap / reskilling: "59 are projected to require reskilling or upskilling by 2030 – 11 of whom
+are unlikely to receive it; this translates to over 120 million workers at medium-term risk of
+redundancy." [percentages of workers, per WEF phrasing]
+
+Nearly 40% of required job skills will change by 2030. 63% of employers cite skills gaps as their
+biggest barrier to business transformation. 85% of employers plan to prioritize upskilling
+2025-2030.
+
+Half of employers plan to re-orient their business in response to AI; 80% plan to upskill workers
+with AI training and two-thirds plan to hire talent with specific AI skills. [from Coursera blog
+summary of the same report, https://blog.coursera.org/wef-future-of-jobs-report-2025/]
+
+--- ANALYSIS NOTE (not from source, for triage) ---
+Both WEF reports are EMPLOYER-SURVEY PROJECTIONS (forward-looking, 2023-2027 and 2025-2030), not
+realized/measured 2020-2025 outcomes. The 2023 report projects a NET NEGATIVE of 14 million jobs
+overall (even though AI/ML specialist roles specifically grow +40%/+1M) — so "AI adoption creates
+net new jobs" is true for the AI-specialist/data-specialist occupational category specifically, but
+the WEF's own 2023 economy-wide net figure was negative (driven by macro factors, not AI per se).
+The 2025 report reverses to a net positive of +78M for 2025-2030, again a projection, not measured
+history.

@@ -35,7 +35,7 @@ schema set **v3** = v2 全部 + 2 份:
    file(article/S-xx.md), cites[DOC-ids](从文中扫描), word_count,
    created_at}
 
-## 3. CLI 扩表(15 → 18 组)
+## 3. CLI 扩表(15 → 19 组)
 
 ```
 nd article outline --file outline.json    # 记录/修订大纲(校验 SYN/N 引用)
@@ -44,6 +44,8 @@ nd article section --id S-01 --file draft.md
       # 文件复制为 article/S-01.md,追加记录
 nd article assemble                       # 按大纲顺序拼 final.md +
                                           # 自动参考文献(cite 并集 → 条目)
+nd schema <alias|record>                  # 自描述:schema 全文 + 示例 payload
+      # (实测 #1 F2;无 session 依赖,是唯一不记 event 的命令)
 ```
 
 成文标注语法(机械可查的最小集):正文引用处写 `(cite: DOC-0001)`;

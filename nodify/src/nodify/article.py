@@ -94,7 +94,13 @@ def register_section(paths: Paths, section_id: str, draft: Path
     if dangling:
         raise DomainError([f"cite does not resolve to an archived doc: {c}"
                            for c in dangling])
-    if not cites:
+    if text.lstrip().startswith("#"):
+        warnings.append(f"{section_id}: draft starts with a markdown heading — "
+                        "assemble adds section headings itself; remove yours "
+                        "or they will double")
+    role = next((s["role"] for s in outline["sections"]
+                 if s["section_id"] == section_id), None)
+    if not cites and role in (None, "argument", "evidence"):
         warnings.append(f"{section_id} cites nothing")
     dest_rel = f"article/{section_id}.md"
     dest = paths.resolve(dest_rel)
@@ -102,7 +108,8 @@ def register_section(paths: Paths, section_id: str, draft: Path
     dest.write_text(text, encoding="utf-8")
     record = {"schema": "article.section.v1", "section_id": section_id,
               "source_file": str(draft), "file": dest_rel, "cites": cites,
-              "word_count": len(text.split()), "created_at": clock_now()}
+              "word_count": len(docsdb._TOKEN.findall(text.lower())),
+              "created_at": clock_now()}
     errs = validate(record)
     if errs:
         raise DomainError(errs)

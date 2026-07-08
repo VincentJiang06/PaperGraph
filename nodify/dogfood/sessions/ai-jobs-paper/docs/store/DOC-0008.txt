@@ -1,0 +1,35 @@
+SOURCE: Gmyrek, P., Berg, J., Bescond, D. (2023). "Generative AI and Jobs: A Global Analysis of Potential Effects on Job Quantity and Quality." ILO Working Paper 96. Geneva: International Labour Office. https://doi.org/10.54394/FHEM8239
+URL (landing page): https://www.ilo.org/publications/generative-ai-and-jobs-global-analysis-potential-effects-job-quantity-and
+URL (PDF, fetched): https://www.ilo.org/sites/default/files/wcmsp5/groups/public/@dgreports/@inst/documents/publication/wcms_890761.pdf
+Press release: https://www.ilo.org/resource/news/generative-ai-likely-augment-rather-destroy-jobs
+Fetched: 2026-07-09. Extracted verbatim via pdftotext -layout from the official ILO PDF (2MB, confirmed genuine ILO Working Paper 96, August 2023, authors Gmyrek/Berg/Bescond).
+========================================================================
+
+--- Suggested citation (verbatim from PDF) ---
+
+"Gmyrek, P., Berg, J., Bescond, D. 2023. Generative AI and jobs: A global analysis of potential effects on job quantity and quality, ILO Working Paper 96 (Geneva, ILO). https://doi.org/10.54394/FHEM8239"
+
+--- ABSTRACT (verbatim, full text) ---
+
+"This study presents a global analysis of the potential exposure of occupations and tasks to Generative AI, and specifically to Generative Pre-Trained Transformers (GPTs), and the possible implications of such exposure for job quantity and quality. It uses the GPT-4 model to estimate task-level scores of potential exposure and then estimates potential employment effects at the global level as well as by country income group. Despite representing an upper-bound estimate of exposure, we find that only the broad occupation of clerical work is highly exposed to the technology with 24 per cent of clerical tasks considered highly exposed and an additional 58 percent with medium-level exposure. For the other occupational groups, the greatest share of highly exposed tasks oscillates between 1 and 4 per cent, and medium exposed tasks do not exceed 25 per cent. As a result, the most important impact of the technology is likely to be of augmenting work – automating some tasks within an occupation while leaving time for other duties – as opposed to fully automating occupations.
+
+The potential employment effects, whether augmenting or automating, vary widely across country income groups, due to different occupational structures. In low-income countries, only 0.4 per cent of total employment is potentially exposed to automation effects, whereas in high-income countries the share rises to 5.5 percent. The effects are highly gendered, with more than double the share of women potentially affected by automation. The greater impact is from augmentation, which has the potential to affect 10.4 percent of employment in low-income countries and 13.4 percent of employment in high-income countries. However, such effects do not consider infrastructure constraints, which will impede the possibility for use in lower-income countries and likely increase the productivity gap.
+
+We stress that the primary value of this analysis is not the precise estimates, but rather the insights that the overall distribution of such scores provides about the nature of possible changes. Such insights can encourage governments and social partners to proactively design policies that support orderly, fair, and consultative transitions, rather than dealing with change in a reactive manner. Moreover, the likely ramifications on job quality might be of greater consequence than the quantitative impacts, both with respect to the new jobs created because of the technology, but also the potential effects on work intensity and autonomy when the technology is integrated into the workplace. For this reason, we also emphasize the need for social dialogue and regulation to support quality employment."
+
+--- About the authors (verbatim) ---
+
+"Paweł Gmyrek is Senior Researcher in the Research Department of the ILO.
+Janine Berg is Senior Economist in the Research Department of the ILO.
+David Bescond is Data Scientist in the ILO's Department of Statistics."
+
+--- KEY QUANTITATIVE FIGURES (from abstract above) ---
+- Clerical work: 24% of tasks highly exposed, 58% medium exposure (highest-exposed broad occupation group).
+- All other occupational groups: highly-exposed task share only 1-4%; medium-exposed tasks <=25%.
+- Total employment potentially exposed to AUTOMATION: 0.4% (low-income countries) vs 5.5% (high-income countries).
+- Total employment potentially exposed to AUGMENTATION: 10.4% (low-income) vs 13.4% (high-income) — augmentation >> automation in magnitude.
+- Gender: women's share of employment potentially affected by automation is "more than double" men's, due to over-representation in clerical work.
+- Method: GPT-4 used to score ~29,000+ ISCO task descriptions for exposure; explicitly described as an UPPER-BOUND estimate.
+- Explicit caveat (near-verbatim, own words in abstract): primary value is the DISTRIBUTION of scores, not the precise point estimates; effects on job QUALITY (work intensity, autonomy) may matter more than quantity.
+
+NOTE: A newer ILO "Refined Global Index" (Working Paper 140, 2025 update) revises these figures — e.g., updated to ~3.3% of global employment in the highest-exposure category, women ~4.7% vs men ~2.4%. That is a later/different index and should be cited separately if used (URL: https://www.ilo.org/sites/default/files/2025-05/WP140_web.pdf) — not verified verbatim in this session.

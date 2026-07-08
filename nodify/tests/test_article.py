@@ -63,7 +63,16 @@ def test_section_cite_resolution_and_assemble(session, tmp_path):
     intro = tmp_path / "intro.md"
     intro.write_text("本文论证崩溃根因。", encoding="utf-8")
     env = session("article", "section", "--id", "S-01", "--file", str(intro))
+    # F7: role-aware — an introduction citing nothing is fine, no warning
+    assert not any("cites nothing" in w for w in env["warnings"])
+
+    # but an evidence-role section citing nothing DOES warn
+    empty_ev = tmp_path / "ev2.md"
+    empty_ev.write_text("空口无凭的证据节。", encoding="utf-8")
+    env = session("article", "section", "--id", "S-02", "--file", str(empty_ev))
     assert any("cites nothing" in w for w in env["warnings"])
+    # restore the cited version for assemble below
+    env = session("article", "section", "--id", "S-02", "--file", str(good))
 
     env = session("article", "assemble")
     assert env["data"]["references"] == ["DOC-0001"]
@@ -96,3 +105,44 @@ def test_v2_session_gated_from_article(session, tmp_path):
     sess_file.write_text(json.dumps(rec, ensure_ascii=False))
     env = session("article", "outline", "--file", _outline(tmp_path), expect=1)
     assert any("nd upgrade" in e for e in env["errors"])
+
+
+def test_live_test_1_fixes(session, tmp_path):
+    """Audit #1 regressions: F1 session_dir in envelopes, F2 nd schema,
+    F4 heading warning, F6 CJK word count."""
+    env = session("brief")
+    assert env["data"]["session_dir"].endswith("sessions/t")     # F1
+
+    env = session("schema", "conclude")                          # F2
+    assert env["data"]["name"] == "synthesis.v2"
+    assert env["data"]["payload_example"]["based_on"]["evidence"][0]["doc_id"]
+    env = session("schema", "nope", expect=2)
+    assert any("unknown schema" in e for e in env["errors"])
+
+    _prepared(session, tmp_path)
+    session("article", "outline", "--file", _outline(tmp_path))
+    d = tmp_path / "h.md"
+    d.write_text("## 我自带标题\n\n中文正文四十个字左右 (cite: DOC-0001)。",
+                 encoding="utf-8")
+    env = session("article", "section", "--id", "S-02", "--file", str(d))
+    assert any("markdown heading" in w for w in env["warnings"])  # F4
+    assert env["data"]["section"]["word_count"] > 7               # F6 (CJK chars count)
+
+
+def test_live_test_1_quote_unicode_fold(session, tmp_path):
+    """F5: a curly-apostrophe source matches an ASCII-apostrophe quote."""
+    session("add", "--statement", "根")
+    src = tmp_path / "u.txt"
+    src.write_text("The lab’s data — released in 2025 — shows it.",
+                   encoding="utf-8")
+    from tests.conftest import write_json
+    session("docs", "ingest", "--file", write_json(tmp_path / "e.json", {
+        "kind": "web", "title": "T", "url": "https://x", "text_file": str(src),
+        "summary": "s", "bindings": [{"node_id": "N-0001", "relation": "supports"}]}))
+    env = session("conclude", "--file", write_json(tmp_path / "s.json", {
+        "node_id": "N-0001", "lean": "supports", "summary": "s", "confidence": "low",
+        "based_on": {"children": [], "evidence": [
+            {"title": "T", "doc_id": "DOC-0001",
+             "quote": "The lab's data - released in 2025 - shows it."}]}}))
+    assert env["warnings"] == []
+    assert env["data"]["synthesis"]["based_on"]["evidence"][0]["quote"] is not None

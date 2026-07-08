@@ -22,10 +22,16 @@ STORE_DIR = "docs/store"
 
 _WS = re.compile(r"\s+")
 _TOKEN = re.compile(r"[a-z0-9]+|[一-鿿]")
+# quote checking folds typographic punctuation so a PDF's curly apostrophe
+# matches an agent's ASCII one (live-test-1 F5); widening only ever lets more
+# true quotes through, never fewer
+_PUNCT_FOLD = str.maketrans({"\u2018": "'", "\u2019": "'", "\u201c": '"',
+                             "\u201d": '"', "\u2013": "-", "\u2014": "-",
+                             "\u00a0": " ", "\u2026": "..."})
 
 
 def _norm(text: str) -> str:
-    return _WS.sub(" ", text).strip()
+    return _WS.sub(" ", text.translate(_PUNCT_FOLD)).strip()
 
 
 def tokens(text: str) -> set[str]:

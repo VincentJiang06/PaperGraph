@@ -9,6 +9,9 @@ version: 0.1.0
 你在做一场深度调查(研究问题 / 技术选型 / 根因分析)。不要把状态堆在上下文
 里:**上下文只放思考的前沿,真相放在树上。** 工具是 `nd`(每条命令输出一个
 JSON envelope;所有落盘记录被 schema 严格校验,trace 自动记录)。
+**--file 类命令的 JSON 形状不用猜**:`nd schema conclude|ingest|outline|expand`
+打印 schema 全文 + 最小示例 payload。session 的磁盘位置在 init/brief 的
+envelope 里(session_dir / notes_dir);草稿区就是 `<session_dir>/notes/`。
 
 ## 启动 / 恢复
 
@@ -32,7 +35,8 @@ JSON envelope;所有落盘记录被 schema 严格校验,trace 自动记录)。
    `nd promote N --note "尝试过的方向/为何不成立/反事实探针/预期证据形态"`。
    论点必须是**最小的、可直接投入调查的明确问题**。太大就先
    `nd add --parent <claim>` 拆解成子论点。
-3. **调查(论证层)**:**先召回再搜索**——`nd recall --node N --query "…"`,
+3. **调查(论证层)**:**先召回再搜索**——`nd recall --node N --query "…"`
+   (索引明显为空时可跳过,但一旦入过库就必须先召回),
    命中的条目把 text_file 直接喂给工人("先读这个,再决定搜什么");然后
    `nd set-status N investigating`,**大量派 subagent**——搜索、精读、数据
    分析各派各的,并行,上下文互相隔离(模板见附录)。工人须把实际引用的
@@ -47,6 +51,8 @@ JSON envelope;所有落盘记录被 schema 严格校验,trace 自动记录)。
    没归档的次要来源至少带 url 或 locator(check 会点名)。
    证据不足→细化方向重派(≤2 轮),再不行
    `nd set-status N stuck --note "缺什么" --reason evidence`,让缺口回流。
+   **lean 语义约定**:命题型陈述 → lean 对陈述本身;问题型论点 → lean 表示
+   答案相对父观点的方向;信息型且无方向 → 用 open/mixed 并在 summary 讲清。
 5. **收束(向上回流)**:一个观点的子节点足够回答它时,写观点级结论
    (based_on.children 列上依据的子节点)。根观点的 synthesis 就是调查的
    最终答案。中途认识变了就写新版(revises 旧 SYN id)。
@@ -54,7 +60,8 @@ JSON envelope;所有落盘记录被 schema 严格校验,trace 自动记录)。
    `nd article outline --file ol.json`({title, thesis, grounded_in:[SYN…],
    sections:[{section_id S-01, title, role, node_ids, intent}], excluded:
    [{node_id, reason}]}):论题必须扎根已有 synthesis,**被排除的枝要给理由**。
-   逐节写草稿(正文引用处写 `(cite: DOC-xxxx)`,只能引已归档条目),
+   逐节写草稿(正文引用处写 `(cite: DOC-xxxx)`,只能引已归档条目;
+   **草稿不要自带标题**——assemble 会按大纲加节标题;中文每节 400-800 字),
    `nd article section --id S-01 --file draft.md` 注册(悬空引用会被硬拒),
    最后 `nd article assemble` 拼装 final.md(References 自动生成)。
 7. **交付**:`nd export --format md|json` 给下游(决策备忘、复盘)。

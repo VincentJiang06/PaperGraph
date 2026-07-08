@@ -1,0 +1,28 @@
+SOURCE: OECD Employment Outlook 2023 — Chapter 3, "Artificial intelligence and the labour market" (this is a DIFFERENT excerpt than notes/n0003_oecd_employment_outlook_2023.txt — that file covers aggregate employment effects; this file covers WHICH occupations are most exposed).
+URL (PDF): https://www.oecd.org/content/dam/oecd/en/publications/reports/2023/07/oecd-employment-outlook-2023_904bcef3/08785bba-en.pdf
+Landing page: https://www.oecd.org/en/publications/oecd-employment-outlook-2023_08785bba-en/full-report/artificial-intelligence-and-the-labour-market-introduction_ea35d1c5.html
+Fetched: 2026-07-09. Extracted verbatim via pdftotext -layout from the official OECD report PDF (6.1MB).
+========================================================================
+
+--- Chapter 3 key findings box (verbatim) ---
+
+"AI's improving ability to complete these non-routine tasks raises new worries of job displacement for occupations previously thought impervious to automation. Occupations in finance, medicine and legal activities which often require many years of education, and whose core functions rely on accumulated experience to reach decisions, may suddenly find themselves at risk of automation from AI. ...
+- Theoretically, the net impact of AI on employment is ambiguous. AI will displace some human labour (displacement effect), but it can also raise labour demand because of the greater productivity it brings (productivity effect). AI can also create new tasks, resulting in the creation of new jobs (reinstatement effect) particularly for workers with skills that are complementary to AI.
+- Measures of AI exposure, which are used in this chapter to evaluate the degree of overlap between tasks performed in a job and those which AI is theoretically capable of performing, show that AI has made the most progress in its ability to perform non-routine, cognitive tasks, such as information ordering, memorisation and perceptual speed. These are often key abilities demanded in occupations that usually require several years of formal training and/or tertiary education. These measures pre-date the recent advances in generative AI applications (ChatGPT, for example), and one should therefore interpret them with caution: both the occupational range and extent of AI exposure might rapidly become larger as generative AI use is increasingly incorporated into production processes and new, more powerful AI systems are developed.
+- High-skilled occupations are those most likely to involve non-routine cognitive tasks, and they have therefore been the most exposed to progress in AI. Examples of such occupations include business professionals, managers, chief executives and science and engineering professionals.
+- So far, there is little evidence of significant negative employment effects due to AI. ... However, AI is evolving rapidly, and advances in generative in AI may disprove some of the evidence accumulated so far."
+
+--- Body text (verbatim, on high-skilled exposure) ---
+
+"As a result, high-skilled occupations have been most exposed to recent advances in AI, including: business professionals; managers; science and engineering professionals; and legal, social and cultural professionals. This extends the potential scope of automation considerably beyond what had previously been possible. ... While the impact of the latest wave of generative AI is not entirely clear yet, early estimates of occupational AI exposure that take into account the capabilities of large language models like ChatGPT reach conclusions similar to those of previous [studies]."
+
+--- Body text (verbatim, on the SEPARATE 27% "high risk of automation" figure — NOT generative-AI-specific) ---
+
+"The study finds that high-skill occupations have the lowest risk of automation. Although AI has made several skills required in high-skilled jobs susceptible to automation, many other skills in those jobs remain bottlenecks to automation. The net effect is that high-skill occupations, although more exposed to recent progress in AI, are still some of the least at risk of automation. Low- and middle-skilled jobs are the most at-risk including construction and extraction, farming, fishing, and forestry, and to a lesser extent production and transportation occupations. The least at-risk jobs include management, and community and social service occupations (Figure 3.4).
+On average across OECD countries in the sample, the occupations at the highest risk of automation account for 27% of employment (Figure 3.5)."
+
+--- CRITICAL DISAMBIGUATION (important limitation to log) ---
+There are TWO DIFFERENT metrics in this OECD chapter that are easy to conflate:
+1. "AI EXPOSURE" (task-capability overlap, generative-AI-relevant) → HIGHEST for high-skilled occupations: business professionals, managers, chief executives, science/engineering professionals, legal/social/cultural professionals.
+2. "RISK OF AUTOMATION" (27% of OECD employment figure, from Lassébie & Quintini 2022 survey of ~100 automatable skills/abilities, NOT generative-AI-specific and predates ChatGPT/GenAI) → HIGHEST for low/middle-skilled occupations: construction/extraction, farming/fishing/forestry, production/transportation. High-skill occupations have the LOWEST automation risk on this measure despite highest exposure.
+These are opposite rankings by skill level and must not be merged when citing "% of jobs at risk from AI."
