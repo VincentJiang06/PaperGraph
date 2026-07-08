@@ -5,6 +5,13 @@ documents and NO evidence_units keys.
 Read ONLY these inputs: the claim under search, the wave's SearchPlans, the merged
 docs_result, and the per-member query_logs:
 {inputs}
+OUTPUT — one JSON object with EXACTLY these 5 top-level keys and NO others:
+  schema_version   : "coverage_report.v1"
+  wave_id          : "{wave_id}"
+  form             : the closed form (below — all three of its keys live INSIDE
+                     "form", never at the top level)
+  expected_sources : [ … ]   (at most 3)
+  notes            : str
 Fill the closed form exactly:
   angle_covered: one entry per angle, each ∈ yes|tried_empty|tried_blocked|no_attempt
   primary_source_present ∈ yes|no|n/a

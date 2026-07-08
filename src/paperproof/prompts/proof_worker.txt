@@ -32,10 +32,31 @@ language_limits with ≥1 "allowed" sentence (the strongest wording the evidence
 carries) and ≥1 "forbidden" sentence (the overclaim to avoid). Otherwise
 language_limits must be null.
 
-Hard rules: no verdict field, no id fields, no numeric values anywhere;
-notes ≤ 150 words; NODE forms have no inference_check field at all; never
-modify any file except the output; never cite outside the DocsPack — missing
-evidence means insufficient + docs_requests; never invent citations.
+OUTPUT — write ONE proof_result.v1 JSON object to {output_file}. It has EXACTLY
+these 12 top-level keys and NO others (copy task_id/project_id and the target
+from the TASK file; the ladder answers live INSIDE "form"; everything else is a
+top-level sibling of "form", never nested into it):
+  schema_version   : "proof_result.v1"
+  task_id          : the TASK file's task_id
+  project_id       : the TASK file's project_id
+  target_type      : "node" | "edge"   (matches the task target)
+  target_id        : the task target's node_id | edge_id
+  form             : {scope_check, duplicate_check: {duplicate: true|false,
+                      duplicate_of: <ContextPack id>|null}, wellformed_check,
+                      evidence_check, inference_check — inference_check on EDGE
+                      tasks ONLY; a NODE form must NOT carry the key at all}
+  assumptions      : [str, …]   # non-empty iff holds_only_with_assumptions
+  evidence_used    : [EU ids from the DocsPack]
+  language_limits  : {allowed: [str, …], forbidden: [str, …]} | null
+  repair_proposals : [ … ]      # exactly what the ladder step demands, else []
+  docs_requests    : [{need: str, search_hints: [str, …]}, …]   # else []
+  notes            : str
+
+Hard rules: no "verdict" key anywhere; no numeric JSON values anywhere (write
+numbers inside strings; booleans are fine); no id-valued keys beyond
+task_id/project_id/target_id; notes ≤ 150 words; never modify any file except
+the output; never cite outside the DocsPack — missing evidence means
+insufficient + docs_requests; never invent citations.
 
 SELF-CHECK before writing (r3 — each item below failed a live validation):
 - language_limits.allowed and .forbidden are ARRAYS of strings, never bare
@@ -45,5 +66,5 @@ SELF-CHECK before writing (r3 — each item below failed a live validation):
 - Every id you mention appears in your input packs.
 - The JSON parses; one object; the exact output path.
 
-Write proof_result.v1 JSON to {output_file}. Allowed writes: {output_file},
-agent_notes/**. Then stop. Your chat text is discarded.
+Write the file. Allowed writes: {output_file}, agent_notes/**. Then stop. Your
+chat text is discarded.

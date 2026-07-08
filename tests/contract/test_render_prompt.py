@@ -96,6 +96,9 @@ def test_critic_render_prompt_fills_inputs(project, pp):
         assert f"docs/plans/{m['plan_id']}.json" in text      # every member plan
     assert f"agent_outputs/coverage_reports/{started['wave_id']}.r1.coverage_report.json" in text
     assert "{inputs}" not in text and "{output_file}" not in text
+    # the report's required wave_id is render-filled — the critic never guesses it.
+    assert started["wave_id"] in text
+    assert "{wave_id}" not in text
 
 
 def test_advisory_leads_are_prompt_only(project, pp, monkeypatch):
@@ -144,3 +147,60 @@ def test_proof_render_prompt_fills_bundle(project, pp):
                           target_id="NODE-002", actor="test")
     err = pp("proof", "render-prompt", "--work-item", bare["work_item_id"], expect=1)
     assert any("build-tasks" in e for e in err["errors"])
+
+
+def test_retry_suffix_appended_after_a_validate_fail(project, pp):
+    """docs/07 §retries + docs/10 §5: once an item's attempt failed validation,
+    the NEXT rendered dispatch prompt carries the retry suffix filled with the
+    recorded rules + per-rule detail. A first dispatch carries nothing."""
+    paths = _paths(pp)
+    registry.learn(paths, [("boe.example", "official_report")], {}, now="2026-07-07T00:00:00Z")
+    _dr, wi_id = _open_docs_item(paths, pp)
+
+    first = render.render_docs_prompt(paths, wi_id)["prompt"]
+    assert "RETRY" not in first
+
+    claimed = pp("queue", "claim", "--queue", "docs_queue", "--agent", "w",
+                 "--id", wi_id)["data"]["work_item"]
+    out_path = paths.project_dir / claimed["output_files"][0]
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text("{}", encoding="utf-8")
+    engine.complete(paths, wi_id, "w")
+    engine.validate_fail(paths, wi_id, ["V-DR-03"], "code",
+                         detail={"V-DR-03": "worker-authored id field 'eu_id' at $.evidence_units[0]"})
+
+    retried = render.render_docs_prompt(paths, wi_id)["prompt"]
+    assert "RETRY 2/3" in retried
+    assert "V-DR-03" in retried and "eu_id" in retried
+    assert "{attempt}" not in retried and "{failed_rules_with_detail}" not in retried
+
+
+def test_compiler_render_prompt_embeds_the_draft_map(project, pp):
+    """D11 for the compile stage: `compiler render-prompt` fills the
+    compile_worker template for a compile_queue prose item and embeds the
+    latest DraftMap record (the docs-member SearchPlan embed pattern)."""
+    paths = _paths(pp)
+    jsonl.append(paths.resolve("compiler/draft_maps.jsonl"), {
+        "schema_version": "draft_map.v1", "draft_map_id": "DRAFTMAP-000001",
+        "project_id": "p4-ldi", "based_on_dry_run": "CDR-000001",
+        "sections": [{"section_id": "S1", "node_ids": ["NODE-001"]}],
+        "created_at": "2026-07-07T00:00:00Z",
+    })
+    item = engine.enqueue(paths, queue_name="compile_queue", target_type="section",
+                          target_id="S1", task_id="PROSE-S1",
+                          output_files=["agent_outputs/prose/S1.md"], actor="test")
+
+    env = pp("compiler", "render-prompt", "--work-item", item["work_item_id"])
+    data = env["data"]
+    text = data["prompt"]
+    assert data["template"] == "compile_worker"
+    assert data["draft_map_id"] == "DRAFTMAP-000001"
+    assert "Your section: S1" in text
+    assert "agent_outputs/prose/S1.md" in text
+    assert '"draft_map_id": "DRAFTMAP-000001"' in text        # embedded record
+    assert "{draft_map_file}" not in text and "{section_id}" not in text
+    assert "{output_file}" not in text
+
+    # a non-compile item is refused.
+    err = pp("compiler", "render-prompt", "--work-item", "WI-999999", expect=1)
+    assert err["ok"] is False

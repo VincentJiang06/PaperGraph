@@ -23,6 +23,78 @@ def test_proof_worker_carries_self_check_block():
     assert "SELF-CHECK" in text
 
 
+def test_proof_worker_enumerates_the_exact_proof_result_v1_contract():
+    """Root guard (live-run class-fix): the ladder alone is not a contract — the
+    template must pin the proof_result.v1 layout key-by-key (the 12 top-level
+    keys, the 'form' wrapper, where ids come from) or workers guess the layout
+    and V-PR-01/V-PR-03 reject them. Pins the template TO the schema."""
+    from paperproof.schemas.proof import ProofResult
+
+    text = prompts.load("proof_worker")
+    for field in ProofResult.model_fields:             # all 12 top-level keys
+        assert field in text, f"proof_worker omits top-level key {field!r}"
+    # the form's inner keys and the duplicate_check shape.
+    for field in ("scope_check", "duplicate_check", "wellformed_check",
+                  "evidence_check", "inference_check", "duplicate_of"):
+        assert field in text, f"proof_worker omits form key {field!r}"
+    # layout + hard-rule language that each failed (or nearly failed) live.
+    assert "top-level keys" in text                    # exhaustive enumeration
+    assert 'INSIDE "form"' in text                     # wrapper vs siblings
+    assert "no numeric JSON values" in text            # V-PR-03
+    assert 'no "verdict" key' in text                  # V-PR-03
+    assert "task_id/project_id/target_id" in text      # allowed id keys, no more
+
+
+def test_critic_worker_enumerates_the_exact_coverage_report_v1_contract():
+    """Root guard: V-WAVE-03 reads the report's 'form' WRAPPER and the schema
+    requires wave_id — the template must name both (and render fills {wave_id})
+    or the critic cannot produce a valid report even in principle."""
+    from paperproof.schemas.search import CoverageReport, CoverageForm, ExpectedSource
+
+    text = prompts.load("critic_worker")
+    for field in CoverageReport.model_fields:          # 5 top-level keys
+        assert field in text, f"critic_worker omits top-level key {field!r}"
+    for field in CoverageForm.model_fields:            # form's inner keys
+        assert field in text, f"critic_worker omits form key {field!r}"
+    for field in ExpectedSource.model_fields:          # expected_sources entries
+        assert field in text, f"critic_worker omits expected_source key {field!r}"
+    assert "{wave_id}" in text                         # render-filled placeholder
+    assert "top-level keys" in text                    # exhaustive enumeration
+
+
+def test_docs10_section5_carries_the_template_files_verbatim():
+    """docs/10 §5: 'The texts below are canonical — the template files carry
+    them verbatim.' This guard makes that sentence mechanically true: each
+    ```text block under a '### … (`<name>.txt`…' heading must equal the shipped
+    template file byte-for-byte. Editing a template without re-syncing docs/10
+    (or vice versa) fails here."""
+    from pathlib import Path
+
+    doc = (Path(__file__).resolve().parents[2] / "docs" / "10-v1-design.md").read_text(
+        encoding="utf-8").split("\n")
+    names = {"proof_worker", "docs_worker", "critic_worker", "compile_worker", "retry_suffix"}
+    found: dict[str, str] = {}
+    i = 0
+    while i < len(doc):
+        line = doc[i]
+        name = next((n for n in names if line.startswith("### ") and f"`{n}.txt`" in line), None)
+        if name is None:
+            i += 1
+            continue
+        j = i + 1
+        while not doc[j].startswith("```"):
+            j += 1
+        k = j + 1
+        while doc[k] != "```":
+            k += 1
+        found[name] = "\n".join(doc[j + 1:k])
+        i = k + 1
+    assert set(found) == names, f"docs/10 §5 is missing template blocks: {names - set(found)}"
+    for name, block in found.items():
+        assert block == prompts.load(name).rstrip("\n"), (
+            f"docs/10 §5 block for {name}.txt is out of sync with the template file")
+
+
 def test_docs_worker_carries_coverage_and_disconfirming_duty():
     text = prompts.load("docs_worker")
     # coverage numbers (2-5 documents / 4-10 evidence units — shipped with hyphens).

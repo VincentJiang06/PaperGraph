@@ -36,7 +36,7 @@ CLOSED_COMMANDS = {
     "validate result", "validate proposal", "validate docs-result",
     "commit apply",
     "freeze apply", "freeze unfreeze",
-    "compiler dry-run", "compiler draft-map", "compiler ingest-prose",
+    "compiler dry-run", "compiler draft-map", "compiler render-prompt", "compiler ingest-prose",
     "audit run",
     "db rebuild", "db check", "db semantic rebuild", "db semantic check",
     "ui serve",

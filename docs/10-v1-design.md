@@ -178,6 +178,7 @@ Global options: `--root <dir>` (default `./data`), `--project <id>` / `PAPERPROO
 | `freeze unfreeze` | `--target <id>` | human-only; revoke + re-open; data: {freeze_id, commit_id} |
 | `compiler dry-run` | — | data: full CompilerDryRun (+ gap items enqueued/cancelled) |
 | `compiler draft-map` | — | requires writing_ready; enqueues one compile_queue prose item per section (task_id PROSE-<section_id>, output agent_outputs/prose/<section_id>.md); data: DraftMap |
+| `compiler render-prompt` | `--work-item <WI>` | emit the fully-filled canonical CompileWorker prompt for a compile_queue prose item (D11): section + output path filled, the latest DraftMap embedded (the docs-member SearchPlan embed pattern); data: prompt text |
 | `compiler ingest-prose <file>` | `--work-item <WI>` | V-PROSE as the item's validate-pass + copy to compiler/prose/ + commit; accepts claimed/running, performing the complete transition implicitly like `validate result` / `docs ingest-result` (v2.1 D14); accepts an ABSOLUTE `<file>` path (normalized to project-relative); data: section_id / failed_rules |
 | `audit run` | `--draft <DRAFTMAP-id>` | mechanical audit; data: AuditReport; exit 1 if findings |
 | `db rebuild / db check` | — | data: manifest / {stale_index: bool} |
@@ -188,7 +189,7 @@ Global options: `--root <dir>` (default `./data`), `--project <id>` / `PAPERPROO
 
 ## 5. Worker Prompt Templates
 
-Templates live at `src/paperproof/prompts/` and are the **only** prompts used to dispatch workers, so behavior is reproducible. `{placeholders}` are filled from the work item/bundle; `{target_summary}` = task_type + target id + the claim/edge_claim text truncated to 200 characters. The texts below are canonical — the template files carry them verbatim. **The canonical renderer is `proof render-prompt` / `docs render-prompt --work-item <WI>` (v2.1 D11):** it emits the fully-filled template (the SearchPlan embedded for docs items; `{registry}` = the V-SRC-05 excerpt via the registry renderer, checked by `check_registry_excerpt` at render time — render time is WHERE V-SRC-05 is enforced; the S5 advisory top-3 similar-request leads are appended here, prompt-only per V-SEM-04).
+Templates live at `src/paperproof/prompts/` and are the **only** prompts used to dispatch workers, so behavior is reproducible. `{placeholders}` are filled from the work item/bundle; `{target_summary}` = task_type + target id + the claim/edge_claim text truncated to 200 characters. The texts below are canonical — the template files carry them verbatim (pinned by the T-r3-10 drift guard, which syncs this section against the files). Each template ENUMERATES its output schema key-by-key and names the forbidden extras — the first live run showed workers echo dispatch metadata and invent ids whenever the key set is left implicit. **The canonical renderers are `proof render-prompt` / `docs render-prompt` / `compiler render-prompt --work-item <WI>` (v2.1 D11):** they emit the fully-filled template (the SearchPlan embedded for docs items and the DraftMap for compile items; `{registry}` = the V-SRC-05 excerpt via the registry renderer, checked by `check_registry_excerpt` at render time — render time is WHERE V-SRC-05 is enforced; the S5 advisory top-3 similar-request leads are appended here, prompt-only per V-SEM-04; `{wave_id}` is filled for critic items so the report's required `wave_id` needs no guessing). When the item's LAST attempt failed validation (a `validate_fail` event exists and attempt ≥ 2), the renderer automatically appends the retry suffix filled with the recorded failed rules + per-rule detail (docs/07 §retries).
 
 ### ProofWorker (`proof_worker.txt`)
 
@@ -227,10 +228,31 @@ language_limits with ≥1 "allowed" sentence (the strongest wording the evidence
 carries) and ≥1 "forbidden" sentence (the overclaim to avoid). Otherwise
 language_limits must be null.
 
-Hard rules: no verdict field, no id fields, no numeric values anywhere;
-notes ≤ 150 words; NODE forms have no inference_check field at all; never
-modify any file except the output; never cite outside the DocsPack — missing
-evidence means insufficient + docs_requests; never invent citations.
+OUTPUT — write ONE proof_result.v1 JSON object to {output_file}. It has EXACTLY
+these 12 top-level keys and NO others (copy task_id/project_id and the target
+from the TASK file; the ladder answers live INSIDE "form"; everything else is a
+top-level sibling of "form", never nested into it):
+  schema_version   : "proof_result.v1"
+  task_id          : the TASK file's task_id
+  project_id       : the TASK file's project_id
+  target_type      : "node" | "edge"   (matches the task target)
+  target_id        : the task target's node_id | edge_id
+  form             : {scope_check, duplicate_check: {duplicate: true|false,
+                      duplicate_of: <ContextPack id>|null}, wellformed_check,
+                      evidence_check, inference_check — inference_check on EDGE
+                      tasks ONLY; a NODE form must NOT carry the key at all}
+  assumptions      : [str, …]   # non-empty iff holds_only_with_assumptions
+  evidence_used    : [EU ids from the DocsPack]
+  language_limits  : {allowed: [str, …], forbidden: [str, …]} | null
+  repair_proposals : [ … ]      # exactly what the ladder step demands, else []
+  docs_requests    : [{need: str, search_hints: [str, …]}, …]   # else []
+  notes            : str
+
+Hard rules: no "verdict" key anywhere; no numeric JSON values anywhere (write
+numbers inside strings; booleans are fine); no id-valued keys beyond
+task_id/project_id/target_id; notes ≤ 150 words; never modify any file except
+the output; never cite outside the DocsPack — missing evidence means
+insufficient + docs_requests; never invent citations.
 
 SELF-CHECK before writing (r3 — each item below failed a live validation):
 - language_limits.allowed and .forbidden are ARRAYS of strings, never bare
@@ -240,8 +262,8 @@ SELF-CHECK before writing (r3 — each item below failed a live validation):
 - Every id you mention appears in your input packs.
 - The JSON parses; one object; the exact output path.
 
-Write proof_result.v1 JSON to {output_file}. Allowed writes: {output_file},
-agent_notes/**. Then stop. Your chat text is discarded.
+Write the file. Allowed writes: {output_file}, agent_notes/**. Then stop. Your
+chat text is discarded.
 ```
 
 ### DocsWorker (`docs_worker.txt`)
@@ -257,7 +279,9 @@ inputs) first, then the web if available.
 
 THE PLAN ({plan_id}, immutable): execute EVERY query in the attached SearchPlan.
 Account for each qid in query_log exactly once: {qid, executed, outcome ∈
-productive|empty|blocked|offtopic, urls_seen, docs_taken, note}. A query you could
+productive|empty|blocked|offtopic, urls_seen, docs_taken, note}. urls_seen and
+docs_taken are INTEGER COUNTS (e.g. urls_seen: 9, docs_taken: 2) — NOT lists; put
+any URL list in note if you want it. A query you could
 not run is executed=false, outcome=blocked, with a reason in note (never silently
 skip one). The plan's counter query is MANDATORY — run it or record it blocked.
 Extra queries you run beyond the plan are welcome; log them with qid "X1", "X2"…
@@ -269,32 +293,66 @@ its recorded workaround. Workarounds are lawful public access ONLY — mirrors,
 web archives, secondary sources that quote the primary verbatim, local PDF text
 extraction. Never bypass a paywall or login.
 
-For each useful source add a documents[] entry: {title, source_type ∈
-peer_reviewed|official_report|working_paper|news|dataset|user_notes,
-origin {kind: user_provided|web, path or url}, citation_key, and for web
-sources the full extracted text INLINE as "text"}.
-Extract evidence_units[]: {doc_ref: <index into your documents> OR doc_id:
-<existing archived id>, location, kind: quote|paraphrase, quote_or_paraphrase,
-summary, support_direction ∈ supports|refutes|context, can_cite_for (≥1),
-cannot_cite_for (≥1), scope {period?, region?}}.
+OUTPUT — write ONE docs_result.v2 JSON object to {output_file}. It has EXACTLY
+these 7 top-level keys and NO others (do NOT echo dispatch metadata such as
+plan_id, angle, or work_item_id, and add no *_detail helper keys):
+  schema_version : "docs_result.v2"
+  request_id     : "{request_id}"
+  project_id     : "{project_id}"
+  documents      : [ … ]        # sources you used (shape below)
+  evidence_units : [ … ]        # extracted evidence (shape below)
+  not_found      : true | false
+  query_log      : [ … ]        # one entry per plan qid (see THE PLAN above)
 
-Quotes must be verbatim from the source. Never invent sources or quotes. Never
-judge graph claims — no verdict/strength/lifecycle language. You assign NO ids.
-If nothing usable exists: not_found=true, empty lists, and a query_log whose
+documents[] — one object per useful source, EXACTLY these keys. You assign NO
+ids/hashes: the ingestor mints doc_id, content_hash, text_path — so do NOT add
+doc_id, doc_index, content_hash, retrieved, or note here:
+  title        : str
+  source_type  : peer_reviewed|official_report|working_paper|news|dataset|user_notes
+  origin       : {kind: user_provided|web, path|url: str}
+  citation_key : str
+  text         : str            # REQUIRED for web sources: full extracted text, inline
+
+evidence_units[] — one object per unit, EXACTLY these keys. NO eu_id /
+evidence_id — the ingestor assigns them. Reference a NEW document by its 0-based
+index in documents[] via doc_ref; reference an ALREADY-ARCHIVED one by doc_id —
+give EXACTLY ONE of the two:
+  doc_ref | doc_id     : int (index into documents[]) | str (existing archived id)
+  location             : str        # page / section / paragraph
+  kind                 : quote | paraphrase
+  quote_or_paraphrase  : str        # VERBATIM when kind=quote
+  summary              : str
+  support_direction    : supports | refutes | context
+  can_cite_for         : [str, …]   # ≥1
+  cannot_cite_for      : [str, …]   # ≥1
+  scope                : {period?: str, region?: str}
+
+query_log[] — one entry per plan qid (plus your extras X1,X2…), EXACTLY:
+  {qid: str, executed: bool, outcome: productive|empty|blocked|offtopic,
+   urls_seen: int, docs_taken: int, note: str}
+
+A kind=quote is a CONTIGUOUS verbatim span copied character-for-character from
+that document's own text — the ingestor rejects (V-DR-05) any quote it cannot
+find verbatim in the text. Do NOT stitch passages with "…"/"..." and do NOT
+condense: if you need to elide or join separate passages, use kind=paraphrase.
+Never invent sources or quotes. Never
+judge graph claims — no verdict/strength/lifecycle language. If nothing usable
+exists: not_found=true, empty documents/evidence_units, and a query_log whose
 every entry is executed or blocked with none productive — an honest not_found
 beats a stretched source.
 
 Coverage (r3): target 2-5 documents and 4-10 evidence units — one thin source
-for a claim with a live literature is under-searched. DISCONFIRMING DUTY: if
-the literature contains evidence AGAINST the claim, capture it
-(support_direction refutes|context); never cherry-pick. FETCH RESILIENCE:
-official-statistics sites often block automated fetches (403) — fall back to
-mirrors, archived copies, or secondary sources quoting the primary figures,
-and extract PDF text locally (e.g. pdftotext) rather than abandoning the angle.
+for a claim with a live literature is under-searched. DISCONFIRMING DUTY: if the
+literature contains evidence AGAINST the claim, capture it (support_direction
+refutes|context); never cherry-pick. FETCH RESILIENCE: official-statistics sites
+often block automated fetches (403) — fall back to mirrors, archived copies, or
+secondary sources quoting the primary figures, and extract PDF text locally
+(e.g. pdftotext) rather than abandoning the angle.
 
-Write docs_result.v2 JSON (documents, evidence_units, not_found, query_log) to
-{output_file}. Allowed writes: {output_file}, agent_notes/**. Then stop. Your
-chat text is discarded.
+{output_file} is RELATIVE TO THE PROJECT DIRECTORY (data/projects/{project_id}/),
+NOT your shell's current working directory; resolve it against the project dir.
+Allowed writes: {output_file}, agent_notes/**. Then stop. Your chat text is
+discarded.
 ```
 
 ### CoverageCritic (`critic_worker.txt`, v2.1 D3)
@@ -307,6 +365,13 @@ documents and NO evidence_units keys.
 Read ONLY these inputs: the claim under search, the wave's SearchPlans, the merged
 docs_result, and the per-member query_logs:
 {inputs}
+OUTPUT — one JSON object with EXACTLY these 5 top-level keys and NO others:
+  schema_version   : "coverage_report.v1"
+  wave_id          : "{wave_id}"
+  form             : the closed form (below — all three of its keys live INSIDE
+                     "form", never at the top level)
+  expected_sources : [ … ]   (at most 3)
+  notes            : str
 Fill the closed form exactly:
   angle_covered: one entry per angle, each ∈ yes|tried_empty|tried_blocked|no_attempt
   primary_source_present ∈ yes|no|n/a

@@ -94,6 +94,31 @@ def _advisory_block(paths: Paths, need: str, hints: list[str]) -> tuple[str, lis
     return block, leads
 
 
+def _retry_block(paths: Paths, wi: dict[str, Any]) -> str:
+    """docs/07 §retries + docs/10 §5: when the item's LAST attempt failed
+    validation, the re-dispatch prompt carries the retry suffix filled with the
+    recorded failure rules + per-rule detail. First dispatches get nothing."""
+    from ..queue import engine
+
+    if int(wi.get("attempt") or 1) < 2:
+        return ""
+    fails = [e for e in engine.load_events(paths)
+             if e.get("work_item_id") == wi.get("work_item_id")
+             and e.get("op") == "validate_fail"]
+    if not fails:
+        return ""
+    last = fails[-1].get("detail") or {}
+    per_rule = last.get("detail") or {}
+    lines = []
+    for rule in last.get("failed_rules") or []:
+        msg = per_rule.get(rule)
+        lines.append(f"- {rule}: {msg}" if msg else f"- {rule}")
+    return "\n" + _fill(load_template("retry_suffix"), {
+        "attempt": str(wi.get("attempt")),
+        "failed_rules_with_detail": "\n".join(lines) or "(no detail recorded)",
+    }) + "\n"
+
+
 def _docs_member_prompt(paths: Paths, wi: dict[str, Any]) -> dict[str, Any]:
     """A docs single item or wave member: the docs_worker template with the
     request fields, the member's OWN embedded plan JSON, the checked registry
@@ -134,6 +159,7 @@ def _docs_member_prompt(paths: Paths, wi: dict[str, Any]) -> dict[str, Any]:
         + json.dumps(plan, ensure_ascii=False, indent=2) + "\n"
         + advisory
     )
+    text += _retry_block(paths, wi)
     return {"template": "docs_worker", "work_item_id": wi["work_item_id"],
             "request_id": request_id, "plan_id": plan.get("plan_id"),
             "output_file": output_file, "advisory_leads": leads, "prompt": text}
@@ -175,7 +201,9 @@ def _critic_prompt(paths: Paths, wi: dict[str, Any]) -> dict[str, Any]:
     text = _fill(load_template("critic_worker"), {
         "output_file": output_file,
         "inputs": inputs,
+        "wave_id": wave_id,
     })
+    text += _retry_block(paths, wi)
     return {"template": "critic_worker", "work_item_id": wi["work_item_id"],
             "wave_id": wave_id, "output_file": output_file, "prompt": text}
 
@@ -220,5 +248,37 @@ def render_proof_prompt(paths: Paths, work_item_id: str) -> dict[str, Any]:
         "target_summary": summary,
         "output_file": output_file,
     })
+    text += _retry_block(paths, wi)
     return {"template": "proof_worker", "work_item_id": work_item_id,
             "task_id": wi.get("task_id"), "output_file": output_file, "prompt": text}
+
+
+def render_compile_prompt(paths: Paths, work_item_id: str) -> dict[str, Any]:
+    """`compiler render-prompt --work-item <WI>` (D11): the compile_worker
+    template for one compile_queue prose section item, with the latest DraftMap
+    embedded (the same embed pattern as the docs member's SearchPlan)."""
+    from ..compiler import draft_map as dm
+    from ..queue import engine
+
+    wi = engine.get_item(paths, work_item_id)
+    if wi.get("queue_name") != "compile_queue" or not str(wi.get("task_id") or "").startswith("PROSE-"):
+        raise DomainError([f"work item {work_item_id} is not a compile prose item "
+                           f"({wi.get('queue_name')}/{wi.get('task_id')})"])
+    record = dm.latest_draft_map(paths)
+    if record is None:
+        raise DomainError(["no draft map; run `compiler draft-map` first"])
+    output_file = (wi.get("output_files") or [None])[0]
+    if not output_file:
+        raise DomainError([f"work item {work_item_id} declares no output file"])
+    section_id = wi["target_id"]
+    text = _fill(load_template("compile_worker"), {
+        "draft_map_file": f"{dm.DRAFT_MAPS} (record {record['draft_map_id']}, embedded below)",
+        "section_id": section_id,
+        "output_file": output_file,
+    })
+    text += ("\nDRAFTMAP (embedded):\n"
+             + json.dumps(record, ensure_ascii=False, indent=2) + "\n")
+    text += _retry_block(paths, wi)
+    return {"template": "compile_worker", "work_item_id": work_item_id,
+            "section_id": section_id, "draft_map_id": record["draft_map_id"],
+            "output_file": output_file, "prompt": text}

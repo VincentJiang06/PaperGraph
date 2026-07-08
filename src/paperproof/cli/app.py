@@ -779,6 +779,20 @@ def compiler_draft_map(ctx: typer.Context) -> None:
     _dispatch("compiler draft-map", lambda: _draft_map.draft_map(_project_paths(s)))
 
 
+@compiler_app.command("render-prompt")
+def compiler_render_prompt(ctx: typer.Context, work_item: str = typer.Option(..., "--work-item")) -> None:
+    """Emit the fully-filled compile_worker dispatch prompt for a compile_queue
+    prose section item as envelope data (D11), the DraftMap embedded."""
+    s = _state(ctx)
+
+    def body() -> dict:
+        from ..prompts import render as _render
+
+        return _render.render_compile_prompt(_project_paths(s), work_item)
+
+    _dispatch("compiler render-prompt", body)
+
+
 @compiler_app.command("ingest-prose")
 def compiler_ingest_prose(
     ctx: typer.Context,
