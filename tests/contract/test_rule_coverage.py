@@ -65,6 +65,11 @@ SCENARIO_COVERED = {
     "V-COV-03": "test_v_cov.py::test_saturation_* (fresh not dead-lettered; saturated+floor-unmet born-dead reason=saturated)",
     "V-COV-04": "test_v_cov.py::test_role_profile_floor_* (msa-check + freeze delegate; per-node ledger line)",
     "V-COV-05": "test_v_cov.py::test_narrow_inherits_ledger",
+    "V-SEM-01": "test_v_sem.py::test_determinism_and_model_pin (parquet identity + model.json pin) [semantic] + test_docs_pack_v2_round_trip",
+    "V-SEM-02": "test_v_sem.py::test_check_pack_* (matcher named; hybrid carries fixed-6-decimal scores; keyword pins no model)",
+    "V-SEM-03": "test_v_sem.py::test_degrade_labeling_keyword_v1_plus_warning (model absent => keyword.v1 + warning, never silent)",
+    "V-SEM-04": "test_v_sem.py::test_advisory_only_similarity_never_fulfills (cache fingerprint-only; fulfilled_by invariant)",
+    "V-SEM-05": "test_v_sem.py::test_cluster_near_dups_within_doc_only (deterministic rep; cross-doc never clusters)",
 }
 
 

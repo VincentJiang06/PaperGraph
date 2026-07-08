@@ -291,6 +291,40 @@ V-COV-05  a narrowed claim inherits the parent claim's ledger (its bindings and
           change by MORE THAN HALF
 ```
 
+### V-SEM (semantic retrieval — S5, docs/18; hybrid pack build + degrade)
+
+Semantic is an OPTIONAL UPGRADE, never a base dependency. The default install
+(no `[semantic]` extra) degrades to keyword matching LOUDLY; these rules guard the
+audit surface a pack exposes, never relevance judgement.
+
+```text
+V-SEM-01  model pinned (name, revision, weights sha256) and recorded in every
+          hybrid pack + in db/semantic/model.json; execution deterministic (same
+          text ⇒ same vector — onnxruntime CPU fp32, intra_op_num_threads=1;
+          `db semantic rebuild` twice ⇒ byte-identical eu_vectors.parquet).
+          Embedding = mean-pool(last_hidden_state, attention_mask) then
+          L2-normalize, with the e5 prefixes ("query: " claim, "passage: " EU).
+V-SEM-02  every pack names its matcher (hybrid.v1 | keyword.v1); a hybrid pack
+          carries per-EU scores serialized as FIXED-6-DECIMAL STRINGS
+          (byte-determinism); a keyword.v1 pack pins no model. verify recomputes
+          retrieval when the pinned model is present and flags drift as a WARNING.
+V-SEM-03  degrade-to-keyword is explicit: pack marked keyword.v1 + a warning in
+          the `docs build-pack` envelope — never a silent fallback, never a crash.
+          keyword.v1 packs are first-class.
+V-SEM-04  no auto-fulfillment from similarity anywhere (cache, committer, critic):
+          a DocsRequest's fulfilled_by is only ever None | "cache" | a DRES id.
+          The request-level cache stays fingerprint-only; advisory similar-request
+          leads are prompt-only.
+V-SEM-05  near-duplicate clustering only WITHIN one document (cosine ≥ 0.92); the
+          pack takes one representative (longest can_cite_for; tie → lowest id),
+          others listed as "also: EU-x" in documents_meta. Across documents:
+          NEVER clustered (independent corroboration is signal — S3 depends on it).
+```
+
+The hybrid score, τ=0.35 semantic floor, and α=0.6 weight are contract constants
+(docs/18) — changing them is a spec change. `pack = REQUESTED ∪ top-12 MATCHED`
+is UNCHANGED (docs/04 r3); semantic feeds the MATCHED half's SCORE only.
+
 ### V-WAVE (search orchestra — S2, docs/15; checked across the wave lifecycle)
 
 ```text

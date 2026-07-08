@@ -14,7 +14,7 @@ from ..graph import model as graph_model
 from ..ids import next_id
 from ..paths import Paths
 from ..queue import engine
-from ..schemas.docs import DocsPack, SourceProfile, Tier
+from ..schemas.docs import DocsPack, DocsPackV2, SourceProfile, Tier
 from ..store import jsonl
 from . import cache, ingest, matcher, pack, planner, registry, wave as wave_mod
 from ..validate.rules import v_src
@@ -28,18 +28,29 @@ def ingest_file(paths: Paths, file_path: str, source_type: str | None, title: st
     return ingest.ingest_file(paths, file_path, source_type, title, citation_key)
 
 
-def search(paths: Paths, query: str, scope: str | None = None) -> dict[str, Any]:
+def search(paths: Paths, query: str, scope: str | None = None, semantic: bool = False) -> dict[str, Any]:
     scope_obj: dict[str, Any] = {}
     if scope:
         try:
             scope_obj = json.loads(scope)
         except json.JSONDecodeError as exc:
             raise UsageError([f"--scope is not valid JSON: {exc.msg}"]) from exc
-    results = pack.search(paths, query, scope_obj)
-    return {"results": results, "count": len(results)}
+    out = pack.search(paths, query, scope_obj, semantic_flag=semantic)
+    results = out.get("results", [])
+    data: dict[str, Any] = {"matcher": out.get("matcher"), "results": results, "count": len(results)}
+    if out.get("model"):
+        data["model"] = out["model"]
+    if out.get("warnings"):
+        data["warnings"] = out["warnings"]
+    return data
 
 
 def build_pack(paths: Paths, task_id: str) -> dict[str, Any]:
+    """`docs build-pack` (docs/04, docs/18): assemble the DocsPack for a task.
+
+    Writes docs_pack.v2 with a ``retrieval`` audit block — hybrid.v1 when the
+    pinned model + index are present, else keyword.v1 with a DEGRADE warning
+    surfaced in the envelope (V-SEM-03, never a silent fallback)."""
     task_path = paths.resolve(f"proof/tasks/{task_id}.json")
     if not task_path.exists():
         raise DomainError([f"proof task not found: {task_id}"])
@@ -49,15 +60,35 @@ def build_pack(paths: Paths, task_id: str) -> dict[str, Any]:
     rec = graph_model.load(paths).record(target_id)
     if rec is None:
         raise DomainError([f"target not found in graph: {target_id}"])
-    eus, docs_meta = pack.assemble(paths, rec)
+    eus, docs_meta, retrieval, warnings = pack.assemble_v2(paths, rec)
     docs_pack_rel = task["docs_pack"]
     pack_id = Path(docs_pack_rel).stem
-    docspack = DocsPack(
+    docspack = DocsPackV2(
         pack_id=pack_id, task_id=task_id, project_id=paths.project_id,
-        evidence_units=eus, documents_meta=docs_meta,
+        evidence_units=eus, documents_meta=docs_meta, retrieval=retrieval,
     )
     jsonl.write_json(paths.resolve(docs_pack_rel), docspack)
-    return {"pack_path": docs_pack_rel, "evidence_count": len(eus)}
+    return {
+        "pack_path": docs_pack_rel, "evidence_count": len(eus),
+        "matcher": retrieval["matcher"], "warnings": warnings,
+    }
+
+
+# --- S5 semantic index (docs/18): `db semantic rebuild|check` ---------------
+
+
+def semantic_rebuild(paths: Paths) -> dict[str, Any]:
+    """`db semantic rebuild`: (re)build the pinned embedding index over every EU."""
+    from ..db import semantic as sem
+
+    return sem.rebuild(paths)
+
+
+def semantic_check(paths: Paths) -> dict[str, Any]:
+    """`db semantic check`: report model present / hash-match / index coverage."""
+    from ..db import semantic as sem
+
+    return sem.check(paths)
 
 
 def request(paths: Paths, target_id: str, need: str, hints: list[str] | None, actor: str | None = None) -> dict[str, Any]:

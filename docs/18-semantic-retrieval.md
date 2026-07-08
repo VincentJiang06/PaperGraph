@@ -12,19 +12,24 @@ without surrendering determinism or auditability.
 ## The embedding index (DERIVED, under `db/semantic/`)
 
 ```json
-// db/semantic/model.json
-{"name": "<multilingual-sentence-embedding model>", "revision": "<pin>",
- "dim": 768, "weights_sha256": "…"}
+// db/semantic/model.json  (the build pin — multilingual-e5-small ONNX)
+{"name": "intfloat/multilingual-e5-small", "revision": "main",
+ "dim": 384,
+ "weights_sha256": "ca456c06b3a9505ddfd9131408916dd79290368331e7d76bb621f1cba6bc8665"}
 ```
 
 ```text
 The model is a PROJECT-PINNED artifact: name+revision+weights hash recorded;
-same model + same text ⇒ same vector (fp32, CPU, batch-invariant execution).
-`db semantic rebuild` embeds, per EU: normalize(summary + " " +
-join(can_cite_for)); per claim at query time: normalize(claim). Vectors live
-in db/semantic/eu_vectors.parquet — derived and rebuildable like all of db/;
-JSONL remains the only source of truth. A missing/mismatched model file
-degrades to keyword matching, loudly (below), never silently.
+same model + same text ⇒ same vector (fp32, CPU, batch-invariant execution —
+onnxruntime with intra_op_num_threads=1 for byte-stability). `db semantic rebuild`
+fetches the weights (once) and verifies the sha256, then embeds. Embedding =
+mean-pool(last_hidden_state, attention_mask) then L2-normalize; texts carry the
+e5 prefixes — "query: " for a claim, "passage: " for an EU (required for
+cross-lingual quality). Per EU: normalize(summary + " " + join(can_cite_for));
+per claim at query time: normalize(claim). Vectors live in
+db/semantic/eu_vectors.parquet — derived and rebuildable like all of db/; JSONL
+remains the only source of truth. A missing/mismatched model file degrades to
+keyword matching, loudly (below), never silently.
 ```
 
 ## Hybrid scoring (replaces the matcher score at pack build)
@@ -61,7 +66,7 @@ triangulation depends on it).
   "matcher": "hybrid.v1",
   "model": {"name": "…", "revision": "…", "weights_sha256": "…"},
   "alpha": "0.6", "tau": "0.35",
-  "scores": [{"evidence_id": "EU-007", "sscore": "0.81", "kscore": "0.44"}]
+  "scores": [{"evidence_id": "EU-007", "sscore": "0.810000", "kscore": "0.440000"}]
 }
 ```
 

@@ -10,11 +10,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .envelope import Failure, to_envelope
-from .rules import v_commit, v_cov, v_dr, v_exp, v_path, v_pr, v_q, v_sp, v_spec, v_src, v_sweep, v_task, v_wave
+from .rules import v_commit, v_cov, v_dr, v_exp, v_path, v_pr, v_q, v_sem, v_sp, v_spec, v_src, v_sweep, v_task, v_wave
 
 __all__ = [
     "Failure", "to_envelope", "RULES", "rule_ids",
-    "v_spec", "v_path", "v_pr", "v_dr", "v_exp", "v_task", "v_q", "v_commit", "v_sweep", "v_sp", "v_src", "v_wave", "v_cov",
+    "v_spec", "v_path", "v_pr", "v_dr", "v_exp", "v_task", "v_q", "v_commit", "v_sweep", "v_sp", "v_src", "v_wave", "v_cov", "v_sem",
 ]
 
 
@@ -106,6 +106,11 @@ RULES: dict[str, Rule] = {
         _rule("V-COV-03", "committer consults saturation not a count; born-dead reason=saturated only, floor unmet"),
         _rule("V-COV-04", "freeze/MSA-4/compiler floors follow the role-profile table; msa-check reports per-node"),
         _rule("V-COV-05", "narrowed claim inherits the parent ledger; rounds reset only if core_terms change >half"),
+        _rule("V-SEM-01", "model pinned (name, revision, weights sha) in every hybrid pack; execution deterministic"),
+        _rule("V-SEM-02", "every pack names its matcher; hybrid packs carry per-EU fixed-6-decimal scores"),
+        _rule("V-SEM-03", "degrade-to-keyword is explicit (keyword.v1 + warning), never a silent fallback"),
+        _rule("V-SEM-04", "no auto-fulfillment from similarity; fulfilled_by is only None|cache|DRES-"),
+        _rule("V-SEM-05", "clustering only within a document; representatives deterministic"),
     ]
 }
 

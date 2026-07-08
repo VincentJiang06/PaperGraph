@@ -5,9 +5,14 @@ from __future__ import annotations
 
 from typing import Literal, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from ._common import STRICT, Scope
+
+# A field literally named ``model`` collides with pydantic's protected ``model_``
+# namespace guard; disable it for the retrieval block only (docs/18 pins the JSON
+# key ``model`` for the embedding-model pin).
+STRICT_MODEL_OK = ConfigDict(extra="forbid", protected_namespaces=())
 
 SourceType = Literal[
     "peer_reviewed", "official_report", "working_paper", "news", "dataset", "user_notes"
@@ -247,3 +252,62 @@ class DocsPack(BaseModel):
     project_id: str
     evidence_units: list[dict]
     documents_meta: list[dict]
+
+
+# --- S5 semantic retrieval (docs/18): docs_pack.v2 -------------------------
+
+
+class RetrievalModel(BaseModel):
+    """The project-pinned embedding model, recorded in every hybrid pack
+    (V-SEM-01): name + revision + weights sha256 make the vector reproducible."""
+
+    model_config = STRICT
+
+    name: str
+    revision: str
+    weights_sha256: str
+
+
+class RetrievalScore(BaseModel):
+    """Per-EU hybrid scores. Serialized as fixed-6-decimal STRINGS so the pack is
+    byte-identical across platforms (docs/18) — no float drift in canonical bytes.
+    ``kscore`` is the min-max-normalized keyword score used in the weighted sum."""
+
+    model_config = STRICT
+
+    evidence_id: str
+    sscore: str
+    kscore: str
+
+
+class RetrievalBlock(BaseModel):
+    """docs_pack.v2 audit block (docs/18): how the pack was retrieved. ``matcher``
+    is ``hybrid.v1`` (embeddings present) or ``keyword.v1`` (degrade path,
+    V-SEM-03). ``model`` is present iff hybrid. ``alpha``/``tau`` pin the contract
+    constants as strings (byte-determinism)."""
+
+    model_config = STRICT_MODEL_OK
+
+    matcher: Literal["hybrid.v1", "keyword.v1"]
+    model: Optional[RetrievalModel] = None
+    alpha: str = "0.6"
+    tau: str = "0.35"
+    scores: list[RetrievalScore] = []
+
+
+class DocsPackV2(BaseModel):
+    """docs_pack.v2 = docs_pack.v1 + a ``retrieval`` audit block (docs/18). v1
+    stays registered and READABLE; the builder writes v2 going forward. The pack
+    remains explainable: every hybrid pack names its model and carries per-EU
+    sscore/kscore. documents_meta may carry a ``near_dups`` annotation
+    (representative EU + within-document also-EUs, V-SEM-05)."""
+
+    model_config = STRICT
+
+    schema_version: Literal["docs_pack.v2"] = "docs_pack.v2"
+    pack_id: str
+    task_id: str
+    project_id: str
+    evidence_units: list[dict]
+    documents_meta: list[dict]
+    retrieval: RetrievalBlock

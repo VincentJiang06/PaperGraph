@@ -148,7 +148,7 @@ Global options: `--root <dir>` (default `./data`), `--project <id>` / `PAPERPROO
 | `proof build-tasks` | `--frontier` | build/rebuild bundles for every claimable or stale proof item, minting the next -rN revision per target; `--frontier` is the required (and only) mode in v1; data: bundles built |
 | `proof build-task <target-id>` | — | one bundle; data: bundle paths |
 | `docs ingest <file>` | `[--source-type --title --citation-key]` | archive user file (dedup by hash); data: doc_id, text_path |
-| `docs search` | `--query <text> [--scope <json>]` | run the matcher; data: scored EU list |
+| `docs search` | `--query <text> [--scope <json>] [--semantic]` | run the matcher; `--semantic` (S5, docs/18) ranks by the hybrid keyword+embedding score when the pinned model is present, else degrades to keyword with a warning; data: {matcher, results, count} |
 | `docs build-pack` | `--task <task-id>` | assemble DocsPack; data: pack path, EU count |
 | `docs request` | `--target <id> --need <text> [--hint <h>]...` | Orchestrator-initiated DocsRequest (code appends; cache-checked like any request; NEVER counts toward the target's docs cap — r3, docs/04); data: request_id, status |
 | `docs ingest-result <file>` | `--work-item <WI>` | validate V-DR + ingest + unblock (accepts claimed/running, completing implicitly — r3, docs/05); data: assigned ids, request status |
@@ -176,6 +176,7 @@ Global options: `--root <dir>` (default `./data`), `--project <id>` / `PAPERPROO
 | `compiler ingest-prose <file>` | `--work-item <WI>` | V-PROSE as the item's validate-pass + copy to compiler/prose/ + commit (two queue events, one command); data: section_id / failed_rules |
 | `audit run` | `--draft <DRAFTMAP-id>` | mechanical audit; data: AuditReport; exit 1 if findings |
 | `db rebuild / db check` | — | data: manifest / {stale_index: bool} |
+| `db semantic rebuild / db semantic check` | — | S5 (docs/18): (re)build the pinned embedding index (fetch+hash-verify the model, embed every EU ⇒ db/semantic/eu_vectors.parquet + model.json) / report present + hash-match + index coverage. Semantic is an optional upgrade — absent deps/model ⇒ retrieval degrades to keyword.v1 loudly |
 | `ui serve` | `--port 8420 [--auto-rebuild]` | serve the docs/07 API + static page; `--auto-rebuild` (r3, live-monitor convenience) rebuilds the index when a poll finds it stale instead of only flying the banner — default off, the banner stays load-bearing |
 | `verify` | — | whole-project sweep (docs/09 §3); exit 0 clean, 3 on violation |
 | `trace` | `--node <id>` | data: the full trace chain (docs/09 §3) |
