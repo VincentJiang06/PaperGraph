@@ -9,8 +9,10 @@ import json
 import pytest
 
 from paperproof.expander import ingest as expander
+from paperproof.paths import paths_for
 from paperproof.store import snapshot
 
+from tests.conftest import EXAMPLE_TOPIC
 from tests.fakes import scenario
 
 pytestmark = pytest.mark.contract
@@ -42,6 +44,27 @@ def _layer0(paths, **over):
 def test_valid_layer0_passes(project, pp):
     paths = scenario.paths_for_pp(pp)
     assert _validate(paths, _layer0(paths)) == []
+
+
+def test_v_gate_01_expand_without_accept(pp, monkeypatch):
+    """P5 [V-GATE-01]: `expand ingest` refuses while the latest contract is not
+    accepted; accepting first lets the identical proposal through."""
+    monkeypatch.setenv("PAPERPROOF_PROJECT", "p4-ldi")
+    pp("project", "init", "p4-ldi")
+    pp("spec", "build", str(EXAMPLE_TOPIC))  # contract NOT accepted yet
+
+    paths = paths_for(pp.tmp_path, "p4-ldi")
+    pf = paths.resolve("agent_outputs/expansions/EXP-BFS-MAIN-L0.json")
+    pf.parent.mkdir(parents=True, exist_ok=True)
+    pf.write_text(json.dumps(_layer0(paths)), encoding="utf-8")
+
+    env = pp("expand", "ingest", str(pf), expect=1)
+    assert any("V-GATE-01" in e for e in env["errors"]), env["errors"]
+
+    # accept, then the same proposal ingests cleanly.
+    pp("spec", "accept")
+    ok = pp("expand", "ingest", str(pf))
+    assert ok["ok"] is True and ok["data"]["assigned_ids"]
 
 
 def test_v_exp_02_stale_snapshot(project, pp):

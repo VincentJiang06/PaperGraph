@@ -144,13 +144,15 @@ def build_bundle(paths: Paths, work_item: dict[str, Any]) -> dict[str, Any]:
         retrieval=retrieval,
     )
 
-    # F13: the bundle is checked by the CANONICAL V-TASK fns at build time — a
-    # malformed pack never reaches a worker.
-    from ..validate.rules import v_task
+    # F13: the bundle is checked by the CANONICAL V-TASK / V-COV fns at build
+    # time — a malformed pack never reaches a worker. V-COV-02 guards that a
+    # fact/mechanism/bridge target carries its correct ledger line (S4, docs/17).
+    from ..validate.rules import v_cov, v_task
 
     ctx_dict = ctx.model_dump(mode="json")
     failures = v_task.check_context_pack(paths, ctx_dict)
     failures += v_task.check_docs_pack(paths, docspack.model_dump(mode="json"))
+    failures += v_cov.check_context_pack_coverage(ctx_dict)
     if failures:
         from ..validate.envelope import to_envelope
 

@@ -8,6 +8,8 @@ verify flips to exit 3 naming the offending record + id.
 
 from __future__ import annotations
 
+import json
+
 import pytest
 
 from paperproof.graph import model as graph_model
@@ -91,6 +93,54 @@ def test_verify_catches_dangling_node_duplicate_of(project, pp):
     assert "V-XREF" in env["errors"]
     detail = " ".join(env["data"]["detail"].values())
     assert "NODE-DANGLING" in detail
+
+
+def test_verify_catches_dangling_latest_proof_result_id(project, pp):
+    """P8: a non-rejected node's latest_proof_result_id (when set) must resolve to
+    a stored proof result; a dangling id makes verify exit 3, naming node + id."""
+    paths = scenario.paths_for_pp(pp)
+    _clean_s1(paths)
+    assert pp("verify")["ok"] is True  # clean first
+
+    gv = graph_model.load(paths)
+    node = dict(gv.node_by_id["NODE-003"])
+    node["latest_proof_result_id"] = "PR-999-nonexistent"
+    node["created_at"] = "2026-07-07T00:00:01Z"
+    jsonl.append(paths.resolve(NODES), node)
+
+    env = pp("verify", expect=3)
+    assert env["ok"] is False
+    assert "V-XREF" in env["errors"]
+    detail = " ".join(env["data"]["detail"].values())
+    assert "NODE-003" in detail and "PR-999-nonexistent" in detail
+
+
+def test_verify_schema_sweeps_the_stored_specs(project, pp):
+    """P6: the schema sweep also validates the single-doc canonical specs
+    (paper_spec.json, project_contract.json); a schema-invalid spec makes verify
+    exit 3 (previously it was never re-validated)."""
+    paths = scenario.paths_for_pp(pp)
+    _clean_s1(paths)
+    assert pp("verify")["ok"] is True  # clean first
+
+    # (a) an unknown field on the stored contract (STRICT extra=forbid).
+    good_contract = paths.project_contract.read_text(encoding="utf-8")
+    bad = json.loads(good_contract)
+    bad["surprise_field"] = "nope"
+    paths.project_contract.write_text(json.dumps(bad), encoding="utf-8")
+    env = pp("verify", expect=3)
+    assert "V-SCHEMA" in env["errors"]
+    assert "project_contract" in " ".join(env["data"]["detail"].values())
+    paths.project_contract.write_text(good_contract, encoding="utf-8")  # restore
+    assert pp("verify")["ok"] is True
+
+    # (b) an out-of-enum paper_type on the stored paper_spec.
+    spec = json.loads(paths.paper_spec.read_text(encoding="utf-8"))
+    spec["paper_type"] = "not_a_real_paper_type"
+    paths.paper_spec.write_text(json.dumps(spec), encoding="utf-8")
+    env = pp("verify", expect=3)
+    assert "V-SCHEMA" in env["errors"]
+    assert "paper_spec" in " ".join(env["data"]["detail"].values())
 
 
 def test_verify_catches_unattributed_graph_append(project, pp):

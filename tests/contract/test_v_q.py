@@ -18,6 +18,17 @@ from tests.fakes.workers import FakeDocsWorker, FakeProofWorker, prove_one
 pytestmark = pytest.mark.contract
 
 
+def test_queue_fail_default_reason_is_manual_fail(project, pp):
+    """P10 (docs/10 §4): `queue fail` without --reason records reason 'manual fail'."""
+    paths = scenario.paths_for_pp(pp)
+    scenario.seed_layer0(paths)
+    wi = next(i["work_item_id"] for i in engine.load_items(paths) if i["target_id"] == scenario.Q)
+    pp("queue", "claim", "--queue", "proof_queue", "--agent", "w", "--id", wi)
+    pp("queue", "fail", wi)
+    fail_ev = [e for e in engine.load_events(paths) if e["work_item_id"] == wi and e["op"] == "fail"][-1]
+    assert fail_ev["detail"]["reason"] == "manual fail"
+
+
 def test_full_lifecycle_walk_emits_one_event_per_transition(project, pp, clock):
     """enqueue -> claim -> heartbeat -> complete -> validate_pass -> commit, each
     with exactly one QueueEvent (V-Q-03), only legal transitions (V-Q-01)."""

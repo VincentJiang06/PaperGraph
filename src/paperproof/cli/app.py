@@ -4,9 +4,9 @@ Every command prints exactly ONE JSON envelope {ok, command, data, errors,
 warnings} to stdout with the exit-code convention:
   0 ok | 1 domain failure | 2 usage error | 3 corrupt state.
 
-The full closed command surface is registered here. M0 commands (project
-init|status, spec build|accept|show) are real; every other command is a stub
-that prints {ok:false, errors:["NOT-IMPLEMENTED"]} and exits 1.
+The full closed command surface (docs/10 §4) is registered here; every command
+is real and runs its module body through ``_dispatch``, which renders any outcome
+as exactly one envelope.
 """
 
 from __future__ import annotations
@@ -70,10 +70,6 @@ def _dispatch(command: str, fn: Callable[[], dict[str, Any]]) -> None:
     if isinstance(data, dict):
         warnings = data.pop("warnings", []) or []
     _emit(command, data=data if isinstance(data, dict) else {"result": data}, warnings=warnings, code=0)
-
-
-def _stub(command: str) -> None:
-    _emit(command, errors=["NOT-IMPLEMENTED"], code=1)
 
 
 # ---------------------------------------------------------------------------
@@ -516,7 +512,7 @@ def queue_complete(ctx: typer.Context, wi: str = typer.Argument(...)) -> None:
 
 
 @queue_app.command("fail")
-def queue_fail(ctx: typer.Context, wi: str = typer.Argument(...), reason: str = typer.Option("manual", "--reason")) -> None:
+def queue_fail(ctx: typer.Context, wi: str = typer.Argument(...), reason: str = typer.Option("manual fail", "--reason")) -> None:
     s = _state(ctx)
     _dispatch("queue fail", lambda: _queue.fail(_project_paths(s), wi, reason))
 

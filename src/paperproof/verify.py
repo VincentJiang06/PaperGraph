@@ -36,20 +36,33 @@ _JSONL_FILES = (
     "compiler/dry_runs.jsonl", "compiler/draft_maps.jsonl", "audit/audit_reports.jsonl",
 )
 
+# Single-doc canonical JSON (not JSONL): one record per file, overwritten in
+# place. Their schema_version pins the registry model like any stored record.
+_SINGLE_DOC_FILES = ("specs/paper_spec.json", "specs/project_contract.json")
+
+
+def _validate_against_registry(rec: dict[str, Any], where: str, failures: list[Failure]) -> None:
+    sv = rec.get("schema_version")
+    model = REGISTRY.get(sv)
+    if model is None:
+        failures.append(Failure("V-SCHEMA", f"{where} unknown schema_version {sv!r}"))
+        return
+    try:
+        model.model_validate(rec)
+    except ValidationError as exc:
+        failures.append(Failure("V-SCHEMA", f"{where} {sv}: {exc.errors()[:1]}"))
+
 
 def _schema_check(paths: Paths) -> list[Failure]:
     failures: list[Failure] = []
     for rel in _JSONL_FILES:
         for i, rec in enumerate(jsonl.read_all(paths.resolve(rel)), start=1):
-            sv = rec.get("schema_version")
-            model = REGISTRY.get(sv)
-            if model is None:
-                failures.append(Failure("V-SCHEMA", f"{rel}:{i} unknown schema_version {sv!r}"))
-                continue
-            try:
-                model.model_validate(rec)
-            except ValidationError as exc:
-                failures.append(Failure("V-SCHEMA", f"{rel}:{i} {sv}: {exc.errors()[:1]}"))
+            _validate_against_registry(rec, f"{rel}:{i}", failures)
+    for rel in _SINGLE_DOC_FILES:
+        p = paths.resolve(rel)
+        if not p.exists():
+            continue
+        _validate_against_registry(jsonl.read_json(p), rel, failures)
     return failures
 
 
@@ -87,6 +100,10 @@ def _crossref(paths: Paths) -> list[Failure]:
         for eid in node.get("evidence_bindings", []) or []:
             if eid not in evidence_ids:
                 failures.append(Failure("V-XREF", f"node {node['node_id']} -> dangling evidence_binding {eid}"))
+        # latest_proof_result_id (when set) must resolve to a stored proof result.
+        lpr = node.get("latest_proof_result_id")
+        if lpr is not None and lpr not in pr_ids:
+            failures.append(Failure("V-XREF", f"node {node['node_id']} -> dangling latest_proof_result_id {lpr}"))
 
     # duplicate_of: every rejected(duplicate) node's state_detail.duplicate_of and
     # every tombstone duplicate_of resolves to a real node/edge id.
@@ -106,6 +123,19 @@ def _crossref(paths: Paths) -> list[Failure]:
 def _graph_check(paths: Paths) -> list[Failure]:
     gv = graph_model.load(paths)
     return v_node_edge.graph_record_checks(gv.nodes, gv.edges)
+
+
+def _gate_check(paths: Paths) -> list[Failure]:
+    """V-GATE-01 (docs/09): a project that has expanded the graph must have an
+    accepted latest contract. Graph records with an unaccepted contract are
+    corruption — expansion could only have bypassed the acceptance gate."""
+    gv = graph_model.load(paths)
+    if not gv.nodes and not gv.edges:
+        return []
+    contract = jsonl.read_json(paths.project_contract) if paths.project_contract.exists() else {}
+    if not contract.get("accepted_by_user"):
+        return [Failure("V-GATE-01", "graph records exist but the latest contract is not accepted")]
+    return []
 
 
 def _wave_check(paths: Paths) -> list[Failure]:
@@ -244,6 +274,7 @@ def run(paths: Paths) -> dict[str, Any]:
         raise CorruptStateError([f"project not found: {paths.project_id}"])
     failures: list[Failure] = []
     failures += _schema_check(paths)
+    failures += _gate_check(paths)
     failures += _graph_check(paths)
     failures += _verdict_recompute(paths)
     failures += v_q.verify_queue(paths)
