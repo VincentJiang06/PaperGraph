@@ -136,6 +136,14 @@ def test_r6_revise_mints_new_retires_old_warns_unmigrated(session, tmp_path):
                session("revise", "N-0002", "--statement", "x", expect=1)["errors"])
 
 
+def test_r6_cannot_revise_the_root(session):
+    session("add", "--statement", "根论题")
+    env = session("revise", "N-0001", "--statement", "重述根", expect=1)
+    assert any("cannot revise the root" in e for e in env["errors"])
+    # the tree stays single-rooted and clean
+    assert session("check")["data"]["hard"] == []
+
+
 # --- R7: brief activity line -----------------------------------------------
 
 def test_r7_brief_shows_activity(session, tmp_path):

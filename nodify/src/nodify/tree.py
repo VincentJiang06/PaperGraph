@@ -224,6 +224,12 @@ def revise(paths: Paths, session: dict[str, Any], node_id: str,
     if node_id not in nodes:
         raise DomainError([f"unknown node: {node_id}"])
     node = nodes[node_id]
+    if node["parent_id"] is None:
+        raise DomainError([
+            f"cannot revise the root {node_id}: it has no parent, so a revision "
+            "would strand the whole tree under a retired root with no way to "
+            "re-parent it. The root question is fixed at init — narrow it via the "
+            "root synthesis, or start a new session if the framing itself changed."])
     if node["status"] == "retired":
         raise DomainError([f"{node_id} is already retired"])
     if not new_statement.strip():

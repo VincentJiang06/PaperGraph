@@ -61,7 +61,9 @@ quote 逐字校验、树距离 recall、来源压缩)整体进 V2。V1 的论据
 (新 id、同父同 kind、fresh 状态、`revises=N`),并把 N 退休(status_note 指向
 新 id)。**子节点与文档绑定不自动迁移**(框架永不级联,P4)——命令返回告警
 列出未迁移项,由模型决定是否 re-parent / 重新 `nd docs bind`。这给了本就存在
-但此前无写入方的 node.v1.revises 字段一个明确语义。
+但此前无写入方的 node.v1.revises 字段一个明确语义。**根节点不可 revise**
+(无父节点,重述会把整棵树悬在退休的旧根下且无 re-parent 手段——根问题在 init
+固定,收窄靠根 synthesis,框架真变了就开新 session)。
 
 ## 4. 记录与文件布局(V1 全部家当)
 

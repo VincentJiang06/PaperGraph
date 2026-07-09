@@ -25,6 +25,15 @@ live 会话 ai-jobs-paper 在新代码下复检仍 0 hard / 0 soft。
 - **R5 报最近 dead 祖先、每孤儿一条**:嵌套退休下不重复报同一孤儿;守卫
   父指针存在(悬空父是独立 hard 项)。
 
+## 自查抓到的边界缺陷(R6)
+
+`nd revise` 若作用于**根节点**(parent_id=None),会铸出第二个无父节点 →
+check 的 "multiple roots" 硬错误,整棵树悬在退休旧根下且无 re-parent 手段。
+判定为不可恢复的坏状态,**直接禁止 revise 根**(报错指向替代:根问题 init
+固定,收窄靠根 synthesis,框架真变了开新 session)。回归测试
+`test_r6_cannot_revise_the_root`。这正是"改一处、自查其与既有不变量(单根)
+的交互"的价值——正是本次 rebuild 强调的协议互联复核。
+
 ## 未动(需 Opus 现场采证,勿先写代码)
 
 R2 recall 质量(先 TC-F 基准)、R4 规模(先 TC-B)、R8 en 基线、R9 对抗
