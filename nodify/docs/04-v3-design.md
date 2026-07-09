@@ -57,7 +57,8 @@ nd schema <alias|record>                  # 自描述:schema 全文 + 示例 pay
 ## 4. check 融合(article 存在时追加)
 
 - hard:section 记录的 cites 悬空;outline 的 grounded_in/node_ids/excluded
-  悬空;assemble 后 final.md 中的 cite 与 records 不一致(重跑 assemble 可修)。
+  悬空;assemble 后 final.md 中的 cite 与 records 不一致 **[unenforced →
+  路线图 R1:check 尚未实现此项,重跑 assemble 可修]**。
 - soft:大纲节未注册成文;成文节不在最新大纲;argument/evidence 节零引用;
   被排除节点无 reason。
 
