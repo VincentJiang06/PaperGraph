@@ -1,0 +1,13 @@
+SOURCE S4
+Title: Generative AI at Work
+Authors: Erik Brynjolfsson, Danielle Li, Lindsey R. Raymond (NBER Working Paper 31161, 2023; published QJE 2025)
+URL: https://www.nber.org/papers/w31161
+Fetched: 2026-07-09
+
+VERBATIM KEY PASSAGES (from abstract):
+
+"we study the staggered introduction of a generative AI-based conversational assistant using data from 5,179 customer support agents"
+
+"Access to the tool increases productivity, as measured by issues resolved per hour, by 14% on average"
+
+"including a 34% improvement for novice and low-skilled workers but with minimal impact on experienced and highly skilled workers"

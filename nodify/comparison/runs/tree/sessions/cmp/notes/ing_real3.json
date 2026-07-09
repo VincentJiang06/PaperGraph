@@ -1,0 +1,14 @@
+{
+ "kind": "report",
+ "title": "CIOL (UK) — Changes in work volumes: freelance translators/interpreters (2024 poll)",
+ "url": "https://www.ciol.org.uk/work-volumes-freelance-translators-interpreters",
+ "text_file": "notes/real_3.txt",
+ "summary": "英国特许语言学会 2024 会员调查:49% 报告工作量显著下降、另 21% 有较小下降(合计逾 70% 下降);工作量较 2022-23 年下降约六分之一到八分之一,且多转为机器翻译后编辑(MTPE),价值大幅降低。翻译业的真实替代信号。",
+ "bindings": [
+  {
+   "node_id": "N-0008",
+   "relation": "supports",
+   "note": "翻译逾70%报告工作量下降"
+  }
+ ]
+}

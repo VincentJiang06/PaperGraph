@@ -1,0 +1,13 @@
+SOURCE S2
+Title: Gen-AI: Artificial Intelligence and the Future of Work (IMF Staff Discussion Note SDN/2024/001) / "AI Will Transform the Global Economy. Let's Make Sure It Benefits Humanity." (IMF, Jan 14, 2024, K. Georgieva)
+Primary source: International Monetary Fund, January 2024.
+URL fetched (reproduction of IMF figures): https://www.govtech.com/artificial-intelligence/imf-artificial-intelligence-could-impact-40-percent-of-jobs
+Primary IMF blog URL (Cloudflare-blocked to WebFetch): https://www.imf.org/en/blogs/articles/2024/01/14/ai-will-transform-the-global-economy-lets-make-sure-it-benefits-humanity
+
+VERBATIM EXTRACTS (task-level exposure with split outcomes):
+
+- "Around the world, 40% of all employment is affected in some way by AI, with the number rising to 60% in higher-income countries."
+- "Roughly half the exposed jobs may benefit from AI integration, enhancing productivity. For the other half, AI applications may execute key tasks currently performed by humans, which could lower labor demand, leading to lower wages and reduced hiring."
+- Kristalina Georgieva (IMF Managing Director): AI could "jumpstart productivity, boost global growth and raise incomes," yet "it could also replace jobs and deepen inequality."
+
+Additional figures from the IMF SDN (widely reported): emerging market exposure ~40%, low-income country exposure ~26%; "In most scenarios, AI will likely worsen overall inequality."

@@ -1,0 +1,19 @@
+{
+ "kind": "report",
+ "title": "WEF Future of Jobs Report 2023 — press release",
+ "url": "https://www.weforum.org/press/2023/04/future-of-jobs-report-2023-up-to-a-quarter-of-jobs-expected-to-change-in-next-five-years/",
+ "text_file": "notes/macro_1.txt",
+ "summary": "WEF 2023(803 家企业、45 经济体)预测 2023-2027:8,300 万岗位被消除、6,900 万新增,净减 1,400 万(约占现有就业 2%);约 23% 岗位将改变。是前瞻性雇主调查,非 2020-2025 已实现结果,且由所有宏观趋势(不止 AI)驱动。",
+ "bindings": [
+  {
+   "node_id": "N-0003",
+   "relation": "supports",
+   "note": "官方净变化‘预测’存在:净减14M"
+  },
+  {
+   "node_id": "N-0006",
+   "relation": "context",
+   "note": "是预测而非测量"
+  }
+ ]
+}

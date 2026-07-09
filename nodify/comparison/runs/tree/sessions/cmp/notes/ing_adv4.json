@@ -1,0 +1,14 @@
+{
+ "kind": "web",
+ "title": "CIO Dive / CFO Dive — AI-driven job cuts and attribution uncertainty (2025 Challenger data)",
+ "url": "https://www.ciodive.com/news/AI-job-cuts-challenger-7000/802416/",
+ "text_file": "notes/adv_4.txt",
+ "summary": "2025 年 9 月单月 7,000 例 AI 归因裁员;Salesforce 客服在 AI agent 接管后从 9,000 减至约 5,000。但上半年仅 75 例被明确归因于 AI,Challenger 自认为真实 AI 驱动裁员被藏在‘技术更新’等模糊标签下——归因高度不确定,可能低估也可能被夸大。",
+ "bindings": [
+  {
+   "node_id": "N-0004",
+   "relation": "supports",
+   "note": "具体案例存在,但归因口径不确定"
+  }
+ ]
+}

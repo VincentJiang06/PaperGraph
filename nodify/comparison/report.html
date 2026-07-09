@@ -1,0 +1,366 @@
+<style>
+  :root {
+    --paper:#f7f8f7; --card:#ffffff; --ink:#191d1f; --ink-soft:#49525a;
+    --muted:#727f84; --line:#e4e8e6; --line-strong:#d3d9d6;
+    --accent:#1f6f5c; --accent-soft:#e6f0eb;
+    --raw:#8a97a1; --skills:#bd8a3f; --tree:#1f6f5c;
+    --raw-soft:#eceff1; --skills-soft:#f5ebda; --tree-soft:#e3efe9;
+    --serif: ui-serif,"Charter","Iowan Old Style","Palatino Linotype",Georgia,serif;
+    --sans: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono: ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --maxw: 960px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:#0f1312; --card:#171c1b; --ink:#eef2f0; --ink-soft:#aeb8b4;
+      --muted:#828e8a; --line:#262d2c; --line-strong:#333b39;
+      --accent:#54c2a2; --accent-soft:#16241f;
+      --raw:#8b98a2; --skills:#d7a75c; --tree:#54c2a2;
+      --raw-soft:#1b2124; --skills-soft:#241d12; --tree-soft:#132420;
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f7f8f7; --card:#ffffff; --ink:#191d1f; --ink-soft:#49525a;
+    --muted:#727f84; --line:#e4e8e6; --line-strong:#d3d9d6;
+    --accent:#1f6f5c; --accent-soft:#e6f0eb;
+    --raw:#8a97a1; --skills:#bd8a3f; --tree:#1f6f5c;
+    --raw-soft:#eceff1; --skills-soft:#f5ebda; --tree-soft:#e3efe9;
+  }
+  :root[data-theme="dark"]{
+    --paper:#0f1312; --card:#171c1b; --ink:#eef2f0; --ink-soft:#aeb8b4;
+    --muted:#828e8a; --line:#262d2c; --line-strong:#333b39;
+    --accent:#54c2a2; --accent-soft:#16241f;
+    --raw:#8b98a2; --skills:#d7a75c; --tree:#54c2a2;
+    --raw-soft:#1b2124; --skills-soft:#241d12; --tree-soft:#132420;
+  }
+
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);
+    line-height:1.62;margin:0;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:clamp(1.4rem,4vw,3.5rem) clamp(1.1rem,4vw,2rem) 4rem;}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted);margin:0 0 .9rem;}
+  h1{font-family:var(--serif);font-weight:600;line-height:1.12;text-wrap:balance;
+    font-size:clamp(1.8rem,4.6vw,3rem);margin:0 0 1rem;letter-spacing:-.01em;}
+  h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.25rem,3vw,1.7rem);
+    margin:0 0 .3rem;letter-spacing:-.01em;text-wrap:balance;}
+  h1 .q{color:var(--accent);font-style:italic;}
+  p{margin:0 0 1rem;max-width:66ch;}
+  .lede{font-size:1.12rem;color:var(--ink-soft);max-width:64ch;}
+  a{color:var(--accent);}
+  section{margin-top:clamp(2.6rem,6vw,4.2rem);}
+  .sec-head{margin-bottom:1.4rem;border-bottom:1px solid var(--line);padding-bottom:.7rem;}
+  .sec-head .kicker{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.35rem;}
+  .sub{color:var(--muted);font-size:.95rem;margin:.15rem 0 0;}
+
+  /* verdict banner */
+  .verdict{display:flex;flex-wrap:wrap;gap:1.2rem 2rem;align-items:baseline;
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:1.3rem 1.5rem;margin-top:1.6rem;}
+  .verdict .rank{font-family:var(--serif);font-size:clamp(1.3rem,3vw,1.9rem);font-weight:600;}
+  .verdict .rank b{color:var(--accent);}
+  .verdict .meta{font-size:.9rem;color:var(--muted);font-family:var(--mono);letter-spacing:.02em;}
+
+  /* legend */
+  .legend{display:flex;gap:1.3rem;flex-wrap:wrap;font-size:.85rem;color:var(--ink-soft);
+    font-family:var(--mono);margin:.2rem 0 0;}
+  .dot{display:inline-block;width:.7em;height:.7em;border-radius:50%;margin-right:.45em;
+    vertical-align:baseline;}
+  .d-raw{background:var(--raw)} .d-skills{background:var(--skills)} .d-tree{background:var(--tree)}
+
+  /* ablation ladder */
+  .ladder{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:end;
+    gap:.4rem;margin:2rem 0 .5rem;}
+  @media(max-width:640px){.ladder{grid-template-columns:1fr;gap:1.4rem;}
+    .ladder .step-arrow{transform:none;text-align:left;padding:0;}}
+  .rung{display:flex;flex-direction:column;align-items:center;gap:.7rem;}
+  .rung .bar-track{height:190px;width:76px;display:flex;align-items:flex-end;
+    border-bottom:2px solid var(--line-strong);}
+  .rung .bar{width:100%;border-radius:6px 6px 0 0;position:relative;
+    transition:height .6s cubic-bezier(.2,.7,.3,1);}
+  .rung .bar span{position:absolute;top:-1.7rem;left:0;right:0;text-align:center;
+    font-family:var(--serif);font-weight:600;font-size:1.3rem;font-variant-numeric:tabular-nums;}
+  .rung.raw .bar{background:var(--raw)} .rung.raw .bar span{color:var(--raw)}
+  .rung.skills .bar{background:var(--skills)} .rung.skills .bar span{color:var(--skills)}
+  .rung.tree .bar{background:var(--tree)} .rung.tree .bar span{color:var(--tree)}
+  .rung .name{font-family:var(--mono);font-size:.82rem;letter-spacing:.03em;color:var(--ink);}
+  .rung .name em{color:var(--muted);font-style:normal;display:block;font-size:.72rem;margin-top:.15rem;}
+  .step-arrow{align-self:center;text-align:center;padding-bottom:2.6rem;min-width:96px;}
+  .step-arrow .delta{font-family:var(--serif);font-style:italic;font-size:1.05rem;color:var(--ink);white-space:nowrap;}
+  .step-arrow .what{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);margin-top:.2rem;}
+  .step-arrow .track{height:1px;background:var(--line-strong);margin:.5rem auto;width:80%;position:relative;}
+  .step-arrow .track::after{content:"→";position:absolute;right:-2px;top:-.72em;color:var(--muted);}
+
+  /* tables */
+  .scroll{overflow-x:auto;margin:0 -.2rem;}
+  table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:520px;}
+  caption{text-align:left;color:var(--muted);font-size:.85rem;margin-bottom:.6rem;font-style:italic;}
+  th,td{padding:.62rem .7rem;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle;}
+  thead th{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);font-weight:500;border-bottom:1px solid var(--line-strong);}
+  tbody th{font-weight:500;color:var(--ink-soft);}
+  td.n{font-variant-numeric:tabular-nums;font-family:var(--mono);text-align:right;}
+  .col-tree{background:var(--tree-soft);}
+  th.col-tree{color:var(--tree);}
+  .win{font-weight:700;color:var(--ink);}
+
+  /* score cell with mini bar */
+  .cell{display:flex;align-items:center;gap:.55rem;justify-content:flex-end;}
+  .cell .val{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.9rem;min-width:2.3ch;text-align:right;}
+  .cell .mb{height:7px;border-radius:4px;flex:0 0 46px;background:linear-gradient(90deg,currentColor var(--w),transparent var(--w));opacity:.9;}
+  .c-raw{color:var(--raw)} .c-skills{color:var(--skills)} .c-tree{color:var(--tree)}
+
+  /* metric cards */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1rem;margin-top:1.4rem;}
+  .mcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.1rem 1.15rem;}
+  .mcard .lab{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .mcard .row{display:flex;justify-content:space-between;align-items:baseline;margin-top:.7rem;font-variant-numeric:tabular-nums;}
+  .mcard .row .m{font-family:var(--mono);font-size:.8rem;color:var(--ink-soft);}
+  .mcard .row .v{font-family:var(--serif);font-weight:600;}
+  .mcard .row.hi .v{color:var(--accent);}
+  .barmini{height:6px;border-radius:3px;background:var(--line);margin-top:.35rem;overflow:hidden;}
+  .barmini i{display:block;height:100%;border-radius:3px;}
+
+  .callout{background:var(--accent-soft);border:1px solid var(--line);
+    border-left:3px solid var(--accent);border-radius:0 12px 12px 0;padding:1.15rem 1.35rem;margin-top:1.4rem;}
+  .callout h2{font-size:1.15rem;margin-bottom:.5rem;}
+  .callout p:last-child{margin-bottom:0;}
+  ul.tight{margin:.4rem 0 0;padding-left:1.1rem;}
+  ul.tight li{margin-bottom:.5rem;max-width:64ch;}
+  ul.tight li b{color:var(--ink);}
+  .note{font-size:.86rem;color:var(--muted);border-top:1px solid var(--line);margin-top:3rem;padding-top:1.1rem;}
+  .note code{font-family:var(--mono);background:var(--card);padding:.1em .35em;border-radius:4px;border:1px solid var(--line);}
+  .recov{font-family:var(--sans);}
+  .conf{font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;padding:.15em .55em;border-radius:20px;border:1px solid var(--line-strong);}
+</style>
+
+<div class="wrap">
+
+  <p class="eyebrow">Nodify · controlled ablation · Opus, single run per arm</p>
+  <h1>Does a <span class="q">logic tree</span> actually make deep research better?</h1>
+  <p class="lede">Same question, same model, same deliverable — a ~1500-word cited
+  article on AI's 2020–2025 net employment effect. Three arms, one variable: the
+  framework. It lets us separate the <em>thinking discipline</em> from the
+  <em>machinery</em>.</p>
+
+  <div class="verdict">
+    <div class="rank"><b>tree</b> &gt; skills &gt; raw</div>
+    <div class="meta">unanimous · 6 / 6 blind judge runs · citations format-normalized</div>
+  </div>
+  <p class="legend" style="margin-top:1.1rem">
+    <span><span class="dot d-raw"></span>raw — no method, no tools</span>
+    <span><span class="dot d-skills"></span>skills — discipline only, no tree</span>
+    <span><span class="dot d-tree"></span>tree — full Nodify (nd + skill)</span>
+  </p>
+
+  <section>
+    <div class="sec-head">
+      <span class="kicker">The result in one picture</span>
+      <h2>Two steps, two different kinds of gain</h2>
+      <p class="sub">Blind-judge <em>overall</em> score (1–5). Each step isolates one addition.</p>
+    </div>
+
+    <div class="ladder">
+      <div class="rung raw">
+        <div class="bar-track"><div class="bar" style="height:60%"><span>3.0</span></div></div>
+        <div class="name">raw<em>baseline</em></div>
+      </div>
+      <div class="step-arrow">
+        <div class="delta">+1.0</div>
+        <div class="track"></div>
+        <div class="what">add discipline</div>
+      </div>
+      <div class="rung skills">
+        <div class="bar-track"><div class="bar" style="height:80%"><span>4.0</span></div></div>
+        <div class="name">skills<em>method only</em></div>
+      </div>
+      <div class="step-arrow">
+        <div class="delta">+1.0</div>
+        <div class="track"></div>
+        <div class="what">add tree</div>
+      </div>
+      <div class="rung tree">
+        <div class="bar-track"><div class="bar" style="height:100%"><span>5.0</span></div></div>
+        <div class="name">tree<em>full framework</em></div>
+      </div>
+    </div>
+    <p style="margin-top:1.6rem">The <b>discipline</b> is the biggest single lever — a
+    disciplined agent with <em>no tooling</em> already beats raw by a full point, mostly
+    by forcing an adversarial line and honest calibration. The <b>tree</b> adds a second
+    full point, but of a different nature: not smoother prose, but deeper evidence,
+    enforced auditability, and — its headline property — a reasoning state that survives
+    interruption.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="kicker">Blind judge panel</span>
+      <h2>Where each arm won and lost</h2>
+      <p class="sub">Mean of 3 blind judges, mode hidden, citation format neutralized. Bar = score / 5.</p>
+    </div>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Dimension</th>
+          <th style="text-align:right">raw</th>
+          <th style="text-align:right">skills</th>
+          <th class="col-tree" style="text-align:right">tree</th></tr></thead>
+        <tbody>
+          <tr><th>Structure / logic</th>
+            <td class="n"><div class="cell c-raw"><span class="mb" style="--w:80%"></span><span class="val">4.0</span></div></td>
+            <td class="n"><div class="cell c-skills"><span class="mb" style="--w:100%"></span><span class="val win">5.0</span></div></td>
+            <td class="n col-tree"><div class="cell c-tree"><span class="mb" style="--w:100%"></span><span class="val win">5.0</span></div></td></tr>
+          <tr><th>Evidence quality</th>
+            <td class="n"><div class="cell c-raw"><span class="mb" style="--w:73%"></span><span class="val">3.7</span></div></td>
+            <td class="n"><div class="cell c-skills"><span class="mb" style="--w:80%"></span><span class="val">4.0</span></div></td>
+            <td class="n col-tree"><div class="cell c-tree"><span class="mb" style="--w:100%"></span><span class="val win">5.0</span></div></td></tr>
+          <tr><th>Adversarial rigor</th>
+            <td class="n"><div class="cell c-raw"><span class="mb" style="--w:60%"></span><span class="val">3.0</span></div></td>
+            <td class="n"><div class="cell c-skills"><span class="mb" style="--w:100%"></span><span class="val win">5.0</span></div></td>
+            <td class="n col-tree"><div class="cell c-tree"><span class="mb" style="--w:93%"></span><span class="val">4.7</span></div></td></tr>
+          <tr><th>Calibration</th>
+            <td class="n"><div class="cell c-raw"><span class="mb" style="--w:80%"></span><span class="val">4.0</span></div></td>
+            <td class="n"><div class="cell c-skills"><span class="mb" style="--w:100%"></span><span class="val win">5.0</span></div></td>
+            <td class="n col-tree"><div class="cell c-tree"><span class="mb" style="--w:100%"></span><span class="val win">5.0</span></div></td></tr>
+          <tr style="border-top:2px solid var(--line-strong)"><th style="color:var(--ink);font-weight:600">Overall</th>
+            <td class="n"><div class="cell c-raw"><span class="mb" style="--w:60%"></span><span class="val">3.0</span></div></td>
+            <td class="n"><div class="cell c-skills"><span class="mb" style="--w:80%"></span><span class="val">4.0</span></div></td>
+            <td class="n col-tree"><div class="cell c-tree"><span class="mb" style="--w:100%"></span><span class="val win">5.0</span></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:1.3rem">One honest reversal: <b>skills edged the tree on
+    adversarial rigor</b> (5.0 vs 4.7). The method's mandatory-counterargument section
+    read as marginally more systematic — and the tree's own <code style="font-family:var(--mono)">nd check</code>
+    agreed, flagging a soft warning that one divergence layer lacked an adversarial
+    direction. The framework saw its own gap.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="kicker">Objective metrics</span>
+      <h2>What the tree does that judging can't see</h2>
+      <p class="sub">Measured mechanically from each arm's artifacts, not scored by a reader.</p>
+    </div>
+    <div class="cards">
+      <div class="mcard">
+        <div class="lab">Sources cited</div>
+        <div class="row"><span class="m">raw</span><span class="v">8</span></div>
+        <div class="barmini"><i style="width:44%;background:var(--raw)"></i></div>
+        <div class="row"><span class="m">skills</span><span class="v">9</span></div>
+        <div class="barmini"><i style="width:50%;background:var(--skills)"></i></div>
+        <div class="row hi"><span class="m">tree</span><span class="v">18</span></div>
+        <div class="barmini"><i style="width:100%;background:var(--tree)"></i></div>
+      </div>
+      <div class="mcard">
+        <div class="lab">Source text archived · durable, verbatim</div>
+        <div class="row"><span class="m">raw</span><span class="v">11 KB</span></div>
+        <div class="barmini"><i style="width:17%;background:var(--raw)"></i></div>
+        <div class="row"><span class="m">skills</span><span class="v">8 KB</span></div>
+        <div class="barmini"><i style="width:12%;background:var(--skills)"></i></div>
+        <div class="row hi"><span class="m">tree</span><span class="v">66 KB</span></div>
+        <div class="barmini"><i style="width:100%;background:var(--tree)"></i></div>
+      </div>
+      <div class="mcard">
+        <div class="lab">Quote fidelity</div>
+        <div class="row"><span class="m">raw</span><span class="v">92%</span></div>
+        <div class="barmini"><i style="width:92%;background:var(--raw)"></i></div>
+        <div class="row"><span class="m">skills</span><span class="v">92%</span></div>
+        <div class="barmini"><i style="width:92%;background:var(--skills)"></i></div>
+        <div class="row hi"><span class="m">tree</span><span class="v">100%</span></div>
+        <div class="barmini"><i style="width:100%;background:var(--tree)"></i></div>
+        <div class="row"><span class="m" style="color:var(--muted)">by diligence</span><span class="m" style="color:var(--tree)">enforced</span></div>
+      </div>
+      <div class="mcard">
+        <div class="lab">Peak raw text held in context</div>
+        <div class="row hi" style="--x:1"><span class="m">raw</span><span class="v" style="color:var(--raw)">~20k tok</span></div>
+        <div class="barmini"><i style="width:100%;background:var(--raw)"></i></div>
+        <div class="row"><span class="m">skills</span><span class="v">~4.5k</span></div>
+        <div class="barmini"><i style="width:22%;background:var(--skills)"></i></div>
+        <div class="row"><span class="m">tree</span><span class="v">~6.5k</span></div>
+        <div class="barmini"><i style="width:32%;background:var(--tree)"></i></div>
+        <div class="row"><span class="m" style="color:var(--muted)">lower is better</span><span class="m"></span></div>
+      </div>
+    </div>
+    <p style="margin-top:1.4rem">The tree cited <b>twice the sources</b> and kept all
+    66&nbsp;KB of them archived and machine-verified — 26 verbatim quotes, every one
+    checked by <code style="font-family:var(--mono)">nd check</code> against its source
+    (100% vs 92% "by diligence"). Raw, by contrast, leaned on three <em>secondary
+    reproductions</em> because publishers blocked the primaries — a provenance gap the
+    archive closes. Notably, the <b>discipline alone</b> already cut context load ~4× vs
+    raw; the tree stays lean too, by pushing raw fetching into isolated subagents.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="kicker">Compaction probe · the headline claim</span>
+      <h2>Interrupt the run — what survives on disk?</h2>
+      <p class="sub">A fresh agent, given only what each arm persisted, tries to resume the investigation.</p>
+    </div>
+    <div class="scroll">
+      <table class="recov">
+        <caption>Every prober self-rated "medium" confidence — but what they could recover differed in kind.</caption>
+        <thead><tr><th>Arm</th><th>Recovery artifact</th><th>What a cold agent recovered</th></tr></thead>
+        <tbody>
+          <tr>
+            <th style="color:var(--raw)">raw</th>
+            <td class="n" style="text-align:left">11.7 KB<br><span style="color:var(--muted);font-family:var(--mono);font-size:.75rem">unstructured dumps</span></td>
+            <td>Only the raw sources. <em>"The analytical / synthesis state is genuinely
+              unrecoverable — I recovered the source base but not the reasoning."</em> Had to
+              re-derive from scratch.</td>
+          </tr>
+          <tr>
+            <th style="color:var(--skills)">skills</th>
+            <td class="n" style="text-align:left">4.3 KB<br><span style="color:var(--muted);font-family:var(--mono);font-size:.75rem">research log</span></td>
+            <td>Conclusions and figures recovered — but the log's citation section was an
+              empty placeholder, so <b>the evidence links were lost</b>. Discipline followed
+              imperfectly.</td>
+          </tr>
+          <tr class="col-tree">
+            <th style="color:var(--tree)">tree</th>
+            <td class="n" style="text-align:left"><b>2.9 KB</b><br><span style="color:var(--tree);font-family:var(--mono);font-size:.75rem">structured nd&nbsp;brief</span></td>
+            <td>The full reasoning state — layers, leanings, specific figures, the
+              adversarial line, <b>and the open coverage gap</b> — plus the exact next command.
+              Missing detail was one <code style="font-family:var(--mono)">nd show</code> away,
+              with <em>verified</em> quotes.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="callout">
+      <h2>The honest answer</h2>
+      <p>Yes, the logic tree improves outcomes — but attribute the gains correctly.</p>
+      <ul class="tight">
+        <li><b>The thinking discipline is the big lever for prose quality.</b> Most of the
+          jump comes from method, not machinery — it's available with or without the tree.</li>
+        <li><b>The tree's edge is not smoother writing.</b> It is evidence depth (2× the
+          sources), <b>enforced auditability</b> (100% verbatim, full traceability, no
+          secondary reproductions), and a reasoning state that survives compaction.</li>
+        <li><b>It puts a floor under rigor that doesn't need a good day.</b> Its checks
+          caught a coverage gap the prose hid; its brief let a cold agent resume in one call.
+          Those compound exactly where discipline alone degrades — at scale, under
+          interruption, with weaker models, or when the output must be <em>trusted and
+          audited</em>, not just read.</li>
+      </ul>
+    </div>
+    <p style="margin-top:1.3rem;color:var(--ink-soft)">Caveat, stated plainly: one clean run
+    per arm, and Opus is a strong researcher — raw still produced a serviceable article
+    (3.0). The tree is not magic. It is insurance against the days the discipline slips.</p>
+  </section>
+
+  <p class="note">Method: identical prompt/model/deliverable; only the framework varied.
+  Judges were blind to arm and to the experiment's purpose; articles were mode-hidden with
+  citation formats normalized. <b>Disclosed instrument bug:</b> the first blinding pass
+  renumbered inline citations but not the reference list, introducing a misalignment for
+  the raw/skills arms only; caught on review, corrected to preserve each author's own
+  numbering, and the panel re-run clean — the correction <em>raised</em> raw's evidence
+  score but left the ranking unchanged (tree&nbsp;&gt;&nbsp;skills&nbsp;&gt;&nbsp;raw in
+  both rounds). Reproduce from <code>nodify/comparison/</code>:
+  <code>score.py</code>, <code>fidelity.py</code>, <code>results.json</code>, and the
+  per-arm <code>runs/</code>.</p>
+
+</div>

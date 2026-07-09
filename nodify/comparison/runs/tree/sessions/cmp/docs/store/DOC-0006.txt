@@ -1,0 +1,63 @@
+SOURCE: Chartered Institute of Linguists (CIOL), UK. "Changes in work volumes: freelance
+translators/interpreters" (member-poll results summary, referencing a CIOL eNews update).
+KIND: primary-adjacent (professional body's own survey of its freelance translator/interpreter
+members; real market/demand data, not a projection).
+URL: https://www.ciol.org.uk/work-volumes-freelance-translators-interpreters
+NODE SUPPORTED: N-0008
+
+--- VERBATIM / QUOTED FIGURES (as extracted from CIOL page) ---
+
+Survey result breakdown of freelance translator/interpreter members reporting change in work volume
+(most recent poll, referenced from a "recent eNews update", year-over-year vs. 2022-23/2024):
+- "49% reported significant decrease" [in work volumes]
+- "21% experienced smaller decline"
+- "14% maintained stable volumes"
+- "11% saw small increases"
+- "5% reported substantial growth"
+(i.e., 70%+ combined reported decreased work volumes)
+
+Member testimonial quotes (verbatim as captured, some truncated by extraction tool but numeric
+content intact):
+"The number of jobs has declined by between one sixth and one eighth compared to 2022-23 and they
+are now mostly MTPE or MT, and therefore of much lower value."
+[MTPE = machine-translation post-editing; MT = machine translation — i.e. respondent's remaining
+work has shifted from full human translation to lower-paid post-editing of AI/MT output]
+
+"Uncertained translation work has almost completely dried up..." [partial: describes a
+specific work category drying up]
+
+"I left the freelance industry in 2024. In my language pair and spe[cialism]..." [partial: member
+reports exiting the profession]
+
+"Basically speaking, an existentially threatening drop in requests f[or services]..." [partial]
+
+--- END QUOTES ---
+
+CROSS-CHECK (from WebSearch summaries of related sources, not independently fetched — flagged as
+lower-confidence, secondary):
+- CEPR/VoxEU column ("Lost in translation: AI's impact on translators and foreign language skills")
+  reportedly cites historical Google Translate rollout data: each 1 percentage-point increase in
+  regional machine-translation usage associated with ~0.7 percentage-point drop in translator
+  employment growth, implying ~28,000 fewer new translator positions created over 2010-2023 than
+  otherwise expected. NOT independently verified via direct fetch — treat as unverified until the
+  CEPR page itself is pulled.
+- UK Society of Authors 2024 survey (reported via WebSearch, not fetched): "more than a third of
+  translators had lost work due to generative AI, and 43% of translators said their income had
+  dropped because of the technology." NOT independently verified via direct fetch.
+
+KEY FINDING: A 2024 professional-body member poll of real working freelance translators/interpreters
+(CIOL, UK) found over 70% reporting decreased work volume in 2024, with 49% reporting a "significant
+decrease"; qualitative testimony describes remaining work shifting from full translation to
+lower-value MT post-editing (MTPE) and at least one member reporting exit from the profession —
+this is a directly measured, realized demand-side effect in a real market, complementing the
+Upwork writing-freelancer decline (real_2.txt) as evidence that translation is an exposed/affected
+category, not an unaffected control category.
+
+WHAT'S MISSING: This is a member-poll (self-selected respondents, likely skewed toward those
+motivated to respond, i.e. possibly those most affected) rather than platform-transaction data like
+Hui/Reshef/Zhou's Upwork study — so it is suggestive/corroborating survey evidence, not as
+rigorous/causal as the Upwork natural-experiment design. Sample size and exact survey date were not
+stated on the fetched page. The CEPR machine-translation/employment-growth study and the UK Society
+of Authors survey look highly relevant but were only found via WebSearch snippets, not independently
+fetched/verified — follow up with direct fetches of https://cepr.org/voxeu/columns/lost-translation-ais-impact-translators-and-foreign-language-skills
+if stronger quantitative causal evidence on translation specifically is needed.

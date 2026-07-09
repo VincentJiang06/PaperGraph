@@ -1,0 +1,15 @@
+SOURCE S2
+Title: Generative AI likely to augment rather than destroy jobs
+Publisher: International Labour Organization (ILO)
+URL: https://www.ilo.org/resource/news/generative-ai-likely-augment-rather-destroy-jobs
+Fetched: 2026-07-09
+
+VERBATIM KEY PASSAGES:
+
+"Generative Artificial Intelligence (AI) is more likely to augment than destroy jobs by automating some tasks rather than taking over a role entirely."
+
+"5.5 per cent of total employment in high-income countries is potentially exposed to the automating effects of the technology, whereas in low-income countries, the risk of automation concerns only some 0.4 per cent of employment."
+
+"Clerical work was found to be the category with the greatest technological exposure, with nearly a quarter of tasks considered highly exposed."
+
+"The greatest impact of this technology is likely to not be job destruction but rather the potential changes to the quality of jobs, notably work intensity and autonomy."

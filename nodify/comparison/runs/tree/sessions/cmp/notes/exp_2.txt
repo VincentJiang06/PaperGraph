@@ -1,0 +1,66 @@
+SOURCE: Briggs, J. and Kodnani, D. (2023) "The Potentially Large Effects of Artificial
+Intelligence on Economic Growth." Goldman Sachs Global Investment Research, Global Economics
+Analyst, 26 March 2023. (Contact/team listed on cover: incl. Giovanni Pierdomenico, Goldman Sachs
+International.)
+URL (report landing page, GS Publishing — blocked 403 to automated fetch):
+https://www.gspublishing.com/content/research/en/reports/2023/03/27/d64e052b-0f6e-45d7-967b-d7be35fabd16.html
+URL (full PDF of the report, mirrored on Internet Archive, used for verbatim extraction):
+https://archive.org/download/the-potentially-large-effects-of-ai-goldman-sachs/The-Potentially-Large-Effects-of-AI-Goldman-Sachs.pdf
+Archive.org item page: https://archive.org/details/the-potentially-large-effects-of-ai-goldman-sachs
+Fetched via: curl download of the Internet Archive-hosted PDF (the original gspublishing.com and
+goldmansachs.com pages return HTTP 403 to automated fetchers), converted to text with
+pdftotext -layout for exact locators. This is the actual Goldman Sachs report PDF (bears
+"Goldman Sachs / Global Economics Analyst / 26 March 2023" headers throughout, and the
+"For the exclusive use of GIULIA.LORIA@COMMUNITY.IT" distribution watermark), not a secondary
+summary.
+
+=== KEY QUOTES FOR N-0007 (exposure) ===
+
+Q1 (headline estimate — cover/summary bullet): "Using data on occupational tasks in both the US
+and Europe, we find that roughly two-thirds of current jobs are exposed to some degree of AI
+automation, and that generative AI could substitute up to one-fourth of current work.
+Extrapolating our estimates globally suggests that generative AI could expose the equivalent of
+300mn full-time jobs to automation."
+Locator: Report front-page summary bullet (page 1).
+
+Q2 (historical offset — job creation, not necessarily net loss): "The good news is that worker
+displacement from automation has historically been offset by creation of new jobs, and the
+emergence of new occupations following technological innovations accounts for the vast majority of
+long-run employment growth."
+Locator: Report front-page summary bullet (page 1).
+
+Q3 (methodology / occupation-level exposure share): "In Exhibit 4, we report the occupation-level
+distribution of the share of tasks that AI can perform. We find that roughly two-thirds of US
+occupations are exposed to some degree of automation by AI, and that of those occupations which
+are exposed, most have a significant—but partial—share of their workload (25-50%) that can be
+replaced."
+Locator: Body text, p.5, under "Exhibit 4: Two-Thirds of Current Occupations Could be Partially
+Automated by AI."
+
+Q4 (industry breakdown): "we estimate that one-fourth of current work tasks could be automated by
+AI in the US (Exhibit 5, top panel), with particularly high exposures in administrative (46%) and
+legal (44%) professions and low exposures in physically-intensive professions such as construction
+(6%) and maintenance (4%)."
+Locator: Body text, p.5-6.
+
+Q5 (exposure != substitution — explicit clarification, this is the key exposure-vs-job-loss
+sentence): "Although the impact of AI on the labor market is likely to be significant, most jobs
+and industries are only partially exposed to automation and are thus more likely to be
+complemented rather than substituted by AI. In Exhibit 8, we assume for illustration that jobs for
+which at least 50% of importance- and complexity-weighted tasks are exposed to automation are
+likely to be substituted by AI, while jobs with an exposure of 10-49% are more likely to be
+complemented, and jobs with a 0-9% exposure are unlikely to be impacted. In our baseline, these
+assumptions would be consistent with 7% of current US employment being substituted by AI, 63%
+being complemented, and 30% being unaffected."
+Locator: Body text, p.8 (discussion following Exhibit 7/8).
+
+Q6 (scenario range): "Our scenario analysis suggests that the ultimate share of work exposed to
+automation could range from 15-35% (Exhibit 7, left panel), a range which is consistent
+with—but on the conservative side of—existing estimates in the literature (Exhibit 7, right
+panel)."
+Locator: Body text, p.8.
+
+Supports: N-0007 (exposure). Primary source for the ~2/3 of jobs / 300 million FTE jobs global
+exposure figures. Q5 is the report's own explicit statement that "exposed" != "substituted/
+automated" — most exposed jobs are "complemented," not replaced, and only 7% of baseline US
+employment is projected to be substituted vs. 63% complemented and 30% unaffected.

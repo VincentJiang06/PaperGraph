@@ -1,0 +1,19 @@
+{
+ "kind": "report",
+ "title": "Stanford Digital Economy Lab — Canaries in the Coal Mine? Six Facts about Recent Employment Effects of AI",
+ "url": "https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recent-employment-effects-of-artificial-intelligence/",
+ "text_file": "notes/adv_3.txt",
+ "summary": "Brynjolfsson 等用 ADP 工资单数据:22-25 岁、身处 AI 最暴露职业的早期职业工人就业相对下降约 13-16%,效应集中在‘自动化型’而非‘增强型’岗位;同职业的年长者保持稳定或增长。是目前最强的因果型岗位下降证据,但为特定人群/职业效应,非宏观净减。",
+ "bindings": [
+  {
+   "node_id": "N-0004",
+   "relation": "supports",
+   "note": "最强因果证据:入门级暴露岗位下降"
+  },
+  {
+   "node_id": "N-0003",
+   "relation": "context",
+   "note": "针对特定人群的下降,非宏观净减"
+  }
+ ]
+}

@@ -1,0 +1,63 @@
+SOURCE A: Hui, Xiang; Reshef, Oren; Zhou, Luofeng. "The Short-Term Effects of Generative
+Artificial Intelligence on Employment: Evidence from an Online Labor Market."
+Published in Organization Science 35(6): 1977-1989 (2024). Working paper versions on SSRN/CESifo.
+KIND: secondary press summary of primary study (university research-news article quoting exact study
+figures); could not directly fetch SSRN/journal full text (paywalled), so figures below are as
+reported by the authors' home institution's news office.
+URL: https://olin.washu.edu/about/news-and-media/news/2023/08/study-ai-tools-cause-a-decline-in-freelance-work-and-incomeat-least-in-the-short-run.php
+(SSRN abstract page: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4527336)
+NODE SUPPORTED: N-0008
+
+--- VERBATIM QUOTES (WashU Olin Business School news article on the Hui/Reshef/Zhou study) ---
+
+"after ChatGPT's release, the number of monthly jobs for writing-related freelancers on Upwork
+declined by 2%"
+
+"monthly earnings declined by 5.2%"
+
+"Workers in those fields saw even steeper declines—a 3.7% drop in monthly jobs" [image-related
+workers: designers, image editors, artists, following DALL-E (April 2022) and Midjourney (July 2022)
+releases]
+
+"a 9.4% loss of income" [same image-worker cohort]
+
+"More highly skilled workers—as defined by such attributes as the number and skill level of past
+jobs, hourly rate, and Upwork's 'top-rated' badges—actually saw a greater drop in new jobs and
+income." [from companion secondary coverage, consistent with study abstract]
+
+--- SUPPORTING QUOTES (Brookings commentary on same study, cross-check of numbers) ---
+URL: https://www.brookings.edu/articles/is-generative-ai-a-job-killer-evidence-from-the-freelance-market/
+
+"freelancers in occupations more exposed to generative AI have experienced a 2% decline in the
+number of contracts and a 5% drop in earnings"
+
+"freelancers providing services such as copyediting, proofreading, and other text-heavy tasks
+experienced a decline of approximately 2% in the number of new monthly contracts" and "a roughly
+5% decrease in their total monthly earnings on the platform"
+
+"the magnitude of the impact was identical to what we observe in text-based models" [comparing
+image-AI effects on image-worker freelancers to text-AI effects on writing freelancers]
+
+"those with stronger past performance...experience larger declines in both the number of new
+contracts and total monthly earnings" — explained by: generative AI enables "less experienced or
+lower-rated freelancers [to] now produce outputs that in many cases approximate the quality
+associated only with top-tier talent."
+
+--- END QUOTES ---
+
+KEY FINDING: On Upwork (a real online freelance labor market), the release of ChatGPT (Nov 2022)
+was followed by a measurable, realized decline in freelance writing-category demand: -2% number of
+monthly jobs/contracts and -5% to -5.2% monthly earnings for exposed (writing/text) freelancers;
+a near-identical pattern (-3.7% jobs, -9.4% earnings) hit image-related freelancers after DALL-E 2 /
+Midjourney. Effects were concentrated in short-term, less complex jobs and (counter-intuitively)
+were larger, not smaller, for previously top-rated/high-skill freelancers — because generative AI
+let lower-skill freelancers approximate top-tier output quality, compressing the skill premium.
+
+WHAT'S MISSING: I could not retrieve the original journal/working-paper full text directly (SSRN
+page not fetched — paywalled/blocked); numbers above are corroborated across two independent
+secondary sources (WashU press office + Brookings) which both cite the same underlying study and
+match each other, but exact language ("2%" vs "~2%", "5%" vs "5.2%") should be verified against the
+Organization Science 2024 published version or CESifo working paper #10601 if higher-fidelity
+citation is required. No coding/programming-freelancer-specific breakdown was retrieved (study
+covers writing and image categories primarily; a "coding" decline figure mentioned in the original
+task brief was not found in the fetched material — may require checking the full paper directly).

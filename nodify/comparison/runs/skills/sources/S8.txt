@@ -1,0 +1,16 @@
+SOURCE S8
+Title: Evaluating the Impact of AI on the Labor Market: Current State of Affairs
+Publisher: The Budget Lab at Yale
+URL: https://budgetlab.yale.edu/research/evaluating-impact-ai-labor-market-current-state-affairs
+Fetched: 2026-07-09
+PROVENANCE NOTE: The Yale page repeatedly truncated on direct fetch; the following passages were returned in quotation marks by the WebSearch engine indexing this Budget Lab report and are reproduced as verbatim.
+
+VERBATIM KEY PASSAGES:
+
+"Overall, our metrics indicate that the broader labor market has not experienced a discernible disruption since ChatGPT's release 33 months ago, undercutting fears that AI automation is currently eroding the demand for cognitive labor across the economy."
+
+"While anxiety over the effects of AI on today's labor market is widespread, our data suggests it remains largely speculative."
+
+CAVEAT (verbatim): "even if new AI technologies will go on to impact the labor market as much, or more, dramatically, it is reasonable to expect that widespread effects will take longer than 33 months to materialize."
+
+The report also acknowledges possible AI impacts on specific occupations and sub-populations, such as early-career workers.

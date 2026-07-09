@@ -1,0 +1,54 @@
+{
+ "node_id": "N-0006",
+ "lean": "mixed",
+ "summary": "测量:短窗口内 AI 就业净效应难以与其他因素分离。Acemoglu 估十年 TFP 增幅<0.53%(年化约0.064%),信号相对宏观噪声太小;美联储研究称多数宏观生产率研究未见显著 AI 效应、‘可能为时尚早’;耶鲁 Budget Lab 发现至 2025 年 8 月 AI 暴露与失业无明显关系;丹麦行政数据显示至 2024 年对收入/工时‘基本零效应’。宏观平静既可解读为真实近中性,也可解读为扩散/测量滞后(J 曲线),不能据此下强结论。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "ref_id": "E-01",
+    "title": "Acemoglu — Simple Macroeconomics of AI",
+    "doc_id": "DOC-0010",
+    "url": null,
+    "locator": "十年TFP",
+    "quote": "less than 0.53%",
+    "tool": "web_fetch",
+    "note": "信号极小"
+   },
+   {
+    "ref_id": "E-02",
+    "title": "FRBSF (Daly 2026)",
+    "doc_id": "DOC-0011",
+    "url": null,
+    "locator": "美联储",
+    "quote": "too soon to see results in aggregate measures",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "ref_id": "E-03",
+    "title": "ICLE review — Yale Budget Lab",
+    "doc_id": "DOC-0011",
+    "url": null,
+    "locator": "至2025-08",
+    "quote": "no clear relationship between AI exposure and unemployment",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "ref_id": "E-04",
+    "title": "ICLE review — Danish administrative data",
+    "doc_id": "DOC-0011",
+    "url": null,
+    "locator": "丹麦行政数据",
+    "quote": "essentially zero effects on earnings or hours through 2024",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "‘近中性’与‘滞后未显现’在现有数据下无法区分"
+ ]
+}

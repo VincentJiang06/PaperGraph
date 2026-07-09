@@ -1,0 +1,34 @@
+SOURCE: WEF's Future of Jobs Report 2025 – Fastest-growing jobs: big data specialists, fintech engineers and AI and machine learning specialists | Job Market Monitor
+URL: https://jobmarketmonitor.com/2025/01/16/wefs-future-of-jobs-report-2025-fastest-growing-jobs-big-data-specialists-fintech-engineers-and-ai-and-machine-learning-specialists/
+KIND: News/secondary summary of primary source (World Economic Forum, "The Future of Jobs Report 2025", January 2025)
+FETCHED: verbatim text extracted via WebFetch on this session's research pass, cross-checked against WEF's own report language reproduced by multiple secondary outlets (libertify.com interactive library summary of the same WEF report).
+
+--- VERBATIM QUOTES ---
+
+"the three fastest-growing jobs in percentage terms are big data specialists, fintech engineers and AI and machine learning specialists."
+
+"Software and applications developers are fourth on the list, while technology trends and geopolitical factors have contributed to security management specialists appearing in the top five."
+
+Ranked list of fastest-growing roles (from the WEF Future of Jobs Report 2025 table, reproduced in secondary summary):
+1. Big Data Specialists
+2. FinTech Engineers
+3. AI and Machine Learning Specialists
+4. Software and Application Developers
+5. Security Management Specialists
+
+Overall job creation/displacement figures (WEF Future of Jobs Report 2025, cross-confirmed via libertify.com summary of the same report):
+"170 million created, 92 million displaced across 55 economies surveyed" with "a net positive of 78 million jobs globally."
+
+"22% of all jobs will be disrupted by 2030, with technology and green transition as the primary drivers of change."
+
+Related figure repeatedly cited from the same WEF report by multiple secondary sources (jobmarketmonitor.com search-snippet aggregation, not independently re-verified against the primary PDF due to 403 blocks on weforum.org and a corrupted PDF fetch on reports.weforum.org):
+"AI and data processing alone will create 11 million roles and replace 9 million."
+"Growing digital access is expected to create 19 million jobs by 2030 and replace 9 million."
+
+Additional context on skills transformation:
+"On average, workers can expect that two-fifths (39%) of their existing skill sets will be transformed or become outdated over the 2025-2030 period."
+
+--- NOTES ---
+Direct WebFetch of weforum.org URLs (digest page, "fastest growing and declining jobs" story page, "jobs of the future" story page) returned HTTP 403 Forbidden in this session. The reports.weforum.org PDF fetch also failed/aborted. The quotes above were obtained via jobmarketmonitor.com and libertify.com, both of which reproduce WEF's own report language in direct quotation. The "11 million / 9 million" AI-and-data-processing figure is widely repeated across secondary sources (search-engine snippet aggregation) but could not be independently confirmed against a directly-fetched primary WEF page in this session — flagged as lower-confidence than the 170m/92m/78m top-line figures, which were confirmed via direct WebFetch of libertify.com's summary of the WEF report.
+
+NODE SUPPORTED: N-0005 (创造侧: AI-driven job/task creation and augmentation, 2020-2025 / by 2030)

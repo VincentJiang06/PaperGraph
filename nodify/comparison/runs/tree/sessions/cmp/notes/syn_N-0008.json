@@ -1,0 +1,54 @@
+{
+ "node_id": "N-0008",
+ "lean": "mixed",
+ "summary": "真实市场里替代已发生但有界、且多为增强:Fortune500 客服部署 GPT 助手后平均生产率约 +15%、经验浅者提升更大——增强多于换人;Upwork 写作类月度工作量降 2%、收入降 5.2%(图像类更大);英国翻译业逾七成从业者报告 2024 年工作量下降。替代真实存在,但集中在写作/翻译/客服等暴露品类,且常表现为任务重构而非整职消失。",
+ "confidence": "high",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "ref_id": "E-01",
+    "title": "Brynjolfsson, Li, Raymond — Generative AI at Work",
+    "doc_id": "DOC-0004",
+    "url": null,
+    "locator": "Abstract",
+    "quote": "15% on average",
+    "tool": "web_fetch",
+    "note": "客服增强"
+   },
+   {
+    "ref_id": "E-02",
+    "title": "Hui, Reshef, Zhou — Upwork natural experiment",
+    "doc_id": "DOC-0005",
+    "url": null,
+    "locator": "写作类工作量",
+    "quote": "declined by 2%",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "ref_id": "E-03",
+    "title": "Hui, Reshef, Zhou — Upwork natural experiment",
+    "doc_id": "DOC-0005",
+    "url": null,
+    "locator": "写作类收入",
+    "quote": "monthly earnings declined by 5.2%",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "ref_id": "E-04",
+    "title": "CIOL 2024 translator poll",
+    "doc_id": "DOC-0006",
+    "url": null,
+    "locator": "翻译从业者调查",
+    "quote": "49% reported significant decrease",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "缺编程类自由职业的替代量化;部分数据经二手来源交叉核对"
+ ]
+}

@@ -1,0 +1,31 @@
+SOURCE: David H. Autor, Caroline Chin, Anna M. Salomons, Bryan Seegmiller — "New Frontiers: The Origins and Content of New Work, 1940–2018"
+Originally released as NBER Working Paper No. 30389 (August 2022); published in The Quarterly Journal of Economics, Vol. 139, No. 3, pp. 1399–1465 (2024).
+URL (NBER working paper page): https://www.nber.org/papers/w30389
+URL (cross-check, BU Technology & Policy Research Initiative summary): https://sites.bu.edu/tpri/2024/06/03/new-frontiers-the-origins-and-content-of-new-work-1940-2018/
+URL (cross-check, IDEAS/RePEc NBER abstract mirror): https://ideas.repec.org/p/nbr/nberwo/30389.html
+KIND: Primary academic paper (peer-reviewed, QJE) — abstract text retrieved via WebFetch and cross-verified across three independent mirrors of the same abstract.
+
+--- VERBATIM QUOTES ---
+
+(On the paper's core question)
+"We address three core questions about the hypothesized role of newly emerging job categories ('new work') in counterbalancing the erosive effect of task-displacing automation on labor demand: what is the substantive content of new work; where does it come from; and what effect does it have on labor demand?"
+
+(On the scale of employment accounted for by new work — confirmed consistently across NBER, BU TPRI, and RePEc mirrors)
+"the majority of current employment is in new job specialties introduced after 1940"
+(BU TPRI mirror renders the same finding as: "the majority of current employment is in new job specialties introduced since 1940")
+
+(On where new work creation has moved over time)
+"the locus of new work creation has shifted—from middle-paid production and clerical occupations over 1940–1980, to high-paid professional and, secondarily, low-paid services since 1980"
+
+(On augmentation vs. automation — the key mechanism for the "does creation offset substitution" question)
+"Augmentation and automation innovations have countervailing effects on labor demand: augmentation innovations boost occupational labor demand while automation innovations erode it."
+"new work emerges in response to technological innovations that complement occupational outputs and demand shocks [that raise occupational demand]"
+
+(On the recent-decades trend — directly relevant to whether creation is still offsetting substitution)
+"the demand-eroding effects of automation innovations have intensified in the last four decades while the demand-increasing effects of augmentation innovations have not"
+
+--- NOTES ---
+This is the key academic reference for the "creation side" of N-0005: historically (1940-2018), most employment growth came from brand-new job titles/specialties created by technology, and augmentation innovations that raise labor demand have historically offset automation's erosive effect. BUT the paper's own finding is a caution against a simple "AI creates more than it destroys" reading going forward: the erosive (automation) channel has been intensifying over the last four decades while the offsetting (augmentation) channel has NOT kept pace. This is directly usable as counter-evidence/tension for any claim that job creation will straightforwardly offset AI-driven substitution in 2020-2025.
+Note: This paper's data window ends in 2018 and is not itself AI-specific (it covers general automation/augmentation technology 1940-2018); it establishes the historical baseline mechanism, not 2020-2025 AI-specific figures.
+
+NODE SUPPORTED: N-0005 (创造侧: AI-driven job/task creation and augmentation, 2020-2025 / historical baseline + caution)

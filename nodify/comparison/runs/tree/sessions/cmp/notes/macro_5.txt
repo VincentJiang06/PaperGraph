@@ -1,0 +1,36 @@
+SOURCE (bonus, supplements the required 4): two related items on measurement of AI's aggregate labor-market effect
+ITEM A — "The AI Moment? Possibilities, Productivity, and Policy"
+  AUTHOR: Mary C. Daly (President & CEO, Federal Reserve Bank of San Francisco)
+  PUBLISHER: Federal Reserve Bank of San Francisco, Economic Letter 2026-06
+  DATE: February 23, 2026
+  URL: https://www.frbsf.org/research-and-insights/publications/economic-letter/2026/02/ai-moment-possibilities-productivity-policy/
+  KIND: central-bank research commentary (PRIMARY — Fed economic letter)
+ITEM B — "AI, Productivity, and Labor Markets: A Review of the Empirical Evidence" (Fruits & Stout)
+  PUBLISHER: International Center for Law & Economics (ICLE)
+  DATE: February 2026
+  URL: https://laweconcenter.org/resources/ai-productivity-and-labor-markets-a-review-of-the-empirical-evidence/
+  KIND: policy-research literature review (SECONDARY synthesis of multiple primary empirical studies)
+RETRIEVED VIA: r.jina.ai text-rendering proxy for both pages (direct WebFetch of frbsf.org and laweconcenter.org returned HTTP 403).
+NOTE ON DATES: both items are dated Feb 2026, slightly after the nominal 2020-2025 window named in the task, but they are the most authoritative available syntheses assessing measurement of AI's employment effect using data through 2024-2025; included as directly on-point for N-0006's measurement/lag question.
+
+--- EXTRACTED VERBATIM TEXT / FIGURES ---
+
+[Item A, Daly/FRBSF] "Some of this could be timing. AI adoption and use are still evolving, so it may be too soon to see results in aggregate measures."
+
+[Item A, Daly/FRBSF] "So far, most macro-studies of productivity growth find limited evidence of a significant AI effect (see, for example, Imas 2026, Acemoglu 2025, and Aghion and Bunel 2024.)"
+
+[Item A, Daly/FRBSF] "Even firms that say it's useful find little evidence of transformative gains (see, for example, Yotzov et al. 2026 and McKinsey 2025)."
+
+[Item B, ICLE] "Most datasets find little evidence of economywide job loss or wage decline."
+
+[Item B, ICLE] "The Budget Lab at Yale finds no clear relationship between AI exposure and unemployment through August 2025"
+
+[Item B, ICLE] "Anders Humlum and Emilie Vestergaard (2025) link survey-reported ChatGPT use to Danish administrative records across 11 exposed occupations and find essentially zero effects on earnings or hours through 2024."
+
+[Item B, ICLE] "Observed macroeconomic flatness therefore supports competing interpretations. One view holds that AI delivers modest aggregate gains even after diffusion, either because the affected task share of GDP is limited or because current capabilities remain poorly matched to high-value work."
+
+[Item B, ICLE] "Erik Brynjolfsson, Daniel Rock, and Chad Syverson's (2021) 'productivity J-curve' highlights a second interpretive challenge. General-purpose technologies can raise long-run productivity even as measured productivity initially stagnates or falls."
+
+--- RELEVANCE ---
+Node N-0003 (macro/sector net employment 2020-2025): SUPPORTS "no clearly attributable net change observed" — a Federal Reserve Bank president and an independent empirical review both state that macro/firm-level data through 2024-2025 show little to no significant aggregate AI employment or productivity effect (Budget Lab/Yale: "no clear relationship between AI exposure and unemployment through August 2025"; Danish administrative data: "essentially zero effects on earnings or hours through 2024").
+Node N-0006 (measurement/lag): DIRECTLY AND STRONGLY SUPPORTS — this is the most explicit evidence gathered for the measurement/lag question: a sitting Fed Bank president states aggregate macro-studies find "limited evidence of a significant AI effect" and explicitly attributes this partly to timing ("too soon to see results in aggregate measures"); the ICLE review independently states "macroeconomic flatness therefore supports competing interpretations" (real null effect vs. measurement/diffusion lag per the Brynjolfsson-Rock-Syverson "productivity J-curve"), i.e., short-window AI net employment effects are NOT currently reliably separable from other factors/noise using available macro data.

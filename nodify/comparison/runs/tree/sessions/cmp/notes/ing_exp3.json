@@ -1,0 +1,19 @@
+{
+ "kind": "report",
+ "title": "OECD Employment Outlook 2023 — Ch.3 & Box 3.2 (AI and the labour market)",
+ "url": "https://www.oecd.org/employment-outlook/2023/",
+ "text_file": "notes/exp_3.txt",
+ "summary": "OECD:自动化风险最高的职业约占就业 27%;并明确暴露不等于自动化,AI 对就业的影响需持续监测;从任务或岗位上的替代并不必然意味着短期就业损失。既给出暴露量级,也直接支持‘短期净减不必然’。",
+ "bindings": [
+  {
+   "node_id": "N-0007",
+   "relation": "supports",
+   "note": "27% 最高风险职业"
+  },
+  {
+   "node_id": "N-0006",
+   "relation": "context",
+   "note": "替代不必然短期净减就业"
+  }
+ ]
+}

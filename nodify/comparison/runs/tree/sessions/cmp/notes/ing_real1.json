@@ -1,0 +1,14 @@
+{
+ "kind": "paper",
+ "title": "Brynjolfsson, Li, Raymond — Generative AI at Work (arXiv:2304.11771 / QJE 2025)",
+ "url": "https://arxiv.org/abs/2304.11771",
+ "text_file": "notes/real_1.txt",
+ "summary": "5,000 余名客服坐席分阶段部署 GPT 助手:平均生产率提升约 15%,经验较浅者提升约 30%,而经验丰富者提升极小甚至对话质量略降。真实、可测的任务层增强证据,且增益集中在低技能者——增强多于岗位替代。",
+ "bindings": [
+  {
+   "node_id": "N-0008",
+   "relation": "supports",
+   "note": "客服+15%,以增强为主"
+  }
+ ]
+}

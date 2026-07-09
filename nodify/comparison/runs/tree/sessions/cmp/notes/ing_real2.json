@@ -1,0 +1,19 @@
+{
+ "kind": "web",
+ "title": "Hui, Reshef, Zhou — Short-Term Effects of Generative AI on Employment: Evidence from an Online Labor Market (Brookings/Org. Science 2024)",
+ "url": "https://www.brookings.edu/articles/is-generative-ai-a-job-killer-evidence-from-the-freelance-market/",
+ "text_file": "notes/real_2.txt",
+ "summary": "Upwork 自然实验(ChatGPT 等发布前后):写作类自由职业月度工作量降 2%、月收入降 5.2%;图像类工作量降 3.7%、收入降 9.4%;且过往表现更强者降幅反而更大。真实、可因果识别的岗位/收入下降,但为特定暴露品类。",
+ "bindings": [
+  {
+   "node_id": "N-0008",
+   "relation": "supports",
+   "note": "写作-2%/-5.2%,图像-3.7%/-9.4%"
+  },
+  {
+   "node_id": "N-0004",
+   "relation": "context",
+   "note": "暴露品类的真实下降"
+  }
+ ]
+}

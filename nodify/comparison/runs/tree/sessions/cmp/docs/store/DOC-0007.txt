@@ -1,0 +1,25 @@
+SOURCE: WEF Future of Jobs Report 2023 — press release
+TITLE: "Future of Jobs Report 2023: Up to a Quarter of Jobs Expected to Change in Next Five Years"
+PUBLISHER: World Economic Forum
+DATE: April 2023 (report insight edition dated May 2023)
+URL: https://www.weforum.org/press/2023/04/future-of-jobs-report-2023-up-to-a-quarter-of-jobs-expected-to-change-in-next-five-years/
+KIND: institutional survey report / press release (PRIMARY — WEF employer-survey based projection)
+RETRIEVED VIA: r.jina.ai text-rendering proxy of the WEF press release page (direct WebFetch on weforum.org returned HTTP 403).
+
+--- EXTRACTED VERBATIM TEXT / FIGURES ---
+
+"83 million eliminated" [jobs, projected]
+
+"69 million new jobs created" [projected]
+
+"a net decrease of 14 million jobs, or 2% of current employment"
+
+"almost a quarter of jobs (23%) are expected to change in the next five years"
+
+TIMEFRAME: The figures explicitly represent PROJECTIONS for "the next five years", i.e. the 2023-2027 window, based on a survey of 803 companies collectively employing more than 11.3 million workers across 27 industry clusters and 45 economies. These are employer expectations/forecasts, NOT realized/measured employment outcomes for 2020-2025.
+
+CONTEXT (from search cross-check, same report): "employers anticipate 69 million new jobs to be created and 83 million eliminated among the 673 million jobs in the dataset, resulting in a net decrease of 14 million jobs, or 2% of current employment." Growth of 10.2% and decline of 12.3% underlie the 23% churn figure. AI adoption is expected by ~75% of surveyed companies, with 50% of organizations expecting AI to create job growth and 25% expecting it to create job losses.
+
+--- RELEVANCE ---
+Node N-0003 (岗位层 — macro/sector net employment 2020-2025 attributable to AI diffusion): SUPPORTS the existence of large predicted net-negative headline numbers (-14M / -2%) commonly cited as "AI will cause job losses" — but this is a forward-looking EMPLOYER-EXPECTATION SURVEY covering ALL macrotrends (green transition, ESG, localization, economic conditions), not an AI-attributable, realized, official statistical net change for 2020-2025. Weakens/complicates any claim that -14M is an "AI-caused net change already observed" — it is a projection for 2023-2027 and job change is driven by many macrotrends besides AI.
+Node N-0006 (measurement/lag): Indirectly relevant — these are stated as forecasts/expectations, not measured outcomes, underscoring that no realized short-window AI-attributable net figure exists in this source.

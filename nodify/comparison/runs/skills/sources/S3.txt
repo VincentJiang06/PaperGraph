@@ -1,0 +1,15 @@
+SOURCE S3
+Title: Anthropic Economic Index: Insights from Claude 3.7 Sonnet
+Publisher: Anthropic
+URL: https://www.anthropic.com/news/anthropic-economic-index-insights-from-claude-sonnet-3-7
+Fetched: 2026-07-09
+
+VERBATIM KEY PASSAGES:
+
+"augmentation still comprising 57% of usage"
+
+"We don't see any occupational categories where automation dominates"
+
+"Community and Social Service tasks, which includes education and guidance counseling, approach 75% augmentation"
+
+CONTEXT (from Anthropic Economic Index methodology): The index classifies AI usage as either "augmentation" (collaborative: task iteration, learning, validation) or "automation" (directive: full task delegation). Analysis is at the level of tasks within occupations, not whole jobs.

@@ -1,0 +1,26 @@
+SOURCE: CBS News — "This is the fastest-growing job for young workers, LinkedIn says" (reporting on LinkedIn's internal labor-market/hiring data)
+URL: https://www.cbsnews.com/news/artificial-intelligence-entry-level-role-linkedin-study/
+KIND: News report citing LinkedIn's own platform hiring/job-postings data (LinkedIn "Jobs on the Rise" / AI talent data)
+FETCHED: verbatim text extracted via WebFetch on this session's research pass.
+
+--- VERBATIM QUOTES ---
+
+(Fastest-growing job title)
+"The fastest-growing job title for young workers on the networking platform is 'AI engineer,'"
+
+(Scale of AI-related job posting growth, 2023-2025)
+"Between 2023 and 2025, LinkedIn added 639,000 AI-related job postings in the U.S., 75,000 of which were AI engineer roles."
+
+(Persistence of the trend)
+"AI engineer is the fastest-growing job title for young people for the second year in a row, according to LinkedIn."
+
+(Employer demand framing)
+"Companies are just gorging on AI talent."
+
+(Countervailing signal — entry-level hiring overall, important caveat/tension for the creation-vs-substitution question)
+"Between December 2025 and February 2026, hiring for entry-level roles in the U.S. sank 6%"
+
+--- NOTES ---
+This source shows concrete, recent (2023-2025) demand-side evidence of new AI-specific roles (AI engineer) growing fast on a major labor-market platform (LinkedIn), consistent with WEF's "AI and Machine Learning Specialists" appearing among fastest-growing occupations (see create_1.txt). However, the same article explicitly flags a contradiction: overall entry-level hiring in the U.S. was falling even as AI-titled roles grew, i.e., the newly created AI roles are a narrow, high-skill slice and do not by themselves establish that creation is offsetting broader labor-market substitution/displacement. This is useful as both supporting evidence (new-role creation is real and fast-growing) and as a limiting caveat (scale of creation vs. scale of displacement is contested).
+
+NODE SUPPORTED: N-0005 (创造侧: AI-driven job/task creation and augmentation, 2020-2025 — demand-side/LinkedIn evidence + caveat)

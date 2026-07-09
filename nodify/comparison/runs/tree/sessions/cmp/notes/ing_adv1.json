@@ -1,0 +1,10 @@
+{
+  "kind": "report",
+  "title": "Challenger, Gray & Christmas — 2025 Year-End Report",
+  "url": "https://www.challengergray.com/blog/2025-year-end-challenger-report-highest-q4-layoffs-since-2008-lowest-ytd-hiring-since-2010/",
+  "text_file": "notes/adv_1.txt",
+  "summary": "美国裁员追踪机构 Challenger 2025 全年报告:全年宣布裁员 1,206,374,其中明确归因于 AI 的为 54,836(约 4.5%);同时计划招聘仅 507,647,同比降 34%,为 2010 年以来最低。用于衡量 AI 归因裁员在总裁员中的占比。",
+  "bindings": [
+    {"node_id": "N-0004", "relation": "supports", "note": "AI 归因裁员绝对量上升,但仅占总裁员约4.5%"}
+  ]
+}

@@ -1,0 +1,66 @@
+SOURCE: OECD (2023) "OECD Employment Outlook 2023: Artificial Intelligence and the Labour
+Market" — Chapter 3 "Assessing the Direct Exposure of Occupations to AI" (and Box 3.2 therein).
+Paris: OECD Publishing.
+URL (official PDF): https://www.oecd.org/content/dam/oecd/en/publications/reports/2023/07/oecd-employment-outlook-2023_904bcef3/08785bba-en.pdf
+URL (landing page, blocked 403 to automated fetch): https://www.oecd.org/en/publications/oecd-employment-outlook-2023_08785bba-en/full-report.html
+Fetched via: curl download of the official OECD PDF (oecd.org web pages return HTTP 403 to
+automated fetchers, but the direct PDF under /content/dam/ downloads fine), converted to text
+with pdftotext -layout for exact locators.
+
+=== KEY QUOTES FOR N-0007 (exposure) ===
+
+Q1 (headline exposure figure): "Taking the effect of AI into account, occupations at highest risk
+of automation account for about 27% of employment. And a significant share of workers (three in
+five) is worried about losing their jobs entirely to AI in the next ten years, particularly those
+who actually work with AI."
+Locator: Chapter 1 / Executive summary, p. ~ (early overview section).
+
+Q2 (restated figure with method note): "On average across OECD countries in the sample, the
+occupations at the highest risk of automation account for 27% of employment (Figure 3.5)."
+[Sentence continues in source: "Luxembourg, the United Kingdom and Sweden have the lowest shares
+of employment in the occupations at the highest risk of automation while Hungary, the Slovak
+Republic and the Czech Republic have highest shares" — this clause is cut off mid-sentence in the
+PDF text-extraction because a chart (Figure 3.5) interrupts the text flow at that point; not
+reproduced further to avoid mis-quoting an incomplete sentence.]
+Locator: Chapter 3, section on occupational exposure (near Figure 3.5).
+
+Q3 (definition of "exposure" as distinct from realized displacement — directly relevant to
+EXPOSURE != job loss): "AI exposure measures the overlap between the tasks performed in a job and
+the tasks which AI is theoretically capable of performing. It is much more difficult to predict
+what types of new tasks AI will create."
+Locator: Chapter 3, subsection "The creation of new tasks and jobs is not well captured by studies
+focusing only on exposure."
+
+Q4 (explicit "does not necessarily imply" caveat on employment losses): "Displacement from tasks or
+jobs does not necessarily imply short-term losses in employment. The studies that do find evidence
+of a displacement effect rely on data on hiring or narrow occupation groups. While these studies
+show that firm or establishment hiring may decline, or that narrow occupation groups within a firm
+may contract, they do not show that employment within the firm goes down."
+Locator: Chapter 3, subsection "Firms rely on worker attrition rather than layoffs to adjust labour
+demand," p.114 (per embedded page marker "OECD EMPLOYMENT OUTLOOK 2023 © OECD 2023 / 114").
+
+Q5 (Box 3.2 — synthesizes Eloundou et al. 2023 and Goldman Sachs/Briggs & Kodnani 2023 by name,
+and gives the report's own exposure-vs-automation disclaimer): "Researchers affiliated with
+OpenAI, the firm that created ChatGPT, released their own measures of exposure by evaluating
+whether the time to complete tasks on the job can be reduced by at least 50% with the aid of
+ChatGPT or similar applications (Eloundou et al., 2023[35]). They find that exposure rises with
+average earnings (based on data from the United States) as well as education and training
+requirements. The investment bank Goldman Sachs also released estimates of AI exposure, based on
+the existing literature and their own assessments of likely use cases of large language models.
+They find that AI exposure is most heavily concentrated in high-skill professional services
+industries (Briggs and Kodnani, 2023[36]). These early estimates of occupational AI exposure that
+take into account the capabilities of large language models like ChatGPT reach similar conclusions
+as previous estimates of AI exposure. It is primarily high-pay occupations requiring higher than
+average education or training that are most exposed to AI. However, these estimates are based on
+the early assessments of the researchers, and they have not yet been validated on external data.
+In addition, exposure is not necessarily equivalent to automation, and the effect of AI on
+employment will require continuous monitoring."
+Locator: Box 3.2, "The growth of large language models (LLM) and the perils of predicting the
+effects of rapidly progressing AI," Chapter 3, p.~110.
+
+Supports: N-0007 (exposure). Primary institutional source for the ~27% "highest risk of
+automation" occupational-employment share, and the clearest single-sentence disclaimer in the
+literature: "exposure is not necessarily equivalent to automation" (Q5), plus a formal definition
+of exposure as task-overlap-with-AI-capability rather than realized job loss (Q3/Q4). Box 3.2
+explicitly cross-references both Eloundou et al. (2023) and Goldman Sachs/Briggs & Kodnani (2023),
+tying all three of this investigation's sources together.

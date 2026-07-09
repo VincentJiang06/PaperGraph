@@ -1,0 +1,19 @@
+{
+ "kind": "paper",
+ "title": "ILO Working Paper 96 — Generative AI and jobs (Gmyrek, Berg, Bescond 2023)",
+ "url": "https://webapps.ilo.org/static/english/intserv/working-papers/wp096/index.html",
+ "text_file": "notes/macro_3.txt",
+ "summary": "ILO:24% 文书任务高度暴露、另 58% 中度暴露;技术最重要的影响可能是‘增强’工作而非完全自动化整个职业;对就业质量的影响可能比数量影响更重要。支持‘增强为主、暴露集中于文书’,弱化宽泛的净数量效应。",
+ "bindings": [
+  {
+   "node_id": "N-0007",
+   "relation": "supports",
+   "note": "文书任务暴露度量化"
+  },
+  {
+   "node_id": "N-0003",
+   "relation": "context",
+   "note": "增强为主而非净减岗位"
+  }
+ ]
+}

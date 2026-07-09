@@ -1,0 +1,54 @@
+{
+ "node_id": "N-0005",
+ "lean": "supports",
+ "summary": "创造侧提供实质抵消但不完全:WEF 2025 将‘AI 与机器学习专家’列为增速最快前三;LinkedIn 2023-2025 新增 63.9 万 AI 相关招聘;Autor 等的历史机制显示当前多数就业存在于 1940 年后新出现的职业。但张力明显——同期入门级招聘下降约 6%,且 Autor 自陈近四十年自动化的侵蚀强于增强的拉动。故创造真实存在、以增强/新职业形式抵消部分替代,但不足以支撑‘完全抵消’。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "ref_id": "E-01",
+    "title": "WEF Future of Jobs 2025 (fastest-growing)",
+    "doc_id": "DOC-0012",
+    "url": null,
+    "locator": "增速最快前三",
+    "quote": "big data specialists, fintech engineers and AI and machine learning specialists",
+    "tool": "web_search",
+    "note": null
+   },
+   {
+    "ref_id": "E-02",
+    "title": "Autor et al. — New Frontiers",
+    "doc_id": "DOC-0013",
+    "url": null,
+    "locator": "历史新工作机制",
+    "quote": "the majority of current employment is in new job specialties introduced after 1940",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "ref_id": "E-03",
+    "title": "CBS/LinkedIn data",
+    "doc_id": "DOC-0014",
+    "url": null,
+    "locator": "2023-2025 美国",
+    "quote": "639,000 AI-related job postings",
+    "tool": "web_search",
+    "note": null
+   },
+   {
+    "ref_id": "E-04",
+    "title": "CBS/LinkedIn data",
+    "doc_id": "DOC-0014",
+    "url": null,
+    "locator": "入门级招聘",
+    "quote": "entry-level roles in the U.S. sank 6%",
+    "tool": "web_search",
+    "note": "创造侧的反向张力"
+   }
+  ]
+ },
+ "open_questions": [
+  "缺 2020-2025 AI 专属的‘创造-替代’净抵消直接测算"
+ ]
+}

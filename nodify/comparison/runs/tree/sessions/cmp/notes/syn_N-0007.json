@@ -1,0 +1,74 @@
+{
+ "node_id": "N-0007",
+ "lean": "supports",
+ "summary": "任务‘暴露’广泛:三项独立来源汇聚——Eloundou 等估约 80% 劳动力≥10% 任务、约 19% 工人≥50% 任务受 LLM 影响;高盛估相当于 3 亿全职岗位暴露、但仅约 7% 就业被替代、63% 被互补;OECD 估最高风险职业约占 27%。三者均强调‘暴露≠自动化/净失业’。故任务层替代的是‘广度上界’,而非已实现的岗位消灭。",
+ "confidence": "high",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "ref_id": "E-01",
+    "title": "Eloundou et al. GPTs are GPTs",
+    "doc_id": "DOC-0001",
+    "url": null,
+    "locator": "Abstract",
+    "quote": "around 80% of the U.S. workforce could have at least 10% of their work tasks",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "ref_id": "E-02",
+    "title": "Eloundou et al. GPTs are GPTs",
+    "doc_id": "DOC-0001",
+    "url": null,
+    "locator": "Abstract",
+    "quote": "approximately 19% of workers may see at least 50% of",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "ref_id": "E-03",
+    "title": "Goldman Sachs (Briggs & Kodnani)",
+    "doc_id": "DOC-0002",
+    "url": null,
+    "locator": "前页摘要",
+    "quote": "300mn full-time jobs to automation",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "ref_id": "E-04",
+    "title": "Goldman Sachs (Briggs & Kodnani)",
+    "doc_id": "DOC-0002",
+    "url": null,
+    "locator": "情景估计",
+    "quote": "7% of current US employment being substituted by AI",
+    "tool": "web_fetch",
+    "note": "互补63%远大于替代7%"
+   },
+   {
+    "ref_id": "E-05",
+    "title": "OECD Employment Outlook 2023",
+    "doc_id": "DOC-0003",
+    "url": null,
+    "locator": "Ch.3/Box3.2",
+    "quote": "occupations at the highest risk of automation account for 27% of employment",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "ref_id": "E-06",
+    "title": "OECD Employment Outlook 2023",
+    "doc_id": "DOC-0003",
+    "url": null,
+    "locator": "Box 3.2",
+    "quote": "does not necessarily imply short-term losses in employment",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "暴露阈值差异大(19%~66%),口径不统一,难直接比较"
+ ]
+}

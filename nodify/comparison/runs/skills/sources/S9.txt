@@ -1,0 +1,13 @@
+SOURCE S9
+Title: Automation and New Tasks: How Technology Displaces and Reinstates Labor
+Authors: Daron Acemoglu, Pascual Restrepo (Journal of Economic Perspectives, 33(2), 2019)
+URL: https://www.aeaweb.org/articles?id=10.1257/jep.33.2.3
+Fetched: 2026-07-09
+
+VERBATIM KEY PASSAGES (abstract):
+
+"Automation, which enables capital to replace labor in tasks it was previously engaged in, shifts the task content of production against labor because of a displacement effect."
+
+"The introduction of new tasks changes the task content of production in favor of labor because of a reinstatement effect, and always raises the labor share and labor demand."
+
+"The effects of automation are counterbalanced by the creation of new tasks in which labor has a comparative advantage."

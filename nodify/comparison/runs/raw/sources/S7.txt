@@ -1,0 +1,15 @@
+SOURCE S7
+Title: Future of Jobs Report 2025 (World Economic Forum)
+Author: World Economic Forum, January 2025.
+Primary URL: https://www.weforum.org/publications/the-future-of-jobs-report-2025/
+URL fetched (reproduction of WEF figures): https://blog.coursera.org/wef-future-of-jobs-report-2025/
+
+VERBATIM EXTRACTS (forecast of gross and net job change to 2030):
+
+- "By 2030, 92 million jobs will be displaced, and 170 million new ones will be created, a net increase of 78 million."
+- "80% plan to upskill workers with AI training and two-thirds plan to hire talent with specific AI skills, while only 40% plan to reduce their workforce as AI automates certain tasks."
+- "nearly 40% of job skills expected to change and 63% of employers citing it as their primary challenge"
+
+Additional widely-reported WEF figures: the 170M created and 92M displaced amount to structural labour-market churn of about 22% of the studied jobs; net +78M = a net +7% increase. Fastest-declining roles (absolute): Clerical/Secretarial Workers, Cashiers and Ticket Clerks, Data Entry Clerks, Bank Tellers, Postal Service Clerks. Fastest-growing: Big Data Specialists, AI and Machine Learning Specialists, Software and Application Developers, Fintech Engineers.
+
+Interpretation note: These are EMPLOYER-EXPECTATION FORECASTS for 2025-2030, not realized outcomes; AI/information-processing technology is a leading driver of both creation and displacement.

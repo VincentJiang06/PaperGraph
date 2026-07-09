@@ -1,0 +1,19 @@
+{
+ "kind": "report",
+ "title": "FRBSF (Daly 2026) & ICLE review (Fruits & Stout 2026) — measuring AI's macro employment effect",
+ "url": "https://www.icle.org/",
+ "text_file": "notes/macro_5.txt",
+ "summary": "最直接针对测量问题:多数宏观生产率研究未发现显著 AI 效应,‘可能为时尚早’(美联储);耶鲁 Budget Lab 发现至 2025 年 8 月 AI 暴露与失业无明显关系;丹麦行政数据显示至 2024 年对收入或工时‘基本零效应’;宏观面的平静既可解读为真实零效应,也可解读为测量/扩散滞后(生产率 J 曲线)。",
+ "bindings": [
+  {
+   "node_id": "N-0006",
+   "relation": "supports",
+   "note": "至2024-2025无可分离的总量信号"
+  },
+  {
+   "node_id": "N-0003",
+   "relation": "context",
+   "note": "宏观面平静"
+  }
+ ]
+}

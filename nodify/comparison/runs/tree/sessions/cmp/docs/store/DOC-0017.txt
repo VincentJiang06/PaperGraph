@@ -1,0 +1,27 @@
+SOURCE: Stanford Digital Economy Lab — "Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence" (Brynjolfsson, Chandar, Chen)
+URL: https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recent-employment-effects-of-artificial-intelligence/
+KIND: paper (academic working paper, Stanford Digital Economy Lab; uses ADP high-frequency payroll administrative data covering millions of US workers)
+RETRIEVED: via WebFetch
+
+PURPOSE: strongest ACADEMIC (non-employer-self-reported) evidence of AI-caused net employment decline, focused on early-career workers in AI-exposed occupations — the most-cited scholarly source for "AI is already shrinking entry-level jobs."
+
+VERBATIM QUOTES:
+
+1) Headline effect size:
+"early-career workers (ages 22-25) in the most AI-exposed occupations have experienced a 16 percent relative decline in employment"
+[Note: some secondary press coverage (e.g. Time, Afrotech, Big Think) reports this as "13%" — treat 16% as the figure stated on Stanford's own publication page; the discrepancy itself is worth flagging as a caveat on precision/version differences between preprint drafts.]
+
+2) Data source / methodology:
+"high-frequency administrative data from the largest payroll software provider in the United States" [i.e., ADP payroll records, not self-reported employer announcements — a methodological strength versus Challenger's data].
+
+3) Mechanism — automation vs. augmentation:
+"employment declines are concentrated in occupations where AI is more likely to automate, rather than augment, human labor"
+Adjustment channel: "adjustments occur primarily through employment rather than compensation" (i.e., firms cut headcount/hiring rather than cutting pay — consistent with quiet non-backfilling of entry-level roles rather than visible mass layoffs).
+
+4) Robustness / caveats acknowledged by the authors:
+"Results are robust to alternative explanations, such as excluding technology-related firms and excluding occupations amenable to remote work."
+Contrast: employment for workers in less-exposed fields and for experienced (older) workers in the SAME occupations "has remained stable or continued to grow" — i.e., this is a targeted early-career effect, not evidence of aggregate/economy-wide net job loss.
+
+SUPPORTS/REFUTES N-0004:
+- SUPPORTS (adversarial direction, and the single strongest piece of evidence found in this search): rigorous administrative-payroll-data study finds a real, sizeable (~13-16%) relative employment decline specifically for young workers in AI-exposed roles since late 2022, via reduced hiring/non-backfilling rather than overt layoffs — this is exactly the "AI already causing observable job loss" pattern the question asks about, and it is NOT self-reported by employers (addresses the Challenger-data attribution-uncertainty critique).
+- CAVEAT (bounds the "mass/net" claim): effect is concentrated in a narrow demographic slice (ages 22-25) within specific AI-exposed occupations; older/experienced workers in the same occupations and workers in less-exposed occupations show stable-or-growing employment. This reads as an early-career/entry-level EFFECT, not evidence of aggregate net job loss across the whole labor market.

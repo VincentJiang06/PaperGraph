@@ -1,0 +1,78 @@
+SOURCE: Eloundou, T., Manning, S., Mishkin, P., Rock, D. (2023) "GPTs are GPTs: An Early Look at
+the Labor Market Impact Potential of Large Language Models." arXiv:2303.10130 (working paper,
+version dated August 22, 2023; later published as "GPTs are GPTs: Labor market impact potential
+of LLMs," Science 384(6702), 2024).
+URL: https://arxiv.org/abs/2303.10130 (PDF: https://arxiv.org/pdf/2303.10130)
+Fetched via: arxiv.org abstract page (WebFetch) + arxiv.org/pdf/2303.10130 downloaded with curl and
+converted to text with pdftotext -layout for exact locators.
+
+=== ABSTRACT (verbatim) ===
+"We investigate the potential implications of large language models (LLMs), such as Generative
+Pre-trained Transformers (GPTs), on the U.S. labor market, focusing on the increased capabilities
+arising from LLM-powered software compared to LLMs on their own. Using a new rubric, we assess
+occupations based on their alignment with LLM capabilities, integrating both human expertise and
+GPT-4 classifications. Our findings reveal that around 80% of the U.S. workforce could have at
+least 10% of their work tasks affected by the introduction of LLMs, while approximately 19% of
+workers may see at least 50% of their tasks impacted. We do not make predictions about the
+development or adoption timeline of such LLMs. The projected effects span all wage levels, with
+higher-income jobs potentially facing greater exposure to LLM capabilities and LLM-powered
+software. Significantly, these impacts are not restricted to industries with higher recent
+productivity growth. Our analysis suggests that, with access to an LLM, about 15% of all worker
+tasks in the US could be completed significantly faster at the same level of quality. When
+incorporating software and tooling built on top of LLMs, this share increases to between 47 and
+56% of all tasks. This finding implies that LLM-powered software will have a substantial effect on
+scaling the economic impacts of the underlying models. We conclude that LLMs such as GPTs exhibit
+traits of general-purpose technologies, indicating that they could have considerable economic,
+social, and policy implications."
+
+=== BODY TEXT (verbatim, from pdftotext extraction of arxiv.org/pdf/2303.10130) ===
+
+[Section discussing the exposure measure and its limits — page ~2 of the PDF, paragraph
+following footnote 2]
+"This exposure measure reflects an estimate of the technical capacity to make human labor more
+efficient; however, social, economic, regulatory, and other determinants imply that technical
+feasibility does not guarantee labor productivity or automation outcomes. Our analysis indicates
+that approximately 19% of jobs have at least 50% of their tasks exposed when considering both
+current model capabilities and anticipated tools built upon them. Human assessments suggest that
+only 3% of U.S. workers have over half of their tasks exposed to LLMs when considering existing
+language and code capabilities without additional software or modalities. Accounting for other
+generative models and complementary technologies, our human estimates indicate that up to 49% of
+workers could have half or more of their tasks exposed to LLMs."
+
+[Table 4 caption, discussing occupations with highest exposure]
+"Table 4: Occupations with the highest exposure according to each measurement. The final row lists
+the occupations with the highest 𝜎 2 value, indicating that they had the most variability in
+exposure scores. Exposure percentages indicate the share of an occupation's task that are exposed
+to GPTs (𝛼 ) or GPT-powered software (𝛽 and 𝜁 ), where exposure is defined as driving a reduction
+in time it takes to complete the task by at least 50% (see exposure rubric A.1). As such,
+occupations listed in this table are those where we estimate that GPTs and GPT-powered software
+are able to save workers a significant amount of time completing a large share of their tasks, but
+it does not necessarily suggest that their tasks can be fully automated by these technologies. All
+tasks are assigned equal weight within an occupation."
+
+=== KEY QUOTES FOR N-0007 (exposure) ===
+
+Q1 (Abstract): "around 80% of the U.S. workforce could have at least 10% of their work tasks
+affected by the introduction of LLMs, while approximately 19% of workers may see at least 50% of
+their tasks impacted."
+Locator: Abstract, arXiv:2303.10130.
+
+Q2 (Abstract, adoption disclaimer): "We do not make predictions about the development or adoption
+timeline of such LLMs."
+Locator: Abstract, arXiv:2303.10130.
+
+Q3 (Body, exposure != automation outcome): "This exposure measure reflects an estimate of the
+technical capacity to make human labor more efficient; however, social, economic, regulatory, and
+other determinants imply that technical feasibility does not guarantee labor productivity or
+automation outcomes."
+Locator: Body text, section following footnote 2 (page ~2), arXiv:2303.10130 PDF.
+
+Q4 (Table 4 caption, exposure != full automation): "occupations listed in this table are those
+where we estimate that GPTs and GPT-powered software are able to save workers a significant amount
+of time completing a large share of their tasks, but it does not necessarily suggest that their
+tasks can be fully automated by these technologies."
+Locator: Table 4 caption, arXiv:2303.10130 PDF.
+
+Supports: N-0007 (exposure). This is the primary academic source for the ~80%/19% figures.
+Q3 and Q4 are the paper's own explicit statements that "exposure" (technical capacity /
+time-saving potential) is distinct from realized automation/job loss.

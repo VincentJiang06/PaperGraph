@@ -1,0 +1,19 @@
+{
+ "kind": "report",
+ "title": "Goldman Sachs (Briggs & Kodnani) — The Potentially Large Effects of AI on Economic Growth (2023)",
+ "url": "https://www.gspublishing.com/content/research/en/reports/2023/03/27/d64e052b-0f6e-45d7-967b-d7be35fabd16.html",
+ "text_file": "notes/exp_2.txt",
+ "summary": "高盛:约三分之二现有岗位暴露于某种程度的 AI 自动化,生成式 AI 或使相当于 3 亿全职岗位暴露于自动化;但多数岗位仅部分暴露,更可能被互补而非替代——估计 7% 就业被替代、63% 被互补、30% 不受影响。关键结构:互补远大于替代。",
+ "bindings": [
+  {
+   "node_id": "N-0007",
+   "relation": "supports",
+   "note": "三分之二暴露/3亿全职岗位"
+  },
+  {
+   "node_id": "N-0005",
+   "relation": "context",
+   "note": "63%互补>7%替代"
+  }
+ ]
+}

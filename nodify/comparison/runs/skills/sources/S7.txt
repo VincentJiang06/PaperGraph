@@ -1,0 +1,17 @@
+SOURCE S7
+Title: Is generative AI a job killer? Evidence from the freelance market
+Publisher: Brookings Institution (reporting Hui, Reshef & Zhou, "The Short-Term Effects of Generative AI on Employment: Evidence from an Online Labor Market")
+URL: https://www.brookings.edu/articles/is-generative-ai-a-job-killer-evidence-from-the-freelance-market/
+Fetched: 2026-07-09
+
+VERBATIM KEY PASSAGES:
+
+"freelancers providing services such as copyediting, proofreading, and other text-heavy tasks experienced a decline of approximately 2% in the number of new monthly contracts."
+
+[same workers] "saw a roughly 5% decrease in their total monthly earnings on the platform."
+
+"Not only are high-skill freelancers not insulated from the adverse effects but they are, in fact, disproportionately affected."
+
+"with tools like ChatGPT and DALL-E2, less experienced or lower-rated freelancers can now produce outputs that in many cases approximate the quality associated only with top-tier talent."
+
+"generative AI appears to be 'leveling the playing field' by compressing performance differences across the skill spectrum"

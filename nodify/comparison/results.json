@@ -1,0 +1,55 @@
+{
+  "judge_panel_clean": {
+    "tree": {
+      "structure": 5,
+      "evidence": 5,
+      "adversarial": 4.67,
+      "calibration": 5,
+      "overall": 5
+    },
+    "raw": {
+      "structure": 4,
+      "evidence": 3.67,
+      "adversarial": 3,
+      "calibration": 4,
+      "overall": 3
+    },
+    "skills": {
+      "structure": 5,
+      "evidence": 4,
+      "adversarial": 5,
+      "calibration": 5,
+      "overall": 4
+    }
+  },
+  "ranking_all_6_judges": "tree > skills > raw (unanimous)",
+  "mechanical": {
+    "raw": {
+      "sources": 8,
+      "archived_bytes": 11417,
+      "quotes": 12,
+      "fidelity": 0.92,
+      "peak_ctx_tokens": "18-22k",
+      "recovery_artifact": "11.7KB unstructured",
+      "recovery": "reasoning state unrecoverable, re-derived"
+    },
+    "skills": {
+      "sources": 9,
+      "archived_bytes": 8262,
+      "quotes": 12,
+      "fidelity": 0.92,
+      "peak_ctx_tokens": "4-5k",
+      "recovery_artifact": "4.3KB log",
+      "recovery": "conclusions recovered, citations lost (empty placeholder)"
+    },
+    "tree": {
+      "sources": 18,
+      "archived_bytes": 65981,
+      "quotes": 26,
+      "fidelity": 1.0,
+      "peak_ctx_tokens": "6-7k (1.5k verbatim)",
+      "recovery_artifact": "2.9KB structured brief",
+      "recovery": "full reasoning state + coverage gap recovered"
+    }
+  }
+}

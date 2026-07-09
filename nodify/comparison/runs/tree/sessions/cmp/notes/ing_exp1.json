@@ -1,0 +1,14 @@
+{
+ "kind": "paper",
+ "title": "Eloundou, Manning, Mishkin, Rock — GPTs are GPTs (arXiv:2303.10130, 2023)",
+ "url": "https://arxiv.org/abs/2303.10130",
+ "text_file": "notes/exp_1.txt",
+ "summary": "最常引用的暴露测度:约 80% 美国劳动力至少 10% 的工作任务会受 LLM 影响,约 19% 的工人可能有至少 50% 的任务受影响。作者明确:技术可行性不等于自动化结果,暴露不代表任务会被完全自动化。是任务替代‘广度上界’的核心证据。",
+ "bindings": [
+  {
+   "node_id": "N-0007",
+   "relation": "supports",
+   "note": "80%/19% 暴露测度,且暴露≠自动化"
+  }
+ ]
+}

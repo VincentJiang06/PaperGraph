@@ -1,0 +1,19 @@
+{
+ "kind": "web",
+ "title": "CBS News — LinkedIn data: AI engineer fastest-growing entry role, but entry-level hiring down",
+ "url": "https://www.cbsnews.com/news/artificial-intelligence-entry-level-role-linkedin-study/",
+ "text_file": "notes/create_3.txt",
+ "summary": "LinkedIn 数据:2023-2025 年美国新增 63.9 万 AI 相关招聘,其中 7.5 万为 AI 工程师;‘AI 工程师’连续两年成为年轻人增长最快的职位。但同期整体入门级招聘下降 6%。既是创造侧证据,也含入门级收缩的反向张力。",
+ "bindings": [
+  {
+   "node_id": "N-0005",
+   "relation": "supports",
+   "note": "AI 岗位快速增长"
+  },
+  {
+   "node_id": "N-0004",
+   "relation": "context",
+   "note": "入门级招聘下降6%"
+  }
+ ]
+}

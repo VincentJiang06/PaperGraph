@@ -1,0 +1,137 @@
+[RAW MODE persisted NO working log or conclusions — the only on-disk state is the raw saved source dumps below. To resume, everything must be re-derived from these.]
+
+=== S1.txt ===
+SOURCE S1
+Title: GPTs are GPTs: An Early Look at the Labor Market Impact Potential of Large Language Models
+Authors: Tyna Eloundou, Sam Manning, Pamela Mishkin, Daniel Rock (2023/2024)
+URL fetched: https://arxiv.org/abs/2303.10130
+(Published version: Science, 2024, doi:10.1126/science.adj0998)
+
+VERBATIM EXTRACTS (task-level exposure / task substitution):
+
+- "around 80% of the U.S. workforce could have at least 10% of their work tasks affected"
+- "approximately 19% of workers may see at least 50% of their tasks impacted"
+- With direct LLM access: "about 15% of all worker tasks in the US could be completed significantly faster" at the same level of quality
+- With LLM-powered software and tooling built on top of LLMs: this increases to "between 47 and 56% of all tasks"
+- Wage distribution: impacts span all income levels, with "higher-income jobs potentially facing greater exposure to LLM capabilities and LLM-powered software."
+
+Interpretation note: These are estimates of task EXPOSURE (potential), not realized job losses. The authors argue LLMs exhibit traits of general-purpose technologies (GPTs).
+
+=== S2.txt ===
+SOURCE S2
+Title: Gen-AI: Artificial Intelligence and the Future of Work (IMF Staff Discussion Note SDN/2024/001) / "AI Will Transform the Global Economy. Let's Make Sure It Benefits Humanity." (IMF, Jan 14, 2024, K. Georgieva)
+Primary source: International Monetary Fund, January 2024.
+URL fetched (reproduction of IMF figures): https://www.govtech.com/artificial-intelligence/imf-artificial-intelligence-could-impact-40-percent-of-jobs
+Primary IMF blog URL (Cloudflare-blocked to WebFetch): https://www.imf.org/en/blogs/articles/2024/01/14/ai-will-transform-the-global-economy-lets-make-sure-it-benefits-humanity
+
+VERBATIM EXTRACTS (task-level exposure with split outcomes):
+
+- "Around the world, 40% of all employment is affected in some way by AI, with the number rising to 60% in higher-income countries."
+- "Roughly half the exposed jobs may benefit from AI integration, enhancing productivity. For the other half, AI applications may execute key tasks currently performed by humans, which could lower labor demand, leading to lower wages and reduced hiring."
+- Kristalina Georgieva (IMF Managing Director): AI could "jumpstart productivity, boost global growth and raise incomes," yet "it could also replace jobs and deepen inequality."
+
+Additional figures from the IMF SDN (widely reported): emerging market exposure ~40%, low-income country exposure ~26%; "In most scenarios, AI will likely worsen overall inequality."
+
+=== S3.txt ===
+SOURCE S3
+Title: The Simple Macroeconomics of AI
+Author: Daron Acemoglu (MIT), May 12, 2024 (prepared for Economic Policy; NBER WP 32487)
+URL: https://economics.mit.edu/sites/default/files/2024-05/The%20Simple%20Macroeconomics%20of%20AI.pdf
+(Read directly from the fetched PDF, pages 1-14.)
+
+VERBATIM EXTRACTS (abstract):
+
+- "Using existing estimates on exposure to AI and productivity improvements at the task level, these macroeconomic effects appear nontrivial but modest—no more than a 0.66% increase in total factor productivity (TFP) over 10 years."
+- "Consequently, predicted TFP gains over the next 10 years are even more modest and are predicted to be less than 0.53%."
+- "Empirically, I find that AI advances are unlikely to increase inequality as much as previous automation technologies because their impact is more equally distributed across demographic groups, but there is also no evidence that AI will reduce labor income inequality. Instead, AI is predicted to widen the gap between capital and labor income."
+
+VERBATIM EXTRACTS (task-based model, pages 2, 12):
+
+- "Automation (or more precisely extensive-margin automation) involves AI models taking over and reducing costs in certain tasks. In the case of generative AI, various mid-level clerical functions, text summary, data classification, advanced pattern recognition, and computer vision tasks are among those that can be profitably automated."
+- "Task complementarity can increase the productivity in tasks that are not fully automated and may even raise the marginal product of labor."
+- On wages: "(a) automation always produces a positive effect on wages (and labor demand) because it increases productivity (or equivalently, reduces costs)... (b) simultaneously, automation displaces workers from the tasks they used to perform. The negative displacement effect is represented by the second term." "In general, this expression has ambiguous sign, so automation can increase or reduce wages."
+
+Interpretation note: Acemoglu's model separates task-level automation (substitution) from aggregate outcomes; his headline is that near-term macro effects are MODEST, while distributional effects (capital vs labor) can be adverse.
+
+=== S4.txt ===
+SOURCE S4
+Title: Introducing the Anthropic Economic Index (first report; based on Claude.ai / Clio usage data)
+Author: Anthropic, February 2025.
+URL: https://www.anthropic.com/news/the-anthropic-economic-index
+
+VERBATIM EXTRACTS (how AI is ACTUALLY used at the task level — automation vs augmentation):
+
+- "Overall, we saw a slight lean towards augmentation, with 57% of tasks being augmented and 43% of tasks being automated."
+- Augmentation defined: "AI was not being used to replace people doing tasks, but instead worked with them, engaging in tasks like validation (e.g., double-checking the user's work), learning (e.g., helping the user acquire new knowledge and skills), and task iteration (e.g., helping the user brainstorm or otherwise doing repeated, generative tasks)."
+- "Over one-third of occupations (roughly 36%) see AI use in at least a quarter of their associated tasks, while approximately 4% of occupations use it across three-quarters of their associated tasks."
+- "As we predicted, there wasn't evidence in this dataset of jobs being entirely automated: instead, AI was diffused across the many tasks in the economy, having stronger impacts for some groups of tasks than others."
+
+Interpretation note: AI adoption operates at the TASK level, not the whole-job level; augmentation modestly exceeds automation in observed usage.
+
+=== S5.txt ===
+SOURCE S5
+Title: Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence
+Authors: Erik Brynjolfsson, Bharat Chandar, Ruyu Chen (Stanford Digital Economy Lab), 2025.
+URL: https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recent-employment-effects-of-artificial-intelligence/
+Data: millions of monthly ADP payroll records through July 2025.
+
+VERBATIM EXTRACTS (realized net job change in a specific segment):
+
+- "early-career workers (ages 22-25) in the most AI-exposed occupations have experienced a 16 percent relative decline in employment" (since late 2022)
+- "employment for workers in less exposed fields and more experienced workers in the same occupations has remained stable or continued to grow"
+- "adjustments occur primarily through employment rather than compensation"
+- "employment declines are concentrated in occupations where AI is more likely to automate, rather than augment, human labor"
+- The findings are "early, large-scale evidence consistent with the hypothesis that the AI revolution is beginning to have a significant and disproportionate impact on entry-level workers in the American labor market."
+
+Interpretation note: This is direct evidence that task substitution has begun to translate into HEADCOUNT reductions, but only in a narrow segment (young entrants in the most exposed occupations, e.g. software, customer support).
+
+=== S6.txt ===
+SOURCE S6
+Title: Evaluating the Impact of AI on the Labor Market: Current State of Affairs (The Budget Lab at Yale)
+Author: The Budget Lab at Yale (Martha Gimbel et al.), 2025.
+Primary URL: https://budgetlab.yale.edu/research/evaluating-impact-ai-labor-market-current-state-affairs
+URL fetched (reproduction with author quotes): https://fortune.com/2026/02/02/ai-labor-market-yale-budget-lab-ai-washing/
+
+VERBATIM EXTRACTS (aggregate / economy-wide net effect):
+
+- "The picture of AI's impact on the labor market that emerges from our data is one that largely reflects stability, not major disruption at an economy-wide level."
+- Martha Gimbel (executive director, Yale Budget Lab): "No matter which way you look at the data, at this exact moment, it just doesn't seem like there's major macroeconomic effects here."
+- On the pace of change: while occupational changes have occurred since ChatGPT's late-2022 release, "the rate of change has not increased enough to signal a massive shift."
+
+Additional (from Budget Lab methodology, widely reported): a ~33-month analysis window found "no discernible disruption" in broad employment metrics and no clear correlation between AI exposure and aggregate unemployment; the occupational mix is changing but not faster than in past technological eras.
+
+Interpretation note: At the AGGREGATE (economy-wide) level there is no measurable net displacement to date; disruption remains concentrated and small relative to the whole labor market.
+
+=== S7.txt ===
+SOURCE S7
+Title: Future of Jobs Report 2025 (World Economic Forum)
+Author: World Economic Forum, January 2025.
+Primary URL: https://www.weforum.org/publications/the-future-of-jobs-report-2025/
+URL fetched (reproduction of WEF figures): https://blog.coursera.org/wef-future-of-jobs-report-2025/
+
+VERBATIM EXTRACTS (forecast of gross and net job change to 2030):
+
+- "By 2030, 92 million jobs will be displaced, and 170 million new ones will be created, a net increase of 78 million."
+- "80% plan to upskill workers with AI training and two-thirds plan to hire talent with specific AI skills, while only 40% plan to reduce their workforce as AI automates certain tasks."
+- "nearly 40% of job skills expected to change and 63% of employers citing it as their primary challenge"
+
+Additional widely-reported WEF figures: the 170M created and 92M displaced amount to structural labour-market churn of about 22% of the studied jobs; net +78M = a net +7% increase. Fastest-declining roles (absolute): Clerical/Secretarial Workers, Cashiers and Ticket Clerks, Data Entry Clerks, Bank Tellers, Postal Service Clerks. Fastest-growing: Big Data Specialists, AI and Machine Learning Specialists, Software and Application Developers, Fintech Engineers.
+
+Interpretation note: These are EMPLOYER-EXPECTATION FORECASTS for 2025-2030, not realized outcomes; AI/information-processing technology is a leading driver of both creation and displacement.
+
+=== S8.txt ===
+SOURCE S8
+Title: Generative AI and jobs: A 2025 update
+Author: International Labour Organization (ILO), with NASK, 2025.
+URL: https://www.ilo.org/publications/generative-ai-and-jobs-2025-update
+
+VERBATIM EXTRACTS (exposure vs transformation):
+
+- "One in four workers across the world are in an occupation with some degree of GenAI exposure."
+- "most jobs will be transformed rather than made redundant."
+- The brief reports "a mean automation score of 0.29 in 2025 versus 0.30 in 2023," indicating slightly lower exposure than prior estimates.
+- Growing GenAI capabilities in "voice, image and video generation" have increased exposure for media and web-related roles.
+- Managing the transition requires "social dialogue, to enhance both working conditions and productivity."
+
+Interpretation note: The ILO frames the effect as TRANSFORMATION of job content (task recomposition) rather than automatic ELIMINATION of jobs; exposure is not the same as displacement.
+

@@ -1,0 +1,23 @@
+SOURCE: ILO Working Paper 96 — "Generative AI and jobs: A global analysis of potential effects on job quantity and quality"
+AUTHORS: Pawel Gmyrek, Janine Berg, David Bescond
+PUBLISHER: International Labour Organization (ILO)
+DATE: 2023
+URL: https://webapps.ilo.org/static/english/intserv/working-papers/wp096/index.html
+KIND: institutional/academic working paper (PRIMARY — task-exposure analysis using GPT-4 classification of occupational tasks)
+RETRIEVED VIA: r.jina.ai text-rendering proxy of the ILO working-paper landing page (direct WebFetch on webapps.ilo.org returned HTTP 403).
+
+--- EXTRACTED VERBATIM TEXT / FIGURES ---
+
+Title (verbatim): "Generative AI and jobs: A global analysis of potential effects on job quantity and quality"
+
+Clerical exposure: "24 per cent of clerical tasks considered highly exposed and an additional 58 percent with medium-level exposure." (For other occupational groups, per cross-checked search summary of the same paper: "the greatest share of highly exposed tasks oscillates between 1 and 4 per cent, and medium exposed tasks do not exceed 25 per cent.")
+
+Augmentation vs automation (verbatim): "the most important impact of the technology is likely to be of augmenting work – automating some tasks within an occupation while leaving time for other duties – as opposed to fully automating occupations."
+
+Global augmentation/automation split (verbatim): affecting "10.4 percent of employment in low-income countries and 13.4 percent of employment in high-income countries," compared to only "0.4% to 5.5%" facing automation potential. [figures denote augmentation-exposed vs automation-exposed employment shares by country income group]
+
+Job quality emphasis (verbatim): "the likely ramifications on job quality might be of greater consequence than the quantitative impacts, both with respect to the new jobs created because of the technology, but also the potential effects on work intensity and autonomy when the technology is integrated into the workplace."
+
+--- RELEVANCE ---
+Node N-0003 (macro/sector net employment 2020-2025): REFUTES the framing of a large net job-quantity effect from generative AI at the aggregate/sectoral level — ILO's own conclusion is that AUGMENTATION (task-level change within jobs) dominates over full automation/job elimination, and that only clerical work shows meaningfully high exposure; most occupations show low (1-4%) high-exposure task shares. This implies no broad, cross-sector net headcount effect should yet be expected/observed — effects are concentrated and mostly qualitative (job quality/intensity), not quantity.
+Node N-0006 (measurement/lag): Supports the claim indirectly — ILO frames its findings as exposure POTENTIAL (a forward-looking task-exposure index), explicitly stating the job QUALITY effects (harder to measure in short windows: work intensity, autonomy) "might be of greater consequence than the quantitative impacts" — i.e., the paper itself does not claim to have measured realized net employment effects, and suggests the larger effects may be qualitative/hard-to-measure rather than clean quantity/headcount shifts separable from other factors.

@@ -1,0 +1,15 @@
+SOURCE S6
+Title: Evaluating the Impact of AI on the Labor Market: Current State of Affairs (The Budget Lab at Yale)
+Author: The Budget Lab at Yale (Martha Gimbel et al.), 2025.
+Primary URL: https://budgetlab.yale.edu/research/evaluating-impact-ai-labor-market-current-state-affairs
+URL fetched (reproduction with author quotes): https://fortune.com/2026/02/02/ai-labor-market-yale-budget-lab-ai-washing/
+
+VERBATIM EXTRACTS (aggregate / economy-wide net effect):
+
+- "The picture of AI's impact on the labor market that emerges from our data is one that largely reflects stability, not major disruption at an economy-wide level."
+- Martha Gimbel (executive director, Yale Budget Lab): "No matter which way you look at the data, at this exact moment, it just doesn't seem like there's major macroeconomic effects here."
+- On the pace of change: while occupational changes have occurred since ChatGPT's late-2022 release, "the rate of change has not increased enough to signal a massive shift."
+
+Additional (from Budget Lab methodology, widely reported): a ~33-month analysis window found "no discernible disruption" in broad employment metrics and no clear correlation between AI exposure and aggregate unemployment; the occupational mix is changing but not faster than in past technological eras.
+
+Interpretation note: At the AGGREGATE (economy-wide) level there is no measurable net displacement to date; disruption remains concentrated and small relative to the whole labor market.

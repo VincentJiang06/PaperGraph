@@ -1,0 +1,45 @@
+SOURCE A: CIO Dive — "AI tied to 7,000 job cuts in September: Challenger"
+URL: https://www.ciodive.com/news/AI-job-cuts-challenger-7000/802416/
+KIND: web (news article summarizing Challenger, Gray & Christmas monthly report, Sept 2025 data)
+
+SOURCE B: CFO Dive — "AI-driven job cuts may be underreported: Challenger"
+URL: https://www.cfodive.com/news/ai-driven-job-cuts-underreported-challenger/752418/
+KIND: web (news article on Challenger's own commentary about likely undercounting of AI-attributed cuts, H1 2025 data)
+
+RETRIEVED: via WebFetch (both)
+
+PURPOSE: (a) most recent monthly AI-cut figures + a named entry-level example (Salesforce); (b) the key ADVERSARIAL-HONESTY caveat that AI attribution may be an undercount because employers avoid naming AI publicly — cuts both ways for the thesis.
+
+VERBATIM QUOTES — Source A (CIO Dive):
+
+1) Single-month figure:
+"In September alone, Challenger tracked 7,000 AI-driven job cuts."
+
+2) Year-to-date figure (2025, as of Sept):
+"More than 17,000 job cuts have been directly attributed to AI so far this year, with the tech industry leading the way."
+[Note: this YTD-through-September figure of "17,000+" is well below the full-year 2025 total of 54,836 reported later in the year (see adv_1.txt) — most AI-attributed cuts were announced in Q4 2025.]
+
+3) Entry-level hiring difficulty (Andy Challenger, SVP):
+"Tech firms are undergoing incredible disruption with AI that is not only costing jobs, but also making it difficult to land positions, particularly for entry-level engineers."
+
+4) Named example of AI directly substituting for headcount:
+Salesforce CEO Marc Benioff stated the company "reduced its customer service headcount from 9,000 to about 5,000 after AI agents began handling conversations with customers." [~44% reduction in one specific customer-service function, explicitly attributed by the CEO to AI agents.]
+
+5) Comparison to broader "technology" category (attribution-uncertainty caveat):
+"Technological updates, including automation and 'possibly' AI implementation, have led to 20,219 job cuts in 2025" — i.e., even the broader "technology" reason category (which includes AI as one possible sub-cause) is a small fraction of the ~1.2M total 2025 cuts.
+
+VERBATIM QUOTES — Source B (CFO Dive, H1 2025 data):
+
+1) Explicit-AI-attribution count is small:
+"Only 75 job cuts by U.S.-based employers in the first half of the year were explicitly attributed to AI."
+
+2) Broader "technology" category context:
+"Technology-related factors such as automation drove 20,000 job cuts among U.S.-based employers in the first half of the year" — versus just 75 explicitly citing AI by name.
+
+3) Underreporting hypothesis (why the true number could be HIGHER than reported):
+"Companies using the term 'technological update' more often than we have over the past decade, so our suspicion is that some of the AI job cuts that are likely happening are falling into that category."
+Companies may avoid directly tying their layoffs to AI because they "don't want press on it."
+
+SUPPORTS/REFUTES N-0004 (both sources together illustrate the core measurement problem):
+- SUPPORTS: Named, dated, employer-confirmed cases exist (Salesforce cutting customer-service headcount ~44% citing AI agents by name; 7,000 AI-cited cuts in a single month, Sept 2025); entry-level tech hiring is explicitly and repeatedly described by Challenger's own SVP as harder due to AI.
+- REFUTES/COMPLICATES (core adversarial-honesty finding): explicit AI attribution is a genuinely SMALL and inconsistent share of total layoffs (75 out of ~20,000+ "technology" cuts in H1 2025; ~17,000 of ~600,000+ cuts through September 2025) — but Challenger itself argues this likely UNDERSTATES true AI impact because employers deliberately avoid the "AI" label for PR reasons, meaning the true causal share is unknown and could run either way. This is the central attribution-uncertainty caveat for N-0004.

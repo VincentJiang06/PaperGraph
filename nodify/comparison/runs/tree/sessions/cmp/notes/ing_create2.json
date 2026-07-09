@@ -1,0 +1,14 @@
+{
+ "kind": "paper",
+ "title": "Autor, Chin, Salomons, Seegmiller — New Frontiers: The Origins and Content of New Work, 1940-2018",
+ "url": "https://www.nber.org/papers/w30389",
+ "text_file": "notes/create_2.txt",
+ "summary": "历史证据:当前多数就业存在于 1940 年后新出现的职业专业中,由‘增强型’创新拉动;但论文自陈近四十年‘自动化’对劳动需求的侵蚀在加强,而‘增强’对需求的拉动未同步跟上。既支持‘技术创造新工作抵消替代’的机制,也内含近期这一抵消变弱的警示。",
+ "bindings": [
+  {
+   "node_id": "N-0005",
+   "relation": "supports",
+   "note": "新工作抵消自动化的历史机制"
+  }
+ ]
+}

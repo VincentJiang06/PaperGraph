@@ -1,0 +1,29 @@
+SOURCE: Challenger, Gray & Christmas — "2025 Year-End Challenger Report: Highest Q4 Layoffs Since 2008; Lowest YTD Hiring Since 2010"
+URL: https://www.challengergray.com/blog/2025-year-end-challenger-report-highest-q4-layoffs-since-2008-lowest-ytd-hiring-since-2010/
+KIND: report (primary source, outplacement firm tracking employer-announced job cut reasons since 1993; "AI" reason category began 2023)
+RETRIEVED: via WebFetch, 2026-07 (session date; report itself covers full-year 2025 data, published ~Jan 2026)
+
+PURPOSE: strongest available primary data on AI-attributed layoffs and hiring pullback for 2025 (adversarial evidence for N-0004: net job loss thesis)
+
+VERBATIM QUOTES:
+
+1) Total layoffs scale, 2025 vs 2024:
+"In 2025, employers announced 1,206,374 job cuts, an increase of 58% from the 761,358 announced in 2024."
+
+2) AI-attributed layoffs, full-year 2025:
+"AI has been responsible for 54,836 announced layoff plans" during 2025.
+
+3) Share of total (derived from the two figures above, not a direct Challenger quote — flagged as adversarial-honesty caveat):
+54,836 / 1,206,374 ≈ 4.5% of all 2025 announced job cuts were explicitly attributed to AI as the cited reason. I.e., AI is a stated reason for a small minority of total 2025 layoffs even in the year AI-cited cuts grew fastest.
+
+4) Hiring collapse (broader than AI-specific, but consistent with an "AI-adjacent hiring freeze" narrative):
+"Last year, U.S. employers announced 507,647 planned hires, down 34% from the 769,953 announced in 2024. It is the lowest year-to-date total since 2010."
+
+5) Seasonal/entry-tier hiring collapse:
+"Included in Challenger's hiring figure are 372,520 seasonal hiring plans in the fourth quarter, the lowest number of announced seasonal hires since Challenger began tracking them in 2012."
+
+NOTE: The fetched summary did not surface a direct Challenger quote isolating entry-level tech hiring specifically within this report (see adv_4.txt / CIO Dive for that quote, and Andy Challenger's separate statement captured there).
+
+SUPPORTS/REFUTES N-0004:
+- SUPPORTS (adversarial direction): AI-cited layoffs are real, growing, and dated (54,836 in 2025 alone, up from near-zero pre-2023), and total hiring has collapsed to a 15-year low in the same period — consistent with an "AI-adjacent hiring freeze" pattern the question asks about.
+- CAVEAT (refutes strong/causal reading): AI-cited layoffs are only ~4.5% of 2025's total 1.2M job cuts; the 58% YoY layoff surge and 34% hiring drop are macro/economy-wide (rates, tariffs, restructuring) and cannot be attributed to AI on this data alone — Challenger's own categories list AI as one of many named reasons, not the dominant one.

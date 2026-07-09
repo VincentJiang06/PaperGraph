@@ -1,0 +1,14 @@
+{
+ "kind": "web",
+ "title": "Fortune — A.I. replaced nearly 4,000 workers in May 2023 (Challenger data)",
+ "url": "https://fortune.com/2023/06/02/ai-job-cuts-layoffs-tech-industry-challenger-grey/",
+ "text_file": "notes/adv_2.txt",
+ "summary": "报道 Challenger 数据:2023 年 5 月首次出现明确归因于 AI 的裁员,约 3,900 人因该技术被裁,均集中在科技业;但仅占当月美国 8 万余裁员中的一小部分。用于确立‘AI 归因裁员’这一现象的起点与量级。",
+ "bindings": [
+  {
+   "node_id": "N-0004",
+   "relation": "supports",
+   "note": "首个 AI 归因裁员月,但占比极小"
+  }
+ ]
+}

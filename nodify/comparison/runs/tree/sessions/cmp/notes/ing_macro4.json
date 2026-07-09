@@ -1,0 +1,19 @@
+{
+ "kind": "paper",
+ "title": "Acemoglu — The Simple Macroeconomics of AI (NBER WP 32487, 2024)",
+ "url": "https://www.nber.org/papers/w32487",
+ "text_file": "notes/macro_4.txt",
+ "summary": "Acemoglu 估计未来十年 AI 带来的全要素生产率增幅不超过 0.66%(更可能<0.53%,年化约 0.064%),远小于 Goldman Sachs 的 7% GDP、McKinsey 的 1.5-3.4 个百分点预测。如此小的冲击意味着短窗口内无可归因的宏观就业波动,且信号相对宏观噪声太小、难以分离。",
+ "bindings": [
+  {
+   "node_id": "N-0003",
+   "relation": "supports",
+   "note": "宏观冲击极小→无可归因净变化"
+  },
+  {
+   "node_id": "N-0006",
+   "relation": "supports",
+   "note": "信号太小难以分离"
+  }
+ ]
+}

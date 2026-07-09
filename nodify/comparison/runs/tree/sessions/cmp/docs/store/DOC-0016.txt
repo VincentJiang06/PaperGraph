@@ -1,0 +1,21 @@
+SOURCE: Fortune — "A.I. replaced 4000 workers in May, Challenger report says"
+URL: https://fortune.com/2023/06/02/ai-job-cuts-layoffs-tech-industry-challenger-grey/
+KIND: web (news article reporting on Challenger, Gray & Christmas's June 2023 monthly job-cut report — the FIRST month AI was ever cited as a layoff reason)
+RETRIEVED: via WebFetch
+
+PURPOSE: earliest documented instance of AI being explicitly named as a cause of measurable, dated layoffs (May 2023) — the historical anchor point for the adversarial thesis.
+
+VERBATIM QUOTES:
+
+1) Headline attributed figure:
+"In May, 3,900 people were laid off due to the technology" according to Challenger, Gray & Christmas.
+
+2) Sector concentration:
+"The nearly 4,000 A.I.-related layoffs were all in the tech industry" according to Andy Challenger, the firm's senior vice president.
+
+3) Scale-in-context caveat (adversarial honesty):
+The approximately 4,000 AI-related cuts represented a portion of over 80,000 total U.S. job losses that month. The report also noted this was the first time AI had been cited as a specific reason for layoffs in their tracking.
+
+SUPPORTS/REFUTES N-0004:
+- SUPPORTS (adversarial direction): This is the first hard, dated, employer-disclosed evidence that AI adoption directly caused a discrete batch of layoffs (~3,900-4,000, tech sector only) — establishes AI-caused job loss is observable and traceable to a specific month, not merely speculative.
+- CAVEAT (refutes "mass/net loss" reading): ~4,000 jobs is a tiny fraction (<5%) of that month's >80,000 total U.S. job losses, and confined entirely to tech — not evidence of broad, cross-sector, or "mass" net loss as of mid-2023.

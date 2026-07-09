@@ -1,0 +1,16 @@
+SOURCE S5
+Title: Future of Jobs Report 2025: 78 Million New Job Opportunities by 2030 but Urgent Upskilling Needed
+Publisher: World Economic Forum (press release / report)
+URL: https://www.weforum.org/press/2025/01/future-of-jobs-report-2025-78-million-new-job-opportunities-by-2030-but-urgent-upskilling-needed-to-prepare-workforces/
+(fetched via authorized press-release mirror: https://www.eco-business.com/press-releases/future-of-jobs-report-2025-78-million-new-jobs-by-2030-but-urgent-upskilling-needed-to-prepare-workforces/)
+Fetched: 2026-07-09
+
+VERBATIM KEY PASSAGES:
+
+"170 million new roles set to be created and 92 million displaced, resulting in a net increase of 78 million jobs."
+
+"Job disruption will equate to 22 per cent of jobs by 2030"
+
+"41 per cent plan to reduce their workforce as AI automates certain tasks" (share of employers)
+
+NOTE: These net figures aggregate ALL structural drivers (technological change, the green transition, demographic shifts, economic conditions), not AI alone. The AI-specific channel appears in the 22% churn figure and the employer-intention statistics.

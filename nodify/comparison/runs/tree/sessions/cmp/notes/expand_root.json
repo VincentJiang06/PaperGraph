@@ -1,0 +1,30 @@
+{
+  "parent_id": "N-0001",
+  "children": [
+    {
+      "statement": "任务层:2020-2025 年 AI agents/生成式 AI 对工作任务的暴露与实际替代程度如何(从暴露测度到真实采用)?",
+      "why_helps_parent": "厘清‘任务替代’这一层的广度与深度,是判断净效应的第一层证据;答案不预设岗位是否净减",
+      "orientation": "neutral"
+    },
+    {
+      "statement": "岗位层:2020-2025 年宏观与行业就业总量是否/如何随 AI agents 扩散而变化,能否观测到可归因的净增减?",
+      "why_helps_parent": "直接考察‘岗位净增减’这一层;无论增减都能作答,不预设方向",
+      "orientation": "neutral"
+    },
+    {
+      "statement": "反面:是否已有证据表明 AI 在 2020-2025 造成了可观测的大规模岗位净流失(裁员潮、特定职业萎缩)?",
+      "why_helps_parent": "专门寻找推翻‘净效应接近中性’的反证,压力测试根观点",
+      "orientation": "adversarial"
+    },
+    {
+      "statement": "创造侧:2020-2025 年 AI 是否催生新职业/新任务/新需求,并在多大程度上抵消被替代的岗位?",
+      "why_helps_parent": "岗位净增减取决于替代与创造之差,创造侧是判断净效应不可缺的一半",
+      "orientation": "neutral"
+    },
+    {
+      "statement": "反面/测量:2020-2025 这一短窗口内,AI 的就业净效应能否与疫情、利率、周期等因素分离并被可靠测量?",
+      "why_helps_parent": "若净效应根本无法从数据中分离,则任何‘净增/净减’强结论都站不住,直接挑战根观点的可判定性",
+      "orientation": "adversarial"
+    }
+  ]
+}

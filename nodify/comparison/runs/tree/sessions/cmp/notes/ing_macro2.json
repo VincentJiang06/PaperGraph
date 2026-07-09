@@ -1,0 +1,24 @@
+{
+ "kind": "report",
+ "title": "WEF Future of Jobs Report 2025 — press release",
+ "url": "https://www.weforum.org/press/2025/01/future-of-jobs-report-2025-78-million-new-job-opportunities-by-2030-but-urgent-upskilling-needed-to-prepare-workforces/",
+ "text_file": "notes/macro_2.txt",
+ "summary": "WEF 2025 预测到 2030:新增 1.7 亿、被替代 9,200 万,净增 7,800 万(约 +7%)。方法同 2023 版,但净值由 -1,400 万翻正为 +7,800 万——版本间符号翻转本身说明这是波动的预期调查而非稳定的可归因测量。",
+ "bindings": [
+  {
+   "node_id": "N-0003",
+   "relation": "supports",
+   "note": "最新预测净增78M,与前版相反"
+  },
+  {
+   "node_id": "N-0005",
+   "relation": "supports",
+   "note": "170M 新岗位预测"
+  },
+  {
+   "node_id": "N-0006",
+   "relation": "context",
+   "note": "版本间符号翻转"
+  }
+ ]
+}

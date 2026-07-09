@@ -1,0 +1,54 @@
+{
+ "node_id": "N-0003",
+ "lean": "mixed",
+ "summary": "岗位净增减:未找到任何机构报告 2020-2025 已实现的、可归因于 AI 的宏观净变化。仅有前瞻性雇主调查(WEF),且其净值在两版间由 -1,400 万翻转为 +7,800 万,自证为波动预期而非稳定测量;ILO 认为影响以‘增强’为主、暴露集中于文书;Acemoglu 估十年 TFP 增幅≤0.66%,冲击过小,短窗口内难产生可归因的宏观就业波动。故岗位层净效应接近中性/不可辨识。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "ref_id": "E-01",
+    "title": "WEF Future of Jobs 2023",
+    "doc_id": "DOC-0007",
+    "url": null,
+    "locator": "预测2023-2027",
+    "quote": "net decrease of 14 million jobs, or 2% of current employment",
+    "tool": "web_fetch",
+    "note": "预测非实测"
+   },
+   {
+    "ref_id": "E-02",
+    "title": "WEF Future of Jobs 2025",
+    "doc_id": "DOC-0008",
+    "url": null,
+    "locator": "预测至2030",
+    "quote": "net increase of 78 million jobs",
+    "tool": "web_fetch",
+    "note": "符号较前版翻转"
+   },
+   {
+    "ref_id": "E-03",
+    "title": "ILO Working Paper 96",
+    "doc_id": "DOC-0009",
+    "url": null,
+    "locator": "增强为主",
+    "quote": "the most important impact of the technology is likely to be of augmenting work",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "ref_id": "E-04",
+    "title": "Acemoglu — Simple Macroeconomics of AI",
+    "doc_id": "DOC-0010",
+    "url": null,
+    "locator": "十年TFP上界",
+    "quote": "no more than a 0.66% increase in total factor productivity (TFP) over 10 years",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "未直接取 BLS/Eurostat 总量时序;预测口径混入所有宏观趋势,非纯 AI"
+ ]
+}

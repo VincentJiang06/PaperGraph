@@ -1,0 +1,25 @@
+## SESSION
+QUESTION: AI agents 在 2020-2025 年对就业的净效应是什么?区分任务替代与岗位净增减
+BOUNDARY: 只看2020-2025
+BUDGETS: depth 2/4 · open claims 0/12 · total nodes 8 (uncapped) · docs 18
+ACTIVITY: 3 adds · 8 concludes · 37 ingests
+
+## CONCLUSIONS (synthesized viewpoints)
+- N-0001 [supports/medium] 2020-2025 年 AI agents 对就业的净效应须分两层看。任务替代层(N-0002):暴露广泛(约 80% 劳动力≥10% 任务、高盛口径约三分之二岗位部分暴露),但暴露≠取代——真实替代集中于写作、翻译、客服等品类,且多以增强/任务重构呈现(客服 +15% 生产率;Upwork 写作 -2% 工作量、-5.2% 收入;翻译逾七成报告下降)。岗位净增减层(N-0003):无机构报告 2020-2025 已实现、可归因于 AI 的宏观净变化;WEF 预测在两版间由净减 1,400 万翻转为净增 7,800 万(证其为波动预期而非测量),Acemoglu 估十年 TFP≤0.66%。对抗线(N-0004):AI 明确归因裁员仅占 Challenger 总裁员约 4.5%,最强因果证据为 Stanford 入门级(22-25 岁)最暴露职业就业相对下降约 13-16%、Salesforce 客服 9,000→5,000——真实位移在增强但仍属局部/入门级,未构成经济体级大规模净失业。创造侧(N-0005):AI 岗位快速增长(LinkedIn 新增 63.9 万)+历史新工作机制,提供部分而非完全抵消(同期入门级招聘 -6%)。测量(N-0006):Fed/耶鲁/丹麦数据至 2024-2025 未见可分离的总量信号,‘近中性’难与‘尚未显现’完全区分。综合判断:任务层广泛替代/增强、岗位层净效应接近中性且以增强为主,位移风险集中于特定人群与暴露品类而非总量——与根观点一致,但需附‘测量滞后’这一保留。
+- N-0002 [mixed/high] 任务层呈‘暴露广、替代浅、增强为主’。暴露侧(N-0007):约 80% 劳动力至少 10% 任务、约 19% 至少 50% 任务受 LLM 影响,高盛口径约三分之二岗位部分暴露、约 3 亿全职岗位,但各来源均强调暴露≠自动化。真实侧(N-0008):替代确已发生但有界,集中于写作、翻译、客服等暴露品类,且常表现为任务重构而非整职消失(客服 +15% 生产率、经验浅者更大;Upwork 写作 -2%/-5.2%;翻译逾七成报告工作量下降)。故任务替代在广度上显著、在深度上有限。
+
+## TREE MAP
+- N-0001 viewpoint/synthesized ← ROOT ✓syn
+- N-0002 viewpoint/synthesized ← N-0001 ✓syn
+- N-0003 claim/concluded ← N-0001 ✓syn
+- N-0004 claim/concluded ← N-0001 ✓syn
+- N-0005 claim/concluded ← N-0001 ✓syn
+- N-0006 claim/concluded ← N-0001 ✓syn
+- N-0007 claim/concluded ← N-0002 ✓syn
+- N-0008 claim/concluded ← N-0002 ✓syn
+
+## ARTIFACTS
+- article: outline OL (5 sections, 5 registered), final.md assembled — nd article show
+
+## DISCIPLINE WARNINGS
+- N-0002: expanded without an adversarial direction

@@ -1,0 +1,19 @@
+SOURCE S3
+Title: The Simple Macroeconomics of AI
+Author: Daron Acemoglu (MIT), May 12, 2024 (prepared for Economic Policy; NBER WP 32487)
+URL: https://economics.mit.edu/sites/default/files/2024-05/The%20Simple%20Macroeconomics%20of%20AI.pdf
+(Read directly from the fetched PDF, pages 1-14.)
+
+VERBATIM EXTRACTS (abstract):
+
+- "Using existing estimates on exposure to AI and productivity improvements at the task level, these macroeconomic effects appear nontrivial but modest—no more than a 0.66% increase in total factor productivity (TFP) over 10 years."
+- "Consequently, predicted TFP gains over the next 10 years are even more modest and are predicted to be less than 0.53%."
+- "Empirically, I find that AI advances are unlikely to increase inequality as much as previous automation technologies because their impact is more equally distributed across demographic groups, but there is also no evidence that AI will reduce labor income inequality. Instead, AI is predicted to widen the gap between capital and labor income."
+
+VERBATIM EXTRACTS (task-based model, pages 2, 12):
+
+- "Automation (or more precisely extensive-margin automation) involves AI models taking over and reducing costs in certain tasks. In the case of generative AI, various mid-level clerical functions, text summary, data classification, advanced pattern recognition, and computer vision tasks are among those that can be profitably automated."
+- "Task complementarity can increase the productivity in tasks that are not fully automated and may even raise the marginal product of labor."
+- On wages: "(a) automation always produces a positive effect on wages (and labor demand) because it increases productivity (or equivalently, reduces costs)... (b) simultaneously, automation displaces workers from the tasks they used to perform. The negative displacement effect is represented by the second term." "In general, this expression has ambiguous sign, so automation can increase or reduce wages."
+
+Interpretation note: Acemoglu's model separates task-level automation (substitution) from aggregate outcomes; his headline is that near-term macro effects are MODEST, while distributional effects (capital vs labor) can be adverse.

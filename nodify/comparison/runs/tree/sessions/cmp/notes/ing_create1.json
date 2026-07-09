@@ -1,0 +1,14 @@
+{
+ "kind": "web",
+ "title": "WEF Future of Jobs Report 2025 — fastest-growing jobs summary",
+ "url": "https://jobmarketmonitor.com/2025/01/16/wefs-future-of-jobs-report-2025-fastest-growing-jobs-big-data-specialists-fintech-engineers-and-ai-and-machine-learning-specialists/",
+ "text_file": "notes/create_1.txt",
+ "summary": "WEF 2025 报告(55 经济体调查)概述:按百分比增速,增长最快的三类岗位为大数据专家、金融科技工程师、AI 与机器学习专家;整体预测到 2030 年净增岗位。是 AI 催生新岗位的直接信号(二手概述)。",
+ "bindings": [
+  {
+   "node_id": "N-0005",
+   "relation": "supports",
+   "note": "AI/ML 专家进入增速最快前三"
+  }
+ ]
+}

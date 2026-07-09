@@ -1,0 +1,15 @@
+SOURCE S5
+Title: Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence
+Authors: Erik Brynjolfsson, Bharat Chandar, Ruyu Chen (Stanford Digital Economy Lab), 2025.
+URL: https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recent-employment-effects-of-artificial-intelligence/
+Data: millions of monthly ADP payroll records through July 2025.
+
+VERBATIM EXTRACTS (realized net job change in a specific segment):
+
+- "early-career workers (ages 22-25) in the most AI-exposed occupations have experienced a 16 percent relative decline in employment" (since late 2022)
+- "employment for workers in less exposed fields and more experienced workers in the same occupations has remained stable or continued to grow"
+- "adjustments occur primarily through employment rather than compensation"
+- "employment declines are concentrated in occupations where AI is more likely to automate, rather than augment, human labor"
+- The findings are "early, large-scale evidence consistent with the hypothesis that the AI revolution is beginning to have a significant and disproportionate impact on entry-level workers in the American labor market."
+
+Interpretation note: This is direct evidence that task substitution has begun to translate into HEADCOUNT reductions, but only in a narrow segment (young entrants in the most exposed occupations, e.g. software, customer support).

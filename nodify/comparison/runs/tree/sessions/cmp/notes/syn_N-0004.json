@@ -1,0 +1,54 @@
+{
+ "node_id": "N-0004",
+ "lean": "mixed",
+ "summary": "对抗线:大规模、可归因的净失业尚未成立,但特定人群的真实位移信号在增强。Challenger 数据中 AI 明确归因裁员 2025 年约 5.5 万,仅占总裁员约 4.5%;2023 年 5 月首现约 3,900 例。最强因果证据是 Stanford:22-25 岁最暴露职业早期工人就业相对下降约 13-16%,且集中于‘自动化型’岗位;Salesforce 客服因 AI agent 从 9,000 减至约 5,000。均为局部/入门级效应,非经济体层面净减。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "ref_id": "E-01",
+    "title": "Challenger 2025 Year-End Report",
+    "doc_id": "DOC-0015",
+    "url": null,
+    "locator": "2025全年",
+    "quote": "54,836 announced layoff plans",
+    "tool": "web_search",
+    "note": "占总裁员约4.5%"
+   },
+   {
+    "ref_id": "E-02",
+    "title": "Fortune (Challenger May 2023)",
+    "doc_id": "DOC-0016",
+    "url": null,
+    "locator": "2023-05",
+    "quote": "3,900 people were laid off due to the technology",
+    "tool": "web_search",
+    "note": null
+   },
+   {
+    "ref_id": "E-03",
+    "title": "Stanford — Canaries in the Coal Mine?",
+    "doc_id": "DOC-0017",
+    "url": null,
+    "locator": "早期职业最暴露职业",
+    "quote": "16 percent relative decline in employment",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "ref_id": "E-04",
+    "title": "CIO Dive (Challenger Sept 2025)",
+    "doc_id": "DOC-0018",
+    "url": null,
+    "locator": "2025-09",
+    "quote": "7,000 AI-driven job cuts",
+    "tool": "web_search",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "AI 归因口径不确定(可能被藏在‘技术更新’标签下),既可能低估也可能被夸大"
+ ]
+}

@@ -1,0 +1,23 @@
+SOURCE: WEF Future of Jobs Report 2025 — press release
+TITLE: "Future of Jobs Report 2025: 78 Million New Job Opportunities by 2030 but Urgent Upskilling Needed to Prepare Workforces"
+PUBLISHER: World Economic Forum
+DATE: January 2025
+URL: https://www.weforum.org/press/2025/01/future-of-jobs-report-2025-78-million-new-job-opportunities-by-2030-but-urgent-upskilling-needed-to-prepare-workforces/
+KIND: institutional survey report / press release (PRIMARY — WEF employer-survey based projection)
+RETRIEVED VIA: r.jina.ai text-rendering proxy of the WEF press release page (direct WebFetch on weforum.org returned HTTP 403).
+
+--- EXTRACTED VERBATIM TEXT / FIGURES ---
+
+"170 million new jobs by 2030, while displacing 92 million others" resulting in "a net increase of 78 million jobs."
+
+"job disruption will equate to 22% of jobs by 2030, with 170 million new roles set to be created and 92 million displaced"
+
+"Frontline roles, including farmworkers, delivery drivers and construction workers, are poised to see the largest job growth in absolute terms by 2030."
+
+"Significant increases are also projected for care jobs, such as nursing professionals, and education roles"
+
+TIMEFRAME: PROJECTIONS through 2030 (i.e., 2025-2030 window), drawn from survey data of "over 1,000 leading global employers—collectively representing more than 14 million workers across 22 industry clusters and 55 economies." Net +78M / +7% of current employment is a FORECAST, not a realized/measured 2020-2025 outcome.
+
+--- RELEVANCE ---
+Node N-0003 (macro/sector net employment 2020-2025 attributable to AI): The 2025 report flips the headline net number from the 2023 report's -14M/-2% to +78M/+7% net INCREASE by 2030 — same institution, same survey methodology, both employer-expectation projections driven by MULTIPLE macrotrends (technology broadly, demographic shifts, economic conditions, green transition), not isolated AI attribution. The sign-flip between successive editions (2023 vs 2025) itself is evidence these are volatile employer-sentiment projections rather than stable, attributable, measured net effects — undercuts using either WEF figure as a definitive "AI caused net X jobs" data point for N-0003.
+Node N-0006 (measurement/lag): Directly relevant — WEF explicitly frames both reports as forward-looking, employer-survey-based forecasts over a 2-5 year horizon, not retrospective measurement; this is consistent with the claim that short-window, macro-level, AI-attributable net employment effects are not directly/reliably measured but rather forecast under uncertainty.

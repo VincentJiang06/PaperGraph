@@ -1,0 +1,14 @@
+SOURCE S8
+Title: Generative AI and jobs: A 2025 update
+Author: International Labour Organization (ILO), with NASK, 2025.
+URL: https://www.ilo.org/publications/generative-ai-and-jobs-2025-update
+
+VERBATIM EXTRACTS (exposure vs transformation):
+
+- "One in four workers across the world are in an occupation with some degree of GenAI exposure."
+- "most jobs will be transformed rather than made redundant."
+- The brief reports "a mean automation score of 0.29 in 2025 versus 0.30 in 2023," indicating slightly lower exposure than prior estimates.
+- Growing GenAI capabilities in "voice, image and video generation" have increased exposure for media and web-related roles.
+- Managing the transition requires "social dialogue, to enhance both working conditions and productivity."
+
+Interpretation note: The ILO frames the effect as TRANSFORMATION of job content (task recomposition) rather than automatic ELIMINATION of jobs; exposure is not the same as displacement.

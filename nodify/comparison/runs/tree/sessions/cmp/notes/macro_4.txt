@@ -1,0 +1,28 @@
+SOURCE: "The Simple Macroeconomics of AI"
+AUTHOR: Daron Acemoglu
+PUBLISHER: National Bureau of Economic Research (NBER Working Paper No. 32487); also circulated via MIT Economics
+DATE: 2024 (published in Economic Policy journal, 2025)
+URLs:
+  - https://www.nber.org/papers/w32487
+  - https://www.nber.org/system/files/working_papers/w32487/w32487.pdf
+  - https://economics.mit.edu/sites/default/files/2024-05/The%20Simple%20Macroeconomics%20of%20AI.pdf
+KIND: academic working paper (PRIMARY — task-based macroeconomic model)
+RETRIEVED VIA: r.jina.ai text-rendering proxy of the MIT-hosted PDF (direct WebFetch of NBER/MIT PDFs failed: connection reset / unreadable binary stream).
+
+--- EXTRACTED VERBATIM TEXT / FIGURES ---
+
+TFP estimate (verbatim): "no more than a 0.66% increase in total factor productivity (TFP) over 10 years"
+
+TFP estimate, refined/lower bound (verbatim): "predicted TFP gains over the next 10 years are even more modest and are predicted to be less than 0.53%"
+
+TFP estimate with annualized figure (verbatim): "TFP gains over the next 10 years from AI are about 0.66%—meaning that relative to the baseline without the current suite of AI and computer vision advances, TFP will be higher by 0.66 percentage points in 10 years, or annual TFP growth will be higher by around 0.064%"
+
+Contrast with industry forecasts (verbatim): "Goldman Sachs (2023) predicts a 7% increase in global GDP" and McKinsey forecasts "up to a 1.5 − 3.4 percentage point rise in average annual GDP growth in advanced economies over the coming decade" — Acemoglu's paper positions its own 0.53-0.66% TFP / modest GDP estimate as far below these industry projections.
+
+Inequality/labor-income statement (verbatim): "AI is predicted to widen the gap between capital and labor income. Finally, some of the new tasks created by AI may have negative social value"
+
+Task-exposure constraint (from cross-checked search summary of same paper): "only 20% of U.S. labor tasks are exposed to AI, and even fewer can be profitably automated," with "only 23% of AI-exposed tasks can be profitably automated" and "average labor cost savings per task about 27%."
+
+--- RELEVANCE ---
+Node N-0003 (macro/sector net employment 2020-2025): SUPPORTS a "no attributable macro-level net employment/output shock" reading — Acemoglu's task-based model implies AI's near/medium-term (10-year horizon) TFP contribution is modest (0.53-0.66%, ~0.064%/year), far below headline projections from Goldman Sachs/McKinsey; a shock this small over a 10-year horizon would not be expected to produce a clearly attributable net employment swing within the shorter 2020-2025 window.
+Node N-0006 (measurement/lag): DIRECTLY SUPPORTS — the paper is itself a macroeconomic quantification effort explicitly built to counter larger, less rigorous forecasts; its modest estimated TFP/GDP effect size (order of magnitude smaller than survey-based forecasts) implies that in a short window (a few years), any AI-attributable net employment effect would be too small relative to macro noise (business cycle, other tech, monetary policy) to be reliably separated/measured — consistent with the claim that quantitative macroeconomic judgment finds AI's near-term aggregate employment signal is not cleanly isolable.
