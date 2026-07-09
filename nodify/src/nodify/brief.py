@@ -34,8 +34,19 @@ def _sections(paths: Paths, session: dict[str, Any]) -> list[tuple[str, list[str
         latest_syn[s["node_id"]] = s
     referenced_children = {c for s in syns for c in s["based_on"]["children"]}
     budgets = session["budgets"]
-    from . import docsdb
+    from . import docsdb, events as ev_mod
     ndocs = len(docsdb.entries_by_id(paths))
+
+    # activity summary (R7): the framework has no cost mechanism (P4); it just
+    # makes effort visible — fetch budget is a whole-investigation aggregate.
+    op_counts: dict[str, int] = {}
+    for e in ev_mod.read(paths):
+        if e["mutating"]:
+            op_counts[e["command"]] = op_counts.get(e["command"], 0) + 1
+    activity = " · ".join(
+        f"{op_counts[c]} {label}" for c, label in
+        (("add", "adds"), ("conclude", "concludes"), ("docs ingest", "ingests"),
+         ("docs bind", "binds"), ("revise", "revises")) if op_counts.get(c))
 
     head = [
         f"QUESTION: {session['question']}",
@@ -44,6 +55,7 @@ def _sections(paths: Paths, session: dict[str, Any]) -> list[tuple[str, list[str
          f"/{budgets['max_depth']} · open claims {tree._open_claims(nodes)}"
          f"/{budgets['max_open_claims']} · total nodes {len(nodes)} (uncapped)"
          + (f" · docs {ndocs}" if ndocs else "")),
+        *( [f"ACTIVITY: {activity}"] if activity else [] ),
     ]
 
     conclusions = []

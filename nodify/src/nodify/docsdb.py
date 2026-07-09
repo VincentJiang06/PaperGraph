@@ -124,6 +124,35 @@ def ingest(paths: Paths, payload: dict[str, Any]) -> tuple[dict[str, Any], list[
     return entry, warnings
 
 
+RELATIONS = ("supports", "refutes", "context", "background")
+
+
+def bind(paths: Paths, doc_id: str, node_id: str, relation: str,
+         note: str | None = None) -> tuple[dict[str, Any], list[str]]:
+    """Add a binding to an already-archived doc without re-ingesting its text
+    (R3). Appends a new latest record with the binding added; a duplicate
+    (node, relation) is a no-op with a warning."""
+    entries = entries_by_id(paths)
+    if doc_id not in entries:
+        raise DomainError([f"unknown doc: {doc_id}"])
+    if node_id not in tree.nodes_by_id(paths):
+        raise DomainError([f"unknown node: {node_id}"])
+    if relation not in RELATIONS:
+        raise UsageError([f"relation must be one of {list(RELATIONS)}, got {relation!r}"])
+    entry = entries[doc_id]
+    if any(b["node_id"] == node_id and b["relation"] == relation
+           for b in entry["bindings"]):
+        return entry, [f"{doc_id} is already bound to {node_id} as {relation} — unchanged"]
+    updated = {**entry, "bindings": entry["bindings"] + [
+        {"node_id": node_id, "relation": relation, "note": note,
+         "bound_at": clock_now()}]}
+    errs = validate(updated)
+    if errs:
+        raise DomainError(errs)
+    store.append(paths.resolve(INDEX), updated)
+    return updated, []
+
+
 def quote_ok(paths: Paths, entry: dict[str, Any], quote: str) -> bool:
     text = paths.resolve(entry["text_file"]).read_text(encoding="utf-8",
                                                        errors="replace")

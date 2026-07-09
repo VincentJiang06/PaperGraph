@@ -2,6 +2,11 @@
 
 > 每项都注明证据来源(docs/05、docs/06 或代码复核)。执行纪律见
 > docs/08-test-cases.md 的 Opus 操作守则。优先级 = 价值/成本综合。
+>
+> **迭代 1 状态(Opus,2026-07-09)**:R1 · R3 · R5 · R6 · R7 已实现并测试
+> (46 tests green,新回归 tests/test_iter1.py;审计 docs/09-iter1.md)。
+> **仍待 Opus 现场跑**:R2(recall 质量,先建 TC-F 基准再改)、R4(规模,
+> 先 TC-B 采证)、R8(en 基线 TC-A)、R9(对抗 TC-J)、R10(语义,最后)。
 
 ## R1 — P2 修复:final.md 陈旧性检查(小,立即)
 

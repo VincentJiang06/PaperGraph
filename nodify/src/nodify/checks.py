@@ -87,6 +87,8 @@ def run(paths: Paths, session: dict[str, Any]) -> tuple[list[str], list[str]]:
     soft += a_soft
 
     # --- soft: laziness made visible ---
+    ACTIVE = {"open", "expanding", "pending", "investigating"}
+    DEAD_ANCESTOR = {"retired", "closed"}
     for n in nodes.values():
         kids = tree.children_of(nodes, n["node_id"])
         if (n["kind"] == "viewpoint" and kids
@@ -97,6 +99,17 @@ def run(paths: Paths, session: dict[str, Any]) -> tuple[list[str], list[str]]:
         if n["kind"] == "claim" and n["status"] == "concluded" \
                 and n["node_id"] not in concluded_with_syn:
             soft.append(f"{n['node_id']}: concluded claim has no synthesis")
+        # retire hygiene (R5): an active node stranded under a retired/closed
+        # ancestor — one warning per orphan, naming the nearest dead ancestor.
+        if n["status"] in ACTIVE:
+            cur = n
+            while cur["parent_id"] in nodes:
+                cur = nodes[cur["parent_id"]]
+                if cur["status"] in DEAD_ANCESTOR:
+                    soft.append(f"{n['node_id']} ({n['status']}) is active under "
+                                f"{cur['status']} ancestor {cur['node_id']} — "
+                                "retire or re-parent it")
+                    break
     for s in syn_records:
         b = s["based_on"]
         if not b["children"] and not b["evidence"]:

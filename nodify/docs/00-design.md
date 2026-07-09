@@ -56,6 +56,13 @@ quote 逐字校验、树距离 recall、来源压缩)整体进 V2。V1 的论据
 可随认识更新追加新版(revises 链)。**下游(简报、导出、未来的 compiler)
 只消费 synthesis,不消费过程文本**——这就是"提取逻辑、抛弃文字"的落点。
 
+**节点陈述修订(R6,`nd revise`)** —— 当一个节点的 statement 本身需要
+重述(如论点被证据收窄),`nd revise N --statement "…"` 铸一个**新节点**
+(新 id、同父同 kind、fresh 状态、`revises=N`),并把 N 退休(status_note 指向
+新 id)。**子节点与文档绑定不自动迁移**(框架永不级联,P4)——命令返回告警
+列出未迁移项,由模型决定是否 re-parent / 重新 `nd docs bind`。这给了本就存在
+但此前无写入方的 node.v1.revises 字段一个明确语义。
+
 ## 4. 记录与文件布局(V1 全部家当)
 
 ```
@@ -104,6 +111,7 @@ nd add --parent N --kind K --statement "…" [--why …] [--orientation …]
 nd add --file expand.json            # 批量挂子节点(一次发散原子落盘)
 nd promote <N> --note "…"            # viewpoint 原地升格 claim
 nd set-status <N> <status> [--note "…"] [--reason evidence|protocol]
+nd revise <N> --statement "…" [--note "…"]  # 重述陈述:铸新节点+退休旧节点(R6)
 nd conclude --file synthesis.json    # 写结论记录
 nd brief [--max-chars 8000]          # 树 → token 有界简报(核心命令,见 §6)
 nd show <N> | nd tree                # 检视(单节点血统 / 全树骨架)
@@ -112,8 +120,10 @@ nd check                             # 巡检:结构硬错误 + 纪律软警告(
 nd export [--format json|md]         # 全量导出给下游渲染器
 ```
 
-共 10 个命令组(add 双模式算一个)。每条命令一个 envelope,且**每条命令
-(含只读)追加一条 event**。清单由契约测试双向镜像;扩表 = 先改本文再改测试。
+本节是 V1 节点层命令(revise 为 R6 后补的节点操作,任何 schema 集可用);
+V2/V3 的 docs/recall/article/schema/upgrade 命令见 docs/03、docs/04。全局封闭
+清单以 CLI 契约测试为准(双向镜像)。每条命令一个 envelope,且**每条命令
+(含只读)追加一条 event**;扩表 = 先改本文再改测试。
 并发故事一句话:**树的一切写入由主会话经 nd 串行执行**;模型派出的任何
 subagent 只写 `notes/` 草稿,汇报由主会话蒸馏后落树(P12 的 V1 简化形态)。
 框架立场:**鼓励大量 subagent**——上下文隔离的调查工人天然符合"阅后即焚",
@@ -125,7 +135,9 @@ subagent 只写 `notes/` 草稿,汇报由主会话蒸馏后落树(P12 的 V1 简
 
 确定性渲染,优先级装箱,超预算从低优先级截断并如实标注 `[truncated: …]`:
 
-1. session 的 question/boundary + 预算余量(+docs 计数);
+1. session 的 question/boundary + 预算余量(+docs 计数)+ **ACTIVITY**
+   (从事件日志聚合的 add/conclude/ingest/bind/revise 计数,R7:让调查成本
+   可见;框架不设成本机制,抓取预算是整场调查的聚合值,P4);
 2. **前沿**:所有 open/expanding 观点、pending/investigating 论点(带
    statement + 一行血统路径;investigating 带 since 时间戳);
 3. 根链结论:每个 synthesized 观点的最新 synthesis(lean + summary 单行);
@@ -144,8 +156,10 @@ subagent 只写 `notes/` 草稿,汇报由主会话蒸馏后落树(P12 的 V1 简
 - **硬(exit 1)**:记录 schema 非法;悬空引用(parent_id / based_on /
   revises 指向不存在的 id);kind↔status 非法组合;预算超限。
 - **软(警告,exit 0)**:发散无 adversarial 方向的 viewpoint;based_on 全空
-  的 synthesis;evidence 无 url 也无 locator 的引用;长期 open 且无子节点的
-  观点;concluded 但无 synthesis 的 claim。
+  的 synthesis;evidence 无 url 也无 locator 的引用;concluded 但无 synthesis
+  的 claim;retired/stuck/closed 无 status_note;**active 节点挂在 retired/
+  closed 祖先下**(R5 退休卫生:退休一个节点不级联,子树里的 open/pending 工作
+  会被静默悬空,check 点名最近的 dead 祖先让它可见)。
   软警告是"让偷懒可见"的机制(泛化框架的过程保证是软的,这是有意的取舍)。
 
 ## 8. 技能层(V1 交付的另一半)

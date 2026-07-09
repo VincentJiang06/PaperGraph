@@ -212,6 +212,55 @@ def set_status(paths: Paths, node_id: str, status: str, *,
     return record
 
 
+def revise(paths: Paths, session: dict[str, Any], node_id: str,
+           new_statement: str, *, note: str | None = None,
+           actor: str | None = None) -> tuple[dict[str, Any], dict[str, Any], list[str]]:
+    """Restate a node's claim/question (R6, wiring node.v1.revises). Mints a
+    FRESH node (new id, same parent+kind, revises=<old>, fresh status) and
+    retires the old one with a pointer note. Children and doc bindings are
+    NOT auto-migrated (the framework never cascades — P4); the model decides
+    whether to re-parent / re-bind. Returns (new, retired, warnings)."""
+    nodes = nodes_by_id(paths)
+    if node_id not in nodes:
+        raise DomainError([f"unknown node: {node_id}"])
+    node = nodes[node_id]
+    if node["status"] == "retired":
+        raise DomainError([f"{node_id} is already retired"])
+    if not new_statement.strip():
+        raise UsageError(["revise requires a non-empty --statement"])
+    fresh_status = "open" if node["kind"] == "viewpoint" else "pending"
+    # a claim revision is net +1 open claim only when the old one was settled
+    if node["kind"] == "claim" and node["status"] not in OPEN_CLAIM_STATUSES \
+            and _open_claims(nodes) >= session["budgets"]["max_open_claims"]:
+        raise DomainError([f"budget max_open_claims="
+                           f"{session['budgets']['max_open_claims']} reached"])
+    actor = clock_actor(actor)
+    new_id = next_id("N", list(nodes))
+    new = {**node, "node_id": new_id, "status": fresh_status,
+           "statement": new_statement, "revises": node_id,
+           "status_note": None, "stuck_reason": None,
+           "created_at": clock_now(), "created_by": actor}
+    retired_note = (f"{note} " if note else "") + f"revised → {new_id}"
+    retired = {**node, "status": "retired", "status_note": retired_note,
+               "created_at": clock_now(), "created_by": actor}
+    _append_node(paths, new)
+    _append_node(paths, retired)
+
+    warnings: list[str] = []
+    kids = children_of(nodes, node_id)
+    if kids:
+        warnings.append(f"{node_id} had {len(kids)} child(ren) "
+                        f"({[k['node_id'] for k in kids]}) — NOT migrated to "
+                        f"{new_id}; re-parent if still relevant")
+    from . import docsdb
+    bound = sorted(e["doc_id"] for e in docsdb.entries_by_id(paths).values()
+                   if any(b["node_id"] == node_id for b in e["bindings"]))
+    if bound:
+        warnings.append(f"{node_id} carried doc bindings {bound} — NOT migrated; "
+                        f"nd docs bind them to {new_id} if still relevant")
+    return new, retired, warnings
+
+
 def conclude(paths: Paths, session: dict[str, Any], payload: dict[str, Any], *,
              actor: str | None = None) -> tuple[dict[str, Any], list[str]]:
     """Write a synthesis record. Payload = the synthesis schema minus schema /

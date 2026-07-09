@@ -135,6 +135,19 @@ def set_status(node_id: str = typer.Argument(...),
 
 
 @app.command()
+def revise(node_id: str = typer.Argument(...),
+           statement: str = typer.Option(..., "--statement",
+                                         help="the restated claim/question"),
+           note: Optional[str] = typer.Option(None, "--note"),
+           root: Optional[str] = _ROOT_OPT, session: Optional[str] = _SESSION_OPT) -> None:
+    def go(paths: Paths, sess):
+        new, retired, warns = tree.revise(paths, sess, node_id, statement, note=note)
+        return ({"new": new, "retired": retired}, [new["node_id"], node_id],
+                f"revise {node_id} -> {new['node_id']}", warns)
+    _run("revise", root, session, go, mutating=True)
+
+
+@app.command()
 def conclude(file: Path = typer.Option(..., "--file"),
              root: Optional[str] = _ROOT_OPT, session: Optional[str] = _SESSION_OPT) -> None:
     def go(paths: Paths, sess):
@@ -255,6 +268,22 @@ def docs_ingest(file: Path = typer.Option(..., "--file"),
         return ({"entry": entry}, [entry["doc_id"]],
                 f"ingest {entry['doc_id']}: {entry['title'][:80]}", warns)
     _run("docs ingest", root, session, go, mutating=True)
+
+
+@docs_app.command("bind")
+def docs_bind(doc_id: str = typer.Argument(...),
+              node: str = typer.Option(..., "--node"),
+              relation: str = typer.Option(..., "--relation",
+                                           help="supports|refutes|context|background"),
+              note: Optional[str] = typer.Option(None, "--note"),
+              root: Optional[str] = _ROOT_OPT, session: Optional[str] = _SESSION_OPT) -> None:
+    def go(paths: Paths, sess):
+        from . import docsdb
+        session_mod.require_set(sess, "v2")
+        entry, warns = docsdb.bind(paths, doc_id, node, relation, note=note)
+        return ({"entry": entry}, [doc_id, node],
+                f"bind {doc_id} -> {node} ({relation})", warns)
+    _run("docs bind", root, session, go, mutating=True)
 
 
 @docs_app.command("for-node")

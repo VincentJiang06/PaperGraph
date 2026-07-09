@@ -58,6 +58,9 @@ sessions/<id>/
 ```
 nd docs ingest --file entry.json   # 入库:{kind,title,url?,text_file(待归档的文本路径),summary,bindings[...]}
                                    # 代码算 hash;命中已有条目→只追加绑定
+nd docs bind DOC-xxxx --node N --relation R [--note …]
+                                   # 给已归档条目加绑定,无需重投文本(R3);
+                                   # (node,relation) 重复 = no-op 告警
 nd docs for-node <N> [--all]       # 列出绑定到 N(默认含祖先)的条目
 nd recall --node N --query "…" [--k 8]
 nd upgrade                         # schema set v1 → v2(幂等,记事件)

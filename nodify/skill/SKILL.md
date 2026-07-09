@@ -34,7 +34,9 @@ envelope 里(session_dir / notes_dir);草稿区就是 `<session_dir>/notes/`。
    新方向"(反事实探针失败),它就穷尽了:
    `nd promote N --note "尝试过的方向/为何不成立/反事实探针/预期证据形态"`。
    论点必须是**最小的、可直接投入调查的明确问题**。太大就先
-   `nd add --parent <claim>` 拆解成子论点。
+   `nd add --parent <claim>` 拆解成子论点。若某个节点的**陈述本身**需要
+   重述(证据把论点收窄了),用 `nd revise N --statement "…"`——它铸新节点
+   并退休旧节点,子节点与绑定不自动迁移(命令会告警,你决定是否 re-parent)。
 3. **调查(论证层)**:**先召回再搜索**——`nd recall --node N --query "…"`
    (索引明显为空时可跳过,但一旦入过库就必须先召回),
    命中的条目把 text_file 直接喂给工人("先读这个,再决定搜什么");然后
@@ -45,7 +47,9 @@ envelope 里(session_dir / notes_dir);草稿区就是 `<session_dir>/notes/`。
 4. **蒸馏(焚前入库)**:每个 subagent 报告读完立即处理,原文丢弃。
    结论**实际依赖**的来源先归档:让工人把抓到的页面文本存 notes/,然后
    `nd docs ingest --file entry.json`({kind,title,url?,text_file,summary≤500,
-   bindings:[{node_id,relation}]})——同文自动去重,只加绑定。再写结论:
+   bindings:[{node_id,relation}]})——同文自动去重,只加绑定。若一篇已归档的
+   条目对另一个节点也相关(常见:反证同时支持对立假设),用
+   `nd docs bind DOC-xxxx --node N --relation R` 直接加绑定,不必重投文本。再写结论:
    `nd conclude --file syn.json` —— evidence 条目用 **doc_id 指向归档条目**,
    quote 必须逐字(不逐字会被自动降级并告警;宁可 paraphrase 别编);
    没归档的次要来源至少带 url 或 locator(check 会点名)。

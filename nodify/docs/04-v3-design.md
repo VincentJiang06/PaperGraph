@@ -57,10 +57,12 @@ nd schema <alias|record>                  # 自描述:schema 全文 + 示例 pay
 ## 4. check 融合(article 存在时追加)
 
 - hard:section 记录的 cites 悬空;outline 的 grounded_in/node_ids/excluded
-  悬空;assemble 后 final.md 中的 cite 与 records 不一致 **[unenforced →
-  路线图 R1:check 尚未实现此项,重跑 assemble 可修]**。
+  悬空;**final.md 陈旧**——check 在结构无误时用最新大纲+已注册节重算文章
+  文本,与磁盘 final.md 逐字比对,不一致即判 hard(提示重跑 assemble)。
+  重算确定性(assemble 无时间戳),故"输出会变"⇔"stale"(R1,修复文档
+  声称而代码未做的 P2 缺口)。
 - soft:大纲节未注册成文;成文节不在最新大纲;argument/evidence 节零引用;
-  被排除节点无 reason。
+  被排除节点无 reason;retired/closed 祖先下仍挂 active 子节点(R5)。
 
 ## 5. 升级
 

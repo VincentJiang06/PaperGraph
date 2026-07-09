@@ -7,9 +7,9 @@ import typer
 from nodify.cli import app
 
 CLOSED_COMMANDS = {
-    "init", "add", "promote", "set-status", "conclude",
+    "init", "add", "promote", "set-status", "revise", "conclude",
     "brief", "show", "tree", "log", "check", "export",
-    "upgrade", "recall", "docs ingest", "docs for-node",
+    "upgrade", "recall", "docs ingest", "docs bind", "docs for-node",
     "article outline", "article section", "article assemble", "article show",
     "schema",
 }

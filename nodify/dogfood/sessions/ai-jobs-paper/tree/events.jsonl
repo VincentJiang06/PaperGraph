@@ -89,3 +89,6 @@
 {"schema":"event.v1","event_id":"EV-000089","at":"2026-07-08T19:45:32Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
 {"schema":"event.v1","event_id":"EV-000090","at":"2026-07-08T19:48:08Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
 {"schema":"event.v1","event_id":"EV-000091","at":"2026-07-08T19:48:08Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (1840 chars)"}
+{"schema":"event.v1","event_id":"EV-000092","at":"2026-07-09T03:06:09Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000093","at":"2026-07-09T03:06:09Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (1908 chars)"}
+{"schema":"event.v1","event_id":"EV-000094","at":"2026-07-09T03:06:20Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (1908 chars)"}

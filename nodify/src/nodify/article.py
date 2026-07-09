@@ -117,7 +117,13 @@ def register_section(paths: Paths, section_id: str, draft: Path
     return record, warnings
 
 
-def assemble(paths: Paths) -> tuple[dict[str, Any], list[str]]:
+FINAL = "article/final.md"
+
+
+def _render(paths: Paths) -> tuple[str, dict[str, Any], list[str]]:
+    """Deterministic assembly of the final article TEXT from the latest outline
+    + registered sections. Pure: no disk write. `assemble` writes what this
+    returns; `check` recomputes it to detect a stale final.md (R1)."""
     warnings: list[str] = []
     outline = latest_outline(paths)
     if outline is None:
@@ -131,7 +137,7 @@ def assemble(paths: Paths) -> tuple[dict[str, Any], list[str]]:
     for sec in outline["sections"]:
         sid = sec["section_id"]
         rec = sections.get(sid)
-        if rec is None:
+        if rec is None or not paths.resolve(rec["file"]).is_file():
             missing.append(sid)
             continue
         text = paths.resolve(rec["file"]).read_text(encoding="utf-8",
@@ -151,11 +157,19 @@ def assemble(paths: Paths) -> tuple[dict[str, Any], list[str]]:
             src = e["url"] or e["text_file"]
             parts.append(f"- [{doc_id}] {e['title']} — {src}")
         parts.append("")
-    final_rel = "article/final.md"
-    paths.resolve(final_rel).write_text("\n".join(parts), encoding="utf-8")
-    return ({"file": final_rel, "sections": [s["section_id"] for s in
-             outline["sections"] if s["section_id"] in sections],
-             "skipped": missing, "references": cited}, warnings)
+    text = "\n".join(parts)
+    meta = {"file": FINAL,
+            "sections": [s["section_id"] for s in outline["sections"]
+                         if s["section_id"] in sections
+                         and paths.resolve(sections[s["section_id"]]["file"]).is_file()],
+            "skipped": missing, "references": cited}
+    return text, meta, warnings
+
+
+def assemble(paths: Paths) -> tuple[dict[str, Any], list[str]]:
+    text, meta, warnings = _render(paths)
+    paths.resolve(FINAL).write_text(text, encoding="utf-8")
+    return meta, warnings
 
 
 def check(paths: Paths, nodes: dict[str, Any], syn_ids: set[str],
@@ -196,4 +210,19 @@ def check(paths: Paths, nodes: dict[str, Any], syn_ids: set[str],
         for c in set(CITE_RE.findall(text)):
             if c not in entries:
                 hard.append(f"{rec['section_id']}: cite does not resolve: {c}")
+
+    # R1 (P2 fix): a final.md on disk must equal what the current outline +
+    # registered sections would assemble to — otherwise it is stale. Only run
+    # this once the article is structurally sound (no missing files / dangling
+    # cites above), so the byte comparison is meaningful.
+    final = paths.resolve(FINAL)
+    if not hard and outline is not None and final.is_file():
+        try:
+            expected, _, _ = _render(paths)
+        except DomainError:
+            expected = None
+        if expected is not None and \
+                final.read_text(encoding="utf-8", errors="replace") != expected:
+            hard.append("article/final.md is stale — the outline or a section "
+                        "changed since assembly; re-run nd article assemble")
     return hard, soft
