@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from .errors import DomainError
+
 
 def dumps(record: dict[str, Any]) -> str:
     return json.dumps(record, ensure_ascii=False, separators=(",", ":"))
@@ -21,9 +23,15 @@ def read_all(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         return []
     out = []
-    for line in path.read_text(encoding="utf-8").splitlines():
+    where = "/".join(path.parts[-2:])  # e.g. tree/nodes.jsonl
+    for lineno, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
         if line.strip():
-            out.append(json.loads(line))
+            try:
+                out.append(json.loads(line))
+            except json.JSONDecodeError as e:
+                # a corrupt line must surface as a clean, located error, never a
+                # raw crash (TC-E corruption-recovery UX)
+                raise DomainError([f"{where}:{lineno}: corrupt JSONL line — {e.msg}"])
     return out
 
 

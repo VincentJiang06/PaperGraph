@@ -65,7 +65,11 @@ def ingest(paths: Paths, payload: dict[str, Any]) -> tuple[dict[str, Any], list[
     if not src.is_file():
         raise UsageError([f"text_file not found: {raw_path} (absolute or "
                           "session-relative, e.g. notes/saved.txt)"])
-    text = src.read_text(encoding="utf-8", errors="replace")
+    raw_bytes = src.read_bytes()
+    if b"\x00" in raw_bytes:
+        raise DomainError(["text_file looks binary (contains null bytes) — "
+                           "archive extracted text, not a raw binary/PDF"])
+    text = raw_bytes.decode("utf-8", errors="replace")
     if not text.strip():
         raise DomainError(["text_file is empty — nothing to archive"])
 
@@ -195,6 +199,23 @@ def _distance(nodes: dict, query_id: str, bound_id: str) -> str:
 
 
 _ORDER = {"self": 0, "descendant": 1, "ancestor": 2, "sibling": 3, "global": 4}
+_STRONG_WEIGHT = 3  # title/summary/notes count 3× an archived-body token match
+
+
+def _relevance(paths: Paths, entry: dict[str, Any], qtok: set[str]) -> tuple[int, int, int]:
+    """(score, strong_hits, body_hits). R2: title/summary/binding-notes are
+    weighted, and the archived FULL TEXT is scored too — so a doc relevant only
+    in its body still ranks (the live-test-2 G4 weakness was title+summary-only)."""
+    strong = tokens(entry["title"] + " " + entry["summary"] + " "
+                    + " ".join(b.get("note") or "" for b in entry["bindings"]))
+    try:
+        body = tokens(paths.resolve(entry["text_file"]).read_text(
+            encoding="utf-8", errors="replace"))
+    except OSError:
+        body = set()
+    strong_hits = len(qtok & strong)
+    body_hits = len(qtok & body)
+    return _STRONG_WEIGHT * strong_hits + body_hits, strong_hits, body_hits
 
 
 def recall(paths: Paths, node_id: str, query: str, k: int = 8) -> dict[str, Any]:
@@ -206,14 +227,18 @@ def recall(paths: Paths, node_id: str, query: str, k: int = 8) -> dict[str, Any]
     for doc_id, e in sorted(entries_by_id(paths).items()):
         dist = min((_distance(nodes, node_id, b["node_id"]) for b in e["bindings"]),
                    key=_ORDER.get)
-        overlap = len(qtok & tokens(f"{e['title']} {e['summary']}"))
-        scored.append((_ORDER[dist], -overlap, doc_id, dist, overlap, e))
+        score, sh, bh = _relevance(paths, e, qtok)
+        # sort key: distance tier first (design), then relevance desc, then id
+        scored.append((_ORDER[dist], -score, doc_id, dist, score, sh, bh, e))
     scored.sort(key=lambda t: t[:3])
     hits = []
-    for _, _, doc_id, dist, overlap, e in scored[:k]:
+    for _, _, doc_id, dist, score, sh, bh, e in scored[:k]:
+        why = (f"distance {dist}; relevance {score} "
+               f"(strong×{_STRONG_WEIGHT}={sh * _STRONG_WEIGHT}, body={bh})")
+        if score == 0:
+            why += " — NO query-token match"
         hits.append({"doc_id": doc_id, "title": e["title"], "summary": e["summary"],
-                     "text_file": e["text_file"], "distance": dist,
-                     "why": f"binding distance {dist}, {overlap} query tokens matched"})
+                     "text_file": e["text_file"], "distance": dist, "why": why})
     result = {"schema": "recall.result.v1", "node_id": node_id, "query": query,
               "hits": hits}
     errs = validate(result)

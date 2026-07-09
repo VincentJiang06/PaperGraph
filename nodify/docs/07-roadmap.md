@@ -5,8 +5,12 @@
 >
 > **迭代 1 状态(Opus,2026-07-09)**:R1 · R3 · R5 · R6 · R7 已实现并测试
 > (46 tests green,新回归 tests/test_iter1.py;审计 docs/09-iter1.md)。
-> **仍待 Opus 现场跑**:R2(recall 质量,先建 TC-F 基准再改)、R4(规模,
-> 先 TC-B 采证)、R8(en 基线 TC-A)、R9(对抗 TC-J)、R10(语义,最后)。
+> **迭代 2(Opus,2026-07-09)**:R2 · R4 · R9 完成(59 tests)。
+> R2 召回加入全文+绑定注解打分(TC-F 基准:body-only 查询 recall@1=1.0);
+> R9 对抗探针(TC-J)证明防线成立,并**抓到真 bug**:check 遇畸形/非 JSON
+> 记录会崩(未捕获异常),已修为 schema 错误提前返回 + store 定位报错(TC-E)。
+> R4 压测(156 节点)证明 brief 有界截断、check 不崩——无需改代码。
+> **仍待 Opus 现场跑**:R8(en 基线 TC-A)、R10(语义召回,V4,可选依赖)。
 
 ## R1 — P2 修复:final.md 陈旧性检查(小,立即)
 

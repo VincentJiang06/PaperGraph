@@ -20,6 +20,11 @@ def run(paths: Paths, session: dict[str, Any]) -> tuple[list[str], list[str]]:
     doc_records = store.read_all(paths.resolve(docsdb.INDEX))
     for rec in node_records + syn_records + doc_records:
         hard += validate(rec)
+    # bail before structural checks if any record is schema-invalid: the
+    # accessors below assume well-formed records, so proceeding would CRASH on
+    # a malformed (e.g. out-of-band-forged) record instead of reporting it.
+    if hard:
+        return sorted(hard), []
 
     nodes = store.latest_by_id(paths.resolve(NODES), "node_id")
 
@@ -118,4 +123,9 @@ def run(paths: Paths, session: dict[str, Any]) -> tuple[list[str], list[str]]:
             if ref["url"] is None and ref["locator"] is None and ref.get("doc_id") is None:
                 soft.append(f"{s['synthesis_id']}/{ref['ref_id']}: evidence has "
                             "neither doc_id nor url nor locator")
+            # R9: a verbatim quote is only trustworthy if verifiable against an
+            # archived doc — a quote with no doc_id is "trust me". Make it visible.
+            if ref.get("quote") and ref.get("doc_id") is None:
+                soft.append(f"{s['synthesis_id']}/{ref['ref_id']}: quote is not "
+                            "verifiable (no doc_id — archive the source to verify it)")
     return sorted(hard), sorted(soft)
