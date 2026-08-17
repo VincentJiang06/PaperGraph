@@ -1,4 +1,0 @@
-Source: World Nuclear Association, "Carbon Dioxide Emissions From Electricity" (citing IPCC AR5, 2014, median lifecycle emissions), updated 2022.
-URL: https://world-nuclear.org/information-library/energy-and-the-environment/carbon-dioxide-emissions-from-electricity
-
-On a life-cycle basis, nuclear power emits just a few grams of CO2 equivalent per kWh of electricity produced. Whilst estimates vary, the United Nations (UN) Intergovernmental Panel on Climate Change (IPCC) has provided a median value among peer-reviewed studies of 12g CO2 equivalent/kWh for nuclear, similar to wind, and lower than all types of solar.

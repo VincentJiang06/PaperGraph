@@ -36,5 +36,5 @@ fresh agent continue, or whether it must restart.
 }
 ```
 For the tree arm: `cd` into the workspace and run
-`/Users/vince/playground/Paper Graph/.venv/bin/nd brief` first, then drill with
+`~/playground/Paper Graph/.venv/bin/nd brief` first, then drill with
 `nd tree`, `nd show <id>`, `nd log`, `nd docs for-node <id>`. Write the JSON, then stop.

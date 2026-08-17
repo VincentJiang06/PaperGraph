@@ -1,140 +1,116 @@
-# PaperGraph
+# academic-research-plugin — 规划仓（v2，从零重做）
 
-PaperGraph is a small, coding-agent-supervised workflow that turns a research topic into a
-finished Markdown paper. It improves two failure modes with re-runnable checks:
+> 一个全新的 DSH profile：**超并行、多 loop 的学术证据探索系统**。
+> 产品是**可信度**——每条 claim 携带机器判定的状态，背书通道只有三条：
+> 数据分析可重跑 / 他文引证可回溯到原文 / 逻辑推断前提可追。
+> **研究是产品，散文只是渲染层。**
 
-- **Divergence:** the paper must engage the field's real positions and its strongest objection.
-- **Rigor and traceability:** every empirical claim must reproduce from raw data or verify against
-  a saved source.
+**当前状态：规划完成 + 过 R1 攻击轮 + R2 部分修复；实现尚未开始，但门已经有了。**
+`gates/` 下有五道可运行的门与两套负例套件（`./gates/run_all.sh`，退出码判定），
+`.loop/` 下有过 linter 的九阶段迭代 runbook。v1 规划已归档于 `.archive/v1-2026-08-17/`，本轮从零重做。
 
-The project deliberately does not provide a claim graph, queue framework, model API wrapper,
-database, or product CLI. The host coding agent coordinates native subagents; PaperGraph itself
-does not need a model API key.
+---
 
-## Current state
+## 关于这个仓库（PaperGraph → 本项目）
 
-The project was reset on 2026-07-09 after the previous graph/CLI designs failed to improve paper
-quality reliably. That implementation is retained only under `archive/pre-reset-2026-07-09/` and
-is not an implementation source.
+本仓库原先装的是 **Paper Graph**：一个 claim-graph 研究框架，两代实现（nodify 2,036 行 / paperproof v2 13,949 行）。
+它现在装的是它的**后继者**——一个建在 DSH 上的学术证据探索 profile。
 
-The active workflow is experimental but runnable:
+**前代没有被删掉，它是本项目最重要的证据来源之一。**
 
-- Four domain runs under `runs/` pass both author-facing gates.
-- The independent eval has literature answer keys for all four runs.
-- Only `nuclear-safety` currently has the complete D2/D3/D4b/D5 judgment panel; it is `REVISE`.
-- The other runs have only partial evals. A mechanical `SHIP` result without a complete panel is
-  provisional and must not be treated as a release decision.
-- The required gated-versus-freehand A/B baseline has not been completed.
+- 前代的全部代码、消融实验、run 记录保留在 `archive/`，并在 commit `71ccea0` 里完整存档
+  （含此前从未提交过的 post-reset 门控工作流，1,605 个文件）。
+- `00-PREMISE.md` §B 是对前代四次消融的**重新审计**：v1 曾把「三代框架被四次消融判死」当作最高禁令，
+  一手考古发现四次消融**只测了第四代**，那条"单调下降曲线"是三个不同实验的三个不同量拼的，
+  最差那格的最大分项**是渲染伪影**（作者在同一文件里就说了）。
+  **真正被证伪的是度量方法**，不是结构本身。该禁令因此降级为一条有界的、标明证据强度的设计偏置。
+- `research/v2/gt-pg-failure.md` 与 `gt-pg-current.md` 是这次考古的完整记录。
 
-Known executable conformance gaps, intentionally not fixed during documentation-only work:
+换句话说：这个仓库从「一个被自己的消融判死的框架」变成了「对那次判决的复审 + 一个不重蹈覆辙的后继设计」。
+前代的价值不在于它的代码能跑，而在于它留下了**可以被检验的失败记录**——
+本项目的第一条产品主张（可信度 = 机器判定的状态）正是从那里长出来的。
 
-- `eval/harness.py` does not yet fail closed when judgment fields are absent. It also does not
-  fully enforce the steelman mean, honesty-flag, and referee-band rules in `eval/EVAL.md`.
-- `gates/rigor_gate.py` reports a failed DVC reproduction, but its final exit decision currently
-  depends only on values found in metric files; stale metrics could therefore mask a DVC failure.
-- `eval/protocol.md` does not yet define every per-judge output and aggregation field consumed by
-  the demonstrated verdict artifact. That interface must be completed on the eval track.
-- `eval/selftest.py` passes its present cases but has no negative case proving that a missing panel
-  cannot produce `SHIP`.
+**部分调研未收录**：`research/v2/` 在本仓库是 21 份而非 26 份，
+差的五份是对第三方包（`@deepseek-ai/dsh`，npm 公开包）的实现细节逆向档案。
+理由与后果（456 个指针在本仓库内解析不了，占 33.8%）写在 [`research/v2/EXCLUDED.md`](research/v2/EXCLUDED.md)，
+并由 `gates/check_pointers.mjs` 识别为独立的「已声明排除」状态，不与「欠债」混同。
 
-## Document map
+---
 
-The documents are intentionally split by responsibility:
+## 文档地图
 
-| Layer | Canonical files | Purpose |
+| 文件 | 职责 | 规模 |
 |---|---|---|
-| Design | `DESIGN.md` | Product goal, trade-offs, and the small-system architecture |
-| Workflow | `WORKFLOW.md` | Topic-to-paper loop, agent roles, parallel waves, and stop conditions |
-| Gate interfaces | `gates/divergence.md`, `gates/rigor.md` | Exact author-side file formats and deterministic pass rules |
-| Held-out eval | `eval/EVAL.md` | Independent quality policy and final ship criteria |
-| Eval interface | `eval/protocol.md` | Agent inputs, output contract, and aggregation handoff |
-| History | `CHANGELOG.md`, `eval/CHANGELOG.md` | Separate workflow and eval change tracks |
+| [00-PREMISE.md](00-PREMISE.md) | **前提审计**——本项目押的每一条赌注，其正反证据与强度，以及会推翻它的观测 | 768 行 / 9 条赌注 |
+| [01-CONTRACTS.md](01-CONTRACTS.md) | **唯一规范源**——状态模型、claim 种类、证据等级、写权矩阵、身份与独立性、门分级、flag 词表、文件契约、术语表 | 1092 行 / 68 条可检验断言 |
+| [02-ARCHITECTURE.md](02-ARCHITECTURE.md) | profile 形态、模块分拆 M0–M8、DSH 能力映射、加载期门、运行时约束 | 755 行 / 27 条能力判定 |
+| [03-EVIDENCE-ENGINE.md](03-EVIDENCE-ENGINE.md) | 三通道验证机制、门实现契约、反伪造接线、admission、负向测试 | 1439 行 |
+| [04-ORCHESTRATION.md](04-ORCHESTRATION.md) | 拓扑、循环结构、扇出准入、停止与饱和、预算双计数器、检索资源治理、人在环 | 864 行 |
+| [05-TESTING.md](05-TESTING.md) | 三层评测、指标纪律、held-out、A/B 证伪、红队、校准、eval-of-eval、人力预算 | 1238 行 |
+| [06-SURVEY.md](06-SURVEY.md) | 调研摘要与**载荷数字总表**（全项目引用数字的唯一入口） | 1131 行 / 784 行核验表 |
+| [07-ATTACK-LEDGER.md](07-ATTACK-LEDGER.md) | **攻击台账**——每轮的靶标指纹、种子命中率、findings 全量、裁决与修复状态 | 298 行 / R1 收 164 条 |
+| `research/v2/` | 证据基座：26 份调研文件 / 25 维度 / 11,661 行 | ~1.1 MB |
+| `.loop/` | 持续迭代开发 runbook（**设计态，不自动启动**） | — |
 
-`AGENTS.md` is the cross-agent operating contract. `CLAUDE.md` is the Claude Code supplement.
-`archive/` is historical evidence only, and `product/` is product planning; neither is binding.
+**阅读顺序**：00 → 01 → 02 → 03/04/05。
+**权威规则**：`01-CONTRACTS.md` 是所有共享词汇的唯一定义源，其他文档**只引用不复述**；
+若某文档需要一个 §9 术语表里没有的词，必须挂起裁决而非自行造词。
 
-When documents disagree, the narrowest boundary document wins: gate file questions go to the
-matching `gates/*.md`; held-out verdict questions go to `eval/EVAL.md`; orchestration questions go
-to `WORKFLOW.md`; design intent goes to `DESIGN.md`. Executable scripts must be brought into
-conformance with these documents rather than silently redefining them.
+---
 
-## Quality model
+## 本轮相对 v1 的五条改进（"更好"的可检验定义）
 
-```text
-topic
-  -> native subagents map positions, steelman, attack, and ground evidence
-  -> orchestrator owns and revises paper.md
-  -> both in-loop gates PASS                    candidate paper
-  -> held-out eval re-derives the yardstick     SHIP or REVISE
-```
+| # | 标准 | 兑现情况 |
+|---|---|---|
+| 1 | **地面真值取自一手来源** | 7 位 reader 直读 194 个已安装 DSH 包，产出 **50 处与二手文档的冲突**，其中 12 条改变设计（见 `research/v2/GROUND-TRUTH-CORRECTIONS.md`） |
+| 2 | **数字落笔即验证** | **784 行核验表**，每个承重数字带口径三元组（指标/样本/对比）+ 状态 + 一手出处 + as-of 日期；**37 个在落笔时当场纠正**（口径：06-SURVEY §3.3「当场纠正的数字」表的数据行数；语料全库标 `corrected` 的是 50 行，两者不是同一个对象） |
+| 3 | **独立性从第一轮就跨厂商** | 攻击轮进行中（见 07） |
+| 4 | **v1 的已知债当场还清** | `[E:]` 指针全文强制；超并行 vs 同预算串行的 A/B 已写入 05-TESTING §T4 作为一等实验臂 |
+| 5 | **完备性对照** | 攻击轮后拿 v1 的 34 条 findings 做覆盖率 diff，只许更全 |
 
-The two layers solve different problems:
+---
 
-- `gates/` is a fast, deterministic floor used during every revision. It is useful but gameable
-  because the author also creates `positions.md` and `claims.tsv`.
-- `eval/` is an out-of-loop, author-blind judge. It derives its position map from real literature,
-  dispatches independent judgment agents, and is required for a final `SHIP` decision.
+## 本轮最重要的三个发现
 
-Passing both gates produces a candidate, not a finished release. Missing eval dimensions fail
-closed: the result is incomplete, never `SHIP`.
+**1. v1 的证据台账方案在 DSH 上行不通。** v1 打算把证据建成"自定义 log-only 会话事件"。
+一手代码：`ignorable` 字段只读不写（194 包零写入方），这么做会产出**不可 resume 的 session**。
+正确落点是 `tool/result.data.meta`——对模型不可见、抗 pruner、抗持久化、与 `tool/call` 由核心校验的 seq 天然绑定。
 
-## Per-paper files
+**2. 超并行不是质量主张。** 公开文献中**不存在任何等算力对照实验**证明扇出提升研究质量；
+全部正面数据点都是并行外形下的 test-time scaling 且有混杂，而反向证据更锐（工具调用 2→150 时事实核查掉约 42pp；
+某实验室三代把工具调用上限 600→400→300 而分数反升）。
+本项目据此把 `hyper-parallel` **重定义为吞吐与核验密度主张**：扇出只用于覆盖率、同一断言的 N 路独立核验、
+上下文卫生；**禁止**用于论证链构建、跨 claim 一致性推理、最终裁决。等预算 A/B 是本项目的核心实验，
+公开文献里没有人做过。
 
-```text
-runs/<slug>/
-  paper.md          artifact revised by the orchestrator
-  positions.md      author-side map used by the divergence gate
-  claims.tsv        empirical-claim ledger used by the rigor gate
-  transforms/       one deterministic transform per data claim
-  metrics/          transform outputs checked by the rigor gate
-  sources/          saved text for source claims
-  dvc.yaml          data-claim pipeline; omitted when there are no data claims
-  dvc.lock          generated provenance for data claims
-  gate_report.md    latest results from both in-loop gates
-```
+**3. v1 最高禁令的地基被削弱。** v1 把"永不建造结构框架"当 P-1，理由是"三代框架被四次消融判死"。
+一手考古：四次消融**只测了第四代**；那条"单调下降曲线"是三个不同实验的三个不同量拼的；
+最差那格的最大分项**是渲染伪影**（作者在同一文件里就说了）；"纪律是最大杠杆"只在 N=1 成立，N=5 时反号。
+**真正被证伪的是度量方法**——LLM 评委在 2 档有效分辨率上测不出结构增益；
+而本项目的验收指标全部机械可测，这正是它们缺的那把尺子。P-1 已降级为有界的设计偏置 P-1′。
 
-The exact `positions.md` and `claims.tsv` contracts live in the two gate interface documents.
+---
 
-## Run the checks
+## 诚实声明：未偿债与阻塞项
 
-From the repository root:
+**本项目对自己的门当前不押注**（00-PREMISE B8）。B1–B7 里所有"靠门保证"的说法都建立在
+三条尚未落地的代码上：gate-integrity 真脚本、走真实入口的负例套件、台账格式门。
+在它们落地前，本规划的可信度承诺是**设计论证而非已验证性质**。
 
-```bash
-python3 gates/rigor_gate.py runs/<slug>
-python3 gates/divergence_gate.py runs/<slug>
-```
+**M0 阻塞项**（实现前必须解决，不是普通测试用例）：
 
-For a pre-ship held-out evaluation, first create the literature answer key and judgment panel by
-following `eval/protocol.md`, then run:
+1. **PDF 可见性区分**——通道分离的架构前提是能判断"这段文字对人是否可见"，而多数 PDF 抽取库
+   拿不到颜色/字号/图层信息，PDF 又是学术场景主要摄取对象。
+2. **`quote_faithful` 的 100% 承诺缺实测**——语料中没有逐字引语匹配的端到端公开测量，
+   也没有 PDF 文本抽取保真度的公开量化。这是核心承诺，必须自测。
+3. **三处 DSH 实测空缺**：M1 插件 `inject` 的确切服务名、headless 一次性任务的 CLI 调用形式、
+   workflow 引擎行的 entry id（patch 打不中只 warn 不 fail，猜 id = 静默失效）。
+4. **`run_code` 是否可达 `node:fs`** ——直接决定"run_code 绕过 fs 围栏"的措辞强度。
+5. **compaction 从未在本机触发**（139 个 session、0 条 replace）——整个证据锚点方案建立在
+   "pruner 展开保留 meta"这条代码事实上，读对了但没跑过。
+6. **中央限速网关的失效行为未设计**——纯自建跨进程单点、DSH 侧零支撑、一挂全停。
+7. **`gate_integrity.sh` 自身谁来证明没被改**——自指问题，本仓库无先例答案。
 
-```bash
-python3 eval/harness.py score runs/<slug> \
-  --key eval/corpus/<slug>/answer_key.json \
-  --arm gated
-python3 eval/selftest.py
-```
-
-Data claims require DVC because the rigor gate delegates re-execution and provenance to it.
-Source-only papers do not need a DVC pipeline.
-
-## Agent execution
-
-Use the host coding agent's native subagent framework. Do not add provider SDKs or API-key
-configuration to PaperGraph. Parallel work is expected, but shared files have one writer:
-
-- advocates run in parallel, one bounded task per mapped position;
-- the adversary runs alongside the advocates;
-- claim grounders run in parallel with disjoint `claim_id` outputs;
-- held-out advocates, adversary, claim auditor, and at least three referees run independently;
-- only the orchestrator merges worker returns into shared paper artifacts.
-
-The full dispatch and ownership rules are in `WORKFLOW.md` and `AGENTS.md`.
-
-## Non-negotiables
-
-- Never use archived framework files as current guidance.
-- Never invent a source, quote, number, or provenance record.
-- Never weaken a gate or the eval to admit a failing paper.
-- Never call an in-loop gate result an independent quality verdict.
-- Never ship while any held-out eval dimension is missing or failing.
-- Keep workflow and eval changes on their separate documented tracks.
+**运行面**：一切运行、调试、验收走 headless + 门脚本 CLI（`dsh --profile`，exit code 判定）。
+〔裁定 A-1〕本轮一手语料中**不存在独立于 headless 的 TUI 包**（`dsh web` 只是 `--profile web` 的别名），
+因此"terminal 一等"的准确含义即 headless + 标准输出 + 门脚本报告；若用户所指 TUI 是某个未读到的包，该裁定需重做。

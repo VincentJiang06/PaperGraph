@@ -1,2 +1,0 @@
-"""PaperGraph deterministic script surface."""
-

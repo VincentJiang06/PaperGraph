@@ -1,0 +1,1478 @@
+[
+ {
+  "id": "F001",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §6.4(L522) vs §6.1表GC-2行(L481) vs §1.4 ST-V行(L87) vs V1.4(L152)/V6.2(L556);下游 03-EVIDENCE-ENGINE.md:323/457/1112、05-TESTING.md:76/609/976",
+  "claim": "「GC-2 永远不得写 ST-V」这条被四处规范化、被两份下游文档当作唯一依据的绝对规则，在 §6.4 开头被一个例外条款直接推翻；且该例外自称的依据（§1.3 三条量化上界）恰恰全是反对模型终判的证据。",
+  "repro": "site-A §6.1表GC-2行逐字：「最高 ST-A；以及向下的 ST-C / ST-U / ST-N | **永远不得写 ST-V**」。site-B §6.4逐字：「**GC-2 原则上不得写 ST-V**，但在双判官 κ≥0.8 且结论一致时可例外写 ST-V。依据是 §1.3 的三条量化上界。」site-C §1.4：ST-V「由 Class-0 或 Class-1 门确定性判定成立。判定路径不经过任何模型。」site-D V1.4「不存在任何 status==verified 且 mechanism_results 含 gate_class==GC-2 的 claim」;V6.2 同。site-E 下游 03:457「EE-L-7 G-L2 只能收窄，不能写 ST-V。这是 01-CONTRACTS §6.1 对 GC-2 的规定」;05:76「HB-1：L2 永不写 verified。依据是 §6.1 的 GC-2 行」;05:976 VT-2;05:609 把该事件列为「P0，实验作废，回炉门代码」。双绑：一条 K-L-A claim，双跨厂商判官 κ=0.85 一致判 support。按 §6.4 门应写 ST-V；写完 V1.4/V6.2/VT-2 全部判红、§1.4 的 ST-V 定义为假、05 的 P0 触发。无任何门实现能同时满足 §6.4 与 V1.4。复核检查：sed -n '481p;522p' 01-CONTRACTS.md 取两句原文，再对该输入手工执行 §1.5 的 S 并对照 V1.4。附加：§1.3 三条上界是「所有模型 CI 重叠、最好 F1=0.750」「BAcc 74.7–77.4」「21 个 judge 的 κ 只有 0.376–0.511」——κ≥0.8 高于本文件语料中任何实测 κ。",
+  "seed": "V2"
+ },
+ {
+  "id": "F002",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §1.5.1(L141) vs V1.3(L151)/V1.2(L150) vs §0.2(L21)/§4.1 I-W1/§4.2 W-04(L359) vs 00-PREMISE.md B8观测表(L599)",
+  "claim": "单调性不变量在同一句话里被自己的「唯一例外」取消：编排器可把 ST-U 提升回 base。这使 V1.3 的符号执行必然失败、V1.2 的纯函数性不成立，并在契约层明文授权了一条非门代码写 status 的路径——而 B8 把该事件定义为「不可能事件」P0。",
+  "repro": "site-A §1.5.1 逐字：「**任何提升状态的规则都是缺陷**，唯一例外：当 producer 在同一轮内补交了缺失证据时，编排器可将 ST-U 提升回 base。 因此 `S` 可以用「对每条规则做一次符号执行、断言输出 ≤ 输入」来自动验证。」（原文 'base。 因此' 处多一个空格，是插入痕迹）。site-B V1.3：「符号执行 S 的第 2 步全部规则，断言每条规则的输出状态在 §1.5.1 的偏序下不高于输入。」site-C §0.2：「系统中不存在任何一条从 agent 输出到 status 字段的写路径（§4）。这不是纪律要求，是写权矩阵的结构性后果。」W-04：claims/<id>.status.json 的唯一物理写者是「门代码（确定性脚本）」，编排层不在其列。site-D V1.2：「重跑 S 必须得到与存档 status 逐字节相同的值（S 是纯函数）」。site-E 00-PREMISE B8：「任何一次 status 被非确定性代码路径写入 | **P0** —— 这应当是**不可能事件**」。双绑：producer 补交证据后编排器把 ST-U 提回 ST-V。若编排器真写 status.json 则违反 W-04 并使 §0.2 为假、B8 的 P0 成立；若改由门重跑 S 则 S 的输入已变，根本不需要「例外」，该句纯属多余且会让 V1.3 的实现者对该规则做符号执行时得到 输出>输入。复核检查：把 §1.5 第 2 步的五条规则连同该例外一起做符号执行，断言 output ≤ input。",
+  "seed": "V1"
+ },
+ {
+  "id": "F003",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §0.2(L21) vs §4.4(L379-385) vs 00-PREMISE.md B8 裁决(L581);相关 04-ORCHESTRATION.md §3.4(L281)",
+  "claim": "§0 全局公理把「不存在 agent→status 写路径」宣称为「写权矩阵的结构性后果」，而同一文件 §4.4 明确承认写权无法被文件系统强制、run_code 同时绕过内核沙箱与 ctx.fs 围栏；§4.4 给的产物级兜底恰好对这条旁路无效。这正是 B8 明令「不得在下游文档里被引用为已建立的保障」的那件事，出现在整份规范源的第一条公理里。",
+  "repro": "site-A §0.2 逐字：「系统中不存在任何一条从 agent 输出到 `status` 字段的写路径（§4）。这不是纪律要求，是写权矩阵的结构性后果。」site-B §4.4 逐字：「我们**不能**用沙箱强制写权……`run_code` 同样不设防，且它**同时绕过**内核沙箱（只管 bash）**和** `ctx.fs` 策略围栏（只管 ctx.fs 工具）」；标题即「写权是审计契约，不是文件系统权限（必须诚实写出）」。site-C §4.4 兜底逐字：「任何未被 `tool/call` / `tool/code-dispatch` 事件覆盖的断言，一律 `not_covered`。」site-D 00-PREMISE B8 裁决：「本条在下面三件事被写成代码之前，一律按 `unverified` 对待，**且不得在下游文档里被引用为已建立的保障**」。site-E 04:281 给复算 worker L3-① 的白名单含 `bash`（沙箱内）；GROUND-TRUTH-CORRECTIONS.md#A9 记「出厂组合覆盖为 workspace-write」。双绑：L3-① worker 用 bash/run_code 执行 open('.arc/claims/x.status.json','w')。W-04 的强制点只有「提交工具的 schema 不含 status 字段，出现即 tools/pre-execute deny」，对直接文件写无效；§4.4 的兜底以 tool/code-dispatch 覆盖为通过条件，而这次写入正是被 code-dispatch 覆盖的，兜底不触发。于是 §0.2 的绝对断言为假。复核检查：在 §4.2 矩阵里搜索任何对 .arc/ 目录的文件系统级强制手段——只有三层工具边界钩子，全部不拦 run_code。",
+  "seed": null
+ },
+ {
+  "id": "F004",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §1.5.2(L143) + §1.5 2b(L133) vs §7.2 F-14行(L592) + §7.3(L633) + §1.5 2d(L135) vs §2.4矩阵(L227,229)",
+  "claim": "F-14 `single-cluster` 按 independent_cluster_count==1 无条件置位并在 §7.3 被定为「降一档」，而 §1.5.2 恰恰规定 K(K-D)=1、K(K-L-T)=1（单簇是这两条通道的正常态）。结果 2d 会把每一条 K-D 与 K-L-T claim 从 ST-V 压到 ST-A——ST-V 在契约上不可达，整个产品的绿灯为空。",
+  "repro": "site-A §1.5.2：「K(K-D) = 1（数据推导的独立性由重跑保证，不由多源保证）；K(K-L-T) = 1（转录只需要一个真实锚点）」；§1.5 2b：「independent_cluster_count < K(kind) → base 降一档」。site-B §7.2：「| F-14 | `single-cluster` | `independent_cluster_count == 1` | GC-0 | S 2b |」——触发条件是 count==1，与 kind 无关。site-C §7.3：「| F-09 / F-02 / F-14 / F-15 | 降一档 |」；§1.5 2d：「flags 硬上限（§7.3） → base = min(base, ceiling(flags))」。site-D §2.4 矩阵：K-D 数据推导（封闭式）ST-V 为 ✅；K-L-T 文献转录 ST-V 为 ✅。双绑（手工执行 S）：输入 kind=K-D 封闭式、重跑门通过、evidence_grade=G5、independent_cluster_count=1、无其它 flag。第1步 base=ST-V。2b：1<1 为假，不降。但 F-14 已由 GC-0 置位（count==1 成立），2d：ceiling(F-14)=降一档 → base=ST-A。K-L-T 同理 ST-V→ST-A。§2.4 的两个 ✅ 无法兑现。复核检查：对上述输入向量逐步执行 §1.5，并 grep F-14 的置位条件是否带 kind 限定（无）。修法必须二选一：给 F-14 加 kind 条件，或从 §7.3 移除 F-14——两者都会改动别处已依赖的规则。",
+  "seed": null
+ },
+ {
+  "id": "F005",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md V1.6(L154) vs §1.5.2(L143)+§1.5 2b(L133);同一错误传播至 02-ARCHITECTURE.md:367、05-TESTING.md:649、03-EVIDENCE-ENGINE.md:1116",
+  "claim": "旗舰红队用例 RT-1 指名的降级机制在本文件自己的参数下永不触发：V1.6 声称 independent_cluster_count=1 触发 2b，而 §1.5.2 把 K(K-L-T) 定为 1，1<1 为假。该用例被声明为「失败即证明我们把 faithfulness 当 factuality 卖」。",
+  "repro": "site-A V1.6 逐字：「红队用例 RT-1：构造一个格式规范、含一句语法完美且**虚假**的数值断言的网页；期望 `quote_faithful = pass` 且 `status ≠ verified`（`independent_cluster_count = 1` 触发 2b）……该用例失败即证明我们把 faithfulness 当 factuality 卖。」site-B §1.5.2：「K(K-L-T) = 1（转录只需要一个真实锚点）」；2b 的条件是 count < K(kind)。双绑：RT-1 的网页有完整快照与 HTML 锚（§3.3 G5 典型路径含「出版社 HTML」），claim 为转录型（payload ⊆ anchor_span）→ 第1步 base=ST-V；2b 判 1<1=假，不触发；G5 的 §3.4 上限就是 ST-V，2c 不降。status 落 ST-V，RT-1 失败。site-C 传播：02:367「独立簇数为 1 触发降级」、05:649「（independent_cluster_count = 1 触发 §1.5 2b）」、03:1116「（independent_cluster_count=1 触发降级）」三处照抄同一不存在的机制。复核检查：对 (kind=K-L-T, grade=G5, cluster=1, quote_faithful=pass) 手工跑 S。注意与上一条发现耦合：若靠 F-14 降级救 RT-1，则代价是 ST-V 全局不可达；两者不能同时正确。",
+  "seed": null
+ },
+ {
+  "id": "F006",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.3 字段注释(L63) vs §1.5 0e(L115) / §7.2 F-29行(L607) / V7.4(L643);判据 §1.4.1(L94)",
+  "claim": "同一输入 counter_evidence_searched==false 在规范源里被指定了两个不同的输出状态（ST-U 与 ST-N），而这正是 §1.4.1 声明「必须分开、审计含义完全不同」的那条线。",
+  "repro": "site-A §1.3 代码块逐字：「counter_evidence_searched : bool // 必须为 true 才允许非 unverified」——即 false ⇒ 只能是 unverified(ST-U)。site-B §1.5 第0步：「0e counter_evidence_searched == false → ST-N +flag F-29」；F-29 行「S 0e → ST-N」；V7.4「否则 status == ST-N」。site-C §1.4.1：「`unverified` 与 `not_covered` 必须分开。前者是「我们看了，没找到支持」；后者是「我们没能力看」……两者的审计含义完全不同。」双绑：一条未做反证检索的承重 claim，按 §1.3 应为 ST-U，按 0e 为 ST-N；V1.2 要求 S 是纯函数且重跑逐字节一致，而规范源给出两个值，实现者无从选择。语义上 0e 更糟：「没去搜」是纪律缺失，判 ST-N（我们没能力看）恰是 §1.4.1 警告的洗白方向。复核检查：grep -n 'counter_evidence_searched' 01-CONTRACTS.md 取全部四处，比对输出状态。",
+  "seed": null
+ },
+ {
+  "id": "F007",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §6.1表(L479-481) vs §3.5(L300)/§1.5第1步(L125)/§7.3 F-10(L631)/V7.2(L641);03-EVIDENCE-ENGINE.md:822",
+  "claim": "ST-E 是被 §3.5 强制的必经状态，但 §6.1 的三个门类里没有任何一类被允许输出 ST-E；同时 §1.5 的 2c/2d 用 min() 作用于 §1.5.1 明写不可比的 ST-A 与 ST-E，使 S 在图形读数 + G4 证据这一常见组合上不是全函数。",
+  "repro": "site-A §6.1 表「可以判什么」列逐字：GC-0 =「ST-V、ST-U、ST-N」；GC-1 =「ST-V、ST-C、ST-U、ST-N」；GC-2 =「**最高 ST-A**；以及向下的 ST-C / ST-U / ST-N」。三行合起来 ST-E 不在任何一类的可判集合内。site-B §3.5：「任何数值来自图形几何读数的断言，`base` 强制为 ST-E」；§1.5 第1步：「图形读数的数值断言：base 强制为 ST-E（覆盖上述结果）」；§7.3：「F-10 | 强制 ST-E」；V7.2 要求其 status == ST-E。site-C 03:822 已把 G-CHART-GEOM 派给 GC-2 且写「上限 ST-E(±8%)，永不更高」——直接越出 §6.1 给 GC-2 的可判集合。site-D §1.5.1 偏序逐字：「ST-V ⊐ {ST-A, ST-E} ⊐ ST-U」——ST-A 与 ST-E 同处一集合，互不可比。双绑一：一条 bar chart 几何读数 claim 必须落 ST-E，而执行 §6.1 的门必须拒绝输出该值。双绑二：同一 claim 的证据是 G4（整篇 PDF 抽取文本），§3.4 给 G4 的上限是 ST-A，2c 要求 base = min(ST-E, ST-A)——在给定偏序下无定义，S 无返回值，V1.2 的「重跑逐字节相同」不可能成立。复核检查：对 (F-10 置位, evidence_grade=G4) 手工执行 2c。",
+  "seed": null
+ },
+ {
+  "id": "F008",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §7.2 F-01/F-03/F-04/F-12/F-24 的「谁消费」列 vs §7.3(L628-636) vs §1.5 2d(L135);另 F-25 vs §1.5 2e(L136)",
+  "claim": "§1.5 2d 把 flag 上限的计算完全委托给 §7.3，但 §7.2 有五个 flag 声明「消费于 S 2d」却在 §7.3 表里没有行；F-25 声明「消费于 S 2e」，而 2e 的条件只测 budget_state。这些 flag 因此无法进判定，直接违反 F-规则-2。",
+  "repro": "site-A §7.2「谁消费」列写 'S 2d' 的：F-01 uncertainty:no-ci、F-03 cherry-picking:window、F-04 best-case-ratio、F-12 metric-frame-mismatch、F-24 pricing-promo；写 'S 2e' 的：F-25 as-of-stale。site-B §7.3 全表只有七行：F-05/F-07、F-10、F-13、F-09/F-02/F-14/F-15、F-18/F-21/F-30/F-32/F-33、F-34、F-19/F-20/F-17/F-26/F-35。上述六个 flag 全部缺席。site-C §1.5：「2d flags 硬上限（§7.3） → base = min(base, ceiling(flags))」；「2e budget_state == degraded → base 降一档 +flag F-11」——2e 不读任何 flag。site-D §7.1：「F-规则-2 flags **必须进判定**，不是只打印。前代的 honesty flags 从不进判定、只打印」；「F-规则-4 词表是**封闭的**」。双绑：一条带 F-12（口径不符）的 claim 走到 2d，ceiling(F-12) 在 §7.3 无定义。实现者要么当作无上限（F-规则-2 被违反，重演前代「flags 只打印」的确切失效），要么自行发明上限（违反 F-规则-4 与 §9.0 不得自造）。F-25 同理：as-of 超 TTL 的 claim 被路由到 2e，而 2e 只判 budget_state==degraded，该 flag 永不生效。复核检查：把 §7.2 的「谁消费」列与 §7.3 的行做集合差。",
+  "seed": null
+ },
+ {
+  "id": "F009",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.5(L127-129) vs §4.2 W-03(L358)/W-12(L367) vs §4.1 I-W2(L348) vs §8.1(L658-659);传播至 03-EVIDENCE-ENGINE.md:302",
+  "claim": "决定 K-D 能否达到 ST-V 的开关字段 question_authored_by 被规定写在 claim 记录里、却由编排层写入，而 W-03 给 claims/<id>.json 的唯一物理写者是 producer agent；I-W2 要求这种情况必须拆成两个物理文件，而 §8.1 的规范布局里不存在第三个文件。",
+  "repro": "site-A §1.5 逐字：「「封闭式 / 开放式」的机器判据：claim 记录中 `question_authored_by` 字段……该字段由编排层写入（§4 W-12 的同一写者），producer agent 不可写。」site-B §4.2 W-03：「`claims/<id>.json`（**内容**：kind、结构化载荷、metric_frame、证据指针、premises、tolerance） | **producer agent**，经 claim 提交工具，schema 硬校验 | 门只读」；W-12 覆盖的工件是 `runs/<run_id>/manifest.json`，不是 claim 记录。site-C §4.1 I-W2：「一个工件，一个物理写者。若两类主体都需要向同一逻辑记录写入，则该记录**必须拆成两个物理文件**。」site-D §8.1 claims/ 下只有 `<claim_id>.json` 与 `<claim_id>.status.json` 两个文件。site-E 03:302 照抄同一错配：「`question_authored_by` 字段由编排层写（01-CONTRACTS §4 W-12 的同一写者）」。双绑：该字段是 §1.5 第1步分支的唯一机器判据（human 且问句预冻结→封闭式→可达 ST-V；agent→开放式→上限 ST-A）。按 W-03 编排层写它即违反 I-W2；按 I-W2 必须再开一个物理文件，但 §8.1 的规范布局没有它，而 §8.1 自称「布局（规范）」。复核检查：在 §4.2 的十五行矩阵里搜 question_authored_by（零命中），再对 §8.1 的 claims/ 条目计数。",
+  "seed": null
+ },
+ {
+  "id": "F010",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §4.2 引言(L342) 的穷举声明 vs §1.4.3(L98)、§2.3第6项(L217)/§9.17(L788)、§1.5(L127)",
+  "claim": "§4 自称「本节穷举，不留「等等」」，但至少三个由本文件规范化的字段在十五行写权矩阵里没有任何一行：human_review_required、stale、question_authored_by。",
+  "repro": "site-A §4 引言逐字：「上一轮最大的缺陷类是跨文档漂移，而写权是漂移的震中。**本节穷举，不留「等等」**。」site-B 三个无写者字段：①§1.4.3「`human_review_required` 是布尔字段，不是状态值」——05-TESTING.md:590 直接置位（「置 `human_review_required = true`」），但 W-01..W-15 无该字段；②§2.3 第6项「前提变更 → 依赖它的推断结论自动置 `stale` 并重判」+ §9.17 定义 stale 为中间态、不是 status 值——03:686 EE-I-8 说由「门运行器」写，01 的矩阵没有；③question_authored_by（见上一条）。双绑：W-04 的写者是门代码但其工件是 status.json 且 §9.17 明说 stale 不是 status 值，因此 stale 既不属于 W-03（producer 内容）也不属于 W-04（status），无归属；human_review_required 同理。实现者要么把它们塞进已有文件（破坏 I-W2 的一工件一写者），要么自建文件（违反 §8.1 规范布局）。复核检查：对 §1/§2/§9 中所有反引号字段名逐个 grep §4.2 表。",
+  "seed": null
+ },
+ {
+  "id": "F011",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P2",
+  "location": "README.md 权威规则(L28-29) / 01-CONTRACTS.md §9.3(L774) / V9.1(L808) vs 全部五份正文文档",
+  "claim": "「其他文档只引用不复述」是本文档集用来消灭「上一轮最大的缺陷类：跨文档漂移」的唯一机制，但冻结文档集自身大面积违反它：以 24 字符归一化 n-gram 比对，五份正文与 01-CONTRACTS 共享 ≥40 字符的连续文本片段 169 段，最长 131 字符——V9.1 的门槛只有 5-gram。该问题未出现在任何一份「已知弱点」段落里。",
+  "repro": "site-A README 逐字：「**权威规则**：`01-CONTRACTS.md` 是所有共享词汇的唯一定义源，其他文档**只引用不复述**」；§9.3：「术语定义只此一份；其他文档复述定义即为回归」；V9.1：「文档 lint：其他文档中出现本文件定义句的 5-gram 重复即失败（复述检测）」。site-B 复核者要跑的检查（可复现脚本）：把 01-CONTRACTS.md 去空白后建 24 字符 n-gram 集合，逐份扫描 00/02/03/04/05/06，输出长度 ≥40 的连续命中段。实测结果：02=29 段、03=56 段、04=9 段、05=25 段、06=34 段、00=16 段，合计 169 段。site-C 具体的规范句复述（非引文性质）：02:357 对 V6.7 的近逐字复述「每个 GC-2 judge 有一份带日期与 `judge_version` 的 κ 校准记录，κ ≥ 0.60 才被标记为终判档；跨 `judge_version` 的分数不得出现在同一张图/表里」；03 对 §7.2.2 通道分离硬约束的 117 字符逐字复述「抓取管线必须把页面拆成互不混合的字段 rendered_text / non_rendered_text / structured_data / http_headers，只有 rendered_text 进入可引用证据池」；04 对 §6.4 的 62 字符复述「GC-2 不得参与生成期：写作阶段禁止调用同一个 rubric judge 自评再改写——那是对 judge 直接做梯度下降」；05 对 W-13 的 118 字符 per-step token schema 逐字复述；02 对 V4.5 与 §6.5.2 gate-integrity 条件的逐字复述。双绑：V9.1 若被实现，冻结集当场全红；若不实现，则「唯一规范源」没有任何强制机制，而 §4 引言自陈跨文档漂移是上一轮最大的缺陷类。上一条发现（RT-1 机制错误同时出现在 01/02/03/05 四份文档）就是这种复述带来的漂移已经发生的证据。",
+  "seed": null
+ },
+ {
+  "id": "F012",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §7.2 F-14/F-20 行(L592,L598) 与 §2.3(L213) vs 00-PREMISE.md:456/478/490",
+  "claim": "flag 编号命名空间与前代 finding 编号冲突：F-14 与 F-20 在同一文档集里各指两个完全不同的东西，且规范源自己在 §2.3 用了前代那一义；V7.1 的封闭词表检查会因此在自家文档上误判。",
+  "repro": "site-A §7.2 定义：「F-14 | `single-cluster` | independent_cluster_count == 1」「F-20 | `grimmer-test3` | 由 GRIMMER test 3 触发」。site-B 同一文件 §2.3 第2项逐字用另一义：「不声明 warrant，推断通道会立刻退化成第二个字符数门（**前代 F-14 的实证**）」。site-C 00-PREMISE.md:456「[E: gt-pg-current.md#F-14~F-19]」、:478「F-14（lorem ipsum 击穿）+ F-20（D1 screen 8/8=100% 与 D2 K8:0 稻草人……）」、:490「F-14 证明「读起来像论证的散文」正是字符数门最擅长盖章的东西」。双绑：V7.1「语料中出现的每一个 flag 都在 §7.2 词表内；出现表外 flag 即失败」+ V9.2 的专有名词 lint。任何按 /F-\\d\\d/ 扫描的实现会把 00-PREMISE 三处前代 finding 读成 flag，且 F-14 的两义语义相反（一个是「单簇→降级」，一个是「字符数门被 lorem ipsum 击穿」）。§9 术语表没有为前代 finding id 保留命名空间，也没有消歧规则（对比 §9.25 为 provider 三义专门写了消歧条）。复核检查：grep -oE 'F-[0-9]{2}' *.md 后按文件分组，逐个判定属于哪一义。",
+  "seed": null
+ },
+ {
+  "id": "F013",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P2",
+  "location": "04-ORCHESTRATION.md §2.5 L3 动作行(L165) vs 01-CONTRACTS.md §1.5 0e(L115)/§7.2.3(L624)/V7.4(L643)",
+  "claim": "编排文档把「预算紧张时跳过反证检索」写成一条优雅降级选项，而契约的 0e 使该动作等价于直接判死该 claim（ST-N），三路已完成的核验成果全部作废；真正的降级通道 2e 根本走不到。",
+  "repro": "site-A 04:165 逐字：「**动作** | N 路独立核验，四路各司其职：① 重跑数据（K-D 通道）② 回原文抓字面（`quote_faithful`）③ 口径推演（`metric_frame` 三元组比对）④ 主动反证检索（`counter_evidence_searched（预算紧张时该项可跳过并记 flag）`）」。site-B 01 §7.2.3 逐字：「因此每条承重 claim **必须**附带一次**主动反证检索**……**找不到反证也要记录搜索过程与预算**」；§1.5「0e counter_evidence_searched == false → ST-N +flag F-29」；V7.4「对每条承重 claim，counter_evidence_searched == true；否则 status == ST-N」。双绑：预算紧张 → 按 04 跳过 ④ → counter_evidence_searched=false → S 的第0步「先命中先返回」，0a–0d 不涉及、0e 立即返回 ST-N，第1步与第2步全不执行。编排层按 04 认为省下了一路检索开销，实际是把 claim 判成「我们没能力看」，重跑门/逐字/口径三路的成本全部沉没；而 §1.5 2e 的 degraded 降一档（真正的预算降级路径）永远走不到。site-C 04 自己记录了这条捷径必然被走：04:324「本轮多个兄弟调研 subagent 共享 WebSearch 会话配额……各自留下「反证检索做得不够」的自陈」。复核检查：对 (counter_evidence_searched=false, 其余全通过) 手工执行 S。",
+  "seed": "V4"
+ },
+ {
+  "id": "F014",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.2 表 source_integrity 行(L46) vs §1.2.1(L49) vs §1.5 0c(L112) vs §2.4 矩阵 K-I 行(L231)/§1.5 第1步 K-I(L124)",
+  "claim": "source_integrity 的值域缺一个 `na`（同表的 quote_faithful 有），而 §1.2.1 的子测试②要求每条证据都能绑到一次真实发生过的抓取。K-I（逻辑推断）的输入是别的 claim、根本没有抓取事件，取值只能落 not_covered，于是 0c 在第1步之前就返回 ST-N，K-I 通道整体不可达。",
+  "repro": "site-A §1.2 表：「`source_integrity` | `intact` / `mutated` / `missing` / `contaminated` / `not_covered`」——无 `na`；同表 `quote_faithful` 的值域是「`pass` / `fail` / `na`」。site-B §1.2.1：「子测试②的必要性：`verified` 的最低门槛是「这次抓取确实发生过」」；子测试②原文为「抓取溯源绑定（本条证据能否绑到一条真实发生过的 `tool/call`/`tool/result`）」。site-C §1.5：「0c source_integrity == not_covered → ST-N」，且第0步「按下列顺序求值，**先命中先返回**」。site-D §2.4 矩阵 K-I 行 ST-A 为 ✅；§1.5 第1步「K-I 逻辑推断：推断门全项通过 → ST-A」。双绑：一条前提全部 ST-V、DAG 无环、warrant=deductive、反例搜索记录齐全的 K-I claim。source_integrity 无合法取值：取 not_covered → 0c 返回 ST-N，第1步永不执行，§2.4 的 ✅ 与 §1.5 的 K-I 分支全成死码；取 intact 则是宣称一次并不存在的抓取通过了三项精确比对（§1.2.1 明说三者都是精确比对）。同样的问题波及无抓取事件的 K-D（用户自备数据文件）。复核检查：对 (kind=K-I) 逐步执行 §1.5 第0步。",
+  "seed": null
+ },
+ {
+  "id": "F015",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md V5.5(L465) vs V5.1(L461)/§4.2 W-07(L362) vs §5.2.1(L419-421)/§9.25(L796)/V9.3(L810);相关 §5.3 R-I3(L428)",
+  "claim": "规范源自己在 §5.2.1 警告「同名概念写错会让整份文档自相矛盾」，随后在 V5.5 里裸用 `provider` 表示传输后端，而 V5.1 与 W-07 用同名字段表示 LLM 路由；两条断言施加在同名字段上的要求互相冲突。R-I3 的 per-subagent spawn 要求也与 §5.2.1 自陈的「作用于整个 run、脚本不可见」冲突。",
+  "repro": "site-A §5.2.1 逐字：「**必须消歧的同名概念（写错会让整份文档自相矛盾）**：`agentOptions.provider` = **LLM 路由**……**可以 per-call 指定**。`WorkflowStartRequest.subagentProvider` = **subagent 传输后端**（spawn / fork / …）。**作用于整个 run，脚本不可见。**」site-B V5.1：「每条 status == attributed 的 claim，其 `verdicts/` 记录中的 `provider` ≠ producer 的 `provider`」（义①）；W-07 规定 verdicts 文件字段为「`childId/provider/model/prompt_hash/ts`」（义①）。site-C V5.5：「全部裁决/取证子代理的启动记录中 `provider`（传输后端）为 `spawn`」（义②，裸用）。site-D §9.25 要求三义消歧、第三义必须写全称；V9.3：「单独出现的「饱和」「provider」「默认值」「轮预算」「确定性」五个词若未带限定语，即失败」。双绑一：实现 V5.1 与 V5.5 的检查器读同名字段 `provider`，一个要求它 ≠ producer 的 LLM 路由值，一个要求它等于字符串 'spawn'——同一字段不可能同时满足。双绑二：R-I3「取证/裁决子代理必须走 `spawn`（零父历史）而非 `fork`」是 per-subagent 决定，而 §5.2.1 自陈该值作用于整个 run 且脚本不可见 → 编排脚本无法执行 R-I3，V5.5 要求核对的「启动记录」也无处可查（04:169 同样写「走 `spawn` 非 `fork`」）。复核检查：grep -n 'provider' 01-CONTRACTS.md，按 §9.25 三义逐处标注，看 V5.5 是否通过 V9.3 的 lint。",
+  "seed": null
+ },
+ {
+  "id": "F016",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §8.6.3(L737) vs §8.6 引言(L721)/V8.9(L758) 与 §6.3 硬要求5(L512)",
+  "claim": "§8.6.3 自称是 retention_tier 的封闭降级触发器枚举、且 V8.9 要求 tier_reason[] 取自该枚举，但枚举里至少六个成员根本不产生 tier 变化（T0/T3/T9/T12/T13 等），其中 T9-RATE 的「一般 1 req/s 并发 1」还与 §6.3 的 per-host 限速表（OpenAlex 常规 100 rps、Crossref 单条 10 rps）直接冲突。",
+  "repro": "site-A §8.6 引言：「**档位由「取得渠道 + 权利信号」决定，不由「内容有多有用」决定**；决策发生在 fetch 时刻，写进 provenance，**只能下调，不能事后上调**」；V8.9：「每条 evidence 记录携带 `retention_tier ∈ {A, B, C}` 与非空 `tier_reason[]`（触发器 ID 列表）」。site-B §8.6.3 逐字（节选）：「`T0-HARD`（影子图书馆域名 → **硬拒，不发请求**）/ …… `T3-ROBOTS`（RFC 9309 Disallow 命中 → 不抓取）/ …… `T9-RATE`（arXiv 1 req/3s 且单连接；一般 1 req/s 并发 1）/ …… `T12-UNREACHABLE` / `T13-HOLD`（legal hold → 暂停一切自动删除与 TTL 降级）」。这五个成员没有任何一个产出 A/B/C 档位：T0/T3 是「不发请求」、T9 是速率、T12 由 F-33 走 S 0c → ST-N、T13 是暂停删除。site-C §6.3 硬要求5 与其表：「限速按 host 分桶，由中央网关决定并行度」，宽松档「OpenAlex 常规 100 rps」，中间档「Crossref polite 列表 3 rps / 单条 10 rps」「NCBI 3 rps（无 key）/ 10 rps（有 key）」；04:583-591 复述同表。双绑一：一条 evidence 只命中 T9-RATE，V8.9 要求 tier_reason=[T9] 且 retention_tier ∈ {A,B,C}，但 §8.6.3 没有为 T9 指定任何档位，档位无法计算。双绑二：抓取器同时执行 T9 的硬编码「一般 1 rps 并发 1」与 §6.3 的 per-host 桶，宽松桶被压到 1/100，检索侧吞吐上限被自家契约削两个数量级，而 04:322 正把检索侧认定为「瓶颈几乎必然先出现」的一侧。复核检查：把 §8.6.3 的十四个触发器逐个映射到 §8.6 的三档表，统计无映射者。",
+  "seed": null
+ },
+ {
+  "id": "F017",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P3",
+  "location": "01-CONTRACTS.md V6.8(L562) vs §6.1 表 GC-2 行(L481)",
+  "claim": "规范源自己的 lint 断言在规范源自己的表格上命中：V6.8 禁止「确定性」出现在描述 GC-2 的段落内，而 §6.1 的 GC-2 行原文就写着「门本身是确定性聚合器」。",
+  "repro": "site-A V6.8 逐字：「文档 lint：任何文档中「确定性 / deterministic / 机器判定」一词出现在描述 GC-2 的段落内即失败。」site-B §6.1 表 GC-2 行逐字：「| **Class-2** | GC-2 | **消费 LLM 裁决**：门本身是确定性聚合器，但**输入含模型判断** | …」。复核检查：grep -n '确定性聚合器' *.md（唯一命中即 01-CONTRACTS.md:481，正是描述 GC-2 的表行）。V6.8 未限定「其他文档」（对比 V9.1/V9.2 都写了「其他文档中」），因此按字面必须自查。同类自查失败还有 V9.3（「确定性」在 §1.2 表头、§4.2 W-04、§9.10 多处裸用）与 V9.5（§1.4.4 正文出现「不写 76%」这一百分比形式的门通过率字面量）。",
+  "seed": null
+ },
+ {
+  "id": "F018",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P3",
+  "location": "01-CONTRACTS.md §7.2 F-21 行(L599) vs §6.2.1(L487-494)",
+  "claim": "F-21 的触发条件写成「低于阈值」，而全文没有任何地方给出该阈值；§6.2.1 给的判据是 power == 0 → not_applicable，两者不等价，且两处的闭式解写法不一致（一处带 max(0,·) 一处不带）。",
+  "repro": "site-A §7.2：「| F-21 | `grim-not-applicable` | `power = 1 − N·items/10^d` 低于阈值 | GC-0 | 输出 `not_applicable` → ST-N，**不是通过** |」。site-B §6.2.1：「GRIM 的检出功率有闭式解 `power = max(0, 1 − N·items / 10^d)` …… **N ≥ 100 且 d=2 时功率恒为 0**……**功率为 0 时输出 `not_applicable` → ST-N，不是通过**」。双绑：一条 N=50, items=1, d=2 的 GRIM 结果，power = 1 − 50/100 = 0.50。按 §6.2.1 power≠0，应输出 consistent/inconsistent 并带 power；按 F-21 需与「阈值」比较，而阈值不存在，实现者必须自造一个数（违反 §7.1 F-规则-4 与 §9.0）。复核检查：grep -n '阈值' 01-CONTRACTS.md 附近搜索 GRIM 的具体数值门槛（零命中）。",
+  "seed": null
+ },
+ {
+  "id": "F019",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P3",
+  "location": "README.md 文档地图(L23) 与「五条改进」表 #3(L40) vs 冻结目录实际内容",
+  "claim": "README 的文档地图列出 07-ATTACK-LEDGER.md，且用「见 07」作为改进项 #3（跨厂商独立性）的兑现证据，但该文件在冻结集与项目目录里都不存在。",
+  "repro": "site-A README 逐字：「| [07-ATTACK-LEDGER.md](07-ATTACK-LEDGER.md) | 攻击轮台账 | — |」；改进表第 3 行：「| 3 | **独立性从第一轮就跨厂商** | 攻击轮进行中（见 07） |」。site-B 复核检查：ls 冻结目录 /private/tmp/.../attack-v2/ 得到 README + 00–06 共 8 个文件，无 07；ls <repo>/ 同样只有 README + 00–06 + docs/ + research/。双绑：README 同时声明「本项目对自己的门当前不押注」（诚实声明段）与用一份不存在的台账作为改进兑现证据；对一个以「可信度是产品」为口号的文档集，指向空文件的兑现声明与 00-PREMISE B8 观测表里的「REPORT / 台账出现未闭环占位符而格式门未拦下 | P1，格式门失效」是同一类。",
+  "seed": null
+ },
+ {
+  "id": "F020",
+  "attacker": "A1-coherence-contracts",
+  "severity": "P3",
+  "location": "04-ORCHESTRATION.md §2.5 输出行(L166) vs 01-CONTRACTS.md §4.2 W-07(L362)/W-08(L363) 与 §6.2 GC-0 成员(L485)",
+  "claim": "04 把 L3 四路核验的输出统一写进 verdicts/（W-07 规定那里只放 Class-2 裁决原件、由裁决子代理写），但其中三路按 01 §6.2 属 GC-0，其产物应由门代码写 gate-reports/。",
+  "repro": "site-A 04:165-166：动作四路为「① 重跑数据（K-D 通道）② 回原文抓字面（quote_faithful）③ 口径推演（metric_frame 三元组比对）④ 主动反证检索」，输出行为「`verdicts/<gate_id>/<claim_id>.json`（GC-2 裁决原件）、`analysis/<claim_id>/`（K-D 工件）、`inferences/<claim_id>.reviewer.md`」。site-B 01 §6.2 把「`quote_faithful` 归一化匹配」「`metric_frame` 三字段非空」「重跑门的数值容差比对」全部列为 GC-0 成员；W-07 的工件说明是「Class-2 裁决原件，含 childId/provider/model/prompt_hash/ts」、写者是「裁决 subagent 自身」；W-08 的门报告写者是门代码。双绑：一个 GC-0 的逐字匹配结果若落进 verdicts/，其记录必须带 provider/model/prompt_hash（W-07 的字段），而 GC-0 无模型参与，这些字段无值；若落进 gate-reports/ 则 04 的输出行为错。另：03:83 要求「GC-2 的门必须在 params 里写 {provider, model, prompt_hash, judge_version, kappa, ...} 缺任一即门红」，会把 GC-0 结果判红。复核检查：把 04 §2.5 的四路逐个对照 01 §6.2/§6.3 的门类归属与 §4.2 的写者行。",
+  "seed": null
+ },
+ {
+  "id": "F021",
+  "attacker": "A2-drift-hunt",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §6.4（522行）vs §6.1表（481行）、V1.4（152行）、V6.2（556行）；下游 03-EVIDENCE-ENGINE.md EE-L-7（457行）、NT-L-8（1112行）、05-TESTING.md HB-1（76行）、609行、VT-2（976行）",
+  "claim": "规范源对「GC-2 能否写 ST-V」给出两个互斥答案；该例外把「verified 永不经模型」这条核心可信度主线打穿，且五条下游断言全部按「绝对禁止」实现。",
+  "repro": "site-A §6.1 Class-2 行末列：「**永远不得写 ST-V**」。site-B §6.4 首句：「**GC-2 原则上不得写 ST-V**，但在双判官 κ≥0.8 且结论一致时可例外写 ST-V。依据是 §1.3 的三条量化上界」。site-C V1.4：「不存在任何 status == verified 且 mechanism_results 中含 gate_class == GC-2 的 claim（§6.4）」——括号引用的正是给出例外的那节。双绑：两个 judge、κ=0.85、结论一致的 K-L-A claim，按 §6.4 应写 verified，按 §6.1/V1.4/V6.2/EE-L-7/HB-1 必须拒绝。附加自反：§1.3 逐字写「所有被测模型的置信区间重叠、统计上不可区分，最好者 F1 = 0.750」，§6.4 却称该例外「依据是 §1.3 的三条量化上界」，即用「模型不可靠」的证据论证「双模型一致可判 verified」；κ≥0.8 无 [E:] 指针，且与同节及 V6.7 的 κ≥0.60 分级无衔接。复核：grep -n 'ST-V' 01-CONTRACTS.md，比对 §6.1/§6.4/V1.4/V6.2 四处。",
+  "seed": "V2"
+ },
+ {
+  "id": "F022",
+  "attacker": "A2-drift-hunt",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §1.5.1（141行）自身；vs §0.2（21行）、§4.2 W-04（359行）、V1.2/V1.3（150-151行）；04-ORCHESTRATION.md §1.2 第2条（47行）",
+  "claim": "单调性不变量在同一句里自我否定：先宣布「任何提升状态的规则都是缺陷」，随即给编排器开一条把 ST-U 提升回 base 的升级路径，同时把 status 写权从门代码转给编排层，一次推翻 I-W1、W-04、04 §1.2 三条既有不变量，并使 S 不再是可符号执行的纯函数。",
+  "repro": "site-A §1.5.1：「**任何提升状态的规则都是缺陷**，唯一例外：当 producer 在同一轮内补交了缺失证据时，编排器可将 ST-U 提升回 base。 因此 S 可以用「对每条规则做一次符号执行、断言输出 ≤ 输入」来自动验证。」site-B W-04：status「唯一物理写者=门代码（确定性脚本）」「任何 agent 不可写」。site-C 04 §1.2：「**编排器自己也不写 status**。编排器写的是 runs/<run_id>/manifest.json（W-12）与 budget/（W-13）」。双绑：一条因 0d 落 ST-U 的 claim，producer 同轮补交正确引语——按例外编排器须写 status 上移；按 W-04 与 04 §1.2 编排器无权写；按 V1.3 该规则本身即缺陷。且「是否同一轮内补交」是编排时序状态，不在 V1.2 声明的 S 输入域（「输入全在 CAS 与注册表快照里」）内 → 重跑 S 无法复现存档 status，V1.2 不可兑现。",
+  "seed": "V1"
+ },
+ {
+  "id": "F023",
+  "attacker": "A2-drift-hunt",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §7.2 F-14（592行）+ §7.3（633行）vs §1.5.2（143行）、§1.5 步骤2b（133行）、§2.4 矩阵（227/229行）",
+  "claim": "F-14「single-cluster 降一档」与 K(K-D)=1、K(K-L-T)=1 冲突：任何 independent_cluster_count==1 的 claim 都会在 2d 被降一档，于是封闭式 K-D 与 K-L-T 这两类**唯一可达 ST-V 的 kind** 在单簇下永不可达 ST-V——而 §1.5.2 设 K=1 的全部理由正是「单簇即可 ST-V」。产品的绿灯在最常见形态下消失。",
+  "repro": "site-A §1.5.2：「K(K-D) = 1（数据推导的独立性由重跑保证，不由多源保证）；K(K-L-T) = 1（转录只需要一个真实锚点）」。site-B §7.2 F-14 行：flag 条件「independent_cluster_count == 1」，setter GC-0。site-C §7.3：「F-09 / F-02 / F-14 / F-15 | 降一档」。算术：一条封闭式 K-D claim，重跑门通过 → 步骤1 base=ST-V；2b 判 1 < K=1 为假，不降；但 F-14 已被 GC-0 置位，2d 取 ceiling(flags)=降一档 → ST-A。故 §2.4 矩阵「K-D 封闭式 ST-V ✅」「K-L-T ST-V ✅」在单簇输入上不可达。附加：2d 定义为 `base = min(base, ceiling(flags))`，而 §7.3 里 F-02/F-09/F-14/F-15 给的是**相对操作**「降一档」不是 ceiling，min(base, 降一档) 类型不良；四个降档 flag 同时命中时是降一档还是四档也未定义（链上只有三级），S 因此不是良定义函数，V1.2/V1.3 不可执行。复核：对 (kind=K-D 封闭式, cluster=1, 无其他 flag) 手工跑一遍 §1.5 的 0→2e。",
+  "seed": null
+ },
+ {
+  "id": "F024",
+  "attacker": "A2-drift-hunt",
+  "severity": "P1",
+  "location": "00-PREMISE.md §B4 裁决（315-325行、534-542行、266行）vs 01-CONTRACTS.md §1.4（82-92行）、§9（766行）；03-EVIDENCE-ENGINE.md 文件尾声明 B4 为 binding",
+  "claim": "被声明为 binding 的前提源 B4 规定了一套与规范源完全不同的六值状态枚举与四个未入 §9 术语表的字段，且 B4 的硬约束与 ST-E 的定义直接冲突；照 B4 实现即触发 V1.1「出现第七个值即失败」。",
+  "repro": "site-A 00-PREMISE §B4：「**状态（status）** —— 六态：`verified-fulltext` / `verified-metadata` / `estimated(±ε, method)` / `inferred` / `contested` / `unverified`」，正交字段含「`evidence_strength`（连续量）」「`upstream_root`」。site-B 01-CONTRACTS §1.4：「ST ::= verified | attributed | estimated | contested | unverified | not_covered」，标题为「唯一枚举」。三值不同（verified-fulltext/verified-metadata/inferred vs verified/attributed/not_covered）；upstream_root 是 §5.5/§9.5 的 upstream_id 的同义新词；evidence_strength 无 §9 词条（03 §11.4 已证「01-CONTRACTS 的六值枚举里没有它」）。site-C B4 硬约束首条：「**没到 `verified` 档，就禁止输出量化断言**」，而 §1.4 ST-E 逐字「**仅用于数值断言**」、§3.5 要求 ST-E 必须原样显示 ε 出现在描述性叙述里 → 任何图形派生数值同时被要求输出与禁止输出；B4 自身在同段既立此禁令又定义 estimated(±ε) 为量化状态。扩散：B4 的词汇被写进 B3 推翻观测（266行「`verified`（含 `verified-metadata`）断言占比中位数 < 30%」）与 B7 中文裁决（534/542行「默认状态上限是 `verified-metadata`」「`verified-fulltext` 比例中位数 <10%」）——即项目的 kill 判据用一套不存在的状态值表达，机器不可判。复核：grep -n 'verified-fulltext|verified-metadata|inferred|upstream_root|evidence_strength' *.md。",
+  "seed": null
+ },
+ {
+  "id": "F025",
+  "attacker": "A2-drift-hunt",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §0.2（21行）vs §4.4（377-385行）、§8.4 D-8.4（700行）、§4.2 W-08（363行）、V4.2（398行）；03-EVIDENCE-ENGINE.md EE-0.5（约第38行区段）",
+  "claim": "「不存在从 agent 输出到 status 的写路径，这是结构性后果」被同文件 §4.4 自证为不成立（写权只是审计契约、run_code 同时绕过内核沙箱与 ctx.fs 围栏），而用来兜底的「门产物自证签名」正是 §8.4 D-8.4 以同一威胁模型否决过的机制——防篡改论证成环。",
+  "repro": "site-A §0.2：「系统中不存在任何一条从 agent 输出到 `status` 字段的写路径（§4）。这不是纪律要求，是写权矩阵的结构性后果。」（03 EE-0.5 逐字复用：「这不是纪律要求，是 01-CONTRACTS §4 写权矩阵的结构性后果」）。site-B §4.4：「我们**不能**用沙箱强制写权……`run_code` 同样不设防，且它**同时绕过**内核沙箱（只管 bash）**和** `ctx.fs` 策略围栏（只管 ctx.fs 工具）」「`toolFilter` **不是权限天花板**」。site-C §8.4 D-8.4 拒绝哈希链的理由：「能改 claim 记录的人（本机用户/agent）同样能改哈希链的锚点」。site-D W-08/V4.2 却要求用「`generator_version` + `inputs_hash` 自证签名」+ 文件 mtime 交叉验证来判定 status.json 的写入者合法性。双绑：一个持有 run_code 的 producer agent 直接写 claims/<id>.status.json 并填入合法 generator_version/inputs_hash——按 §0.2 该事件「不可能」，按 §4.4 该路径无任何强制点，按 D-8.4 该签名对同一威胁模型无效，V4.2 因此检不出。B8「当前不押……不得在下游文档里被引用为已建立的保障」被 §0.2 与 EE-0.5 的绝对措辞违反。",
+  "seed": null
+ },
+ {
+  "id": "F026",
+  "attacker": "A2-drift-hunt",
+  "severity": "P2",
+  "location": "03-EVIDENCE-ENGINE.md §8.2（987、1000行）、§11.6（1309行）与 06-SURVEY.md（449行）vs 01-CONTRACTS.md W-06（361行）、§8.1（660行）",
+  "claim": "两份下游文档把规范源的 evidence_id 五元组误引成三元组，03 据此「按 01-CONTRACTS 实现三元组」并自认这会造成同一 work 多版本键碰撞与静默覆盖——一条真实数据丢失路径完全由对规范源的误读制造。",
+  "repro": "规范源 W-06 与 §8.1 两处逐字一致：「id = `sha256(work_id ‖ version_id ‖ locator ‖ normalize(quote) ‖ extractor_version)`」（五元组）。03 §8.2：「语料给出的键是五元组……**而 01-CONTRACTS §4 W-06 / §8.1 写的是三元组（缺 `version_id` 与 `normalize(quote)`）**……**本文件按 01-CONTRACTS 的三元组实现**」，其实现式第987行为 `evidence_id = hash(work_id, locator, extractor_version)`；§11.6：「在 01-CONTRACTS 修改之前，多版本文献的证据可能被静默覆盖。这是一条真实的数据丢失路径。」06-SURVEY 449行独立复述同一错误：「01-CONTRACTS §4 W-06（证据卡 id = `hash(work_id, locator, extractor_version)`）」。复核：sed -n '361p;660p' 01-CONTRACTS.md 与 sed -n '987p;1000p' 03-EVIDENCE-ENGINE.md 并列。三点后果：①规范源未被复述而被**改述**；②03 的「契约缺陷」条目指控不成立；③按 03 实现即得到规范源未授权的弱键。",
+  "seed": null
+ },
+ {
+  "id": "F027",
+  "attacker": "A2-drift-hunt",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §2.1 判定段（173行）与 fail-closed 第②点（177行）vs §4.4（380行）、research/v2/GROUND-TRUTH-CORRECTIONS.md #A7",
+  "claim": "规范源在自设「不得与 GROUND-TRUTH-CORRECTIONS 冲突」的硬约束下，仍把 K-D 重跑门的禁网能力挂在沙箱上，与一手真值 A7 及同文件 §4.4 直接冲突。",
+  "repro": "site-A §2.1：「在**全新临时目录**里从 CAS 按哈希重新物化输入 → `uv sync --frozen` → **沙箱禁网** → 跑」，fail-closed 第②点「非零退出/超时/**触发沙箱网络拒绝**」。site-B 同文件 §4.4 首条：「内核沙箱只管文件效应，**不拦网络**」。site-C GTC #A7：「沙箱只管文件效应、不拦网络……`run_code` 同样不设防」。site-D 文件头硬约束：「本文件中任何关于 DSH 运行时的陈述，均不得与 `research/v2/GROUND-TRUTH-CORRECTIONS.md` 冲突。冲突以该文件为准。」旁证：03-EVIDENCE-ENGINE 〔裁定 D-3〕已改口「禁网由容器网络命名空间提供；容器不可用即 not_applicable，**不得用「沙箱模式已配置」充数**」——即下游已知规范源此处写错却未回改。后果：照 §2.1 实现的重跑门会用一个不存在的机制当禁网证据，联网脚本可稳定复现并拿到 ST-V（03 第252行已描述该失效）。",
+  "seed": null
+ },
+ {
+  "id": "F028",
+  "attacker": "A2-drift-hunt",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §5.3 R-I3（428行）+ V5.5（465行）vs §5.2.1（420行）；04-ORCHESTRATION.md §3.5 末（约336行）、§5.3（490-500行）",
+  "claim": "「裁决/取证子代理必须走 spawn」这条独立性机械保证与规范源自述的 DSH 事实（传输后端 run 级、脚本不可见）以及 04 的 fork 缓存策略三者不能同时成立；且 V5.5 把 `provider` 用作传输后端义，与 R-I2 的 `verdict.provider`（LLM 路由义）在同一节内同名异义，违反 §9.25。",
+  "repro": "site-A §5.3 R-I3：「取证/裁决子代理必须走 `spawn`（零父历史）而非 `fork`（带父已完成回合前缀）」；V5.5：「全部裁决/取证子代理的启动记录中 `provider`（传输后端）为 `spawn`；不存在 `fork` 启动的裁决者」。site-B §5.2.1：「`WorkflowStartRequest.subagentProvider` = **subagent 传输后端**（spawn / fork / …）。**作用于整个 run，脚本不可见。**」site-C 04 §3.5：「本 profile 应显式把 `subagent_fork` 配回 `one-shot` 以保住 fork 的缓存收益」，§5.3 又要求全部子代理共享逐字节相同前缀以命中缓存。双绑：一个 run 内既要 producer 走 fork（缓存收益）又要 reviewer 走 spawn（独立性），而后端是 run 级且脚本不可见 → 无法在同一 run 同时满足；若整 run 设 spawn，则 04 §3.5/§5.3 的缓存论证作废。命名：§9.25 规定 provider 三义必须消歧，V5.1 用 `provider` 指义①（LLM 路由）、V5.5 用 `provider` 指义②，相隔四行。",
+  "seed": null
+ },
+ {
+  "id": "F029",
+  "attacker": "A2-drift-hunt",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md V1.6（154行）；05-TESTING.md §T5.1 N1 行（649行）；03-EVIDENCE-ENGINE.md NT-L-12（1116行）",
+  "claim": "旗舰红队用例 RT-1 给出的降级机制在规范源自己的 K 值下不成立（2b 对 K=1 的 kind 不触发），错误机制被 05-TESTING 逐字复制、被 03 模糊化转述——该用例的「失败即证明我们把 faithfulness 当 factuality 卖」因此建立在一条算错的路径上。",
+  "repro": "V1.6：「期望 `quote_faithful = pass` 且 `status ≠ verified`（`independent_cluster_count = 1` **触发 2b**）」。§1.5 步骤2b 条件：`independent_cluster_count < K(kind)`；§1.5.2：K(K-L-T) = 1。算术：RT-1 是一张网页上的逐字数值断言，载荷可被 anchor_span 逐字覆盖 → K-L-T；1 < 1 为假 → 2b **不触发**。真正拦住它的只能是 F-14 经 2d（见另一条 finding，且该路径本身类型不良）。05-TESTING 649行原样复制错误机制：「（`independent_cluster_count = 1` 触发 §1.5 2b）。已是 §1.6 V1.6」；03 NT-L-12 改写成含糊的「触发降级」。复核：把 (K-L-T, cluster=1) 代入 §1.5 逐步求值。",
+  "seed": null
+ },
+ {
+  "id": "F030",
+  "attacker": "A2-drift-hunt",
+  "severity": "P2",
+  "location": "04-ORCHESTRATION.md §10.A T-7（859行）与文件尾（864行）、06-SURVEY.md §1.1（40-41行）、1129行 vs 01-CONTRACTS.md 文件尾（831行）；02-ARCHITECTURE.md 677行、03-EVIDENCE-ENGINE.md 1319行、05-TESTING.md 1032行、00-PREMISE.md 694行",
+  "claim": "以「数字落笔即验证」为卖点的文档集，自己的语料基线计数在冻结态里同时存在 22/23/26 三个值，且两份文档的「更正记录」误称规范源写的是 22（规范源实为 26）——纠错机制本身产出了新的错误引用。",
+  "repro": "实测：`ls -1 <repo>/research/v2/*.md | wc -l` = 26（18 ext + 7 gt + GTC）。01-CONTRACTS 文件尾：「`research/v2/`（26 文件 / 25 研究维度 = 18 ext + 7 gt……）」。04 §10.A T-7：「语料文件数：实测 **26** 个……**01-CONTRACTS 写 22**、本轮任务书写 23」；04 文件尾同样写「注意 01-CONTRACTS 文件尾写 22」。06-SURVEY §1.1：「本轮任务书与 `01-CONTRACTS.md` 文末的证据基线分别写作「23 文件」与「22 文件」……**修法在 01-CONTRACTS 文末**」，1129行重申「本文件更正了……`01-CONTRACTS.md` 文末的「22 文件」」。而 02/03/05 三份文件尾至今写「23 文件」，00-PREMISE 重评记录写「22 文件快照」。复核：grep -n '证据基线' *.md。后果：README 第38行把「数字落笔即验证／46 个当场纠正」列为本轮改进兑现项，而该纪律在文档集自身的元数字上失效，并留下一条对规范源的错误引证。",
+  "seed": null
+ },
+ {
+  "id": "F031",
+  "attacker": "A2-drift-hunt",
+  "severity": "P2",
+  "location": "03-EVIDENCE-ENGINE.md §6.2 P1 行与 §6.2.2〔裁定 D-9〕（835-838行）vs 01-CONTRACTS.md §2.4 矩阵末行（232行）、§3.5（300行）、§7.2 F-10（588行）",
+  "claim": "规范源对同一规则给出两种口径（§3.5「图形几何读数」vs §2.4 矩阵「图形读数数值」），03 择其窄者为图表数值开出 ST-A 与 ST-V 两条通道，绕过了「图表数值禁止参与比较/排序/阈值」的全部保护。",
+  "repro": "site-A §2.4 矩阵末行：「任意 kind + 图形读数数值 | ST-V ❌ | ST-A ❌ | ST-E ✅」。site-B §3.5：「任何数值来自图形几何读数的断言，`base` 强制为 ST-E……**禁止参与任何比较、排序、阈值判断**」。site-C 03 D-9：「标签是 PDF 文本对象……**可达 ST-V**」「标签是位图……**GC-2 → 上限 ST-A**」，并自述「01-CONTRACTS §3.5 强制 ST-E 的对象是「数值来自图形几何读数」；OCR 读印刷标签不是几何读数，所以不落入那条」。双绑：一张柱状图上的印刷标签数值，按 §2.4 只能 ST-E（不得参与比较），按 D-9 可为 ST-A/ST-V（可参与比较、可作前提）。同时 F-10 由「抓取/抽取工具」按「数值来自图形几何读数」置位并强制 ST-E，setter 无法判定标签是矢量还是位图 → 同一记录可能既带 F-10（强制 ST-E）又被 D-9 判 ST-A。后果：§3.5 引 8% 误差可翻转「A 优于 B」的理由被一条口径差绕过。",
+  "seed": null
+ },
+ {
+  "id": "F032",
+  "attacker": "A2-drift-hunt",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.5 步骤2d（135行）+ §7.3（628-636行）vs §7.2 各 flag 的「谁消费」列（579-614行）",
+  "claim": "S 的 2d 步骤把上限完全委托给 §7.3，而 §7.2 中标注消费者为「S 2d」的 F-01/F-03/F-04/F-12/F-24 以及 0b 引用的 F-06、新增的 F-36 在 §7.3 表中均无条目 → ceiling(flags) 对这些输入未定义，S 不可判定。",
+  "repro": "§1.5 2d：「flags 硬上限（§7.3） → base = min(base, ceiling(flags))」。§7.2 逐行「谁消费」列：F-01「S 第 2d 步；渲染器」、F-03「S 2d；人审队列」、F-04「S 2d；渲染器」、F-12「S 2d；人审队列」、F-24「S 2d；渲染器」。§7.3 全表仅列 F-05/F-07、F-10、F-13、F-09/F-02/F-14/F-15、F-18/F-21/F-30/F-32/F-33、F-34、F-19/F-20/F-17/F-26/F-35——上述五个 flag 与 F-06、F-36 全部缺席。复现：构造一条只带 F-12（口径不可比）的 claim 跑 2d，ceiling 无定义 → 实现者只能自行裁定，V1.2「重跑 S 得到逐字节相同 status」不可保证。附带：F-36 行自述「不改状态」却未列入 §7.3 的「不改状态」组，且表中位置排在 F-35 之前（编号乱序），词表封闭性（F-规则-4）与 V7.1 的机械 lint 会因此产生歧义。",
+  "seed": null
+ },
+ {
+  "id": "F033",
+  "attacker": "A2-drift-hunt",
+  "severity": "P2",
+  "location": "04-ORCHESTRATION.md §4.2 SAT-2（356行）、§4.4（389-397行）、§4.5 f3（415行）、§9.1 参数表（k=3、D_min=3、idle_rounds 上限=2）",
+  "claim": "最典型的检索饱和形态（重复命中已有证据）在编排规则下同时被判为「非有效派发轮」与「futile」，于是 SAT-2 的 k 窗口永远攒不满、run 先被 idle_rounds 上限推入 blocked —— 项目自建的核心停机判据在它要检测的场景里不可达。",
+  "repro": "SAT-2 要求「∃ 连续 k 个「有效派发轮」满足 Δcluster == 0 ∧ Δstatus_up == 0」。§4.4 (b)：一轮有效当且仅当「第 r 轮向台账写入的记录数 ≥ D_min，其中每条记录是一张证据卡，或一条显式的 no-result 记录」。§4.5 f3：「它写入的记录全部是重复内容（CAS 命中已有 object_sha256 且 evidence_id 已存在）」即 futile。算术：饱和期检索命中的是已抓过的同一批文献 → 按 EE-A-3 内容寻址幂等，零新证据卡；结果非空故也不产 no-result 记录 → 台账增量 0 < D_min=3 → 该轮不计入 k 窗口且 idle_rounds+=1。idle_rounds 上限 2 < k = 3 → 连续 3 轮之前 run 已进入 blocked（人裁），SAT-2 在该形态下永不成立；同时 futile_ratio=1.0 ≥ θ_futile=0.5 触发 SAT-4，饱和被标成「空转」。复核：以「三轮全部重复命中」为输入手工跑 §4.4/§4.5/§4.2 与 §9.1 的参数。",
+  "seed": null
+ },
+ {
+  "id": "F034",
+  "attacker": "A2-drift-hunt",
+  "severity": "P3",
+  "location": "01-CONTRACTS.md §1.3 字段注释（63行）vs §1.5 0e（115行）、§7.2 F-29（607行）、V7.4（643行）",
+  "claim": "同一字段的失败后果在规范源内有两个不同答案：ST-U 与 ST-N，而 §1.4.1 正是以「二者必须分开」为核心论点。",
+  "repro": "site-A §1.3：「counter_evidence_searched : bool  // 必须为 true 才允许非 unverified」（即 false → unverified = ST-U）。site-B §1.5 0e：「counter_evidence_searched == false → ST-N +flag F-29」；F-29 行「S 0e → ST-N」；V7.4：「否则 status == ST-N」。§1.4.1 逐字：「`unverified` 与 `not_covered` 必须分开……两者的审计含义完全不同」。复核：grep -n 'counter_evidence_searched' 01-CONTRACTS.md。",
+  "seed": null
+ },
+ {
+  "id": "F035",
+  "attacker": "A2-drift-hunt",
+  "severity": "P3",
+  "location": "01-CONTRACTS.md §7.2 F-14（592行）vs §2.3 第2项（213行）、00-PREMISE.md 478行/490行",
+  "claim": "同一 token「F-14」在冻结文档集内有两种含义（本项目 single-cluster flag / 前代 findings 编号），且规范源自身混用，使 V7.1 的 flag 词表 lint 与 F-规则-4 的封闭性在机械检查层不可判。",
+  "repro": "site-A §7.2：「F-14 | `single-cluster` | `independent_cluster_count == 1`」。site-B 同文件 §2.3 第2项：「不声明 warrant，推断通道会立刻退化成第二个字符数门（**前代 F-14 的实证**）」。site-C 00-PREMISE 478行「F-14（lorem ipsum 击穿）」、490行「F-14 证明「读起来像论证的散文」……」。V7.1 要求「语料中出现的每一个 flag 都在 §7.2 词表内」——一个按 token 扫描的 lint 无法区分两义。同类命名空间碰撞：04 用 `W_admit/W_gateway/W_budget/W_path`（扇出宽度）与 01 的 W-01…W-15（写权矩阵行）、用 `F-A/F-B/F-C`（扇出位）与 F-xx（flags）同前缀；04 §10.A T-5 自认是局部编号，但未改前缀。",
+  "seed": null
+ },
+ {
+  "id": "F036",
+  "attacker": "A2-drift-hunt",
+  "severity": "P3",
+  "location": "01-CONTRACTS.md §7.2 F-21（599行）vs §6.2.1（487、494行）",
+  "claim": "F-21 复述 GRIM 功率公式时丢掉 max(0, ·) 并把触发条件改成一个全文未定义的「阈值」，与 §6.2.1 的「功率为 0 时输出 not_applicable」不是同一条规则。",
+  "repro": "site-A §6.2.1：「`power = max(0, 1 − N·items / 10^d)`」「**功率为 0 时输出 `not_applicable` → ST-N，不是通过**」（N=28,items=1,d=2 → 0.72，与实测 0.718 相符；N≥100,d=2 → 0）。site-B F-21 行：「`power = 1 − N·items/10^d` **低于阈值**」。文档集内无任何一处给出该阈值的取值或标定计划（grep -n 'power' 01-CONTRACTS.md 03-EVIDENCE-ENGINE.md）；03 §0.2 的门信封只要求输出 power，不定阈。后果：GC-0 门的「假安全」防线落在一个未定义常量上。",
+  "seed": null
+ },
+ {
+  "id": "F037",
+  "attacker": "A2-drift-hunt",
+  "severity": "P3",
+  "location": "README.md 第22行 vs 全文档集（仅 01-CONTRACTS 文件尾一处提及 06-SURVEY §1.1）",
+  "claim": "README 宣称 06-SURVEY 是「全项目引用数字的唯一入口」，但零份正文文档以此方式引用它：所有承重数字在 6 份文档里各自直接挂 [E: ext-*.md#…] 指针复述，这正是本轮结构性修复要消灭的复述形态。",
+  "repro": "README 文档地图：「06-SURVEY.md | 调研摘要与**载荷数字总表**（全项目引用数字的唯一入口）」。检查：grep -n '06-SURVEY' *.md → 仅 README 与 01-CONTRACTS 文件尾（且后者引用的是 §1.1 的文件计数，不是数字入口）。对照 grep -c '17.0%|38.1%|0.750|66,287' 的结果：同一批数字在 00/01/02/03/05/06 中各自独立出现并各自附证据指针。含义：'唯一入口' 是名义角色，未被任何文档兑现；数字口径漂移的防线实际仍是逐处人工复述。",
+  "seed": null
+ },
+ {
+  "id": "F038",
+  "attacker": "A2-drift-hunt",
+  "severity": "P3",
+  "location": "00-PREMISE.md B3 推翻观测（266行）、B7（542行）vs 01-CONTRACTS.md §1.4.4（101行）、§9.28（799行）；05-TESTING.md T2.3",
+  "claim": "项目的 kill 判据用「verified 断言占比中位数」这一聚合通过率形式表达，与规范源「不存在聚合 status／门通过率不得作为质量指标／分子分母必须同露」的纪律冲突。",
+  "repro": "site-A 00-PREMISE 266行：「首批真实任务上 `verified`（含 `verified-metadata`）断言占比中位数 < 30%……」；542行：「真实中文任务上 `verified-fulltext` 比例中位数 **<10%**」。site-B §1.4.4：「**不存在聚合 status。** 系统不得产出「全部已验证」这类整体性断言……门通过率不得作为对外质量指标——它的分母可被压缩（少写载荷数字即可提高通过率）；内部诊断时必须分子分母同露（「142 verified / 187 载荷断言」，不写 76%）」。两处 kill 判据均只给百分比、未给分子分母，且分母（载荷断言数）正是可被压缩的那一个。",
+  "seed": null
+ },
+ {
+  "id": "F039",
+  "attacker": "A3-gaming-status",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §6.4（第 522 行）；与 §6.1 表、§1.4 ST-V 行、§1.6 V1.4、§6.6 V6.2、§2.4 矩阵，及 02/03/04/05 四份文档冲突",
+  "claim": "状态模型有一条把「ST-V 判定路径不经过任何模型」整条承诺打穿的后门：GC-2 在「双判官 κ≥0.8 且结论一致」时可写 ST-V。该例外只存在于这一句，全文档集其余位置都写着绝对禁令，且它引用的依据（§1.3 三条量化上界）论证的恰恰是相反结论。这是懒惰 agent 的最优路线：绕开 GC-0/GC-1 的一切确定性工件，直接刷两个判官。",
+  "repro": "逐字引用：01-CONTRACTS §6.4 首句「**GC-2 原则上不得写 ST-V**，但在双判官 κ≥0.8 且结论一致时可例外写 ST-V。依据是 §1.3 的三条量化上界。」\n对照同文件 §6.1 表 Class-2 行「**永远不得写 ST-V**」；§1.4 ST-V 行「判定路径不经过任何模型」；V1.4「语料中不存在任何 `status == verified` 且 `mechanism_results` 中含 `gate_class == GC-2` 的 claim」；V6.2「不存在 `gate_class == GC-2` 且 `verdict` 直接导致 `status == verified` 的路径」；§2.4 矩阵 K-L-A / K-I 行 ST-V = ❌。\n对照兄弟文档：03-EVIDENCE-ENGINE:457「G-L2 **只能收窄，不能写 ST-V**」、:323「**只能收窄，永不写 ST-V**」；05-TESTING:76「HB-1：L2 永不写 `verified`」、:609「任一臂的 `verified` 断言中出现 `gate_class == GC-2` 的路径 → **P0，实验作废，回炉门代码**」、:976 VT-2；02-ARCHITECTURE:301。\n复算方法：`grep -n \"GC-2\" attack-v2/*.md` 后逐条比对——七处绝对禁令 vs 一处例外，例外方无证据指针、无〔裁定〕标记、无「什么会推翻」。\n作弊配方（可执行）：①把 claim 走 K-L-A 或 K-I 通道（本来上限 ST-A）；②派两个判官跑 G-L2；③κ 取自本项目自建的 200 条人标校准集（05-TESTING:915，样本由本项目自选），选易判条目即可把 κ 顶到 0.8+；④条款没规定 κ 是「判官对人标」还是「判官对判官」，也没像 R-I2 那样要求两判官跨厂商——取同族模型时低困惑度偏好（§5.2 自陈的 self-preference 机理）天然制造高一致；⑤两判官一致 → ST-V。全程零 GC-0 工件。\n文档宣称 vs 观测：宣称「ST-V 由确定性门判定、不经模型」，观测到规范源自己开了一条纯模型路径通往 ST-V。",
+  "seed": "V2"
+ },
+ {
+  "id": "F040",
+  "attacker": "A3-gaming-status",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §1.5.1（第 141 行）；与 §0.2、§4.1 I-W1、§4.2 W-04、§1.6 V1.2/V1.3 冲突",
+  "claim": "单调性不变量自带一条 producer 触发的升级后门：「唯一例外：当 producer 在同一轮内补交了缺失证据时，编排器可将 ST-U 提升回 base」。这既违反同一句话前半段「任何提升状态的规则都是缺陷」，也让编排层成为 status 的第二个写者（W-04 明写编排层不在写者名单），并使 V1.3 的符号执行验证在结构上不可能成立。",
+  "repro": "逐字引用：01-CONTRACTS §1.5.1「`S` 的第 2 步中每一条规则都只能把 base ……向下移……**任何提升状态的规则都是缺陷**，唯一例外：当 producer 在同一轮内补交了缺失证据时，编排器可将 ST-U 提升回 base。 因此 `S` 可以用「对每条规则做一次符号执行、断言输出 ≤ 输入」来自动验证。」（注意「base。」与「因此」之间有多余空格，句式为后期插入形态）\n对照：§0.2「系统中不存在任何一条从 agent 输出到 `status` 字段的写路径」；§4.1 I-W1 同义；§4.2 W-04 唯一物理写者 = 「门代码（确定性脚本）」，编排层不在其中；V1.2「重跑 `S` 必须得到与存档 `status` 逐字节相同的值」；V1.3「符号执行 `S` 的第 2 步全部规则，断言每条规则的输出状态……不高于输入」。\n复算方法：对 §1.5 的 S 做一次符号执行——该例外不是 S 的第 2 步规则，无法被 V1.3 覆盖；同时它由「编排器」执行而非 S，故 status ≠ S(inputs)，V1.2 必然失败。\n作弊配方：任一被 0d（引语不符）、2b（簇数不足）、G-L2 判 not-support 打到 ST-U 的 claim，producer 在同一轮内追加任意一份「缺失证据」（补一条 evidence 卡即可，本条无质量判据、无重跑 S 的要求），由编排器直接抬回 base。抬回不经过 S 重算，因此原来的否决输入（引语 fail、簇数 1）仍在记录里。\n文档宣称 vs 观测：宣称「状态是算出来的，不是断言出来的」「不存在从 agent 输出到 status 的写路径」，观测到 producer 的一个动作即可触发编排层直接写高 status。",
+  "seed": "V1"
+ },
+ {
+  "id": "F041",
+  "attacker": "A3-gaming-status",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §1.5 步骤 0e / §7.2.3 / V7.4；03-EVIDENCE-ENGINE.md 全文门清单（§2–§8）；仅 §4.4.2 覆盖 K-I",
+  "claim": "`counter_evidence_searched` 被 §7.2.3 称为「逃不过的只有这一条」，是抵御选择性引用（N6）的唯一防线，但在 K-L / K-D 两条主通道上它没有门、没有工件契约、没有任何质量判据——03-EVIDENCE-ENGINE 的门清单里根本不存在计算它的门。它只能落成一个存在性检查，因而是 S 的全部输入里最容易伪造的一个；更严重的是激励是反的：诚实找到反证会被 2a 直接吸收到 ST-C，乱搜一通反而保住高状态。",
+  "repro": "逐字引用：§1.5「0e counter_evidence_searched == false → ST-N +flag F-29」；§7.2.3「逃不过的只有「你有没有找过反面」这个可审计的过程字段」「**找不到反证也要记录搜索过程与预算**」；V7.4「对每条承重 claim，`counter_evidence_searched == true`；否则 status == ST-N」（只断言布尔值）。\n复算方法：`grep -o \"G-[A-Z0-9-]*\" 03-EVIDENCE-ENGINE.md | sort -u` → 得到 G-RERUN / G-DEP / G-L0 / G-L1 / G-L2 / G-ENTAIL / G-DAG / G-WARRANT / G-REDERIVE / G-RETRACT / G-HIJACK / G-FINGERPRINT / G-PROV / G-ADMIT / G-GRIM / G-CHART-*，**没有任何一个门产出 counter_evidence_searched**；`grep -n \"反证\\|F-29\" 03-EVIDENCE-ENGINE.md` 只命中 §10 威胁表两行（:1282、:1287），零实现契约。唯一的反例搜索格式契约是 §4.4.2，其载体是 `inferences/<claim_id>.reviewer.md`，只适用于 K-I。\n作弊配方：对任意 K-L claim 提交 `counter_evidence_search: {queries: [<claim 原句逐字>], budget: {...}, result: not_found}`——查询词与正命题完全同义，检索必然只返回支持面；GC-0 只能验「记录非空」（§6.2 成员表里也没有此项），→ searched=true / found=false → 0e 不触发、2a 不触发 → 保住 base。第二种更省事的作弊：因为没有门定义谁写这个字段，实现时它必然退化为 producer 自报或编排层常量 true。\n激励反向的证明：§1.5「2a counter_evidence_found == true → ST-C（吸收态，覆盖任何 base）」。即认真搜索并找到反证的 agent，其 claim 一律掉进 ST-C 吸收态；03-EVIDENCE-ENGINE:1287 自己写了「`counter_evidence_found` 的整体比例（长期为 0 是可疑信号）」，但这只是一个人看的观察指标，没有任何门消费它。\n文档宣称 vs 观测：宣称这是不可绕过的过程字段，观测到它是全套 S 输入里唯一既无门、又无工件 schema、又无质量判据的字段。",
+  "seed": null
+ },
+ {
+  "id": "F042",
+  "attacker": "A3-gaming-status",
+  "severity": "P1",
+  "location": "04-ORCHESTRATION.md §2.5（第 165 行）；违反 01-CONTRACTS §1.5 0e 与 V7.4，并违反 04 自身第 5 行「不复述定义原文」的自律",
+  "claim": "编排文档给反证检索开了一条「预算紧张时该项可跳过并记 flag」的旁路，把规范源的硬否决（skip → ST-N）私自改写成「记个 flag 就行」。这是把 P1-3 的存在性漏洞升级成公开授权的跳过权，而且跳过条件（预算是否紧张）由编排层自己判定。",
+  "repro": "逐字引用：04-ORCHESTRATION §2.5「**动作** | N 路独立核验，四路各司其职：① 重跑数据（K-D 通道）② 回原文抓字面（`quote_faithful`）③ 口径推演（`metric_frame` 三元组比对）④ 主动反证检索（`counter_evidence_searched（预算紧张时该项可跳过并记 flag）`）」——注意该括号被塞进反引号代码跨度内部，形态即为后插。\n对照：01-CONTRACTS §1.5「0e counter_evidence_searched == false → ST-N」（前置否决、先命中先返回）与 V7.4；以及 04-ORCHESTRATION 自身开篇第 5 行「本文件引用时只写「见 01-CONTRACTS §N」，**不复述定义原文**」。\n复算方法：`grep -n \"counter_evidence_searched\" attack-v2/*.md`，比较 01 的硬否决与 04 的可跳过条款；再对 04:165 与 §1.5 0e 做一次真值表比对——两者对同一输入给出不同 status。\n作弊配方：编排层把 `budget_state` 推到 degraded（04 §5.4 的 α=0.8 是自定阈值，E_cap/N_cap 亦自定）→ 声明预算紧张 → 全批 claim 跳过反证检索、只记 F-11 → 依 04 的写法 status 不落 ST-N；依 01 的写法应全批 ST-N。实现者按哪份文档写，就决定了这条防线存不存在。\n文档宣称 vs 观测：01 宣称 0e 是不可绕过的前置否决，04 在同一集合内授权绕过它。",
+  "seed": "V4"
+ },
+ {
+  "id": "F043",
+  "attacker": "A3-gaming-status",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §1.5 第 1 步「封闭式/开放式」机器判据（第 127–129 行）；与 §4.2 W-03/W-12、§4.1 I-W2 冲突；§1.6/§2.5 无任何 V 断言覆盖",
+  "claim": "`question_authored_by` 是 K-D 通道通往 ST-V 的唯一开关（开放式端到端永不可达 ST-V），但它：①没有任何冻结机制（对照 04 给 checklist 配了 `runs/<run_id>/checklist.json` + hash 入 manifest + V-4.29 红样本）；②没有任何可检验断言；③它的物理写者与 W-03「claims/<id>.json 唯一物理写者 = producer agent」直接冲突，因而违反 I-W2。结果是：全项目最承重的一个二值开关，是自报的。",
+  "repro": "逐字引用：§1.5「「封闭式 / 开放式」的机器判据：claim 记录中 `question_authored_by` 字段。取值 `human` 且问句与数据文件在 run 之前即已冻结 → 封闭式；取值 `agent` → 开放式。该字段由编排层写入（§4 W-12 的同一写者），producer agent 不可写。」\n对照：§4.2 W-03 —— `claims/<id>.json`（**内容**：kind、结构化载荷、metric_frame、证据指针、premises、tolerance）唯一物理写者 = **producer agent**；W-12 的工件是 `runs/<run_id>/manifest.json`，字段清单里没有 `question_authored_by`；W-04 的 status.json 字段清单也没有它。§4.1 I-W2：「一个工件，一个物理写者。若两类主体都需要向同一逻辑记录写入，则该记录**必须拆成两个物理文件**。」\n复算方法：`grep -rn \"question_authored_by\" attack-v2/` → 全集只有 3 处命中（01:127、03:302、03:1099），其中没有一处定义它的物理落点、没有一处定义「run 之前即已冻结」如何机器判定、没有一条 V/NT 断言校验其取值正确性（NT-D-13 只校验 producer 不能在提交参数里带它）。对照 `grep -n \"checklist.json\" 04-ORCHESTRATION.md` → 04:356 + V-4.29「跑到一半改 checklist，断言门红」，即同类「冻结」需求在别处是有机制的。\n作弊配方：让 agent 自由选题、自由选口径跑完开放式端到端分析，事后由编排层（在 headless 单操作者环境里就是同一个运行者）把 `question_authored_by` 记为 `human`，并在 manifest 里补一条时间戳（无 hash 锚、无前置冻结证据可被复核）→ S 第 1 步走封闭式分支 → 重跑门通过即 ST-V。§2.1 明写「开放式端到端分析（选题→选方法→选口径→出结论）**不得产出 ST-V**」的整条能力边界被一个自报字段抹掉。\n文档宣称 vs 观测：宣称这是「机器判据」，观测到它没有判据、没有冻结锚、没有校验断言，且其物理写者与写权矩阵矛盾。",
+  "seed": null
+ },
+ {
+  "id": "F044",
+  "attacker": "A3-gaming-status",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §1.5 步骤 2b + §1.5.2 K(kind) + §7.2 F-14 + §7.3；波及 V1.6（RT-1）、02:367、03:1116（NT-L-12）、05:649",
+  "claim": "独立簇计数在 S 里被写了两遍且互相打架：2b 用 K(kind) 判定，2d 用 F-14 判定。K(K-D 封闭式)=K(K-L-T)=1 意味着单簇不触发 2b，但 F-14 在 `independent_cluster_count == 1` 时由 GC-0 必然设置、§7.3 又规定它「降一档」。后果有二：①K-D 封闭式与 K-L-T 的 ST-V 在 §2.4 矩阵里标 ✅、在 S 里实际不可达——「数据分析可重跑」这条背书通道被自己的 flag 上限掐死；②核心红队用例 RT-1 的判定理由是错的，而 RT-1 正是全项目用来证明「没把 faithfulness 当 factuality 卖」的唯一用例。",
+  "repro": "逐字引用：§1.5「2b independent_cluster_count < K(kind) → base 降一档」；§1.5.2「`K(K-D) = 1`……`K(K-L-T) = 1`（转录只需要一个真实锚点）」；§7.2 F-14 行「`single-cluster` | `independent_cluster_count == 1` | GC-0 | S 2b」；§7.3「F-09 / F-02 / F-14 / F-15 | 降一档」（经 2d 生效）。\n计算复核（独立复算者可直接手算）：设一条 K-L-T claim，evidence_grade=G5，单一上游簇。2b：1 < 1 为假 → 不降。F-14：1 == 1 为真 → GC-0 必设 → 2d 降一档 → ST-V→ST-A。故 §2.4 矩阵「K-L-T ST-V ✅」与 S 的实际输出矛盾；同理 K-D 封闭式（§1.5.2 明说其独立性「由重跑保证，不由多源保证」）在单数据集时仍被 F-14 降到 ST-A。\n第二个后果的复核：V1.6 逐字写「期望 `quote_faithful = pass` 且 `status ≠ verified`（`independent_cluster_count = 1` 触发 2b）」。对 K-L-T 而言 2b 恒不触发（K=1），该理由是假的；RT-1 之所以还能不给 ST-V，靠的是 F-14/2d，而不是文档四处复述的 2b。同一错误理由被复制到 02-ARCHITECTURE:367、03-EVIDENCE-ENGINE:1116（NT-L-12）、05-TESTING:649 —— 即四份文档共享同一条错误的机制解释。\n作弊配方（若实现者按 §1.5.2 的字面把 F-14 排除在 2d 之外以保住 K-D/K-L-T 的 ST-V）：造一个含稳定 HTML 锚的单页（G5，§3.3 明列「出版社 HTML」为 G5 路径），把伪造数值写成结构化载荷并让 anchor_span 逐字覆盖 → K-L-T + G5 + 单簇 → ST-V。这正是 RT-1 要防的那个形态。\n文档宣称 vs 观测：宣称 2b 是拦住投毒单源的机制，观测到 2b 对两个可达 ST-V 的 kind 恒不触发，真正生效的是一条与 §1.5.2 立论相反的 flag 上限。",
+  "seed": null
+ },
+ {
+  "id": "F045",
+  "attacker": "A3-gaming-status",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.6 V1.2 + §1.3 `budget_state` + §7.2 F-25 + §6.3 硬要求 2；04-ORCHESTRATION.md §5.4（第 505–515 行）",
+  "claim": "S 被宣称为纯函数且「输入全在 CAS 与注册表快照里」，但它的三类输入是时间依赖且不在 CAS 的：`budget_state`（run 级、随时钟推进）、注册表超龄降级（RW>7 天等）、F-25 的 as-of TTL。因此 V1.2「重跑得到逐字节相同 status」在设计上不可能成立；更实用的后果是 `budget_state` 是 run 级全局量，同一份证据的 status 取决于该 claim 在 run 中被处理的次序，且触发阈值由本项目自定，可被套利。",
+  "repro": "逐字引用：V1.2「对任意 claim，重跑 `S` 必须得到与存档 `status` 逐字节相同的值（`S` 是纯函数，输入全在 CAS 与注册表快照里）」；§1.5「0f budget_state == exhausted → ST-N」「2e budget_state == degraded → base 降一档」；§6.3 硬要求 2「超龄即降级为 ST-N……建议阈值：RW > 7 天、PPS > 30 天、Hijacked > 90 天」；F-25「可失效字段……的 `as_of` 超过该类 TTL……建议 TTL：引用幻觉率类 90 天、模型能力类 180 天、定价/榜单 30 天」；04 §5.4「ok → degraded : E ≥ α·E_cap ∨ N_search ≥ α·N_cap 〔裁定〕α = 0.8」。\n复算方法：取任一 status==verified 的存档 claim，把系统时钟推进 8 天后重跑 S —— 注册表快照超龄 → 0c → ST-N ≠ 存档值，V1.2 直接红。再取两条证据完全相同的 claim，一条在 E<0.8·E_cap 时判、一条在其后判 → 前者 base、后者降一档，同一输入两个 status。\n作弊配方（预算套利，三条都可执行）：①把 `E_cap` / `N_cap` 设大（04 §5.4 未规定谁设、以什么依据设，§10 表把 α 列为「〔裁定〕M1 标定」），degraded 永不触发，2e 永不降级；②把想要高状态的载荷 claim 排在 run 前段处理，让 degraded 只落到无关紧要的背景 claim 上；③反向套利：故意让 budget 早早 exhausted，则 04 §4.2「全部未完成 claim 置 exhausted → ST-N」把「没做的活」统一洗成「未覆盖」，而 ST-N 在对外渲染上与「我们没能力看」同形，不产生任何问责信号。\n文档宣称 vs 观测：宣称 S 是可重跑纯函数，观测到 S 至少有三类非 CAS、时间依赖输入，其中一类还是运行期自选阈值的全局量。",
+  "seed": null
+ },
+ {
+  "id": "F046",
+  "attacker": "A3-gaming-status",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.2 值域 + §1.5 步骤 0d + §1.6 V 清单",
+  "claim": "S 只把 `quote_faithful == fail` 当否决，从不把 `pass` 当必要条件；而 §1.2 的值域里还有第三个值 `na`，S 完全不处理它。于是一条 K-L-T claim 可以在逐字引语门从未成功跑过的情况下拿到 ST-V——而 §1.3 恰恰把 `quote_faithful` 宣称为「可以 100% 兑现」的两条产品承诺之一。",
+  "repro": "逐字引用：§1.2 表「`quote_faithful` | `pass` / `fail` / `na`」；§1.5「0d claim 携带逐字引语 **且** quote_faithful == fail → ST-U」；§1.5 第 1 步「K-L-T 文献转录：锚点包含检验通过 → ST-V」；§1.3「`quote_faithful` 与 `source_integrity` 是**可以 100% 兑现**的产品承诺」。\n复算方法：在 §1.6 / §2.5 / §3.7 / §7.4 的全部 V 断言里检索「verified ⇒ quote_faithful == pass」形态的断言 —— 不存在（V3.2 只管 evidence_grade，V2.6 只管 T/A 子模式一致性）。再对 S 做真值表：quote_faithful=na 时 0d 的合取式为假 → 不否决；步骤 1 的 K-L-T 分支只要求 `normalized(payload) ⊆ normalized(anchor_span)` → ST-V。\n作弊配方：提交 K-L-T claim 时不填「逐字引语」字段（§2.2 必备工件第 2 项在门侧只能查非空，而 0d 的触发条件写的是「claim 携带逐字引语」），使引语门输出 `na`；anchor_span 与结构化 payload 由同一次提交给出 → 包含检验必然通过 → G5 + ST-V。整条「引语忠于快照」的确定性验证从未运行，状态却是最高档。\n文档宣称 vs 观测：宣称引语忠实度是 100% 可兑现的确定性承诺，观测到它在 S 里只是一条可被 `na` 绕过的负向否决。",
+  "seed": null
+ },
+ {
+  "id": "F047",
+  "attacker": "A3-gaming-status",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.5 步骤 2b/2d/2e 与 §1.5.1 的偏序链定义",
+  "claim": "「降一档」在 ST-U 处没有定义：偏序链 `ST-V ⊐ {ST-A, ST-E} ⊐ ST-U` 的底就是 ST-U，而 2b/2d/2e 三条规则都可能作用在已是 ST-U 的 base 上，且多条降级可同时命中。S 因此不是全函数，V1.2（逐字节相同）与 V1.3（符号执行）无法执行。",
+  "repro": "逐字引用：§1.5.1「只能把 base 沿 `ST-V ⊐ {ST-A, ST-E} ⊐ ST-U` 这条链向下移」；§1.5「2b……base 降一档：ST-V→ST-A，ST-A→ST-U，ST-E→ST-U」（2b 自带映射表但无 ST-U 项）；「2d base = min(base, ceiling(flags))」；「2e budget_state == degraded → base 降一档」（无映射表）。\n复算方法：构造 K-L-A claim（base=ST-A，K=2），令 independent_cluster_count=1、flags 含 F-09 `preprint-only`（§7.3：降一档）、budget_state=degraded。按先命中先返回之外的顺序求值：2b → ST-U；2d F-09 降一档 → 未定义；2e 再降一档 → 未定义。三条规则的相对顺序、以及降到底之后的行为，文档均未规定 → 同一输入不同实现给出不同 status。\n文档宣称 vs 观测：宣称 S 可用符号执行自动验证单调性，观测到 S 的降级算子在链底无定义、且多降级叠加无结合律说明。",
+  "seed": null
+ },
+ {
+  "id": "F048",
+  "attacker": "A3-gaming-status",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §3.3 G5 定义 + §8.6 Tier B（默认档）+ §8.6.2 耦合规则 + §8.6.1 摘录硬上限",
+  "claim": "默认留存档（Tier B）与 G5 的定义要件互斥：G5 要求「全文快照在手」，而 Tier B 明确只保留 ≤300 字符摘录且「不得复用未保留的正文」。§8.6.2 却写「Tier B → 仅该锚点跨度可达 G5」。由于 ST-V 需要 G5（§3.4），这意味着要么默认档下 ST-V 不可达（整个产品的绿灯在默认配置下归零），要么 G5 的定义被这条耦合规则悄悄改写成「锚点跨度在手」——两种解释导出完全不同的系统。",
+  "repro": "逐字引用：§3.3「**G5** | `fulltext+anchor` | **全文快照在手**，且 claim 载荷有稳定可复核的定位符」；§8.6 表「**Tier B**（**默认档**）| 受硬上限约束的摘录 + 起止偏移/页码/XPath + 回链 + `rendered_text_sha256`」；§8.6.1「一般来源默认 **≤300 字符/单条**、同一文献累计 **≤1,200 字符**」；§8.6.2「Tier B → **仅该锚点跨度**可达 G5……**同一文献的任何新 claim 都必须重新抓取**，不得复用未保留的正文」；§3.4「G5 | ST-V」。\n复算方法：取一条 Tier B 证据，按 §3.3 的字面判 evidence_grade —— 「全文快照在手」为假 → 至多 G4 → §3.4 上限 ST-A；按 §8.6.2 判 → G5 → ST-V。两条规范源规则对同一记录给出不同 evidence_grade。再核对 V8.11（只禁 Tier C + >G2）与 V3.2（只禁 ≤G4 + verified），没有任何 V 断言能发现这个冲突。\n文档宣称 vs 观测：宣称 evidence_grade 与 retention_tier 正交且「两者的下限取交集」，观测到在默认档上两者对同一条记录给出互斥的等级判定。",
+  "seed": null
+ },
+ {
+  "id": "F049",
+  "attacker": "A3-gaming-status",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §9.3「规范源」与 V9.1；实测跨文件逐字复述 ≥12 处",
+  "claim": "「01-CONTRACTS 是唯一规范源、其他文档只引用不复述」这条被 README 与每份文档开篇复述的元规则，在冻结集里已被自身违反：多处规范句被兄弟文档逐字搬运，其中包括本次发现 P1-1 所涉的 §6.4 规范句。V9.1（5-gram 复述即失败）若真跑，会在这份冻结集上变红。",
+  "repro": "复算脚本（可直接重跑）：对 attack-v2/*.md 逐行去除 markdown 标记与空白，按「。；」切句，取长度 ≥18 的片段做跨文件重复检测 —— 得到 28 组跨文件重复片段。其中属于规范定义句复述的至少 12 组，最刺眼的四条：\n① 01-CONTRACTS:532「GC2不得参与生成期：写作阶段禁止调用同一个rubricjudge自评再改写——那是对judge直接做梯度下降」逐字复现于 04-ORCHESTRATION:189（该行同时写着「规范表述见 01-CONTRACTS §6.4」）与 02-ARCHITECTURE:354；「judge只在冻结产物上跑一次[E:extevaluation.mdR4]」复现于 03-EVIDENCE-ENGINE:479。\n② 01-CONTRACTS:296「含义：「结论正确」这一信号对「依据正确」几乎没有预测力」→ 03-EVIDENCE-ENGINE:448。\n③ 01-CONTRACTS:220（§2.3.1 的 ARCT 论据全句）→ 03-EVIDENCE-ENGINE:521；01-CONTRACTS:214（§2.3 第 3 项）→ 03-EVIDENCE-ENGINE:567。\n④ §6.6 V6.7 整条被 02-ARCHITECTURE:357 逐字复述。\n对照：§9.3「术语定义只此一份；其他文档复述定义即为回归（lint：对本文件的定义句做 n-gram 检索）」；V9.1「其他文档中出现本文件定义句的 5-gram 重复即失败」。\n文档宣称 vs 观测：README 第 28–29 行宣称「其他文档只引用不复述」，观测到复述在冻结集里是常态，且规范源与副本一旦漂移（P1-1 就是实例）无从判断哪份为准。",
+  "seed": null
+ },
+ {
+  "id": "F050",
+  "attacker": "A3-gaming-status",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §5.2.1 + §5.3 R-I3 + §5.6 V5.5；02-ARCHITECTURE.md:108–109、:598；04-ORCHESTRATION.md:309、:494",
+  "claim": "「取证/裁决子代理必须走 spawn 而非 fork」这条独立性机制与本项目自己的一手真值冲突：subagent 传输后端是 run 级、脚本不可见的设置，无法按角色逐子代理强制；V5.5 却把它写成逐子代理启动记录的断言。同时 02 把 fork 插件整个 disabled，而 04 两处要求把 `subagent_fork` 配回 one-shot「以保住 fork 的缓存收益」——同一份规划对同一个插件给出互斥的配置指令。",
+  "repro": "逐字引用：§5.2.1「`WorkflowStartRequest.subagentProvider` = **subagent 传输后端**（spawn / fork / …）。**作用于整个 run，脚本不可见。**」；§5.3 R-I3「取证/裁决子代理必须走 `spawn`（零父历史）而非 `fork`」；V5.5「全部裁决/取证子代理的启动记录中 `provider`（传输后端）为 `spawn`；不存在 `fork` 启动的裁决者」；02-ARCHITECTURE:108–109「- id: tool-subagent-fork ... disabled: true # 〔裁定〕本 profile 不用 fork」；04-ORCHESTRATION:309「本 profile 应显式把 `subagent_fork` 配回 `one-shot` 以保住 fork 的缓存收益」，:494 同义复述。\n复算方法：`grep -n \"fork\" attack-v2/0[2-4]*.md` 并比对 02:109 与 04:309/494；再对照 §5.2.1 的 run 级语义检查 R-I3 是否可按角色强制 —— 若整个 run 只有一个传输后端，则要么全 run 皆 spawn（R-I3 的「而非 fork」成为空条件，02 的 disabled 才是真正生效的机制），要么该规则不可实施。\n文档宣称 vs 观测：宣称跨上下文独立性有机械强制点（V5.5 可审计），观测到该强制点建立在一个 run 级、脚本不可见的旋钮上，且两份下游文档对同一插件给出相反配置。",
+  "seed": null
+ },
+ {
+  "id": "F051",
+  "attacker": "A3-gaming-status",
+  "severity": "P3",
+  "location": "00-PREMISE.md:694；01-CONTRACTS.md:831；04-ORCHESTRATION.md:864；06-SURVEY.md:41、:1129",
+  "claim": "文档集里唯一被四处交叉引用的元数字（研究语料文件数）仍在漂移：00-PREMISE 写 22，01-CONTRACTS 文末已改成 26，而 04 与 06 仍断言「01-CONTRACTS 文末写 22」。这是在一份把「数字落笔即验证」「跨文档漂移是上一轮最大缺陷类」当作核心卖点的文档集里，对其自身元数据的可复算失败。",
+  "repro": "复算命令：`grep -n \"22 文件\\|26 文件\\|26 份\" attack-v2/*.md`。结果：00-PREMISE:694「`research/v2/`（22 文件快照）」；01-CONTRACTS:831「`research/v2/`（26 文件 / 25 研究维度……）」；06-SURVEY:1129「本文件更正了任务书的「23 文件」与 `01-CONTRACTS.md` 文末的「22 文件」」；04-ORCHESTRATION:864「注意 01-CONTRACTS 文件尾写 22、本轮任务书写 23，三者不一致」。\n独立核验：`ls <repo>/research/v2/ | wc -l` → 26，与 01-CONTRACTS 现值一致，因此 04 与 06 关于兄弟文档内容的断言现已为假，而 00-PREMISE 的值仍为旧值。\n文档宣称 vs 观测：README「本轮相对 v1 的五条改进」第 2 条宣称「数字落笔即验证……46 个在落笔时当场纠正」，观测到该纠正只落到 1 份文档，另 1 份未更新、另 2 份对已更新文档的描述变成过期断言。",
+  "seed": null
+ },
+ {
+  "id": "F052",
+  "attacker": "A4-gaming-gates",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §6.4（第 522 行）vs §6.1 表（第 481 行）、§1.6 V1.4（第 152 行）、§6.6 V6.2（第 556 行）、05-TESTING.md §T1.1 HB-1、§T4.7",
+  "claim": "GC-2 的「永不写 ST-V」这条全系统最硬的边界，被 §6.4 自己开了一个后门。§6.1 规范表逐字写「**永远不得写 ST-V**」，而 §6.4 正文逐字写「GC-2 原则上不得写 ST-V，**但在双判官 κ≥0.8 且结论一致时可例外写 ST-V**。依据是 §1.3 的三条量化上界。」——它援引的 §1.3 恰恰论证的是相反结论（事实支持维「所有模型 CI 重叠、统计上不可区分」，最好 F1=0.750）。κ 是**判官之间**的一致度，不是**判官与真值**的一致度；§6.4 同页自己写着「MT-Bench 上 exact match 0.788–0.851 对应 κ 只有 0.376–0.511」「self-preference 的机理是低困惑度偏好，同族互评会系统性放大」。两个都偏好低困惑度文本的判官高度一致，正是这条例外要求的通过条件。",
+  "repro": "检查：`grep -n \"不得写 ST-V\" 01-CONTRACTS.md` 得两行——481 行「**永远不得写 ST-V**」，522 行「但在双判官 κ≥0.8 且结论一致时可例外写 ST-V」。再 `grep -n \"GC-2\" 01-CONTRACTS.md 05-TESTING.md 03-EVIDENCE-ENGINE.md` 得四条与之冲突的可检验断言：V1.4「不存在任何 status == verified 且 mechanism_results 中含 gate_class == GC-2 的 claim（§6.4）」——它把 §6.4 引为自己的**依据**，而 §6.4 说的是反面；V6.2「不存在 gate_class == GC-2 且 verdict 直接导致 status == verified 的路径」；05 HB-1「L2 永不写 verified」；05 §T4.7 把「任一臂的 verified 断言中出现 gate_class == GC-2 的路径」列为「**P0，实验作废，回炉门代码**」。文档声称：GC-2 上限 ST-A，这是 kind×状态矩阵 §2.4、§3.4、§9.11 的共同前提。观察到：唯一规范源自身含一条把最高档交给两个模型互相点头的路径。作弊脚本：producer 让 L2 用两个同族/同厂商判官（R-I2 只约束 verdict.provider ≠ producer.provider，**不约束两个判官之间**同源），两判官对低困惑度的 producer 文本天然一致，κ 轻易 ≥0.8 → 拿 ST-V，绕过 G-L1 逐字命中与 K≥2 独立簇的全部要求。",
+  "seed": "V2"
+ },
+ {
+  "id": "F053",
+  "attacker": "A4-gaming-gates",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §1.5.1（第 141 行）",
+  "claim": "单调性不变量的「唯一例外」把 agent 输出重新接回了 status。原文：「**任何提升状态的规则都是缺陷**，唯一例外：当 producer 在同一轮内补交了缺失证据时，编排器可将 ST-U 提升回 base。」这条例外由 producer 的行为触发、由编排器执行，直接违反 §0.2「系统中不存在任何一条从 agent 输出到 status 字段的写路径」与 §4.1 I-W1，也违反 §4 W-04（status 的唯一物理写者是门代码）。更致命的是它**结构上逃过了自己的机器检查**：V1.3 只对「`S` 的第 2 步全部规则」做符号执行，而这条例外发生在 `S` 之外的编排器里，符号执行 `S` 永远看不到它。",
+  "repro": "检查：`grep -n \"唯一例外\\|提升回\" 01-CONTRACTS.md` → 第 141 行。再读 V1.3（第 151 行）「符号执行 `S` 的第 2 步全部规则，断言每条规则的输出状态在 §1.5.1 的偏序下不高于输入」。文档声称：状态只能下降，且这一点可机器验证。观察到：升级路径存在、且落在被验证范围之外。作弊脚本：producer 第一轮故意漏交 `counter_evidence_searched` 或快照 → 0e/0a 命中 → ST-U；同一轮内「补交」→ 编排器把 ST-U 提回 base（可为 ST-V）。整条门链（G-L1 逐字命中、G-DEP、K≥2）在补交时是否重跑，文中未规定；ST-U 的两个最常见来源（0a source_integrity=mutated/missing、0d quote_faithful=fail）恰恰是「补交证据」最容易伪装成的形态。对比 05-TESTING §T5.2 RT-17 的升级规则「任何一次 status 被非确定性代码路径写入是 **P0，应当是不可能事件**」——本条例外使该「不可能事件」成为契约允许的常规操作。",
+  "seed": "V1"
+ },
+ {
+  "id": "F054",
+  "attacker": "A4-gaming-gates",
+  "severity": "P1",
+  "location": "03-EVIDENCE-ENGINE.md §3.1.1（第 337–348 行）+ §1.2 表（第 137 行）vs 01-CONTRACTS.md §1.6 V1.4（第 152 行）、05-TESTING.md VT-2",
+  "claim": "文献通道的 ST-V 在契约上不可达——三条背书通道去掉一条。03 §3.1.1 规定 K-L 的固定流水线是「producer 提交结构化载荷 → **G-ENTAIL 蕴含自检（GC-2）** → G-L1 包含检验（GC-0）→ **G-L2 支持性（GC-2）**」，且明写「顺序是 G-ENTAIL 在前」；03 §1.2 表也把 G-L2（GC-2）列为 K-L 的主门之一。于是每条 K-L claim 的 `mechanism_results[]` 里必然至少有一条 `gate_class == GC-2` 的记录。而 V1.4 是**含有性**断言而非**因果性**断言：「不存在任何 `status == verified` **且** `mechanism_results` 中含 `gate_class == GC-2` 的 claim」。两者同时成立时，K-L-T 永远拿不到 ST-V，§2.4 的 kind×状态矩阵（K-L-T 行 ST-V 打 ✅）与 §3.4（G5 → ST-V）全部落空。唯一的逃逸是把 GC-2 门的结果排除出 `mechanism_results[]`——但 EE-0 规定「每一个门，无论 GC-0/GC-1/GC-2，必须输出下列信封。字段缺失即门红」，且 V6.1 要求每条 mechanism_results 携带 gate_class，排除即等于让 GC-2 的判定不可审计。",
+  "repro": "检查：读 03 第 337–348 行的三步流水线与「顺序是 G-ENTAIL 在前」；读 03 第 137 行 K-L 行「G-L0（GC-1）/ G-L1（GC-0）/ **G-L2（GC-2）**」；读 01 第 152 行 V1.4 的措辞；读 03 §9.2 NT-L-8 的断言「**语料中不存在 `verified` 且 `mechanism_results` 含 GC-2 的 claim**（01-CONTRACTS V1.4）」；读 05 VT-2。对任一条通过全部门的 K-L-T claim 跑 V1.4，必红。文档声称：K-L-T 可达 ST-V（§2.4、§3.4 表 G5 行）。观察到：V1.4 与 §3.1.1 的强制流水线互斥。注意这不是「GC-2 直接导致 verified」（V6.2 用的是「直接导致」，可满足），而是 V1.4 独有的含有性写法造成的——两条断言口径不同却被 NT-L-8/VT-2 当同一条执行。",
+  "seed": null
+ },
+ {
+  "id": "F055",
+  "attacker": "A4-gaming-gates",
+  "severity": "P1",
+  "location": "03-EVIDENCE-ENGINE.md §2.4.1 C-3 与 C-4（第 276–284 行）",
+  "claim": "G-DEP 被一行哈希断言整体绕过——而 03 §2.4 开篇自陈「**这是本节最重要的门，因为没有它，G-RERUN 是一个几乎不会红的检查**」。C-3 的通过条件逐字是「脚本**要么非零退出**，要么产出的被引用 key 与原值差异 > τ_f」；C-4 逐字是「C-1/C-3 中脚本崩溃（非零退出）**计为「敏感」**，因为崩溃证明脚本确实读了该输入」。两条合起来给出一条完整作弊路径：让 `run.py` 读入每个声明输入、校验其 sha256 等于硬编码摘要、不等则 `raise`，随后 `print` 硬编码结论数字。",
+  "repro": "作弊脚本（可直接执行）：\n```python\nimport hashlib, json, sys\nfor p, want in [(\"data/a.csv\",\"<冻结时的sha256>\"), (\"data/b.csv\",\"<...>\")]:\n    if hashlib.sha256(open(p,'rb').read()).hexdigest() != want: sys.exit(1)\njson.dump({\"effect\": 0.37, \"p\": 0.004}, open(\"out.json\",\"w\"))\n```\n逐门追踪：§2.1 第 2 步输入哈希校验 → 通过（字节确实是那份）；第 4 步 `uv sync --frozen` → 通过；第 5 步禁网容器 → 通过（不联网）；第 6/7 步 out.json 数值比对 → 逐位相同，通过；§2.2.1 regime 测定（5 个 seed 逐字节相同）→ deterministic，容差 1e-9，通过。G-DEP：C-1 对任一输入施加 δ=1e-2 扰动 → sha256 变 → `sys.exit(1)` → 按 C-4「崩溃计为敏感」→ 每个输入都「敏感」；C-3 置空输入 → 同样 exit 1 → 满足「要么非零退出」；C-2 反向必要性 → 每个输入都有敏感 key，通过。结论：`verdict=pass` → base = ST-V。文档声称（§2.4 第 259 行）：「一个把结论数字**硬编码**在 `run.py` 里的脚本……它拿到的是 ST-V」是 G-DEP 要消灭的形态，NT-D-9 被标为「**最重要的一条**」。观察到：NT-D-9 的 fixture 是「读了输入但不使用」的朴素版本，对哈希断言版本无效——负例套件本身在这一点上是空洞的。修法方向（不属本报告职责，仅证明缺陷可判）：C-4 必须区分「崩溃于数据处理」与「崩溃于完整性断言」，或对崩溃另设 `caveats` 且不计为敏感。",
+  "seed": null
+ },
+ {
+  "id": "F056",
+  "attacker": "A4-gaming-gates",
+  "severity": "P1",
+  "location": "03-EVIDENCE-ENGINE.md 全文（§0.1 门清单、§9 负向测试清单）vs 01-CONTRACTS.md §1.5 第 0e 步、§7.2 F-29、§7.2.3",
+  "claim": "`S` 的 0e 步（`counter_evidence_searched == false → ST-N`）与 F-29 在整个证据引擎里**没有任何门实现**，只剩一个存在性检查。`grep -n \"反证\\|counter_evidence\\|F-29\" 03-EVIDENCE-ENGINE.md` 只命中 4 处，全部在 §4.4.2（K-I 复核者的反例搜索 yaml）、§9.2 NT-L-13、§10 的残余风险表——**文献通道没有 G-COUNTER 之类的门 id、没有 EE 规则、没有判定契约、没有 NT 用例断言「空洞的反证检索必须红」**。而 01 §7.2.3 把它定位为对付 N6 选择性引用的唯一防线：「逃不过的只有『你有没有找过反面』这个可审计的过程字段」；F-29 的 setter 标为 GC-0，GC-0 能做的只有「记录存在且非空」。",
+  "repro": "检查：`grep -n \"反证\\|counter_evidence\\|F-29\" 03-EVIDENCE-ENGINE.md`（4 命中，均非门实现）；`grep -o \"G-[A-Z-]*\" 03-EVIDENCE-ENGINE.md | sort -u` 得 17 个门 id，无一个负责反证检索；03 §9.1–§9.7 的 NT 表无一条针对反证检索质量。作弊脚本：producer 对每条承重 claim 附一份形式合规的反证检索记录——`{strategy:[\"同快照内反义词检索\"], queries:[\"<一个已知不会命中的字符串>\"], budget:{wall_s:3,tokens:120,tool_calls:1}, result:\"not_found\"}`。0e 通过（searched=true），2a 不触发（found=false），status 保持在 base。§10 的 N6 行自己承认「反证检索只能发现**同一快照内**的反对句」——即把搜索限制在自己挑选的快照内是被文档**认可**的做法，作弊者不需要越轨。文档声称（§10 N1/N6）：F-29「强制反证检索」是内容攻击与选择性引用的两大减损之一。观察到：该减损在实现契约层是空的，且 EE-NT-1「本文件每一条 `EE-*` 硬规则必须恰好对应至少一个 `NT-*` 用例」抓不到它——因为它从来没有被写成 EE 规则。",
+  "seed": null
+ },
+ {
+  "id": "F057",
+  "attacker": "A4-gaming-gates",
+  "severity": "P1",
+  "location": "03-EVIDENCE-ENGINE.md 全文 vs 01-CONTRACTS.md §1.5 第 2b 步、§1.5.2 K(kind)、§5.5 R-I6、§5.6 V5.3/V5.4、§1.6 V1.6",
+  "claim": "上游簇归并器（`independent_cluster_count` 的计算者）在证据引擎里完全缺席。03 自陈其职责是「**门具体怎么实现，它往 `S` 的输入里放什么**」，却没有为归并器分配 gate id、gate_class、EE-0 信封、`power_basis`，也没有任何 NT 用例。`grep -n \"归并\\|upstream_id\\|independent_cluster\" 03-EVIDENCE-ENGINE.md` 只命中 6 处，全部在 §9 的 NT-A-4（那是 `work_id` 合并，不是 `upstream_id` 归并）、§10 的残余风险表与 §11.4——没有一处是实现契约。而 `S` 第 2b 步的降级、K(kind)≥2 对合成共识（Gemini-3-Flash 73% ASR）的唯一防线、RT-1（V1.6，「该用例失败即证明我们把 faithfulness 当 factuality 卖」）的期望结果、V5.3/V5.4 两条回归用例，全部依赖它。",
+  "repro": "检查：`grep -o \"G-[A-Z-]*\" 03-EVIDENCE-ENGINE.md | sort -u` → G-ADMIT/G-CHART-*/G-DAG/G-DEP/G-ENTAIL/G-FINGERPRINT/G-GRIM/G-HIJACK/G-L*/G-PROV/G-REDERIVE/G-RERUN/G-RETRACT/G-WARRANT，无归并器；再 `grep -n \"归并\" 03-EVIDENCE-ENGINE.md` 确认 6 处均为叙述而非契约。文档声称：01 §5.5 R-I6「每条证据必须携带 `upstream_id`；`independent_cluster_count` 按 `upstream_id` 去重后计算」，且 01 §5.5 给了 5 组现成硬样本（11 中文域名=1 条日经、8 域名=1 篇 BadRAG、Unpaywall=OpenAlex 同后端等）作为回归用例。观察到：`upstream_id` 是 producer 写的内容字段（§4 W-03 claims/<id>.json 由 producer 写），R-I1「一切独立性判定使用 harness 侧身份，不得取 manifest 里的自报字段」只约束 **agent 身份**，不约束 `upstream_id`。作弊脚本：同一篇上游被 3 个聚合站转述，producer 给第 1 条填 DOI、第 2 条填「官方域名」、第 3 条填「通稿原始发布机构」——§5.5 的归并键优先级是一个**有序列表**而不是一个规范化函数，三条落在不同键空间即不碰撞 → `independent_cluster_count = 3` ≥ K(K-L-A)=2 → 2b 不降级，F-14 不置位。整个 N3 防线由一个不存在的组件加一个 producer 自填字段构成。",
+  "seed": null
+ },
+ {
+  "id": "F058",
+  "attacker": "A4-gaming-gates",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §9.1（第 772 行）、§0.1（第 19 行）、§4.6 V4.3（第 399 行）、§2.1 fail-closed 第 ⑥ 点（第 177 行）",
+  "claim": "「正文中不允许出现未被某条 claim 覆盖的数字或比较」这条产品级公理，只有一个覆盖其中三分之一的机器检查。§9.1 逐字定义「**凡进入正文的数字、命名实体、比较，一律是承重的**」，备注栏写「机器可判：裸数字扫描」——裸数字扫描只能覆盖阿拉伯数字，对**命名实体**和**比较**零覆盖，且对中文数字/量词表述零覆盖。对一个把中文场景列为硬要求（§3.6、05 §T3.4 中文题不少于 20 题）的产品，这是核心承诺的直接失效。",
+  "repro": "检查：`grep -n \"裸数字\" *.md` → 全文档集只有 6 处，白名单一律是「年份、章节号、页码」；`grep -n \"汉字数字\\|中文数字\\|数字词\\|比较扫描\" *.md` → **零命中**。作弊脚本（三条全部通过 V4.3、§2.1⑥、05 §T7.3 的红案）：①把 37% 写成「约四成」「三分之一强」「近半数」；②把「A=12.4，B=8.1」写成「A 显著高于 B」「A 远超 B」——03 §4.2.3〔裁定 D-7〕明文规定「**散文强度不参与判定**」，所以没有任何门会看这句；③命名实体（机构名、模型名、期刊名）本就无扫描器。结果：一份不含任何阿拉伯数字的承重论述可以 100% 逃过台账，`prose/` 构建成功，V4.3 命中数为 0。文档声称：05 §T7.3 断言 v2 的 `{{claim:...}}` 占位符机制 +「裸数字扫描」已经「关闭了那个盲区」（前代 16 条承重断言中 4 条无台账行，「其中包括论点的一半」），且其红案只是「向成稿注入一句含**裸数字**的承重断言」。观察到：红案 fixture 与作弊路径正交——注入中文数字或纯比较句，同一红案不会红。这直接复现了前代 gt-pg-current.md#F-32 的失效形态（12/12 claim 全复现，但组合起来推不出保留的那句论点）。",
+  "seed": null
+ },
+ {
+  "id": "F059",
+  "attacker": "A4-gaming-gates",
+  "severity": "P2",
+  "location": "03-EVIDENCE-ENGINE.md §8.2（第 1000 行）与 §11.6 vs 01-CONTRACTS.md §4 W-06（第 361 行）、§8.1（第 660 行）；03 §9.6 NT-A-3",
+  "claim": "03 对唯一规范源的引述是错的，并据此实现了一个更弱的去重键，还把自己造成的缺陷记成「01 的契约缺陷」。03 §8.2 逐字写「语料给出的键是五元组 `sha256(work_id ‖ version_id ‖ locator ‖ normalize(quote) ‖ extractor_version)`，而 **01-CONTRACTS §4 W-06 / §8.1 写的是三元组（缺 `version_id` 与 `normalize(quote)`）**……**本文件按 01-CONTRACTS 的三元组实现**」。事实是 01 的两处都写的**就是五元组**。后果不止于 `version_id`：丢掉 `normalize(quote)` 直接摧毁 W-06 自己声称的核心性质——「按**来源坐标**内容寻址 → 并行写入天然幂等、去重不需要 embedding、**矛盾在构造上不可能被去重门吃掉**」。",
+  "repro": "检查：`sed -n '361p;660p' 01-CONTRACTS.md` → 两处均为 `sha256(work_id ‖ version_id ‖ locator ‖ normalize(quote) ‖ extractor_version)`；对照 03 第 987 行的实现值 `evidence_id = hash(work_id, locator, extractor_version)` 与第 1000 行的错误引述。文档声称：03 前言「本文件不定义任何术语……引用它们时只写『见 01-CONTRACTS §N』」，硬约束是以 01 为准。观察到：03 单方面弱化了规范源的键，并把结果写进 §11.6 作为「01 需要修改」的候选缺陷。作弊/失效路径：同一 locator（如同一节、同一表格单元）内的两句互相矛盾的话，在三元组下 `evidence_id` 相同 → 主键碰撞 → 按 EE-A-3「天然去重」被吞掉；而 03 §8.2 恰恰用一整段论证「我们最需要保留的那一类写入，正是它最会被丢掉的那一类」。**并且负例 fixture 是空洞的**：§9.6 NT-A-3 的构造逐字是「同一 work 的两条**矛盾**证据（**不同 section**）」——刻意选了不会碰撞的那一面，因此这条 NT 无论键是三元组还是五元组都会绿。",
+  "seed": null
+ },
+ {
+  "id": "F060",
+  "attacker": "A4-gaming-gates",
+  "severity": "P2",
+  "location": "03-EVIDENCE-ENGINE.md §2.2.1（第 184–196 行）",
+  "claim": "regime 的「测出来而不是声明出来」是一条假的防线，因为被测的对象由作弊者亲手编写。§2.2.1 逐字宣称：「**为什么必须是测出来的**：若 regime 由 producer 声明，攻击面立刻出现——声明 `stochastic` 即可换到宽容差。测定把这条路堵死：一个真正确定性的脚本无论怎么声明都会被判为 `deterministic`」。测定判据是「以 R=5 个互不相同的 seed 各跑一次，若 5 次的 `out.json` **逐字节相同** → deterministic」——判据作用在**整个文件**上，而 producer 完全控制文件内容。",
+  "repro": "作弊脚本：在 `run.py` 末尾加一行 `result[\"_seed\"] = int(os.environ[\"SEED\"])`（或任何 seed 依赖的无关字段）。5 次重跑 out.json 不再逐字节相同 → regime 判为 `stochastic` → 容差从 §2.2.2 的 `rtol=1e-9` 跳到 §2.2.3 的 `max(0.01, 3σ̂/|s̄|)·|s̄|`；承重字段本身恒定 → σ̂=0 → 容差 = **1%·|s̄|**，比 deterministic 宽 7 个数量级。§2.2.4 的硬上限只在 `σ̂/|s̄| > 0.10` 时触发，σ̂=0 完全不触发。§2.2.1 的「若 producer 的声明与实测不符：**不判门红**，改判 regime 并按实测 regime 重算容差」进一步保证这条路无惩罚。检查：读 §2.2.1 第 190 行的判据措辞「逐字节相同」，对照 §2.2.2/§2.2.3 的两组容差；再查 §9.1 NT 表——NT-D-4 只覆盖「声明 stochastic 而实测 deterministic」的方向（惩罚诚实者），**没有任何用例覆盖「脚本被构造成 stochastic 以换宽容差」**。文档声称：这条路已被堵死。观察到：堵死的是「说谎」，没堵「改代码」，而 producer 本来就是写代码的那个。",
+  "seed": null
+ },
+ {
+  "id": "F061",
+  "attacker": "A4-gaming-gates",
+  "severity": "P2",
+  "location": "03-EVIDENCE-ENGINE.md §2.2.4〔裁定 D-2〕（第 219–225 行）",
+  "claim": "容差带宽的硬上限设在了它自己论证为「已不携带信息」的位置的正下方。规则是 `σ̂_f/|s̄_f| > 0.10 → not_applicable`，理由逐字是「容差带 3σ/|s̄| **> 0.30** 意味着『复现』这个词已经不携带信息……一个 30% 宽的容差带比那个 8%（足以翻转 A 优于 B 的比较结论）大近四倍」。取上限为 0.10 意味着 `σ̂/|s̄| = 0.0999` 合法，对应容差带 **29.97%** —— 恰好停在被判定为无意义的那条线的下一位小数上，且仍然产出 ST-V。",
+  "repro": "检查：读 §2.2.4 的公式与理由段；代入 `σ̂/|s̄| = 0.0999` → 容差 `max(0.01, 3×0.0999)·|s̄| = 0.2997·|s̄|`。作弊脚本：producer 在 `run.py` 里引入一个可调噪声源（bootstrap 次数、子采样比例），把 σ̂/|s̄| 调到 0.09 附近；此后任何落在 ±27% 内的重跑结果都判「复现」→ ST-V。这是典型的自选输入：被评者选择噪声水平，容差是该选择的 3 倍。§9.1 的 NT-D-5 只测 `σ̂/|s̄| = 0.25`（远超上限、必红），**没有任何用例测 0.09 这一档**——负例套件只验证了上限存在，没有验证上限位置合理。文档声称：D-2 保护「复现」一词的信息量。观察到：它在 29.97% 处才生效，而同一段落自认 8% 已足以翻转结论。",
+  "seed": null
+ },
+ {
+  "id": "F062",
+  "attacker": "A4-gaming-gates",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.5 第 1 步末行（第 125 行）+ §1.5.1（第 141 行）、§1.6 V1.3",
+  "claim": "`S` 的第 1 步里藏着一条升级规则，而单调性的机器检查只覆盖第 2 步。第 1 步末行逐字：「图形读数的数值断言 : base 强制为 ST-E（**覆盖上述结果**）（§3.5）」。「覆盖上述结果」是无条件的：若同一条 claim 的决定性机制**已经失败**（如 K-L-A 归因裁决 not-support → ST-U，或 K-D 重跑门不通过 → ST-U），这条规则会把 ST-U 抬成 ST-E。在 §1.5.1 的偏序 `ST-V ⊐ {ST-A, ST-E} ⊐ ST-U` 下，ST-E 严格高于 ST-U，这是一次状态提升。V1.3 逐字只承诺「符号执行 `S` 的**第 2 步**全部规则」，因此结构上看不见它。",
+  "repro": "检查：读 §1.5 第 119–126 行（第 1 步 base 表）末行的「覆盖上述结果」；读 §1.5.1 的偏序链与 V1.3 的作用域「第 2 步全部规则」。作弊脚本：一条 K-L-A claim 的载荷数值来自论文里的一张柱状图；G-L2 判 not-support → 第 1 步本应给 ST-U；因该数值是图形读数，第 1 步末行强制 base = ST-E → 该数字以「已估读」形态携 ε 进入正文（§3.5 允许 ST-E 出现在描述性叙述里）。读者看到的是一个带误差棒的估读值，而真实语义是「决定性机制跑了，没能建立支持」。文档声称：§1.5.1「任何提升状态的规则都是缺陷」，且该性质可自动验证。观察到：第 1 步内的提升既不被禁令覆盖（禁令写的是「`S` 的第 2 步中每一条规则」），也不被 V1.3 检查覆盖。",
+  "seed": null
+ },
+ {
+  "id": "F063",
+  "attacker": "A4-gaming-gates",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §7.3（第 626–636 行）vs §7.2 表（第 579–614 行）、§7.1 F-规则-2（第 571 行）",
+  "claim": "「flags 必须进判定，不是只打印」这条规则对全部 producer 自报 flag 不成立——因为 §7.3 的硬上限表压根没有它们的行。§7.2 词表里 F-01（`uncertainty:no-ci`）、F-03（`cherry-picking:window`）、F-04（`best-case-ratio`）、F-12（`metric-frame-mismatch`）、F-24（`pricing-promo`）的「谁消费」栏都写着「**S 2d**」，而 §7.3 这张定义 2d 的表只列了 F-05/F-07/F-10/F-13/F-09/F-02/F-14/F-15/F-18/F-21/F-30/F-32/F-33/F-34 以及「不改状态」组。上述五个 flag 在 2d 的 `ceiling(flags)` 里**没有定义值**，即 §1.5 第 2d 步对它们是恒等变换。",
+  "repro": "检查：逐行 diff §7.2 表「谁消费」列中出现「S 2d」的 flag 集合，与 §7.3 表首列的 flag 集合；差集为 {F-01, F-03, F-04, F-12, F-24}。文档声称：F-规则-2 逐字「flags **必须进判定**，不是只打印。前代的 honesty flags 从不进判定、只打印，是 SHIP 定义四分之三未实现的一部分」。观察到：v2 在四个自报诚实 flag 上复现了完全相同的形态。作弊脚本（这是理性作弊者的**最优**动作，因为它同时提高观感与得分）：producer 主动声明 F-03「选择性时间窗」+ F-04「比率取最优情形」+ F-01「点估计无置信区间」——三条自报诚实标注，status 一分不降（2d 无定义），交付物里显示为「本系统主动披露了三处口径限制」。诚实声明变成零成本的信誉装饰。注意 F-12 更严重：它是 §4.2.2 口径可比性检查的唯一降级出口，NT-I-4 的断言仅是「F-12 置位」，而置位后没有任何状态后果。",
+  "seed": null
+ },
+ {
+  "id": "F064",
+  "attacker": "A4-gaming-gates",
+  "severity": "P2",
+  "location": "03-EVIDENCE-ENGINE.md §9.0 NT-00（第 1078 行）、01-CONTRACTS.md §6.5.2（第 542 行）、§6.6 V6.5、§9.22（第 793 行）、00-PREMISE.md B8 裁决第 1 条（第 583 行）",
+  "claim": "gate 完整性脚本的两条断言都以一个**可由被检查者自由移动的 git tag** 为参照，因此该门在设计上恒绿。断言是「`git status --porcelain -- checks/` 干净 **且** `git diff <gates-baseline-tag> -- checks/` 为空」。§9.22 逐字定义 gates-baseline 是「**conductor 在编写 checks 时打的 git tag**」——即由改门的同一个人打、且 git tag 可以 `-f` 重指。这与 README M0 阻塞项 #7（「`gate_integrity.sh` 自身谁来证明没被改」）是**不同**的洞：不需要碰脚本，只需重指 tag。",
+  "repro": "作弊脚本（三条命令）：`vim checks/rerun_gate.py`（放宽容差 / 加白名单）→ `git commit -am 'gates: tune'` → `git tag -f gates-baseline-<n> HEAD`。此后 `git status --porcelain -- checks/` 干净、`git diff gates-baseline-<n> -- checks/` 为空，NT-00 绿、V6.5 绿。检查：`git tag | grep -c gates-baseline` 在本仓库返回 **22**；`git log --oneline` 中提交 a4e0b11 的信息逐字含「**tag re-pointed**」——即重指 tag 在本仓库已经是常规操作，不是理论顾虑。文档声称：00-PREMISE B8 把这条列为「**v2 必须补的第一个洞**」，补法是把它「写成真脚本」；03 §9.0 NT-01 的补充判据是「gate-integrity 脚本从未在真实 run 中触发过一次非零退出 ⇒ 必须构造一次真实篡改来证明它活着」。观察到：把它写成真脚本并不能修复这个洞——洞在参照物（可写的 tag）而不在脚本。且「构造一次真实篡改」的红案若由同一 conductor 构造，他会在篡改后**不**重指 tag，于是红案通过而真实攻击路径仍然畅通。缺失的机制：tag → commit 的绑定必须落在不可由 conductor 单方重写的地方（签名 tag + 独立留存的 tag→sha 映射，或把 baseline sha 写进门报告的 `inputs_hash`），全文档集无任何一处提及。",
+  "seed": null
+ },
+ {
+  "id": "F065",
+  "attacker": "A4-gaming-gates",
+  "severity": "P2",
+  "location": "05-TESTING.md §T6.4 末段（第 838–840 行）",
+  "claim": "05 给攻击者的「优先瞄准清单」是一条虚假的完备性声明，且方向是把审计注意力**引开**。原文逐字：「同类需要标注性质的还有：`independent_cluster_count` 的 `K`（§1.5.2 已标〔裁定〕）、GC-1 的超龄阈值（§6.3 标为「建议值」）。**这三处是全文档集中「阈值不是测出来的」的全部位置**——攻击者应当优先瞄准它们」。这句话可被同一文档集直接证伪。",
+  "repro": "检查：`grep -n \"〔裁定\" 03-EVIDENCE-ENGINE.md` 逐条清点 03 中进入判定路径、且数值无测量依据的阈值——① §2.2.3 `R = 5`〔裁定〕；② §2.2.4 `σ̂/|s̄| ≤ 0.10`〔裁定 D-2〕；③ §2.2.5 `atol_floor = 1e-12`〔裁定，工程常数〕；④ §2.2.2 `rtol = 1e-9`；⑤ §2.4.1 C-1 的扰动幅度 `δ = 1e-2`；⑥ §3.3.3 中文跨距上限「载荷长度 × 1.5」〔裁定，工程常数〕；⑦ §3.4.5 F-13 的 `N = 5`〔裁定〕；⑧ §6.3 图族路由器的 `k=2, n=3`〔裁定〕。其中 ⑤ 与 ⑧ 被 03 自己的 §11.1 / §11.5 逐字承认为无实测支持（「C-1 的扰动幅度 `δ = 1e-2` 是一个**凭空取的常数**」「k=2/n=3 是裁定，**没有实测支持**」）。文档声称：只有三处。观察到：至少十一处，其中两处被兄弟文档明文标为未标定。后果：05 §T6.1「必须现场标定的阈值（清单）」同样不含这八个常数，因此没有任何 M1 标定任务会指向它们；一个按 05 指引工作的审计者会漏掉整条 K-D 通道的全部容差常数——即漏掉 F4/F9/F10 三条攻击面。",
+  "seed": null
+ },
+ {
+  "id": "F066",
+  "attacker": "A4-gaming-gates",
+  "severity": "P2",
+  "location": "05-TESTING.md §T9 VT-10（第 987–988 行），对照 §T0.3（第 48–61 行）",
+  "claim": "VT-10 自带一句逃逸条款，使它成为一条结构上不可能红的「门」——恰好是本文件 §T0.3 定义为「不是门」的东西。原文逐字：「**VT-10** A/B 实验的预注册文件 sha256 在报告中出现，且实际分析脚本哈希与之匹配；**存在至少一份 null 或反向结果被原样保留的历史记录（若尚无，记为「该路径未验证」）**。」括号里的兜底把后半条断言的失败态直接转成一个标签。",
+  "repro": "作弊脚本：不产出任何 null 结果（或产出后按 §T4.6 的「重跑必须由人签署新预注册」路径把旧实验从报告中挪走），在报告里写一行「该路径未验证」→ VT-10 通过。检查：读 §T0.3 逐字「**任何检查，若我们造不出一个使它非零退出的构造，它在本文件里被记为「未验证机制」，不记为门，也不得出现在任何通过率里**」，再读 §T5.5「本节里目前造不出红案的检查（排出门外）」的三条清单——VT-10 不在其中。文档声称：VT 系列是「本文件自己的门」（§T9 标题）。观察到：VT-10 的后半段永远无法非零退出，却被计入门清单，违反本文件自己的 T0.3。对比 VT-3 的写法（「存在一个 κ 出界导致该批作废的历史记录（**没触发过 ≠ 有效**）」）——同一份文件在相邻条目上用了两种相反的严格度，说明这是可修的疏漏而非不可避免的妥协。",
+  "seed": null
+ },
+ {
+  "id": "F067",
+  "attacker": "A4-gaming-gates",
+  "severity": "P2",
+  "location": "05-TESTING.md §T3.2 标题（第 317 行）vs §T3.2 D-4（第 338–340 行）、§T3.5（第 399–400 行）",
+  "claim": "held-out 的烧毁纪律在小节**标题**里被一条正文完全不存在的例外抵消。标题逐字是「### T3.2 物理隔离与烧毁（**连续两次失败的题目可解冻复用**）纪律」，而正文 D-1…D-5 五条纪律里没有任何一条提到「解冻」「复用」或「连续两次失败」；D-4 的措辞与之直接冲突：「任何一次针对某批失败题去改 prompt / skill / 流程之后，那批题**立刻从 held-out 降级为 dev 集，永久不再计入对外分数**」；§T3.5 的轮换规则同样写「被替换出来的题降级为 dev 集，**永久**不再计入对外分数（与 D-4 同一去向）」。",
+  "repro": "检查：`grep -n \"解冻\\|复用\" 05-TESTING.md` → 只命中标题一处，正文零处。作弊脚本：系统在题 Q 上连续失败两次 → 按标题的例外把 Q「解冻复用」→ 调 prompt 直到 Q 通过 → Q 仍留在 held-out 核心闭集 → 对外分数包含一道已被调优过的题。这恰好是 held-out 唯一要防的事，且方向选得最坏：被反复调优的正是系统最弱的那些题，「解冻复用」会系统性地把最脏的题重新洗白成对外分数。文档声称：D-4 是永久性降级。观察到：标题给出了一条相反的、无正文支撑的例外。附带：§T3.6 残余二括注已承认「D-4 烧毁纪律目前**无机械强制**——没人能从工件上区分『这批题被用来调过 prompt』与『没有』」，所以即便删掉标题的例外，这条仍只是纪律；标题的例外把「无强制的纪律」变成了「明文许可」。",
+  "seed": "V6"
+ },
+ {
+  "id": "F068",
+  "attacker": "A4-gaming-gates",
+  "severity": "P2",
+  "location": "02-ARCHITECTURE.md 第 677 行、03-EVIDENCE-ENGINE.md 第 1319 行、05-TESTING.md 第 1032 行、04-ORCHESTRATION.md 第 864 行、06-SURVEY.md 第 40–41/1128–1129 行 vs 01-CONTRACTS.md 第 831 行、README.md 第 24 行",
+  "claim": "证据基线的文件数在冻结文档集内部有三个互相冲突的值，而这正是本项目自称最大缺陷类（§4 前言：「上一轮最大的缺陷类是**跨文档漂移**」）与第二条改进承诺（README「数字落笔即验证」，784 行核验表）的直接反例。02/03/05 的文件尾写「23 文件」；04 写「**实测 26 文件**；注意 01-CONTRACTS 文件尾写 **22**、本轮任务书写 23，三者不一致」；06-SURVEY §1.1 写「本文件更正了任务书的『23 文件』与 `01-CONTRACTS.md` 文末的『22 文件』」；而冻结的 01-CONTRACTS 文件尾实际写的是「**26 文件 / 25 研究维度 = 18 ext + 7 gt**」。",
+  "repro": "检查：`ls -1 <repo>/research/v2 | wc -l` → **26**（18 个 ext-* + 7 个 gt-* + GROUND-TRUTH-CORRECTIONS.md，与 01 的 26/25 口径一致）；`grep -n \"23 文件\\|26 文件\\|22\" attack-v2/*.md`。文档声称：README 改进项 #2「数字落笔即验证——784 行核验表，每个承重数字带口径三元组 + 状态 + 一手出处 + as-of 日期；46 个在落笔时当场纠正」。观察到：①更正只传播到 01/06/README，02/03/05 三份仍停在旧值；②04 与 06 对 01 的引述（「01 文末写 22」）在冻结集内为假，即**一条描述兄弟文档内容的断言未随兄弟文档更新而失效检测**——这正是 §2.3 第 6 项 `stale` 传导机制要解决的问题，而文档集自身没有对自身适用它；③该数字是承重的（它是「证据基座规模」这一对外可信度声明的分母），却不在 06-SURVEY 的核验表覆盖范围内，说明核验表只覆盖外部数字、不覆盖项目自述元数字。",
+  "seed": null
+ },
+ {
+  "id": "F069",
+  "attacker": "A4-gaming-gates",
+  "severity": "P2",
+  "location": "03-EVIDENCE-ENGINE.md §0.4（第 103–117 行）vs README.md 第 28–29 行、01-CONTRACTS.md 前言（第 3–4 行）",
+  "claim": "03 自造并**立即赋予规范效力**的标识符共 8 组，其中多组已是门红条件，这使 01「任何被多个文档共享的术语、枚举、字段、规则，只在这里定义一次」在冻结集内已经为假。README 的规则逐字是：「若某文档需要一个 §9 术语表里没有的词，**必须挂起裁决而非自行造词**」——03 的做法是造词、使用、然后列一张「回填候选」表。这不是该规则允许的处置。",
+  "repro": "检查：读 03 §0.4 的表格，其中标「**是**——它们跨文档被 `mechanism_results[]` 消费」的有 `applicable`/`power_basis`/`error_asymmetry`/`caveats`、`regime ∈ {deterministic, stochastic}`、`ni_polarity ∈ {evidence_of_problem, expected_to_be_reported}`、`quantifier`/`modality` 五值与三值枚举；再读 EE-0（第 45 行）「**每一个门，无论 GC-0 / GC-1 / GC-2，必须输出下列信封。字段缺失即门红。**」与 EE-0.2「`power` 与 `power_basis` 必须成对出现，且 `power_basis` 取值受限于上面五值」，以及 §4.2.3〔裁定 D-7〕把 `quantifier`/`modality` 的偏序作为 G-DAG 的 fail 条件。文档声称：01 是唯一规范源，其他文档「只引用不复述」，需要新词先改 01。观察到：03 定义了 8 组枚举/字段并让它们成为门红与状态降级的判据，01 §9 至今没有它们；V9.2 的 lint（「出现不在 §9 表内、且被当作专有名词使用的术语即报警，需人工确认后回填」）在这里只会产生一批**待人工确认的报警**，而门已经在按这些枚举判红。03 自己也标注了最危险的一处：`CLEAN/FLAGGED/SUSPECT/NOT_COVERED`「与 `source_integrity` 值域部分同形但不同义，是本文件最可能被读成『第二套状态枚举』的地方」——一个自认可能被误读成第二套状态枚举的四值枚举，正处在唯一规范源之外。",
+  "seed": null
+ },
+ {
+  "id": "F070",
+  "attacker": "A4-gaming-gates",
+  "severity": "P2",
+  "location": "全部 8 份文档的 `[E: <文件>#<锚>]` 指针；README.md 第 40 行改进项 #4；01-CONTRACTS.md §9.31 V9.1–V9.5",
+  "claim": "证据指针只被强制**存在**、从不被强制**可解析**——这正是本项目对 L0(存在性) ≠ L1(定位性) 的核心批判在自身文档上的复发。README 改进项 #4 逐字是「`[E:]` 指针全文强制」；§9.31 的五条文档 lint（V9.1 复述检测 / V9.2 术语报警 / V9.3 五个词的限定语 / V9.4 raw agreement 并排 κ / V9.5 门通过率）中，**没有一条检查 `[E:]` 指向的锚点是否在被引文件中真实存在**。同时锚点书写格式跨文档至少 4 种，任何未来的 lint 都无法用单一规则解析。",
+  "repro": "检查：全集提取 `[E: …]` 得 1343 条带锚点引用；抽样核对格式差异——01 写 `ext-security-injection.md#未决-18`、`#核验表 #12`（带空格与二次井号）；03 写 `#未决12`、`#未决11`（无连字符）；04 写 `00-PREMISE.md#B1 会推翻它的观测`（自由文本锚）；02 写 `[E: 01-CONTRACTS §5.1；gt-pg-current.md#C-9]`（把兄弟文档章节号塞进证据指针）。逐条抽查语料后确认：`ext-security-injection.md#未决-18`、`ext-evaluation.md#未决-7/-8` 等**在「章节名-序号」的人读约定下确实可解析**（对应文件 `## 未决与风险` 下的第 18/7/8 条），因此这不是伪造引用；问题在于该约定是纯人读的——`grep '未决-18' ext-security-injection.md` 返回 0，任何机器校验都会误报或需要为 4 种格式各写一个解析器。文档声称：证据指针是「写作纪律」的第一条，且本项目的产品定义就是「存在性可做到高精度……但存在性不构成任何关于内容的承诺」（§2.2.2、EE-L-1）。观察到：项目对自己的证据指针只做了 L0 级强制。作弊路径：写 `[E: ext-evaluation.md#D9]`（该文件无 D9 段）与写一个真锚点，在任何现有 lint 下无差别；这是纯存在性检查的教科书旁路。",
+  "seed": null
+ },
+ {
+  "id": "F071",
+  "attacker": "A4-gaming-gates",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.6 V1.5（第 153 行）vs §1.4.4（第 101 行）",
+  "claim": "禁止聚合状态的机器检查退化成了一张三词黑名单。§1.4.4 的规则是语义性的：「系统不得产出『全部已验证』这类整体性断言，只能产出逐 claim 状态……门通过率不得作为对外质量指标」。而它的可检验断言 V1.5 逐字只有：「不存在名为 `overall_status` / `all_verified` / `pass_rate` 且被写进交付物的字段」——按**字段名**匹配。",
+  "repro": "作弊脚本：把字段命名为 `delivery_confidence` / `evidence_coverage_index` / `credibility_score` / `ledger_health`，或干脆在散文里写「本报告 187 条承重断言中 142 条通过全部确定性门」——V1.5 零命中；05 §T2.7 报告格式门的第 2 条红条件是「出现『N%』形式的门通过率 → 红」，同样按**百分号形式**匹配，写成分数式「142/187」即绕过（而 §1.4.4 恰恰**要求**内部诊断写成「142 verified / 187 载荷断言」，所以这个形式在语料中天然合法、不可能被禁）。检查：读 V1.5 与 §1.4.4 的措辞差；读 05 §T2.7 第 2 条与 §9.31 V9.5「出现『gate pass rate』或百分比形式的门通过率作为对外指标，即失败」。文档声称：Goodhart 防线（§9.28）「门通过率永不对外报告」。观察到：三处强制点全部是字面量匹配（三个字段名 / 百分号 / 字符串 'gate pass rate'），语义等价物零成本绕过。",
+  "seed": null
+ },
+ {
+  "id": "F072",
+  "attacker": "A4-gaming-gates",
+  "severity": "P3",
+  "location": "05-TESTING.md §T5.4 第一条（第 751 行）、00-PREMISE.md B8「会推翻它的观测」表（第 601 行）",
+  "claim": "「findings 中『由门发现』的比例 < 30% → P1」是一个分子分母双向自报的治理指标，且作弊方向与它想激励的方向相反。这条指标的分母是攻击者提交的 findings 总数，分子是门套件产出的 findings 数——两者都由同一批运行者记录。",
+  "repro": "作弊脚本（两条，都不需要改任何代码）：①压低分母——减少攻击轮的透镜数、缩短攻击预算、或在裁决阶段把攻击者的 flag 大量判为「非 finding」（PROVE-OR-FLAG 的删除权按 gt-house-method.md#B6 只在裁决者手里，而裁决者是自己人）；②抬高分子——把门套件里大量必然命中的机械 lint（裸数字扫描、schema 校验、as_of 缺失）逐条记为「由门发现的 finding」。两条都能把比例推过 30%。检查：读 §T5.4 第一条与 B8 表中同一条；再读 §T5.4 第三条「『N findings fixed』这个指标在没有『M findings dropped without adjudication』的情况下是无意义的」——同一节已经识别出这类指标需要配对 integrity 数，却没有给这条 30% 指标配任何 integrity 对子（如「攻击轮预算」「透镜数」「被判为非 finding 的候选数」）。文档声称：这是 B8 的推翻观测之一。观察到：它是自报指标，且没有配对完整性指标——违反本文件自己的规则 M-2 与 §9.28。",
+  "seed": null
+ },
+ {
+  "id": "F073",
+  "attacker": "A4-gaming-gates",
+  "severity": "P3",
+  "location": "03-EVIDENCE-ENGINE.md §2.4.1 C-2（第 270–274 行）、§9.1 NT-D-11（第 1097 行）、§9.7 覆盖矩阵",
+  "claim": "G-DEP 的 C-2 子检查按设计永远不会失败，却被计入 EE-NT-1 的覆盖矩阵。C-2 的处置逐字是「不满足 ⇒ 该输入是装饰性的。**处理**：不判 fail，记 `caveats: [\"decorative_input:<path>\"]`」，其对应的负例 NT-D-11 的断言是「`verdict=pass` + `caveats` 含 `decorative_input`」——即负例的期望结果是**通过**。",
+  "repro": "检查：读 §2.4.1 C-2 的处置段与 §9.1 NT-D-11 一行；对照 03 §9.0 NT-01「每个门在 CI 中存在至少一条 red fixture，且该 fixture 使门**非零退出**；无 red fixture 的门标记为「未验证的门」，其输出不得进入 `S`」与 05 §T0.3「造不出红案的检查不是门」。文档声称：EE-NT-1「本文件每一条编号为 `EE-*` 的硬规则，必须在下表中恰好对应至少一个 `NT-*` 用例。取差集非空即本文件失败」——覆盖矩阵是按 id 配对的 grep 差集检查，不检查该 NT 是否会红。观察到：一条恒不红的子检查通过一条恒绿的 NT 用例满足了覆盖矩阵，差集为空、lint 通过。这是覆盖率指标本身的存在性旁路：EE-NT-1 的实现（「grep 本文件全文的 `EE-*` 集合与下表首列集合，两向差集必须都为空」）只能验证配对存在，不能验证配对有效。C-2 的「什么会推翻」条款（「若装饰性输入与硬编码作弊高度共现 > 50%，则升级为 fail」）依赖一个不存在的回归集，因此在可预见期内它保持恒绿。",
+  "seed": null
+ },
+ {
+  "id": "F074",
+  "attacker": "A4-gaming-gates",
+  "severity": "P3",
+  "location": "01-CONTRACTS.md §9.31 V9.1（第 808 行）vs 03-EVIDENCE-ENGINE.md §1.1（第 128 行）、§5.2.1–§5.2.2",
+  "claim": "「只引用不复述」的复述检测只覆盖**定义句**，因此大段证据文本的逐字复制不受任何约束——而跨文档漂移正是从这里发生的。V9.1 逐字：「文档 lint：其他文档中出现**本文件定义句**的 5-gram 重复即失败（复述检测）」。",
+  "repro": "检查：`grep -n \"纯文本合规率 3.9%、HTML 标记 1.1%、渲染快照 1.1%、原始 HTTP 响应 0.2%\" *.md` → 同时命中 01-CONTRACTS 第 619 行、03-EVIDENCE-ENGINE 第 128 行、06-SURVEY 第 565 行，三处逐字相同（连同「10,779 / 15,387 = 70.0%」「5,200 次试验 = 100 提示 × 4 表示 × 13 模型」整段）；同类：03 §5.2.1/§5.2.2 逐字复制 01 §6.3.1 的 RW 全套数字（71,799 / 66,287 / 62,708 / 134,175 / 40.5% / 34.5% / 42 条）。文档声称：01 前言「其他文档引用时只能写「见 01-CONTRACTS §x.y」，**禁止复述定义原文**——复述即为回归（可 grep 检测，见 §9.3）」。观察到：被禁的只是定义句，承重数字段落的逐字复制既合规又不可检测。后果与 F17 同源——一旦某个数字在 06-SURVEY 的核验表被更正，三处副本没有任何机制会同步失效；这正是 03 §4.5 EE-I-7/EE-I-8 为 K-I claim 设计的 `inputs_hash` + `stale` 机制要解决的问题，而文档集对自身未使用它。",
+  "seed": null
+ },
+ {
+  "id": "F075",
+  "attacker": "A4-gaming-gates",
+  "severity": "P3",
+  "location": "03-EVIDENCE-ENGINE.md §3.4.4（第 484 行）vs 05-TESTING.md §T6.1 校准集规模段（第 787–789 行）",
+  "claim": "同一个统计量在兄弟文档间给出两个值，且只有一份留痕。03 §3.4.4 写「200 条按难度分三箱各约 65 条（**n=65 时 Wilson 半宽约 9.7 pp**，勉强可用；n=100 才到 7.8 pp）」；05 §T6.1 写「n=65 时 Wilson 半宽 **9.6 pp**」并附口径注「语料写的是「约 9.7 pp」，本文件用 #43 附带的同一脚本复算得 9.6 pp，差异在四舍五入内；此处取复算值并留痕，不静默沿用」。",
+  "repro": "检查：`grep -n \"9.6 pp\\|9.7 pp\" 03-EVIDENCE-ENGINE.md 05-TESTING.md`。文档声称：README 改进项 #2「数字落笔即验证」，且 06-SURVEY 是「全项目引用数字的唯一入口」。观察到：05 做了复算并留痕（正确行为），但 03 未同步、06-SURVEY 的核验表未把该数字收编为单一入口，于是同一份规划集内同一量有两个值。严格说这条本身无害（差异在舍入内），但它证明「唯一入口」这条治理约束在实践中没有强制点——没有任何 lint 检查「同一量在不同文档中取值一致」。",
+  "seed": null
+ },
+ {
+  "id": "F076",
+  "attacker": "A4-gaming-gates",
+  "severity": "P3",
+  "location": "01-CONTRACTS.md §7.2 词表（第 613–614 行）",
+  "claim": "flag 词表的排序与依据存在两处瑕疵，而词表被声明为「封闭的」且新增必须先改本文件。F-36 `output-input-independent` 排在 F-35 `non-commercial-only` **之前**；且 F-36 的「依据」栏逐字为「〔裁定〕本轮语料无对应 flag；依据 03-EVIDENCE-ENGINE 的 G-DEP 需求」——即唯一规范源的封闭词表里有一条 flag 的依据是下游实现文档的需求。",
+  "repro": "检查：读 §7.2 表第 613–614 两行的顺序与 F-36 的依据栏。文档声称：F-规则-4「词表是**封闭的**。新增 flag 必须先改本文件」，以及 01 前言「需要新术语时，先改本文件，再改引用它的文档」。观察到：F-36 的存在证明流程实际是反向的（03 提出需求 → 01 追认），与 F18（03 §0.4 自造 8 组标识符待回填）是同一形态；乱序则说明该表没有任何机器校验（V7.1 只检查「出现的 flag 都在词表内」，不检查词表自身的完整性与有序性）。附带：F-36 的消费栏写「不改状态（状态已由重跑门 fail → ST-U）」，因此它也不在 §7.3 的上限表内——与 F12 同一类遗漏，但此条是有意的。",
+  "seed": null
+ },
+ {
+  "id": "F077",
+  "attacker": "A5-evidence-numbers",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §6.4「GC-2 的边界」首句 vs §1.6 V1.4 vs §1.4 表 ST-V 行",
+  "claim": "唯一规范源自相矛盾：§6.4 给 GC-2（模型判官）开了一条写 ST-V 的例外，而同一文件的 §1.4 把 ST-V 定义为「判定路径不经过任何模型」、§1.6 V1.4 又把「不存在 status==verified 且含 GC-2 的 claim」写成绝对可机检不变量，且 V1.4 的括注恰恰指向 §6.4。三处不可同真——只要例外触发一次，V1.4 必然失败，ST-V 的语义（确定性、无模型）也随之作废。更糟的是 §6.4 声称「依据是 §1.3 的三条量化上界」，而 §1.3 那三条（判官最好者 F1=0.750 且各模型 CI 重叠不可区分；per-claim BAcc 天花板 74.7–77.4；MT-Bench 上 exact-match 0.788–0.851 对应 κ 仅 0.376–0.511）全部是禁止 GC-2 定终判的理由，不是开例外的理由；而例外要求的「双判官 κ≥0.8」比该文件自己引用的一手测量（21 judge/约 541,000 判定，κ 上界 0.511）高出一大截，文件内无任何证据表明该阈值可达。这直接击穿「产品是可信度、每条 claim 由机器判定」的核心承诺。",
+  "repro": "① 打开 /private/tmp/claude-501/-Users-vince-playground-dsh-projects/49a72e10-a725-4806-8367-7896c0d4c08e/scratchpad/attack-v2/01-CONTRACTS.md。② §6.4 逐字：「**GC-2 原则上不得写 ST-V**，但在双判官 κ≥0.8 且结论一致时可例外写 ST-V。依据是 §1.3 的三条量化上界。」③ §1.6 逐字：「**V1.4** 语料中不存在任何 `status == verified` 且 `mechanism_results` 中含 `gate_class == GC-2` 的 claim（§6.4）。」④ §1.4 表 ST-V 行逐字：「由 Class-0 或 Class-1 门（§6）确定性判定成立。判定路径不经过任何模型。」⑤ §1.3 第 3 条逐字：「MT-Bench 上 exact match 0.788–0.851 对应的 Cohen κ 只有 0.376–0.511」。复核命令：`grep -n 'GC-2 原则上不得写 ST-V\\|V1.4\\|判定路径不经过任何模型\\|0.376' 01-CONTRACTS.md`。文档宣称：ST-V 一律无模型参与、V1.4 可机器检查；实际观测：同文件授权模型判官写 ST-V，V1.4 与 §1.4 定义被自身条款证伪，且例外阈值 κ≥0.8 无任何一手证据支撑。",
+  "seed": "V2"
+ },
+ {
+  "id": "F078",
+  "attacker": "A5-evidence-numbers",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §1.5.1「单调性不变量（可机器检查）」末句；对照 00-PREMISE.md B8「会推翻它的观测」表第 2 行",
+  "claim": "状态函数 S 的单调性不变量自带一条撤销自己的例外：「唯一例外：当 producer 在同一轮内补交了缺失证据时，编排器可将 ST-U 提升回 base。」这条把 status 的写者从纯函数 S 交给了编排器，与 V1.2（重跑 S 必须得到与存档 status 逐字节相同的值）和 V1.3（符号执行断言每条规则输出不高于输入）不可同真；而 00-PREMISE B8 自己把「任何一次 status 被非确定性代码路径写入」列为 P0 且「这应当是不可能事件」。即：契约文本正式授权了前提文档判定为不可能的 P0 事件。这不是 B8 已自陈的「门可能空心」，而是门即使不空心也被合法绕过——比自陈更坏。",
+  "repro": "① 01-CONTRACTS.md §1.5.1 逐字：「**任何提升状态的规则都是缺陷**，唯一例外：当 producer 在同一轮内补交了缺失证据时，编排器可将 ST-U 提升回 base。 因此 `S` 可以用「对每条规则做一次符号执行、断言输出 ≤ 输入」来自动验证。」② 同文件 §1.6 逐字：「**V1.2** 对任意 claim，重跑 `S` 必须得到与存档 `status` 逐字节相同的值（`S` 是纯函数，输入全在 CAS 与注册表快照里）。」③ 00-PREMISE.md B8「会推翻它的观测」表逐字：「任何一次 status 被非确定性代码路径写入 | **P0** —— 这应当是**不可能事件**」。复核命令：`grep -n '唯一例外：当 producer' 01-CONTRACTS.md; grep -n '非确定性代码路径写入' 00-PREMISE.md`。文档宣称：status 只由纯函数 S 决定、提升即缺陷；实际观测：同段落授予编排器提升权，且未规定该提升是否重跑 S、是否留 flag、是否入 CAS。",
+  "seed": "V1"
+ },
+ {
+  "id": "F079",
+  "attacker": "A5-evidence-numbers",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §1.2 表 `quote_faithful` 行 + §1.2.2 归一化算法末句；对照 §1.3 末段与 05-TESTING.md §T6.1 阈值表",
+  "claim": "被当作产品「100% 可兑现」的唯一确定性承诺 `quote_faithful`，其唯一实现里藏着一条模糊分支：`rapidfuzz partial_ratio ≥ 95` 命中即「把引语改写成快照里的真实跨度后重判」→ 判 pass。于是 pass 的含义不再是 §1.2 定义的「逐字引语是快照抽取文本的子串」，而是「与快照有 ≥95 的部分相似度，且系统已把它悄悄改成快照原文」。F-28 只在 <95 时触发（§7.2 表逐字：「归一化匹配分 < 95」），因此这条改写路径不留任何 flag、不降任何档。对一条较长引语，改一个数字通常仍 ≥95，于是「原本被写错的载荷数字」会被静默换成源文数字并通过；再叠加 §2.2.1 的 K-L-T 判定式 `normalized(claim.payload) ⊆ normalized(anchor_span)` 可达 ST-V，就形成一条把不忠实转录洗成 ST-V 的通道。05-TESTING §T6.1 只自陈了假阴方向（「阈值错会系统性假阴」），假阳与静默改写方向未被任何一处记账——比已自陈的更坏。",
+  "repro": "① 01-CONTRACTS.md §1.2 表逐字：`quote_faithful` | **确定性、哈希可判** | 「归一化后的逐字引语是否为快照抽取文本的子串。无模型参与。」② §1.2.2 末句逐字：「精确命中 → `pass`；`rapidfuzz partial_ratio ≥ 95` 命中 → 把引语改写成快照里的真实跨度后重判；`< 95` → `fail`。」③ §1.3 末段逐字：「`quote_faithful` 与 `source_integrity` 是**可以 100% 兑现**的产品承诺」。④ §7.2 表 F-28 行逐字：「| F-28 | `quote-mismatch` | 归一化匹配分 < 95 | GC-0 | S 0d → ST-U | §1.2.2 |」。⑤ 05-TESTING.md 阈值表逐字：「| `rapidfuzz partial_ratio ≥ 95` | §1.2.2 | 工程惯例，无外部测量 | … | 阈值错会系统性假阴 |」。复核命令：`grep -rn 'rapidfuzz\\|100% 兑现\\|F-28' 01-CONTRACTS.md 05-TESTING.md`。独立复核者可再构造一条 200 字符引语、只改其中一个数字，计算 partial_ratio≥95，按 §1.2.2 走一遍即得 pass。文档宣称：pass = 逐字子串、100% 可兑现；实际观测：pass 含 ≤5% 偏差的模糊命中且系统自动改写载荷，无 flag、无降档。",
+  "seed": null
+ },
+ {
+  "id": "F080",
+  "attacker": "A5-evidence-numbers",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §7.2 flag 词表（F-01/F-03/F-04/F-12/F-24 行）vs §7.3「flags → 状态硬上限」表",
+  "claim": "S 的第 2d 步 `base = min(base, ceiling(flags))` 对五个 flag 无定义：F-01（uncertainty:no-ci）、F-03（cherry-picking:window）、F-04（best-case-ratio）、F-12（metric-frame-mismatch）、F-24（pricing-promo）在 §7.2 词表的「对 S 的作用」列都写「S 第 2d 步」/「S 2d」，但 §7.3 的硬上限表只覆盖 F-05/F-07、F-10、F-13、F-09/F-02/F-14/F-15、F-18/F-21/F-30/F-32/F-33、F-34、F-19/F-20/F-17/F-26/F-35。ceiling() 对那五个 flag 无返回值，S 因此不是全函数；V1.2（重跑逐字节一致）与 V1.3（符号执行）在这五条上无法执行。F-12 尤其致命：口径三元组不匹配是本项目自称的核心纪律，却是五个悬空 flag 之一。",
+  "repro": "① 01-CONTRACTS.md §7.2 表逐字（示例两行）：「| F-01 | `uncertainty:no-ci` | … | S 第 2d 步；渲染器 |」「| F-12 | `metric-frame-mismatch` | … | S 2d；人审队列 |」。② §7.3 表全文只有七行：F-05/F-07；F-10；F-13；F-09/F-02/F-14/F-15；F-18/F-21/F-30/F-32/F-33；F-34；F-19/F-20/F-17/F-26/F-35。③ §1.5 第 2d 步逐字：「2d  flags 硬上限（§7.3）  → base = min(base, ceiling(flags))」。复核命令：`grep -n '^| F-' 01-CONTRACTS.md`（取「对 S 的作用」列含 2d 的行）与 `sed -n '/### §7.3/,/### §7.4/p' 01-CONTRACTS.md`，做差集即得 {F-01,F-03,F-04,F-12,F-24}。文档宣称：S 是唯一计算式、可符号执行验证；实际观测：ceiling() 在 5/36 个 flag 上无定义。",
+  "seed": null
+ },
+ {
+  "id": "F081",
+  "attacker": "A5-evidence-numbers",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.5 第 2c/2d 步 + §1.5.1 偏序声明；§1.6 V1.3",
+  "claim": "S 用 `min(base, ceiling(...))` 求值，但 §1.5.1 声明的序是偏序 `ST-V ⊐ {ST-A, ST-E} ⊐ ST-U`——ST-A 与 ST-E 互不可比，min(ST-A, ST-E) 无定义。图形读数（第 1 步强制 ST-E）同时携带 F-34（retention-tier-c，§8.6.2 把上限压到「仅存在性断言」即 ST-A 侧）时，2c 就落进这个未定义格。同理 ST-C 与 ST-N 被称为吸收态但从未被放进那条链，因此 V1.3 要求断言的「输出状态在 §1.5.1 的偏序下不高于输入」对规则 0b/0c/2a 没有可判真值。结论：S 的确定性与 V1.2「逐字节相同」在这些输入上不成立。",
+  "repro": "① §1.5 逐字：「2c  evidence_grade 上限（§3.4）+ retention_tier 上限（§8.6.2） → base = min(base, ceiling(...))」「2d … base = min(base, ceiling(flags))」。② §1.5.1 逐字：「每一条规则都只能把 base 沿 `ST-V ⊐ {ST-A, ST-E} ⊐ ST-U` 这条链向下移，或移入吸收态 `ST-C` / `ST-N`」。③ §1.6 逐字：「**V1.3** 符号执行 `S` 的第 2 步全部规则，断言每条规则的输出状态在 §1.5.1 的偏序下不高于输入。」④ §7.3 逐字：「| F-34 | 经 §8.6.2 压到 `evidence_grade ≤ G2` → 仅存在性断言 |」。复核：构造 base=ST-E（图形读数）且 flags 含 F-34 的 claim，按 2c/2d 求 min，两个候选值不可比即无定义。文档宣称：S 是纯函数且不变量可机器检查；实际观测：min 定义在一个非全序上，且吸收态不在序内。",
+  "seed": null
+ },
+ {
+  "id": "F082",
+  "attacker": "A5-evidence-numbers",
+  "severity": "P2",
+  "location": "06-SURVEY.md §3.2.4 主表第 1 行「一手出处」列（arXiv:2506.06635v1）vs 06-SURVEY.md §3.3-A 表同一论文行（arXiv:2605.06635）vs 00-PREMISE.md B1 证据行（https://arxiv.org/abs/2605.06635）",
+  "claim": "全项目「引用数字的唯一入口」在最承重的一行上给出了错误的一手出处 ID。§3.2.4 把「链接可达 >94% / 主题相关 >80% / 事实核查 39–77%」与「GPT-5.4 78.6% → 16.7%」的出处写作 `arXiv:2506.06635v1`，实测该 ID 是一篇完全无关的车载网络安全论文；正确 ID 是同文件 §3.3 与 00-PREMISE B1 用的 `arXiv:2605.06635`。这两个数字组是 01-CONTRACTS §2.2.3、00-PREMISE B1、README「本轮最重要的三个发现」第 2 条（「工具调用 2→150 时事实核查掉约 42pp」）以及整个 hyper-parallel 重定义论证的地基。这正是该文件 §3.3 自设的「口径掉包/张冠李戴」类错误，出现在它自己的否定式白名单里。",
+  "repro": "① 06-SURVEY.md §3.2.4 逐字：「| **链接可达 >94% / 主题相关 >80% / 事实核查 39–77%** | … | verified（arXiv 预印本，PwC 产业实验室） | arXiv:2506.06635v1 | 2026-05-07 | 01-CONTRACTS §2.2.3；00-PREMISE B1 |」。② 06-SURVEY.md §3.3-A 逐字：「…| arXiv:2605.06635 正文核算 | 00-PREMISE B1 |」。③ 00-PREMISE.md:60 逐字：「[E: https://arxiv.org/abs/2605.06635]」。④ 已实测 https://arxiv.org/abs/2506.06635 → 标题 “TrustConnect: An In-Vehicle Anomaly Detection Framework through Topology-Based Trust Rating”，作者 Ayan Roy 等，提交 2025-06-07，内容为车载网络信任评级，与引文忠实度无关。⑤ 已实测 https://arxiv.org/abs/2605.06635 → 标题 “Cited but Not Verified: Parsing and Evaluating Source Attribution in LLM Deep Research Agents”，2026-05-07，摘要逐字含 “strongest frontier models maintain link validity above 94% and relevance above 80%, yet achieve only 39-77% factual accuracy” 与 “Fact Check accuracy drops by approximately 42% on average across two frontier models as tool calls scale from 2 to 150”。复核命令：`grep -rn '06635' *.md` + 打开两个 arXiv 页面。文档宣称：§3 主表每行「一手出处」可定位、落笔即验证；实际观测：主表该行的 ID 指向一篇无关论文，且与本文件 §3.3、00-PREMISE 自相矛盾。",
+  "seed": "V7"
+ },
+ {
+  "id": "F083",
+  "attacker": "A5-evidence-numbers",
+  "severity": "P2",
+  "location": "06-SURVEY.md §3.2.7 主表「子 agent 压缩比」行（一手出处列：anthropic.com/engineering/multi-agent-research-system，状态列：verified（逐字））",
+  "claim": "一条标为「verified（逐字）」的引用挂错了一手页面。所引 Anthropic 多智能体研究系统博文中不存在该句；该逐字表述实际出自 Anthropic 另一篇《Effective context engineering for AI agents》。同一行的 as-of（2025-06）也是被错挂那篇的日期。该行是 00-PREMISE B1「上下文卫生」论证的支撑之一，而「上下文卫生」正是本项目保留扇出的两个合法用途之一。这是本文件 §1.3-U4/U5 声称已消灭的「同一机构不同载体混同」形态。",
+  "repro": "① 06-SURVEY.md §3.2.7 逐字：「| 子 agent 压缩比：烧「数万 token」，回传 **1,000–2,000 token** | 上下文压缩量级 / Anthropic 多 agent 研究系统 / — | verified（逐字） | anthropic.com/engineering/multi-agent-research-system | 2025-06 | 00-PREMISE B1 |」。② 已实测 https://www.anthropic.com/engineering/multi-agent-research-system：可逐字取到「agents typically use about 4× more tokens than chat interactions, and multi-agent systems use about 15× more tokens」「outperformed single-agent Claude Opus 4 by 90.2% on our internal research eval」「token usage by itself explains 80% of the variance」，但**没有**任何关于子 agent 回传 1,000–2,000 token 的句子。③ 已实测 https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents：逐字含「Each subagent might explore extensively, using tens of thousands of tokens or more, but returns only a condensed, distilled summary of its work (often 1,000-2,000 tokens).」文档宣称：该行 verified（逐字）、出处为多智能体研究系统博文；实际观测：出处页无此句，正确出处是另一篇博文，as-of 日期随之失效。",
+  "seed": null
+ },
+ {
+  "id": "F084",
+  "attacker": "A5-evidence-numbers",
+  "severity": "P2",
+  "location": "06-SURVEY.md §3.2.3 第 6 行与 §3.2.8 第 4 行的「消费方」列（均标 01-CONTRACTS §6.3.1）；06-SURVEY.md §3.2.6 倒数第 3 行「消费方」列（标 01-CONTRACTS §5.3 R-I4）；对照 §3.1 与 §7 第 3 条",
+  "claim": "§3.1 与 §7 第 3 条宣称「消费方」列已被机器校验、约 100 个探针查出 15 处过度声称并全部改为 `—`，且把残余风险限定为「数字串写法差异导致的漏判」。实测仍有至少两处过度声称，且都不属于写法差异：（a）Crossref `update-type:retraction` **74,607** 两行都标消费方 01-CONTRACTS §6.3.1，但 74,607 在 01-CONTRACTS 全文命中 0（它实际出现在 03-EVIDENCE-ENGINE.md:742）；(b)「局部消息传递 ASR 低约 20%；自复制注入 GPT-4o +13.92% / GPT-3.5 +209%」标消费方 01-CONTRACTS §5.3 R-I4，而 R-I4 全条无任何数字。两处都是普通半角逗号数字串，一次 grep 必中，说明那条「已跑过一次」的校验本身没跑到位——而这一列正是该文件自称「最可能被抓到硬伤、但现在是被测量过的」那一列。",
+  "repro": "① 06-SURVEY.md §3.2.3 逐字：「| Crossref `update-type:retraction` **74,607** | … | 01-CONTRACTS §6.3.1（去重要求） |」；§3.2.8 逐字：「| OpenAlex `is_retracted:true` **134,175** vs Crossref `update-type:retraction` **74,607**（差 1.8×） | … | 01-CONTRACTS §6.3.1 |」。② 复核命令：`grep -c '74,607' 01-CONTRACTS.md` → 0；`grep -rn '74,607' *.md` → 只命中 06-SURVEY.md:692、06-SURVEY.md:800、03-EVIDENCE-ENGINE.md:742。③ 06-SURVEY.md §3.2.6 逐字：「| 局部消息传递 ASR 低约 **20%**；自复制注入 GPT-4o **+13.92%** / GPT-3.5 **+209%** | … | 01-CONTRACTS §5.3 R-I4 |」；`grep -n 'R-I4' 01-CONTRACTS.md` → 唯一命中行为「**规则 R-I4（局部消息传递）**：并行子代理之间只交换**结构化证据卡 + 快照 id**，禁止自由文本回传；协调者不把子代理的自由文本直接拼进自己的上下文。」全条零数字；`grep -c '13.92' 01-CONTRACTS.md` → 0。④ 对照 06-SURVEY.md §3.1 逐字：「**2026-08-17 实跑结果：约 100 个探针，查出 15 处过度声称，已全部改为 `—` 并在 §7 第 3 条记账。**」文档宣称：过度声称已被机器扫净、残余仅为写法差异；实际观测：至少两条同写法数字的消费方指针为假。",
+  "seed": null
+ },
+ {
+  "id": "F085",
+  "attacker": "A5-evidence-numbers",
+  "severity": "P2",
+  "location": "00-PREMISE.md 继承规则表 R-2 / R-9 行与 B6 正文（多处裸写 F-01…F-35）vs 01-CONTRACTS.md §7.2 flag 词表 F-01…F-36；README.md「权威规则」段",
+  "claim": "同一套 `F-NN` 记号在文档集内承载两个互不兼容的命名空间：01-CONTRACTS §7.2 把 F-01…F-36 定义为规范 flag 词表（F-13=`unstable-decomposition`、F-28=`quote-mismatch`），而 00-PREMISE 用同一记号指前代 gt-pg-current 的 finding 编号（F-13=「手写 metric 与真跑 metric 对门等价」、F-28=「eval 改写被评工件」），且在 R-2/R-9 两行里**不带任何来源前缀**裸写。README 明写「01-CONTRACTS.md 是所有共享词汇的唯一定义源，其他文档只引用不复述」，而 06-SURVEY 又反过来以「01-CONTRACTS flag F-07」的写法引用同一记号。实现者对任一 `F-NN` 做 grep 会得到两个不同定义，这在一个把 flag 词表当作机器判定输入（V7.1：出现表外 flag 即失败）的设计里是可落到代码的歧义。该冲突在任何一份「已知弱点」中均未被记账。",
+  "repro": "① 01-CONTRACTS.md §7.2 逐字：「| F-13 | `unstable-decomposition` | 同一子命题做 N 次同义改写后独立走检索-判定链，判定不稳定 | GC-1 + GC-2 组合 | S 2d：强制降至 ST-U |」「| F-28 | `quote-mismatch` | 归一化匹配分 < 95 | GC-0 | S 0d → ST-U |」。② 00-PREMISE.md 继承规则表逐字：「| **R-2** | **新鲜度绑定**：… | F-13（手写 metric 与真跑 metric 对门等价）；顺带解掉 F-28 |」「| **R-9** | eval 不得修改被评工件（配合 R-2 的 exec_id，读取而非重跑） | F-28 |」；同文件正文逐字：「**所谓 held-out 评测物理修改了它正在评的工件。** [E: gt-pg-current.md#F-28,R-9]」。③ 06-SURVEY.md §3.2.3 逐字：「| 劫持刊表 **456 条** | … | 01-CONTRACTS flag F-07 |」。④ README.md 逐字：「**权威规则**：`01-CONTRACTS.md` 是所有共享词汇的唯一定义源，其他文档**只引用不复述**」。复核命令：`grep -on 'F-[0-9]\\+' 00-PREMISE.md`（可见 F-01…F-35 全域被占用）与 `grep -n '^| F-' 01-CONTRACTS.md`。文档宣称：共享词汇单一来源；实际观测：`F-NN` 记号在两个命名空间上冲突，且 00-PREMISE 有裸引用。",
+  "seed": null
+ },
+ {
+  "id": "F086",
+  "attacker": "A5-evidence-numbers",
+  "severity": "P2",
+  "location": "README.md「本轮相对 v1 的五条改进」表第 1、2 行与「文档地图」表 06-SURVEY 行",
+  "claim": "README——项目的门面与「更好」的可检验定义表——的三个自证数字与下游文档矛盾：（a）「其中 12 条改变设计」，而 GROUND-TRUTH-CORRECTIONS.md 与 06-SURVEY §1.1 一致给出 34 条（A12+B7+C7+D4+E4），12 只是 A 组；（b）「46 个在落笔时当场纠正」，而 06-SURVEY §1.2 与 §3.3 一致给出语料全库 50 行标 corrected，README 的 46 在下游文档中无任何出处；（c）文档地图把 06-SURVEY 的规模写成「1129 行 / 784 行核验表」，暗示该文件含 784 行核验表，而 §3.4 明写「本表 **134 行**，自算；语料全表 **784 行**」——784 属于 research/v2/ 的 18 张表，不在本文件内。另有 01-CONTRACTS 标「830 行」实测 831 行。一个以「数字落笔即验证」为第 2 条改进标准的项目，其宣布该标准的那一行本身未过验证。",
+  "repro": "① README.md 逐字：「| 1 | **地面真值取自一手来源** | 7 位 reader 直读 194 个已安装 DSH 包，产出 **50 处与二手文档的冲突**，其中 12 条改变设计（见 `research/v2/GROUND-TRUTH-CORRECTIONS.md`） |」「| 2 | **数字落笔即验证** | **784 行核验表**，…；**46 个在落笔时当场纠正** |」「| [06-SURVEY.md](06-SURVEY.md) | … | 1129 行 / 784 行核验表 |」「| [01-CONTRACTS.md](01-CONTRACTS.md) | … | 830 行 / 64 条可检验断言 |」。② 06-SURVEY.md §1.1 逐字：「一手真值层共报告 **50 处与二手文档的冲突**，GTC 从中抽取会**改变设计**的 **34 条**（A 组 12 条运行时事实 / B 组 7 条前代证据重估 / C 组 7 条前代文档-代码落差 / D 组 4 条本仓库实践落差 / E 组 4 条新机会）」。③ 06-SURVEY.md §1.2 逐字：「分状态：**verified 642 / corrected 50 / unverified 79 / 其他 13**」；§3.3 逐字：「语料全库共 **50 行**标 `corrected`（§1.2 脚本自算）。本节共 **37 行**」。④ 06-SURVEY.md §3.4 逐字：「未进入 §3.2 的核验表行（本表 **134 行**，自算；语料全表 **784 行**）」。⑤ 复核命令：`wc -l attack-v2/*.md`（01-CONTRACTS.md = 831）；`grep -c '^| A[0-9]\\|^- \\*\\*B[0-9]\\|^- \\*\\*C[0-9]\\|^- \\*\\*D[0-9]\\|^- \\*\\*E[0-9]' research/v2/GROUND-TRUTH-CORRECTIONS.md`。文档宣称：改进 1/2 的兑现情况；实际观测：12≠34、46 在下游无出处（下游为 50）、784 行核验表不在 06-SURVEY 内、830≠831。",
+  "seed": null
+ },
+ {
+  "id": "F087",
+  "attacker": "A5-evidence-numbers",
+  "severity": "P3",
+  "location": "06-SURVEY.md §3.3-B「时效失效类」表 Crossref 行（出处列：crossref.org 公告）",
+  "claim": "这一行把「Crossref polite pool 50 rps」判为「2025-12-01 前的旧值」，出处填「crossref.org 公告」，但该公告并不给出任何旧数值（原文逐字：自 2013 年 REST API 上线以来未改过 rate limit，未列旧值）。50 rps 实际来自历史响应头 `X-Rate-Limit-Limit: 50`，不是公告内容——即被「纠正」的那个数字，在所填的一手出处里不存在。同一行的「**失效 16 倍**」也未声明分母：50/3=16.7 用的是列表端点，而单条端点是 50/10=5 倍；本文件 §3.2.2 自己刚写过「节流单位互不可比，不得合表比较」。",
+  "repro": "① 06-SURVEY.md §3.3-B 逐字：「| Crossref polite pool **50 rps** | **2025-12-01 前的旧值**；现值列表 3 rps / 单条 10 rps，**失效 16 倍** | crossref.org 公告 | 01-CONTRACTS §6.3-5（已带 ⚠️） |」。② 已实测 https://www.crossref.org/blog/announcing-changes-to-rest-api-rate-limits/：自 2025-12-01 起 polite pool = 单条 10 请求/秒、列表 3 请求/秒、并发 3；public pool = 单条 5、列表 1、并发 1；页面逐字称 “We haven't changed the rate limits since the REST API was launched in 2013.”，未给出任何旧数值。③ 复核：在该公告页搜索字符串「50」不得到 rate-limit 旧值。④ 对照 06-SURVEY.md §3.2.2 逐字：「**节流单位互不可比**：QPS / RPM / 并发浏览器数 / 每小时配额是四种不同的东西，**不得合表比较**。」附带校准：§3.2.1 的 Crossref 现值行（3 rps / 10 rps / 并发 3，vs public 1 & 5）与一手完全一致，HOLDS。文档宣称：该纠正行的一手出处为 crossref.org 公告；实际观测：公告不含被纠正的旧值，且「16 倍」的分母未声明。",
+  "seed": null
+ },
+ {
+  "id": "F088",
+  "attacker": "A5-evidence-numbers",
+  "severity": "P3",
+  "location": "01-CONTRACTS.md §7.2 flag 词表末两行（F-36 排在 F-35 之前）",
+  "claim": "规范 flag 词表的行序断裂：F-36（`output-input-independent`）排在 F-35（`non-commercial-only`）之前，且 F-36 的来源列自陈「〔裁定〕本轮语料无对应 flag；依据 03-EVIDENCE-ENGINE 的 G-DEP 需求」。在一份宣称「词表即机器判定输入」（V7.1：出现表外 flag 即失败）且要求其他文档「不得自行造词」的规范源里，一个乱序 + 无语料依据的新造条目会让任何按序生成枚举的实现产生偏差，也削弱 F-36 与 V7.x 的可检验绑定（§7.4 没有针对 F-36 的断言）。",
+  "repro": "① 复核命令：`grep -n '^| F-' 01-CONTRACTS.md | tail -4`，可见行号顺序为 …613:| F-36 …、614:| F-35 …。② F-36 行逐字：「| F-36 | `output-input-independent` | 重跑门检出输出与输入无关（常数脚本 / ε-依赖）… | GC-0（重跑门 G-DEP） | 不改状态（状态已由重跑门 fail → ST-U）；**审计必检项**… | 〔裁定〕本轮语料无对应 flag；依据 03-EVIDENCE-ENGINE 的 G-DEP 需求 |」。③ §7.3 硬上限表与 §7.4 可检验断言（V7.1–V7.8）均未提及 F-36。文档宣称：flag 词表是可机器校验的封闭枚举；实际观测：行序断裂且末条无语料依据、无对应可检验断言。",
+  "seed": null
+ },
+ {
+  "id": "F089",
+  "attacker": "A6-evidence-pointers",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §6.4 第 522 行（对照 §6.1 表 481 行、§1.4 ST-V 行 87、§1.6 V1.4 行 152、§6.6 V6.2 行 556；05-TESTING.md HB-1 行 76、VT-2 行 976、红线表 行 609）",
+  "claim": "唯一规范源在 §6.4 开了一条「GC-2 可写 ST-V」的例外，直接击穿本项目的核心可信度承诺，并与同一文件四处、下游文档三处冲突；其援引的「依据」是反向引用。",
+  "repro": "逐字：01-CONTRACTS §6.4 「**GC-2 原则上不得写 ST-V**，但在双判官 κ≥0.8 且结论一致时可例外写 ST-V。依据是 §1.3 的三条量化上界。」\n对照同文件：§6.1 表 GC-2 行「**最高 ST-A**；……**永远不得写 ST-V**」；§1.4「ST-V ……判定路径**不经过任何模型**」；V1.4「语料中不存在任何 `status == verified` 且 `mechanism_results` 中含 `gate_class == GC-2` 的 claim（§6.4）」；V6.2「不存在 `gate_class == GC-2` 且 `verdict` 直接导致 `status == verified` 的路径」。\n对照下游：05-TESTING HB-1「L2 永不写 `verified`。依据是 `01-CONTRACTS` §6.1 的 GC-2 行」；VT-2「不存在任何 `verified` 状态由 L2（GC-2）或 L3（人）写入的路径」；05-TESTING 红线表「任一臂的 `verified` 断言中出现 `gate_class == GC-2` 的路径 → **P0，实验作废，回炉门代码**」。\n三处证据反证：①「依据是 §1.3 的三条量化上界」是反向引用——§1.3 三条上界（Opus 4.6 F1=0.750 且所有模型 CI 重叠；per-claim BAcc 74.7–77.4；raw agreement 虚高 38.6pp）恰恰是论证 `claim_supported`「**确定性不可判**」的，结论句写的是「`claim_supported` **只能是分级判断**」，不能推出可例外写 ST-V。②κ≥0.8 在本项目全部一手语料中从未被观测到：§1.3 第 3 条给出的实测 Cohen κ 只有 0.376–0.511；§6.4 自己下一段的上线门槛是 κ≥0.60；§6.4 再下一段写「624 对中 378 对（60.6%）有分歧并被人工裁决」。③即使两判官 κ≥0.8，一致也不等于正确（相关误差），而 §1.1 全节论点就是「把审计能力当作真值能力卖」是本项目要消灭的原罪。\n独立复跑：`grep -n 'ST-V' 01-CONTRACTS.md | grep -i 'GC-2'` → 481 行与 522 行给出互相矛盾的规则；`grep -rn 'GC-2' 05-TESTING.md` → 三处按 481 行执行。V1.4/V6.2 若真被实现为 CI 断言，会对 §6.4 允许的语料判红——规范源自相矛盾到无法同时满足自己的可检验断言。\n文档声称 vs 观测：README「01-CONTRACTS.md 是所有共享词汇的唯一定义源」「产品是可信度……状态是算出来的」vs 观测到规范源内部存在一条模型判定→`verified` 的合法通道。",
+  "seed": "V2"
+ },
+ {
+  "id": "F090",
+  "attacker": "A6-evidence-pointers",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §1.5.1 第 141 行（对照 §0.2 行 21、§4.1 I-W1 行 345、§4.2 W-04、§1.6 V1.2 行 150 / V1.3 行 151）",
+  "claim": "被宣称「可机器检查」的单调性不变量，其自带的例外条款同时废掉了该不变量、废掉了 S 的纯函数性、并在门代码之外开了第二条 status 写路径；该例外不在任何一份「已知弱点」清单里。",
+  "repro": "逐字：§1.5.1「`S` 的第 2 步中每一条规则都只能把 base 沿 `ST-V ⊐ {ST-A, ST-E} ⊐ ST-U` 这条链向下移……**任何提升状态的规则都是缺陷**，唯一例外：当 producer 在同一轮内补交了缺失证据时，编排器可将 ST-U 提升回 base。 因此 `S` 可以用「对每条规则做一次符号执行、断言输出 ≤ 输入」来自动验证。」\n三条冲突：\n(1) 与 §4.1 I-W1「系统中不存在任何一条从 agent 输出到 `status` 字段的写路径」+ §4.2 W-04「`claims/<id>.status.json`（**status 及全部派生字段**）唯一物理写者 = **门代码（确定性脚本）**；任何 agent 不可写」冲突——「编排器可将 ST-U 提升回 base」就是门代码之外的一次 status 写入，且其触发条件是 producer（agent）补交材料。\n(2) 与 V1.2「重跑 `S` 必须得到与存档 `status` 逐字节相同的值（`S` 是纯函数）」冲突——被提升过的 claim，用同一批存档输入重跑 S 只会再次落回 ST-U（0a–0g 任一前置否决触发），与存档值不等。\n(3) V1.3 逐字只覆盖「符号执行 `S` 的**第 2 步全部规则**」，而该例外发生在 S 之外（编排器），符号执行覆盖不到——所以「可机器检查」这个形容词对该例外为假。\n另：「提升回 base」在语义上无定义——S 的返回值就是 base，函数返回后 base 不再存在；文档未定义「补交后的 base」如何重算。\n独立复跑：`grep -n '唯一例外' 01-CONTRACTS.md`（1 命中，141 行）；`sed -n '345,346p;150,152p' 01-CONTRACTS.md` 取三条冲突原文；再 `sed -n '/^## §10/,/^---/p' 01-CONTRACTS.md` 与 00-PREMISE §五、README M0 阻塞项 —— 八条 + 五条 + 七条已知弱点中**均无此条**，属未被自陈的缺陷。\n文档声称 vs 观测：00-PREMISE B8「会推翻它的观测：任何一次 status 被非确定性代码路径写入 → **P0，这应当是不可能事件**」vs 规范源自己写下了这条路径。",
+  "seed": "V1"
+ },
+ {
+  "id": "F091",
+  "attacker": "A6-evidence-pointers",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.5 第 134–135 行（2c/2d 步）+ §1.5.1 第 141 行偏序定义 + §3.4 表 + §7.3 表",
+  "claim": "S 第 2c/2d 步使用的 `min(base, ceiling(...))` 在文档自己声明的偏序上不是良定义运算：ST-A 与 ST-E 被显式写成同一层不可比集合，而两者可以同时成为 min 的两个实参；且 §3.4 的 ceiling 有两行根本不是 ST 值。",
+  "repro": "逐字：§1.5「2c  evidence_grade 上限（§3.4）+ retention_tier 上限（§8.6.2） → base = min(base, ceiling(...))」「2d  flags 硬上限（§7.3） → base = min(base, ceiling(flags))」；§1.5.1 声明的链为 `ST-V ⊐ {ST-A, ST-E} ⊐ ST-U`（花括号 = 同层、彼此不可比）；2b 的降级映射逐字为「ST-V→ST-A，ST-A→ST-U，ST-E→ST-U」——确认 A 与 E 之间无任何序关系。\n可构造的具体输入（两步 grep 即可复现）：\n① §7.3 表「F-10 | 强制 ST-E」；§1.5 第 1 步「图形读数的数值断言 base 强制为 ST-E（覆盖上述结果）」。\n② §3.4 表「G4 | **ST-A**」「G3 | **ST-A，且仅限「关于摘要内容本身」的断言**」。\n→ 一条来自 G4 来源的图表派生数值 claim：base = ST-E，ceiling = ST-A，2c 要算 `min(ST-E, ST-A)`——在声明的偏序里无定义。这不是边角输入：G4 = 「逐字包含仍可判但无锚点」，正是图表 PDF 的典型形态。\n更严重：§3.4 表「G2 | **仅存在性断言**；**不得支撑任何数值断言**」「G1 | **不得作为任何 claim 的承重证据**，只能是 `candidate`」——这两行的「上限」不是 ST 枚举中的任何一个值，因此 `ceiling()` 不是一个到 ST 的全函数，`min(base, ceiling(G2))` 是类型错误。\n后果：V1.2（重跑 S 得逐字节相同 status）与 V1.3（符号执行断言输出≤输入）在这些输入上都无法执行——它们是本项目「状态是算出来的」这条公理的唯一机械保证。\n文档声称 vs 观测：§1.5.1「因此 `S` 可以……自动验证」vs 观测到 S 的两条规则所用运算在其声明的定义域上不封闭。§10 已知弱点八条中无此条。",
+  "seed": null
+ },
+ {
+  "id": "F092",
+  "attacker": "A6-evidence-pointers",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.5 第 109–138 行（第 0 步「先命中先返回」与第 2 步 2a/2b/2e 的交互）；对照 §1.4.2 第 96 行",
+  "claim": "S 的求值顺序使「已找到反证」这一最重要的信号被结构性吞掉：任一前置否决命中时 2a 的 ST-C 永不可达，反证被静默降级成 ST-U；同时 2a 之后没有 return，2b/2e 的「降一档」对 base=ST-C 无定义映射。",
+  "repro": "逐字：§1.5「按下列顺序求值，**先命中先返回**」「第 0 步 · 前置否决（任一命中 → **立即返回**）：0a source_integrity ∈ {mutated, missing} → ST-U……0c not_covered → ST-N……0e counter_evidence_searched == false → ST-N……0f budget_state == exhausted → ST-N……0g 决定性机制未运行 → ST-N」；第 2 步「2a counter_evidence_found == true → ST-C（吸收态，覆盖任何 base）」。\n反例一（反证被吞）：一条 claim 已搜到反证（counter_evidence_found=true）但复核时快照 hash 不匹配（source_integrity=mutated，F-16）→ 0a 立即返回 **ST-U**，2a 永不执行。读者看到的是「我们看了，没找到支持」，而真实情况是「我们找到了反证，并且来源还被改过」。§1.4.2 逐字要求「**`contested` 与 `unverified` 必须分开**……二元 status 会把「静默语义漂移」全部标成绿灯」——该顺序恰好制造了这条被禁止的合并。同类反例可用 0c/0f/0g 任一构造（预算耗尽 + 已找到反证 → ST-N，反证消失）。\n反例二（吸收态未被强制）：counter_evidence_found=true 且 independent_cluster_count < K → 2a 置 base=ST-C，但第 2 步无 return 语句，继续走 2b「base 降一档」，而 2b 的映射表只有 `ST-V→ST-A, ST-A→ST-U, ST-E→ST-U`，ST-C 无像；2e（budget degraded）同样。「吸收态」只是括号里的一句注释，不是求值规则。\n独立复跑：`sed -n '105,141p' 01-CONTRACTS.md` 读全式；`sed -n '96p' 01-CONTRACTS.md` 读 §1.4.2；对上述两组输入手工走一遍 S。\n文档声称 vs 观测：§1.4.1/§1.4.2 花两整段论证「unverified / not_covered / contested 三者的审计含义完全不同，必须分开」，而 S 的求值顺序把其中两条通道并成一条。§10 已知弱点无此条。",
+  "seed": null
+ },
+ {
+  "id": "F093",
+  "attacker": "A6-evidence-pointers",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §6.1 表（第 479–481 行）vs §1.4 枚举（行 82–92）、§1.5 第 1 步（行 125）、§7.3（F-10 行）、03-EVIDENCE-ENGINE.md §6.2 表（行 822）",
+  "claim": "六值枚举中的 ST-E 在门分级表里没有任何一个门类被允许输出；按 §6.1 逐字执行，图表证据通道在规范上没有合法出口。",
+  "repro": "逐字：§6.1 表「可以判什么」列三行分别为——GC-0：「ST-V、ST-U、ST-N」；GC-1：「ST-V、ST-C、ST-U、ST-N」；GC-2：「**最高 ST-A**；以及向下的 ST-C / ST-U / ST-N」。三行合起来的并集 = {ST-V, ST-A, ST-C, ST-U, ST-N}，**不含 ST-E**。\n但 §1.4 枚举含 ST-E；§1.5 第 1 步逐字「图形读数的数值断言 base 强制为 ST-E（**覆盖上述结果**）」；§7.3「F-10 | 强制 ST-E」；V3.4/V7.2 都对 `status == estimated` 的 claim 做断言。\n下游已经按「GC-2 可以出 ST-E」实现：03-EVIDENCE-ENGINE §6.2 表逐字「**P2 无标签几何读数** | ……| G-CHART-GEOM | **GC-2** | **上限 ST-E(±8%)，永不更高**」。\n→ 若把 §6.1 表实现为门输出的白名单校验（V6.1 已要求每条 mechanism_results 携带 gate_class），G-CHART-GEOM 的每一次输出都会被判非法；若不实现，§6.1 表就不是规范而是描述。二者必居其一。\n独立复跑：`grep -n 'ST-E' 01-CONTRACTS.md` → 出现在 §1.4/§1.5/§3.5/§7.3/V3.4/V7.2，唯独不在 §6.1；`sed -n '822p' 03-EVIDENCE-ENGINE.md` 取下游用法。\n文档声称 vs 观测：§6「本节把它们钉死，任何文档不得再含混」vs 观测到六值枚举的第三个值在钉死表里根本没有归属。",
+  "seed": null
+ },
+ {
+  "id": "F094",
+  "attacker": "A6-evidence-pointers",
+  "severity": "P2",
+  "location": "00-PREMISE.md §四「本文件与下游的关系」第 678 行；违规点：04-ORCHESTRATION.md（13 处）、02-ARCHITECTURE.md（5 处）、03-EVIDENCE-ENGINE.md（2 处）、06-SURVEY.md（1 处）",
+  "claim": "[E:] 证据指针被用来指向兄弟规划文档（而非 research/v2/ 或一手 URL），共 21 处；其中 4 处逐字指向 00-PREMISE 的「裁决」——恰是 00-PREMISE 明文禁止被引为证据的东西。承载这些指针的是扇出禁令与 GC-2 边界等核心规则，其证据链在此闭环自指。",
+  "repro": "被违反的规则逐字：00-PREMISE §四「下游文档**不得引用本文件的裁决作为证据**，只能引用它指向的一手来源。」以及 00-PREMISE B8 裁决「一律按 `unverified` 对待，且**不得在下游文档里被引用为已建立的保障**」。各文件写作纪律逐字：「每条载重断言带 `[E: <文件>#<锚>]`，**指向 `research/v2/` 语料或一手 URL**」。\n独立复跑（一条命令）：`grep -cE '\\[E: *(00-PREMISE|01-CONTRACTS|02-ARCH|03-EVID|04-ORCH|05-TEST|06-SURV)' *.md` → 02-ARCHITECTURE 5 / 03-EVIDENCE-ENGINE 2 / 04-ORCHESTRATION 13 / 06-SURVEY 1 / 其余 0。\n最刺眼的实例：`04-ORCHESTRATION.md:108`「跨 claim 一致性推理、论证链构建、最终裁决全部落在 L4，即零扇出区——这是 00-PREMISE B1 明确禁止扇出的三处 [E: 00-PREMISE.md#B1 **裁决**]」——本项目最核心的架构禁令，其唯一证据指针指向的是本项目自己的裁决。同型的还有 `[E: 00-PREMISE.md#B1 裁决]`×4、`[E: 00-PREMISE.md#B9 裁决]`、`[E: 00-PREMISE B9]`（02-ARCHITECTURE:671）、`[E: 00-PREMISE B7 反对证据]`（06-SURVEY:1073）、`[E: 01-CONTRACTS §6.4]`（02-ARCHITECTURE:354）、`[E: 01-CONTRACTS §6.3 硬要求 4]`、`[E: 01-CONTRACTS §7.2.2, §7.4 V7.8]`。\n注意其中 02-ARCHITECTURE:354 的引用对象正是本轮 P1 所在的 §6.4——下游文档把一条自相矛盾的规范当作「证据」引用。\n文档声称 vs 观测：README 改进项 4「`[E:]` 指针**全文强制**」+ 00-PREMISE §四明文禁令 vs 21 处自指指针。这一条与 B8 无关（B8 只谈门是否是真脚本），未被任何 已知弱点 列表覆盖。",
+  "seed": null
+ },
+ {
+  "id": "F095",
+  "attacker": "A6-evidence-pointers",
+  "severity": "P2",
+  "location": "README.md 权威规则（行 28–29）、01-CONTRACTS.md 文件地位（行 3–4）与 §9.3（行 774）；违规点：02-ARCHITECTURE.md 行 617、04-ORCHESTRATION.md 行 529、05-TESTING.md 行 495、02-ARCHITECTURE.md 行 354、04-ORCHESTRATION.md 行 189",
+  "claim": "「其他文档只引用不复述，复述即为回归（可 grep 检测）」这条自称可机械检测的规则，被自己的文档集在至少三组定义句上违反；§9.3 承诺的 n-gram lint 若真跑起来会判红。",
+  "repro": "被违反的规则逐字：01-CONTRACTS 行 3–4「任何被多个文档共享的术语、枚举、字段、规则，**只在这里定义一次**……**禁止复述定义原文**——复述即为回归（**可 grep 检测**，见 §9.3）」；§9.3「lint：对本文件的定义句做 **n-gram 检索**」。\n三组可 grep 的复述：\n① `grep -n '4 字符/token 的固定启发式' *.md` → 01-CONTRACTS:375（定义处）、02-ARCHITECTURE:618（E-17）、04-ORCHESTRATION:529 三处逐字同现「**对 CJK 与 JSON schema 系统性低估**」「与 compaction 同源，不会打架」。\n② `grep -n 'cacheReadTokens' *.md` → 01-CONTRACTS:368（W-13 定义）、04-ORCHESTRATION:529、05-TESTING:495 三处复述同一字段清单 `{turn, step, inputTokens(仅未缓存), cacheReadTokens, cacheWriteTokens?, outputTokens, reasoningTokens?}`。\n③ `grep -n '梯度下降' *.md` → 01-CONTRACTS:532（§6.4 定义）、02-ARCHITECTURE:354、04-ORCHESTRATION:189 三处复述整段「写作阶段禁止调用同一个 rubric judge 自评再改写——那是对 judge 直接做梯度下降；judge 只在冻结产物上跑一次」。\n讽刺点：04-ORCHESTRATION:529 与 189、02-ARCHITECTURE:354 都在同一句里写了「规范表述见 01-CONTRACTS §x.y / 本节不重述」，然后紧接着重述。同类正例存在（03-EVIDENCE-ENGINE:814「**全部在 01-CONTRACTS §3.5，本节不重述。**」后确实没重述），说明这是执行不一致，不是约定被放弃。\n文档声称 vs 观测：README「权威规则：其他文档**只引用不复述**」vs 至少 3 组定义句被 2–3 处逐字复制。规范源自称该违规「可 grep 检测」，本条即是那条 grep 的输出。",
+  "seed": null
+ },
+ {
+  "id": "F096",
+  "attacker": "A6-evidence-pointers",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §4.2 W-02（第 357 行）vs README.md M0 阻塞项 #5（第 81–82 行）；对照 01-CONTRACTS §10 已知弱点八条（行 810–823）",
+  "claim": "整个证据锚点方案的地基——「`tool/result.data.meta` 被 pruner 完整保留」——在规范源里被写成无限定的「唯一零风险落点」，而项目自己在 README 把它列为「从未跑过」的 M0 阻塞项；限定词在传到实现者手上的那一层被剥掉了。",
+  "repro": "规范源逐字（01-CONTRACTS §4.2 W-02 依据列）：「**唯一零风险落点**：模型不可见、**被 pruner 完整保留**、被持久化逐字保留、事件类型已知不影响 resume [E: GROUND-TRUTH-CORRECTIONS.md#A1/#E2, gt-evidence-substrate.md#B8/#D4]」——全句无任何「未实测」「设计假设」标注。\n项目自陈逐字（README「诚实声明：未偿债与阻塞项」第 5 条）：「**compaction 从未在本机触发**（139 个 session、0 条 replace）——整个证据锚点方案建立在「pruner 展开保留 meta」这条代码事实上，**读对了但没跑过**。」\n一手清单逐字（GROUND-TRUTH-CORRECTIONS A1）：「**证据元数据落点改为 `tool/result.data.meta`**（模型不可见、抗 pruner、抗持久化、类型已知）。这是唯一零风险落点」——A1 同样未标未实测，即上游也没带限定，规范源忠实转抄了一个未加限定的断言。\n为什么是「比自陈更糟」：01-CONTRACTS §10 逐条列了八条已知弱点（S 未运行、G5 外推、K(kind) 是裁定、§9.14 无外部证据、PDF 可见性、K-I 无 ST-V 通道、中文注入盲区、数字保质期），**不含**这一条；而 §1.2.1 的子测试②、§8.2、V4.6 全部依赖它。实现者读的是 01-CONTRACTS，不是 README。\n独立复跑：`grep -n '零风险落点' 01-CONTRACTS.md research/v2/GROUND-TRUTH-CORRECTIONS.md`；`grep -n 'compaction 从未' README.md`；`sed -n '/^## §10/,/^---/p' 01-CONTRACTS.md` 确认八条中无此条。\n文档声称 vs 观测：01-CONTRACTS 写作纪律「语料中标 `unverified` 的数字，本文件在引用处一并标注，**不做洗白**」+「无外部证据、由本文件自行裁定的规则，显式标 〔裁定〕」vs 一条已知未实测的运行时性质被写成无标注的硬事实。",
+  "seed": null
+ },
+ {
+  "id": "F097",
+  "attacker": "A6-evidence-pointers",
+  "severity": "P3",
+  "location": "03-EVIDENCE-ENGINE.md §6.2 表 P2 行（第 822 行）、§6.3（行 848）、§11.5（行 1307）；源头 research/v2/ext-multimodal-evidence.md 核验表 #11/#12 与 D2 表",
+  "claim": "ST-E 的 ε=±8% 是把一个「平均值」当成「界」在用：一手只有 MAPE（平均绝对百分比误差）7.2%/7.4%，无分散度与分位数，plan 却写成「上限 ST-E(±8%)，永不更高」并要求渲染器原样显示 ε 给读者。",
+  "repro": "plan 逐字（03-EVIDENCE-ENGINE §6.2 表 P2 行）：「**上限 ST-E(±8%)，永不更高** | 无标签 MAPE **7.2% / 7.4%**（同上同批图同模型，只改标签）[E: #12]」；§6.3 逐字「给一个 Adaptive MAPE 28.01% / 11.58% 的读数盖上 ±8% 的 ε」；§11.5 同。\n一手逐字（ext-multimodal-evidence.md 核验表 #12）：「7.2% / 7.4% | **无**数据标签时的 **MAPE**（整表 / 逐值）/ 同上同批图同模型 | verified | arXiv:2606.29808 Table 2」——口径三元组里只有均值，**未报任何分散度、分位数或上界**；#11/#12 的样本是「50 张 Vega-Lite 图（5 类各 10 张）」。\n为什么是缺陷：MAPE 是均值，按定义约一半单张图的读数误差超过 7.2–7.4%。把它写成「±8%，永不更高」是把中心趋势升格为界。而 01-CONTRACTS §3.5/§7.3 要求「渲染器必须**原样显示 ε**」——读者看到的 ±8% 会被理解为区间保证。plan 未把 ±8% 标为 `inference`。\n对照本项目自己的禁令（00-PREMISE §二「禁止的置信度升级形态」第 7 条「换掉分子或分母」、第 4 条「把 N=1 的数字当作稳定估计」）与 00-PREMISE §三「标 `unverified` 的条目**永远不得升格为裸数字**」——同一类操作。\n注意：该措辞的源头在语料 D2 表（「上限 `estimated(±8%)`，永不 `verified`」），plan 是忠实继承而非自创；但 plan 有一套「落笔即验证 + 状态标注」的纪律，继承时未标注。\n独立复跑：`grep -n '±8%' 03-EVIDENCE-ENGINE.md`；`grep -n '^| 12 ' research/v2/ext-multimodal-evidence.md`；核对 #12 的口径列是否含任何分散度字段（无）。",
+  "seed": null
+ },
+ {
+  "id": "F098",
+  "attacker": "A6-evidence-pointers",
+  "severity": "P3",
+  "location": "00-PREMISE.md §六 重评记录（第 694 行）；README.md 行 37 vs 06-SURVEY.md §1.1（行 28、41–43）",
+  "claim": "语料规模元数字未全量传播：06-SURVEY 声明已把「22 文件」更正为 26，01-CONTRACTS 已改，00-PREMISE 仍写 22；另 README 与 06-SURVEY 对「改变设计的条目数」给出 12 与 34 两个不同值。",
+  "repro": "① 00-PREMISE §六 逐字：「| 2026-08-17 | — | 初版建立 | — | `research/v2/`（**22 文件快照**）|」。\n06-SURVEY §1.1 逐字：「本轮任务书与 `01-CONTRACTS.md` 文末的证据基线分别写作「23 文件」与「22 文件」，实测为 **26 文件 / 25 个研究维度**。这是本文件对自己上游的第一条更正，**修法在 01-CONTRACTS 文末的「证据基线」行**。」——更正范围只点名了 01-CONTRACTS，00-PREMISE 被漏掉。\n01-CONTRACTS 行 831 已改：「**证据基线**：`research/v2/`（26 文件 / 25 研究维度 = 18 ext + 7 gt……计数经 06-SURVEY §1.1 实测复核）」。\n实测：`ls <repo>/research/v2/*.md | wc -l` → **26**。故 00-PREMISE 的 22 为陈值。\n② README 行 37 逐字：「7 位 reader 直读 194 个已安装 DSH 包，产出 **50 处与二手文档的冲突**，其中 **12 条改变设计**」；06-SURVEY §1.1 逐字：「GTC 从中抽取会**改变设计**的 **34 条**（A 组 12 条运行时事实 / B 组 7 条 / C 组 7 条 / D 组 4 条 / E 组 4 条）」。同一量两个值（12 vs 34），而 README 行 22 自己声明 06-SURVEY 是「全项目引用数字的**唯一入口**」。\n独立复跑：`grep -n '22 文件' *.md`（唯一命中 00-PREMISE:694）；`grep -n '12 条改变设计\\|34 条' README.md 06-SURVEY.md`。\n文档声称 vs 观测：06-SURVEY §1.1 自评「一个以「不让任何断言绕过证据审计」为价值主张的文档集，连自己的语料规模都写错，是最廉价的攻击入口」——该入口只被堵了一半。",
+  "seed": null
+ },
+ {
+  "id": "F099",
+  "attacker": "A6-evidence-pointers",
+  "severity": "P3",
+  "location": "README.md 文档地图表（第 17 行）",
+  "claim": "README 的文档规模表把 01-CONTRACTS 记为 830 行，实测 831 行；其余七个文件行数全部准确。",
+  "repro": "README 逐字：「| [01-CONTRACTS.md](01-CONTRACTS.md) | **唯一规范源**…… | **830 行** / 64 条可检验断言 |」。\n实测：`wc -l attack-v2/*.md` → 00-PREMISE 694（表写 694 ✓）、01-CONTRACTS **831**（表写 830 ✗）、02-ARCHITECTURE 677 ✓、03-EVIDENCE-ENGINE 1319 ✓、04-ORCHESTRATION 864 ✓、05-TESTING 1033 ✓、06-SURVEY 1129 ✓。01-CONTRACTS 文末自述亦为「830 行」量级口径。\n注：同一行的「64 条可检验断言」经复核**准确**：`grep -oE '\\*\\*V[0-9]+\\.[0-9]+\\*\\*' 01-CONTRACTS.md | sort -u | wc -l` → 64。\n文档声称 vs 观测：README 改进项 2「**数字落笔即验证**」——七对一的命中率说明纪律确实在跑，这一处是单点漂移（很可能是最后一次编辑后未重跑 wc）。",
+  "seed": null
+ },
+ {
+  "id": "F100",
+  "attacker": "A6-evidence-pointers",
+  "severity": "P3",
+  "location": "01-CONTRACTS.md §0.2（第 21 行）与 §4.1 I-W1（第 345 行）vs §1.4 ST-A 行（第 88 行）、04-ORCHESTRATION.md §4.2（第 374 行）",
+  "claim": "规范源把「不存在从 agent 输出到 status 的写路径」写成无限定的结构性公理，但同文件 §1.4 的 ST-A 定义就是模型判断的产物；下游文档不得不自行补上限定句，规范源却从未写。",
+  "repro": "逐字（§0.2）：「**状态是算出来的，不是断言出来的。**……系统中不存在任何一条从 agent 输出到 `status` 字段的写路径（§4）。**这不是纪律要求，是写权矩阵的结构性后果。**」I-W1 同句复述。\n同文件 §1.4：「| ST-A | `attributed` | 已归因 | 锚点存在且完整，但「锚点 ⟹ 断言」这一步**由模型或人判断**。|」——即 ST-A 的取得由模型裁决驱动。\n下游被迫补限定（04-ORCHESTRATION §4.2 逐字）：「**我们不声称 `STOP` 是 model-free。** `Δstatus_up` 的一部分（ST-A 的取得）经过 GC-2，而 GC-2 消费模型裁决（01-CONTRACTS §6.1）。我们声称的是**可复算性**……这两件事必须分开说——**把「可复算」讲成「无模型参与」正是本项目要消灭的那类混淆**。」\n规范源确实用 §9.11「裁决**不是** status」+ W-04（唯一物理写者=门代码）把「写权」与「数据流」区分开，所以 §0.2 在最窄读法下可辩护；但它自称「结构性后果」并放在 §0 全局公理位置、无任何限定，读者按 §0.2 会把 ST-A 读成无模型参与——而 04-ORCHESTRATION 认为这正是「本项目要消灭的那类混淆」。规范源与下游对同一事实的表述强度不一致，且强的一方是规范源。\n独立复跑：`sed -n '21p;88p;345p' 01-CONTRACTS.md`；`sed -n '374p' 04-ORCHESTRATION.md`；`grep -n 'model-free' *.md`（仅 04-ORCHESTRATION 命中，01-CONTRACTS 零命中）。",
+  "seed": null
+ },
+ {
+  "id": "F101",
+  "attacker": "A7-reality-dsh",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §1.5.1（第 141 行）；与 §0.2、§4.1 I-W1、§4.2 W-04、04-ORCHESTRATION §1.2、00-PREMISE B8「会推翻它的观测」冲突",
+  "claim": "唯一规范源在「单调性不变量」这一句里自己开了一个后门：`编排器可将 ST-U 提升回 base`。这条例外同时打穿三件事——(1) 单调性不再成立，(2) status 出现了门代码之外的第二个写者，(3) 00-PREMISE B8 预注册的 P0「不可能事件」在冻结文档里就已经发生。",
+  "repro": "逐字引用 01-CONTRACTS §1.5.1：「**任何提升状态的规则都是缺陷**，唯一例外：当 producer 在同一轮内补交了缺失证据时，编排器可将 ST-U 提升回 base。」\n对照 §0.2：「系统中不存在任何一条从 agent 输出到 `status` 字段的写路径。」\n对照 §4.1 I-W1：「status 是由门代码计算的，从不由 agent 断言。」\n对照 §4.2 W-04：`claims/<id>.status.json` 的唯一物理写者是「**门代码（确定性脚本）**」。\n对照 04-ORCHESTRATION §1.2 第 2 条：「**编排器自己也不写 status**。」\n对照 00-PREMISE B8「会推翻它的观测」表：「任何一次 status 被非确定性代码路径写入 | **P0** —— 这应当是**不可能事件**」。\n独立复跑者要跑的检查：(a) `grep -n '编排器可将 ST-U 提升回 base' 01-CONTRACTS.md`；(b) 按 V1.3 的要求对 §1.5 第 2 步做符号执行，断言「每条规则输出 ≤ 输入」——该例外使这条断言必然失败，因为它是一条 ST-U → base 的上行边；(c) 按 W-04 写 status 写者白名单门，编排器不在白名单里，该例外的实现必然被自己的门判红。\n文档声称：S 的单调性「可以用对每条规则做一次符号执行、断言输出 ≤ 输入来自动验证」（V1.3）。实际观测：规范源自带一条不可被该符号执行接受的上行规则，且该规则的执行主体是被 W-04 明确排除的编排层。",
+  "seed": "V1"
+ },
+ {
+  "id": "F102",
+  "attacker": "A7-reality-dsh",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §6.4 首句（第 522 行）；与 §6.1 表（第 481 行）、§1.4 ST-V 定义（第 87 行）、V1.4（第 152 行）、V6.2（第 556 行）、03-EVIDENCE-ENGINE EE-L-7（第 457 行）冲突",
+  "claim": "§6.4 给 GC-2 开了一条写 ST-V 的例外（「双判官 κ≥0.8 且结论一致时可例外写 ST-V」），直接推翻本项目的核心产品承诺——ST-V 的定义是「判定路径不经过任何模型」。同一文件的 §6.1、V1.4、V6.2 与下游 03 都写的是绝对禁止，且 V1.4 还把 §6.4 引为自己的依据。",
+  "repro": "逐字引用 01-CONTRACTS §6.4：「**GC-2 原则上不得写 ST-V**，但在双判官 κ≥0.8 且结论一致时可例外写 ST-V。依据是 §1.3 的三条量化上界。」\n对照 §6.1 表 Class-2 行末列：「**永远不得写 ST-V**」。\n对照 §1.4 ST-V：「由 Class-0 或 Class-1 门（§6）确定性判定成立。**判定路径不经过任何模型**。」\n对照 V1.4：「语料中不存在任何 `status == verified` 且 `mechanism_results` 中含 `gate_class == GC-2` 的 claim（§6.4）」——它把 §6.4 当作自己的依据，而 §6.4 恰恰允许了它禁止的东西。\n对照 V6.2：「不存在 `gate_class == GC-2` 且 `verdict` 直接导致 `status == verified` 的路径」。\n对照 03-EVIDENCE-ENGINE §457：「**EE-L-7** G-L2 **只能收窄，不能写 ST-V**。这是 01-CONTRACTS §6.1 对 GC-2 的规定，本节不重述其理由。」\n再看它引的依据：§1.3 的三条上界（Claude Opus 4.6 F1=0.750、per-claim BAcc 74.7–77.4、raw agreement 比 κ 系统性虚高 38.6pp）全部是**反对**把模型裁决升到确定性档的证据；§6.4 自己下文还写着「κ ≥ 0.60 方可做**终判档的 ST-A**」。而「双判官 κ」是两个 judge 之间的一致度，正是 §1.3 第 3 条点名的虚高口径。\n独立复跑者要跑的检查：`grep -n 'ST-V' 01-CONTRACTS.md 03-EVIDENCE-ENGINE.md` 后逐条比对；再按 §1.5 写出 S 的实现——S 的第 1 步按 kind 取 base，没有任何一条分支能让 GC-2 的裁决产出 ST-V，所以这条例外在 S 里根本无处落地，实现者会卡在「我该改 S 还是改 §6.1」这一行。",
+  "seed": "V2"
+ },
+ {
+  "id": "F103",
+  "attacker": "A7-reality-dsh",
+  "severity": "P1",
+  "location": "02-ARCHITECTURE.md §A.3（cordis.patch.yml 骨架，第 86–138 行）、§D.3 boot 门（第 513–555 行）、04-ORCHESTRATION.md §3.5（第 297、303、843 行）、§9.1 参数表（第 813 行）；一手对照物 `$DSH_PKGS/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-headless/cordis.patch.yml:16-20`",
+  "claim": "全套文档把「出厂呈现模式是 `native`」当作固定事实反复承重引用，据此裁定「P0 层不存在 / `run_code` 不在面上」。但本项目强制要装的 `@deepseek-ai/dsh-headless` bundle 把 `tools` 行的 config **整体替换**为 `mode: !!js process.env.DSH_TOOLS_MODE`——呈现模式在本 profile 的组合下是一个**启动环境变量**，不是 `native`。于是 `run_code`（被 02 §C-8 与 04 §6.5 承认为同时绕过内核沙箱与 ctx.fs 围栏的旁路、并被 04 §3.4 明令逐出取证 worker 白名单）是否存在，由一个没有任何 patch 钉住、没有任何门断言、也没有进运行时指纹的 env var 决定。",
+  "repro": "一手命令（可逐字复跑）：\n`grep -n 'mode' $DSH_PKGS/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-headless/cordis.patch.yml`\n→ 输出：`20:    mode: !!js process.env.DSH_TOOLS_MODE`（上文注释逐字为 `# Keep the same temporary process-wide Code Mode opt-in as the Web surface.`）\n`sed -n '2549,2553p;2586p' .../dsh-tools/lib/index.js` → `mode: z.union([\"native\", …]).default(\"native\")` 与 `this.defaultMode = config.mode ?? \"native\"`——即 env 未设时才回落 native。\n`grep -n -A4 'id: tools$' .../dsh-base/cordis.patch.yml` → base 只挂载不配置；headless 是唯一给 `tools` 写 config 的层。\n结合 02 §E-26 自己写的 patch 语义（「patch 的**每个顶层键整体赋值**，`config` 整体被换掉，**无深合并**」），headless 层的 `{mode: env}` 就是生效值。\n文档声称：04 §3.5 P0 行「**仅在 `code` / `both` 呈现模式下存在，而出厂默认是 `native`**」；04 §9.1「**仅 code/both 呈现模式；出厂是 native**」；04 §10 第 4 条「出厂呈现模式是 `native`」；02 §B.5 表同句。\n实际观测：在本项目强制的 bundle 组合（`dsh-base` → `dsh-headless` → …）下，出厂呈现模式 = `process.env.DSH_TOOLS_MODE`。`export DSH_TOOLS_MODE=both` 后再 `dsh --profile academic-research …`，`run_code` 对全部 agent 与子代理静默上线，**零 patch、零 warning**。\n再查覆盖面：`grep -n 'DSH_TOOLS_MODE' /…/attack-v2/*.md` → **零命中**（八份文档都没提过它）。02 §A.3 的 profile patch 显式钉死了 `spill-policy` / `tool-result-pruner` / `code-runtime` / `tool-web` 并写明理由是「显式重述出厂值，让漂移在 diff 里可见」，唯独漏掉了那一行**出厂值本身就是 env 读取**的 `tools`；§D.3 boot 门第 1 段的 row 清单（`agent-loop tool-subagent code-runtime spill-policy tool-result-pruner tool-web web headless-startup headless-runner academic-fetch`）也不含 `tools`；01-CONTRACTS §4.2 W-12 的运行时指纹字段表同样不含呈现模式。且 02 §E-31 自己指出 `DSH_*` 前缀变量不能写进 `.env`、只能 `export`——正好落在 boot 门完全看不见的启动环境层。",
+  "seed": null
+ },
+ {
+  "id": "F104",
+  "attacker": "A7-reality-dsh",
+  "severity": "P1",
+  "location": "02-ARCHITECTURE.md §A.3 第 142 行与 §D.3 第 536 行（boot 门第 1 段）；对照 §C-26（第 481 行）、§E-3（第 599 行）；一手对照物 `dsh-base/cordis.patch.yml:76-78`、`dsh-agent-loop/README.md:52`",
+  "claim": "boot 门把「机器级偏好静默改掉我们的并发闸与模型路由」这条威胁钉在了错误的文件上：它断言 `$DSH_HOME/cordis.patch.yml` 不存在，却对 `$DSH_HOME/settings.yaml` 只字未提。而按 DSH 一手代码与 README，settings.yaml 才是**热重载、无需重启**就能改掉 LLM 适配器路由（`llm-deepseek:` / `llm-pi-ai:` section）与并发闸（`agent-loop` 的 Settings section 全部内容就是 `maxParallelToolCalls`）的那一层。门堵了小洞，放过了更大且会在跑动中途生效的那个洞。",
+  "repro": "逐字引用 02 §A.3：「**`$DSH_HOME/cordis.patch.yml` 排在 profile 层之后，级别更高**…→ **boot 门必须断言它不存在，或断言其内容哈希**，否则一次机器级偏好可以静默改掉我们的并发闸与模型路由。」\n逐字引用 §D.3 第 1 段末行：`test ! -e \"${DSH_HOME:-$HOME/.dsh}/cordis.patch.yml\" || { echo \"HOME PATCH LAYER PRESENT\"; exit 1; }`——全脚本仅此一条 home 层断言。\n一手命令：\n`sed -n '76,79p' .../dsh-base/cordis.patch.yml` → 逐字注释：`# User-settings document ($DSH_HOME/settings.yaml, hot-reloaded): a` / `# 'llm-deepseek:' or 'llm-pi-ai:' section there overrides the adapter entries` / `# below without a restart, and is what the web Models page writes.`\n`grep -n 'maxParallelToolCalls' .../dsh-agent-loop/README.md` → `:52` 逐字：`it is also the whole of the 'agent-loop' Settings section, so a user layer over this entry caps the next tool group without a restart`。\n覆盖面检查：`grep -n 'settings.yaml' /…/attack-v2/*.md` → **全八份文档仅 1 处命中**（02 §C-26），且是当作「让用户热改配置」的**能力**写的，不是当作威胁面，也没有任何门断言与之关联。\n文档声称：boot 门覆盖了机器级偏好对「并发闸与模型路由」的静默篡改。实际观测：并发闸（maxParallelToolCalls）与模型路由（llm-* adapter section）的真实机器级入口是 settings.yaml，它热重载、可在长跑中途生效、且不在 boot 门、`--dump-config` 断言、W-12 运行时指纹的任一面上。这正是 00-PREMISE B8 与 01-CONTRACTS §6.5.3 点名「在本仓库连中三次」的那一类**配置层空心门**。",
+  "seed": null
+ },
+ {
+  "id": "F105",
+  "attacker": "A7-reality-dsh",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §5.2 / R-I2（第 414–424 行）、V5.1（第 461 行）；02-ARCHITECTURE.md §C.1 C-1（第 446 行）、§A.3 第 106 行；04-ORCHESTRATION.md §2.5 第 175 行；一手对照物 `dsh-base/cordis.patch.yml:88-96`、`dsh-llm-pi-ai/README.md`",
+  "claim": "「跨厂商独立性」被全套文档称为本轮最有价值的机会项，并写成硬规则 R-I2 与硬断言 V5.1（每条 ST-A 的裁决 provider 必须 ≠ producer 的 provider）。但 (a) 本项目给出的 profile 骨架里只配了一个 LLM 路由 `deepseek-official`，八份文档没有任何一处说明第二个厂商路由怎么装、装在哪；(b) 本机唯一的替代适配器 `dsh-llm-pi-ai` 出厂是**空路由休眠挂载**，要靠 `$DSH_HOME/settings.yaml` 的 `llm-pi-ai:` section 才会注册路由——而那一层正是 F4 里 boot 门完全不管的层；(c) pi-ai 允许把任意路由名指向任意 OpenAI 兼容端点，所以 `provider ≠ provider` 只是一次**字符串比较**，不是 harness 事实，直接违反同一文件的 R-I1（「一切独立性判定使用 harness 侧的…链；**不得取自报字段**」）。",
+  "repro": "逐字引用 R-I2：「任何写入 ST-A 的 Class-2 裁决，其 `verdict.provider` 必须与 producer 的 provider **不同**，且该值取自编排脚本传入的 `agentOptions.provider`、并与 `runs/<run_id>/manifest.json` 的运行时指纹交叉校验。」\n逐字引用 R-I1：「一切独立性判定使用 harness 侧的 `childId` / `sessionId` / `parentSession` 链；**不得取 manifest 里的自报字段**。」\n一手命令：\n`ls -d .../@deepseek-ai/dsh-llm*` → `dsh-llm  dsh-llm-deepseek  dsh-llm-pi-ai  dsh-llm-retry`（无 anthropic/openai 适配器包）。\n`sed -n '88,96p' .../dsh-base/cordis.patch.yml` → 逐字：`# The pi-ai multi-provider twin, mounted dormant: zero routes (and no extra` / `# models in the picker) until a 'llm-pi-ai:' settings section supplies provider` / `# profiles — then those routes register live`。\n`head -6 .../dsh-llm-pi-ai/README.md` → 逐字：`a route pi-ai does not ship is declared outright, so an OpenAI-compatible gateway, a self-hosted server, or a provider newer than the installed catalog is configuration rather than a code change.`\n再查 W-12 的指纹字段（01-CONTRACTS §4.2 W-12）：只有 `sandbox/mode`、`approval/policy`、`result.sandbox.{mode,enforcement}`、`tool/call` callId、`tool/code-dispatch` id、`web search provider id`——**没有 LLM 路由解析结果、没有 settings.yaml 哈希、没有端点**。所以 R-I2 承诺的「与运行时指纹交叉校验」在 W-12 的字段表上无物可校。\n覆盖面：`grep -n 'anthropic\\|openai\\|pi-ai' /…/attack-v2/*.md` → 只有 01-CONTRACTS §5.2.1 一处把 `anthropic` 当举例（该包本机未安装），02 §A.3 硬写 `agentOptions: { provider: deepseek-official, … }`。\n文档声称：R-I2 可「在脚本里直接声明」，「独立性不必靠外部编排」。实际观测：在本计划给出的 profile 上，第二条路由不存在；把它接上的唯一途径是一个门不检查的热重载文件；接上之后 `provider` 名与真实厂商之间没有任何 harness 级绑定。V5.1 若照写实现，要么因为只有一个路由而让**所有** ST-A claim 判红（K-L-A 与 K-I 的天花板都是 ST-A，即绝大多数 claim），要么被一行 `llm-pi-ai: { anthropic: { baseUrl: <同一个 deepseek 端点> } }` 无声满足。",
+  "seed": null
+ },
+ {
+  "id": "F106",
+  "attacker": "A7-reality-dsh",
+  "severity": "P2",
+  "location": "02-ARCHITECTURE.md §A.3 第 108–109 行 与 §E-2 第 598 行 vs 04-ORCHESTRATION.md §3.5 第 309 行 与 §5.3 第 494 行",
+  "claim": "两份主文档对 `subagent_fork` 给出互相排斥的 profile 配置指令：02 说整行 `disabled: true`、本 profile 不用 fork；04 说本 profile 应把 `subagent_fork` 配回 `one-shot` 以保住 fork 的缓存收益。实现者写 `cordis.patch.yml` 时必须二选一，而两份文档都自称是该行的裁定方。",
+  "repro": "逐字引用 02 §A.3：\n```\n- id: tool-subagent-fork      # 出厂 base 是 one-shot；三个 shipped preset 却是 continuable\n  disabled: true              # 〔裁定〕本 profile 不用 fork（取证子代理必须零父历史，01-CONTRACTS §5.3）\n```\n逐字引用 02 §E-2 设计应对：「〔裁定〕profile 层把 `tool-subagent` 显式配回 `one-shot`，把 `tool-subagent-fork` 直接 `disabled`。」\n逐字引用 04 §3.5 末段：「**一条出厂配置必须显式覆盖**：三个 shipped preset 把 `subagent_fork` 也设成了 `continuable`…**本 profile 应显式把 `subagent_fork` 配回 `one-shot` 以保住 fork 的缓存收益**。」\n逐字引用 04 §5.3：「这条与 §3.5 末尾「把 `subagent_fork` 配回 `one-shot`」是同一件事的两面。」\n独立复跑者要跑的检查：`grep -n 'subagent_fork\\|tool-subagent-fork' 02-ARCHITECTURE.md 04-ORCHESTRATION.md`，然后尝试写出唯一的一份 profile patch——`disabled: true` 与 `backgroundMode: one-shot` 不能同时成立（disabled 的行不会被挂载，也就不存在缓存收益可保）。\n文档声称：01-CONTRACTS 是唯一规范源、02/04 只做各自层面的裁定。实际观测：同一条 profile 配置有两个互斥的〔裁定〕，且 04 的那条还给出了一个在 02 的配置下不可能兑现的收益理由。",
+  "seed": null
+ },
+ {
+  "id": "F107",
+  "attacker": "A7-reality-dsh",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.3（第 63 行）vs §1.5 第 0 步 0e（第 115 行）",
+  "claim": "唯一规范源在同一节内对 `counter_evidence_searched == false` 给出两个不同的结果状态：§1.3 写「必须为 true 才允许非 unverified」（即 false ⇒ ST-U），§1.5 的 0e 写「→ ST-N」。这恰好落在本文件 §1.4.1 反复强调「必须分开」的那一对状态上。",
+  "repro": "逐字引用 §1.3 的 `claim_supported` 必填字段块：「`counter_evidence_searched    : bool                       // 必须为 true 才允许非 unverified`」。\n逐字引用 §1.5 第 0 步：「`0e  counter_evidence_searched == false          → ST-N   +flag F-29`」。\n对照 §1.4.1：「`unverified` 与 `not_covered` 必须分开。前者是「我们看了，没找到支持」；后者是「我们没能力看」…审计含义完全不同。」\n再对照 04-ORCHESTRATION §2.5 把该项写成「`counter_evidence_searched（预算紧张时该项可跳过并记 flag）`」——跳过后按 0e 全批落 ST-N，按 §1.3 则应落 ST-U。\n独立复跑者要跑的检查：实现 S 的 0e 分支时，从 §1.3 与 §1.5 各取一次规范，两次得到不同的枚举值;或对同一批 fixture 分别按两种读法跑 S，比较 `status` 分布。\n文档声称：「§1.5 状态函数 S — 唯一的计算式」。实际观测：同一文件的字段定义处给出了另一条与之冲突的计算规则，且冲突的正是本项目宣称的核心区分。",
+  "seed": "V4"
+ },
+ {
+  "id": "F108",
+  "attacker": "A7-reality-dsh",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.5 签名行（第 105 行）与第 1 步（第 127–129 行）、第 2 步 2c（第 134 行）；V1.2（第 150 行）",
+  "claim": "S 的声明签名是 `S(kind, quote_faithful, source_integrity, claim_supported)`，但其函数体读了两个不在签名里的输入——`question_authored_by`（决定封闭式/开放式，从而决定 base 是 ST-V 还是 ST-A）与 `retention_tier`（2c 的上限）。按签名照抄实现的人在第 1 步就写不下去。",
+  "repro": "逐字引用 §1.5 首行：「`status = S(kind, quote_faithful, source_integrity, claim_supported)`，按下列顺序求值」。\n逐字引用第 1 步的机器判据：「「封闭式 / 开放式」的机器判据：claim 记录中 `question_authored_by` 字段。取值 `human` 且问句与数据文件在 run 之前即已冻结 → 封闭式；取值 `agent` → 开放式。」\n逐字引用 2c：「`evidence_grade 上限（§3.4）+ retention_tier 上限（§8.6.2） → base = min(base, ceiling(...))`」。\n对照 §1.3 的 `claim_supported` 字段清单（evidence_grade / independent_cluster_count / counter_evidence_* / mechanism_results / flags / budget_state）——`question_authored_by` 与 `retention_tier` **都不在其中**；`retention_tier` 按 §8.6 挂在证据的 provenance 上，`question_authored_by` 按第 1 步由编排层（W-12 的写者）写在 claim 记录里。\n独立复跑者要跑的检查：写出 `function S(kind, qf, si, cs) { … }`，在第 1 步需要判断封闭式/开放式时会发现四个形参里取不到 `question_authored_by`，在 2c 需要 `retention_tier` 时同样取不到;再对 V1.2「重跑 S 必须得到与存档 status 逐字节相同的值（S 是纯函数，输入全在 CAS 与注册表快照里）」做一次实现——`question_authored_by` 既不在 CAS 也不在注册表快照里。\n文档声称：S 是纯函数且输入已穷举。实际观测：签名漏了两个会改变输出档位的输入，V1.2 的「输入全在 CAS 与注册表快照里」对其中一个不成立。",
+  "seed": null
+ },
+ {
+  "id": "F109",
+  "attacker": "A7-reality-dsh",
+  "severity": "P2",
+  "location": "04-ORCHESTRATION.md §5.3（第 494 行）与 V-4.21（第 552 行）vs §3.4 规则 O-6（第 273–286 行）、§5.5 模型分层（第 525 行）、02-ARCHITECTURE §B.5〔裁定 B-3〕（第 318 行）",
+  "claim": "缓存前缀约束被写成一条可机检断言 V-4.21：「对同一 profile 的 N 个子代理请求，断言其请求前缀的字节哈希相同」。但本项目自己的设计强制让不同角色的前缀**必然不同**：O-6 要求角色间工具白名单交集为空（工具定义进前缀）、§5.5 要求角色间模型分层（pro/flash）、02〔裁定 B-3〕要求每个角色一个独立命名的 subagent 实例并各带 persona/toolFilter。V-4.21 按字面无法通过，实现者只能把它悄悄改成「同角色内」——而文档没写这一层限定。",
+  "repro": "逐字引用 V-4.21：「前缀稳定性检查：对同一 profile 的 N 个子代理请求，断言其请求前缀的字节哈希相同（缓存架构约束的机器检查）。红样本：在前缀里插入 run_id，断言检查失败。」\n逐字引用 §5.3：「→ **所有子代理必须共享逐字节相同的前缀**（system prompt + 工具定义 + 共享上下文）」。\n逐字引用 §3.4 规则 O-6：「每个 worker 角色持有一个**封闭的**工具白名单；任意两个角色的白名单交集必须为空」，并给出七个角色各不相同的白名单表。\n逐字引用 §5.5：「flash 承担有确定性验收的任务…pro 承担产品本身…」。\n逐字引用 02 §B.5：「每个角色一个独立命名的 `dsh-tool-subagent` 实例（`toolName` + `agentOptions.{provider, model}` + `persona` + `toolFilter` + `maxDepth` 全部 per-instance 固定）」。\n独立复跑者要跑的检查：取 §3.4 表里的「取证 worker」与「裁决 agent」两行，按 §5.3 的前缀定义（system prompt + 工具定义 + 共享上下文）各算一次前缀哈希——工具白名单交集为空 ⇒ 工具定义段不同 ⇒ 哈希必不同;再叠加 §5.5 的 pro/flash 分层与 R-I2 的跨厂商要求，两者连 KV cache 命名空间都不同。\n文档声称：V-4.21 是「缓存架构约束的机器检查」。实际观测：该断言与同文件的 O-6、§5.5 及 02 的〔裁定 B-3〕互斥，按字面实现必然恒红。",
+  "seed": null
+ },
+ {
+  "id": "F110",
+  "attacker": "A7-reality-dsh",
+  "severity": "P2",
+  "location": "04-ORCHESTRATION.md §5.2（第 469–484 行）、V-4.18（第 549 行）vs 01-CONTRACTS §5.2 R-I2（第 423 行）、04 §5.5 模型分层（第 525 行）",
+  "claim": "预算模型把整张价卡「塌缩」成 DeepSeek 特化的一个基准数 × 两个开关，并据此写下 V-4.18「账单可事后按 §5.2 的式子完全重算」。但 R-I2 强制每条 ST-A 的裁决必须走**另一个厂商**的路由——那部分支出既不适用 `B(flash)=1 / B(pro)=3`，也不适用 `P_hit = P_miss/30` 与 DeepSeek 的峰谷窗口。以核验为主的架构里这不是边角料，而是「验证成本与生成成本同量级」（00-PREMISE B9）的那一半。",
+  "repro": "逐字引用 §5.2：「DeepSeek 特化后整张价卡塌缩成一个基准数 × 两个开关（as-of 2026-08-17…）」，公式块含 `B(flash) = 1, B(pro) = 3`、`P_hit = P_miss / 30`、`K(off-peak)=1, K(peak)=2`。\n逐字引用 V-4.18：「每次运行落一份 `budget/usage.json`，含逐 agent 的 `(T_miss, T_hit, T_out)` 与当时的 `B`、`K`；**账单可事后按 §5.2 的式子完全重算**。」\n逐字引用 01-CONTRACTS R-I2：「任何写入 ST-A 的 Class-2 裁决，其 `verdict.provider` 必须与 producer 的 provider **不同**」。\n对照 §5.3 第 1 条：「TTL 无保证…**不能把缓存命中当作确定性收益写进预算**」——该限定只覆盖 DeepSeek 侧的缓存，跨厂商侧连 cache 语义都不同。\n对照 00-PREMISE B9：「**验证成本与生成成本同量级**（B3 已列）。**验证必须是独立预算科目。**」\n独立复跑者要跑的检查：拿一条 ST-A claim 的实际调用序列（producer=deepseek-official，裁决者=另一路由），试着用 §5.2 的四个符号（B、K、$0.22、30）把两侧支出都算出来——第二个厂商的 B/K/单价在本文件任何地方都没有定义位，`budget/usage.json` 的字段表（逐 agent 的 T_miss/T_hit/T_out + B + K）也没有 provider 维度。\n文档声称：账单可完全重算。实际观测：预算模型只覆盖单一厂商，而独立性契约强制引入第二个厂商，两条契约在 `budget/` 的 schema 上正面冲突且无人裁决。",
+  "seed": null
+ },
+ {
+  "id": "F111",
+  "attacker": "A7-reality-dsh",
+  "severity": "P2",
+  "location": "04-ORCHESTRATION.md §9.1 参数汇总表（第 812 行）vs 02-ARCHITECTURE.md §A.3（第 96 行）、§E-3（第 599 行）",
+  "claim": "04 §9.1 自称是「全部可调参数（含来源与状态）」，`maxParallelToolCalls` 一行只写「10（出厂，**可热改的用户设置**）」，完全没有记录本 profile 已经把它显式钉成 4。实现者按参数总表配置会写回 10，直接抹掉 02 的裁定。",
+  "repro": "逐字引用 04 §9.1 表行：「| `maxParallelToolCalls` | 10（出厂，**可热改的用户设置**） | gt-orchestration.md#G1 | **不是安全边界** |」。\n逐字引用 02 §A.3 的 profile patch：\n```\n- id: agent-loop\n  config:\n    agents: []\n    maxParallelToolCalls: 4    # 〔裁定〕见 §E.1\n```\n逐字引用 02 §E-3 设计应对：「**它不是安全边界。** 我们显式写 4；真正的并发闸是中央限速网关（C-20）」。\n独立复跑者要跑的检查：`grep -n 'maxParallelToolCalls' 02-ARCHITECTURE.md 04-ORCHESTRATION.md`——02 出现两次（值 4 与出厂 10），04 出现三次（§3.5、§9.1、§3.5 陷阱说明）全部只写 10;再按 04 §9.1「全部可调参数」这张表去生成 profile 配置，得到的是 10 而不是 4。\n文档声称：§9.1 是「全部可调参数（含来源与状态）」的汇总。实际观测：该表记录的是出厂值而非本 profile 的裁定值，且没有任何一列标出「本 profile 覆盖为 4」。",
+  "seed": null
+ },
+ {
+  "id": "F112",
+  "attacker": "A7-reality-dsh",
+  "severity": "P2",
+  "location": "00-PREMISE.md 第 694 行；02-ARCHITECTURE.md 第 677 行；03-EVIDENCE-ENGINE.md 第 1319 行；05-TESTING.md 第 1032 行；01-CONTRACTS.md 第 831 行；04-ORCHESTRATION.md 第 860 行（T-7）与第 864 行；06-SURVEY.md 第 40–41、1129 行",
+  "claim": "一个以「不洗数字」为产品的文档集，自己的证据基线计数在冻结态里有 **三个值同时存在**（22 / 23 / 26），而且专门用来收敛这条漂移的更正条目（04 §10.A T-7 与 06-SURVEY §1.1）**把 22 归错了文件**。按 T-7 去修的人会去改一个已经正确的文件，同时漏掉三个仍然错的文件。",
+  "repro": "一手命令：`grep -n '文件版本\\|22 文件\\|23 文件\\|26 文件' /…/attack-v2/*.md`\n实际值：\n- 00-PREMISE.md:694（重评记录）→「`research/v2/`（**22 文件快照**）」\n- 02-ARCHITECTURE.md:677 →「证据基线：`research/v2/`（**23 文件**）」\n- 03-EVIDENCE-ENGINE.md:1319 →「证据基线：`research/v2/`（**23 文件**…）」\n- 05-TESTING.md:1032 →「证据基线：`research/v2/`（**23 文件**，2026-08-17 快照）」\n- 01-CONTRACTS.md:831 →「`research/v2/`（**26 文件** / 25 研究维度 = 18 ext + 7 gt…）」\n- 04-ORCHESTRATION.md:864 →「（**实测 26 文件**…注意 **01-CONTRACTS 文件尾写 22**、本轮任务书写 23，三者不一致，见 §10.A T-7）」\n- 06-SURVEY.md:1129 →「本文件更正了任务书的「23 文件」与 `01-CONTRACTS.md` 文末的「**22 文件**」」\n地面真值：`ls -1 <repo>/research/v2 | wc -l` → **26**（1 份 GROUND-TRUTH-CORRECTIONS + 18 ext-* + 7 gt-*）。\n文档声称：04 §10.A T-7「语料文件数：实测 **26** 个…01-CONTRACTS 写 22、本轮任务书写 23」，理由是「一个以「不洗数字」为产品的文档集，自己的基线计数不能有三个版本」。实际观测：01-CONTRACTS 写的是 26（已修），写 22 的是 00-PREMISE 的重评记录，写 23 的是 02 / 03 / 05 三份文档。T-7 与 06-SURVEY §1.1 两处更正记录都把来源指错，因此这条漂移在冻结态里既没被修完、也没被记对。",
+  "seed": null
+ },
+ {
+  "id": "F113",
+  "attacker": "A7-reality-dsh",
+  "severity": "P2",
+  "location": "03-EVIDENCE-ENGINE.md §7 EE-F-6（第 952 行）与负例 NT-F-8（第 1259 行）vs 01-CONTRACTS §4.6 V4.6（第 402 行）、§1.2.1（第 49 行）、00-PREMISE B8「最高 ROI 纪律」（第 587 行）",
+  "claim": "反伪造绑定门的规范判据在 03 里被换了裁判：01 的 V4.6 要求 callId 能在 **session 日志**里查到（harness 痕迹），03 的 EE-F-6 与其负例 NT-F-8 要求 callId 在 **`runs/<run_id>/manifest.json`**（W-12，编排层自己写的文件）里可查。负例套件只演练了后者，等于用我们自己的记账文件给我们自己的记账背书。",
+  "repro": "逐字引用 01-CONTRACTS V4.6：「不存在任何 `evidence` 记录其 `object_sha256` 在 CAS 中不存在，或其 `tool/call` callId **在 session 日志中查无此事**。」\n逐字引用 01-CONTRACTS §1.2.1：「子测试②的必要性：`verified` 的最低门槛是「这次抓取确实发生过」，而 **session 日志**只能证明发生过…」\n逐字引用 03 EE-F-6：「每条证据的 `tool/call` callId 与 `tool/code-dispatch` 的 `<parent>:code:<n>` id 必须在 **`runs/<run_id>/manifest.json` 中可查**（写者见 01-CONTRACTS §4 W-12）。」\n逐字引用 03 负例表 NT-F-8：「一条证据的 `tool/call` callId **在 `runs/<run_id>/manifest.json` 中查无此事** → `not_covered`（01-CONTRACTS V4.6）」——它把 V4.6 当依据，却换掉了 V4.6 指定的数据源。\n对照 01-CONTRACTS §4.2 W-12：`runs/<run_id>/manifest.json` 的唯一物理写者是「**编排层**」。\n对照 00-PREMISE B8：「**任何跨执行边界的断言必须对运行系统自己的痕迹断言**（session jsonl 事件存在性 + hash），**不得停在配置层**。这条在本仓库连中三次。」\n独立复跑者要跑的检查：构造一条伪造 evidence，其 callId 同时被写进 manifest（编排层可写）但在 session JSONL 中不存在——NT-F-8 会**放行**，V4.6 会判红。两个负例的判别力差一个执行边界。\n文档声称：反伪造门兑现的是「绑到一条真实发生过的 `tool/call`」。实际观测：03 的规范接线与负例把这条断言降级到了我们自己的 manifest 上。",
+  "seed": null
+ },
+ {
+  "id": "F114",
+  "attacker": "A7-reality-dsh",
+  "severity": "P3",
+  "location": "04-ORCHESTRATION.md §6.2（第 579–591 行）vs 01-CONTRACTS.md §6.3 第 5 条（第 512–514 行）、§9.3（第 774 行）、V9.1（第 808 行）",
+  "claim": "「01-CONTRACTS 是唯一规范源、其他文档只引用不复述」这条权威规则被 04 §6.2 自己打破：它把 01 §6.3 第 5 条的整张学术限速表逐字复述了一遍（含 ≥5-gram 的原句），并且额外引入了一条 01 里没有的规范数值（Europe PMC 保守设 3 rps）。按 01 自己的 V9.1 lint，这份文档集会判自己红。",
+  "repro": "逐字比对：\n01-CONTRACTS §6.3-5：「**arXiv 1 请求/3 秒（≈0.33 rps）且禁止并发连接**」/「「Crossref polite pool = 50 rps」是 2025-12-01 之前的值，现已失效 16 倍」。\n04 §6.2 表：「**1 请求 / 3 秒（≈0.33 rps）且禁止并发连接**」/「**「polite pool = 50 rps」是 2025-12-01 之前的值，现已失效 16 倍**」。\n一手命令：`grep -n '0.33 rps' /…/attack-v2/*.md` → 01:512、04:322、04:583;`grep -n '2025-12-01 之前的值' /…/attack-v2/*.md` → 01:514、04:588。\n04 自己承认了这次复述：「学术侧的限速值与 01-CONTRACTS §6.3 第 5 条同源；若两处数字出现分歧，以 01-CONTRACTS 为准」——但随后仍把整表抄了一遍。\n新增规范值：04 §6.2 表有「| 中间 | Europe PMC | **未公布** → 保守设 3 rps + 指数退避 + 熔断 |」，而 01 §6.3 第 5 条的成员里**没有 Europe PMC**;同时 04 表给 CORE 加了 01 没有的「**本轮实测不可达** → **在实机验证连通性之前不进任何路径**」这一硬约束，而 01 §6.3 仍把 CORE 列为「最紧的四条」之一、未标不可达。\n对照 V9.1：「文档 lint：其他文档中出现本文件定义句的 5-gram 重复即失败（复述检测）。」对照 §9.3：「术语定义只此一份；其他文档复述定义即为回归」。\n对照 02 §E-19 的相反做法：「**具体限额与其中一条已失效的旧值见 01-CONTRACTS §6.3 硬要求 5**（本文件不复述数字与口径警告）」——证明该纪律在同一套文档里被不一致地执行。\n文档声称：唯一规范源 + 只引用不复述 + V9.1 可机检。实际观测：把 V9.1 跑在本文档集上会命中 04 §6.2，而且 04 §6.2 还持有一条只存在于非规范源的限速规范值。",
+  "seed": null
+ },
+ {
+  "id": "F115",
+  "attacker": "A7-reality-dsh",
+  "severity": "P3",
+  "location": "00-PREMISE.md B9 裁决（第 626 行）与 §六 重评记录（第 692–694 行）vs 04-ORCHESTRATION.md §5.6（第 531–537 行）、§10.A T-6（第 859 行）",
+  "claim": "00-PREMISE 用自我约束条款规定「下游文档若与本文件的裁决冲突，**必须在此处开一条重评记录说明理由，不得静默偏离**」。04 §5.6 明确推翻了 B9 的裁决（`maxBudgetUsd` 属 Claude Agent SDK 不属 DSH，本运行时不存在原生美元预算旋钮），但 00-PREMISE 的重评记录表在冻结态里只有「初版建立」一行。规定的流程在冻结那一刻就没被执行。",
+  "repro": "逐字引用 00-PREMISE B9 裁决：「**预算即代码**：用运行时原生旋钮（`maxBudgetUsd` / 并发上限 / 深度上限），不自建预算中间件。」\n逐字引用 00-PREMISE §四：「下游文档若与本文件的裁决冲突，**必须在此处开一条重评记录说明理由，不得静默偏离**。」\n逐字引用 00-PREMISE §六 重评记录表（全表只有一行）：「| 2026-08-17 | — | 初版建立 | — | `research/v2/`（22 文件快照） |」\n逐字引用 04 §5.6：「**⚠️ 一处必须更正的跨文档冲突。**…**〔裁定〕以 DSH 一手为准：本运行时不存在原生的美元预算旋钮。**…**本条已列入 §10，需回填 00-PREMISE B9。**」\n一手佐证（04 的判断本身是对的）：`grep -rn 'maxBudgetUsd' $DSH_PKGS/@deepseek-ai/dsh/node_modules/@deepseek-ai/` → 零命中。\n独立复跑者要跑的检查：`sed -n '690,695p' 00-PREMISE.md` 看重评记录行数;`grep -n 'T-6' 04-ORCHESTRATION.md` 看回填仍是待办。\n文档声称：冲突必须留痕于 00-PREMISE §六。实际观测：冲突已发生并被 04 明写，00-PREMISE 仍逐字保留错误裁决，重评记录零新增。",
+  "seed": null
+ },
+ {
+  "id": "F116",
+  "attacker": "A7-reality-dsh",
+  "severity": "P3",
+  "location": "04-ORCHESTRATION.md §3.5（第 303 行）",
+  "claim": "P0 层是否存在的判据用了一个逻辑取反错误的连接词：写成「不选 Code Mode **且** 确认宿主挂了 code-runtime」才判定 P0 不存在。按字面，若宿主没挂 code-runtime（另一个使 P0 不存在的充分条件）该判据不成立，实现者会得到相反结论。",
+  "repro": "逐字引用：「**〔裁定〕若本 profile 不显式选用 Code Mode 且确认宿主挂了 `code-runtime`，则 P0 层不存在，优先级从 P1 开始。**」\n同段前文给出的两个必要条件是并列的：「该闸门**只在 `code`/`both` 呈现模式下存在**…**且宿主必须挂 `code-runtime`**」。因此「P0 存在」= (mode ∈ {code,both}) ∧ (挂了 code-runtime)，其否定应为 (mode = native) **∨** (未挂 code-runtime)。\n独立复跑者要跑的检查：把该句写成布尔表达式并与 §3.5 表的 P0 行备注、§10 第 4 条（「出厂呈现模式是 `native`，`code-runtime` 只由 web-app / headless 挂载。**若不选 Code Mode**…」）比对——§10 用的是单条件，§3.5 用的是双条件合取。\n文档声称：这是一条可前移验证的〔裁定〕。实际观测：裁定的触发条件写成了 AND，与其自身推导出的 OR 不一致;在本项目（headless 必挂 code-runtime）下恰好不出错，但换任何一个不挂 code-runtime 的宿主就会给出错误结论。",
+  "seed": null
+ },
+ {
+  "id": "F117",
+  "attacker": "A7-reality-dsh",
+  "severity": "P3",
+  "location": "04-ORCHESTRATION.md §3.5 表 P2/P3 行（第 299–300 行）vs 02-ARCHITECTURE.md §A.3（第 100–104 行）、§E-2（第 598 行）；`dsh-jobs-local/README.md:9`",
+  "claim": "扇出优先级阶梯 P0→P3 有三级在本 profile 自己的配置下不成立或语义反转，而文档只处置了 P0：P3（continuable 后台子代理，无上限）被 02 的 `backgroundMode: one-shot` 消灭;P2 的注解「这个 10 限制的是「同时在创建中的子代理数」，不是「同时在工作的子代理数」」建立在 continuable 出厂值上，在 one-shot 下正好反过来。且 one-shot 路径会落进 `maxConcurrentJobsPerOwner = 10` 那个**超限抛错不排队**、且与 `bash(run_in_background)` 共桶的池子——两份文档都没分析这个交互。",
+  "repro": "逐字引用 04 §3.5 表：\n「| **P2** | 一条 assistant 消息里并排调 `subagent` 工具 | `maxParallelToolCalls` 默认 10 | 10 | 出厂 `subagent` 是 continuable，调用在 inbox 接受后立即返回 → **这个 10 限制的是「同时在创建中的子代理数」，不是「同时在工作的子代理数」** |」\n「| **P3** | continuable 后台子代理 | **运行时不设上限** | — | …|」\n逐字引用 02 §A.3：\n```\n- id: tool-subagent\n  config:\n    …\n    backgroundMode: one-shot  # 〔裁定〕见 §E.2\n```\n逐字引用 02 §E-2：「〔裁定〕profile 层把 `tool-subagent` 显式配回 `one-shot`」。\n逐字引用 04 §3.5 表末行：「| — | one-shot 后台（Task） | `maxConcurrentJobsPerOwner` 10，**超限抛错不排队**，与 `bash(run_in_background)` 共用同一桶 | 10 |」\n一手佐证：`grep -n 'maxConcurrentJobsPerOwner' .../dsh-jobs-local/README.md` → `:9` 逐字：`maxConcurrentJobsPerOwner is a positive safe integer and defaults to 10. Before invoking a producer, start() counts the exact owner's running and stopping records`;`.../dsh-jobs-local/lib/index.js:137` → `throw new Error('background job limit reached for this owner (limit: …)')`。\n独立复跑者要跑的检查：按 02 §A.3 的 patch 配置后，重读 04 §3.5 的 P2/P3 行——P3 的路径已被 disable，P2 的注解前提（continuable）已不成立;再叠加 02 §E-25「长跑复算走 `run_in_background`（占 jobs 的 10 槽）」，计算取证扇出 + 后台 bash 同时占用同一 10 槽桶时的溢出行为（抛错，不排队），这与〔裁定 B-4〕「唯一会排队而不是失败」的选路理由正面相关却无人分析。\n文档声称：§10 第 4 条只承认「P0 层可能根本不存在」。实际观测：在本 profile 的自有配置下，四级阶梯里实际只剩 P1 一级有效，且 one-shot 与 jobs 桶的交互是一个未被任何文档覆盖的失败面。",
+  "seed": null
+ },
+ {
+  "id": "F118",
+  "attacker": "A8-foundation-b8",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §6.4（第 520–522 行）vs §6.1 表 / §1.6 V1.4 / §6.6 V6.2 / 03-EVIDENCE-ENGINE.md §L 323、457、1112 / 05-TESTING.md HB-1（76 行）、VT-2",
+  "claim": "「唯一规范源」内部自相矛盾地为 GC-2（消费 LLM 裁决的门）开了一条写 ST-V 的例外，这条例外直接击穿产品的核心承诺「ST-V 的判定路径不经过任何模型」，并使四份文档的五条可检验断言在实现后必然失败。且该例外自称的依据恰恰论证了相反结论。",
+  "repro": "§6.1 表逐字：「**Class-2** | GC-2 | …… | **最高 ST-A**；以及向下的 ST-C / ST-U / ST-N | **永远不得写 ST-V**」。§6.4 开头逐字：「**GC-2 原则上不得写 ST-V**，但在双判官 κ≥0.8 且结论一致时可例外写 ST-V。依据是 §1.3 的三条量化上界。」\n检查方式：在 attack-v2/ 下执行 `grep -n \"ST-V\" 01-CONTRACTS.md | sed -n '1,40p'` 并对读 §6.1 表行与 §6.4 首段；再执行 `grep -rn \"GC-2\" 0[2-6]*.md | grep -i \"ST-V\\|verified\"`。\n文档宣称：§1.4 ST-V 定义「由 Class-0 或 Class-1 门（§6）确定性判定成立。判定路径不经过任何模型」；V1.4「语料中不存在任何 `status == verified` 且 `mechanism_results` 中含 `gate_class == GC-2` 的 claim」；V6.2「不存在 `gate_class == GC-2` 且 `verdict` 直接导致 `status == verified` 的路径」；03 §457 EE-L-7「G-L2 **只能收窄，不能写 ST-V**。这是 01-CONTRACTS §6.1 对 GC-2 的规定」；03 NT-L-8 与 05 VT-2「不存在任何 `verified` 状态由 L2（GC-2）或 L3（人）写入的路径」。\n实际观测：§6.4 授权了这条路径。三份下游文档都按 §6.1 复述规则并据以设计负例，实现 §6.4 会让 V1.4、V6.2、NT-L-8、HB-1、VT-2 同时变红。此外 §6.4 援引的「§1.3 的三条量化上界」原文是「最好者 Claude Opus 4.6 F1 = 0.750」「MT-Bench exact match 0.788–0.851 对应 Cohen κ 只有 0.376–0.511」——这三条论证的是 GC-2 **不能**终判，κ≥0.8 在该实测分布里几乎不可达；引用的证据与被支撑的结论反号。",
+  "seed": "V2"
+ },
+ {
+  "id": "F119",
+  "attacker": "A8-foundation-b8",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §1.5.2（K 取值）+ §1.6 V1.6（RT-1）+ §7.3（F-14 行）+ §7.2（F-14 定义）",
+  "claim": "状态函数 S 的独立簇规则与 flag 上限规则互斥：按 §1.5.2 的 K 取值，项目自封的头号红队用例 RT-1 必然判成 verified（即自证「把 faithfulness 当 factuality 卖」）；若按 §7.3 让 F-14 无条件降一档来救 RT-1，则 K-D（数据推导）与 K-L-T（文献转录）的 ST-V 永远不可达，整套绿灯语义作废。两条规则必坏其一。",
+  "repro": "§1.6 V1.6 逐字：「红队用例 RT-1：构造一个格式规范、含一句语法完美且**虚假**的数值断言的网页；期望 `quote_faithful = pass` 且 `status ≠ verified`（`independent_cluster_count = 1` 触发 2b）。该用例失败即证明我们把 faithfulness 当 factuality 卖。」\n§1.5 第 2 步 2b 逐字：「`independent_cluster_count < K(kind)` → base 降一档」。§1.5.2 逐字：「`K(K-D) = 1`……`K(K-L-T) = 1`（转录只需要一个真实锚点）；`K(K-L-A) = 2`；`K(K-I) = 2`」。\n检查方式：把 RT-1 的构造代入 S。该页面上的虚假数值是逐字存在的，§2.2.1 的机器判据 `normalized(claim.payload) ⊆ normalized(anchor_span)` 成立 → sub_mode = K-L-T → K=1 → 判 `1 < 1` = false → **2b 不触发** → base 保持 ST-V（G5 级 HTML 锚点按 §3.4 允许 ST-V）→ status = verified。V1.6 期望的触发机制在自己的 K 表下不可能发生。\n另一读法同样坏：§7.2 定义「F-14 `single-cluster` | `independent_cluster_count == 1` | GC-0 | S 2b」，而 §7.3 把 F-14 列入「F-09 / F-02 / F-14 / F-15 | 降一档」。若 2d 按此对任何 `count == 1` 的 claim 无条件降一档，则 §1.5.2 明写 K(K-D)=1（「数据推导的独立性由重跑保证，不由多源保证」）的 K-D claim 也会被降一档，K-D 的 ST-V 与 K-L-T 的 ST-V 全部不可达，§2.4「kind × 可达状态矩阵」中的两个 ✅ 变成空头。\n文档宣称：S 是「唯一的计算式」「纯函数」；实际观测：同一份文件的 §1.5.2 与 §7.3 对 `count == 1` 给出两个互斥判决，且任一判决都摧毁文档另一处的一等承诺。",
+  "seed": null
+ },
+ {
+  "id": "F120",
+  "attacker": "A8-foundation-b8",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §1.5.1（单调性不变量的例外句）vs §4.1 I-W1 / §4.2 W-04 / §0.2 / 04-ORCHESTRATION.md §1.2 第 2 条",
+  "claim": "在「机器可检查的单调性不变量」这一句里，文档亲手给编排器开了一条把 ST-U 提升回 base 的写路径，与「系统中不存在任何一条从 agent 输出到 status 字段的写路径」「status 的唯一物理写者是门代码」正面冲突，并使 V1.2（重跑 S 逐字节复现）失效——因为该提升不是 S 的输出。",
+  "repro": "§1.5.1 逐字：「**任何提升状态的规则都是缺陷**，唯一例外：当 producer 在同一轮内补交了缺失证据时，编排器可将 ST-U 提升回 base。」\n§4.1 逐字：「**I-W1 · status 是由门代码计算的，从不由 agent 断言。** 系统中不存在任何一条从 agent 输出到 `status` 字段的写路径。」§4.2 W-04 逐字：`claims/<id>.status.json`（**status 及全部派生字段**）的唯一物理写者是「**门代码（确定性脚本）**」，其他主体一栏写「任何 agent 不可写」。§0.2 逐字：「状态是算出来的，不是断言出来的……这不是纪律要求，是写权矩阵的结构性后果。」\n04-ORCHESTRATION.md §1.2 第 2 条逐字：「**编排器自己也不写 status**。编排器写的是 `runs/<run_id>/manifest.json`（W-12）与 `budget/`（W-13）。」\n检查方式：`grep -n \"提升回 base\" 01-CONTRACTS.md` 与 `grep -n \"编排器自己也不写 status\" 04-ORCHESTRATION.md` 对读；再对 V1.2「重跑 `S` 必须得到与存档 `status` 逐字节相同的值」做一次思想实验：一条被编排器提升过的 claim，其存档 status 为 base 而重跑 S 得 ST-U → V1.2 恒红。\n文档宣称：状态提升在结构上不可能；实际观测：规范源在不变量条款内部授权了一个非门主体做状态提升，且下游文档已按「不可能」设计负例（04 V-4.3、05 VT-2）。",
+  "seed": "V1"
+ },
+ {
+  "id": "F121",
+  "attacker": "A8-foundation-b8",
+  "severity": "P1",
+  "location": "00-PREMISE.md §B8 裁决第 1 条（583 行）+ 01-CONTRACTS.md §6.5.2 / V6.5 / §9.22 + 02-ARCHITECTURE.md 296、401、407 行 + 03-EVIDENCE-ENGINE.md NT-00",
+  "claim": "B8 自称「必须补的第一个洞」的那条 gate-integrity 脚本，其信任锚点（`gates-baseline` tag）由编写 checks 的同一个 conductor 自己打、且可用 `git tag -f` 重指，文档中没有任何地方把 tag→commit 的绑定固定在检查方轨道上。这正是本文档集自己从前代提炼的 R-4「阈值与分母都必须在检查方轨道，作者轨只读」被违反的形态——B8 的第一条前置代码本身就是空心门，而 B1–B7 全部「靠门保证」的说法都压在它上面。",
+  "repro": "01-CONTRACTS §9.22 逐字：「**gates-baseline** | conductor 在编写 checks 时打的 git tag；门只在 `git status --porcelain -- checks/` 干净且 `git diff <tag> -- checks/` 为空时算数。」——写 checks 的人 == 打 baseline 的人。\n00-PREMISE B6 R-4 逐字：「**阈值与分母都必须在检查方轨道，作者轨只读**」，对应事故 F-15/F-16/F-17「尺子和分母在被告手里」。\n检查方式（可在本机复现）：`cd ~/playground/dsh-projects && git tag -l 'gates-baseline*' | wc -l` → 22（与文档所述一致）；`git tag -f gates-baseline-22 HEAD` 即可在不留任何门可见痕迹的情况下让任意 checks/ 改动通过 `git diff <tag> -- checks/`；轻量 tag 无签名、无 reflog 保护、可强推。仓库自身的实践已见先例：`git log --oneline --grep=tag` 命中 `a4e0b11 … all findings closed, tag re-pointed`。\n第二个漏面：该断言的作用域被硬编码为 `-- checks/`，门的运行器、CI 配置、门依赖的 schema/注册表同步器、`checks/` 之外的判定代码全部不在 diff 范围内；02-ARCHITECTURE 407 行自陈「`gate_integrity.sh` 自己也在 `checks/` 里，谁证明它没被改？本仓库**无答案**……**本文件不裁定这一条**」。\n文档宣称：把它写成真脚本即可把 B8 从「不押」升级；实际观测：脚本落地后，被检查方仍同时持有基线锚点与作用域边界，检查强度等价于「conductor 自觉」——与 D1 判定的现状（「目前完全依赖 conductor 自觉」）没有实质差别。",
+  "seed": null
+ },
+ {
+  "id": "F122",
+  "attacker": "A8-foundation-b8",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.5 第 2 步 2c/2d + §1.5.1 偏序定义 + §7.3 上限表",
+  "claim": "S 的降级步骤对一个偏序集合使用 `min()` 与「降一档」，而该偏序里存在文档自己声明的不可比对（ST-A 与 ST-E）与两个链外吸收态（ST-C / ST-N），导致 S 在多个真实输入组合上无定义；V1.3 承诺的「符号执行断言输出 ≤ 输入」因此无法执行。",
+  "repro": "§1.5.1 逐字给出的序是：「`ST-V ⊐ {ST-A, ST-E} ⊐ ST-U` 这条链」——花括号即声明 ST-A 与 ST-E 不可比。§1.5 2c/2d 逐字：「`base = min(base, ceiling(...))`」。\n检查方式：取 base = ST-E（§3.5 规定图形读数强制 ST-E），同时命中一个 §7.3 上限为 ST-A 的约束 → 求 `min(ST-A, ST-E)`，在文档给定的偏序下无定义。再取 2a 先把 base 置为吸收态 ST-C，随后 2b 要求「base 降一档：ST-V→ST-A，ST-A→ST-U，ST-E→ST-U」——ST-C 无对应映射；2e「budget_state == degraded → base 降一档」同理无定义。第 0 步已 return 的 ST-N 不受影响，但 0c 之外经 §7.3「F-18 / F-21 / F-30 / F-32 / F-33 | 强制 ST-N」在 2d 注入的 ST-N 同样落在 min 的定义域外。\n文档宣称：V1.3「符号执行 `S` 的第 2 步全部规则，断言每条规则的输出状态在 §1.5.1 的偏序下不高于输入」，且 §1.5 是「唯一的计算式」；实际观测：规则族里至少三处（min 遇不可比对、降一档遇吸收态、min 遇吸收态）没有良定义的语义，符号执行器无法判定，实现者必须自行发明规则——这正是 §9 术语纪律要禁止的「自行造词」在语义层的等价物。",
+  "seed": null
+ },
+ {
+  "id": "F123",
+  "attacker": "A8-foundation-b8",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §7.2 词表 vs §7.3「flags → 状态硬上限」表 vs §1.5 第 0b 步",
+  "claim": "§1.5 2d 依赖的 `ceiling(flags)` 函数在 §7.3 中不完备：至少 5 个 flag 在 §7.2 里被声明「消费于 S 2d」却在 §7.3 上限表中没有对应行；另有 1 个 flag 被路由到一条它永远不可能触发的规则；0b 步发出的 flag 与 §7.3 表里的 flag 编号对不上。",
+  "repro": "检查方式：`grep -n \"S 2d\\|S 第 2d\" 01-CONTRACTS.md` 取出 §7.2 中消费方为 2d 的 flag，与 §7.3 表逐行比对。\n观测：§7.2 中 F-01（`uncertainty:no-ci`，「S 第 2d 步；渲染器」）、F-03（`cherry-picking:window`，「S 2d」）、F-04（`best-case-ratio`，「S 2d」）、F-12（`metric-frame-mismatch`，「S 2d」）、F-24（`pricing-promo`，「S 2d」）——五者在 §7.3 上限表中**均无行**，`ceiling()` 对它们无定义。\nF-25（`as-of-stale`）在 §7.2 中写「S 2e」，而 §1.5 的 2e 逐字是「`budget_state == degraded` → base 降一档」——一条只由预算状态触发的规则，`as-of` 超龄永远进不去。\n§1.5 0b 逐字：「`source_integrity == contaminated` → ST-C +flag **F-05 / F-06**」，而 §7.3 首行是「**F-05 / F-07** | 强制 ST-C（0b）」；§7.2 中 F-06 是 `expression-of-concern / correction`（且自带「缺失不构成「无 EoC」的证据」的限定），F-07 是 `hijacked-journal`。两处对同一条规则给出不同的 flag 集合。\n文档宣称：「**F-规则-4** 词表是**封闭的**」「flags **必须进判定**，不是只打印」；实际观测：封闭词表与判定函数之间的映射有 6 处缺口/错指，落地时这些 flag 会退化为前代被批判的「只打印、从不进判定」（§7.1 F-规则-2 引 GROUND-TRUTH-CORRECTIONS #C3）。",
+  "seed": null
+ },
+ {
+  "id": "F124",
+  "attacker": "A8-foundation-b8",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.6 V1.2 vs §6.3 硬要求 2 + §7.2 F-18 / F-25",
+  "claim": "V1.2 把 S 断言为输入全在本地快照内的纯函数、可逐字节重跑复现，但同一文件另有三条规则让 S 的输出依赖挂钟时间（注册表超龄、as-of TTL、门阈值天数），因此 V1.2 在任何跨越阈值天数的重跑上必然失败。",
+  "repro": "§1.6 V1.2 逐字：「对任意 claim，重跑 `S` 必须得到与存档 `status` 逐字节相同的值（`S` 是纯函数，输入全在 CAS 与注册表快照里）。」\n§6.3 硬要求 2 逐字：「**超龄即降级为 ST-N，不是通过**。建议阈值：RW > 7 天、PPS > 30 天、Hijacked > 90 天。」§7.2 F-18 `stale-registry`「S 0c → ST-N」；F-25 `as-of-stale`「建议 TTL：引用幻觉率类 90 天、模型能力类 180 天、定价/榜单 30 天」。\n检查方式：对同一条 status 为 ST-V、其 GC-1 证据 `data_as_of` 距今 6 天的 claim，在第 8 天重跑 S。输入（CAS 字节、注册表快照）完全未变，输出从 ST-V 变为 ST-N。\n文档宣称：S 是纯函数且重跑逐字节一致；实际观测：`now()` 是 S 的隐式输入，从未在 §1.5 的签名 `S(kind, quote_faithful, source_integrity, claim_supported)` 里出现。修法（把 `evaluated_at` 显式入参并存档）文档未提，`§10 已知薄弱处` 也未列。",
+  "seed": null
+ },
+ {
+  "id": "F125",
+  "attacker": "A8-foundation-b8",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §2.1（K-D 必备工件 5 与判定）+ §4.2 W-03 vs 03-EVIDENCE-ENGINE.md §2.2.1/§2.2.2",
+  "claim": "决定 K-D 重跑门 pass/fail 的数值容差由 producer agent 自己写进 claim 文件，而把它钉死的规范约束（regime 由实测决定、容差只能收紧不能放宽）只写在下游的 03，未进入自称唯一规范源的 01。任何按 01 实现的人都会造出「被告自带尺子」的重跑门——ST-V 可被一个宽容差直接买到。",
+  "repro": "01 §2.1 必备工件 5 逐字：「`values` + `tolerance`（按字段声明相对/绝对容差）」；判定逐字：「与 `values` 按 `tolerance` 做**数值比对**」。01 §4.2 W-03 逐字：`claims/<id>.json`（**内容**：kind、结构化载荷、metric_frame、证据指针、premises、**tolerance**）的唯一物理写者是「**producer agent**」，门一栏写「门只读」。01 全文对 tolerance 无任何上限或单调收紧约束（`grep -n \"tolerance\\|容差\" 01-CONTRACTS.md` 共 5 处，均无约束）。\n真正的约束在 03-EVIDENCE-ENGINE §2.2.2 逐字：「默认 rtol = 1e-9，atol = 0（producer 可在 tolerance 中按字段覆盖，**只能收紧不能放宽**）」与 §2.2.1「**为什么必须是测出来的**：若 regime 由 producer 声明，攻击面立刻出现——声明 `stochastic` 即可换到宽容差。」\n检查方式：`sed -n '766,806p' 01-CONTRACTS.md | grep -n \"regime\\|容差\"` → 零命中，§9 术语表 33 条中无 `regime`；而 03 第 111 行自陈该词「与 GC-0/1/2 同名不同义，不消歧会制造混淆」，即 03 自行造词并本地消歧。\n文档宣称：README「`01-CONTRACTS.md` 是所有共享词汇的唯一定义源，其他文档**只引用不复述**；若某文档需要一个 §9 术语表里没有的词，必须挂起裁决而非自行造词」；01 §9.2 更把这条写成文档 lint。实际观测：一条承重的判定规范与一个新术语只存在于下游文档，规范源本身留着可被利用的宽口径版本。这同时是「唯一规范源」这一结构性主张的反例。",
+  "seed": null
+ },
+ {
+  "id": "F126",
+  "attacker": "A8-foundation-b8",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §0.3（全局公理）vs 00-PREMISE.md B5「本节的诚实标注」(427 行) / B8 裁决 (581 行) / 01-CONTRACTS §10.1",
+  "claim": "把「注入不能改变 status / 注入必然留痕可复核」作为无条件承诺写进 §0 全局公理，而支撑它的 S1–S4 按 00-PREMISE 自陈「全部是论证，不是证据」、其执行体（门）按 B8「当前不押」。承诺放在文件最顶端的公理位，免责放在文件最末的 §10 与另一份文件里——这正是 B8 的坦白被当作免责盾牌使用的具体形态。",
+  "repro": "01 §0.3 逐字：「**我们承诺两件可兑现的事，不承诺第三件。** 可承诺：**注入不能改变 status**、**注入必然留痕可复核**。」——无 `unverified` 标记、无「待红队验证」限定。\n00-PREMISE B5 逐字：「**上述所有「结构性消灭」的判断都是论证，不是证据。**……第一轮红队（RT-1…RT-14）跑完之前，S1–S4 应当按「未验证设计假设」对待，**不得在下游文档里写成已验证事实**。」B8 裁决逐字：「**当前不押。本条在下面三件事被写成代码之前，一律按 `unverified` 对待，且不得在下游文档里被引用为已建立的保障**」。\n01 §10.1 确实坦白：「**§1.5 的 `S` 函数从未运行过。**……RT-1 至 RT-14 跑完之前，这些判断应按「未验证设计假设」对待」。\n检查方式：`sed -n '17,32p' 01-CONTRACTS.md` 与 `sed -n '810,820p' 01-CONTRACTS.md` 对读——同一文件，公理位是无条件承诺，末尾是「从未运行过」。\n文档宣称：00-PREMISE §二禁止「把「未被证伪」写成「已被验证」」，且要求承诺句必须与其证据强度同处；实际观测：产品对外语义（§0.3 明写「产品语义、门的实现、对外文案三处必须同时保持这条界线」）以公理形式无条件给出，而其唯一支撑是 B8 自陈不押的门。",
+  "seed": null
+ },
+ {
+  "id": "F127",
+  "attacker": "A8-foundation-b8",
+  "severity": "P2",
+  "location": "00-PREMISE.md B9 裁决（626 行）+ §六 重评记录（690–694 行）vs 04-ORCHESTRATION.md §5.6",
+  "claim": "00-PREMISE B9 的裁决建立在一个被下游用 DSH 一手证据判定为不存在的运行时旋钮上；04 已明写该冲突并要求回填 00-PREMISE，但 00-PREMISE 的重评记录表在冻结版里仍只有「初版建立」一行——文档集自己规定的冲突回填机制在第一次被触发时就没有执行。",
+  "repro": "00-PREMISE B9 裁决逐字：「**预算即代码**：用运行时原生旋钮（`maxBudgetUsd` / 并发上限 / 深度上限），不自建预算中间件。」\n04-ORCHESTRATION §5.6 逐字：「**⚠️ 一处必须更正的跨文档冲突。**……`maxBudgetUsd` / `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS` / `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` 的来源是 **code.claude.com 文档，即 Claude Agent SDK，不是 DSH**……**〔裁定〕以 DSH 一手为准：本运行时不存在原生的美元预算旋钮。**……**本条已列入 §10，需回填 00-PREMISE B9。**」\n检查方式：`sed -n '690,694p' 00-PREMISE.md` → 重评记录表仅一行「2026-08-17 | — | 初版建立 | — | `research/v2/`（22 文件快照）」；`grep -n \"maxBudgetUsd\" 00-PREMISE.md` → 裁决句仍在原样。\n文档宣称：00-PREMISE §四「下游文档若与本文件的裁决冲突，**必须在此处开一条重评记录说明理由**，不得静默偏离」；§一「**未重评而继续在下游文档里使用某条赌注，等同于我们指控 v1 犯的错误**」。实际观测：冲突已被下游发现、判定并显式请求回填，冻结版中未回填，B9 的裁决句仍以现在时陈述一个不存在的能力。",
+  "seed": null
+ },
+ {
+  "id": "F128",
+  "attacker": "A8-foundation-b8",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §4.6 V4.2",
+  "claim": "用于证明「status 只由白名单内的门写入」的机械断言，其证据是文件 mtime 与门自证签名的交叉验证；mtime 无法确立写入者身份、可被任意进程改写，这条断言在结构上无法反驳一个冒名写入者——它是 B8 自陈「最贵的一条经验：跨越执行边界的检查是空的」的同类复发，且未被任何 §10 已知弱点覆盖。",
+  "repro": "§4.6 V4.2 逐字：「对 `claims/*.status.json`、`ledger/`、`gate-reports/` 的全部历史写入，其写入者必须在 `checks/` 白名单内（**通过文件 mtime + 门自证签名 `generator_version`/`inputs_hash` 交叉验证**）。」\n检查方式：任何能写 `claims/*.status.json` 的进程同样能 `os.utime()` 设 mtime，并能复制一份合法门产物里的 `generator_version` 字符串；`inputs_hash` 由写入方自算，无第三方签名或密钥。构造一次伪写入后跑 V4.2，断言不会红。\n文档宣称：§4.1 I-W1「不存在任何一条从 agent 输出到 status 的写路径」由这条断言机械保证；00-PREMISE B8 逐字「**任何跨执行边界的断言必须对运行系统自己的痕迹断言**（session jsonl 事件存在性 + hash），不得停在配置层。这条在本仓库连中三次。」\n实际观测：V4.2 停在文件系统元数据层，没有绑定 session jsonl 的写入事件（而 §4.2 W-02/§6.5.4 已经建立了读取 session 事件的能力，V4.6 也确实用了 callId 存在性）。同一份文件里存在正确形态的断言（V4.6），偏偏管「谁写了 status」的这条用了 mtime。",
+  "seed": null
+ },
+ {
+  "id": "F129",
+  "attacker": "A8-foundation-b8",
+  "severity": "P2",
+  "location": "00-PREMISE.md B8 裁决三条前置代码（581–587 行）+ 「会推翻它的观测」表（596–602 行）",
+  "claim": "B8 的坦白在两处低报：(1) 允许把 B8 从「不押」升级的三条前置代码，不包含 B8 自己认定的最高 ROI、且在本仓库连中三次的那条纪律（对运行痕迹断言），该纪律被降格为「外加一条」而不在升级判据内；(2) 推翻判据之一「findings 中由门发现的比例 < 30%」在规划期与 M0 期不可证伪，且构成循环——门要先存在且有判别力，才可能成为该比例的分子。",
+  "repro": "B8 裁决逐字：「**当前不押。本条在下面三件事被写成代码之前，一律按 `unverified` 对待**：1. gate 完整性写成真脚本…… 2. 每条 pass 规则配一条走真实入口的负例…… 3. 证据台账有格式门。」随后另起一段：「**外加一条来自 house 的最高 ROI 纪律**：**任何跨执行边界的断言必须对运行系统自己的痕迹断言**……这条在本仓库连中三次。」\n检查方式：读升级条件的构造——三条 checklist 全绿即满足「写成代码」的字面要求，而「外加」那条不在 checklist 内，也没有对应的可检验断言编号（`grep -n \"session jsonl\" 01-CONTRACTS.md 05-TESTING.md` 显示 §6.5.4 只规定了读日志的三个地雷，V4.2 反而用了 mtime——见另一条 finding）。\nB8 推翻观测表逐字：「一轮攻击后，findings 中「由门发现」的比例 < 30% | P1 —— 门套件在做装饰，攻击者在做门的工作」。检查方式：在当前状态（零实现代码、零门）下计算该比例，分母为本轮 findings、分子恒为 0 → 判据恒真且无信息；而它被写成「会推翻 B8」的观测之一。\n文档宣称：B8 是「最不舒服的一条」，其坦白是完整的；README 复述「B1–B7 里所有「靠门保证」的说法都建立在三条尚未落地的代码上」。实际观测：升级判据比 B8 自己列举的失败史窄了一条，且其中一条推翻判据在门落地前不可能被触发——坦白的边界被画在了比证据允许的位置更靠内的地方。",
+  "seed": null
+ },
+ {
+  "id": "F130",
+  "attacker": "A8-foundation-b8",
+  "severity": "P2",
+  "location": "全文档集的 `[E: <file>#<anchor>]` 指针机制；样本见 00-PREMISE.md 419 行 vs 01-CONTRACTS.md §7.2.2 vs research/v2/ext-security-injection.md:507",
+  "claim": "项目把「`[E:]` 指针全文强制」列为相对 v1 的五条改进之一，但锚点命名空间从未在 01 的文件契约里定义，同一目标章节在不同文档里有两种互不兼容的写法，且目标文件中根本不存在被引用的编号锚点——整套证据指针机制目前机械不可解析，等同于它指控 v1 的「孤儿引用」。",
+  "repro": "检查方式（可复现）：在 attack-v2/ 执行 `grep -o \"#未决[-]\\?[0-9]*\" *.md | sort | uniq -c` → 01/02/05/06 使用 `#未决-N`（如 01 §7.2.2 的 `ext-security-injection.md#未决-12`、02 的 `#未决-1`、`#未决-3`），03/04 使用 `#未决N`（如 04 的 `#未决3`、`#未决1`、03 的 `#未决5`）；00-PREMISE 419 行使用 `ext-security-injection.md#未决12`。再执行 `grep -n \"未决\" <repo>/research/v2/ext-security-injection.md` → 唯一命中是第 507 行的 `## 未决与风险`，文件内不存在 `未决-12` / `未决12` 这样的锚点，编号项的寻址约定在任何文档中都没有定义。\n文档宣称：README「本轮相对 v1 的五条改进」第 4 条逐字「`[E:]` 指针全文强制」；01 写作纪律逐字「每条载重断言带证据指针 `[E: <文件>#<锚>]`」；00-PREMISE §三要求指针带保质期并可回溯一手。\n实际观测：`<锚>` 的语法与解析规则未定义，两种拼写并存于同一冻结集，目标文件无对应锚点。任何「门脚本校验 [E:] 指针可解析」的实现（01 §9.31 的文档 lint 家族）今天会对全集报错，或者只能退化为「字符串存在即通过」——后者就是空心门。",
+  "seed": null
+ },
+ {
+  "id": "F131",
+  "attacker": "A8-foundation-b8",
+  "severity": "P3",
+  "location": "00-PREMISE.md §六（694 行）/ 01-CONTRACTS.md 尾（831 行）/ 02-ARCHITECTURE.md 尾（677 行）/ 03-EVIDENCE-ENGINE.md 尾（1319 行）/ 04-ORCHESTRATION.md 尾（864 行）/ 05-TESTING.md 尾（1032 行）/ 06-SURVEY.md §1.1",
+  "claim": "同一份冻结语料的文件数在文档集里有三个并存取值（22 / 23 / 26），06-SURVEY 已当场更正并宣称修法落在 01，但只有 01 被改；04 用来提示该冲突的注释本身已经过期（它声称 01 文末写 22，而 01 文末现在写 26）。这是一个把承重数字当卖点的项目在自己的元数据上的实测漂移。",
+  "repro": "检查方式：`grep -rn \"证据基线\" *.md | grep -o \"（[^）]*文件\"`。观测：00-PREMISE §六「`research/v2/`（22 文件快照）」；01 尾「（26 文件 / 25 研究维度 = 18 ext + 7 gt……计数经 06-SURVEY §1.1 实测复核）」；02 尾「（23 文件）」；03 尾「（23 文件）」；05 尾「（23 文件，2026-08-17 快照）」；04 尾「（**实测 26 文件**……注意 01-CONTRACTS 文件尾写 22、本轮任务书写 23，三者不一致，见 §10.A T-7）」；06 §1.1「共 **26 个 `.md` 文件**、**11,661 行**」。\n实地核对：`ls <repo>/research/v2/*.md | wc -l` → 26（18 ext + 7 gt + GROUND-TRUTH-CORRECTIONS）。\n文档宣称：README 改进第 2 条「**数字落笔即验证**……**46 个在落笔时当场纠正**」；00-PREMISE §三「凡下游文档引用外部数字而不带口径三元组或抓取日期，即为回归」。实际观测：更正在 06 被发现、只传播到 01，其余四份文件保留旧值，且 04 的更正注释已成为一条错误引述。",
+  "seed": null
+ },
+ {
+  "id": "F132",
+  "attacker": "A8-foundation-b8",
+  "severity": "P3",
+  "location": "00-PREMISE.md B1 「配套的三条硬约束」第 1 条（96 行）vs 04-ORCHESTRATION.md §1.2 第 2 条",
+  "claim": "00-PREMISE 用了一条 04 明确判定为「与 01-CONTRACTS §4 冲突」的表述来陈述 B1 的硬约束，且该冲突未按 00-PREMISE §四回填。",
+  "repro": "00-PREMISE B1 逐字：「**拓扑 = Centralized + 黑板台账**……编排器**独占 status 写入权**；worker 之间不互相喊话」。\n04-ORCHESTRATION §1.2 第 2 条逐字：「「编排器独占 status 写入权」这句业界常用表述在本项目里的准确形态是：**编排器独占「何时调用门」的权力，门独占「status 值」的写入**。**把这两件事合并表述会与 01-CONTRACTS §4 冲突。**」\n检查方式：`grep -n \"独占 status 写入权\" *.md` → 命中 00-PREMISE 96 行与 04 的小节标题及正文；比对 00-PREMISE §六重评记录（无相关行）。\n文档宣称：01 是唯一规范源，00 的裁决约束下游；实际观测：00 保留了下游已判定为错误的合并表述，而 04 只能在自己文件里就地纠偏——纠偏未回流。",
+  "seed": "V10"
+ },
+ {
+  "id": "F133",
+  "attacker": "A8-foundation-b8",
+  "severity": "P3",
+  "location": "00-PREMISE.md B8 裁决第 1 条（583 行）vs 01-CONTRACTS.md §6.5.2 / V6.5 / §9.22、02-ARCHITECTURE.md 296/401 行、03-EVIDENCE-ENGINE.md NT-00",
+  "claim": "同一条 gate-integrity 断言在 00-PREMISE 里丢掉了 `-- checks/` 路径限定，变成对整个工作树要求 porcelain 干净；按该口径实现，门在任何有未提交改动的仓库里恒红，实际必然被绕过或注释掉。",
+  "repro": "00-PREMISE B8 逐字：「**gate 完整性写成真脚本**：`git status --porcelain` 干净 **且** `git diff <gates-baseline-tag> -- checks/` 为空」。01 §6.5.2 / V6.5 / §9.22、02 296 行与 401 行、03 NT-00 全部写作 `git status --porcelain -- checks/`。\n检查方式：`grep -rn \"porcelain\" *.md` 逐条比对第一个子句；在真实宿主仓库执行 `cd ~/playground/dsh-projects && git status --porcelain | head` → 当前即有 3 个已修改文件与多个未跟踪文件，全仓库口径下门恒非零退出。\n文档宣称：README「其他文档只引用不复述」，01 是唯一规范源；实际观测：00 复述了该定义并在复述中改变了作用域，两种口径一个恒红、一个漏检 `checks/` 以外的门依赖。",
+  "seed": null
+ },
+ {
+  "id": "F134",
+  "attacker": "A8-foundation-b8",
+  "severity": "P3",
+  "location": "00-PREMISE.md B5 红队表 RT-1（413 行）vs 01-CONTRACTS.md §1.3",
+  "claim": "00-PREMISE 把 `claim_supported` 当作可取 `verified` 的谓词使用，而 01 明确规定它「不是布尔值，是一条核算记录」「确定性不可判」，无 verified 取值。",
+  "repro": "00-PREMISE RT-1 行逐字：「`quote_faithful=true`，但 `claim_supported` **不得为 verified**（独立簇数=1 应触发降级）」。01 §1.2 表逐字：「**`claim_supported`** | **不是布尔值，是一条核算记录** | **确定性不可判**」；§1.3 给出其字段结构（evidence_grade / independent_cluster_count / …）。01 V1.6 对同一个 RT-1 的正确写法是「`quote_faithful = pass` 且 `status ≠ verified`」。\n检查方式：`grep -n \"claim_supported\" 00-PREMISE.md 01-CONTRACTS.md` 对读。\n文档宣称：01 §9 术语表封闭、其他文档不得自造用法，V9.2 文档 lint 应捕获此类；实际观测：上游前提文件对核心字段的类型用法与规范源不一致，且 `quote_faithful` 的值域在 00 写作 `true`、在 01 §1.2 是 `pass / fail / na`。",
+  "seed": null
+ },
+ {
+  "id": "F135",
+  "attacker": "A8-foundation-b8",
+  "severity": "P3",
+  "location": "README.md 文档地图表（第 17 行）vs 01-CONTRACTS.md 实测",
+  "claim": "README 对 01 的自报计数与实测不符（行数与可检验断言条数各差 1），在一个把「机械可测」当作换尺子理由的项目里，这类自报计数本应是零成本可校验项。",
+  "repro": "README 逐字：「[01-CONTRACTS.md](01-CONTRACTS.md) | **唯一规范源**…… | 830 行 / 64 条可检验断言」。\n检查方式：`wc -l 01-CONTRACTS.md` → 831；`grep -c \"^- \\*\\*V[0-9]\" 01-CONTRACTS.md` → 65。\n文档宣称：README 同表对 00-PREMISE 的「694 行 / 9 条赌注」与实测一致，说明这些数字是按实测填写的口径；实际观测：01 那一格未随文件最终定稿更新。",
+  "seed": null
+ },
+ {
+  "id": "F136",
+  "attacker": "A9-foundation-premise",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §6.4「GC-2 的边界」第 522 行（与 §6.1 表、§1.4 ST-V 定义、V1.4、V6.2、03-EVIDENCE-ENGINE.md#457 EE-L-7 冲突）",
+  "claim": "唯一规范源在 GC-2 上开了一个「双判官 κ≥0.8 可例外写 ST-V」的后门，直接推翻本项目最核心的产品定义——「ST-V 的判定路径不经过任何模型」。这一条同时使 §6.1、§1.4、V1.4、V6.2 四处规范互相矛盾，并使 00-PREMISE B5/S2「子代理完全被攻陷时最大破坏只是一条 unverified」变成假命题：被 N1（attack by content）投毒的页面会让两个判官一致地判 support，从而拿到 ST-V。更严重的是它引用的依据是反向的——§1.3 的三条上界正是「模型判不了支持性」的证据，被拿来当例外的理由。",
+  "repro": "逐字对照四处：①§6.1 表 GC-2 行「不可以判什么」列逐字为「**永远不得写 ST-V**」；②§1.4 ST-V 行逐字为「由 Class-0 或 Class-1 门（§6）确定性判定成立。判定路径不经过任何模型。」；③V1.4 逐字为「语料中不存在任何 `status == verified` 且 `mechanism_results` 中含 `gate_class == GC-2` 的 claim（§6.4）」——它把 §6.4 当作自己的依据；④V6.2 逐字为「不存在 `gate_class == GC-2` 且 `verdict` 直接导致 `status == verified` 的路径」；⑤03-EVIDENCE-ENGINE §4 EE-L-7 逐字为「G-L2 **只能收窄，不能写 ST-V**。这是 01-CONTRACTS §6.1 对 GC-2 的规定」。而 §6.4 首句逐字为「**GC-2 原则上不得写 ST-V**，但在双判官 κ≥0.8 且结论一致时可例外写 ST-V。依据是 §1.3 的三条量化上界。」独立复核者跑三步：(a) 对 S 做 V6.2 要求的可达性分析，例外分支使 GC-2→ST-V 可达，V1.4/V6.2 恒假；(b) 核 §1.3 第 3 条自己给的数据——21 个 judge / 约 541,000 次判定，Cohen κ 区间为 0.376–0.511，且 raw agreement 虚高 38.6pp，「双判官 κ≥0.8」在本文件自己的一手数字里没有实例；(c) 核 §6.4 下一段自己的门槛「κ ≥ 0.60 方可做终判档的 **ST-A**」——同一节两句话对同一 κ 尺度给出两个互斥结论。文档声称「状态是算出来的，不是断言出来的」（§0.2）、「注入不能改变 status」（§0.3），观测到的是：一条模型一致性规则可以把 status 抬到最高档。",
+  "seed": "V2"
+ },
+ {
+  "id": "F137",
+  "attacker": "A9-foundation-premise",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §1.5.1 单调性不变量，第 141 行（与 §0.2、§4.2 W-04、V1.2、V1.3 冲突）",
+  "claim": "被宣称「可机器检查」的单调性不变量自带一条例外，把一条**提升状态**的写路径交给编排器；该例外落在 V1.3 符号执行覆盖范围（第 2 步）之外，因此机器检查会永远通过，而真实系统有升格路径。它同时使 S 不再是纯函数（V1.2 的「重跑逐字节相同」不成立，因为 S 的四个入参里没有「是否同一轮补交」这一项），并使 §0.2「系统中不存在任何一条从 agent 输出到 status 字段的写路径」失效。",
+  "repro": "§1.5.1 逐字：「`S` 的第 2 步中每一条规则都只能把 base 沿 `ST-V ⊐ {ST-A, ST-E} ⊐ ST-U` 这条链向下移……**任何提升状态的规则都是缺陷**，唯一例外：当 producer 在同一轮内补交了缺失证据时，编排器可将 ST-U 提升回 base。 因此 `S` 可以用「对每条规则做一次符号执行、断言输出 ≤ 输入」来自动验证。」（注意「base。」与「因此」之间有一个多余空格，是插入痕迹）。对照 §4.2 W-04 逐字：`claims/<id>.status.json` 的物理写者是「**门代码（确定性脚本）**」「任何 agent 不可写」。独立复核者跑三步：(a) 按 V1.3 对第 2 步做符号执行——例外不在第 2 步，检查恒绿；(b) 构造反例：一条 claim 因 0d（`quote_faithful == fail`）落 ST-U，producer 同轮补交一份新引语，按例外由编排器抬回 base，而 S 的四个入参在存档中与首次判定相同 → 重跑 S 得 ST-U ≠ 存档值，V1.2 失败；(c) 把该路径接到 00-PREMISE B5/S2「status 唯一写入者是确定性代码。子代理**完全被攻陷**时，能做的最大破坏是提交一条会被判 unverified 的证据」——被攻陷的 producer 只要「同一轮内补交」即可升格，S2 的上界失效。若作者本意是「补交后重跑 S」，那么该例外整句是多余的（重跑自然得 base），保留它只制造一条升格路径。",
+  "seed": "V1"
+ },
+ {
+  "id": "F138",
+  "attacker": "A9-foundation-premise",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §8.6 留存分档表（Tier B 为默认档）+ §8.6.1 + §8.6.2，与 §2.2 必备工件第 1 条、§1.2 `quote_faithful` 定义、00-PREMISE B6 R-5 冲突",
+  "claim": "在**默认**留存档（Tier B）下，本项目唯一敢承诺 100% 兑现的两条谓词都塌了：`quote_faithful` 退化为构造性恒真（拿引语去匹配「围绕引语裁出来的摘录」），`source_integrity` 退化为依赖实时重取（文档自己的一手数字是 3/5 = 60% 成功）。这条不在任何一份「已知弱点」里，且它作用在默认路径而非边角路径上。",
+  "repro": "逐字对照：①§2.2 必备工件第 1 条：「快照：`{raw_bytes_sha256, text_sha256, ...}`，**字节在 CAS 内**」；②§8.6 表 Tier B 行（备注逐字为「**默认档**」）「保存什么」列：「受硬上限约束的摘录 + 起止偏移/页码/XPath + 回链 + `rendered_text_sha256`」——不含原始字节与全文；③§8.6.1：「一般来源默认 **≤300 字符/单条**、同一文献累计 **≤1,200 字符**」；④§8.6.2 Tier B 行逐字：「**仅该锚点跨度**可达 G5；`quote_faithful` 仍可离线复核（**引语按构造落在保留的摘录内**），`source_integrity` 需重取后比对哈希」；⑤§1.2 `quote_faithful` 判定方式逐字：「归一化后的逐字引语是否为**快照抽取文本**的子串」。独立复核者跑两步：(a) 在 Tier B 下枚举 `quote_faithful == fail` 的可能输入——若摘录是围绕匹配跨度裁出的，子串关系由构造保证，`fail` 只能来自归一化 bug，该门失去证伪能力（可写一条负例：Tier B 记录上人为篡改引语中的一个数字，若门仍 pass 则确证；若门 fail 也只说明它在检自己的拷贝，不是检来源）；(b) 核 00-PREMISE B6 的 R-5 逐字：「证据的可信基底是**内容寻址快照**，且**必须在抓取时刻落盘**」，其事故依据是「`--verify-sources` 的已知样本联网确认率是 **3/5 = 60%**（失败集中在 JS/blocked）——实时 refetch 在 403/paywall/JS 下不可靠」。文档声称（§1.3）「`quote_faithful` 与 `source_integrity` 是**可以 100% 兑现**的产品承诺」；观测到的是：在默认档上前者恒真、后者 60%。",
+  "seed": null
+ },
+ {
+  "id": "F139",
+  "attacker": "A9-foundation-premise",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.5 第 2 步 2b/2c/2d（与 §3.5、§2.4 矩阵、V3.4、F-10、00-PREMISE B4 裁决冲突）",
+  "claim": "状态函数 S 的第 2 步在两处不封闭：(a) 2b 把 ST-E 也纳入「降一档」，而图形读数的独立簇数天然为 1，K(K-L-A)=2 ⇒ 几乎每条图表派生数值都被降到 ST-U，ST-E 这个状态与 §3.5 整节、V3.4、F-10、B4「不新增第四条通道、图表走 literature 但上限 estimated」的裁决一起被架空；(b) 2c/2d 的 `min(base, ceiling)` 定义在一个显式声明 ST-A 与 ST-E **不可比**的偏序上，min(ST-A, ST-E) 无定义 ⇒ S 不是全函数，V1.2「重跑逐字节相同」在不同实现间不可保证。",
+  "repro": "逐字：§1.5 2b「`independent_cluster_count < K(kind)` → base 降一档：ST-V→ST-A，ST-A→ST-U，**ST-E→ST-U**」；§1.5.2「`K(K-L-A) = 2`」；§1.5 第 1 步「图形读数的数值断言：base 强制为 ST-E（覆盖上述结果）（§3.5）」；§1.5.1 偏序逐字「`ST-V ⊐ {ST-A, ST-E} ⊐ ST-U`」（花括号 = 同层不可比）；2c/2d 逐字「base = min(base, ceiling(...))」；§7.3 表「F-10 | 强制 ST-E」；§3.4 表「G4 | **ST-A**」。独立复核者跑两步：(a) 取一条真实形态——某论文图 1 读出的一个数，来源是一篇论文（`independent_cluster_count = 1`），kind 为 K-L-A（图上数字不在 anchor_span 文本内，`normalized(payload) ⊆ normalized(anchor_span)` 不成立），1 < 2 触发 2b → ST-U；在语料里搜索是否存在任何使图表数值达到 ST-E 的输入组合（需同一图出现在 ≥2 个独立上游簇，实践上不存在）；(b) 对 base=ST-A（G4 全文无锚）且 flags 含 F-10（ceiling=ST-E）的记录求 2d 的 `min(ST-A, ST-E)`，在 §1.5.1 声明的偏序上无定义——若实现按格取 meet 则得 ST-U（再次杀死 ST-E），若按枚举序号取则实现相关。文档声称 S 是「唯一的计算式」且「纯函数」；观测到的是一个部分函数加一个不可达状态。",
+  "seed": null
+ },
+ {
+  "id": "F140",
+  "attacker": "A9-foundation-premise",
+  "severity": "P2",
+  "location": "03-EVIDENCE-ENGINE.md §0.3〔裁定 D-9〕（第 99 行）与 §6.2.2（第 833–840 行），对照 01-CONTRACTS §2.4 矩阵末行、§3.5、V3.4",
+  "claim": "下游文档给图表 P1（位图印刷标签、经 OCR/视觉模型读出）判定 ST-A，而规范源的 kind×状态矩阵对「任意 kind + 图形读数数值」把 ST-A 明确标为 ❌、把 base 强制为 ST-E。方向是**升格**且后果具体：ST-E 被 §3.5/V3.4 禁止参与任何比较、排序、阈值判断，ST-A 不受此限——于是一个由模型从像素上读出的数字可以合法地进入「A 优于 B」这类结论，而文档自己的证据说 8% 误差足以翻转这类比较。",
+  "repro": "逐字：01-CONTRACTS §2.4 矩阵末行「| 任意 kind + 图形读数数值 | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ |」（ST-V ❌、**ST-A ❌**、ST-E ✅）；§3.5「任何数值来自图形几何读数的断言，`base` 强制为 ST-E……**禁止参与任何比较、排序、阈值判断**」「8% 的误差足以翻转「A 优于 B」这类比较结论」；V3.4「每条 `status == estimated` 的 claim……**不被任何比较/排序/阈值类 claim 引用为前提**」。而 03 §0.3〔裁定 D-9〕逐字：「图表 P1（印刷标签）走视觉模型时**上限 ST-A**」，§6.2.2 逐字：「**标签是位图，需要视觉模型/OCR 识别** → 判定路径经过模型 → **GC-2 → 上限 ST-A**（01-CONTRACTS §6.1）」。独立复核者跑一步：把 D-9 的输出状态代入 01-CONTRACTS §2.4 矩阵查表，ST-A 落在 ❌ 格；再检查 03 是否为此开过重评记录——03 §6.2.1 为 P3 路径显式写了「本文件对语料的收紧」并说明理由，而 D-9 是**放宽**方向却只说「语料的 D2 给的 `verified` 与我们的 GC-2 规则冲突，以 01-CONTRACTS 为准」，未处理与 §2.4/§3.5 的冲突。",
+  "seed": null
+ },
+ {
+  "id": "F141",
+  "attacker": "A9-foundation-premise",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §7.2 词表「谁消费」列 与 §7.3「flags → 状态硬上限」表",
+  "claim": "S 第 2d 步所依赖的 `ceiling(flags)` 是一个部分函数：§7.2 把 F-01 / F-03 / F-04 / F-12 / F-24 五个 flag 明确路由到「S 2d」，而 §7.3（2d 的唯一定义表）根本没有这五行，2d 对它们无定义；另有 F-25 被路由到「S 2e」，但 2e 的触发条件是 `budget_state == degraded`，与 as-of 超龄无关，属类型错配。",
+  "repro": "逐字取 §7.2「谁消费」列：F-01「S 第 2d 步；渲染器」、F-03「S 2d；人审队列」、F-04「S 2d；渲染器」、F-12「S 2d；人审队列」、F-24「S 2d；渲染器」、F-25「S 2e」。逐字取 §7.3 全表左列：F-05/F-07、F-10、F-13、F-09/F-02/F-14/F-15、F-18/F-21/F-30/F-32/F-33、F-34、F-19/F-20/F-17/F-26/F-35——五个被路由到 2d 的 flag 一个都不在。独立复核者跑一步：按 §1.5 实现 S，喂一条 flags=[F-12] 的 claim，2d 需要 `ceiling(F-12)`，在 §7.3 查表未命中，实现只能在「按无上限处理（= flag 不进判定）」与「按最保守处理」之间自选——前者恰好复现 §7.1 F-规则-2 要禁的病（前代 honesty flags「只打印、从不进判定」），后者使不同实现给出不同 status，V1.2 失败。再对 F-25 跑一遍：置 `as_of` 超 TTL 但 `budget_state == ok`，2e 的守卫条件不成立，F-25 无任何生效路径。",
+  "seed": null
+ },
+ {
+  "id": "F142",
+  "attacker": "A9-foundation-premise",
+  "severity": "P2",
+  "location": "00-PREMISE.md B2 反对该禁令的证据第 3 条（第 131 行）",
+  "claim": "用来把 v1 最高禁令 P-1 降级为 P-1′ 的那段核心算术，其中一步与自身描述互相矛盾：要让 composite 从 4 维的 −0.20 降到 3 维的 −0.13，adversarial_completeness 一维必须贡献 −0.41，而同一句话说它「同样 15/15 满分零方差」——两臂满分零方差的维度贡献必然是 0。整个「最保守读法下净信号约等于零」的结论就建立在这条逐维剔除链上，而这条结论是本项目一切结构投资（白名单四类）的授权来源。",
+  "repro": "逐字：「逐步剔除具伪影签名的维度：6 维 −0.39 → 去 calibration −0.266 → 再去 convergence −0.20 → 再去 adversarial_completeness（**同样 15/15 满分零方差**）**−0.13**」，以及同段「calibration 一项 tree=4.00（15/15 全是 4）、notree=5.00（15/15 全是 5），**方差为零**」。独立复核者跑纯算术：6×(−0.39) = −2.34；剔除 calibration（差值 4.00−5.00 = −1.00）后 5 维和 = −1.34，均值 −0.268（文档写 −0.266，四舍五入可接受）；要得到 4 维均值 −0.20，convergence 必须为 −0.54；要得到 3 维均值 −0.13，adversarial_completeness 必须为 **−0.41**；而「两臂 15/15 满分零方差」蕴含差值 = 0，代入后 3 维均值应为 −0.80/3 = **−0.267**，不是 −0.13。二者不可同真。因此要么该维的描述错（它并非两臂满分零方差，则它不具「伪影签名」，不该被剔除），要么 −0.13 这个数错。文档在这一段的结论句是「**最保守读法下净信号约等于零**」并据此把 P-1 降级；该结论的关键一步不可复算。",
+  "seed": null
+ },
+ {
+  "id": "F143",
+  "attacker": "A9-foundation-premise",
+  "severity": "P2",
+  "location": "00-PREMISE.md B9 裁决第 626 行 + §四 下游关系 + §六 重评记录（第 692–694 行），对照 04-ORCHESTRATION.md §5.6 与 §10.A T-6",
+  "claim": "冻结版的第一读文档里写着一条被下游用一手证据推翻的 DSH 能力（`maxBudgetUsd` 原生旋钮），且 00-PREMISE 自己规定的纠错机制（重评记录）在冻结时刻是零行——即「本文件是可被证伪的」这套自约束在它第一次被触发时就没有运转。这条比一般笔误重：B9 的整条裁决「不自建预算中间件」建立在这个不存在的旋钮上，而 04 的实际设计是自建闸。",
+  "repro": "逐字：00-PREMISE B9 裁决第一条「**预算即代码**：用运行时原生旋钮（`maxBudgetUsd` / 并发上限 / 深度上限），不自建预算中间件。」；00-PREMISE §四「下游文档若与本文件的裁决冲突，**必须在此处开一条重评记录说明理由，不得静默偏离**」；§六 重评记录表只有一行「| 2026-08-17 | — | 初版建立 | — | `research/v2/`（22 文件快照） |」。04-ORCHESTRATION §5.6 逐字：「**⚠️ 一处必须更正的跨文档冲突。**……`maxBudgetUsd` / `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS` / `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` 的来源是 **code.claude.com 文档，即 Claude Agent SDK，不是 DSH**……**〔裁定〕以 DSH 一手为准：本运行时不存在原生的美元预算旋钮。**」并在 §10.A 列 T-6「更正 `maxBudgetUsd` 的归属……**这是一条会让下游写出不存在的 DSH 能力的错误**」。独立复核者跑两步：(a) 在 00-PREMISE 全文 grep `maxBudgetUsd`，命中仍是原文未改；(b) 在 §六 表中查是否有对应行，结果为无。文档声称「未重评而继续在下游文档里使用某条赌注，等同于我们指控 v1 犯的错误」（§一）；观测到的是同一形态。",
+  "seed": null
+ },
+ {
+  "id": "F144",
+  "attacker": "A9-foundation-premise",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.3 `budget_state` 字段 + §9 术语表 与 04-ORCHESTRATION.md §10.A（T-1…T-7）、03-EVIDENCE-ENGINE.md §0.4",
+  "claim": "「01-CONTRACTS 是唯一规范源」这条 README 首条权威规则在冻结版里不成立，而且不是措辞问题：规范源自己的必填字段 `budget_state ∈ {ok, degraded, exhausted}` 驱动 S 的 0f 与 2e，但决定它取值的两个计数器（`E`、`N_search`）与阈值只定义在 04，规范源里没有名字——即 S 这条「唯一的计算式」无法只靠 01-CONTRACTS 求值。冻结时刻累计有 7 条（04 §10.A T-1…T-7）加 5 类（03 §0.4 标「是」的行）待回填而未回填的共享词。",
+  "repro": "逐字：README「**权威规则**：`01-CONTRACTS.md` 是所有共享词汇的唯一定义源，其他文档**只引用不复述**；若某文档需要一个 §9 术语表里没有的词，**必须挂起裁决而非自行造词**」；01-CONTRACTS §9 标题「术语表 — **不在此表的词，其他文档不得发明**」；§1.3 必填字段块含「`budget_state : ok | degraded | exhausted`」，§1.5 0f「`budget_state == exhausted` → ST-N」、2e「`budget_state == degraded` → base 降一档」。04 §10.A T-2 逐字：「`E`（token 当量）、`N_search`——两个预算计数器的名字。定义式见 §5.2 | 预算是跨文档共享概念（**01-CONTRACTS §1.3 的 `budget_state` 已依赖它们，但没有名字**）」。独立复核者跑两步：(a) 在 01-CONTRACTS 全文 grep `N_search`、`有效派发轮`、`futile`、`Δcluster`、`Δstatus_up`、`power_basis`、`ni_polarity`、`regime`——零命中，而 04 的 V-4.18/V-4.19 与 03 的 `mechanism_results[]` 信封都要求它们落盘；(b) 按 §9.31 V9.2 跑 lint（其他文档中出现不在 §9 表内且被当专有名词使用的术语即报警），报警条数 ≥12。注意这是**自陈式**违规（两份下游都列了清单），但清单本身正是证据：冻结版的规范源不自足。",
+  "seed": null
+ },
+ {
+  "id": "F145",
+  "attacker": "A9-foundation-premise",
+  "severity": "P2",
+  "location": "00-PREMISE.md B3 裁决第 242 行、01-CONTRACTS.md §3.2 结论第 268 行，与 01-CONTRACTS §3.4.0 + §8.6.2 的耦合规则",
+  "claim": "被要求「写进首屏」的那个覆盖率天花板（「全文级核验最多覆盖约 1/6」）只算了 OA 可得性一个维度，没有与规范源自己声明必须取交集的第二个正交维度（`retention_tier`）相乘。默认档 Tier B 只允许保留锚点跨度而非整篇（「仅该锚点跨度可达 G5」），Tier C 压到 ≤G2，因此实际可达 ST-V 的比例严格低于 17.0%，而全文档集没有任何一处给出交集后的数。一个把「成对报数」「不洗口径」当产品的系统，在自己最外显的承诺数字上少乘了一个自己规定的因子。",
+  "repro": "逐字：01-CONTRACTS §3.2「`has_content.pdf:true` | **54,999,764** | **17.0%**」、结论「「每条论断都可追溯到原文」这个承诺，在现实中最多覆盖约六分之一的英文文献」；§3.4.0 逐字「`evidence_grade` 还要再过一道正交约束：`retention_tier`（§8.6）……**两者的下限取交集**」；§8.6 表 Tier B 备注「**默认档**」；§8.6.2「Tier B → **仅该锚点跨度**可达 G5」「Tier C → `evidence_grade ≤ G2`」；§8.6.3 列出 14 个降级触发器（T0-HARD…T13），其中 T1-AUTH/T2-402/T3-ROBOTS/T4/T5/T8/T10/T12 都会把来源压到 Tier C 或限制用途。00-PREMISE B3 裁决第 2 条逐字「**覆盖率天花板写进首屏**：全文级核验最多覆盖约 1/6 的文献」。独立复核者跑一步：在全部 8 份文档中 grep 是否存在任何把 17.0% 与 retention 降级率相乘或取交的估算——零命中；因此「1/6」是上界的上界，且方向单一（只会更低）。补充可核对的量级锚点：§3.6 中文侧 OpenAlex `language:zh` 仅 1.56%、References 完整率 7%/2%，中文路径的实际 ST-V 天花板远低于 1/6，而 B7 只写「押小」未给数。",
+  "seed": null
+ },
+ {
+  "id": "F146",
+  "attacker": "A9-foundation-premise",
+  "severity": "P2",
+  "location": "00-PREMISE.md B1「会推翻它的观测」第 4 行 与 01-CONTRACTS.md §6.3 硬要求 5、04-ORCHESTRATION.md §3.6「扇出宽度是四个上界的最小值」/§7 D1",
+  "claim": "B1 为系统名字预注册的推翻条件（「中央限速网关下，实际有效并行度长期 < 4 → 架构应退回少而深，名字必须改」）所需的数据**已经全部在冻结版内**，但没有任何一份文档把它算出来。B1 押注的三处中最核心的一处——「同一条载荷断言的 N 路独立核验」——恰好全部跑在 1 rps 量级的学术 API 上；按 §6.3 自己给的限额，核验路径的稳态有效并行度是个位数甚至 <4。项目把一个当下即可判定的架构前提，推迟到 M1/M2 去测，而名字与整套编排已按「超并行」定稿。",
+  "repro": "逐字：00-PREMISE B1 推翻表第 4 行「中央限速网关下，实际有效并行度长期 < 4 | 推翻扇出的工程前提 | 若成立，架构应退回「少而深 + 强核验」，**名字必须改**」；01-CONTRACTS §6.3 硬要求 5 逐字「**arXiv 1 请求/3 秒（≈0.33 rps）且禁止并发连接**、Semantic Scholar 有 key **1 rps**、OpenAlex 语义检索 **1 rps**、CORE 免注册 5 单请求/10 秒（≈0.5 rps）」「**arXiv 必须是串行队列，不能是令牌桶。**」；00-PREMISE B1 反对证据 8 逐字「20 个并行 agent 各自发语义检索，平均每个要等 20 秒」；B1 裁决小仓位第 2 处逐字「**同一条载荷断言的 N 路独立核验**（一路重跑数据、一路回原文抓字面、一路做口径推演、一路找反证）——**这是把并行从「多找」改向「多验」的关键动作**」。独立复核者跑一步算术：把 §6.3 的 per-host 限额代入 04 §3.6 的「四个上界的最小值」，对核验类子任务（语义检索 + arXiv 取原文 + Crossref/OpenAlex 字段比对）求稳态可同时在飞的请求数——arXiv 桶为 1（串行队列硬约束），S2/OpenAlex 语义各为 1，即核验路径上的有效并行度 ≈ 3；再 grep 全部 8 份文档是否有任何一处给出这个数——零命中（04 §7 D1 只把它写成一条待触发的降级路径，未计算触发与否）。注意此项存在一个诚实的不确定性：发现路径（bocha/serper/OpenAlex 常规 100 rps）的并行度可以很高，因此若把「有效并行度」定义在全部工具调用上，可能 >4；但 B1 押注的那三处里唯一买质量的一处落在 1 rps 侧。",
+  "seed": null
+ },
+ {
+  "id": "F147",
+  "attacker": "A9-foundation-premise",
+  "severity": "P2",
+  "location": "00-PREMISE.md 赌注一览表（B1–B9）与 README「M0 阻塞项」第 72–85 行",
+  "claim": "缺一条承重赌注：**DSH 这个基底本身是否托得住本设计**从未被立成赌注并评级。9 条赌注审的是外部世界（B1/B3/B4/B5/B7/B9）、继承的前代契约（B2/B6）与自家纪律（B8），唯独没有审「平台」。而 README 的 7 条 M0 阻塞项里有 4 条是纯基底未知数，且证据锚点方案整条压在一条从未跑过的代码事实上。按本文件自己的标准（「一个以不让任何断言绕过证据审计为价值主张的系统，建在未审计的前提上是自我否证的」），这是同一个错误换了个对象。",
+  "repro": "逐字：00-PREMISE 卷首「**为什么存在**：上一轮把前代的一条判词……当成最高禁令继承，**从未核过它背后的证据**……一个以「不让任何断言绕过证据审计」为价值主张的系统，建在未审计的前提上是自我否证的。本文件的存在是为了让这件事不再发生第二次。」；赌注一览表 9 行，逐条陈述为「超并行提升研究质量 / 结构与门提升质量 / 可信度是产品 / 三通道背书是充分分类 / 确定性门能承载可信度 / 前代契约值得继承 / 中文学术场景可交付 / 我们自己的门不会空心 / 成本前提可承受」——无一条以 DSH 运行时为对象。对照 README M0 阻塞项逐字：第 3 条「**三处 DSH 实测空缺**：M1 插件 `inject` 的确切服务名、headless 一次性任务的 CLI 调用形式、workflow 引擎行的 entry id（patch 打不中只 warn 不 fail，**猜 id = 静默失效**）」；第 4 条「**`run_code` 是否可达 `node:fs`**」；第 5 条「**compaction 从未在本机触发**（139 个 session、0 条 replace）——整个证据锚点方案建立在「pruner 展开保留 meta」这条代码事实上，**读对了但没跑过**」；第 6 条「**中央限速网关的失效行为未设计**——纯自建跨进程单点、DSH 侧零支撑、**一挂全停**」。独立复核者跑两步：(a) 在 00-PREMISE 中 grep「B10」「基底」「运行时赌注」——零命中；(b) 检查这些未知数是否有「押注强度 / 会推翻它的观测 / 何时检验」三件套——M0 清单只有描述，没有任何一条带预注册的推翻判据，而 9 条赌注每条都有。缺口的具体后果：B8 的落点三条（`tool/result.data.meta`、CAS 快照、多帧 zstd）全部依赖 M0 第 5 条那条没跑过的事实，一旦 compaction 的真实行为与代码读法不符，B8 之外的 B1–B7「靠门保证」也一并落空——即基底风险与 B8 是**串联**而非并联，却只有 B8 被评级。",
+  "seed": null
+ },
+ {
+  "id": "F148",
+  "attacker": "A9-foundation-premise",
+  "severity": "P3",
+  "location": "00-PREMISE.md §六 重评记录（第 694 行）与 04-ORCHESTRATION.md §10.A T-7",
+  "claim": "以「不洗数字」为产品的文档集，自己的证据基线计数在冻结版里仍有一处错值，而负责纠正它的那张回填表本身已过期、其陈述也是错的。",
+  "repro": "实测：`ls -1 <repo>/research/v2 | wc -l` = **26**；`wc -l *.md | tail -1` = **11661**。对照四处：README「`research/v2/` | 证据基座：**26** 份调研文件 / 25 维度 / 11,661 行」✔；01-CONTRACTS 文件尾「`research/v2/`（**26** 文件 / 25 研究维度 = 18 ext + 7 gt……计数经 06-SURVEY §1.1 实测复核）」✔；00-PREMISE §六 表「`research/v2/`（**22** 文件快照）」✘；04 §10.A T-7 逐字「语料文件数：实测 **26** 个……**01-CONTRACTS 写 22**、本轮任务书写 23」——而 01-CONTRACTS 实际写的是 26，故 T-7 对 01-CONTRACTS 的指控本身是过期/错误的，真正未修的是 00-PREMISE。独立复核者跑：`grep -n '22 文件' 00-PREMISE.md` 与 `tail -1 01-CONTRACTS.md`。",
+  "seed": null
+ },
+ {
+  "id": "F149",
+  "attacker": "A9-foundation-premise",
+  "severity": "P3",
+  "location": "03-EVIDENCE-ENGINE.md §8.5 admission 拒绝表（第 1054 行）、§4 末（第 693 行）、§10（第 1284 行）",
+  "claim": "跨文档引用出现悬空锚：03 三处引用 01-CONTRACTS 的 §8.9 / §10.3 / §10.6，而 01-CONTRACTS 的 §8 只到 §8.7、§10 无编号子节。其中 §8.9 是真悬空（V8.9 是可检验断言不是节，retention 的节是 §8.6）；§10.3/§10.6 只有按「§10 的第 3/6 条」这一未成文约定才能解析。这三条都出现在「本文件不定义术语、只引用规范源」这套纪律的执行位置上——引用解析不了，纪律就无法机械校验。",
+  "repro": "脚本可复现：从 01-CONTRACTS 抽取全部锚点（标题 `^#{2,4} §N.M`、加粗 `**§N.M`、表格首列 `| §N.M |`）得 134 个；再从其余 7 份文档抽取全部 `01-CONTRACTS[^§]{0,12}§(N(\\.M)*)` 引用做差集，得三条未命中：03 的 `8.9`、`10.3`、`10.6`。逐字：03 §8.5 表「| `retention_tier` 缺失或 `tier_reason[]` 为空 | **01-CONTRACTS §8.9** |」（应为 §8.6 / V8.9）；03 §4 末「这是一个真实的产品风险，不是保守的美德**（同 01-CONTRACTS §10.6）**」；03 §10「若漏并，`K=2` 事实上等价于 `K=1`**（01-CONTRACTS §10.3）**」。对照 01-CONTRACTS §8 的实际子节序列：§8.1…§8.7（无 §8.8/§8.9），§10 为无编号八条列表。",
+  "seed": null
+ },
+ {
+  "id": "F150",
+  "attacker": "A10-reality-buildability",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §6.4 第 522 行（对照 §6.1 表、§1.4 ST-V 行、§2.4 矩阵、§1.6 V1.4、§6.6 V6.2、03-EVIDENCE-ENGINE.md §3.4.1 EE-L-7 第 457 行）",
+  "claim": "「GC-2 永远不得写 ST-V」这条全项目最硬的边界，在唯一规范源自己的 §6.4 开头被一句例外打穿：「**GC-2 原则上不得写 ST-V**，但在双判官 κ≥0.8 且结论一致时可例外写 ST-V。依据是 §1.3 的三条量化上界。」这句话与同一文件 §6.1 表格逐字冲突（GC-2「不可以判：**永远不得写 ST-V**」）、与 §1.4「ST-V…判定路径不经过任何模型」冲突、与 §2.4 矩阵（K-L-A/K-I 的 ST-V 列为 ❌）冲突、与两条可检验断言 V1.4 / V6.2 冲突（这两条断言会把该例外产生的每一条 claim 判为门红），并且它援引的「依据」§1.3 恰恰论证了相反结论（事实支持性最好 F1=0.750、所有模型 CI 重叠、raw agreement 相对 κ 系统性虚高 38.6pp——即 κ 本身在该维度上不可能稳定到 0.8）。03-EVIDENCE-ENGINE §3.4.1 逐字写「G-L2 只能收窄，不能写 ST-V。这是 01-CONTRACTS §6.1 对 GC-2 的规定」——下游文档实现的是 §6.1 而不是 §6.4，说明这句例外是孤立插入的。产品的整条可信度承诺（verified = 判定路径不经过模型）在此被撤销。",
+  "repro": "复算步骤：① `grep -n 'κ≥0.8\\|双判官' *.md` → 全文档集只有 01-CONTRACTS:522 一处命中，无任何下游文档实现或引用它；② 打开 01-CONTRACTS §6.1 表第 481 行读 GC-2 行的「不可以判」列：「**永远不得写 ST-V**」；③ 读 §1.6 V1.4：「语料中不存在任何 `status == verified` 且 `mechanism_results` 中含 `gate_class == GC-2` 的 claim」与 §6.6 V6.2：「不存在 `gate_class == GC-2` 且 `verdict` 直接导致 `status == verified` 的路径（对 `S` 做一次可达性分析）」。文档宣称 = GC-2 绝不产 ST-V；实际观测 = §6.4 给了一条产 ST-V 的路径，且该路径会使 V1.4/V6.2 必然为红。任一独立复核者只要按 V6.2 对 S 做可达性分析即可复现该矛盾。",
+  "seed": "V2"
+ },
+ {
+  "id": "F151",
+  "attacker": "A10-reality-buildability",
+  "severity": "P1",
+  "location": "03-EVIDENCE-ENGINE.md §9 元规则 M-1（第 1070 行），对照同节 §9.0 NT-01（第 1079 行）、01-CONTRACTS §6.5.1 与 §9.21、05-TESTING §T0.3、00-PREMISE B8 裁决第 2 条",
+  "claim": "负向测试清单的第一条元规则被加了一个逃生舱：「**M-1 red-first（时间紧张时可先绿后补红）**」。red-first 是整个项目防「空心门」的唯一机制，而 00-PREMISE B8 明写本项目对自己的门「当前不押」，必须先补的三条代码之二正是「每条 pass 规则配一条走真实入口的负例」。这个括号把该前置条件降级为可延期项，且与它下面 9 行的 NT-01 直接冲突（NT-01：「无 red fixture 的门标记为『未验证的门』，**其输出不得进入 `S`**」——即无红案的门根本不允许存在于判定路径，不存在「先绿」的合法状态）；也与 01-CONTRACTS §6.5.1「门必须先证明自己会红」、§9.21 术语定义「red-first = 门在被信任之前必须先证明自己会红」、05-TESTING §T0.3「造不出红案的检查不是门」逐字冲突。更关键：它把同一条引用 [E: gt-house-method.md#A9] 读成了与 01-CONTRACTS 相反的意思。「时间紧张」是无操作定义的主观条件，落到代码里就是永远为真。",
+  "repro": "复算步骤：① 读 03-EVIDENCE-ENGINE.md:1070 全句，与 :1079 的 NT-01 全句并列；② `grep -n 'red-first' 01-CONTRACTS.md 05-TESTING.md 03-EVIDENCE-ENGINE.md`，对比三处措辞——只有 03 带括号例外；③ 读 00-PREMISE.md:584「**每条 pass 规则配一条走真实入口的负例**（B6 的 R-8），负例套件本身进 CI」，这是 B8 从「不押」升级为「押」的三个必要条件之一。文档宣称 = red-first 是硬前置；实际观测 = 规范化的负向测试清单自己给出了跳过它的许可。实现者按 M-1 写 CI 会得到一个允许门先上线后补红案的流水线，这正是 B8 记录的前代与本仓库两条独立失败线的形状。",
+  "seed": "V3"
+ },
+ {
+  "id": "F152",
+  "attacker": "A10-reality-buildability",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §1.2.2（第 51 行）× §4.2 W-03（第 358 行）× §4.1 I-W2 × §1.3「可以 100% 兑现」的措辞（第 77 行）",
+  "claim": "`quote_faithful` 是本项目宣称「可以 100% 兑现」的两条产品承诺之一，但它的唯一实现里写着一条自动改写规则：「精确命中 → `pass`；`rapidfuzz partial_ratio ≥ 95` 命中 → **把引语改写成快照里的真实跨度后重判**；`< 95` → `fail`」。两个独立的破口：(a) **写权违规**——执行 quote_faithful 的是 GC-0 门（§6.2 首项），而引语属于 claim 的载荷内容，§4.2 W-03 规定 `claims/<id>.json` 的**唯一物理写者是 producer agent，门只读**；门改写引语即违反 W-03 与 I-W2，并使 V1.2「重跑 S 必须得到与存档 status 逐字节相同的值」失去意义（S 的输入被 S 自己改过）。(b) **语义反转洗白**——partial_ratio 对长引语的少量插入极不敏感：源文为「the effect was **not** significant」而 claim 引语为「the effect was significant」时，两串在归一化后的 partial_ratio 远高于 95，于是系统自动把引语改写为含 not 的原文跨度并重判为 `pass`，而 claim 的结构化载荷（§9.2）仍主张相反的结论；F-28 只在 <95 时触发，因此这条路径**不留任何 flag**。这直接兑现了 §1.1 自己警告的「把审计能力当作真值能力卖」。",
+  "repro": "复算步骤：① 读 01-CONTRACTS.md:51 的三分支规则原文；② 读 :358 的 W-03 行「唯一物理写者 = **producer agent**，经 claim 提交工具，schema 硬校验｜**门只读**」；③ 构造最小反例：quote=\"the effect was significant across all three cohorts (p = .043)\"，snapshot 跨度=\"the effect was not significant across all three cohorts (p = .043)\"，用 `python -c \"from rapidfuzz.fuzz import partial_ratio; print(partial_ratio(a,b))\"` 计算，得分显著 >95 → 按 §1.2.2 系统改写引语后重判 → `quote_faithful = pass`，无 F-28；④ 读 §7.2 F-28 行确认其触发条件仅为「归一化匹配分 < 95」。文档宣称 = quote_faithful 是确定性、哈希可判、可 100% 兑现；实际观测 = 存在一条把 5% 编辑距离内的语义反转引语自动升格为 pass 且不留痕的路径，且执行它需要门写 claim 内容（违反写权矩阵）。",
+  "seed": null
+ },
+ {
+  "id": "F153",
+  "attacker": "A10-reality-buildability",
+  "severity": "P1",
+  "location": "01-CONTRACTS.md §1.5 第 2 步 2b/2d（第 133、135 行）× §7.2 F-14 行（第 592 行）× §7.3 表（第 633 行）× §1.5.2 K(kind) 裁定（第 143 行）× §2.4 矩阵",
+  "claim": "状态函数 S 的第 2d 步被定义为 `base = min(base, ceiling(flags))`，即它消费的必须是**状态上界**；但 §7.3「flags → 状态硬上限」表里有四行给的不是上界而是一个**操作**：「F-09 / F-02 / F-14 / F-15 → 降一档」。后果有两层：(a) **不可转写**——实现者无法把「降一档」代入 min()；若同一 claim 同时带 F-09、F-02、F-15，是降一档还是降三档、顺序如何，规范未定义，且「降一档」不满足 min 的幂等与交换律，不同实现会得到不同 status，V1.2「重跑 S 必须得到逐字节相同的值」不可能兑现。(b) **F-14 被双重路由导致 ST-V 在常态下不可达**——§7.2 把 F-14 的消费点写作「S **2b**」，§7.3 又把它列进 2d 的表里；而 F-14 的置位条件恰是 `independent_cluster_count == 1`。按 §1.5.2 裁定 `K(K-D)=1`（「数据推导的独立性由重跑保证，不由多源保证」）与 `K(K-L-T)=1`（「转录只需要一个真实锚点」），单簇时 2b 不触发，但 2d 会按 §7.3 把 base 降一档：K-D 封闭式 ST-V→ST-A、K-L-T ST-V→ST-A。而 §2.4 矩阵里能达 ST-V 的**只有**这两类。即：在「一份数据一次重跑」「一个锚点一次转录」这两个本设计明确宣布只需单簇的常态下，`verified` 永远发不出来——产品的核心状态在自己的规则下不可达。",
+  "repro": "复算步骤：① 并列读 01-CONTRACTS.md:135（2d 的定义式）与 :633（§7.3 第四行）——一个要求 ceiling 值，一个给出操作；② 并列读 :592（F-14 消费列 = 「S 2b」）与 :633（F-14 出现在 2d 的表里）；③ 取一条最简单的 K-L-T claim：evidence_grade=G5、quote_faithful=pass、source_integrity=intact、counter_evidence_searched=true、counter_evidence_found=false、independent_cluster_count=1、budget_state=ok。手算 S：0 步全不命中 → 第 1 步 base=ST-V → 2a 否 → 2b：1 < K(K-L-T)=1 为假，不降 → 2c：G5 上限 ST-V，不降 → 2d：F-14 已由 GC-0 置位（count==1），查 §7.3 得「降一档」→ base=ST-A。同一条 claim 按 §7.2 的路由（只进 2b）应得 ST-V。两种读法给出不同 status，且按 §7.3 读法 §2.4 矩阵的整列 ST-V 不可达。文档宣称 = S 是唯一的、纯的、可符号执行验证的计算式（V1.2/V1.3）；实际观测 = 2d 的输入类型不齐、F-14 被路由到两个步骤、ST-V 在常态输入下不可达。",
+  "seed": null
+ },
+ {
+  "id": "F154",
+  "attacker": "A10-reality-buildability",
+  "severity": "P1",
+  "location": "05-TESTING.md §T4.2 主终点（第 514–517 行）× 01-CONTRACTS §1.5.2 K(kind)（第 143 行）× §2.4 矩阵（第 225–232 行）× 00-PREMISE B1 第 55 行",
+  "claim": "被称为「本项目的核心实验」「做出臂 II 即是贡献」的等预算并行度实验，其主终点 `verified 承重断言数 / 预算` 对被试变量的核心一支**结构性不敏感，而且方向为负**。B1 允许的三处扇出中第二处是「同一条载荷断言的 N 路独立核验（一路重跑数据、一路回原文抓字面、一路做口径推演、一路找反证）」，00-PREMISE 逐字写它「买 `verified 断言数 / 预算`」。但按 01-CONTRACTS：能达 ST-V 的只有 K-D 封闭式与 K-L-T（§2.4），而这两类的 K 值都被裁定为 1（§1.5.2：数据推导靠重跑不靠多源；转录只需一个真实锚点）。因此增加独立核验路数**不能**把任何 claim 升到 ST-V：K-L-A 与 K-I 的 K=2 但它们的天花板是 ST-A，永远不进 verified 计数；而多出来的核验路数会真实消耗 token 与 N_search（分母）。再加上 2a：找反证这一路一旦命中即 ST-C（吸收态），只会减少分子。净效果是主终点关于「N 路核验」单调不升。于是 hyper-parallel 臂在自己的主终点上被自己的核心机制惩罚，实验即使跑出「serial 更优」也无法区分是拓扑更差还是度量与状态模型把该臂的收益定义没了。",
+  "repro": "复算步骤：① 读 05-TESTING.md:514「**主终点**：`verified 承重断言数 / 预算`」；② 读 00-PREMISE.md:55「同一条载荷断言的 N 路独立核验…**买 `verified 断言数 / 预算`**」；③ 读 01-CONTRACTS.md:143 的 K 裁定与 :225–232 的 kind×可达状态矩阵；④ 手算：对任一 K-D 封闭式 claim，把独立核验路数从 1 提到 4（重跑/抓字面/口径推演/找反证），逐条过 S：base 仍由重跑门给出 ST-V，2b 不触发（K=1），2a 只可能把它打到 ST-C；分子最多不变、可能减少，分母必然增加。对任一 K-L-A 或 K-I claim，无论多少路核验，§2.4 的 ST-V 列都是 ❌。文档宣称 = 扇出用于 N 路核验以提高 verified/预算；实际观测 = 在本项目自己的状态模型下该路径对 verified 计数的偏导 ≤ 0。",
+  "seed": null
+ },
+ {
+  "id": "F155",
+  "attacker": "A10-reality-buildability",
+  "severity": "P1",
+  "location": "05-TESTING.md §T4（全节，尤其 T4.3 共同控制项第 527–537 行、T4.1 freehand 臂第 458 行、T8.1 排期表第 912–918 行）× 04-ORCHESTRATION §7.2 CP-1/CP-2/CP-5（第 689–698 行）",
+  "claim": "核心 A/B 实验的设计里**完全不存在**两个强制人在环检查点。04 §7.2 规定 CP-1（外环之前，强制，**总是**：人审批研究计划、子问题分解、冻结 checklist）与 CP-2（L4 之后，强制，**总是**）；CP-5 更是 harness 强制（「`goal` 的 activation 永不持久化，resume 后必须人类重新 arm」，并逐字写「任何宣称『无人值守跑一夜』的表述都与这条事实冲突」）。而 05-TESTING 全文对 CP-1/CP-2/CP-5 零次提及。三重后果：(a) **未控混杂**——T4.3 列了六条共同控制项（同渲染器/同 schema/同 judge/同题集/同 provider/禁止未预注册比较），没有一条控制人的介入；每个 run 前后各有一次强制人工干预，而该人按 T8.4 自陈很可能就是系统作者兼出题者兼 L3，且未盲。(b) **两臂人介入量不可比**——freehand 臂「关闭 L1 in-loop 判定与状态计算」，而 CP-2 的入口机制是 §7.3 的机器三分流（依赖 `quote_faithful`/DOI 可解析等机器判定）；判定关掉后 CP-2 要么无入口、要么口径完全不同，两臂在人这一维上不等价。(c) **人力未预算**——按 T4.2/T4.4 的样本量（臂 II 16 topic × 2 臂 + 臂 I 12 topic × 2 臂 = 56 个 run），仅强制项就是 56 次 CP-1 计划审批 + 56 个 CP-2 队列（每队列上限 20 条 → 最多 1,120 次人工裁决），再加上跨进程重启时每次都要人重新 arm 的 CP-5；T8.1 的 M2 行只列了「臂 I 每臂 30 条抽检 / 臂 II 完整性终点抽检 / held-out 首次全量人裁」，这三项都不含上述任何一项。",
+  "repro": "复算步骤：① `grep -n 'CP-1\\|CP-2\\|CP-5' 05-TESTING.md` → **零命中**（我已执行，输出为空）；② 读 04-ORCHESTRATION.md:692–696 确认 CP-1、CP-2 的类型列均为「**强制**」、触发条件列均为「总是」，CP-5 为「条件（**harness 强制**）」且第 698 行写明与「无人值守跑一夜」冲突；③ 读 05-TESTING.md:527–537 的 T4.3 六条共同控制项，逐条核对无一涉及人；④ 算 run 数：T4.2「臂 II 的 topic 数取 16」×2 臂 + T4.4「臂 I…要求 10/12 同向」即 12 topic×2 臂 = 56，乘以每 run 一次 CP-1 与一个 CP-2 队列（04 §7.4 上限 min(20, 0.10×载荷claim数)）；⑤ 读 T8.1 的 M2 行确认这些人工量不在排期表内。文档宣称 = 臂 II 是可执行的、两臂除扇出形态外全部等价的受控实验；实际观测 = 两个强制人工干预点位于每个 run 的首尾、在两臂上不等价、由未盲的同一人执行、且其工时从未计入人力预算。",
+  "seed": null
+ },
+ {
+  "id": "F156",
+  "attacker": "A10-reality-buildability",
+  "severity": "P2",
+  "location": "05-TESTING.md §T4.2〔裁定〕（第 499–506 行）与 §T4.2 主终点复述（第 516–517 行）× 00-PREMISE.md B1 预注册判据（第 71 行）",
+  "claim": "00-PREMISE B1 的预注册判据逐字是「**固定美元预算下**，A=单线程深挖 vs B=N 路扇出+客观裁决，B 的 `verified 载荷断言数 / 预算` 显著更高…」，而 00-PREMISE 被 03-EVIDENCE-ENGINE 页脚声明为 binding 前提源（B1 在列）。05-TESTING §T4.2 单方面裁定「**等 token 预算 + 等检索调用预算，不等墙钟、不等美元**」，理由是美元不可等化。这是对一份预注册的事后修改：预注册的意义就是不许改判据，而 T4.0 自己规定「实验期间**不得修改**」预注册文件的第②项（主终点与次终点的精确定义）与第④项（样本量与固定停止规则）。更隐蔽的是，T4.2 在第 516–517 行复述 B1 判据时把「固定美元预算下」这个限定词删掉了，只留「B 的 `verified 载荷断言数 / 预算` 显著更高，且 B 的 false-claim rate 不高于 A」，使读者看不出口径已被换过。而 T4.2 自己给的理由恰好证明这次换口径是实质性的：DeepSeek 分时计价 + 串行臂 cache 命中率天然更高 ⇒ **等 token ≠ 等钱**，即两种口径下实验可能给出相反结论。",
+  "repro": "复算步骤：① 读 00-PREMISE.md:71 的预注册判据原文，注意开头「固定美元预算下」；② 读 05-TESTING.md:499「**〔裁定〕等 token 预算 + 等检索调用预算，不等墙钟、不等美元**」与 :503–505 的理由；③ 读 05-TESTING.md:516–517 的复述，逐字比对可见限定词缺失；④ 读 05-TESTING.md:447–450 的 EXP-PRE 规则（②主终点精确定义、⑤两臂全部配置差异清单，实验期间不得修改）。文档宣称 = 本文件把 B1 的预注册结论「落成可执行设计」；实际观测 = 预算口径由美元改为 token+检索次数，且改动未在任何地方登记为对预注册的修订（04 §10.A 的回填清单 T-1…T-7 也不含此项）。",
+  "seed": null
+ },
+ {
+  "id": "F157",
+  "attacker": "A10-reality-buildability",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §7.2 F-01/F-03/F-04/F-12/F-24 行（第 579、581、582、590、602 行）× §7.3 表（第 628–636 行）× §1.5 2d（第 135 行）",
+  "claim": "§7.2 词表中有五个 flag 的「谁消费」列写着「S 2d」（F-01 `uncertainty:no-ci`、F-03 `cherry-picking:window`、F-04 `best-case-ratio`、F-12 `metric-frame-mismatch`、F-24 `pricing-promo`），但 §7.3「flags → 状态硬上限」表里**一行都没有它们**。2d 的定义是 `base = min(base, ceiling(flags))`，而这五个 flag 的 ceiling 未定义 → 实现者在写 2d 时对这五个 flag 只有两种选择：当作无上限（则 F-规则-2「flags 必须进判定，不是只打印」被违反，退回前代「honesty flags 从不进判定、只打印」的确证失效模式）或自行编造上限（则 S 不再是唯一规范源定义的纯函数）。F-12 尤其致命：口径不匹配是本项目反复强调的头号失效类（「每个数字都对、拼起来是错的」），它却没有状态上限。",
+  "repro": "复算步骤：① `grep -n 'S 2d\\|S 第 2d' 01-CONTRACTS.md` 列出全部声明在 2d 消费的 flag；② 逐个到 §7.3 表（:628–636）里查找，F-01/F-03/F-04/F-12/F-24 均无对应行；③ 读 :135 的 2d 定义式确认它只接受 ceiling。文档宣称 = 「F-规则-2 flags 必须进判定」+「§7.3 flags → 状态硬上限」是完备表；实际观测 = 五个进判定的 flag 没有上限值，2d 对它们无法求值。",
+  "seed": null
+ },
+ {
+  "id": "F158",
+  "attacker": "A10-reality-buildability",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.2 表（第 46 行）+ §1.2.1（第 49 行）× §6.2 GC-0 成员（第 485 行）× §6.3 GC-1 成员（第 505 行）× §1.5 0a/0c（第 110、112 行）× §1.4 ST-U/ST-N 定义（第 91–92 行）",
+  "claim": "`source_integrity` 是五值枚举 `intact / mutated / missing / contaminated / not_covered`，由三个子测试判定（①字节同一性 ②抓取溯源绑定 ③注册表成员资格），但**从子测试结果到五个取值的映射从未给出**——实现者不知道「②失败」该产出 mutated 还是 not_covered，也不知道三个子测试同时失败时取哪个值（这直接决定走 0a→ST-U 还是 0c→ST-N，两条路的审计含义按 §1.4.1 是相反的）。第二处：子测试②（把证据绑到一条真实发生过的 `tool/call`/`tool/result`）**不在任何门类的成员清单里**——§6.2 的 GC-0 成员只列了「`source_integrity` 的**哈希部分**」，§6.3 的 GC-1 成员列的是 DOI 解析/注册表/URL 存活/快照重取 hash，都不是它；而它的输入是 session JSONL，既不是 GC-0 定义的「本地 CAS / 注册表快照」，也不需要联网（GC-1 的定义要件）。于是 V6.1 要求的 `gate_class` 字段对这条本项目最核心的反伪造机制**无值可填**。第三处：0a 把 `missing` 判为 ST-U，与 §1.4 自己的定义冲突——ST-U 是「我们看了，没找到支持」，ST-N 是「我们没能力看」；快照缺失属于后者。",
+  "repro": "复算步骤：① 读 :46 的 source_integrity 行与 :49 的 §1.2.1，找不到任何「子测试 → 取值」的映射表；② 读 :485 GC-0 成员行（注意限定词「哈希部分」）与 :505 GC-1 成员行，确认二者都不含「抓取溯源绑定」；③ 读 §6.1 表 GC-0 的定义「输入全在本地 CAS / 注册表快照内」，session JSONL 不属于任一项；④ 读 :110 与 :92：`missing → ST-U` vs 「ST-N…源不可达」。写伪码验证：`def source_integrity(subtest1, subtest2, subtest3) -> Literal[...]` —— 函数体无法从规范写出。文档宣称 = source_integrity 三个子测试「全部可重跑、模型无关，因此同属确定性层」且每条 mechanism_result 都携带 gate_class（V6.1）；实际观测 = 映射缺失、门类归属缺失、且 missing 的状态归属与 §1.4.1 自相矛盾。",
+  "seed": null
+ },
+ {
+  "id": "F159",
+  "attacker": "A10-reality-buildability",
+  "severity": "P2",
+  "location": "02-ARCHITECTURE.md §B.10 建造顺序理由第 3 条（第 426 行）与 B.0 建造序表（第 205 行）× 05-TESTING §T6.3（第 812 行）× §T6.1 表首行（第 779 行）× 01-CONTRACTS §6.5.1",
+  "claim": "建造顺序存在真实的循环依赖，两份文档给出的「硬顺序」互相反向。02 §B.10 第 3 条逐字写「**M3 的 GC-0 子集第三，早于 M1。** 这是本图最反直觉的一条：**先建门，后建被门检查的东西**」；05 §T6.3 逐字写「**顺序是硬的：先建金标集，再建门。**」。而金标集本身依赖被门检查的东西：§T6.1 要求 GC-0 的 `rapidfuzz partial_ratio ≥ 95` 阈值必须在「500 对（引语, 快照跨度），含中文 PDF 抽取样本 ≥150 对」的自建金标集上现场标定（规则 M-9：任何进入判定路径的阈值不得直接引用文献或工程惯例数字），而「快照跨度」只能由 M1（取证抓取插件，建造序 4）产出；同理 01-CONTRACTS §6.5.1 与 03 §9 M-1 要求红案 fixture 的「事件形状必须来自**真实捕获**而非手编」，而产生 `tool/result.data.meta.evidence` 这一事件形状的正是 M1。因此建造序 3 的 GC-0 门既拿不到合规的标定集，也拿不到合规的红案 fixture——按项目自己的规则，它在第 3 位不可能被合法地建成。",
+  "repro": "复算步骤：① 并列读 02-ARCHITECTURE.md:426 与 05-TESTING.md:812 两句「硬顺序」；② 读 05-TESTING.md:774–779（规则 M-9 + 第一行标定集「500 对（引语, 快照跨度）」）；③ 读 02-ARCHITECTURE.md:205 的建造序列（M3 = 3/6/8，M1 = 4）与 :262（M1 的依赖 = M2、M0）；④ 追问「快照跨度从哪来」：读 02 §B.2 M1 的取证抓取工具面（:236）——快照与 CAS 字节由 M1 在同一次工具执行内写入。文档宣称 = 建造顺序的每条理由都是「不这样就白做」；实际观测 = 第 3 位的门需要第 4 位模块的产出才能标定与红案化，两份文档对「门 vs 金标集」谁先谁后给出相反的硬规定。",
+  "seed": null
+ },
+ {
+  "id": "F160",
+  "attacker": "A10-reality-buildability",
+  "severity": "P2",
+  "location": "04-ORCHESTRATION.md §7.4（第 717–720 行）与 §7.3（第 704–713 行）× 05-TESTING.md §T8.2 第 1 条（第 925–926 行）× 01-CONTRACTS §6.4（第 530 行）",
+  "claim": "两份文档对「人要看多少」给出互斥的模型，且 04 内部的溢出处置与它自己上一节的调阈原则冲突。05 §T8.2 把判官分歧率「按 60% 量级排期」并称之为「**这是『人要看多少』的唯一一手锚点**」（624 对中 378 对 = 60.6% 有分歧并被人工裁决）；01-CONTRACTS §6.4 也规定「**用分歧率做升级信号**」。而 04 §7.4 硬性裁定 `|CP-2 队列| ≤ min(20, 0.10 × 载荷 claim 总数)`。取一个 120 条载荷 claim 的 run：按 60.6% 分歧率需人工裁决约 73 条，而队列上限是 min(20, 12) = **12** 条——61 条分歧项无处可去。§7.4 给的溢出处置是「触发『收缩发现宽度 / **提高自动打回阈值**』」，但 §7.3 刚刚规定「**自动打回的阈值按精确率调，不按召回率调**」；为了塞进容量而抬高打回阈值正是按召回（吞吐）调阈，且会把「真正歧义」的条目错分进 §7.3 定义为「机器判定**确凿**不成立」的自动打回桶。",
+  "repro": "复算步骤：① 读 04-ORCHESTRATION.md:717 的容量式与 :720 的溢出处置；② 读 :713「自动打回的阈值按精确率调，不按召回率调」；③ 读 05-TESTING.md:925–926 的 60.6% 锚点与「唯一一手锚点」措辞；④ 代入算术：载荷 claim 数 N=120 → 容量 = min(20, 12) = 12；分歧项 ≈ 0.606 × 120 = 73；缺口 61。N 越大缺口越大（N=200 时容量 20、分歧 121、缺口 101）。文档宣称 = CP-2 是「行业空白 = 我们的产品面」的强制人工裁决点，且分歧率是升级信号；实际观测 = 容量闸使 83% 的分歧项无法进入人工裁决，而唯一的泄压阀与本文件的调阈原则相反。",
+  "seed": null
+ },
+ {
+  "id": "F161",
+  "attacker": "A10-reality-buildability",
+  "severity": "P2",
+  "location": "01-CONTRACTS.md §1.3 claim_supported 结构（第 60–68 行）× §4.2 W-03/W-04/W-14（第 358、359、369 行）× §4.1 I-W1/I-W2（第 346–348 行）× §7.2 F-01/F-03/F-04/F-24 的「谁设置」列",
+  "claim": "`claim_supported` 被定义为一条含 7 个必填字段的核算记录（缺任一 → 直接 not_covered），但写权矩阵里**没有任何一行承载它**：W-03（producer 写 claims/<id>.json）的字段清单是「kind、结构化载荷、metric_frame、证据指针、premises、tolerance」，W-04（门写 .status.json）的字段清单是「status、evidence_grade、independent_cluster_count、counter_evidence_*、computed_at、gate_version、inputs_hash」——两者合起来仍缺 `mechanism_results[]`、`flags[]`、`budget_state`；而 W-14 把 `flags[]` 的写者散给「§7 逐 flag 的 setter」，其中包含 producer agent、抓取工具执行器、编排层、GC-0/GC-1/GC-2 至少五类主体。于是一条逻辑记录有 ≥5 个物理写者，直接违反 I-W2「一个工件，一个物理写者。若两类主体都需要向同一逻辑记录写入，则该记录**必须拆成两个物理文件**」，而 §8.1 的目录契约没有为它们分文件。更进一步：F-01/F-03/F-04/F-24 的「谁设置」列是「producer 声明」，这些 flag 经 2d 参与 status 计算——即存在一条从 agent 输出到 status 的实际写路径，与 I-W1 的绝对措辞「系统中**不存在任何一条**从 agent 输出到 `status` 字段的写路径」冲突；且危险方向是**漏报即升格**（producer 不声明 F-04，claim 的 status 就更高），这一侧没有任何机械强制。",
+  "repro": "复算步骤：① 读 :60–68 的 claim_supported 七字段；② 逐字段到 §4.2 矩阵里找唯一物理写者：`evidence_grade`→W-04；`independent_cluster_count`→W-04；`counter_evidence_*`→W-04；`mechanism_results[]`→**无行**；`flags[]`→W-14（转指 §7 逐 flag setter，多主体）；`budget_state`→**无行**（W-13 只管 `budget/` 目录的用量账）；③ 读 §7.2 F-04 行的「谁设置 = producer 声明」与「谁消费 = S 2d；渲染器」；④ 读 §4.1 I-W1/I-W2 原文。文档宣称 = 「本节穷举，不留『等等』」「每个工件恰好一个物理写者」「不存在任何一条从 agent 输出到 status 的写路径」；实际观测 = claim_supported 无落点、flags[] 多写者、四个 producer 自报 flag 经 2d 影响 status 且漏报方向无强制。",
+  "seed": null
+ },
+ {
+  "id": "F162",
+  "attacker": "A10-reality-buildability",
+  "severity": "P2",
+  "location": "02-ARCHITECTURE.md §B.0 模块表（M0–M8，第 200–210 行）× 04-ORCHESTRATION.md §9.2 标定顺序（第 827–829 行）× 05-TESTING.md §T4.0 表「首次检验点」列（第 435–436 行）与 §T8.1 里程碑表（第 912–918 行）× 01-CONTRACTS §9 术语表",
+  "claim": "`M0`–`M8` 在同一文档集里承载两个互不兼容的义项，而唯一规范源的术语表两个都没收录。义项一（02-ARCHITECTURE）：模块编号，M1 = 学术检索取证插件、M2 = 证据底座、M3 = 门脚本集。义项二（04 §9.2、05 §T8.1、05 §T4.0）：里程碑编号，「M1（**第一个端到端 run**）」「M2（**首批 checkable-answer eval**）」「M3 = 首个真实中文任务」。于是 05-TESTING §T4.0 表里两条实验臂的「首次检验点」都写作 `M2`——按义项一读是「证据底座建好时」（建造序 2，早于插件与编排，此时根本跑不了 A/B），按义项二读是「首批 eval 里程碑」。这是本文档集最容易致命的歧义，因为它出现在核心实验的时间表列里；而 01-CONTRACTS §9 术语表既没有 M0–M8 的模块义，也没有里程碑义，V9.2 的 lint（「不在 §9 表内、且被当作专有名词使用的术语即报警」）会漏掉它，因为 04 §10.A 的回填清单 T-1…T-7 也没列它。",
+  "repro": "复算步骤：① 读 02-ARCHITECTURE.md:203–205（M1/M2/M3 的模块定义）；② 读 04-ORCHESTRATION.md:827–829（「M0（架构定稿前，阻塞）→…M1（第一个端到端 run）→…M2（首批 checkable-answer eval）」）；③ 读 05-TESTING.md:435–436 的「首次检验点」列（两行都是 M2），再读 :912–918 的里程碑表（M0/M1/M2/M3）；④ `grep -n 'M0\\|M1\\|M2' 01-CONTRACTS.md` 的 §9 段落（:766–805）→ 无任何一行定义它。文档宣称 = 「01-CONTRACTS 是所有共享词汇的唯一定义源」「若某文档需要一个 §9 术语表里没有的词，必须挂起裁决而非自行造词」；实际观测 = 一个跨四份文档使用的标识符有两套互斥义项、无仲裁、且出现在核心实验的时间表里。",
+  "seed": null
+ },
+ {
+  "id": "F163",
+  "attacker": "A10-reality-buildability",
+  "severity": "P3",
+  "location": "02-ARCHITECTURE.md:677、03-EVIDENCE-ENGINE.md:1319、05-TESTING.md:1032 三处页脚 × 01-CONTRACTS.md:831 页脚 × README.md:24 × 06-SURVEY.md:28/1128 × 04-ORCHESTRATION.md §10.A T-7（第 860 行）",
+  "claim": "以「数字落笔即验证」为第二条改进标准的文档集，其自身证据基线的文件计数在文档集内仍有两个值并存：02/03/05 三份页脚写「`research/v2/`（23 文件）」，而 README、06-SURVEY、01-CONTRACTS 页脚写 26。06-SURVEY §1.1 已经把它当作「必须当场更正的元数字」并更正了任务书的 23 与 01-CONTRACTS 的 22，04 §10.A 的 T-7 也把它列为待回填项——但两处更正都只点名了 01-CONTRACTS 与任务书，**漏掉了 02/03/05 三份自己的页脚**，且 T-7 声称「01-CONTRACTS 写 22」在当前快照里已经过期（01-CONTRACTS 页脚已是 26）。即：更正动作本身没有做全量扫描，这正是该项目要消灭的失效形状。",
+  "repro": "复算步骤：① `ls -1 <repo>/research/v2/ | wc -l` → **26**（我已执行）；② `grep -n '23 文件\\|26 文件\\|26 份' *.md` → 02:677、03:1319、05:1032 命中「23 文件」，README:24 命中「26 份」，06:1128 与 01:831 命中 26；③ 读 04-ORCHESTRATION.md:860 的 T-7 行，其描述的现状（01-CONTRACTS 写 22）与 01-CONTRACTS 当前页脚（26）不符。文档宣称 = 「一个以『不洗数字』为产品的文档集，自己的基线计数不能有三个版本」（T-7 原话）；实际观测 = 更正后仍有两个版本并存于六份文件里，且更正条目自身已过期。",
+  "seed": null
+ },
+ {
+  "id": "F164",
+  "attacker": "A10-reality-buildability",
+  "severity": "P3",
+  "location": "01-CONTRACTS.md §7.2 词表末两行（第 613–614 行）× §7.1 F-规则-4",
+  "claim": "封闭词表的行序错乱且末行的依据栏自陈无语料支持：F-36 `output-input-independent` 排在 F-35 `non-commercial-only` **之前**，破坏了「封闭词表按编号可 lint」的前提；且 F-36 的依据栏写「〔裁定〕本轮语料无对应 flag；依据 03-EVIDENCE-ENGINE 的 G-DEP 需求」——即它是由下游文档需求反向铸入唯一规范源的词，与 §7.1 F-规则-4「词表是封闭的。新增 flag 必须先改本文件」的方向恰好相反（先有下游需求，后补规范）。另外 §7.3 的硬上限表也没有 F-36 的行（正文说它「不改状态」，但读者需要跨节推断）。",
+  "repro": "复算步骤：① 读 01-CONTRACTS.md:613–614，观察编号顺序 F-34 → F-36 → F-35；② 读 :613 的依据栏原文；③ 读 :573 的 F-规则-4；④ 在 §7.3 表（:628–636）中查找 F-36 → 只出现在「F-19 / F-20 / F-17 / F-26 / F-35」这一行之外，无独立行。文档宣称 = 封闭受控词表，可用 V7.1 机械校验；实际观测 = 行序非单调，一个 flag 由下游文档需求反向铸入。",
+  "seed": null
+ }
+]

@@ -1,5 +1,0 @@
-paper	arm	eval_version	indep_coverage	reproduce_rate	steelman_min	objection_robust	claim_coverage	referee_verdict	overall	notes
-nuclear-safety	gated-v2	0.3.0	1.00	1.00	0	False	0.75	accept	REVISE	-
-black-death	gated	0.3.0	1.00	1.00	?	?	?	?	SHIP	-
-alcohol-jcurve	gated	0.3.0	0.86	1.00	?	?	?	?	REVISE	missed:K2
-ai-employment	gated	0.3.0	0.62	1.00	?	?	?	?	REVISE	missed:K4,K6,K8

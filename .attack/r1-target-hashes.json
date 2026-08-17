@@ -1,0 +1,42 @@
+[
+ {
+  "file": "README.md",
+  "sha256": "851068f949dfb531c6ced40071290d675fdcd0920e6315d6cc23b3b2175fd307",
+  "bytes": 6908
+ },
+ {
+  "file": "00-PREMISE.md",
+  "sha256": "aa26a94cb96041228680721607e3d6db48c8f04979e4403955c7391544c466b9",
+  "bytes": 98976
+ },
+ {
+  "file": "01-CONTRACTS.md",
+  "sha256": "4001d2a72e04776eb93cfe822c30dc46f2814f880cc8b0df3901885986e5b701",
+  "bytes": 102463
+ },
+ {
+  "file": "02-ARCHITECTURE.md",
+  "sha256": "963835704c07222abf8cb52983774c9fc0c3c3f08d05be61f9896d01c498a1ac",
+  "bytes": 85103
+ },
+ {
+  "file": "03-EVIDENCE-ENGINE.md",
+  "sha256": "8c34992a62fa52f9a0e3c46807056018443e8ae00004be335b1156b86e1a642f",
+  "bytes": 138240
+ },
+ {
+  "file": "04-ORCHESTRATION.md",
+  "sha256": "e11e23c9ad6f3f360a75192011377e272199b4a0f165673b739f519a2f7b46bf",
+  "bytes": 93540
+ },
+ {
+  "file": "05-TESTING.md",
+  "sha256": "872d97562381201ee17e60eb94cc3c76389da1b714c536471ce7f452c0a9e4a7",
+  "bytes": 87115
+ },
+ {
+  "file": "06-SURVEY.md",
+  "sha256": "0eb305070ab0971b01cca0511500b9b44844b990102839343f6822247ff120cb",
+  "bytes": 124171
+ }
+]

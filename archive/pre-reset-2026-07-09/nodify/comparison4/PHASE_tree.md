@@ -6,8 +6,8 @@ come from **disk**. Your dispatch says which phase number you are and whether it
 final one.
 
 ## The tool + the rule
-- nd binary: `/Users/vince/playground/Paper Graph/.venv/bin/nd`
-- Method skill (read it): `/Users/vince/playground/Paper Graph/nodify/skill/aggressive.md`
+- nd binary: `~/playground/Paper Graph/.venv/bin/nd`
+- Method skill (read it): `~/playground/Paper Graph/nodify/skill/aggressive.md`
   (loosened v0.2: budgets are soft; **reframe/reparent are cheap** — restructure freely).
 - **WORKER BUDGET = 0**: do the research yourself in this one context (symmetric with the
   notree arm). No subagents.
@@ -17,7 +17,7 @@ final one.
 - **If phase 1** (no session yet): `nd init cmp --question "<the big question, given in
   dispatch>"` then build the root viewpoint + an initial fan-out of facets, and start
   cataloguing studies.
-- **If phase > 1**: run `/Users/vince/playground/Paper Graph/.venv/bin/nd brief` FIRST and
+- **If phase > 1**: run `~/playground/Paper Graph/.venv/bin/nd brief` FIRST and
   work only from what it shows (drill with `nd tree` / `nd show` / `nd docs for-node` /
   `nd recall`). **Do NOT try to recall context you don't have — the tree is your memory.**
   Continue the *same* investigation; do not restart it or duplicate existing nodes.

@@ -1,6 +1,0 @@
-Excerpt — Autor, "Why Are There Still So Many Jobs?" (paraphrased fixture text)
-
-Automation does not simply substitute for labor. It also complements it. As routine
-tasks are automated, the tasks that machines cannot do become more valuable, and workers
-who supply those tasks see rising demand for their effort. The interplay between
-substitution and complementarity is the crux of the employment question.

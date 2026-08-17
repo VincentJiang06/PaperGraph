@@ -1,7 +1,27 @@
-# project data (canonical state lives per-project, not in the repo)
-data/
+# 密钥与凭据 —— 本仓库 public，这一段是硬约束
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+secrets.*
+credentials.*
+**/api_keys.*
 
-# python
+# DSH 运行时产物
+.dsh/
+runs/*/session.jsonl
+runs/*/*.zst
+
+# 证据 CAS —— 内容可能带版权表达（见 01-CONTRACTS §8.6 留存分档）
+# 只发布 claim 台账与哈希，不发布快照原始字节
+evidence/objects/
+.arc/objects/
+
+# 本地
+.DS_Store
+node_modules/
 __pycache__/
 *.pyc
 .venv/
@@ -11,19 +31,18 @@ dist/
 build/
 .pytest_cache/
 .coverage
-
-# derived index (per-project, under data/) — NOT the src/paperproof/db package
-data/**/db/
-# S5 semantic index: vendored weights (470MB) + derived vectors are never committed
-# (rebuildable from JSONL; already under db/ above, listed explicitly for safety)
-**/db/semantic/
-
-# local tool state
 .claude/settings.local.json
-.DS_Store
-
-# agent worktrees (harness-managed, never commit)
 .claude/worktrees/
 
-# reorganize-logic: legacy compaction (context only)
-docs/contracts/_legacy-context.md
+# ── 以下三条继承自前代 Paper Graph 的 .gitignore ────────────────────────
+# 它们是**有意的**排除，理由写在原文件里，不要因为「看起来是遗留」就删掉：
+#
+#   data/            —— 「canonical state lives per-project, not in the repo」
+#                        本机实测 465MB / 78 文件，从未被任何 commit 收录过
+#   **/db/semantic/  —— 「vendored weights (470MB) + derived vectors are never
+#                        committed (rebuildable from JSONL)」
+#
+# 本仓库是 public 的，把这两块推上去既无意义也不可逆。
+data/
+data/**/db/
+**/db/semantic/

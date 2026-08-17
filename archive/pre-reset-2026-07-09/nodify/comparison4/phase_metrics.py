@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
-ND = "/Users/vince/playground/Paper Graph/.venv/bin/nd"
+ND = "~/playground/Paper Graph/.venv/bin/nd"
 
 
 def tree_state():

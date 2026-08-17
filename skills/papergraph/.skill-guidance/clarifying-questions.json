@@ -1,4 +1,0 @@
-[
-  "Should PaperGraph OCR ingestion accept only local academic source files and exclude arbitrary remote URLs and generic OCR-only jobs?",
-  "Should the skill trigger only for end-to-end evidence-backed paper work, while routing ordinary OCR extraction, copy editing, and factual lookup to narrower tools?"
-]

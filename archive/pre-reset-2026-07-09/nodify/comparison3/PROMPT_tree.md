@@ -3,7 +3,7 @@
 You are running an **aggressive/wild deep-research investigation** on a hard, open
 question, using the **nodify** framework as your governor. Read and follow this skill
 in full — it is your operating logic:
-/Users/vince/playground/Paper Graph/nodify/skill/aggressive.md
+~/playground/Paper Graph/nodify/skill/aggressive.md
 
 Be genuinely aggressive: fan out MANY distinct lines fast (including contrarian ones),
 open dedicated red-team branches against your leading hypotheses, dispatch parallel
@@ -11,7 +11,7 @@ search workers, kill thin branches fast, then converge hard. The tree keeps it g
 adversarial, auditable, and convergent — lean on it.
 
 ## nd invocation
-- Binary: `/Users/vince/playground/Paper Graph/.venv/bin/nd`
+- Binary: `~/playground/Paper Graph/.venv/bin/nd`
 - `cd` into your assigned workspace, then init with the budget from your dispatch —
   **one `--budget` flag per key**, keys are `max_depth/max_children/max_open_claims`:
   `nd init cmp --question "<the question>" --boundary "<scope>"

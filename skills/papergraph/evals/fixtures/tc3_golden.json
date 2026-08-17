@@ -1,8 +1,0 @@
-{
-  "timestamp": 1551113065,
-  "secret_id": "AKIDEXAMPLE",
-  "secret_key": "Gu5t9xGARNpq86cd98joQYCN3QOQbqDl",
-  "image_base64": "QUJD",
-  "body": "{\"ImageBase64\":\"QUJD\"}",
-  "authorization": "TC3-HMAC-SHA256 Credential=AKIDEXAMPLE/2019-02-25/ocr/tc3_request, SignedHeaders=content-type;host, Signature=c51063fff4cf1c23ec1b3ab6742caa24afdd5a1b26a096c2315d7f1cfde57f21"
-}

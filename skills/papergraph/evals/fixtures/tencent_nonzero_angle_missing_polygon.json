@@ -1,1 +1,0 @@
-{"Response":{"TextDetections":[{"DetectedText":"倾斜文字", "Confidence":98, "ItemPolygon":{"X":90,"Y":100,"Width":400,"Height":50}, "Words":[], "WordCoordPoint":[]}],"Language":"zh","Angle":6.5,"PdfPageSize":0,"RequestId":"fixture-angle-001"}}

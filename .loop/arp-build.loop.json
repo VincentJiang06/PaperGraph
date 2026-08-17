@@ -1,0 +1,542 @@
+{
+  "task": "把 academic-research-plugin 的 v2 规划文档集实现为一个可运行的 DSH profile：一个超并行、多 loop 的学术证据探索系统，产品是可信度——每条 claim 携带由确定性门计算的状态。运行面一律 headless（dsh --profile，exit code 判定），不用 WebUI。",
+  "loop_altitude": "medium",
+  "loop_altitude_rationale": "建构串行、核验并行。这不是效率取舍，是被项目自己的前提约束住的：00-PREMISE B1 对『超并行提升研究质量』的裁决是『不押』——公开文献中不存在等算力对照实验支持它，而反向证据更锐（工具调用 2→150 时事实核查掉约 42pp）。该文档进而只允许三处扇出：覆盖率、同一断言的 N 路独立核验、上下文卫生，并明确禁止用于论证链构建与最终裁决。用扇出来建造这个系统会直接违反它自己写下的赌注，并且会让 S7 的等预算 A/B 失去立场——我们无法一边用超并行建造、一边诚实地测试超并行是否有用。因此：实现走串行，攻击与核验走扇出（这正是 B1 允许的第二处）。",
+  "selection_log": [
+    {
+      "decision": "D0",
+      "answer": "loop",
+      "why": "每个阶段的『做完了吗』都是可运行的门脚本 + exit code。这个项目比一般项目更适合做成 loop——它的规划文档强制要求每条验收判据机器可判（01-CONTRACTS 有 64 条可检验断言），所以『done?』本来就是被设计成机器可答的。"
+    },
+    {
+      "decision": "D1",
+      "answer": "staged",
+      "why": "缝合测试通过：模块间有真实接口。M2 证据底座是纯库 + CLI（接口=CAS 路径与 JSON schema）；M3 门脚本在 DSH 进程外执行（接口=exit code + gate-report JSON）；M1 profile 是 package.json + cordis.patch.yml（接口=boot 成功与工具集）；M8 抓取管线是工具执行器（接口=tool/result.data.meta.evidence）。四处都能独立判定，不是一坨。"
+    },
+    {
+      "decision": "D2",
+      "answer": "red-first + 门脚本",
+      "why": "每阶段先写负例夹具再写实现，门必须先对夹具判红。依据是一手教训 C1：前代 rigor 门只比对 metric 文件，伪造 metric + 无原始数据 → exit 0 PASS，文档宣称『门重执行』是假的。一道从没红过的门等于没有门。"
+    },
+    {
+      "decision": "D3",
+      "answer": "on_the_loop",
+      "why": "用户不在场，逐步审批会阻塞。升级条件收窄到三类：需要改 01-CONTRACTS 的规范定义、M0 实测结果推翻某条设计前提、00-PREMISE 的某条赌注被观测证伪。这三类都是『契约错了』而不是『实现坏了』——按 §V 只有前者该打断人。"
+    },
+    {
+      "decision": "D4",
+      "answer": "medium（建构串行、核验并行）",
+      "why": "见 loop_altitude_rationale。补一条操作性理由：串行建构让每个门的红/绿归因唯一；并行建构下一次失败可能来自三个同时改动的模块，而这个项目的门大多是跨模块断言（如 S 的输入由 M2 产生、由 M3 消费）。"
+    },
+    {
+      "decision": "D5",
+      "answer": "每阶段有限 cap + 两处 restart + 零变更闸 + 最低进度地板",
+      "why": "restart 放在 S4（profile 骨架）与 S3（GC-0 门集）——这两处最容易烂成补丁堆：profile 的 patch 是整键替换语义，连续猜 id 会积累静默失效；门集若靠打补丁修，会积累出一堆互相矛盾的特例。触发器是跑前就定死的计数器（同类失败连续 2 次），不是运行中临时判断。"
+    },
+    {
+      "decision": "D6",
+      "answer": "S0-S3 completeness-first，S4-S8 iteration-first",
+      "why": "前四阶段是契约与证据底座，错了会沿 [E:] 指针传播到全部下游（R1 已经实测到这个传播：一条 evidence_id 五元组误读成三元组，下游就写出了一条真实的数据丢失路径）。后四阶段面对真实 I/O 与真实模型，先跑起来再收敛比先想清楚便宜。"
+    }
+  ],
+  "stages": [
+    {
+      "id": "m0-blockers",
+      "definition_of_done": {
+        "goal": "七条 M0 阻塞项各有一份 .loop/m0/<id>.json，含 verdict ∈ {resolved, design-changed, still-blocked}、复现命令、原始输出的 sha256；凡 verdict 非 resolved 的，规划文档中依赖该前提的每一处都已改写或标注为待实测。",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "explore_narrow",
+      "feedback_signal": {
+        "check": "node gates/check_m0.mjs",
+        "expect": "pass",
+        "falsifiable_when": "存在一份 m0 记录 verdict=resolved 却没有 command 字段或 raw_output_sha256 对不上重跑结果；或某条阻塞项 verdict=design-changed 而规划文档里依赖它的原句未改。",
+        "passing_but_wrong": "七份文件全部凭推理写成 verdict=resolved（『按代码应该是这样』），一次都没真跑。已排除：check_m0 随机抽一条重跑其 command 并比对 raw_output_sha256，对不上即判红。"
+      },
+      "stop_conditions": {
+        "max_iterations": 3,
+        "failure": [
+          "某条阻塞项在本机根本不可测（例如 compaction 从未触发且无法人为触发）"
+        ],
+        "on_failure": {
+          "action": "escalate"
+        }
+      },
+      "depends_on": [],
+      "pattern_note": "measure-then-reconcile — measure-then-reconcile：先实测再回填文档，未知面大、收敛靠排除"
+    },
+    {
+      "id": "status-function",
+      "definition_of_done": {
+        "goal": "01-CONTRACTS §1.5 的状态函数 S 有一份实现 src/status.mjs，且 V1.7 的穷举验证覆盖完整输入向量空间、无一格返回 undefined；V1.1/V1.2/V1.3（枚举内、纯函数、单调）三条断言各有可运行检查。",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "plan_execute_verify",
+      "feedback_signal": {
+        "check": "node gates/check_contracts.mjs && node gates/check_status_exhaustive.mjs && ./gates/test_check_contracts.sh",
+        "expect": "pass",
+        "falsifiable_when": "穷举中出现任一输入向量使 S 返回 undefined、抛异常、或返回六值枚举外的值；或同一向量两次调用结果不同。",
+        "passing_but_wrong": "S 被实现成 `return 'ST-N'`——所有向量都有定义、纯、单调，穷举全绿。已排除：check_status_exhaustive 断言值域覆盖率——六个状态值每个都必须至少被一个合法向量命中，且 K-D 封闭式 + 重跑通过 + G5 + 单簇这一向量必须得到 ST-V（这正是 R1/C-1 打穿过的那条路径）。"
+      },
+      "stop_conditions": {
+        "max_iterations": 4,
+        "failure": [
+          "穷举暴露出 §1.5 规则之间的真实矛盾（不是实现 bug）"
+        ],
+        "on_failure": {
+          "action": "escalate"
+        }
+      },
+      "depends_on": [
+        "m0-blockers"
+      ],
+      "pattern_note": "spec-to-implementation with exhaustive oracle — spec-to-implementation with exhaustive oracle：判据是穷举，不是抽样"
+    },
+    {
+      "id": "evidence-core",
+      "definition_of_done": {
+        "goal": "M2 证据底座作为纯库 + CLI 存在：CAS 写入按 evidence_id 五元组寻址且并行写入幂等；claim/status/manifest 三类文件的 schema 硬校验；写权矩阵 W-01..W-16 中每条『唯一物理写者』在代码里由单一模块承担。",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "plan_execute_verify",
+      "feedback_signal": {
+        "check": "node gates/check_evidence_core.mjs && node gates/test_evidence_core_negative.mjs",
+        "expect": "pass",
+        "falsifiable_when": "同一 (work_id, version_id, locator, quote, extractor_version) 五元组并发写入两次产生两条不同记录；或某个模块能写它在 W 矩阵里不拥有的文件。",
+        "passing_but_wrong": "去重靠 embedding 相似度而非来源坐标——看起来幂等，但会把两条互相矛盾的证据合并成一条。已排除：负例套件里有一对『同一坐标、内容矛盾』的证据，断言它们保持为两条记录且都可检索。"
+      },
+      "stop_conditions": {
+        "max_iterations": 5,
+        "failure": [
+          "五元组寻址在真实语料上产生不可接受的碰撞率"
+        ],
+        "on_failure": {
+          "action": "escalate"
+        }
+      },
+      "depends_on": [
+        "status-function"
+      ],
+      "pattern_note": "library-with-contract-tests — library-with-contract-tests"
+    },
+    {
+      "id": "gc0-gates",
+      "definition_of_done": {
+        "goal": "M3 的全部 GC-0 门（离线确定性）实现完毕：quote_faithful 精确子串判定 + 近似命中只写修复建议、source_integrity 的子测试①③、§7.2 词表中标注 setter 为 GC-0 的每一条 flag。每道门先有负例夹具且门对夹具判红，再有实现。",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "plan_execute_verify",
+      "feedback_signal": {
+        "check": "./gates/run_all.sh gc0 && ./gates/test_gc0_negative.sh",
+        "expect": "pass",
+        "falsifiable_when": "任一 GC-0 门在其对应的红夹具上 exit 0；或 quote_faithful 对一条 partial_ratio=97 的近似命中返回 pass。",
+        "passing_but_wrong": "门通过读取 producer 自报的字段来判定（『producer 说搜过就算搜过』），红夹具因为字段写了 true 而过不了红。已排除：每个红夹具都把自报字段设成『看起来正确』的值，断言门仍判红——门必须从工件而非自报字段取证。"
+      },
+      "stop_conditions": {
+        "max_iterations": 6,
+        "failure": [
+          "某道门的判据在真实语料上假阳性率高到不可用"
+        ],
+        "on_failure": {
+          "action": "restart"
+        }
+      },
+      "depends_on": [
+        "evidence-core"
+      ],
+      "pattern_note": "red-first gate construction — red-first gate construction：先写红夹具再写门"
+    },
+    {
+      "id": "profile-boot",
+      "definition_of_done": {
+        "goal": "M1 profile 能被 dsh 加载并 boot 成功；五条真实加载期不变量（import 失败 / 导出形状非法 / Config 校验抛 / apply() 抛 / inject 未解析致 PENDING）对应六个红 fixture（L3 拆同步抛/异步 validate 抛两个样本）并被 boot 门逐一抓到；patch 的锚定行 id 全部实测命中（零 patch warning）。",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "retry",
+      "feedback_signal": {
+        "check": "./gates/check_boot.sh",
+        "expect": "pass",
+        "falsifiable_when": "boot 门在六个红 fixture 中任一个上 exit 0；或 fixture 目录里的数量不等于 6；或真实 boot 产生任何 patch warning（说明某个锚定行 id 猜错了，patch 静默失效）。",
+        "passing_but_wrong": "boot 门只跑 dump-config 而不真 boot——配置解析得出来，但 apply() 抛异常抓不到。已排除：check_boot.sh 用真实入口启动一次并断言退出码，dump-config 只作为附加信息。"
+      },
+      "stop_conditions": {
+        "max_iterations": 5,
+        "failure": [
+          "DSH 的 profile 机制不支持本设计所需的某个形态（例如无法在 profile 层加自建插件）"
+        ],
+        "on_failure": {
+          "action": "restart"
+        }
+      },
+      "depends_on": [
+        "gc0-gates"
+      ],
+      "pattern_note": "boot-gate with red fixtures — boot-gate with red fixtures：失败模式是「锚定行 id 猜错」，靠重试逼近"
+    },
+    {
+      "id": "fetch-channels",
+      "definition_of_done": {
+        "goal": "M8 抓取/抽取管线把页面拆成互不混合的 rendered_text / non_rendered_text / structured_data / http_headers 四个字段，只有 rendered_text 进入可引用证据池；RT-4（九处注入全部落入 non_rendered，零条进证据池）与 RT-5（PDF 白色/极小字号文本归入 non_rendered）各自通过或被如实记为失败。",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "plan_execute_verify",
+      "feedback_signal": {
+        "check": "node gates/check_channels.mjs && node gates/test_rt4_rt5.mjs",
+        "expect": "pass",
+        "falsifiable_when": "RT-4 的九条注入中任一条出现在 rendered_text 里；或 RT-5 的白字文本被归入 rendered_text。",
+        "passing_but_wrong": "管线把所有可疑内容都丢进 non_rendered（包括正文），RT-4 全绿但证据池空了。已排除：夹具同时含九条注入与一段必须被保留的正文，断言正文在 rendered_text 中且逐字完整。"
+      },
+      "stop_conditions": {
+        "max_iterations": 5,
+        "failure": [
+          "PDF 抽取库拿不到可见性信息，通道分离在 PDF 路径上不可实现（这是 M0-1 阻塞项，若此处才暴露说明 S0 判错了）"
+        ],
+        "on_failure": {
+          "action": "escalate"
+        }
+      },
+      "depends_on": [
+        "profile-boot"
+      ],
+      "pattern_note": "adversarial fixture driven — adversarial fixture driven"
+    },
+    {
+      "id": "orchestration-min",
+      "definition_of_done": {
+        "goal": "M4 最小编排跑通一次端到端 headless run：给定一份冻结问句集，产出带 status 的 claim 台账 + gate-report，全程 exit code 判定，无人工介入；CP-1/CP-2 两个强制人在环检查点在代码里存在且可被 --unattended 显式跳过并记录。",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "plan_execute_verify",
+      "feedback_signal": {
+        "check": "./gates/check_e2e.sh",
+        "expect": "pass",
+        "falsifiable_when": "端到端 run 产出的 claim 中，存在 status 与用 src/status.mjs 对同一输入重算的结果不一致的；或 run 在没有 --unattended 时静默跳过了 CP-1。",
+        "passing_but_wrong": "端到端跑通但所有 claim 都落 ST-N（程序没跑完也算跑完了）。已排除：check_e2e 断言冻结问句集里预置的三条『应当可达 ST-V 的』claim 确实拿到 ST-V，以及两条『应当落 ST-U』的确实落 ST-U。"
+      },
+      "stop_conditions": {
+        "max_iterations": 6,
+        "failure": [
+          "headless 一次性任务的 CLI 调用形式在本 build 上不存在（M0-3 阻塞项）"
+        ],
+        "on_failure": {
+          "action": "escalate"
+        }
+      },
+      "depends_on": [
+        "fetch-channels"
+      ],
+      "pattern_note": "end-to-end thin slice — end-to-end thin slice"
+    },
+    {
+      "id": "ab-honest-test",
+      "definition_of_done": {
+        "goal": "等预算 A/B 实验跑完并落盘：并行臂与串行臂在同一预算下各跑一次，主终点按 05-TESTING §T4 预注册的定义计算，结果无论方向都写进 07-ATTACK-LEDGER 与 00-PREMISE B1 的裁决栏。",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "human_in_the_loop",
+      "feedback_signal": {
+        "check": "node gates/check_ab.mjs",
+        "expect": "pass",
+        "falsifiable_when": "两臂的预算消耗差超过预注册容差；或主终点的计算代码在实验跑完之后被改动过（gates-baseline tag 比对）。",
+        "passing_but_wrong": "两臂都跑了、数字也出来了，但结论段只报告对并行有利的那个终点。已排除：check_ab 断言预注册的全部终点都出现在结果文件里，缺一即红；且断言 B1 裁决栏被更新（无论方向）。"
+      },
+      "stop_conditions": {
+        "max_iterations": 2,
+        "failure": [
+          "两臂无法在同一预算口径下比较（例如串行臂的缓存命中率结构性更高，无法均衡）"
+        ],
+        "on_failure": {
+          "action": "escalate"
+        }
+      },
+      "depends_on": [
+        "orchestration-min"
+      ],
+      "pattern_note": "pre-registered experiment — pre-registered experiment：终点与判据在跑之前冻结，结果无论方向都必须落盘"
+    },
+    {
+      "id": "attack-fixaudit",
+      "definition_of_done": {
+        "goal": "对已实现的系统跑一轮攻击（五透镜扇出 + 跨厂商），种子命中率达标（每个攻击者至少命中一个种子，否则该攻击者作废），全部 P1 有裁决与修复，且修复 diff 过一轮 fix-audit（审计者不是修复者）。",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "review",
+      "feedback_signal": {
+        "check": "node gates/check_attack_ledger.mjs",
+        "expect": "pass",
+        "falsifiable_when": "台账里存在 severity=P1 且 status 非 closed/adjudicated-wontfix 的条目；或本轮含修复但 coverage_gaps.notes 里 fix_audit 不是 run。",
+        "passing_but_wrong": "攻击轮跑了但攻击者全是同一模型同一透镜，findings 数量好看却全是同类。已排除：check_attack_ledger 断言本轮覆盖五个透镜且至少一个攻击者是跨厂商，否则强制标 battery_grade=smoke-only 并判红。"
+      },
+      "stop_conditions": {
+        "max_iterations": 4,
+        "failure": [
+          "P1 数量在连续两轮之间不下降（修复在制造新缺陷）"
+        ],
+        "on_failure": {
+          "action": "restart"
+        }
+      },
+      "depends_on": [
+        "ab-honest-test"
+      ],
+      "pattern_note": "attack -> adjudicate -> fix -> fix-audit rotation — attack → adjudicate → fix → fix-audit rotation"
+    }
+  ],
+  "human_placement": "on_the_loop",
+  "maker_checker": {
+    "separate_checker": true,
+    "scope": "每阶段结束时，一个从未看过该阶段实现的 fresh context 只拿到 diff + 该阶段的验收检查，任务是证明这个实现是坏的。它特别要查三件事：门是否从工件取证而非从被检查方自报的字段取证；负例夹具是否真的能让门判红（而不是夹具本身就不满足前置条件所以门根本没跑到判定）；以及本阶段是否悄悄放宽了上游阶段已经通过的断言。"
+  },
+  "roles": {
+    "planner": {
+      "mandate": "把目标转成阶段规格与契约断言；只写规格与判据，不写实现代码，也不写门脚本"
+    },
+    "generator": {
+      "mandate": "写实现与门脚本以满足契约；不得弱化任何一条断言，不得给自己的产出评分；发现断言写错了要升级而不是改它"
+    },
+    "evaluator": {
+      "separate_context": true,
+      "adversarial": true,
+      "mandate": "fresh context，被告知这份产物是坏的、任务是证明它坏在哪。从不看实现过程与作者的说法，只看 diff 与判据。默认立场是『这个门是空心的』，让证据来推翻它。"
+    }
+  },
+  "contract": {
+    "assertions": [
+      {
+        "id": "A1",
+        "must": "七条 M0 阻塞项每条都有一份带复现命令与原始输出哈希的记录",
+        "check": "node gates/check_m0.mjs",
+        "stage": "m0-blockers"
+      },
+      {
+        "id": "A2",
+        "must": "凡 M0 实测结果与规划文档冲突的，文档已改写而非保留旧说法",
+        "check": "node gates/check_m0.mjs --reconcile",
+        "stage": "m0-blockers"
+      },
+      {
+        "id": "A3",
+        "must": "状态函数 S 对完整输入向量空间都有唯一返回值（全函数）",
+        "check": "node gates/check_status_exhaustive.mjs",
+        "stage": "status-function"
+      },
+      {
+        "id": "A4",
+        "must": "S 的返回值恒落在 §1.4 六值枚举内",
+        "check": "node gates/check_status_exhaustive.mjs --enum",
+        "stage": "status-function"
+      },
+      {
+        "id": "A5",
+        "must": "S 的第 2 步每条规则的输出状态在偏序下不高于输入（单调）",
+        "check": "node gates/check_status_exhaustive.mjs --monotone",
+        "stage": "status-function"
+      },
+      {
+        "id": "A6",
+        "must": "六个状态值每个都至少被一个合法输入向量命中（值域非退化）",
+        "check": "node gates/check_status_exhaustive.mjs --coverage",
+        "stage": "status-function"
+      },
+      {
+        "id": "A7",
+        "must": "§7.2 词表与 §7.3/§7.3.1 作用表双向完备且无重复",
+        "check": "node gates/check_contracts.mjs",
+        "stage": "status-function"
+      },
+      {
+        "id": "A8",
+        "must": "文档与代码中不出现六值枚举外的 ST-* 符号",
+        "check": "node gates/check_contracts.mjs",
+        "stage": "status-function"
+      },
+      {
+        "id": "A9",
+        "must": "同一 evidence_id 五元组的并发写入产生且仅产生一条记录",
+        "check": "node gates/test_evidence_core_negative.mjs --concurrent",
+        "stage": "evidence-core"
+      },
+      {
+        "id": "A10",
+        "must": "同一来源坐标下两条内容矛盾的证据不被合并",
+        "check": "node gates/test_evidence_core_negative.mjs --contradiction",
+        "stage": "evidence-core"
+      },
+      {
+        "id": "A11",
+        "must": "W-01..W-16 每条文件路径的写入都只来自其矩阵指定的唯一模块",
+        "check": "node gates/check_evidence_core.mjs --write-authority",
+        "stage": "evidence-core"
+      },
+      {
+        "id": "A12",
+        "must": "quote_faithful 的 pass 当且仅当归一化引语是快照抽取文本的精确子串",
+        "check": "./gates/test_gc0_negative.sh --quote",
+        "stage": "gc0-gates"
+      },
+      {
+        "id": "A13",
+        "must": "partial_ratio ≥ 95 的近似命中判 fail 并只产出修复建议，不产出 pass",
+        "check": "./gates/test_gc0_negative.sh --nearmiss",
+        "stage": "gc0-gates"
+      },
+      {
+        "id": "A14",
+        "must": "每道 GC-0 门在其红夹具上 exit 非零",
+        "check": "./gates/test_gc0_negative.sh",
+        "stage": "gc0-gates"
+      },
+      {
+        "id": "A15",
+        "must": "门的判定不依赖被检查方自报的字段——红夹具把自报字段设成正确值时门仍判红",
+        "check": "./gates/test_gc0_negative.sh --selfreport",
+        "stage": "gc0-gates"
+      },
+      {
+        "id": "A16",
+        "must": "五条加载期不变量各有红 fixture 且 boot 门在其上 exit 非零",
+        "check": "./gates/check_boot.sh --fixtures",
+        "stage": "profile-boot"
+      },
+      {
+        "id": "A17",
+        "must": "真实 boot 产生零条 patch warning（所有锚定行 id 实测命中）",
+        "check": "./gates/check_boot.sh --no-warn",
+        "stage": "profile-boot"
+      },
+      {
+        "id": "A18",
+        "must": "boot 门走真实入口启动，不以 dump-config 代替",
+        "check": "./gates/check_boot.sh --real-entry",
+        "stage": "profile-boot"
+      },
+      {
+        "id": "A19",
+        "must": "RT-4 的九条注入零条进入可引用证据池",
+        "check": "node gates/test_rt4_rt5.mjs --rt4",
+        "stage": "fetch-channels"
+      },
+      {
+        "id": "A20",
+        "must": "同一夹具中必须保留的正文在 rendered_text 中逐字完整（通道分离没有误杀）",
+        "check": "node gates/test_rt4_rt5.mjs --no-overkill",
+        "stage": "fetch-channels"
+      },
+      {
+        "id": "A21",
+        "must": "端到端 run 产出的每条 claim，其 status 与重算结果逐字节一致",
+        "check": "./gates/check_e2e.sh --recompute",
+        "stage": "orchestration-min"
+      },
+      {
+        "id": "A22",
+        "must": "冻结问句集中预置的三条应达 ST-V 的 claim 确实达到 ST-V",
+        "check": "./gates/check_e2e.sh --positive",
+        "stage": "orchestration-min"
+      },
+      {
+        "id": "A23",
+        "must": "冻结问句集中预置的两条应落 ST-U 的 claim 确实落 ST-U",
+        "check": "./gates/check_e2e.sh --negative",
+        "stage": "orchestration-min"
+      },
+      {
+        "id": "A24",
+        "must": "CP-1/CP-2 未经 --unattended 不得被跳过，跳过必留记录",
+        "check": "./gates/check_e2e.sh --checkpoints",
+        "stage": "orchestration-min"
+      },
+      {
+        "id": "A25",
+        "must": "A/B 两臂的预算消耗差在预注册容差内",
+        "check": "node gates/check_ab.mjs --budget-parity",
+        "stage": "ab-honest-test"
+      },
+      {
+        "id": "A26",
+        "must": "预注册的全部终点都出现在结果文件里，缺一即失败",
+        "check": "node gates/check_ab.mjs --all-endpoints",
+        "stage": "ab-honest-test"
+      },
+      {
+        "id": "A27",
+        "must": "00-PREMISE B1 的裁决栏被 A/B 结果更新，无论方向",
+        "check": "node gates/check_ab.mjs --verdict-updated",
+        "stage": "ab-honest-test"
+      },
+      {
+        "id": "A28",
+        "must": "攻击台账中不存在 severity=P1 且未裁决的条目",
+        "check": "node gates/check_attack_ledger.mjs",
+        "stage": "attack-fixaudit"
+      },
+      {
+        "id": "A29",
+        "must": "含修复的轮次其 coverage_gaps.notes 的 fix_audit 字段为 run",
+        "check": "node gates/check_attack_ledger.mjs --fixaudit",
+        "stage": "attack-fixaudit"
+      },
+      {
+        "id": "A30",
+        "must": "每轮攻击覆盖五个透镜且至少一个攻击者跨厂商，否则强制标 smoke-only",
+        "check": "node gates/check_attack_ledger.mjs --independence",
+        "stage": "attack-fixaudit"
+      }
+    ]
+  },
+  "harness_primitives": [
+    ".loop/run-state.md —— 跨上下文重置存活的阶段台账，记录哪个阶段已完成、当前卡在哪、上一次失败属于哪一类（restart 计数器的持久化载体）",
+    ".loop/m0/*.json —— M0 实测记录，每条带复现命令与原始输出哈希，使『这条前提被验证过』不依赖任何人的记忆",
+    "gates/ 目录 + gates/run_all.sh —— 全部验收判据落成可独立运行的脚本，exit code 是唯一裁决；任何阶段的『做完了吗』都能被一条命令回答",
+    "gates/test_*.sh 负例套件 —— 每道门配一份红夹具，证明门会红；这是本项目防『空心门』的唯一机制",
+    "git tag gates-baseline —— 门代码的基线锚点，使『门在实验后被改过』可检测（其自指弱点见 07-ATTACK-LEDGER C-11，未闭环）",
+    ".attack/r*-findings.json + 靶标哈希 —— 攻击轮的不可篡改记录，是 fix-audit 能够存在的前提：没有上一轮记录就没有 fix-audit"
+  ],
+  "stop_conditions": {
+    "success": "九个阶段的 check 按依赖序全部通过，且 contract 的 A1-A30 全绿；最低进度地板：至少跑到 orchestration-min 并产出过一次真实的端到端 run——在此之前宣布成功一律视为升级而非完成，因为在 M0 到 gc0-gates 之间的任何『全绿』都只证明了离线判据自洽，没碰过真实 DSH 运行面。",
+    "failure": [
+      "任一阶段耗尽 max_iterations 仍未通过其 check",
+      "某个下游阶段两次迫使已验收的上游阶段重新设计（说明分阶段的缝划错了）",
+      "连续 2 次外环迭代产生零新变更（零变更闸：loop 在空转，停下来而不是继续买迭代）",
+      "连续 2 次同类失败，或某次失败正好落在上一次迭代自己的修复里（跑前定死的停滞计数器 → restart 该阶段，不要继续往前打补丁）"
+    ],
+    "escalate": [
+      "需要修改 01-CONTRACTS 的规范定义才能继续（契约错了，不是实现坏了）",
+      "M0 实测结果推翻某条设计前提，且没有不改架构的绕法",
+      "00-PREMISE 的某条赌注被观测证伪（尤其 B1：若 A/B 结果与设计假设相反）",
+      "loop 提议在最低进度地板之前停止（过早放弃闸）",
+      "需要真实付费 API 预算超过预注册额度"
+    ],
+    "max_iterations": 5
+  },
+  "risk_guards": [
+    {
+      "risk": "空心门——门写出来了、全绿，但它从没红过，实际什么都没检查。这是本项目一手教训里发生过两次的失败（前代 rigor 门 exit 0 PASS；house 的 gate-integrity 宣称 pinned 但零代码）。",
+      "mitigation": "每道门必须先有负例夹具且门对夹具判红，才允许写实现（red-first 是 D2 的硬约束，不是建议）；A14/A15 把它写成契约断言；退出码直接判定，禁止用管道遮蔽（管道会把门的 exit code 换成 grep 的）。"
+    },
+    {
+      "risk": "门从被检查方自报的字段取证。R1 已实测到两处：counter_evidence_searched 与 question_authored_by 都是『producer 说了算』。",
+      "mitigation": "A15 要求红夹具把自报字段设成正确值时门仍判红——门必须从工件（tool/call 事件、快照哈希、冻结文件的 seq 时序）取证。"
+    },
+    {
+      "risk": "修复者审计自己的修复，独立性塌陷。",
+      "mitigation": "maker_checker 的 evaluator 是 fresh context；attack-fixaudit 阶段的 fix-audit 明确要求审计者不是修复者；A29 把它写成可判定断言。"
+    },
+    {
+      "risk": "用扇出建造，从而丧失评价扇出的立场（S7 的 A/B 会变成自证）。",
+      "mitigation": "loop_altitude 定为 medium 并在 rationale 里绑到 00-PREMISE B1；实现走串行，扇出只用于攻击与 N 路核验。若某阶段确实需要并行建构，按 escalate 处理而不是自行放宽。"
+    },
+    {
+      "risk": "契约漂移——下游文档复述而非引用 01-CONTRACTS，R1 已实测到 169 段 ≥40 字符的重复片段。",
+      "mitigation": "check_contracts.mjs 是每阶段都跑的门（不只是 status-function 阶段）；A7/A8 在每次 run_all 中重跑。"
+    },
+    {
+      "risk": "预算失控——真实 API 调用在 orchestration-min 与 ab-honest-test 阶段才开始，届时烧钱速度与前几阶段完全不同。",
+      "mitigation": "预注册额度写进 escalate 条件；budget/ 由编排层从 session 日志 fold 出 per-step 分解（W-13），超额即停而不是继续跑。"
+    },
+    {
+      "risk": "权限爆炸半径——门轨道若拿到 run_code 就能自己写 status，§0.2 的第二层强制彻底失效。",
+      "mitigation": "门在不给 run_code、不给写 .arc/ 的独立 profile 里跑（这是 §0.2 指明的 M0 收口）；profile-boot 阶段的 A16-A18 验证这个隔离真的生效。"
+    }
+  ]
+}

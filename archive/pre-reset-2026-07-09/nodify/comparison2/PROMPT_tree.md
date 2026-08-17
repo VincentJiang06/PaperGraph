@@ -6,7 +6,7 @@ frontier; the truth lives on the tree.** The tool is `nd` (each command prints o
 JSON envelope; every persisted record is schema-validated).
 
 ## nd invocation (IMPORTANT)
-- Binary: `/Users/vince/playground/Paper Graph/.venv/bin/nd`
+- Binary: `~/playground/Paper Graph/.venv/bin/nd`
 - **First**, `cd` into your assigned workspace (given in your dispatch message),
   then `nd init cmp --question "<the assigned question>" --boundary "<scope>"`.
   This creates `./sessions/cmp/`. Run all later `nd` commands from the workspace.
