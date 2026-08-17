@@ -1,0 +1,38 @@
+{
+  "id": "C-12b",
+  "question": "`$DSH_HOME/cordis.patch.yml` 与 `$DSH_HOME/settings.yaml` 的实际作用与优先级各是什么？boot 门该断言哪个？",
+  "verdict": "resolved",
+  "answer": "**两个都要断言，且 `settings.yaml` 是更强的那个。** 实测层序：bundle 层 → profile 的 `cordis.patch.yml` → `$DSH_HOME/cordis.patch.yml`（**后者覆盖前者**）；而 `$DSH_HOME/settings.yaml` 在运行期**又盖过整条 patch 链**——三方对撞时 patch 链最终值是 `PATCH-BOGUS-MODEL`，真正发到 API 的却是 `SETTINGS-BOGUS-MODEL`。`cordis.patch.yml` 一旦存在必在 `--dump-config` 的溯源注释里现形，而 `settings.yaml` 对 `--dump-config` 与 `--dump-default-config` **双双不可见**且 `watch: true` 热重载。文档 §A.2 现有的改写口径与实测一致。",
+  "evidence": [
+    {
+      "command": "( H=\"$(mktemp -d)\"; DSH_HOME=\"$H\" dsh --profile headless --dump-config 2>&1 | tail -n 0; printf -- '- id: agent-default-model\\n  config:\\n    provider: deepseek-official\\n    model: FROM-DSHHOME\\n' > \"$H/cordis.patch.yml\"; printf -- '- id: agent-default-model\\n  config:\\n    provider: deepseek-official\\n    model: FROM-PROFILE\\n' > \"$H/profiles/headless/cordis.patch.yml\"; DSH_HOME=\"$H\" dsh --profile headless --dump-config 2>&1 | grep -B1 -A4 '^- id: agent-default-model$' | sed \"s|$H|__DSH_HOME__|g\"; echo '--- dump-default-config (user layers stripped) ---'; DSH_HOME=\"$H\" dsh --profile headless --dump-default-config 2>&1 | grep -A4 '^- id: agent-default-model$' )",
+      "cwd": "~",
+      "raw_output_sha256": "3846a260cf33eeae49f377c2a3b28623b9b9974564ca60b5d65cb1496bc1d647",
+      "excerpt": "# == @deepseek-ai/dsh-base, patched by __DSH_HOME__/profiles/headless/cordis.patch.yml, __DSH_HOME__/cordis.patch.yml\n- id: agent-default-model\n  name: '@deepseek-ai/dsh-agent-default-model'\n  config:\n    provider: deepseek-official\n    model: FROM-DSHHOME\n--- dump-default-config (user layers stripped) ---\n- id: agent-default-model\n  name: '@deepseek-ai/dsh-agent-default-model'\n  config:\n    provider: deepseek-official\n    model: deepseek-v4-flash\n\n〔上半：两个 patch 层同时存在时，溯源注释按施加顺序列出两者，最终值取 **home 层** —— `$DSH_HOME/cordis.patch.yml` **压过** profile 自己的 patch。下半：`--dump-default-config` 把**两个用户层都剥掉**回到出厂 `deepseek-v4-flash`，所以 `diff <(dump-default) <(dump)` 恰好等于「全部用户层 delta」，§D.3 第 1b 段 (ii) 的写法成立。〕"
+    },
+    {
+      "command": "( H=\"$(mktemp -d)\"; DSH_HOME=\"$H\" dsh --profile headless --dump-config 2>&1 | tail -n 0; printf -- '- id: agent-default-model\\n  config:\\n    provider: deepseek-official\\n    model: PATCH-BOGUS-MODEL\\n' > \"$H/cordis.patch.yml\"; printf 'agent-default-model:\\n  provider: deepseek-official\\n  model: SETTINGS-BOGUS-MODEL\\n' > \"$H/settings.yaml\"; DSH_HOME=\"$H\" dsh --profile headless 'say hi' 2>&1 | grep -oE 'you passed [A-Z-]+' )",
+      "cwd": "~",
+      "raw_output_sha256": "093819a9361a61cd7bdad3b40120d10e7139569d0481c6c166ec062c8668c764",
+      "excerpt": "you passed SETTINGS-BOGUS-MODEL\n\n〔同一个 DSH_HOME 里，`cordis.patch.yml` 把模型钉成 `PATCH-BOGUS-MODEL`（它是 patch 链的最后一层），`settings.yaml` 写 `SETTINGS-BOGUS-MODEL`。真正发到 API 的是后者 —— **settings 覆盖整条 patch 链，且这个覆盖对两个 dump 命令完全不可见**。该失败发生在模型生成之前，故本条不含模型输出、完全确定。〕"
+    }
+  ],
+  "layer_order_measured": [
+    "1. bundle 层（package.json 的 dsh.profile.bundles 数组顺序）",
+    "2. $DSH_HOME/profiles/<name>/cordis.patch.yml（profile 自己的层）",
+    "3. $DSH_HOME/cordis.patch.yml（机器级 patch 层 —— **压过第 2 层**，实测）",
+    "4. --patch overlays（**未实测**，来自 dsh --help 文案与文档）",
+    "—— 以上共同构成「插件树」：--dump-config 打印它，--dump-default-config 打印剥掉 2/3/4 层的版本 ——",
+    "5. $DSH_HOME/settings.yaml 的 namespace section（运行期叠加，**压过整棵树**，实测；两个 dump 命令均不可见；watch:true 热重载）"
+  ],
+  "affects": [
+    "02-ARCHITECTURE.md §A.2 第 1–2 条（层序表述与「机器级偏好的真实载体是 settings.yaml」）",
+    "02-ARCHITECTURE.md §C 表 C-12b",
+    "02-ARCHITECTURE.md §D.3 boot 门第 1b 段 (i)(ii)(iii)",
+    "02-ARCHITECTURE.md §一览表第 37 行（settings.yaml 的 agent-presets.default 在 headless 下是惰性的）",
+    "07-ATTACK-LEDGER.md F104",
+    "01-CONTRACTS.md §6.5.5（boot 门断言的对象）"
+  ],
+  "doc_action": "needed —— 幅度小，是**证据升级 + 一条新缺口**，不是推翻。①§A.2 第 2 条现写 `$DSH_HOME/cordis.patch.yml`「本机不存在」，据此说那条断言「在本机恒真，是一条不会红的检查」。判断对，但**理由要补强**：实测该文件一旦存在会**压过 profile 自己的 patch 层**（不是并列、不是先于），所以它不是「较弱的那个」而是「较易观测的那个」——威胁强度上它能整键改掉我们钉死的任何一行（含 §A.3 第 0 块的 `tools.mode` 与 `code-runtime`），只是会在 dump 里现形。这条区别要写进去，否则后人可能因为「恒真」而删掉它。②§A.2 与 §C C-12b 里「settings 覆盖 patch」此前的依据是 `dsh-settings-file/README.md` 的分层描述（**文档阅读**），现在有运行实测（evidence[1]），证据指针应升级。③**新增缺口**：§D.3 第 1b 段 (iii) 的 `assert_settings_overlay.mjs` 走「值级白名单 + sha256 入 manifest」，但该 provider 出厂 `watch: true` **热重载**——boot 期的哈希只能证明 boot 那一刻，运行途中改 `settings.yaml` 会被热发布而这道门看不见。文档需明写这个残余风险（或移交 §D.5 的诚实边界一节）。",
+  "honest_limits": "① 只用 `agent-default-model` 一个 namespace 验证了 settings 覆盖 patch；`llm-pi-ai.providers`（活体注册全新 provider 路由）、`ya-subagent`、`auto-compact` 这三个**威胁更大**的 section 的覆盖行为**未实测**，只按同一机制推断。② **未实测 `--patch` overlay 层**（层序第 4 层），它相对 `$DSH_HOME/cordis.patch.yml` 的先后仅来自 `dsh --help` 文案与文档。③ **未实测热重载**：没有在一次运行途中修改 `settings.yaml` 观察是否真的生效，`watch: true` 的后果是从 README 读来的。④ §A.3 / §D.3 里那些断言脚本本身尚不存在，未验证。⑤ 全部实测都在临时 `DSH_HOME` 干净房里做，**未在用户真实 `~/.dsh` 上复跑**（那里有 1271 字节的 settings.yaml、profile 另装 3 个社区 bundle），真实环境下是否有额外交互未知。⑥ 用户本机 `settings.yaml` 的顶层 section 清单（`ui-onboarding` / `agent-default-model` / `locale` / `agent-presets` / `ya-subagent` / `auto-compact` / `llm-pi-ai`）是读文件得到的，因涉及用户私有第三方 provider 配置，**未收进可复跑的 evidence 命令**。"
+}

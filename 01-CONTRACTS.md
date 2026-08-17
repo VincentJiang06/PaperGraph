@@ -26,7 +26,19 @@
 | ②**文件面** | `.arc/claims/*.status.json` 只由门代码写 | **无文件系统级强制** | 软。见下 |
 
 **第二层为什么是软的**：`run_code` **同时绕过**内核沙箱（只管 bash）**和** `ctx.fs` 策略围栏（只管 `ctx.fs` 工具）
-[E: GROUND-TRUTH-CORRECTIONS.md#A7]。一个拿到 `run_code` 的 agent 可以直接 `open(...,'w')` 写 status 文件。
+[E: GROUND-TRUTH-CORRECTIONS.md#A7]。一个拿到 `run_code` 的 agent 可以直接 `(await import('node:fs')).writeFileSync(...)` 写 status 文件。
+
+**这条已从推论变成实测**〔裁定 · S0 实测，记录 `.loop/m0/M0-4.json`〕：
+同机同时刻同一条 read-only 策略下，走内核沙箱的 bash 路径写文件**被 `sandbox-exec` 拒绝**
+（退出码非 0、stderr 命中该后端的 denialSignatures、文件未生成），
+而 `run_code` 的程序体 `await import('node:fs')` **拿到 fs 并成功写入、读回**。
+真实 headless 会话（`DSH_PERMISSION_MODE=read-only`）复现同一结论，且工作区**内外**两个文件都写成、磁盘核实存在。
+
+**机制也定位了**：`run_code` 跑在**宿主进程的 worker thread** 里（实测 `program pid === host pid`），
+**根本不存在可被 `sandbox-exec` 包住的子进程**——所以这不是沙箱配置问题，是结构问题。
+另两条实测边界：程序体是 `new AsyncFunction` 的函数体，因此 `require` **不在作用域**（`ReferenceError`）；
+`process.env` 键数 **= 0**（挡得住凭据，挡不住文件系统）。
+`node:child_process` 与网络出站**仍未实测**，那两项继续按最坏假设措辞。
 DSH 侧不存在能拦住它的机制。
 
 **因此本文件不得声称「不存在任何一条从 agent 输出到 status 的写路径，这是结构性后果」。**
@@ -88,7 +100,7 @@ K-I 的溯源性不由 `source_integrity` 承担，而由**其前提 claim 各�
 - **V1.8** 语料中不存在 `kind != K-I` 且 `source_integrity == na` 的证据记录；
   也不存在 `source_integrity == na` 却携带非空 `evidence_id` 的记录。
 
-**§1.2.2** 归一化算法（`quote_faithful` 的唯一实现）：NFKC → 统一引号/破折号/省略号 → 折叠空白；PDF 专项做跨行连字符还原与页眉页脚去重；**中文专项做全角/半角统一并整串去空白后比对**（中文 PDF 抽取的空格位置不可靠）[E: ext-reproducibility.md#3 归一化匹配算法]。
+**§1.2.2** 归一化算法（`quote_faithful` 的唯一实现）：NFKC → 统一引号/破折号/省略号 → 折叠空白；PDF 专项做跨行连字符还原与页眉页脚去重；**中文专项做全角/半角统一，并删除一切与 CJK 字符相邻的空白——不按语言分支**（见 §1.2.2.0：原写法「按整串是否含 CJK 决定要不要去空白」是非对称的，实测把中文网页命中率打到 5.0%）[E: ext-reproducibility.md#3 归一化匹配算法]。
 
 判定只有两个出口，**`pass` 当且仅当归一化后的引语是快照抽取文本的精确子串**：
 
@@ -96,6 +108,58 @@ K-I 的溯源性不由 `source_integrity` 承担，而由**其前提 claim 各�
 归一化(引语) 是 归一化(快照抽取文本) 的子串  → pass
 否则                                        → fail  +flag F-28
 ```
+
+**§1.2.2.0 归一化算法按 S0 实测重写**〔裁定 · S0 实测，[E: .loop/m0/M0-2.json]〕。
+
+S0 对该算法做了端到端实测（7 份 PDF × 每份 120 条引语 + 5 份网页）。**结果推翻了原算法**：
+
+| 臂 | 未归一化的原始子串命中率 | 套上**原** §1.2.2 后 |
+|---|---|---|
+| 同工具对照（引语直接取自我们自己的抽取文本） | 恒 **100.0%** | **91.7%–100.0%** |
+| 中文维基百科页 | 100.0% / 96.7% | **5.0% / 17.5%** |
+
+即：**归一化本身在制造假阴性**，而且中文网页上摧毁了整条通道。两条根因都已最小复现：
+
+- **(A) 「中文专项整串去空白」按「该串是否含 CJK」分支，因此是非对称的。**
+  中文文档里的一条**纯英文**引语：引语侧保留空格、快照侧被抹掉，**永远不可能命中**。
+  最小复现：`optimal transport` —— `raw substring = True`，`as_written pass = False`。
+- **(B) 跨行连字符还原是上下文相关重写。** 引语若在还原窗口内被截断就必然失配。
+  最小复现：`German, Arabic, Rus-\n` —— `raw substring = True`，两种规则都 `pass = False`。
+
+**修正后的规则（已实测验证）**：把中文专项改成
+**「凡与 CJK 字符相邻的空白一律删除，且不按语言分支」**。效果：
+
+| 臂 | 原规则 | 修正后 |
+|---|---|---|
+| 同工具对照 | 91.7%–100.0% | **99.2%–100.0%** |
+| 中文 PDF | 70.8 / 100 / 88.3 | **100 / 100 / 96.7** |
+| 中文网页 | 5.0 / 17.5 | **100 / 96.7** |
+| 英文 | — | **全部不变** |
+
+且该规则**不会**让 `the rapist` 误命中 `therapist`（实测确认）——因为它只删 CJK 相邻空白。
+
+**§1.2.2.2 「100% 兑现」这个承诺必须收窄**〔裁定 · S0 实测〕。
+
+即便用上修正规则，**跨工具**场景（作者从自己的 PDF 阅读器复制引语、门拿我们的抽取文本比对）
+仍不是 100%：**英文 90.0%–100.0%、中文 96.7%–100.0%**。残余失配来自阅读顺序、连字/私用区字形与公式。
+
+因此本项目对 `quote_faithful` 的准确承诺是：
+
+> **在同工具口径下**（引语来自我们自己的抽取文本，即 producer 从快照里取引语），
+> `quote_faithful` 是确定性、哈希可判的谓词，实测命中率 **99.2%–100.0%**。
+> **跨工具口径下不承诺 100%**——作者从外部阅读器复制的引语有 0%–10% 的概率因字形与阅读顺序差异而判 fail，
+> 此时走 §1.2.2.1 的修复建议通道（F-28a），由 producer 改用快照里的真实跨度。
+
+**这条把一个营销式的「100%」换成了一个有口径、有实测数字、有失败去向的承诺。**
+它是本项目仅有的两条「可 100% 兑现」承诺之一——**现在只剩一条半**。
+另一条（`source_integrity`）在默认档 Tier B 下也已按 §8.6.2.1 收窄。
+产品页上不得再出现不带口径的「100%」。
+
+**实测本身的边界**（`honest_limits` 逐条转述，不得省略）：
+引语是**程序按固定种子截取的连续字符段**，不是真人手选（真人倾向在句子边界与完整术语处起止，真实命中率可能更高）；
+「人类复制侧」用 `pdftotext -layout` 与自建 innerText 作代理，**没有真的用 Preview/Acrobat 复制、也没有真的取浏览器剪贴板**；
+语料规模小——7 份 PDF（4 英 3 中，**全部数字原生**，中文全部来自《软件学报》一家期刊、排版引擎单一）+ 实际只测到 3 份网页；
+**完全没有扫描件/OCR PDF，没有 Word 导出 PDF**。
 
 **§1.2.2.1 近似命中是修复建议，不是判定结果**〔裁定 · R1/C-3〕。
 `rapidfuzz partial_ratio ≥ 95` 的近似命中**不产生 `pass`**，只产生一条**修复建议**：
@@ -518,7 +582,7 @@ v1 缺失该维度。中文场景下「拿到全文」经常不可能，英文�
 | W-01 | `objects/<sha256>`（CAS：快照原始字节、抽取文本、run 输出） | **我们自建的检索/抓取工具执行器**，在同一次工具执行内写入 | 只读 | 落库 `tool/result` 存的是**截断后**内容；超阈值纯文本结果原文不在日志里 [E: GROUND-TRUTH-CORRECTIONS.md#A2, gt-evidence-substrate.md#E4]。且工具的 canonical value 是 execution-local、不进持久日志 [E: gt-exec-security.md#H-2] |
 | W-02 | `tool/result.data.meta.evidence`（抓取锚点：`object_sha256/url/retrieved_at/http_status/bytes/extractor_version`） | **同一个工具执行器的返回值** | 不可写 | 唯一零风险落点：模型不可见、被 pruner 完整保留、被持久化逐字保留、事件类型已知不影响 resume [E: GROUND-TRUTH-CORRECTIONS.md#A1/#E2, gt-evidence-substrate.md#B8/#D4] |
 | W-03 | `claims/<id>.json`（**内容**：kind、结构化载荷、metric_frame、证据指针、premises、tolerance） | **producer agent**，经 claim 提交工具，schema 硬校验 | 门只读 | — |
-| W-04 | `claims/<id>.status.json`（**status 及全部派生字段**：status、evidence_grade、independent_cluster_count、counter_evidence_*、computed_at、gate_version、inputs_hash） | **门代码（确定性脚本）** | 任何 agent 不可写；提交工具的 schema **不含** status 字段，出现即 `tools/pre-execute` deny | I-W1、I-W2；前代 `reproduced` 列门既不读也不写，「门的输出才是记录」只兑现在旁路文件里，台账本身永远停在 `?` [E: gt-pg-current.md#C-8] |
+| W-04 | `claims/<id>.status.json`（**status 及全部派生字段**：status、evidence_grade、independent_cluster_count、**nominal_source_count**、counter_evidence_*、computed_at、gate_version、inputs_hash） | **门代码（确定性脚本）** | 任何 agent 不可写；提交工具的 schema **不含** status 字段，出现即 `tools/pre-execute` deny | I-W1、I-W2；前代 `reproduced` 列门既不读也不写，「门的输出才是记录」只兑现在旁路文件里，台账本身永远停在 `?` [E: gt-pg-current.md#C-8]。**`nominal_source_count` 于本轮补入**：写者是门代码（03-EVIDENCE-ENGINE 的 **G-CLUSTER**，与 `independent_cluster_count` **同一写者、同一行为**——同门产出、同门写入、该门自己不做任何降级动作），补入理由是 §5.5 R-I6 要求它与独立簇数**并排展示**，不补则渲染层拿不到这个数。**`cluster_map` 不随之进入 W-04**：它体量大且只用于审计与人审队列，落在 `gate-reports/<run_id>/G-CLUSTER.json`（W-08） |
 | W-05 | `ledger/`（per-claim manifest，append-only） | **门代码** | 只读 | — |
 | W-06 | `evidence/<evidence_id>.json`（证据卡；id = `sha256(work_id ‖ version_id ‖ locator ‖ normalize(quote) ‖ extractor_version)`） | **抓取工具执行器** | 只读 | 按**来源坐标**内容寻址 → 并行写入天然幂等、去重不需要 embedding、**矛盾在构造上不可能被去重门吃掉** [E: ext-evidence-schema.md#结论摘要-7] |
 | W-07 | `verdicts/<gate>/<claim_id>.json`（Class-2 裁决原件，含 `childId/provider/model/prompt_hash/ts`） | **裁决 subagent 自身** | 门只读；裁决是门的**输入**，不是 status | §5、§6 |
@@ -601,7 +665,7 @@ reviewer ≠ producer 保证的是「这份裁决出自另一个上下文、另�
 
 ### §5.5 来源独立性：按上游簇归并，不按 URL/域名
 
-**规则 R-I6**：每条证据必须携带 `upstream_id`；`independent_cluster_count` 按 `upstream_id` 去重后计算；报告中必须**同时**展示「名义来源数 / 独立簇数」。
+**规则 R-I6**：每条证据必须携带 `upstream_id`；`independent_cluster_count` 按 `upstream_id` 去重后计算；报告中必须**同时**展示「名义来源数 / 独立簇数」——这两个数的规范字段名分别是 **`nominal_source_count`** 与 `independent_cluster_count`，两者同为 W-04 的派生字段、同由 G-CLUSTER 写入。
 
 **已知的硬样本（可直接做回归用例）**：
 - **Unpaywall = OpenAlex 同一后端**。OpenAlex 官方明说 "Unpaywall records are served from the same OpenAlex data"，实测返回体中 `evidence` 与 `updated` 字段值已 literally 变成 `"deprecated"`。把「两个源都说是 OA」记为 2 票，实际只有 1 票 [E: ext-academic-apis.md#G, #D4]。
@@ -713,6 +777,73 @@ reviewer ≠ producer 保证的是「这份裁决出自另一个上下文、另�
 
 **§6.5.5 boot 门断言的是加载期不变量，不是「必须 export Config」。** 后者是错的：`cordis/lib/index.js:956` 写着 `if (!runtime.Config) return config;`——Config **不是必需**；真实调用是 Standard Schema v1 接缝 `Config["~standard"].validate`，任何 Standard-Schema 库都行，且**异步 validate 会抛** [E: GROUND-TRUTH-CORRECTIONS.md#A4]。boot 门应断言五条真实加载期不变量：import 失败 / 导出形状非法 / Config 校验抛 / `apply()` 抛 / inject 未解析致 PENDING。
 
+**§6.5.6 以 headless 为载体的 check：失败信号必须由被测方在 stdout 里显式写出，harness 退出码只作二次兜底。**
+
+〔裁定 · S0 实测〕`.loop/m0/M0-3b.json`。**实测事实**：`dsh` 的退出码**只反映 harness 成败，不反映任务成败**——让 agent 跑 `exit 7`，agent 如实报告 `7`，`dsh` 自身仍退出 **0**。因此 `dsh --profile P "$TASK"; test $? -eq 0` 这种写法是一道**恒绿的空心门**：被测任务无论成败，退出码都是 0。
+
+**实测确认的运行契约**（本条的判定全部建在这四行上）：
+
+| 面 | 成功 | 失败 |
+|---|---|---|
+| 调用形式 | `dsh --profile <name> "<task>"`（task 是**位置参数**，多词按空格拼接） | 同左 |
+| **stdout** | **只有**最终助手消息 + 换行，别无他物 | 单个换行（**1 字节**） |
+| **stderr** | **0 字节** | 单行 `dsh: <CODE>: <message>`（实测见过 `AUTH` / `INVALID_REQUEST` / `TRANSPORT` / `UNKNOWN`） |
+| **退出码** | `0` = harness 跑完一轮并打印了最终消息——**不代表任务成功** | `1` = harness 层失败：profile 不存在 / 缺 task / 未知 flag / 插件树未激活 / LLM 侧 AUTH·INVALID_REQUEST·TRANSPORT |
+
+**规范（机器可判，`gates/` 下的 `check_e2e.sh` 可直接实现）**：
+
+1. **尾标记是唯一的任务成败信号。** 被测方（任务 prompt 强制要求）必须让最终助手消息以一行标记结尾。判定取 **stdout 的最后一个非空行**，并要求该行**整行**匹配
+
+   ```
+   ^RESULT: (PASS|FAIL)$
+   ```
+
+   —— 无前后空白、无引号、无 markdown 包裹、无同行后缀。**只看最后一个非空行**，不做全文搜索：全文搜索会把模型复述任务说明里的字面量（"…必须以 `RESULT: PASS` 结尾…"）当成结果。
+
+2. **缺失尾标记一律判 FAIL**，理由码 `E-NOMARK`。**不得判 PASS，也不得判「跳过」。** 缺标记恰恰覆盖了最常见的三种真实失效：模型跑飞了、harness 在 AUTH 处死掉（stdout 只有 1 字节换行）、任务被中途截断。**把「没说话」读成「没问题」是本项目要消灭的那类假绿灯。**
+
+3. **与退出码冲突时的裁决是合取，不是择一**：
+
+   ```
+   PASS  ⟺  (exit_code == 0)  ∧  (tail_marker == "RESULT: PASS")
+   ```
+
+   其余全部为 FAIL。展开成四格：
+
+   | 退出码 | 尾标记 | 判定 | 理由码 |
+   |---|---|---|---|
+   | 0 | `RESULT: PASS` | **PASS** | — |
+   | 0 | `RESULT: FAIL` | FAIL | `E-TASK`（被测方自述失败） |
+   | 0 | 缺失 / 不匹配 | FAIL | `E-NOMARK` |
+   | ≠ 0 | 任意（含 `RESULT: PASS`） | FAIL | `E-HARNESS`（harness 层失败，stdout 不可信） |
+
+   **「二次兜底」的精确含义**：退出码**只能把 PASS 降成 FAIL，永远不能把 FAIL 抬成 PASS**。退出码为 0 不是任何形式的通过信号。
+
+4. **判定必须发生在 `dsh` 进程之外。** 门脚本负责跑 `dsh`、捕获 stdout/stderr/退出码，再自己判定；被测的 agent 不参与判定，也不写任何门产物（I-W1、§4 W-04）。
+5. **stderr 必须原样收进 `gate-reports/<run_id>/<gate>.json`（W-08），但不参与判定。** 它是区分 `E-HARNESS` 四个子因（AUTH / INVALID_REQUEST / TRANSPORT / 插件树未激活）的唯一材料；用于事后归因，不用于判 PASS。
+
+参考实现（**退出码不要用管道接**——`cmd | tail` 的 `$?` 是 `tail` 的）：
+
+```bash
+ERR=$(mktemp); OUT=$(mktemp)
+dsh --profile "$PROFILE" "$TASK" >"$OUT" 2>"$ERR"; rc=$?
+tail_line=$(awk 'NF {last=$0} END {print last}' "$OUT")   # 最后一个非空行
+if   [ "$rc" -ne 0 ];                                 then verdict=FAIL; reason=E-HARNESS
+elif [ "$tail_line" = 'RESULT: PASS' ];               then verdict=PASS; reason=-
+elif [ "$tail_line" = 'RESULT: FAIL' ];               then verdict=FAIL; reason=E-TASK
+else                                                       verdict=FAIL; reason=E-NOMARK
+fi
+```
+
+**干净房手法（实测，可直接用于门基线）**：`DSH_HOME="$(mktemp -d)"` 会自动初始化出厂 profile 模板（headless / web），是隔离实验与快照基线的现成手段；`DEEPSEEK_API_KEY=<无效值>` 可在不消耗模型的前提下把「插件树是否装得起来」与「LLM 是否可达」分开——前者失败逐字为 `did not activate`，后者失败逐字为 `dsh: AUTH`。
+
+**残留（不得省略）** 〔`.loop/m0/M0-3b.json` 的 `honest_limits`〕：
+① 只测了 headless profile，**`dsh web` / `--profile web` 的退出码语义未测**。
+② **未测长任务超时与 SIGINT/SIGTERM 中断路径的退出码**——本条规范在这两种路径上没有实测依据。
+③ 未测 `--patch` overlay 与 `dsh plugin` 子命令的退出码。
+④ **未找到把完整轨迹（而非仅最终消息）导出成文件的 CLI 开关**；headless app 的 `--help` 只有 `-h`。轨迹落在 `$DSH_HOME/sessions` 的 jsonl，**该路径未验证解析**——而任何要做**逐轮**判定（而非只判最终消息）的门都会需要它，届时还要一并吃下 §6.5.4 的三个地雷。
+⑤ 尾标记本身是**被测方自述**：它能表达「我知道我失败了」，**不能**表达「我以为我成功了但其实没有」。因此 §6.5.6 只解决**信号载体**问题，不解决**判定正确性**问题——承重的正确性判定仍必须由读产物的确定性门做（§6.5.3）。
+
 ### §6.6 可检验断言
 
 - **V6.1** 每条 `mechanism_results[]` 记录携带 `gate_class ∈ {GC-0, GC-1, GC-2}`；不存在缺失该字段的记录。
@@ -723,6 +854,7 @@ reviewer ≠ producer 保证的是「这份裁决出自另一个上下文、另�
 - **V6.6** 任意读 session 日志的门，在一个含 ≥2 个 zstd frame 的固定 fixture 上必须读出全部记录（负例：只读到第一帧即失败）。
 - **V6.7** 每个 GC-2 judge 有一份带日期与 `judge_version` 的 κ 校准记录，且 κ ≥ 0.60 才被标记为终判档；跨 `judge_version` 的分数不得出现在同一张图/表里。
 - **V6.8** 文档 lint：任何文档中「确定性 / deterministic / 机器判定」一词出现在描述 GC-2 的段落内即失败。
+- **V6.9 headless 载体的失败信号**（§6.5.6）：① 代码 lint——`gates/` 下任何调用 `dsh --profile` 的脚本，其判定表达式不得只依赖退出码；出现 `dsh ...; test $? -eq 0` / `dsh ... && ` 形态即门红。② 三个红样本必须全红：**R-a** 被测方输出 `RESULT: FAIL`（退出码 0）→ 门必须红且理由码 `E-TASK`；**R-b** 被测方不输出尾标记（退出码 0）→ 门必须红且理由码 `E-NOMARK`；**R-c** 退出码为 1 但 stdout 里含 `RESULT: PASS` → 门必须红且理由码 `E-HARNESS`（证明退出码只能降级、不能升级）。③ 正样本必须绿：退出码 0 且最后一个非空行整行为 `RESULT: PASS`。**R-b 是这三条里最重要的一条**——它是「没说话 ≠ 没问题」的机械化。
 
 ---
 
@@ -1086,6 +1218,7 @@ Tier B 保存的是「围绕引语裁出来的摘录」（§8.6.1）。拿引语
 6. **§2.3.1 关闭了 K-I 的 ST-V 通道**，代价是逻辑推断类断言的最高档只有 ST-A——如果研究的主要产出是推断，这个产品的绿灯密度会很低。这是一个真实的产品风险，不是保守的美德。
 7. **中文路径的注入 prevalence 是完全盲区**：本轮检索未找到任何针对中文网页的 IPI 野外测量。**不能假设中文层的注入率低于英文层，只能说没人测过** [E: ext-security-injection.md#未决-18]。
 8. **本文件引用的所有 prevalence 与模型分数在 6 个月内会过期。** 野外注入普查基于 2025-10 的 Common Crawl 快照；简历普查显示两年内明显上升；引用幻觉率是 2026-04 快照。凡引用本文件的数字必须连日期一起引用。
+9. **§6.5.6 的尾标记契约把「任务是否失败」交给了被测方自述。**〔裁定 · S0 实测〕`.loop/m0/M0-3b.json` 只证明了退出码不可用，**没有**给出一个不依赖被测方配合的替代信号。尾标记能表达「我知道我失败了」，不能表达「我以为我成功了但其实没有」；一个跑飞但自信的 agent 会输出 `RESULT: PASS`。缓解只有两条，都不完整：`E-NOMARK` 判 FAIL（挡住沉默失效），以及承重判定一律交给读产物的确定性门（§6.5.3）。此外**长任务超时与 SIGINT/SIGTERM 路径的退出码语义完全未测**，本条规范在那两条路径上没有实测依据。
 
 ---
 

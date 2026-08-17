@@ -1,0 +1,45 @@
+{
+  "id": "M0-7",
+  "question": "gate_integrity.sh 自身谁来证明没被改？gates-baseline tag 由编写 checks 的同一个 conductor 自己打且 git tag -f 可重指——本仓库能真正做到的最强形态是什么，它挡不住什么？",
+  "verdict": "design-changed",
+  "answer": "两条实测把现有方案判死：①git tag 根本不是不可变锚点——在 git 2.55.0 上，receive.denyDeletes 与 receive.denyNonFastForwards 对 refs/tags/* 全部不生效（tag 的非快进强推与删除都 ACCEPTED），同一次实验里对 refs/heads/* 则双双 REJECTED；且默认 core.logAllRefUpdates=true 时 tag 连 reflog 都不写（0 条），只有 always 才写（2 条）。②02-ARCHITECTURE §B 第 447 行给出的候选解「由 conductor 从 tag 检出一份干净副本到 checks/ 之外的路径执行」被红样本证伪：把 gate_integrity.sh 换成一个只 echo OK 的假货并提交，从仓库内入口 ./gates/gate_integrity.sh 调用得到退出码 0——自提升（self-hoisting）不成立，因为提升代码本身就在被检查的文件里。本仓库能真正做到的最强形态是：锚点从 tag 名改成 40 位 commit sha；该 sha 与调用入口都必须位于生产者写不到的地方；由一个仓库外的 runner 用 git archive <sha> gates 展开到仓库外再执行，工作树 gates/ 与 pinned 副本逐文件 sha256 比对。同一份被篡改的仓库，仓库内入口 exit 0，仓库外 pinned runner exit 3。它挡不住的是：谁能改那个 40 位字符串或那个 runner，就能让门说谎——而本仓库 git remote 数为 0，那个「仓库外」今天并不存在，所以自指问题在本仓库仍然未闭合。",
+  "evidence": [
+    {
+      "command": "bash .loop/m0/M0-7.fixture.tag_immutability.sh",
+      "cwd": "~/playground/dsh-projects/academic-research-plugin",
+      "raw_output_sha256": "ebe5bb152ea3297441353b40b4ef15b404dbcbbc64477f1c532dcc911edd5b51",
+      "excerpt": "git: 2.55.0\nremote cfg: denyDeletes=true denyNonFastForwards=true\nTAG    non-fast-forward force-update: ACCEPTED\nBRANCH non-fast-forward force-update: REJECTED\nTAG    delete: ACCEPTED\nBRANCH delete: REJECTED\n-- reflog on the bare remote --\nlogAllRefUpdates=true  -> tag reflog entries: 0\nlogAllRefUpdates=always -> tag reflog entries: 2"
+    },
+    {
+      "command": "bash .loop/m0/M0-7.fixture.gate_integrity_battery.sh",
+      "cwd": "~/playground/dsh-projects/academic-research-plugin",
+      "raw_output_sha256": "75e04bbefa4069ca0d173ac8a3399f9c98d1954f68efb7ffac21b96669bb6adc",
+      "excerpt": "G1 clean / in-repo entry -> exit 0\nG2 clean / pinned runner -> exit 0\nR1 gate edited, uncommitted -> exit 2\nR2 gate edited, committed -> exit 3\nR3 gate_integrity.sh itself replaced + ledger extended / in-repo entry -> exit 0\nR4 same tamper / pinned runner with EXTERNAL sha -> exit 3"
+    },
+    {
+      "command": "{ echo \"toplevel-basename: $(basename $(git rev-parse --show-toplevel))\"; echo \"remote count: $(git remote | wc -l | tr -d ' ')\"; echo \"gates-baseline tags: $(git tag -l 'gates-baseline*' | wc -l | tr -d ' ')\"; echo \"logs/refs subdirs: $(ls .git/logs/refs/ 2>/dev/null | tr '\\n' ' ')\"; echo \"core.logAllRefUpdates: $(git config --get core.logAllRefUpdates)\"; echo \"gates-baseline-22 object type: $(git cat-file -t gates-baseline-22)\"; echo \"gates-baseline-1 object type: $(git cat-file -t gates-baseline-1)\"; echo \"signed tags among the 22: $(for t in $(git tag -l 'gates-baseline*'); do git cat-file -p $t 2>/dev/null | grep -c 'BEGIN PGP'; done | paste -sd+ - | bc)\"; }",
+      "cwd": "~/playground/dsh-projects",
+      "raw_output_sha256": "00ea28715992d488a08dc9b0e55233843c2bcd68d1013e769f68ac2d00372b23",
+      "excerpt": "toplevel-basename: dsh-projects\nremote count: 0\ngates-baseline tags: 22\nlogs/refs subdirs: heads \ncore.logAllRefUpdates: true\ngates-baseline-22 object type: commit\ngates-baseline-1 object type: tag\nsigned tags among the 22: 0"
+    },
+    {
+      "command": "WebFetch https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets （只读查证，非本机命令，无 sha256）",
+      "cwd": "n/a",
+      "raw_output_sha256": "n/a-web-fetch-not-hashable",
+      "excerpt": "GitHub rulesets 可以 target tags，三条相关规则均明写适用于 tag：Restrict updates（Only users with bypass permissions can push to branches or tags whose name matches the pattern you specify）、Restrict deletions、Block force pushes。即：GitHub 侧 tag 可被配置成不可变，但这是远端管理员配置项、且带 bypass permissions 豁免，不是 git 协议自带的性质。"
+    }
+  ],
+  "affects": [
+    "02-ARCHITECTURE.md §B（第 447 行）「〔已知的自指问题〕…候选解：由 conductor 从 tag 检出一份干净副本到 checks/ 之外的路径执行」——该候选解被红样本 R3 证伪（仓库内入口调用时 exit 0）。必须改写为：检出干净副本这个动作本身必须由仓库外的入口发起，且锚点必须是 commit sha 不是 tag。",
+    "02-ARCHITECTURE.md §B（第 330 行）与第 441 行「git diff <gates-baseline-tag> -- checks/ 为空」——tag 作为锚点被实测证伪（tag 可被删除+重建、可非快进强推，服务端 deny 规则不覆盖 refs/tags/*）。全部表述须改为 40 位 commit sha。",
+    "01-CONTRACTS.md §6.5.2「gate 完整性必须是脚本」与 §9.22 术语 gates-baseline 定义、V6.5 断言——三处都以 tag 为锚，须整体改为 commit sha + 仓库外持有；§9.22 还须记下「tag 不受 receive.denyDeletes / denyNonFastForwards 保护」这条一手事实。",
+    "03-EVIDENCE-ENGINE.md §NT-00（git status --porcelain -- checks/ 干净 且 git diff <gates-baseline-tag> -- checks/ 为空 → 整个门套件作废）——判据本身没错，但锚点须换，且须加一条：本断言只有在从仓库外的 pinned 入口执行时才有意义。",
+    "00-PREMISE.md B8 前置代码第 1 条（第 657 行「gate 完整性写成真脚本…这是 v2 必须补的第一个洞」）——须补一句：写成脚本不等于补上洞，实测证明写在 gates/ 里的脚本从仓库内入口调用时可被一行 echo 替换掉。",
+    "04-ORCHESTRATION.md §10 第 8 条「gate_integrity.sh 的自指问题无解（谁证明它没被改）。house 无答案，本文件也没有」——须改为：有一半答案（锚点换 commit sha + 仓库外 pinned runner，红样本已跑通），另一半仍未偿（该 runner 与该 sha 今天没有仓库外的存放处，本仓库 git remote 数为 0）。",
+    "07-ATTACK-LEDGER.md C-11「gate-integrity 的信任锚点可被重指（F121）」——本记录是该条的实测裁决，须回填结论。",
+    "README.md 「诚实声明：未偿债与阻塞项」第 7 条——须改写为带条件的部分答案 + 明确的未偿残余（外部信任根未配置）。",
+    "gates/run_all.sh（统一入口）——须新增第一行调用 gate_integrity，且 run_all.sh 自身必须不再是被推荐的入口：推荐入口改为仓库外的 pinned runner，run_all.sh 只作为被 pinned 展开后执行的那一份。"
+  ],
+  "doc_action": "needed",
+  "honest_limits": "这条没有被解决，只是被缩小到一个可以命名的信任根，下面是它挡不住的清单，逐条都是我实测或推理确认过的，不要当成已修复：①**外部锚点今天不存在**：本仓库 git remote 数为 0，那个「仓库外的 40 位 sha」现在没有任何地方可放；放在本机另一个文件里对一个持有 bash 的 agent 而言不构成边界。②**R4 的绿是买来的，不是挣来的**：pinned runner 之所以能抓到篡改，唯一原因是 sha 由外部传入；我第一版 runner 忘了这点、仍去读仓库内的 ledger，结果同样被骗过（exit 0）——这说明该机制对实现细节极其脆弱。③**TOFU**：第一条 baseline 是因为它第一才被信任，没有任何东西为它背书。④**GitHub ruleset 只是搬家不是解决**：它把信任根从「本地文件」搬到「远端管理员位」，而 admin 带 bypass permissions、可临时关掉 ruleset 再打开；且本轮没有真的建仓库、没有真的配 ruleset、没有真的试强推，那一条是读官方文档不是运行实测。⑤**同机同用户不是两条轨道**：规划里「门轨道与 producer 轨道进程级隔离」在一台机器一个用户下只是执行上下文不同，不是权限主体不同；只要 producer 能拿到 bash，它就能改 runner。⑥**签名没测**：22 个 gates-baseline tag 中带 PGP 签名的是 0 个，本轮也没有验证本机是否具备可用签名密钥，「签名 tag」这条路我没有跑过。⑦**tag 实验只在本地 file:// 传输上做**：结论对 ssh/https 服务端是否一致未验证（git 的 deny* 是 receive-pack 侧配置，理论上一致，但这是推理不是实测）。⑧**BASELINE.ledger 的哈希链只防静默改写中间行，不防整条链重建**：R4 里攻击者直接追加一行就让仓库内入口通过了。"
+}

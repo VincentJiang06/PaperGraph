@@ -1,0 +1,60 @@
+{
+  "id": "M0-3a",
+  "question": "M1 自建插件要 inject DSH 的哪个服务才能注册模型面工具？服务名猜错的真实后果是什么？",
+  "verdict": "resolved",
+  "answer": "服务名是 `tools`（`ToolRuntime` 的 ctx key），不是类名 `ToolRuntime` / `toolRuntime`。同一个插件、同一个 profile，只改 `export const inject` 一个字符串：写 `['toolRuntime']` 时 boot 直接失败并逐字报 `pending (waiting for service: toolRuntime)`；写 `['tools']` 时插件树装得起来（用无效密钥探针跑到 `dsh: AUTH`），且工具被模型真实调用并返回 `M0-INJECT-PROBE-ALIVE`。**「猜错 = fiber 静默停在 PENDING、插件静默不生效」这条前提被实测推翻**——dsh-app-boot 的 `assertEntriesActivated()` 在 boot 末尾无条件枚举未激活 entry 并抛错、退出码 1、点名缺失的服务。",
+  "evidence": [
+    {
+      "command": "( H=\"$(mktemp -d)\"; DSH_HOME=\"$H\" dsh --profile headless --dump-config 2>&1 | tail -n 0; PL=\"$H/profiles/headless/node_modules/dsh-m0-inject-probe\"; mkdir -p \"$PL/lib\"; printf '%s' '{\"name\":\"dsh-m0-inject-probe\",\"version\":\"0.0.1\",\"private\":true,\"type\":\"module\",\"main\":\"./lib/index.js\",\"exports\":{\".\":\"./lib/index.js\",\"./package.json\":\"./package.json\"},\"dsh\":{\"bundle\":{\"patch\":\"./cordis.patch.yml\"}}}' > \"$PL/package.json\"; printf -- '- insert:\\n    - id: m0-inject-probe\\n      name: dsh-m0-inject-probe\\n' > \"$PL/cordis.patch.yml\"; printf '%s\\n' \"import { defineTool } from '@deepseek-ai/dsh-tools';\" \"export const name = 'm0-inject-probe';\" \"export const inject = ['toolRuntime'];\" \"export function apply(ctx) { ctx.tools.register(defineTool({ name: 'm0_probe', description: 'M0 inject probe.', parameters: { note: { type: 'string', description: 'ignored' } }, output: { schema: { type: 'object', additionalProperties: false, properties: { summary: { type: 'string', required: true } } }, render: (_a, v) => [{ type: 'text', text: v.summary }] }, isConcurrencySafe: () => true, execute: async () => ({ summary: 'M0-INJECT-PROBE-ALIVE' }) })); }\" \"export default { name, inject, apply };\" > \"$PL/lib/index.js\"; python3 -c \"import json,sys;p=sys.argv[1];d=json.load(open(p));d.setdefault('dependencies',{})['dsh-m0-inject-probe']='link:./node_modules/dsh-m0-inject-probe';d['dsh']['profile']['bundles'].append('dsh-m0-inject-probe');json.dump(d,open(p,'w'),indent=2)\" \"$H/profiles/headless/package.json\"; DEEPSEEK_API_KEY=invalid-on-purpose-gate-probe DSH_HOME=\"$H\" dsh --profile headless 'noop' 2>&1 | grep -oE 'pending [(]waiting for service: [a-zA-Z]+[)]|dsh: AUTH' | head -1 )",
+      "cwd": "~",
+      "raw_output_sha256": "b8441f002e6f8e2371e72ac18de1aceac1c9348c5d2bcf4586b53d0fb3550959",
+      "excerpt": "pending (waiting for service: toolRuntime)\n\n〔整条命令自建一个最小插件（inject 写成错误的 `toolRuntime`）装进临时 DSH_HOME 的 headless profile，再用**无效 API key** 启动，以便在不消耗模型的前提下把「插件树是否装得起来」和「LLM 是否可达」分开。输出只保留匹配行：boot 在到达 LLM 之前就死在未激活 entry 上。〕"
+    },
+    {
+      "command": "( H=\"$(mktemp -d)\"; DSH_HOME=\"$H\" dsh --profile headless --dump-config 2>&1 | tail -n 0; PL=\"$H/profiles/headless/node_modules/dsh-m0-inject-probe\"; mkdir -p \"$PL/lib\"; printf '%s' '{\"name\":\"dsh-m0-inject-probe\",\"version\":\"0.0.1\",\"private\":true,\"type\":\"module\",\"main\":\"./lib/index.js\",\"exports\":{\".\":\"./lib/index.js\",\"./package.json\":\"./package.json\"},\"dsh\":{\"bundle\":{\"patch\":\"./cordis.patch.yml\"}}}' > \"$PL/package.json\"; printf -- '- insert:\\n    - id: m0-inject-probe\\n      name: dsh-m0-inject-probe\\n' > \"$PL/cordis.patch.yml\"; printf '%s\\n' \"import { defineTool } from '@deepseek-ai/dsh-tools';\" \"export const name = 'm0-inject-probe';\" \"export const inject = ['tools'];\" \"export function apply(ctx) { ctx.tools.register(defineTool({ name: 'm0_probe', description: 'M0 inject probe.', parameters: { note: { type: 'string', description: 'ignored' } }, output: { schema: { type: 'object', additionalProperties: false, properties: { summary: { type: 'string', required: true } } }, render: (_a, v) => [{ type: 'text', text: v.summary }] }, isConcurrencySafe: () => true, execute: async () => ({ summary: 'M0-INJECT-PROBE-ALIVE' }) })); }\" \"export default { name, inject, apply };\" > \"$PL/lib/index.js\"; python3 -c \"import json,sys;p=sys.argv[1];d=json.load(open(p));d.setdefault('dependencies',{})['dsh-m0-inject-probe']='link:./node_modules/dsh-m0-inject-probe';d['dsh']['profile']['bundles'].append('dsh-m0-inject-probe');json.dump(d,open(p,'w'),indent=2)\" \"$H/profiles/headless/package.json\"; DEEPSEEK_API_KEY=invalid-on-purpose-gate-probe DSH_HOME=\"$H\" dsh --profile headless 'noop' 2>&1 | grep -oE 'pending [(]waiting for service: [a-zA-Z]+[)]|dsh: AUTH' | head -1 )",
+      "cwd": "~",
+      "raw_output_sha256": "39e37a1590c0598cdadaf2e641375e86969a96c5e153a5fe8a7aecd1bde64f3d",
+      "excerpt": "dsh: AUTH\n\n〔与上一条**逐字相同的命令，只把 inject 从 `['toolRuntime']` 换成 `['tools']`**。这次插件树装起来了，一路走到 LLM 认证才失败——`dsh: AUTH` 就是「boot 成功」的判据。〕"
+    },
+    {
+      "command": "( H=\"$(mktemp -d)\"; DSH_HOME=\"$H\" dsh --profile headless --dump-config 2>&1 | tail -n 0; PL=\"$H/profiles/headless/node_modules/dsh-m0-inject-probe\"; mkdir -p \"$PL/lib\"; printf '%s' '{\"name\":\"dsh-m0-inject-probe\",\"version\":\"0.0.1\",\"private\":true,\"type\":\"module\",\"main\":\"./lib/index.js\",\"exports\":{\".\":\"./lib/index.js\",\"./package.json\":\"./package.json\"},\"dsh\":{\"bundle\":{\"patch\":\"./cordis.patch.yml\"}}}' > \"$PL/package.json\"; printf -- '- insert:\\n    - id: m0-inject-probe\\n      name: dsh-m0-inject-probe\\n' > \"$PL/cordis.patch.yml\"; printf '%s\\n' \"import { defineTool } from '@deepseek-ai/dsh-tools';\" \"export const name = 'm0-inject-probe';\" \"export const inject = ['tools'];\" \"export function apply(ctx) { ctx.tools.register(defineTool({ name: 'm0_probe', description: 'M0 inject probe.', parameters: { note: { type: 'string', description: 'ignored' } }, output: { schema: { type: 'object', additionalProperties: false, properties: { summary: { type: 'string', required: true } } }, render: (_a, v) => [{ type: 'text', text: v.summary }] }, isConcurrencySafe: () => true, execute: async () => ({ summary: 'M0-INJECT-PROBE-ALIVE' }) })); }\" \"export default { name, inject, apply };\" > \"$PL/lib/index.js\"; python3 -c \"import json,sys;p=sys.argv[1];d=json.load(open(p));d.setdefault('dependencies',{})['dsh-m0-inject-probe']='link:./node_modules/dsh-m0-inject-probe';d['dsh']['profile']['bundles'].append('dsh-m0-inject-probe');json.dump(d,open(p,'w'),indent=2)\" \"$H/profiles/headless/package.json\"; DSH_HOME=\"$H\" dsh --profile headless 'Call the tool m0_probe with no arguments and reply with ONLY its exact returned text.' 2>&1 | grep -c '^M0-INJECT-PROBE-ALIVE$' )",
+      "cwd": "~",
+      "raw_output_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "excerpt": "1\n\n〔同一个插件（inject=['tools']）+ 真实 API key，让模型调用 `m0_probe`，输出用 `grep -c '^M0-INJECT-PROBE-ALIVE$'` 归一成计数。`1` = 工具确实注册到了模型面并被成功执行。〕"
+    }
+  ],
+  "minimal_working_skeleton": {
+    "note": "以下就是实测跑通的那一份，逐字可抄。`inject` 数组即本条阻塞项的答案。",
+    "package.json": "{ \"name\": \"dsh-m0-inject-probe\", \"version\": \"0.0.1\", \"type\": \"module\", \"main\": \"./lib/index.js\", \"exports\": { \".\": \"./lib/index.js\", \"./package.json\": \"./package.json\" }, \"dsh\": { \"bundle\": { \"patch\": \"./cordis.patch.yml\" } } }",
+    "cordis.patch.yml": "- insert:\n    - id: m0-inject-probe\n      name: dsh-m0-inject-probe\n",
+    "lib/index.js": "import { defineTool } from '@deepseek-ai/dsh-tools';\n\nexport const name = 'm0-inject-probe';\nexport const inject = ['tools'];   // ← 承重的那一行：ctx key，不是类名\n\nexport function apply(ctx, config = {}) {\n  ctx.tools.register(defineTool({\n    name: 'm0_probe',\n    description: 'M0 inject probe.',\n    parameters: { note: { type: 'string', description: 'ignored' } },\n    output: {\n      schema: { type: 'object', additionalProperties: false, properties: { summary: { type: 'string', required: true } } },\n      render: (_args, value) => [{ type: 'text', text: value.summary }],\n    },\n    isConcurrencySafe: () => true,\n    execute: async () => ({ summary: 'M0-INJECT-PROBE-ALIVE' }),\n  }));\n}\n\nexport default { name, inject, apply };\n",
+    "安装": "profile 的 package.json 里 `dsh.profile.bundles` 追加包名、`dependencies` 追加该包；插件自己的 cordis.patch.yml 必须用 `- insert:` **列表**形式（bare mapping 会在 boot 失败）",
+    "服务名对照（ctx key）": {
+      "注册模型面工具": "tools",
+      "会话": "sessions",
+      "子代理": "subagents",
+      "文件系统": "fs",
+      "系统提示词": "systemPrompt",
+      "技能": "skills",
+      "向用户提问": "userQuestions",
+      "子进程": "subprocess",
+      "沙箱策略": "sandboxPolicy",
+      "token 计量": "tokenMeter",
+      "会话投影": "sessionProjections",
+      "会话检索": "sessionQuery",
+      "agent 注册表": "agents",
+      "LLM": "llm",
+      "loader": "loader",
+      "timer": "timer"
+    }
+  },
+  "affects": [
+    "02-ARCHITECTURE.md §A.4 第 3 条（M1 插件骨架里被标注为「待实测确认」的 inject 服务名字符串）",
+    "02-ARCHITECTURE.md §9 第 10 条（「两处待实测确认」——本条是其中之一）",
+    "01-CONTRACTS.md §6.5.5（boot 门五条加载期不变量的第五条「inject 未解析致 PENDING」）",
+    "02-ARCHITECTURE.md §D.3 boot 门第 2 段（真实 boot 那一步的 grep 模式表）",
+    "02-ARCHITECTURE.md §D.4（六个红样本 fixture 里「inject 未解析」那一个的期望文案）"
+  ],
+  "doc_action": "needed —— 三处。①§A.4 第 3 条的占位符替换为 `export const inject = ['tools']`；§9 第 10 条把这一处从「待实测确认」划掉。②**§D.3 第 2 段的 grep 模式表里 `'pending (waiting for services'` 拼错了单复数**：dsh-app-boot 逐字为 `const subject = missing.length === 1 ? \"service\" : \"services\"`，缺一个服务时输出单数 `pending (waiting for service: X)`，而缺一个正是最常见情形——该模式在单数场景恒不命中。应改为 `'pending (waiting for service'`（去掉尾 s，同时覆盖单复数）。③§D.4 该 fixture 的期望文案可写死为实测原文 `<pkg>: pending (waiting for service: <svc>)`，且**不得再把它描述为「静默」**——它是响亮的 exit 1。",
+  "honest_limits": "① 只在 `dsh --profile headless` 的 CLI boot 路径验证；web profile 与 HMR 热重载路径（headless 下 `hmr` 行被 bundle disabled）**未测**，热重载期的 inject 失败是否同样响亮未知。② 只对 `tools` 一个服务名做了正负两例实跑；对照表里其余服务名来自 README 的 `ctx key:` 标题与编译产物中的 `inject = [...]` 字面量，**属于代码阅读，未逐个运行验证**。③ evidence[2]（`3a_tool`）含模型生成，命令已归一成计数 `1`，但**若模型某次不调用该工具会得到 `0` 而使哈希对不上**——这是真实的偶发红，不是伪造。④ 附带发现未深究：`output.schema` 写成非 object 形状（如 `{type:'string'}`）时，boot 正常而运行期报 `dsh: TRANSPORT: DeepSeek API stream from ... failed`，与真实网络故障无法区分，值得单独立项。"
+}

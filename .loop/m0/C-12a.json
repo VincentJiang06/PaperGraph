@@ -1,0 +1,38 @@
+{
+  "id": "C-12a",
+  "question": "装上强制要装的 `@deepseek-ai/dsh-headless` bundle 后，`tools` 行的**有效** config 到底是什么？「出厂呈现模式是 native」这条被全套文档承重引用的前提还成立吗？",
+  "verdict": "resolved",
+  "answer": "headless bundle 把 `tools` 行 config **整键替换**为 `mode: !!js process.env.DSH_TOOLS_MODE`（`dsh-base` 该行本来**无 config**），并额外 **insert 了 `code-runtime` 行**。所以「出厂 native」成立，**但只是 `DSH_TOOLS_MODE` 未设置时的 schema 兜底，不是组合事实**。运行实测两侧都验到：不设该变量时模型面上没有 `run_code`；`DSH_TOOLS_MODE=code` 时 `run_code` 存在、可执行、并**成功读到 `node:fs`**（`readdirSync('/').length` = 21）。文档 §A.3 的两行收口方案也独立复核通过：钉成字面量 `native` + `code-runtime: disabled` 后 `DSH_TOOLS_MODE=code` 无效（正常走到 AUTH）；而把 mode 钉成 `code` 且 `code-runtime: disabled` 会响亮启动失败。",
+  "evidence": [
+    {
+      "command": "( H=\"$(mktemp -d)\"; DSH_HOME=\"$H\" dsh --profile headless --dump-config 2>&1 | tail -n 0; DSH_HOME=\"$H\" dsh --profile headless --dump-config 2>&1 | grep -A3 -e '^- id: tools$' -e '^- id: code-runtime$' )",
+      "cwd": "~",
+      "raw_output_sha256": "56eb2297d974170ae2beb5ce7991a2f7003c56b6ccaabe94be33eb45fda743f7",
+      "excerpt": "- id: tools\n  name: '@deepseek-ai/dsh-tools'\n  config:\n    mode: !!js process.env.DSH_TOOLS_MODE\n--\n- id: code-runtime\n  name: '@deepseek-ai/dsh-code-runtime-worker-thread'\n\n〔出厂纯净组合（bundles 仅 dsh-base + dsh-headless）。`tools` 行的有效 config 就是那个未求值的 env 表达式；`code-runtime` 行确实被 headless insert 了 —— **Code Mode 的执行能力在 headless 下是挂着的，只是默认不呈现**。〕"
+    },
+    {
+      "command": "( H=\"$(mktemp -d)\"; DSH_HOME=\"$H\" dsh --profile headless --dump-config 2>&1 | tail -n 0; printf -- '- id: tools\\n  config:\\n    mode: native\\n- id: code-runtime\\n  disabled: true\\n' > \"$H/profiles/headless/cordis.patch.yml\"; echo \"--- pinned native, DSH_TOOLS_MODE=code ---\"; DSH_TOOLS_MODE=code DEEPSEEK_API_KEY=invalid-on-purpose-gate-probe DSH_HOME=\"$H\" dsh --profile headless 'noop' 2>&1 | grep -oE 'dsh: AUTH|requires a code runtime' | head -1; printf -- '- id: tools\\n  config:\\n    mode: code\\n- id: code-runtime\\n  disabled: true\\n' > \"$H/profiles/headless/cordis.patch.yml\"; echo \"--- pinned code, code-runtime disabled ---\"; DEEPSEEK_API_KEY=invalid-on-purpose-gate-probe DSH_HOME=\"$H\" dsh --profile headless 'noop' 2>&1 | grep -oE 'mode \\\"code\\\" requires a code runtime[^\\\"]*' | head -1 )",
+      "cwd": "~",
+      "raw_output_sha256": "2666a9e7995b496e3ee8e6bc6e3154421af5c5bbed8e49851c9d34d54903b70d",
+      "excerpt": "--- pinned native, DSH_TOOLS_MODE=code ---\ndsh: AUTH\n--- pinned code, code-runtime disabled ---\nmode \"code\" requires a code runtime — load a ctx.codeRuntime implementation (e.g. @deepseek-ai/dsh-code-runtime-worker-thread) or set tools mode to \n\n〔**独立复核 §A.3 第 0 块的两行收口**：把 mode 钉成字面量 native 后，父进程的 `DSH_TOOLS_MODE=code` 被本层整键替换掉、不再起作用（正常走到 AUTH）；而一旦 mode 真是 code 且 code-runtime 被 disabled，启动**响亮失败**。这正是把「Code Mode 被打开」从静默呈现变化变成启动失败的那一半。〕"
+    },
+    {
+      "command": "( H=\"$(mktemp -d)\"; DSH_HOME=\"$H\" dsh --profile headless --dump-config 2>&1 | tail -n 0; DSH_TOOLS_MODE=code DSH_HOME=\"$H\" dsh --profile headless \"Using run_code, evaluate: require('node:fs').readdirSync('/').length — or the ESM equivalent. Reply with ONLY the resulting number.\" 2>&1 | grep -c '^21$' )",
+      "cwd": "~",
+      "raw_output_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "excerpt": "1\n\n〔`DSH_TOOLS_MODE=code` 下让模型用 `run_code` 求值 `require('node:fs').readdirSync('/').length`，输出归一成 `grep -c '^21$'`。`1` = 确实返回 21（`/` 下条目数）。**这条同时闭合 README §诚实声明 M0 阻塞项第 4 条「run_code 是否可达 node:fs」。**〕"
+    }
+  ],
+  "affects": [
+    "02-ARCHITECTURE.md §一览表第 35–36 行（headless 整键替换 tools 行 / insert code-runtime）",
+    "02-ARCHITECTURE.md §A.3 第 0 块（`tools.mode: native` 字面量 + `code-runtime: disabled` 两行收口）与第 4 条（两种 pin 组合的真实 boot 文案）",
+    "02-ARCHITECTURE.md §C 表 C-12a 与 C-8",
+    "02-ARCHITECTURE.md §D.3 第 1a 段（assert_tools_presentation.mjs 的三条断言）",
+    "04-ORCHESTRATION.md §3.5 P0 行、§10 未决第 4 条、并发上限表",
+    "00-PREMISE.md B1 配套约束（「先把 run_code 内的工具调用级并行吃满」）",
+    "01-CONTRACTS.md §0.2 第二层（文件面无文件系统级强制的成因清单）、§4.4",
+    "README.md §诚实声明 M0 阻塞项第 4 条（run_code 是否可达 node:fs）"
+  ],
+  "doc_action": "needed —— **不是推翻，是把两处「未实测」升级为「已实测」并补一条缺口**。①**§C 表 C-8 那句必须改**：它现在逐字写着「一条**未实际执行验证**的边界：`run_code` 程序能否加载 `node:fs` / `node:child_process` …… **落笔前应跑最小实验**；在此之前措辞按最坏假设」。本轮跑了，`node:fs` **确认可达**（返回 21），该句应改为已实测确认，并可同时闭合 README §诚实声明 M0 阻塞项第 4 条；`node:child_process` 仍未测，须单独保留最坏假设。②**04-ORCHESTRATION.md §10 第 4 条与 §3.5 仍写「P0 层可能根本不存在 / 出厂呈现模式是 native」，与 02-ARCHITECTURE 已改写的 C-12a 裁定口径不一致**——两份文档必须对齐到同一句：native 只是 env 未设时的兜底，收口靠 §A.3 那两行。③**新增一条 §D.3 第 1a 段抓不到的缺口**：该脚本读的是 dump，而 dump 对 `DSH_TOOLS_MODE` 完全不可观测；在我们自己的 pin 落地前、以及对任何我们没 pin 的行，这个进程级接缝仍不可见。建议门里加一条一行成本的正向断言 `test -z \"${DSH_TOOLS_MODE:-}\"`。",
+  "honest_limits": "① 只测 `DSH_TOOLS_MODE=code`，**未测 `both`，也未测非法值**（如 `DSH_TOOLS_MODE=bogus`）的行为。② 只测 `node:fs`，**未测 `node:child_process` 与网络出站**——C-8 对这两项的最坏假设措辞应保留。③ **未测 `ctx.tools.presentAs()` 这条 agent 级绕过路径**：dsh-tools README 明写单个 agent 可为自己选 code 模式、且 `run_code` 之名「whatever the configured mode」都是保留的，该路径能否被本 profile 的子代理触发**未知**，它是 env 变量之外的第二个接缝，§A.3 的两行收口对它是否有效**没有验证**。④ evidence[2] 含模型生成，已归一成计数，但模型某次不照做会使哈希对不上——真实偶发红。⑤ 本轮测的是出厂纯净组合；用户本机 `~/.dsh/profiles/headless` 另装了 3 个社区 bundle（claude-marketplace / mp-automator / pipeline-executor），本轮 dump 显示它们只 insert 自己的行、未 patch `tools`，但**未逐包审计**。⑥ 附带观测（未收进 evidence）：出厂 headless 模型面共 25 个工具，无 `run_code` 但**有 `workflow`** —— 与 C-12c 的判断一致。"
+}

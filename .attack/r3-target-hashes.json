@@ -1,0 +1,47 @@
+[
+ {
+  "file": "README.md",
+  "sha256": "6a5c7980b4ed861805c3bb634263d29e64fd7639063779a807489ee1f6898e35",
+  "lines": 216
+ },
+ {
+  "file": "00-PREMISE.md",
+  "sha256": "ebd9bea8a6790cefa4c380204dbdc39338cbfe1ed16571a764c75a1237f5e10b",
+  "lines": 927
+ },
+ {
+  "file": "01-CONTRACTS.md",
+  "sha256": "1a257071c2862ea0168d2b94d311821b718469d1b032d8bf5107928e51232bfd",
+  "lines": 1225
+ },
+ {
+  "file": "02-ARCHITECTURE.md",
+  "sha256": "41751a9b0f0b41e91155838601af12577eefaa431a351bfb57b530716b5ae420",
+  "lines": 856
+ },
+ {
+  "file": "03-EVIDENCE-ENGINE.md",
+  "sha256": "78f6d23d20cb4fc3a7d812ee83644186d250af63fa53c0c85dfd2da6dc6511a7",
+  "lines": 1764
+ },
+ {
+  "file": "04-ORCHESTRATION.md",
+  "sha256": "13fba6c3df10dd07fdab0c258326c7480f6d83c7b1e186b816d1ec419af8ea96",
+  "lines": 968
+ },
+ {
+  "file": "05-TESTING.md",
+  "sha256": "55f38b800abbc8b238c7e4f9a7663bad0c4171b7a234725ee6e032764abd16a9",
+  "lines": 1283
+ },
+ {
+  "file": "06-SURVEY.md",
+  "sha256": "13338ced8707f04bc74551176a64d5e19382cf6c0539657de03adf7ebda1dd7f",
+  "lines": 1131
+ },
+ {
+  "file": "07-ATTACK-LEDGER.md",
+  "sha256": "14bee41afa85f92656566988fbf0b2d355d19b03e3bfb216daf107c5d458b204",
+  "lines": 298
+ }
+]

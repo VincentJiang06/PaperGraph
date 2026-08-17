@@ -290,17 +290,34 @@ L1/L2/L3 构成外环的一「批」；L4 只在 STOP 成立后跑一次。**跨
 
 ### §3.5 并行粒度优先级：先吃满哪一层
 
-**〔裁定〕优先级 P0 → P3，但 P0 带一个必须先验证的前提。**
+**〔裁定〕优先级 P0 → P3。P0 的存在与否不由「出厂默认」决定，而由我们自己 pin 的两行决定（见下）。**
 
 | 级 | 路径 | 强制上限 | 本机实测 | 备注 |
 |---|---|---|---|---|
-| **P0** | Code Mode `run_code` 内部子调用 | `maxParallelSubCalls` 默认 10 | 10 | **仅在 `code` / `both` 呈现模式下存在，而出厂默认是 `native`**；且宿主必须挂 `code-runtime`（`dsh-base` 不含，只有 web-app / headless 有）[E: gt-orchestration.md#J1, #J2, #J3, #X5] |
+| **P0** | Code Mode `run_code` 内部子调用 | `maxParallelSubCalls` 默认 10 | 10 | **只在 `code` / `both` 呈现模式下存在**；headless 宿主**确实挂了** `code-runtime`（headless bundle 自己 insert 的），所以执行能力一直在，只是默认不呈现。`native` 只是 `DSH_TOOLS_MODE` **未设时**的 schema 兜底，不是组合事实——收口靠 02-ARCHITECTURE §A.3 第 0 块那两行〔裁定 · S0 实测〕`.loop/m0/C-12a.json` [E: gt-orchestration.md#J1, #J2, #J3, #X5] |
 | **P1** | `workflow` 脚本 `agent()` / `parallel()` | `maxConcurrentAgents` | **12**（硬顶 16） | **唯一会排队而不是失败的路径** [E: gt-orchestration.md#E3, #设计含义1] |
 | **P2** | 一条 assistant 消息里并排调 `subagent` 工具 | `maxParallelToolCalls` 默认 10 | 10 | 出厂 `subagent` 是 continuable，调用在 inbox 接受后立即返回 → **这个 10 限制的是「同时在创建中的子代理数」，不是「同时在工作的子代理数」** [E: gt-orchestration.md#设计含义1, #C6] |
 | **P3** | continuable 后台子代理 | **运行时不设上限** | — | `dsh-subagent` 整包无 Config，续接管理器无 per-parent 计数；唯一兜底是 `maxDepth`、宿主内存、LLM 侧 429 [E: gt-orchestration.md#结论摘要1] |
 | — | one-shot 后台（Task） | `maxConcurrentJobsPerOwner` 10，**超限抛错不排队**，与 `bash(run_in_background)` 共用同一桶 | 10 | [E: gt-orchestration.md#H1, #H3] |
 
-**P0 的前提必须前移验证。** 00-PREMISE B1 的配套约束写的是「先把 `run_code` 内的工具调用级并行吃满（`maxParallelSubCalls` 默认 10）」〔依据 00-PREMISE B1 配套的三条硬约束〕，但该闸门**只在 `code`/`both` 呈现模式下存在，出厂默认是 `native`** [E: gt-orchestration.md#X5]。**〔裁定〕若本 profile 不显式选用 Code Mode 且确认宿主挂了 `code-runtime`，则 P0 层不存在，优先级从 P1 开始。** 这不是可以留到实现阶段发现的事——它决定我们的最细粒度扇出能不能用。已列入 §10 未决。
+**〔裁定 · S0 实测〕P0 的前提已实测，旧写法必须整段替换**（记录：`.loop/m0/C-12a.json`；与 02-ARCHITECTURE §C 的 C-12a、§A.3 第 0 块同一口径，两份文档不得再有第二种说法）。
+
+实测到的三条事实：
+
+1. **`native` 不是组合事实，是一个环境变量未设时的兜底。** `dsh-base` 的 `tools` 行**根本没有 config**；强制安装的 `@deepseek-ai/dsh-headless` bundle 把该行 config **整键替换**为 `mode: !!js process.env.DSH_TOOLS_MODE`。`dsh --profile headless --dump-config` 逐字为 `- id: tools` / `config:` / `mode: !!js process.env.DSH_TOOLS_MODE`。
+2. **执行能力一直挂着。** 同一 bundle **额外 insert 了 `- id: code-runtime`（`@deepseek-ai/dsh-code-runtime-worker-thread`）**。所以「宿主没挂 `code-runtime`，P0 层不存在」这条旧推理在 headless 上不成立。
+3. **该接缝对 dump 不可观测，且已验到底。** 不设 `DSH_TOOLS_MODE` 时模型面上没有 `run_code`；`DSH_TOOLS_MODE=code` 时 `run_code` 存在、可执行，并**成功读到 `node:fs`**（让模型求值 `require('node:fs').readdirSync('/').length`，归一后返回 `21`）。而设与不设该变量，`--dump-config` 输出逐字相同。
+
+**〔裁定〕因此 P0 的状态是二值的，由我们自己的 profile 层决定，不由出厂默认决定**：
+
+| 02 §A.3 第 0 块那两行是否落地 | P0 层 | 优先级起点 | 依据 |
+|---|---|---|---|
+| **未落地** | **存在，且不可观测** —— 任何父进程 `export DSH_TOOLS_MODE=code` 即可把 `run_code` 推上模型面，dump 看不见 | 按最坏假设当 P0 存在处理 | 实测事实 1 + 3 |
+| **已落地**（`tools.mode` 钉成字面量 `native` **且** `code-runtime: disabled`） | **不存在** | **P1** | 实测复核：pin 成 `native` 后父进程的 `DSH_TOOLS_MODE=code` 被本层整键替换掉、不再起作用（正常走到 `dsh: AUTH`）；若 mode 真是 `code` 而 `code-runtime` 被 disabled，则启动**响亮失败**（`mode "code" requires a code runtime …`） |
+
+**对 00-PREMISE B1 配套约束的后果**：B1 写的是「先把 `run_code` 内的工具调用级并行吃满（`maxParallelSubCalls` 默认 10）」〔依据 00-PREMISE B1 配套的三条硬约束〕。**本 profile 选择落地那两行 pin**，因此该配套约束在本运行时**无处落地**，扇出优先级从 P1 开始——这不是「能力缺失」，是一次**用可观测性换执行面**的显式取舍：`run_code` 一旦上线，程序体里不经工具 binding 的网络 IO 与文件 IO 就完全无痕（§6.5 (b2)，且 M0-4 已实测 `run_code` 写文件绕过 `sandbox-exec`）。
+
+**残留（不得省略）** 〔`.loop/m0/C-12a.json` 的 `honest_limits`〕：① 只测了 `DSH_TOOLS_MODE=code`，**`both` 与非法值（如 `bogus`）的行为未测**。② `ctx.tools.presentAs()` 这条 **agent 级绕过路径未测**——`dsh-tools` README 明写单个 agent 可为自己选 code 模式，它是 env 变量之外的第二个接缝，**§A.3 那两行对它是否有效没有验证**。③ 本轮测的是出厂纯净组合；本机 `~/.dsh/profiles/headless` 另装的 3 个社区 bundle 未逐包审计。④ 只测 `node:fs`，`node:child_process` 与网络出站仍按最坏假设措辞。
 
 **P2 的两个陷阱**：① 并行组在遇到第一个非并行安全的调用时**立即中断**，而 `get_goal` / `update_goal` 全是 exclusive——所以「一条消息里放 20 个 `subagent` 调用」只有在中间不夹 exclusive 工具时才连得成一个组 [E: gt-orchestration.md#G2]。② `maxParallelToolCalls` 是**可热改的用户 Settings 项**（下一个 tool group 生效），**不能当安全边界** [E: gt-orchestration.md#G1, #设计含义2]。
 
@@ -562,13 +579,96 @@ budget_state:  ok  →  degraded  →  exhausted        // 见 01-CONTRACTS §1.
 
 ### §6.1 中央限速网关是硬需求
 
-**规则 O-9：所有出网请求经单一网关；网关是独立进程（或 SQLite + 文件锁的跨进程实现）；子代理不持有裸 API key。**
+**规则 O-9：所有出网请求经单一网关；网关以 MCP stdio server 形态由 DSH 托管（`failOnStartupError: true`）；子代理不持有裸 API key；降级直连一律禁止。**
 
-三条依据，缺一不可：
+> **〔裁定 · S0 实测〕本小节按 `.loop/m0/M0-6.json` 整段重写。** 旧写法有两处被实测推翻，都必须点名删掉：
+> ① **「纯自建的跨进程单点、DSH 侧零支撑、一挂全停」是错的**——DSH 侧有真实且可用的支撑（下述 §6.1.1）。
+> ② **「子代理可能是独立进程」在 DSH 的 subagent 机制上是错的**（下述 §6.1.3）。
+> 同时实测揭出一条**规划里完全没有的新风险**：网关**中途崩溃后会被 DSH 静默换进程**，取证链无任何记录（§6.1.4）。
 
-1. **子代理可能是独立进程，任何「每 agent 内存计数器」的方案在超并行下必然击穿** [E: ext-web-providers.md#D2]。
-2. **DSH 侧没有主动限流**：在 `dsh-llm` 与 `dsh-llm-deepseek` 中 grep `concurren|semaphore|inFlight|maxSockets` **零命中** → 限流是被动的（429 + 退避），不是主动的 [E: gt-orchestration.md#I6]。出厂重试策略是 normal / **2 次** / 500ms→10s / ±10% jitter / 5 个 retryable code；`always` 模式**无次数上限**，会重试永久性失败（认证、配额、非法请求）[E: gt-orchestration.md#I2, #I5]。
-3. **学术 API 侧的硬 RPS 直接封顶扇出**：20 个并行 agent 各自发语义检索，平均每个要等 20 秒 [E: ext-academic-apis.md#D1]〔依据 00-PREMISE B1 反对证据8〕。**并行度必须由中央网关决定，不能由 subagent 数量决定。**
+#### §6.1.1 DSH 侧并非零支撑：`dsh-mcp-client` 提供子进程托管
+
+把网关做成 **MCP stdio server** 之后，进程托管这一层**不用自建**——`@deepseek-ai/dsh-mcp-client` 提供：
+
+| 能力 | 语义（README 逐字口径） |
+|---|---|
+| **spawn** | 网关作为 stdio 子进程由 Host 拉起 |
+| **指数退避重连** | 「Reconnect triggers on transport close」——崩掉的 stdio 子进程会触发重连 |
+| **每次 outage 的尝试预算** | 「Reconnection is budgeted per outage」：连续失败达 `reconnect.maxAttempts` 后该 server 的工具被**注销**、重连停止，直到 HMR reload 或 Host restart；连接活过 `maxDelayMs` 则预算复位 |
+| **outage 期间的语义** | 「During the outage the last good generation stays registered; calls against it fail until recovery」——**调用失败，不是静默放行** |
+| **启动期 fail-closed** | `failOnStartupError`：网关起不来则整个 harness 起不来 |
+
+**实测（`M0-6.fixture.gateway_failure_matrix.sh` 的 B 格）**：`failOnStartupError=true` + 网关不可用 → **`exit=1`、`stdout_bytes=0`、boot 错误逐字点名 mcp client、一个 LLM turn 都没跑**。这正是规划想要的 fail-closed，而且比自建的任何检查更早——它发生在第一次模型调用之前。
+
+**⚠️ 出厂默认是错的那一侧。** 实测 C 格：`failOnStartupError=false`（**这是出厂默认**）+ 网关不可用 → `exit=0`、stdout 非空、`gateway_spawn_attempts=4`——**harness 照常跑完一整轮，只是没有网关**。
+
+> **规则 O-9a（配置断言，必须进门）**：网关 MCP server 的 `failOnStartupError` 必须为 `true`。这是一条**必须显式覆盖出厂默认**的配置项，不是可选优化。见 V-4.30。
+
+#### §6.1.2 依据 2 本轮独立复现：DSH 侧没有主动限流
+
+在 `dsh-llm` / `dsh-llm-deepseek` / `dsh-llm-retry` 三个包的 `lib` 下 grep `concurren|semaphore|inFlight|maxSockets|rateLimit|token.bucket` —— **grep 退出码 1（零命中）**〔裁定 · S0 实测〕`.loop/m0/M0-6.json`。限流是被动的（429 + 退避），不是主动的 [E: gt-orchestration.md#I6]。出厂重试策略是 normal / **2 次** / 500ms→10s / ±10% jitter / 5 个 retryable code；`always` 模式**无次数上限**，会重试永久性失败（认证、配额、非法请求）[E: gt-orchestration.md#I2, #I5]。**这条依据不变，且现在有一手复现。**
+
+#### §6.1.3 依据 1 必须收窄：DSH 的子代理**不是**独立进程
+
+旧依据 1 逐字写的是「子代理可能是独立进程，任何『每 agent 内存计数器』的方案在超并行下必然击穿」[E: ext-web-providers.md#D2]。**在 DSH 上被实测证伪**：出厂 headless profile 的 dump 里，
+
+```
+- id: subagent-spawn-in-process     name: '@deepseek-ai/dsh-subagent-spawn-in-process'
+- id: subagent-fork-in-process      name: '@deepseek-ai/dsh-subagent-fork-in-process'
+- id: workflow-worker-thread        name: '@deepseek-ai/dsh-workflow-worker-thread'
+                                    name: '@deepseek-ai/dsh-code-runtime-worker-thread'
+```
+
+subagent 是**同进程**，workflow 与 code-runtime 是 **worker thread**——**没有一个是独立进程**。`dsh-jobs` README 也逐字自陈「The contract is in-process」。
+
+> **〔裁定〕依据 1 改写为这个更窄的条件**：**per-agent 内存计数器在「同一个 dsh 进程内的扇出」下是够的；它击穿的唯一形态是「同时跑多个 `dsh` 调用」**——而那正是 loop / 门脚本 / A/B 两臂的形态，所以依据 1 的**结论不变**（网关仍是硬需求），只是它保护的边界从「子代理」收窄到「并发 harness 进程」。
+
+**由此引出一条二选一，必须在实现前定死**：stdio 传输下**网关是每 harness 进程一个子进程**（实测 E 格：两个并发 `dsh` 拿到**两个不同 pid**），因此 **stdio ≠ 跨进程单例**。
+
+| 传输 | 跨进程共享 | 被 DSH 监管重启 | 实测状态 |
+|---|---|---|---|
+| **stdio** | ❌ 每 harness 一个子进程（实测 `distinct_served_by_pid=2`） | ✅ 有 | **本轮实测过** |
+| **streamable-http** | ✅ 唯一能跨进程共享的形态 | ❌ 无 supervisor respawn，失败按请求重试 | **一次都没跑过**——结论来自 `dsh-mcp-client` README 的 Known Limitations，不是运行实测 |
+
+> **规则 O-9b**：**跨进程共享（streamable-http）与被监管重启（stdio）在 DSH 里是二选一，不能同时要。** 单进程 loop 用 stdio；一旦出现并发 harness（S6 端到端 run、S7 A/B 两臂），令牌桶的跨进程单例必须另行落在网关**自己的**持久层（SQLite + 文件锁），而不是指望 MCP 传输给。
+
+#### §6.1.4 新风险：网关被静默换进程，限流计数器与取证链在崩溃点断开且**无告警**
+
+**实测 D 格（本小节最承重的一条）**：网关**中途崩溃** → DSH 按 §6.1.1 的重连语义**把它换成了一个新进程**（`pid 71338 → 71389`），然后：
+
+```
+exit=0    distinct_gateway_pids=2    dsh_own_stderr_lines=0
+```
+
+五次调用**全部成功**，DSH 自身 **stderr 零行**，退出码 **0**，模型在最终消息里报告 **no errors**。
+
+**这条的危害不在「网关挂了」，在「网关换了而没人知道」**：网关的全部状态都是**内存态**——
+
+- **per-host 令牌桶**（§6.2）→ 归零，重启后瞬间可再发一整桶请求，`arXiv 1 请求/3 秒` 的串行队列失去记忆；
+- **429 集体退避**（规则 O-10）→ 归零，正在退避的供应商被立刻重新撞击；
+- **跨 agent 检索结果缓存**（规则 O-12）→ 归零，同一 query 重新付费重抓，且 `cache_policy_used` 的语义在断点前后不可比。
+
+而**取证链上一个字节的记录都没有**：退出码 0、stderr 0 行、stdout 里是一条正常的最终消息。**这是一次会静默污染整批证据的失效，且现有的任何一道产物门都发现不了它。**
+
+> **规则 O-13a（应对，机器可判）**：
+> 1. 网关每次启动生成 `gateway_boot_id`（一次性随机 128 bit）与单调递增的 `gateway_epoch`，**由网关在每个响应里回带**；
+> 2. **每条证据卡必须记录取回时刻的 `gateway_epoch` 与 `gateway_boot_id`**（与 `fetched_at` / `provider` / `endpoint` / `cache_policy_used` 并列，见 §6.4 末条）；
+> 3. **判据**：同一 `run_id` 内出现 ≥2 个不同的 `gateway_boot_id` → **变更点之后**取回的全部证据判 `source_integrity = not_covered` → `S` 的 0c → **ST-N**（01-CONTRACTS §1.5）。见 V-4.29。
+> 4. **语义必须与「限速拒绝」区分**：限速拒绝是 `not_applicable` + F-11（03-EVIDENCE-ENGINE §5.7 EE-S-12，**不得重试到成功**）；**网关重启窗口是 `not_covered` → ST-N**。两者不是同一件事，不得共用一个 flag。
+>
+> **失效行为三条定死**：**启动期必须 fail-closed**（O-9a）；**运行期允许被监管重启，但重启必须在证据上留痕**（本规则）；**降级直连一律禁止**（无论网关状态如何，worker 都不得绕过——理由见 §6.5）。
+
+**残留（不得省略）** 〔`.loop/m0/M0-6.json` 的 `honest_limits`〕：
+① **streamable-http 形态一次都没跑过**——「DSH 不会 respawn 一个 HTTP 网关」是读 README 的 Known Limitations 得来的，不是运行实测。
+② **没有测 `reconnect.maxAttempts` 耗尽后工具被注销时模型的实际行为**（实测 C 的 4 次 spawn 说明预算是 3+1，但那一轮工具从未注册成功过，所以「工具中途消失」这条路径没被观测到）。
+③ **`gateway_epoch` 方案只有设计，没有实现，没有红样本**；它防的是「重启未留痕」，**防不了「网关自己撒谎报一个假 epoch」**。
+④ 没有测 DSH 的日志等级是否可调高到让 reconnect 的 warn/info 出现在 stderr——`dsh_own_stderr_lines=0` 是**出厂 headless profile 下的一次观测**，不等于「DSH 从不记录」。
+⑤ 没有测网关子进程的 stderr 会不会污染 headless 的 stdout 契约（本轮观测到它进了 stderr，**只是一次观测**）。
+⑥ fixture 的 A/C/D/E 四格都要跑真实 LLM，措辞逐次不同；断言已压成退出码 / 字节数 / pid 计数以求稳定，但「模型是否愿意调用工具」这类行为断言**原理上不保证逐次一致**，其 sha256 可比性弱于 M0-7 的两个 fixture。
+
+#### §6.1.5 依据 3 不变：学术 API 侧的硬 RPS 直接封顶扇出
+
+20 个并行 agent 各自发语义检索，平均每个要等 20 秒 [E: ext-academic-apis.md#D1]〔依据 00-PREMISE B1 反对证据8〕。**并行度必须由中央网关决定，不能由 subagent 数量决定。**（B1 反对证据 8 的结论不变；其中「子代理各自发检索」的**进程模型**描述按 §6.1.3 的同进程事实收窄。）
 
 ### §6.2 分级：per-host 令牌桶 / 串行队列 / 滑动窗口
 
@@ -642,7 +742,7 @@ budget_state:  ok  →  degraded  →  exhausted        // 见 01-CONTRACTS §1.
 | SerpApi | 1 小时 | `no_cache` | 正面：1 小时内重跑同查询免费且结果一致，天然适合验证者复算 |
 | Firecrawl / Tavily / Brave / serper | 未公布缓存控制参数 | — | 视为「每次都是新抓」，但**不能假设**；必须记录取回时间戳 |
 
-→ 证据记录必填 `fetched_at`、`provider`（= 检索供应商 id）、`endpoint`、`cache_policy_used`（把参数原样存下来）。**没有 `cache_policy_used`，「可重跑」就是空话** [E: ext-web-providers.md#D4]。
+→ 证据记录必填 `fetched_at`、`provider`（= 检索供应商 id）、`endpoint`、`cache_policy_used`（把参数原样存下来）、**`gateway_epoch`、`gateway_boot_id`**。**没有 `cache_policy_used`，「可重跑」就是空话** [E: ext-web-providers.md#D4]；**没有 `gateway_boot_id`，缓存层被静默清零这件事在证据上不可见**——网关一旦被 DSH 换进程，本表的四种缓存语义在断点前后全部不可比〔裁定 · S0 实测〕`.loop/m0/M0-6.json`，判据见 §6.1.4 规则 O-13a 与 V-4.29。
 
 ### §6.5 「绕过网关」的诚实执行论证
 
@@ -655,6 +755,7 @@ budget_state:  ok  →  degraded  →  exhausted        // 见 01-CONTRACTS §1.
 **这条论证的四条边界，必须一并写出，否则它是谎话**：
 
 - **(b1) 正确的表述是「绕过没有收益」，不是「绕过不可能」。** 一个被攻陷的 worker 完全可以先绕过网关取内容、再通过网关重放同一个 URL 以取得合法事件。此时它拿到的是同一份内容——绕过的唯一收益是省掉限速。
+  **〔裁定 · S0 实测〕这里必须补一条实测到的现实风险**（`.loop/m0/M0-6.json` 实测 C 格）：**网关缺席时模型会主动用 bash 搜寻替代通道**——`which` / 扫 `PATH` / 试 `npm` / 试 `python`，并且**发现了本机 127.0.0.1:6152 的代理**。它最后没有 `curl`，**唯一的原因是 prompt 里写了 must**。这条实测把 (b1) 从「理论上可绕」变成「观测到的、无需攻陷即会自发出现的行为」。**prompt 纪律不是门**：它挡不住一个只是想把任务做完的 worker。真正的兜底仍然只有产物级那一条（绑不上 `tool/call` → `not_covered` → ST-N）；配额、robots 与留存决策的损害**照旧无人接住**（见 (b3)）。
 - **(b2) `run_code` 的**子工具调用**是被覆盖的**：每个 binding 都走完整的 pre-execute → guards → execute → post-execute → result 管线，并逐条落 `tool/code-dispatch-start` / `tool/code-dispatch` 日志 [E: gt-orchestration.md#J4]〔依据 00-PREMISE B1 配套的三条硬约束〕。真正无痕的是程序体里**不经工具 binding** 直接发起的网络 IO——那类字节没有事件，落到 (b1)。
 - **(b3) 网关与产物门保护的是不同的东西。** 网关保护**配额、合规与可重跑**（`cache_policy_used`、robots、`retention_tier` 都在 fetch 时刻决定，见 01-CONTRACTS §8.6）；产物门保护**可信度**。绕过网关会真实地打爆 429、越过 robots、丢失留存决策——**这些损害产物门一条也发现不了**。所以网关不是优化项，产物门也替代不了它。
 - **(b4) 因此网关的强制手段只能落在工具边界**（01-CONTRACTS §4.4 的三层）+ 子代理不持裸 API key + 网关是独立进程。这些都不在网络边界上，而且它们**不构成隔离**（01-CONTRACTS §5.4）。
@@ -673,6 +774,8 @@ budget_state:  ok  →  degraded  →  exhausted        // 见 01-CONTRACTS §1.
 - **V-4.26** 每条证据记录含非空 `cache_policy_used`；缺失即门红。
 - **V-4.27** 负向测试（(b1) 的机器化）：构造一条 `evidence` 记录，其 `object_sha256` 存在于 CAS 但其 `tool/call` callId 在 session 日志中查无此事，断言该 claim 判 ST-N（这是 01-CONTRACTS V4.6 在编排层的实例）。
 - **V-4.28** Brave 结果不落盘：断言序列化器对 `ephemeral: true` 的对象抛错；红样本为一次尝试写盘。
+- **V-4.29 网关换进程必须留痕**〔裁定 · S0 实测〕`.loop/m0/M0-6.json`：对每个 `run_id`，收集其全部证据卡的 `gateway_boot_id`；若去重后 > 1，则**首次变更时刻之后**（按 `fetched_at` 排序）取回的每一条证据必须被判 `source_integrity = not_covered`，其 claim 落 ST-N。红样本：跑一次 run，中途 `kill` 掉网关子进程，断言变更点之后的证据全部 ST-N 而**不是**照常升格。**这道断言当前必须先红**——`gateway_epoch` / `gateway_boot_id` 只有设计、没有实现（§6.1.4 残留③）。
+- **V-4.30 启动期 fail-closed 的配置断言**（规则 O-9a）：网关 MCP server 条目的 `failOnStartupError === true`；**出厂默认是 `false`**，所以这条是对「有没有显式覆盖」的断言，不是对默认值的断言。红样本：删掉该键或设为 `false`，断言门红。配套的运行期断言：网关不可用时 `dsh` 必须 `exit 1` 且 `stdout` 为 **0 字节**（实测基线，`.loop/m0/M0-6.json` B 格）。
 
 ---
 
@@ -840,9 +943,10 @@ M2（首批 checkable-answer eval）→ 等预算 A/B（A = 单线程深挖 vs B
 1. **§4 的 `STOP` 从未运行过。** 它与 01-CONTRACTS §1.5 的 `S` 一样，是从证据推导出来的设计，不是被测量出来的行为。RS-1/RS-2/RS-3 跑通之前，「同时内容感知且可复现的停机判据」应按未验证设计假设对待。
 2. **`k` / `D_min` / `θ_futile` / `idle_rounds` / `α` / CP-2 容量六个数全是裸裁定**，没有一个来自外部测量。它们中任何一个取值不当，SAT-2 都会退化：`k` 太小 → 提前收敛；`D_min` 太小 → §4.4 的防线形同虚设。
 3. **§4.2 的 `Δstatus_up` 经过 GC-2，因此 `STOP` 不是 model-free。** 本文件已在正文写明并把主信号放在 `Δcluster` 上，但如果 `Δcluster` 在实测中噪声主导（01-CONTRACTS §9.14 已预注册这个风险），SAT-2 会被迫更依赖那条 model-influenced 的信号。
-4. **§3.5 的 P0 层可能根本不存在。** 出厂呈现模式是 `native`，`code-runtime` 只由 web-app / headless 挂载。若不选 Code Mode，00-PREMISE B1 的「先吃满工具调用级并行」这条配套约束在本运行时无处落地。**这是 M0 阻塞项。**
+4. **§3.5 的 P0 层：M0 阻塞项已闭合，但闭合的方式本身是一处薄弱处。**〔裁定 · S0 实测〕`.loop/m0/C-12a.json`。旧写法（「出厂呈现模式是 `native`，`code-runtime` 只由 web-app / headless 挂载，所以 P0 层可能根本不存在」）**已被实测推翻**：headless bundle 把 `tools` 行 config **整键替换**为 `mode: !!js process.env.DSH_TOOLS_MODE` 并**额外 insert 了 `code-runtime` 行**——`native` 只是 `DSH_TOOLS_MODE` **未设时**的兜底，不是组合事实；执行能力一直挂着，只是默认不呈现。**收口靠 02-ARCHITECTURE §A.3 第 0 块那两行**（`tools.mode` 钉成字面量 `native` + `code-runtime: disabled`），落地后 P0 层才真正不存在、优先级从 P1 开始（§3.5 的二值表）。**仍然薄弱的是**：① 那两行是**我们自己的纪律**，不是 DSH 的保证，且 `--dump-config` 对 `DSH_TOOLS_MODE` 完全不可观测——在 pin 落地前、以及对任何我们没 pin 的行，这个进程级接缝仍不可见（建议门里加一条一行成本的正向断言 `test -z "${DSH_TOOLS_MODE:-}"`）；② `ctx.tools.presentAs()` 这条 **agent 级绕过路径未测**，那两行对它是否有效**没有验证**；③ `both` 与非法值未测。
 5. **§3.4 的角色—工具映射有一处自认的例外**（反证 worker 与发现/取证 worker 工具集重叠），而 OpenAI 的判据恰恰是重叠度而非数量。这条例外是已知的协调开销来源。
-6. **§6.5 的执行论证保护的是「升格」，不保护「资源」。** 一个被攻陷或只是写得差的 worker 绕过网关，会真实地打爆配额、越过 robots、丢失留存决策，而产物门一条也发现不了。§6.5 (b3) 已写明，但这意味着网关本身是一个**没有强隔离兜底的软约束**。
+6. **§6.5 的执行论证保护的是「升格」，不保护「资源」。** 一个被攻陷或只是写得差的 worker 绕过网关，会真实地打爆配额、越过 robots、丢失留存决策，而产物门一条也发现不了。§6.5 (b3) 已写明，但这意味着网关本身是一个**没有强隔离兜底的软约束**。**〔裁定 · S0 实测〕这条本轮从「理论风险」升级为「观测到的行为」**（`.loop/m0/M0-6.json` 实测 C 格）：网关缺席时模型**自发**用 bash 搜寻替代通道（`which` / 扫 `PATH` / 试 `npm` / 试 `python`），并发现了本机 `127.0.0.1:6152` 代理；它没有 `curl` 的**唯一**原因是 prompt 里写了 must。**prompt 纪律不是门。**
+   - **§6.1.4 的「网关被静默换进程」目前没有任何机械防线（本条与上一条同属「网关是软约束」这一族，编号沿用 6 以免打断既有引用）。**〔裁定 · S0 实测〕`.loop/m0/M0-6.json` 实测 D 格：网关中途崩溃 → DSH 换进程（pid 71338→71389）→ 退出码 0、DSH 自身 stderr **零行**、模型报告 no errors，而令牌桶 / 429 集体退避 / 跨 agent 缓存的内存态在断点被**静默清零**。应对（规则 O-13a 的 `gateway_epoch` / `gateway_boot_id` + V-4.29）**只有设计、没有实现、没有红样本**，且它防的是「重启未留痕」，**防不了「网关自己撒谎报一个假 epoch」**。在 V-4.29 落地之前，**任何一次跨越网关重启的 run，其证据的可重跑性没有依据**。另有两条未测：`reconnect.maxAttempts` 耗尽后工具被注销时模型的实际行为；streamable-http 形态（唯一能跨进程共享的形态）**一次都没跑过**。
 7. **§8.2 的 house 数据对本设计不利，且我们没有反驳它，只有结构性解释。** 「治理不等于质量」在本项目上是否成立，M2 之前无答案。
 8. **`gate_integrity.sh` 的自指问题无解**（谁证明它没被改）。house 无答案，本文件也没有。
 9. **本文件引用的全部检索供应商限速与价格在 30–90 天内会变。** 峰谷窗口有被取消的先例（2025-09-04）；Crossref polite pool 已经失效过 16 倍。凡引用本文件的数字必须连 as-of 日期一起引用。

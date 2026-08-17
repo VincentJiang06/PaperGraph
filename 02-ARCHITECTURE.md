@@ -32,8 +32,8 @@
 | 事实 | 一手依据 | 对本项目的意义 |
 |---|---|---|
 | headless bundle 只 patch `system-prompt` / `hmr` / `tools` 并 insert `code-runtime` / `headless-startup` / `headless-runner`，全文 35 行，**无 Host/HTTP** | [E: gt-profile-plugin.md#G7] | 攻击面最小；不引入 web 前端那一整套行 |
-| headless bundle 把 `tools` 行的 config **整键替换**为 `mode: !!js process.env.DSH_TOOLS_MODE`；`dsh-base` 的 `tools` 行**根本没有 config**（注释原文：「omitting it here keeps the schema default (native)」） | 实测 R3：`@deepseek-ai/dsh-base/cordis.patch.yml:424`、`@deepseek-ai/dsh-headless/cordis.patch.yml`；`dsh --profile headless --dump-config` 输出带溯源注释 `# == @deepseek-ai/dsh-base, patched by @deepseek-ai/dsh-headless` | **「出厂呈现模式是 native」不是组合事实，是一个环境变量的函数**。见 §C 的 C-12a 与 §A.3 的 `tools` / `code-runtime` 两行 |
-| headless bundle **insert 了 `code-runtime`**（`@deepseek-ai/dsh-code-runtime-worker-thread`），注释原文「Code Mode is a core execution capability, not a Web component」 | 同上（实测 dump 第 326–327 行） | Code Mode 的**执行能力在 headless 下是挂着的**，只是默认不呈现。要真正拿掉必须 `disabled: true`（实测可行，见 C-12a） |
+| headless bundle 把 `tools` 行的 config **整键替换**为 `mode: !!js process.env.DSH_TOOLS_MODE`；`dsh-base` 的 `tools` 行**根本没有 config**（注释原文：「omitting it here keeps the schema default (native)」） | 实测 R3：`@deepseek-ai/dsh-base/cordis.patch.yml:424`、`@deepseek-ai/dsh-headless/cordis.patch.yml`；`dsh --profile headless --dump-config` 输出带溯源注释 `# == @deepseek-ai/dsh-base, patched by @deepseek-ai/dsh-headless` | **「出厂呈现模式是 native」不是组合事实，是一个环境变量的函数**——〔裁定 · S0 实测，[E: .loop/m0/C-12a.json]〕更准确的说法是：**`native` 只是 `DSH_TOOLS_MODE` 未设时的 schema 兜底**。两侧运行实测：不设该变量时模型面无 `run_code`；`DSH_TOOLS_MODE=code` 时 `run_code` 可执行并读到 `node:fs`。**凡把「出厂 native」当固定事实承重引用的句子一律不成立**。见 §C 的 C-12a 与 §A.3 的 `tools` / `code-runtime` 两行 |
+| headless bundle **insert 了 `code-runtime`**（`@deepseek-ai/dsh-code-runtime-worker-thread`），注释原文「Code Mode is a core execution capability, not a Web component」 | 同上（实测 dump 第 326–327 行） | Code Mode 的**执行能力在 headless 下是挂着的**，只是默认不呈现。要真正拿掉必须 `disabled: true`〔裁定 · S0 实测，[E: .loop/m0/C-12a.json]〕：出厂纯净组合的 dump 里 `code-runtime` 行确实在场；`tools.mode` 钉成字面量 `native` + `code-runtime: disabled` 后，父进程 `DSH_TOOLS_MODE=code` 失效（走到 `dsh: AUTH`）；而 mode 钉成 `code` 且 `code-runtime` disabled 会响亮启动失败。见 C-12a |
 | headless profile **没有 `agent-presets` 行**（实测 `dsh --profile harvest-test --dump-config \| grep -c agent-presets` = 0；R3 复核：全安装树里只有 `dsh-web-app/cordis.patch.yml:421` 挂 `agent-presets`，config 为 `default: standard`） | [E: gt-profile-plugin.md#G7, #结论摘要-11] | 所有工具注册在**全局层**，子代理直接继承；**不需要处理 preset 的 mount 三条拒绝规则、generation 永不回收、CLI 覆盖 `roots`** [E: gt-profile-plugin.md#G2, #G3, #G6]。**同时**：`settings.yaml` 的 `agent-presets.default` 在 headless 下是**惰性**的（没有 roster 消费它）——这条把 C-12b 的威胁面从「preset 换 presentAs」收窄到「模型路由」 |
 | headless 下**没有 approval answerer**，`ctx.approval` 解析为 `unavailable` → **fail closed** | [E: gt-exec-security.md#H-6, #G-1] | 批跑必须**预先**把权限放到位；我们的检索/取证工具**不得**依赖 `ctx.approval`（依赖即必然失败） |
 | CLI 语法：`dsh --profile <name> [--patch <path>]* [app args...]`，launcher flag 必须在前，第一个不认识的 token 起全是 app 参数 | [E: gt-profile-plugin.md#H1] | 门脚本与 e2e 外壳可以稳定地拼命令行 |
@@ -88,7 +88,19 @@
 ```yaml
 # ⚠️ patch 的每个顶层键是整体赋值，config 作为一个对象被整体换掉，没有深合并。
 #    官方注释原文见 dsh-base/cordis.patch.yml:6-7。[E: gt-profile-plugin.md#B3, #B4]
-# ⚠️ patch 匹配不到目标行只 warn 不 fail —— 静默失效是本机制的头号风险。[E: gt-profile-plugin.md#B3]
+# ⚠️ patch 匹配不到目标行 —— 静默失效是本机制的头号风险。[E: gt-profile-plugin.md#B3]
+#
+# 〔裁定 · S0 实测〕**「猜错 id = 静默失效」此前把两件相反的事混为一谈，必须分开写：**
+#   ① **patch 的 entry id 猜错 = 真静默**（[E: .loop/m0/M0-3c.json]）。同一个 DSH_HOME、同一份写错
+#      id 的 patch：`--dump-config` 报 2 条 `patch: entry "<id>" not found`，而**真实 boot 报 0 条**
+#      （同次命令用 `dsh: AUTH` 证明 boot 确实跑到了 LLM）。即真实运行路径上**彻底静默**，
+#      连 warn 都没有——「只 warn 不 fail」这个旧说法**低估了它**。
+#      ⇒ 唯一能抓住它的地方是 `--dump-config` 的 stderr（§D.3 第 1 段，那条 grep 不可移动）。
+#   ② **插件 `inject` 的服务名猜错 = 响亮失败**（[E: .loop/m0/M0-3a.json]）。`assertEntriesActivated()`
+#      在 boot 末尾抛错、**退出码 1**，并逐字点名缺失的服务 `pending (waiting for service: <svc>)`。
+#      它**不需要**任何门去抓——boot 自己就红。
+#   ⇒ 本文件凡出现「猜 id / 猜名字 = 静默失效」的地方，一律按这条对照区分；把 ② 写成静默会让人
+#      给一个已经会红的路径再造一道门，把 ① 写成响亮则会让人删掉唯一抓得住它的那条 grep。
 
 # ── 0. 呈现模式与 Code Mode 执行能力：两道都必须显式写死（C-12a，R3 实测）
 #    headless bundle 把 tools 行 config 整键换成 `mode: !!js process.env.DSH_TOOLS_MODE`。
@@ -143,11 +155,19 @@
   config: { fetch: false, searchTimeoutMs: 60000, searchMaxResults: 8 }
 
 # ── 6. workflow 引擎的并发闸必须显式写死，不能吃 CPU 推导值
-#    ⚠️ 该行的 id 在本轮一手语料中未被逐字记录（只记录了 dsh-base 的行号与它设了 provider: spawn）。
-#    落地前必须先 `dsh --profile academic-research --dump-config` 读出真实 id 再写这条 patch，
-#    否则它会静默 warn+skip（B3）。
-# - id: <workflow 引擎行 id>
-#   config: { provider: spawn, maxConcurrentAgents: 6, maxTotalAgents: 1000, maxItemsPerCall: 4096 }
+#    〔裁定 · S0 实测，[E: .loop/m0/M0-3c.json]〕workflow 是**两行**，都来自 @deepseek-ai/dsh-base，
+#    id 已实测确认、可直接写死（不再需要「落地前先 dump 读 id」这一步）：
+#      引擎行     id: workflow-worker-thread   name: '@deepseek-ai/dsh-workflow-worker-thread'  出厂 config: {provider: spawn}
+#      模型面工具行 id: tool-workflow            name: '@deepseek-ai/dsh-tool-workflow'           出厂无 config
+#    命中判据（实测）：patch 后 `--dump-config` 里 `patch: entry` 计数 **= 0**，
+#    且目标行上方出现溯源注释 `# == @deepseek-ai/dsh-base, patched by <本文件>`，且该行的值确实变了。
+#    ⚠️ 打不中的后果比 v1 写的更坏：**真实 boot 路径上完全静默**（详见本节顶部的对照裁定与 §D.3 第 1 段）。
+- id: workflow-worker-thread
+  config: { provider: spawn, maxConcurrentAgents: 6, maxTotalAgents: 1000, maxItemsPerCall: 4096 }
+#    ⚠️ `tool-workflow` **不 disable**：〔裁定 B-4〕把 workflow 定为批量扇出的唯一入口，
+#    这扇 P0 门是本架构要求打开的（C-12c）。且实测残余：**「打中 tool-workflow 且 disabled: true 后
+#    workflow 工具是否真的从模型面消失」未验证**——M0-3c 只证明了 dump 里 `disabled: true` 生效，
+#    模型面的消失是推断。谁将来要靠 disable 它来收口，必须先补这个实验。
 ```
 
 **四条必须随骨架一起说的话**（第 1、2 条在 R3 被改写——旧文本把 profile 层叫「最终仲裁位」并把机器级威胁钉在了错误的文件上）：
@@ -160,6 +180,14 @@
 2. **机器级偏好的真实载体是 `$DSH_HOME/settings.yaml`，不是 `$DSH_HOME/cordis.patch.yml`**〔R3/C-12b 改写〕。
    两个文件都真实存在于层序里，但**威胁不成比例**：
    - `$DSH_HOME/cordis.patch.yml` 本机**不存在**（`loadOptionalPatches` 遇 ENOENT 返回无层），且一旦存在会在 `--dump-config` 里现形。
+     〔裁定 · S0 实测，[E: .loop/m0/C-12b.json]〕**「不存在 ⇒ 断言恒真 ⇒ 可以删」这个推理是错的，理由必须写死在这里**：
+     实测该文件**一旦存在就压过 profile 自己的 patch 层**——不是并列、不是先于。同一个 DSH_HOME 里两层都写 `agent-default-model.model`，
+     profile 层写 `FROM-PROFILE`、home 层写 `FROM-DSHHOME`，dump 的最终值是 `FROM-DSHHOME`，溯源注释按施加顺序列出两者
+     （`# == @deepseek-ai/dsh-base, patched by <profile>/cordis.patch.yml, <home>/cordis.patch.yml`）。
+     → **威胁强度上它能整键改掉我们钉死的任何一行**，包括 §A.3 第 0 块的 `tools.mode` 与 `code-runtime: disabled`。
+     它与 `settings.yaml` 的真实区别**不是「弱」，是「可观测」**：它会在 dump 里现形，settings 不会。
+     所以 §D.3 第 1b (i) 那条断言的价值不在「它今天会不会红」，而在「它把一条能整键翻掉全部 pin 的层钉成了不存在」——
+     **今天恒真恰恰是它该在的理由，不是删它的理由**。
    - `$DSH_HOME/settings.yaml` **本机存在**（R3 实测 1271 字节），由 `dsh-base` 的 `settings` 行（`@deepseek-ai/dsh-settings-file`）挂载，因此**每个 profile 都吃它**，`watch: true` **热重载**，且分层是「schema 默认 → 组合层 base → 用户文档 section」——**用户文档在最上面**，直接覆盖我们写在 `cordis.patch.yml` 里的组合值 [E: gt-profile-plugin.md#D4；R3 实测 `@deepseek-ai/dsh-settings-file/README.md`]。
    - **它对 `--dump-config` 与 `--dump-default-config` 双双不可见**：两个 dump 打印的都是**插件树**，settings 是运行时叠加在树之上的另一层。R3 实测本机 `settings.yaml` 里就带着 `agent-default-model: {provider, model, reasoningEffort}`（模型路由）、`ya-subagent.profiles[].model` 与 `maxDepth`（子代理路由与深度）、`llm-pi-ai.providers`（**活体注册全新的 provider 路由**）、`agent-presets.default`、`auto-compact.thresholds`。
    → 旧文本让 boot 门去断言 `cordis.patch.yml` 不存在。**那道断言检查的是错误的对象**：本机它恒真，而真正能静默改掉模型路由的那个文件门根本没看。正确断言见 §D.3 第 1 段（两个文件都断言，且 `settings.yaml` 走**值级白名单 + 哈希入 manifest**，不是「必须不存在」——它是用户合法的模型选择入口，禁止它就是禁止用户配模型）。
@@ -170,7 +198,7 @@
    → 凡是取值来自 `!!js` 的行，**读 dump 的门对它的实际生效值一无所知**。唯一的修法是让我们自己的层把它替换成字面量（§A.3 第 0 块），此后 dump 里出现的就是可 grep 的 `mode: native`（R3 实测：加 `--patch` 后 dump 第 309 行变为 `mode: native`）。
    任何把 dump 当验收证据的门都是**配置层空心门**（gt-house-method 记录的同一失败类已连中三次，见 §D.5）。
 
-4. **第 0 块的两行都经过真实 boot 验证，不是纸面推理**（R3 实测，用故意无效的密钥）：
+4. **第 0 块的两行都经过真实 boot 验证，不是纸面推理**（R3 实测，用故意无效的密钥；〔裁定 · S0 实测，[E: .loop/m0/C-12a.json]〕**S0 在一个干净的临时 `DSH_HOME` 里独立复核，两条都复现**——钉成字面量 `native` 后父进程的 `DSH_TOOLS_MODE=code` **不再起作用**，钉成 `code` 且 `code-runtime: disabled` 则响亮启动失败）：
    - `tools.mode: native` + `code-runtime: disabled` → `dsh --profile headless --patch <pin> "noop"` 退出码 1，stderr 唯一一行是 `dsh: AUTH: Authentication Fails, ...`。**树装得起来**，headless runner 不依赖 `ctx.codeRuntime`。
    - `tools.mode: code` + `code-runtime: disabled` → 退出码 1，stderr 逐字为
      `dsh: UNKNOWN: dsh-tools: mode "code" requires a code runtime — load a ctx.codeRuntime implementation (e.g. @deepseek-ai/dsh-code-runtime-worker-thread) or set tools mode to "native"`。
@@ -217,7 +245,16 @@
 1. **`cordis.patch.yml` 必须列进 `files`**，否则发布后 `loadOverlayPatches` 因文件缺失直接 throw（bundle 的 patch 文件走的就是这条「不存在也 throw」的路径）[E: gt-profile-plugin.md#D1, #B7]。
 2. **宿主包一律 `peerDependencies`**，靠 `$DSH_HOME/profiles/node_modules` 的扁平回退解析到宿主同一实例 [E: gt-profile-plugin.md#A6, #D1]。违反的代价有活体记录：`@shijunan123/dsh-subagent-effort@0.4.2` 把 `@deepseek-ai/dsh-tools` 写成 regular dependency，pnpm 装了第二份副本，宿主的工具分发器解析到错误模块实例，**每一次工具调用都死于 `Cannot read properties of undefined (reading 'prepare')`**；解法是在 `pnpm-workspace.yaml` 里写 `overrides: '@deepseek-ai/dsh-tools': link:<宿主路径>` [E: gt-profile-plugin.md#D6]。
 3. **四个导出：`name` / `inject` / `Config` / `apply`** [E: gt-profile-plugin.md#D3]。⚠️ **`Config` 是纪律不是机制**：`cordis/lib/index.js:956` 是 `if (!runtime.Config) return config;`，没有 `Config` 的插件**不会崩** [E: GROUND-TRUTH-CORRECTIONS.md#A4]。所以「每个自建插件都导出了 `Config`」必须由我们自己的门检查（§D.3）。
-   ⚠️ **`inject` 的具体服务名字符串在本轮一手语料中只有 serper 的 `['web']` 一个实例**；我们要注入的是工具注册与凭据解析两个服务，其确切服务名**未在一手语料中逐字出现**。落地前必须实测确认，**不得凭记忆写**。已列入 open questions。
+   ✅ **`inject` 的服务名已实测闭合**〔裁定 · S0 实测，[E: .loop/m0/M0-3a.json]〕。注册模型面工具的服务名是 **`tools`**（`ToolRuntime` 的 **ctx key**，**不是类名** `ToolRuntime` / `toolRuntime`），逐字写死：
+
+   ```js
+   export const inject = ['tools'];   // ← 承重的那一行：ctx key，不是类名
+   ```
+
+   正负两例是同一份插件、同一个 profile、**只改这一个字符串**跑出来的：写 `['toolRuntime']` 时 boot 逐字报 `pending (waiting for service: toolRuntime)` 并**退出码 1**；写 `['tools']` 时插件树装得起来（用无效密钥探针跑到 `dsh: AUTH`），且该工具被模型真实调用并返回 `M0-INJECT-PROBE-ALIVE`。
+   两条随之钉死的安装纪律（同一实测）：profile 的 `package.json` 里 `dsh.profile.bundles` 追加包名、`dependencies` 追加该包；插件自己的 `cordis.patch.yml` **必须**用 `- insert:` **列表**形式（bare mapping 会在 boot 失败）。
+   ⚠️ **一条前提被同一实测推翻**：`inject` 猜错**不是**静默 PENDING。`dsh-app-boot` 的 `assertEntriesActivated()` 在 boot 末尾**无条件**枚举未激活 entry、抛错、退出码 1，并**逐字点名缺失的服务**。这与 patch 的 entry id 猜错是**两件相反的事**，见 §A.3 顶部的对照裁定。
+   ⚠️ **残余**（M0-3a honest_limits）：① 只在 `dsh --profile headless` 的 **CLI boot 路径**验证；web profile 与 **HMR 热重载路径**（headless 下 `hmr` 行被 bundle disabled）**未测**，热重载期的 inject 失败是否同样响亮**未知**。② 只对 `tools` 一个服务名做了正负两例实跑；实测记录附的 16 个 ctx key 对照表（`sessions` / `subagents` / `fs` / `systemPrompt` / `skills` / `subprocess` / `sandboxPolicy` / `tokenMeter` / `llm` …）来自 README 标题与编译产物中的 `inject = [...]` 字面量，**属于代码阅读，未逐个运行验证**。③ **该对照表里没有凭据解析服务**——本条只闭合了「工具注册」那一半，`ctx.credentials` 的 inject 名仍未实测，**落地前不得凭记忆写**，仍在 open questions。
 4. **用 `@deepseek-ai/schemastery` 而不是 zod**：代码只要求 Standard Schema v1（`Config["~standard"].validate`，且**必须同步，异步会抛 `TypeError`**），zod v3.24+/v4 理论满足；但 DSH 另有两处依赖 schemastery 专有能力（loader 写回配置时的 `Config.simplify`、`dsh-settings` 的 `schema.toJSON()` 与 `role('secret')` 遍历），**用 zod 在这两条路上会退化到什么程度未在本机验证** [E: gt-profile-plugin.md#C1, #未决-1]。
 
 **环境变量纪律**：`DSH_*` / `XDG_*` / `DYLD_*` / `BASH_FUNC_*` 前缀的一切**不能**写进 `.env`（写了直接 throw），必须 `export`；学术 API 的密钥（`OPENALEX_API_KEY` / `CROSSREF_MAILTO` / `S2_API_KEY` / `SERPER_API_KEY` …）可以放 `$DSH_HOME/.env` 或项目 `.env`，并用 `Config` 的 `.role('credential-ref')` + `ctx.credentials.resolve()` 取 [E: gt-profile-plugin.md#H4, #设计含义-7]。
@@ -366,6 +403,7 @@
 | Code Mode `run_code` 子调用 | `maxParallelSubCalls` 出厂 10（**仅 `code`/`both` 呈现模式下存在**） | `dsh-tools` | 10 |
 
 ⚠️ **最后一行的适用条件在 R3 被改写**：旧表写「出厂呈现模式是 `native`」并据此认为这一闸门在本项目不存在。**那是把一个环境变量当成了组合事实**——headless bundle 把 `tools` 行 config 整键换成 `mode: !!js process.env.DSH_TOOLS_MODE`，`native` 只是 `DSH_TOOLS_MODE` **未设置时**的 schema 兜底（`dsh-tools/lib/index.js` 里逐字为 `mode ?? "native"`）。本 profile 的 `cordis.patch.yml` 把它钉成字面量 `native` 并 `disabled` 掉 `code-runtime` 之后（§A.3 第 0 块），这一行才真正**不存在**；在那两行落地前，它按「存在且不可观测」对待。详见 §C 的 C-12a。
+〔裁定 · S0 实测，[E: .loop/m0/C-12a.json]〕**这条改写被运行实测坐实，两侧都跑了**：不设 `DSH_TOOLS_MODE` 时出厂 headless 模型面共 25 个工具、**无 `run_code`**（但**有 `workflow`**）；`DSH_TOOLS_MODE=code` 时 `run_code` 存在、可执行、并读到 `node:fs`。所以这一闸门在 pin 落地前**确实存在**，只是不可观测——**不得再把「出厂 native」当成它不存在的理由**。
 
 **〔裁定 B-4〕批量扇出的唯一入口是 workflow。**
 理由：它是唯一会**排队而不是失败**的路径；有 `maxTotalAgents` 兜底；`agent(prompt, {schema})` 直接拿结构化值 [E: gt-orchestration.md#设计含义-1]。
@@ -495,13 +533,13 @@ M2 证据底座 ────┤                      ├─→ M4 编排 ──�
 | C-5 | **`ignorable` 只读不写** | **〔需 harness 改造〕→ 绕开** | `Session.append` 的签名与实现里根本没有该通道（只有 `surfaceOp` / `sourceEventSeqs`）；全 194 包 grep 写入方 **0 处**；读端完全支持、写端完全缺失 [E: GROUND-TRUTH-CORRECTIONS.md#A1；gt-evidence-substrate.md#B6] | **不写自定义 log-only 事件**（01-CONTRACTS §8.2）。逃生口 `KNOWN_SESSION_EVENT_TYPES.add()` 实测可行（Set 未冻结、模块单例共享）但官方明写「registration surface … deferred」，且**日志对没装本插件的进程仍不可读** → **一律不用**，只作「若官方开放注册面则升级」的预留路径 [E: gt-evidence-substrate.md#B7, #未决-1]。在野代价已证实：第三方插件写 `ya-subagent/started`，该 session **没有任何 `session/end-seed`** [E: gt-evidence-substrate.md#C1] |
 | C-6 | **spill 截断**：超阈值纯文本结果的原文不在日志里 | **〔profile 层实现〕** | spill-policy 是 `tools/post-execute` 变换器，loop 用**流水线最终结果**建 `tool/result`；出厂 `maxInlineBytes: 50000` 字节（UTF-8 字节，不是 code point）[E: GROUND-TRUTH-CORRECTIONS.md#A2；gt-evidence-substrate.md#E2, #E4] | 逐字校验的基底**只能是 CAS 快照文件**；日志只用于绑定「这次抓取确实发生过」（§4 W-01 依据）。**并且**：spill 文件不可依赖为长期证据——root 出厂**未配置**，落在每进程私有的 OS temp 目录、跨进程不可预测、可能被系统清理、无删除 API [E: gt-evidence-substrate.md#E5；01-CONTRACTS §8.4 D-8.12] |
 | C-7 | **多帧 zstd** | **〔profile 层实现〕** | 磁盘 `.jsonl.zstd` 是多个独立 frame 串接；Node 内置只解第一帧（实测 1 行 vs 3675 行）[E: GROUND-TRUTH-CORRECTIONS.md#A3；gt-evidence-substrate.md#H3] | 按 magic `28 B5 2F FD` 手动切帧、或 spawn `zstd -dc`、或走 `readRaw` / `/api/session.export`。**M0 的第一件代码**。配套两个同级地雷：按行 `JSON.parse` 后**必须** `decodeStorageRecord`（否则 chunk-row 打包行只有 `seq0`、映射有洞）；**必须**用 `surfaceOp === 'append'` 过滤 append-origin 事件（否则 pruner/compaction 的替换体会冒充原始结果）[E: gt-evidence-substrate.md#H4, #D2, #D4；01-CONTRACTS §6.5.4] |
-| C-8 | **`run_code` 旁路** | **〔需 harness 改造〕→ 认账，不宣称围堵** | `dsh-code-runtime-worker-thread` 对沙箱包**零依赖**，程序体用 `new AsyncFunction` 在 worker 自己的 realm 求值，Node 全局（`fetch`/`process`/`globalThis`/`Buffer`/`URL`）都在作用域内；README 自陈 "Containment, not a security boundary … bash-equivalent by design"；程序 spawn 的 OS 进程在 terminate 后**仍存活** [E: GROUND-TRUTH-CORRECTIONS.md#A7；gt-exec-security.md#D-3~D-5] | 它**同时绕过**内核沙箱（只管 bash）与 `ctx.fs` 策略围栏（只管 ctx.fs 工具）。→ 文档里**不得**出现「研究 agent 只能通过我们的检索工具上网」。唯一诚实的表述是产物级兜底（01-CONTRACTS §4.4）。⚠️ 一条**未实际执行验证**的边界：`run_code` 程序能否加载 `node:fs` / `node:child_process` —— README 的 "OS processes … survive termination" 隐含模块可达，但未实跑确认 [E: gt-exec-security.md#未决-1]。**落笔前应跑最小实验**；在此之前措辞按最坏假设 |
+| C-8 | **`run_code` 旁路** | **〔需 harness 改造〕→ 认账，不宣称围堵** | `dsh-code-runtime-worker-thread` 对沙箱包**零依赖**，程序体用 `new AsyncFunction` 在 worker 自己的 realm 求值，Node 全局（`fetch`/`process`/`globalThis`/`Buffer`/`URL`）都在作用域内；README 自陈 "Containment, not a security boundary … bash-equivalent by design"；程序 spawn 的 OS 进程在 terminate 后**仍存活** [E: GROUND-TRUTH-CORRECTIONS.md#A7；gt-exec-security.md#D-3~D-5] | 它**同时绕过**内核沙箱（只管 bash）与 `ctx.fs` 策略围栏（只管 ctx.fs 工具）。→ 文档里**不得**出现「研究 agent 只能通过我们的检索工具上网」。唯一诚实的表述是产物级兜底（01-CONTRACTS §4.4）。**〔裁定 · S0 实测，[E: .loop/m0/M0-4.json]〕这条边界已经跑过，不再是「未实际执行验证」**：① `node:fs` **可达**——程序体 `const fs = await import('node:fs')` 拿到 fs 并成功 `writeFileSync` + 读回；真实 headless 会话（`DSH_PERMISSION_MODE=read-only`）里**工作区内与工作区外两个文件都写成并在磁盘上核实存在**。② **沙箱对它零约束**，机制已定位：`run_code` 跑在**宿主 DSH 进程的 worker thread** 里（`program pid === host pid`），根本没有一个可被 `sandbox-exec` 包住的子进程；同机、同时刻、同一条 read-only 策略下走内核沙箱的 **bash 路径写文件被拒**（退出码非 0 + stderr 命中该后端的 `denialSignatures` + 文件未生成），`run_code` 路径写成。③ 两条措辞更正：`require` **不在作用域**（`ReferenceError: require is not defined`——程序体是 `new AsyncFunction` 的函数体，不是模块作用域），可达路径只有 `await import()`；`process.env` **键数 = 0**（worker `env: {}` 已实测生效），即它**挡凭据、不挡文件系统**。④ **`node:child_process` 与网络出站仍未实测**——`import()` 通道本身是开的使其大概率同样可达，但那是推断；这两项的措辞**继续按最坏假设**，不得据本条升级。⑤ 另一条仍未测：本轮打穿的是内核沙箱，「`run_code` 绕过 `ctx.fs` 围栏」仍只有代码依据，没有跑过「ctx.fs 拒写 / run_code 写成」的对照 |
 | C-9 | **子代理不继承沙箱作为下限** | **〔需 harness 改造〕→ 认账** | `captureDelegatedPolicyOverrides` 只取 `sandboxPolicy.overrideOf(parent.session)`，即父会话的**显式 override**；从不捕获部署出厂值，也不捕获一次性授权。approval 无条件钉为 `'never'` [E: GROUND-TRUTH-CORRECTIONS.md#A8；gt-orchestration.md#C4] | **不得把「子代理受限于父」当安全地板**。设计应对是运行时指纹 + 门：`runs/<run_id>/manifest.json` 中若 `sandbox/mode == danger-full-access`，该次运行的全部产物标记「权限异常，需人工复核」（§4.6 V4.5）。父若切到 `danger-full-access`，所有子代理继承之且**不会有任何提示** [E: gt-exec-security.md#H-6] |
 | C-10 | **出厂值 ≠ 包默认值** | **〔profile 层实现〕** | 沙箱：包默认确是 read-only，但**出厂组合覆盖为 workspace-write**；ralph 轮预算：README 与代码 schema 都写 256，**出厂全部组合覆盖为 64**；goal 轮预算 `defaultMaxGoalRounds = 256` 出厂未覆盖、确认为 256 [E: GROUND-TRUTH-CORRECTIONS.md#A9, #A10；gt-orchestration.md#X1, #X2] | 一切「默认」一律引出厂组合（见 §9.23）；两个轮预算不得混谈（见 §9.24）。**profile 的 `cordis.patch.yml` 显式重述我们依赖的每个值**，让漂移在 git diff 里可见 |
 | C-11 | **`toolFilter` 不是权限天花板** | **〔需 harness 改造〕→ 认账** | 三处一手 README 明文否认；`restrict` 只过滤「继承来的层」，不过滤 scope 自己注册的工具；子代理拿**全新扁平 scope**，不导入父的 restriction → **不向下传递** [E: gt-exec-security.md#B-1~B-4] | 它是有效的降噪手段，不是安全边界。强制点只能落工具边界（§C.3 的 C-12） |
-| C-12 | **`--dump-config` ≠ boot 真值** | **〔profile 层实现〕** | dump 的 layers 不含 CLI 注入的 `agent-presets.roots` 覆盖与 telemetry disable patch [E: gt-profile-plugin.md#H2, #G6] | boot 门必须有**真实 boot** 那一步（§D.4）。同时断言 dump 输出里**没有任何 patch warning**——patch 匹配不到只 warn 不 fail，静默失效是该机制最大的坑 [E: gt-profile-plugin.md#B3, #设计含义-8] |
-| **C-12a** | **「出厂呈现模式是 `native`」是环境变量的函数，不是组合事实**〔R3 新增，攻击 C-12a〕 | **〔profile 层实现〕→ 已给出结构性收口** | R3 三项实测：① `dsh-base/cordis.patch.yml:424` 的 `tools` 行**无 config**（注释：omitting it keeps the schema default (native)）；② `@deepseek-ai/dsh-headless/cordis.patch.yml` 把该行 config **整键替换**为 `mode: !!js process.env.DSH_TOOLS_MODE`（`dsh --profile headless --dump-config` 第 306–309 行，带溯源注释 `# == @deepseek-ai/dsh-base, patched by @deepseek-ai/dsh-headless`）；③ `dsh-tools/lib/index.js` 内为 `mode ?? "native"`；④ 同一 bundle **insert 了 `code-runtime`**，即 Code Mode 的执行能力在 headless 下是挂着的 | **旧裁定「P0 层不存在 / `run_code` 不在面上」在两行 patch 落地前不成立**：任何父进程 `export DSH_TOOLS_MODE=code` 即可把 `run_code` 推上模型面，而 `--dump-config` 对此**完全不可观测**（实测：设与不设该变量，dump 输出逐字相同）。**收口是 §A.3 第 0 块的两行**：`tools.mode: native` 写成字面量（env 接缝被本层整键替换）+ `code-runtime: disabled`。第二行经真实 boot 验证会把「Code Mode 被打开」变成响亮的启动失败（错误文案见 §A.3 第 4 条），是本轮唯一真正结构性的那一半 |
-| **C-12b** | **boot 门把机器级威胁钉在了错误的文件上**〔R3 新增，攻击 C-12b〕 | **〔profile 层实现〕→ 已改写门断言** | `$DSH_HOME/settings.yaml` 由 `dsh-base` 的 `settings` 行挂载（每个 profile 都吃）、`watch: true` 热重载、分层「schema 默认 → 组合层 base → **用户文档 section**」，用户文档在最上面 [E: gt-profile-plugin.md#D4；R3 实测 `dsh-settings-file/README.md` + 本机 1271 字节的 `settings.yaml`]。本机该文件实测携带 `agent-default-model`（模型路由 + `reasoningEffort`）、`ya-subagent.profiles[].model` / `maxDepth`、`llm-pi-ai.providers`（活体注册新 provider 路由）、`agent-presets.default`、`auto-compact.thresholds`。**它对两个 dump 命令双双不可见**（dump 打印插件树，settings 叠在树之上） | 旧门断言 `$DSH_HOME/cordis.patch.yml` 不存在。该文件确实在层序里（`composeProfile` 实测），但本机不存在且一旦存在会在 dump 里现形——**那条断言在本机恒真，是一条不会红的检查**。改写后的门**两个文件都断言**，且 `settings.yaml` 走「值级白名单 + sha256 入 manifest」而不是「必须不存在」（它是用户配模型的合法入口）。可运行断言见 §D.3 第 1 段 |
+| C-12 | **`--dump-config` ≠ boot 真值** | **〔profile 层实现〕** | dump 的 layers 不含 CLI 注入的 `agent-presets.roots` 覆盖与 telemetry disable patch [E: gt-profile-plugin.md#H2, #G6] | boot 门必须有**真实 boot** 那一步（§D.3 第 2 段）。同时断言 dump 输出里**没有任何 patch warning**——〔裁定 · S0 实测，[E: .loop/m0/M0-3c.json]〕**这条断言只能挂在 `--dump-config` 上**：同一份写错 id 的 patch，dump 路径报 2 条 warning，**真实 boot 路径报 0 条**（同次命令 `dsh: AUTH` 证明 boot 已跑到 LLM）。所以「真实 boot」与「零 patch warning」是**两段不可互相替代**的检查，不是一段的两种写法 [E: gt-profile-plugin.md#B3, #设计含义-8] |
+| **C-12a** | **「出厂呈现模式是 `native`」是环境变量的函数，不是组合事实**〔R3 新增，攻击 C-12a〕 | **〔profile 层实现〕→ 已给出结构性收口** | R3 三项实测：① `dsh-base/cordis.patch.yml:424` 的 `tools` 行**无 config**（注释：omitting it keeps the schema default (native)）；② `@deepseek-ai/dsh-headless/cordis.patch.yml` 把该行 config **整键替换**为 `mode: !!js process.env.DSH_TOOLS_MODE`（`dsh --profile headless --dump-config` 第 306–309 行，带溯源注释 `# == @deepseek-ai/dsh-base, patched by @deepseek-ai/dsh-headless`）；③ `dsh-tools/lib/index.js` 内为 `mode ?? "native"`；④ 同一 bundle **insert 了 `code-runtime`**，即 Code Mode 的执行能力在 headless 下是挂着的。**〔裁定 · S0 实测，[E: .loop/m0/C-12a.json]〕本条已从「读包 + dump 阅读」升级为运行实测，且结论收紧**：出厂纯净组合（bundles 仅 `dsh-base` + `dsh-headless`）的 dump 里，`tools` 行的有效 config 就是那个未求值的 `mode: !!js process.env.DSH_TOOLS_MODE`，`code-runtime` 行确实被 insert 了。**「出厂 native」只是 `DSH_TOOLS_MODE` 未设时的 schema 兜底，不是组合事实**——两侧都跑了：不设该变量时模型面上**没有** `run_code`（附带观测：出厂 headless 模型面共 25 个工具，无 `run_code` 但**有 `workflow`**，与 C-12c 一致）；`DSH_TOOLS_MODE=code` 时 `run_code` 存在、可执行、并**成功读到 `node:fs`**（`readdirSync('/').length` = 21）。§A.3 第 0 块的两行收口也独立复核通过：钉成字面量 `native` + `code-runtime: disabled` 后 `DSH_TOOLS_MODE=code` **不再起作用**（正常走到 `dsh: AUTH`）；把 mode 钉成 `code` 且 `code-runtime` 被 disabled 则**响亮启动失败** | **旧裁定「P0 层不存在 / `run_code` 不在面上」在两行 patch 落地前不成立**：任何父进程 `export DSH_TOOLS_MODE=code` 即可把 `run_code` 推上模型面，而 `--dump-config` 对此**完全不可观测**（实测：设与不设该变量，dump 输出逐字相同）。**收口是 §A.3 第 0 块的两行**：`tools.mode: native` 写成字面量（env 接缝被本层整键替换）+ `code-runtime: disabled`。第二行经真实 boot 验证会把「Code Mode 被打开」变成响亮的启动失败（错误文案见 §A.3 第 4 条），是本轮唯一真正结构性的那一半。**⚠️ S0 实测的三条残余，不得省略**：① 只测了 `DSH_TOOLS_MODE=code`，**`both` 与非法值（如 `bogus`）未测**；② **`ctx.tools.presentAs()` 这条 agent 级绕过路径未测**——`dsh-tools` README 明写单个 agent 可为自己选 code 模式、且 `run_code` 之名「whatever the configured mode」都保留，**§A.3 那两行对它是否有效没有验证**，它是 env 变量之外的第二个接缝；③ 本轮测的是出厂纯净组合，用户本机 `~/.dsh/profiles/headless` 另装了 3 个社区 bundle（claude-marketplace / mp-automator / pipeline-executor），dump 显示它们只 insert 自己的行、未 patch `tools`，但**未逐包审计** |
+| **C-12b** | **boot 门把机器级威胁钉在了错误的文件上**〔R3 新增，攻击 C-12b〕 | **〔profile 层实现〕→ 已改写门断言** | `$DSH_HOME/settings.yaml` 由 `dsh-base` 的 `settings` 行挂载（每个 profile 都吃）、`watch: true` 热重载、分层「schema 默认 → 组合层 base → **用户文档 section**」，用户文档在最上面 [E: gt-profile-plugin.md#D4；R3 实测 `dsh-settings-file/README.md` + 本机 1271 字节的 `settings.yaml`]。本机该文件实测携带 `agent-default-model`（模型路由 + `reasoningEffort`）、`ya-subagent.profiles[].model` / `maxDepth`、`llm-pi-ai.providers`（活体注册新 provider 路由）、`agent-presets.default`、`auto-compact.thresholds`。**它对两个 dump 命令双双不可见**（dump 打印插件树，settings 叠在树之上）。〔裁定 · S0 实测，[E: .loop/m0/C-12b.json]〕「settings 覆盖 patch」的证据等级从**文档阅读**升到**运行实测**：三方对撞下 patch 链最终值是 `PATCH-BOGUS-MODEL`，真正发到 API 的是 `SETTINGS-BOGUS-MODEL` | 旧门断言 `$DSH_HOME/cordis.patch.yml` 不存在。该文件确实在层序里（`composeProfile` 实测），但本机不存在且一旦存在会在 dump 里现形——**那条断言在本机恒真**。〔裁定 · S0 实测〕**「恒真」不等于「不会红的检查」，更不等于可以删**：实测该文件一旦存在会**压过 profile 自己的 patch 层**（`FROM-PROFILE` 被 `FROM-DSHHOME` 覆盖），因此它能整键改掉我们钉死的任何一行（含 `tools.mode` 与 `code-runtime`）。它与 `settings.yaml` 的区别是**可观测性**而非威胁强度。改写后的门**两个文件都断言**，且 `settings.yaml` 走「值级白名单 + sha256 入 manifest」而不是「必须不存在」（它是用户配模型的合法入口）；**该哈希只证明 boot 那一刻**——`watch: true` 热重载使运行途中的改动不可见（残余风险，见 §D.3 第 1b (iii) 与 §D.5）。可运行断言见 §D.3 第 1 段 |
 | **C-12c** | **`workflow` 工具是第二扇 P0 门，而本架构强制走它**〔R3 新增，C-12a 追查副产物〕 | **〔需 harness 改造〕→ 认账，且不得再宣称「P0 层不存在」** | `dsh-tool-workflow` 的模型面参数含 `script`（**任意 JavaScript 函数体**）；`dsh-workflow-worker-thread` README 自陈 "Workflow scripts are model-written and have the same trust premise as the model's existing bash access" 与 "`node:vm` inside a worker is an API-shaping mechanism, not a security boundary: an escaped script can recover Node capabilities with the host process's privileges"，并明写 "A genuinely untrusted-script sandbox would require a different engine behind the same workflow seam" [E: gt-orchestration.md#E6, #E7；R3 复核 README 原文] | 关掉 `code-runtime` **不等于**关掉任意 JS 执行面：〔裁定 B-4〕把 workflow 定为批量扇出的**唯一入口**，因此这扇门是**本架构要求打开的**。→ ①01-CONTRACTS §0.2 第二层「文件面无文件系统级强制」的成因清单里，`run_code` 之外必须并列 `workflow.script`；②`.arc/` 的写者隔离**不能**靠「不给 `run_code`」实现，只能靠 §0.2 收口所指的**进程级隔离**（门在不挂 `tool-workflow`、不给写 `.arc/` 的独立 profile 里跑）；③本文件不得出现「本 profile 的模型面上没有任意代码执行」这句话。**列入 M0 阻塞项** |
 
 ### C.3 需求 → 能力逐条映射
@@ -544,7 +582,7 @@ v1 写「插件**必须** `export const Config` 否则 boot 崩」，并把它�
 | **L2** | 导出物形状合法（函数 / 类 / 带 `apply` 的对象） | FAILED(3) | `invalid plugin, expect function or object with an "apply" method, received <typeof>` |
 | **L3** | `Config` 校验不抛（有 `Config` 时；且**必须同步**） | FAILED(3) | `ValidationError` / `TypeError: Async config validation is not supported` |
 | **L4** | `apply()` 不抛 | FAILED(3) | 原始 reason 由 `fiber.await()` rethrow |
-| **L5** | `inject` 的服务最终被提供 | PENDING(0) | `<name>: pending (waiting for services: <missing>)` |
+| **L5** | `inject` 的服务最终被提供 | PENDING(0) | `<name>: pending (waiting for service: <missing>)` |
 
 汇总点：`assertEntriesActivated` 在 boot 末尾遍历 `ctx.loader.entries()`，把 FAILED 与 PENDING 都拼成 `<binName>: N entries did not activate\n<name>: <stack>`，`boot()` 捕获后 dispose 并抛 `dsh: plugin tree failed to load: ...` [E: gt-profile-plugin.md#C2, #C3, #结论摘要-7]。
 另有第六条兜底（不属于「不变量」但会让 boot 失败）：`assertEntriesLoaded` 对「fiber 为 undefined 且未 disabled」的 entry 报 `plugin(s) failed to load: <names>`；以及 `installFailLoud` 把迟到的 unhandledRejection 变成 exit(1)（带 2 秒 terminal release 窗口）[E: gt-profile-plugin.md#C3, #C4]。
@@ -572,7 +610,23 @@ for row in agent-loop tool-subagent tools code-runtime spill-policy tool-result-
   grep -qE "^[[:space:]]*-?[[:space:]]*id:[[:space:]]+${row}[[:space:]]*$" "$DUMP" \
     || { echo "MISSING ROW: ${row}"; exit 1; }
 done
-# patch 匹配不到目标行只 warn 不 fail —— 静默失效是本机制的头号风险 [E: gt-profile-plugin.md#B3]
+# patch 匹配不到目标行 —— 静默失效是本机制的头号风险 [E: gt-profile-plugin.md#B3]
+#
+# 〔裁定 · S0 实测，[E: .loop/m0/M0-3c.json]〕**这条 grep 必须读 `--dump-config` 的 stderr，
+# 不能挪到第 2 段去读真实 boot 的 stderr。这一行是本段不可移动的部分。**
+# 理由是实测出来的，不是风格偏好：同一个临时 DSH_HOME、同一份写错 id 的 patch 文件，
+#   warnings_on_dump_config=2      ← `--dump-config` 路径报了 2 条 `patch: entry "<id>" not found`
+#   warnings_on_real_boot=0        ← 真实 boot 路径**一条都没有**
+#   real_boot_reached_llm=1        ← 同次命令里 `dsh: AUTH` 证明真实 boot 确实跑到了 LLM，
+#                                     排除了「真实 boot 根本没起来所以没输出」这个解释
+# 即：patch 打不中比 v1 文档写的「只 warn 不 fail」**更坏**——它在真实运行路径上**彻底静默**。
+# 后果：**这件事只能靠 `--dump-config` 检测。真实 boot 那一步再怎么 grep stderr 都抓不到。**
+# 谁把这条 grep 并进第 2 段，就会静默失去这道检查，而门依然全绿。
+# 命中判据（正向，实测）：换成真实 id 后 `patch: entry` 计数为 0，且目标行上方出现溯源注释
+#   `# == @deepseek-ai/dsh-base, patched by <你的 patch 文件>`，且该行的 config/disabled 确实变了。
+# ⚠️ 残余（M0-3c honest_limits）：本轮只实跑了 `- id: <x>` 形式的未命中；下面 grep 里
+#   `patch insert:` 与 `name mismatch` 两个分支的文案来自编译产物阅读，**未实跑**。
+#   且只在 headless profile 上测过；web profile 的真实 boot 是否打印该 warning 未测。
 grep -Eq 'patch: entry .* not found|patch insert: entry .* (not found|is not a group)|name mismatch' "$WARN" \
   && { echo "SILENT PATCH FAILURE"; cat "$WARN"; exit 1; }
 
@@ -584,6 +638,21 @@ node checks/gc0/assert_tools_presentation.mjs "$DUMP"
 #      B. rows['code-runtime'].disabled === true
 #      C. 全树任何一行的 config 里不得残留形如 `!!js process.env.DSH_TOOLS_MODE` 的表达式
 #    并且它把 A/B 的实测值写进 runs/<run_id>/manifest.json 的 runtime_fingerprint（W-12）。
+#
+# 〔裁定 · S0 实测，[E: .loop/m0/C-12a.json]〕上面那三条断言有一个**进程级盲区**：
+# 它们读的是 dump，而 **dump 对 `DSH_TOOLS_MODE` 完全不可观测**（实测：设与不设该变量，
+# `tools` 行的 dump 输出逐字相同，都是 `mode: !!js process.env.DSH_TOOLS_MODE`）。
+# 补一条零成本的正向断言，把「产出这份 dump 的那个进程」的环境也钉住：
+test -z "${DSH_TOOLS_MODE:-}" || { echo "DSH_TOOLS_MODE SET IN GATE ENV: $DSH_TOOLS_MODE"; exit 1; }
+# **它挡住什么**：门自己这个进程的环境里带着 `DSH_TOOLS_MODE`——而第 1 段的 `--dump-config`
+#   正是这个进程跑的，所以这条断言让「本门读到的这份 dump 未被 env 污染」成为机器事实。
+#   在 §A.3 第 0 块的 pin 落地**之前**，以及对任何我们没 pin 的 `!!js` 行，这是唯一能拿到的正向信号。
+# **它挡不住什么**（三条，必须写明，否则它会被误当成密封）：
+#   ① 它只证明**门这个进程**此刻的 env。真正跑 dsh 的若是另一个进程（CI runner / launchd /
+#      被 workflow spawn 的子进程），那个进程的 env 本门看不见。
+#   ② `ctx.tools.presentAs()` 这条 **agent 级**绕过路径未测：`dsh-tools` README 明写单个 agent
+#      可为自己选 code 模式，§A.3 那两行对它是否有效**没有验证**（C-12a honest_limits ③）。
+#   ③ 本轮只测了 `DSH_TOOLS_MODE=code`，**`both` 与非法值（如 `bogus`）的行为未测**。
 
 # ── 第 1b 段：两个机器级用户层（C-12b —— 旧门只看了其中较弱的那个）
 # (i) home patch 层：真实存在于层序里（composeProfile: bundle → profile → home → --patch → telemetry）
@@ -596,7 +665,22 @@ cmp -s "$WORK/layer.delta" checks/gc0/expected/layer.delta \
   || { echo "UNEXPECTED USER/OVERLAY LAYER DELTA"; diff checks/gc0/expected/layer.delta "$WORK/layer.delta"; exit 1; }
 # (iii) $DSH_HOME/settings.yaml —— 真正能静默改掉模型路由的那个文件。
 #       它对两个 dump 命令**双双不可见**，所以必须单独断言。
+#       〔裁定 · S0 实测，[E: .loop/m0/C-12b.json]〕「settings 覆盖整条 patch 链」不再是读 README
+#       得来的推断，而是运行实测：同一个 DSH_HOME 里 `cordis.patch.yml` 把模型钉成
+#       `PATCH-BOGUS-MODEL`（它是 patch 链的最后一层），`settings.yaml` 写 `SETTINGS-BOGUS-MODEL`，
+#       真正发到 API 的是后者（`you passed SETTINGS-BOGUS-MODEL`）。该失败发生在模型生成之前，
+#       不含模型输出，完全确定。
 node checks/gc0/assert_settings_overlay.mjs   # 见下方判定核心
+#       ⚠️ **本段的残余风险（S0 实测，写在这里而不是只写在 §D.5）**：`dsh-settings-file` 出厂
+#       `watch: true` **热重载**。因此 `assert_settings_overlay.mjs` 的「值级白名单 + sha256 入
+#       manifest」**只能证明 boot 那一刻**——运行途中有人改 `settings.yaml`，新值会被热发布，
+#       而这道门（它只在 boot 期跑一次）**看不见**。
+#       机器判据上的收口只做到这一步：manifest 里的 `settings_sha256` 是**运行起点**的值，
+#       任何据此声称「本次运行全程的模型路由如 manifest 所载」的句子都是假的。
+#       ⚠️ 更进一步的残余：热重载本身**未实测**（没有在一次运行途中改文件观察是否真的生效），
+#       `watch: true` 的后果是从 README 读来的；且本轮只用 `agent-default-model` 一个 namespace
+#       验证了覆盖，`llm-pi-ai.providers`（活体注册全新 provider 路由）、`ya-subagent`、
+#       `auto-compact` 这三个**威胁更大**的 section 只按同一机制推断，未实测。
 
 # ── 第 2 段：真实 boot（这一步才覆盖 L1..L5）
 #    调用形式已实测确认（R3）：任务是**位置参数**，`dsh --profile <name> "<task>"`。
@@ -606,7 +690,14 @@ node checks/gc0/assert_settings_overlay.mjs   # 见下方判定核心
 BOOT=$(mktemp)
 DEEPSEEK_API_KEY=invalid-on-purpose-gate-probe \
   dsh --profile "$PROFILE" 'noop' >"$BOOT" 2>&1 || true
-for pat in 'plugin tree failed to load' 'did not activate' 'pending (waiting for services' \
+# 〔裁定 · S0 实测〕模式写的是**单数** service，不是 services。
+# dsh-app-boot 逐字：`const subject = missing.length === 1 ? "service" : "services"`
+# ——缺一个服务时输出单数，而那正是最常见的场景。
+# 原文写成 'pending (waiting for services' 会**恒不命中**单服务场景，
+# 即：这道 boot 门会以全绿出厂，却抓不到它被写出来要抓的那个失败。
+# 单数前缀同时覆盖单复数两种输出。
+# 这条是 S0 实测抓到的，不是读代码读出来的——读代码的人（包括写这段的我）看不出单复数会差这一次。
+for pat in 'plugin tree failed to load' 'did not activate' 'pending (waiting for service' \
            'failed to load:' 'invalid plugin, expect function or object'; do
   grep -qF "$pat" "$BOOT" && { echo "LOAD-TIME INVARIANT VIOLATED: $pat"; cat "$BOOT"; exit 1; }
 done
@@ -642,7 +733,11 @@ if (typeof mod.apply !== 'function' && typeof mod.default !== 'function') fail('
 | `f-L3-config` | `Config` 要求一个必填字段，patch 里不给 | `ValidationError` 路径 → `did not activate` |
 | `f-L3b-async` | `Config['~standard'].validate` 返回 Promise | `Async config validation is not supported` |
 | `f-L4-apply` | `apply()` 第一行 `throw` | `did not activate` + 原始 stack |
-| `f-L5-inject` | `inject: ['nonexistent-service']` | `pending (waiting for services: nonexistent-service)` |
+| `f-L5-inject` | `inject: ['nonexistent-service']` | 逐字 `<pkg>: pending (waiting for service: nonexistent-service)`，**且退出码 1**〔裁定 · S0 实测，[E: .loop/m0/M0-3a.json]〕 |
+
+〔裁定 · S0 实测，[E: .loop/m0/M0-3a.json]〕**`f-L5-inject` 的期望文案现在是实测原文，不再是构造的**：把同一份插件的 `inject` 写成 `['toolRuntime']` 跑真实 boot，逐字得到 `pending (waiting for service: toolRuntime)`，退出码 1，boot 在到达 LLM 之前就死在未激活 entry 上（对照组只改这一个字符串写 `['tools']`，同一命令走到 `dsh: AUTH`）。两条随之固定下来的判据：
+① 文案是 **`<包名>: pending (waiting for service: <服务名>)`**，**`service` 用单数**（`dsh-app-boot` 逐字 `const subject = missing.length === 1 ? "service" : "services"`，缺一个是最常见情形）；
+② **这个 fixture 测的是一次响亮失败，不是静默失效**。任何把它描述成「插件静默不生效 / fiber 静默停在 PENDING」的文字都与实测相反，必须删——`assertEntriesActivated()` 无条件枚举未激活 entry 并抛错。它与 §A.3 顶部对照裁定的 ① 类（patch entry id 猜错，真静默）**不是同一类失败**。
 
 〔裁定 · R1〕**为什么是六不是五**：五条加载期不变量对应五个 fixture，但 L3（Config 校验抛）
 被拆成同步抛（`f-L3-config`）与**异步 validate 抛**（`f-L3b-async`）两个独立样本——
@@ -658,8 +753,9 @@ if (typeof mod.apply !== 'function' && typeof mod.default !== 'function') fail('
 
 ### D.5 boot 门的诚实边界（攻击者会问的）
 
-- **第 1 段不证明任何运行时事实。** dump 少两层（§C-12），且 dump 路径的 warn 是否 100% 覆盖 boot 期 warn **未验证**——`renderConfigDump` 的 doc 声称每层看到相同前置状态，但 group-child 盲区意味着极端情形下两边可能不一致，需要构造反例实测 [E: gt-profile-plugin.md#未决-3]。
-- **第 2 段的启动子命令形式待实测确认。** 本轮一手语料记录了 CLI 的 launcher flag 语法与「第一个不认识的 token 起就是 app 参数」，但**没有逐字记录 headless 一次性任务的调用形式**（只知道 headless bundle insert 了 `headless-startup` / `headless-runner`，且 `!!js` 作用域里有 `ctx.headlessStartup.task`）[E: gt-profile-plugin.md#H1, #B8, #G7]。**该行必须实测后再定稿，不得凭记忆写。** 已列入 open questions。
+- **第 1 段不证明任何运行时事实。** dump 少两层（§C-12）。〔裁定 · S0 实测，[E: .loop/m0/M0-3c.json]〕原来写「dump 路径的 warn 是否 100% 覆盖 boot 期 warn **未验证**」，本轮在 entry-id 未命中这一类上测到了**反方向且更强的结论**：dump 报 2 条、**真实 boot 报 0 条**，即 boot 期在这一类上根本没有 warn 输出，覆盖关系是 `dump ⊋ boot = ∅`。**这使第 1 段成为不可替代的一段，而不是第 2 段的冗余。** 仍未偿的部分：① `dsh-app-boot` 的文档注释逐字写着 patch 未命中「mirroring the Loader's boot-time warning」，与实测的真实 boot 零输出**不符**，本轮**没有深究**是 headless 未接 logger sink 还是别的原因；② group-child 盲区下两边是否会在**其他类别**的 warn 上不一致，仍需构造反例 [E: gt-profile-plugin.md#未决-3]；③ 只在 headless profile 上测过。
+- **第 2 段的启动子命令形式已实测闭合**〔裁定 · S0 实测，[E: .loop/m0/M0-3a.json], [E: .loop/m0/C-12a.json]〕。形式是 **`dsh --profile <name> [--patch <path>]* '<task>'`——任务是位置参数**，本轮 S0 的每一条 boot 相关证据命令都逐字用了它并跑通（`DEEPSEEK_API_KEY=invalid-on-purpose-gate-probe dsh --profile headless 'noop'` 稳定产出 `dsh: AUTH`，`dsh: AUTH` 即「boot 成功、失败发生在 LLM 认证」的判据）。**这条不再是 open question。** 残余：只在 headless profile 的 CLI boot 路径验证；web profile 与 HMR 热重载路径未测。
+- **`settings.yaml` 的哈希只证明 boot 那一刻。** 〔裁定 · S0 实测，[E: .loop/m0/C-12b.json]〕`dsh-settings-file` 出厂 `watch: true` **热重载**，而第 1b (iii) 段只在 boot 期跑一次。运行途中改 `settings.yaml` 会被热发布，**这道门看不见**，而 settings 是实测中**压过整条 patch 链**的那一层（`you passed SETTINGS-BOGUS-MODEL`）。⇒ manifest 里的 `settings_sha256` 是**运行起点**的值；任何据此声称「本次运行全程的模型路由如 manifest 所载」的句子都是假的。热重载本身**未实跑**（`watch: true` 的后果读自 README），且只用 `agent-default-model` 一个 namespace 验证过覆盖——`llm-pi-ai.providers` / `ya-subagent` / `auto-compact` 三个威胁更大的 section 是推断。
 - **第 2 段依赖「AUTH 失败」这个可区分信号。** 若某次改动让无效密钥不再产生可区分的失败，这一段会变成一条**不会红的检查**。对策：第 2 段同时断言 boot 日志里出现了我们插件的注册痕迹（一条 `tool/call` 之前的启动事件），而不是只断言「没有 load 失败」。
 
 ---
@@ -699,7 +795,7 @@ if (typeof mod.apply !== 'function' && typeof mod.default !== 'function') fail('
 
 | # | 硬事实 | 一手出处 | 设计应对 |
 |---|---|---|---|
-| E-18 | `run_code` 出厂：`computeMs 60000` / `maxWallMs 600000` / `maxOutputBytes 67108864`（64 MiB）/ `maxOldGenerationSizeMb 512`；worker `env: {}`（**拿不到 API key**）；64 MiB 是**拒绝边界**，超限字节永远到不了 spill 层；中间 binding 值**无字节上限** | [E: gt-exec-security.md#D-1, #D-2, #D-8] | 密钥由宿主侧工具（binding）持有，程序只拿结果。大结果**落盘 + 只返回句柄**，不要 `return` 大对象。profile 里显式写死这四个值（§A.3） |
+| E-18 | `run_code` 出厂：`computeMs 60000` / `maxWallMs 600000` / `maxOutputBytes 67108864`（64 MiB）/ `maxOldGenerationSizeMb 512`；worker `env: {}`（**拿不到 API key**——〔裁定 · S0 实测，[E: .loop/m0/M0-4.json]〕已从代码依据升为实测：程序体里 `Object.keys(process.env).length` **= 0**。但它**只挡凭据，不挡文件系统**：同一程序体 `await import('node:fs')` 写文件成功）；64 MiB 是**拒绝边界**，超限字节永远到不了 spill 层；中间 binding 值**无字节上限** | [E: gt-exec-security.md#D-1, #D-2, #D-8] | 密钥由宿主侧工具（binding）持有，程序只拿结果。大结果**落盘 + 只返回句柄**，不要 `return` 大对象。profile 里显式写死这四个值（§A.3） |
 | E-19 | 每 host 的 RPS 是超并行的真正瓶颈，**具体限额与其中一条已失效的旧值见 01-CONTRACTS §6.3 硬要求 5**（本文件不复述数字与口径警告） | [E: ext-academic-apis.md#D2] | 架构后果有三条：①中央网关按 host 分桶，**arXiv 那一桶必须是串行队列而不是令牌桶**；②网关是**跨进程**的单一权威，子代理拿不到裸密钥；③任一子代理收到 429 必须让整个桶**集体退避**，而不是只让那个子代理睡——否则其余子代理继续撞墙、把退避时间无限拉长 [E: ext-web-providers.md#D2] |
 | E-20 | OpenAlex：单实体 lookup **$0 / 0 credit**（实测响应头 `x-ratelimit-credits-used: 0`）；list+filter $0.0001；search / semantic search $0.001；内容下载 **$0.01/篇**，免费档 **约 100 篇/天**（官方原文 "about 100 files per day"）。全部为 **2026-08-17** 实测/文档口径 | [E: ext-academic-apis.md#A3, #A7；核验表 #3/#6/#7] | 检索架构围绕「已知 DOI/ID → 免费单实体 lookup」组织：**先用便宜的发现层拿到 ID，再用免费的 lookup 拿全量元数据**。单价**读自响应头**而非硬编码；同时读 `x-ratelimit-remaining-usd` 以区分「今天钱花完了」与「退避一下再试」，否则会陷入死循环 |
 | E-21 | 全文可得性有一个**物理上限**，且 G5 的真实上限还要更低——**具体比例、其 corpus 口径警告、以及未测量的第二层损耗，见 01-CONTRACTS §3.2**（本文件不复述） | [E: ext-academic-apis.md#A7, #A10] | 对架构的直接后果：**取证预算必须按「可得全文的那一小部分」而不是按检索命中数来规划**；命中但取不到全文的条目走 §3.3 的低等级路径而不是排队重试。产品承诺侧的处理见 §3.2 结论，本文件不重复 |
@@ -712,7 +808,7 @@ if (typeof mod.apply !== 'function' && typeof mod.default !== 'function') fail('
 
 | # | 硬事实 | 一手出处 | 设计应对 |
 |---|---|---|---|
-| E-26 | patch 的**每个顶层键整体赋值**，`config` 整体被换掉，**无深合并**；`name` **不能被 patch 改写**（要换实现只能 disable 旧行 + insert 新行）；patch 匹配不到**只 warn 不 fail** | [E: gt-profile-plugin.md#B3, #B4] | 整体替换时必须把该行原有的键**一起写回**（`agent-loop` 的 `agents: []` 是最容易翻车的一个）。boot 门断言零 patch warning（§D.3 第 1 段） |
+| E-26 | patch 的**每个顶层键整体赋值**，`config` 整体被换掉，**无深合并**；`name` **不能被 patch 改写**（要换实现只能 disable 旧行 + insert 新行）；patch 匹配不到**在真实 boot 路径上零输出**（〔裁定 · S0 实测〕比旧写法「只 warn 不 fail」更坏：warn **只在 `--dump-config` 路径**出现，真实 boot 完全静默） | [E: gt-profile-plugin.md#B3, #B4]；[E: .loop/m0/M0-3c.json] | 整体替换时必须把该行原有的键**一起写回**（`agent-loop` 的 `agents: []` 是最容易翻车的一个）。boot 门断言零 patch warning，且**必须读 `--dump-config` 的 stderr**（§D.3 第 1 段）——挪到第 2 段会静默失去这道检查 |
 | E-27 | 单次 pass 的盲区：若某层用 `config:` 整体替换了一个 group 行的子列表，新引入的子行**不会进 id 索引**，后续层按 id patch 它们会 warn+skip | [E: gt-profile-plugin.md#B6] | 不要整体替换 group 行的 `config` 数组；要加子行就用 `insert` 带 `id` |
 | E-28 | bundle 顺序即命运：两个 bundle 都 patch `id: web` 的 `searchProvider` 时**只有最后一个生效且无任何警告**（本机 web profile 实证） | [E: gt-profile-plugin.md#B5] | 〔裁定 B-1〕不与 serper 争 `web.searchProvider`。若确需换，让 profile 的 `cordis.patch.yml` 作最终仲裁 |
 | E-29 | `dsh.client`-only 的包**不会被 reconcile 加进 bundles**（`exportsPatch` 只看 `dsh.bundle.patch`），必须在 profile 的 patch 里手写 `insert:` | [E: gt-profile-plugin.md#D5] | 安装第三方插件后必须 `--dump-config` 确认它真的进了树，光靠 `dsh plugin add` 不够 |
@@ -736,7 +832,7 @@ if (typeof mod.apply !== 'function' && typeof mod.default !== 'function') fail('
 
 3. **中央限速网关是一个纯自建的跨进程单点，DSH 侧零支撑。** 它一挂，所有取证停摆；它有 bug，就是一个既不在 DSH 的可观测面上、也不在门的判定面上的隐形故障源。而它必须是跨进程的（子代理可能是独立进程 [E: ext-web-providers.md#D2]）。**本文件没有为它设计故障模式与降级路径**，只把它列为 C-20。
 
-4. **`run_code` 旁路让「太严的门」成为真实风险。** 产物级兜底（§4.4）说未被 `tool/call` 覆盖的断言一律 ST-N。但 `run_code` 里的子调用**确实**会落 `tool/code-dispatch` 事件 [E: gt-exec-security.md#D-10]，而一次用 `node:fs` 直接写的抓取则不会。这意味着一条**真实且正确**的证据可能因为取得路径不对而被判 ST-N。房内的教训是「一个逼着记录说假话的门，和一个放行假话的门一样坏」[E: gt-house-method.md#M11]。**本划分选择了严的一侧，但没有量化它的假阴性率。**
+4. **`run_code` 旁路让「太严的门」成为真实风险。** 产物级兜底（§4.4）说未被 `tool/call` 覆盖的断言一律 ST-N。但 `run_code` 里的子调用**确实**会落 `tool/code-dispatch` 事件 [E: gt-exec-security.md#D-10]，而一次用 `node:fs` 直接写的抓取则不会。〔裁定 · S0 实测，[E: .loop/m0/M0-4.json]〕**这条弱点的前半段已从假设变成事实**：`node:fs` 在 `run_code` 程序体里可达（`await import('node:fs')`，`require` 不在作用域），且同一 read-only 策略下它写文件成功而 bash 路径被拒——所以「绕开我们记录路径的抓取」不是理论可能，是已实跑的动作。这意味着一条**真实且正确**的证据可能因为取得路径不对而被判 ST-N。房内的教训是「一个逼着记录说假话的门，和一个放行假话的门一样坏」[E: gt-house-method.md#M11]。**本划分选择了严的一侧，但没有量化它的假阴性率。**
 
 5. **compaction 的证据存活是代码级论证，不是运行级证据。** E-13/E-14：本机 139 个 session 从未触发过压缩。M1 的整个证据锚点方案建立在「pruner 用 `...event.data` 展开会保留 `meta`」这条代码事实上——**读代码读对了，但没跑过**。
 
@@ -748,7 +844,12 @@ if (typeof mod.apply !== 'function' && typeof mod.default !== 'function') fail('
 
 9. **本文件引用的所有外部数字都带 2026-08-17 的 as-of，且会过期。** API 定价与限速尤其易变：Crossref polite pool 已在 2025-12-01 失效 16 倍 [E: ext-academic-apis.md#核验表 #22]；DeepSeek 定价在 2026-08-16 刚全线移动 〔依据 00-PREMISE B9〕。凡引用本文件的数字必须连日期一起引用。
 
-10. **两处「待实测确认」直接落在可运行的骨架里**：M1 插件的 `inject` 服务名字符串（§A.4 第 3 条），以及 boot 门第 2 段的 headless 一次性任务调用形式（§D.5）。这两处我选择**标注而不是猜**——一个猜错的骨架比一个标注了空缺的骨架更危险，因为前者看起来可抄。
+10. ~~**两处「待实测确认」直接落在可运行的骨架里**~~ —— **两处均已实测闭合**〔裁定 · S0 实测，[E: .loop/m0/M0-3a.json]〕：
+    - M1 插件的 `inject` 服务名（§A.4 第 3 条）= **`tools`**（ctx key，不是类名）。正负两例实跑：写错时逐字 `pending (waiting for service: toolRuntime)` + 退出码 1；写对时插件树装起来、工具被模型真实调用。
+    - boot 门第 2 段的调用形式（§D.5）= **`dsh --profile <name> [--patch <path>]* '<task>'`，任务是位置参数**，本轮每条 boot 证据命令都用它跑通。
+
+    **实测同时推翻了当初的一条理由。** 原文写「标注而不是猜」的依据是「猜错的骨架看起来可抄」——这条纪律成立，但对 `inject` 而言，**猜错的后果不是静默生效错误，而是响亮的 exit 1 并逐字点名缺失服务**。真正会静默的是另一件事：**patch 的 entry id 猜错**（真实 boot 零输出，[E: .loop/m0/M0-3c.json]）。这两件事此前在本文件里被混为一谈，现已在 §A.3 顶部分开写死。
+    **仍未偿**：① `ctx.credentials` 一侧的 inject 服务名**不在**本轮实测的 16 个 ctx key 对照表里，仍是「标注而不是猜」的状态；② 全部 inject/boot 结论只覆盖 headless 的 CLI boot 路径，**web profile 与 HMR 热重载路径未测**，热重载期的 inject 失败是否同样响亮**未知**。
 
 ---
 

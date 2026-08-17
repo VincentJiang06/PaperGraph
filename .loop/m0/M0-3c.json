@@ -1,0 +1,47 @@
+{
+  "id": "M0-3c",
+  "question": "profile 的 cordis.patch.yml 要打到 workflow 引擎行，那一行的真实 entry id 是什么？patch 打不中的真实后果是什么？",
+  "verdict": "design-changed",
+  "answer": "workflow 是**两行**，都来自 `@deepseek-ai/dsh-base`：引擎行 `workflow-worker-thread`（插件 `@deepseek-ai/dsh-workflow-worker-thread`，出厂 config `provider: spawn`），模型面工具行 `tool-workflow`（插件 `@deepseek-ai/dsh-tool-workflow`，出厂无 config）。**patch 打不中比文档写的更坏**：同一个临时 DSH_HOME、同一份写错 id 的 patch，`--dump-config` 报 2 条 warning（退出 0），而**真实 boot 路径报 0 条**（同次命令里用 `dsh: AUTH` 证明 boot 确实跑到了 LLM）。即真实运行路径上它**彻底静默**，不是「只 warn 不 fail」。",
+  "evidence": [
+    {
+      "command": "( H=\"$(mktemp -d)\"; export DSH_HOME=\"$H\"; dsh --profile headless --dump-config 2>&1 | tail -n 0; printf -- '- id: workflow-engine\\n  config:\\n    provider: fork\\n- id: tool-worklfow\\n  disabled: true\\n' > \"$H/profiles/headless/cordis.patch.yml\"; echo \"warnings_on_dump_config=$(dsh --profile headless --dump-config 2>&1 | grep -c 'patch: entry')\"; echo \"warnings_on_real_boot=$(DEEPSEEK_API_KEY=invalid-on-purpose-gate-probe dsh --profile headless 'noop' 2>&1 | grep -c 'patch: entry')\"; echo \"real_boot_reached_llm=$(DEEPSEEK_API_KEY=invalid-on-purpose-gate-probe dsh --profile headless 'noop' 2>&1 | grep -c 'dsh: AUTH')\"; dsh --profile headless --dump-config 2>&1 | grep -oE 'patch: entry \\\"[a-z-]+\\\" not found' )",
+      "cwd": "~",
+      "raw_output_sha256": "ad4bbfe9bac74c1f3b1657c17b8565de5fd29307434ce9aaaec4bf7850136930",
+      "excerpt": "warnings_on_dump_config=2\nwarnings_on_real_boot=0\nreal_boot_reached_llm=1\npatch: entry \"workflow-engine\" not found\npatch: entry \"tool-worklfow\" not found\n\n〔三行计数出自**同一个临时 DSH_HOME、同一份写错 id 的 patch 文件**，因此可直接对比：dump-config 看得见 2 条，真实 boot 一条都没有，而 `real_boot_reached_llm=1` 排除了「真实 boot 根本没跑起来」这个解释。〕"
+    },
+    {
+      "command": "( H=\"$(mktemp -d)\"; export DSH_HOME=\"$H\"; dsh --profile headless --dump-config 2>&1 | tail -n 0; printf -- '- id: workflow-worker-thread\\n  config:\\n    provider: fork\\n- id: tool-workflow\\n  disabled: true\\n' > \"$H/profiles/headless/cordis.patch.yml\"; echo \"warnings_on_dump_config=$(dsh --profile headless --dump-config 2>&1 | grep -c 'patch: entry')\"; dsh --profile headless --dump-config 2>&1 | grep -A3 -e '^- id: workflow-worker-thread$' -e '^- id: tool-workflow$' )",
+      "cwd": "~",
+      "raw_output_sha256": "8b3baf2b4409484e62b163d5f0881bc05c1597a2729315b4b50c80c3928e7c08",
+      "excerpt": "warnings_on_dump_config=0\n- id: workflow-worker-thread\n  name: '@deepseek-ai/dsh-workflow-worker-thread'\n  config:\n    provider: fork\n- id: tool-workflow\n  name: '@deepseek-ai/dsh-tool-workflow'\n  disabled: true\n\n〔换成真实 id 后：零 warning，且两行的 config/disabled 都按 patch 生效。**「零 warning + 目标行确实变了」就是命中的判据。**〕"
+    }
+  ],
+  "workflow_rows": {
+    "引擎行": {
+      "id": "workflow-worker-thread",
+      "name": "@deepseek-ai/dsh-workflow-worker-thread",
+      "出厂 config": {
+        "provider": "spawn"
+      },
+      "来源 bundle": "@deepseek-ai/dsh-base"
+    },
+    "模型面工具行": {
+      "id": "tool-workflow",
+      "name": "@deepseek-ai/dsh-tool-workflow",
+      "出厂 config": "无",
+      "来源 bundle": "@deepseek-ai/dsh-base"
+    },
+    "命中判据": "patch 后 `--dump-config` 的 `patch: entry` 计数为 0，且该行上方出现溯源注释 `# == @deepseek-ai/dsh-base, patched by <你的 patch 文件>`"
+  },
+  "affects": [
+    "README.md §诚实声明·M0 阻塞项第 3 条（「patch 打不中只 warn 不 fail，猜 id = 静默失效」）",
+    "00-PREMISE.md §M0 阻塞项对应条目",
+    "02-ARCHITECTURE.md §C 表 C-12（「boot 门必须有真实 boot 那一步。同时断言 dump 输出里没有任何 patch warning」）",
+    "02-ARCHITECTURE.md §E 表 E-26（「patch 匹配不到只 warn 不 fail …… boot 门断言零 patch warning（§D.3 第 1 段）」）",
+    "02-ARCHITECTURE.md §D.3 boot 门第 1 段（`--dump-config >\"$DUMP\" 2>\"$WARN\"` 之后 grep $WARN 的那几行）",
+    "02-ARCHITECTURE.md §A.3（本 profile 自己的 cordis.patch.yml 骨架里涉及 workflow 的行）"
+  ],
+  "doc_action": "needed —— 两处。①「只 warn 不 fail」要精确化为：**warn 只在 `--dump-config` 路径上出现；真实 boot 路径上零输出、完全静默**。这不是措辞洁癖——它决定了这件事**只能**靠 `--dump-config` 检测，真实 boot 那一步再怎么 grep stderr 都抓不到。②§D.3 第 1 段的写法**恰好是对的**（它正是从 `--dump-config` 的 stderr 抓 warning），应在该段补一条注释把「为什么必须是 dump-config 而不是真实 boot」的理由写死，否则后人很容易把它并进第 2 段而静默失去这道检查。另：§A.3 的 workflow 行可把 id 写死为 `workflow-worker-thread` / `tool-workflow`。",
+  "honest_limits": "① 只验证 `- id: <x>` 形式的未命中；`- insert:` 形式的未命中（编译产物里文案为 `patch insert: entry %C not found`）与 `name mismatch` 分支**未实跑**，仅代码阅读。② 只在 headless profile 上测；web profile 真实 boot 是否打印该 warning **未测**。③ **未验证「打中 `tool-workflow` 且 `disabled: true` 后 `workflow` 工具是否真的从模型面消失」**——本记录只证明 dump 里 `disabled: true` 生效，模型面的消失是推断，未跑。④ 未测 `--patch` overlay 层里写错 id 的行为。⑤ dsh-app-boot 的文档注释逐字写着 patch 未命中「mirroring the Loader's boot-time warning」，与实测的真实 boot 零输出**不符**；本记录以实测为准，但**没有深究这是 headless 未接 logger sink 还是别的原因**。"
+}

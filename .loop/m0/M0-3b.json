@@ -1,0 +1,52 @@
+{
+  "id": "M0-3b",
+  "question": "headless 一次性任务的确切 CLI 调用形式是什么？退出码怎么拿、输出怎么导成可判定的形式？",
+  "verdict": "design-changed",
+  "answer": "调用形式是 `dsh --profile headless \"<task>\"`（task 为**位置参数**，多词按空格拼接）；stdout **只有最终助手消息**，成功时 stderr 为 0 字节，诊断一律走 stderr 且带 `dsh: ` 前缀；harness 层失败（profile 不存在 / 缺 task / 未知 flag / 插件树未激活 / AUTH / INVALID_REQUEST / TRANSPORT）一律退出 1。**但退出码不反映任务成败**：让 agent 跑 `exit 7`，agent 如实回答 7，`dsh` 仍退出 0。因此「exit code 判定」不足以承载 loop 的 check，每个门必须**退出码 + stdout 内容断言**并用。",
+  "evidence": [
+    {
+      "command": "dsh --help",
+      "cwd": "~",
+      "raw_output_sha256": "92370cf0ad4d6a1b991c0cafb249ea574efbe087d6e692a692b264d52bc3a57a",
+      "excerpt": "Usage: dsh [options] [command] [args...]\n\nOptions:\n  --profile <name>            the profile under $DSH_HOME/profiles to boot\n  --patch <path>              extra patch-list overlay applied after the profile\n                              layer (repeatable)\n  --dump-config               print the composed profile tree and exit\n  --dump-default-config       print the profile tree without its user layer or\n                              --patch overlays and exit\n\nExamples:\n  dsh --profile headless \"run the tests\"     answer one task, print the result, and exit"
+    },
+    {
+      "command": "( H=\"$(mktemp -d)\"; DSH_HOME=\"$H\" dsh --profile headless --dump-config 2>&1 | tail -n 0; DSH_HOME=\"$H\" dsh --profile headless --help )",
+      "cwd": "~",
+      "raw_output_sha256": "49f6f2d4a5d40bfc6d0f3dd7f6f18799f5401d8e65dcc6377042494992220640",
+      "excerpt": "Usage: dsh --profile headless [options] [task...]\n\nAnswer one task, print the final assistant message, and exit.\n\nArguments:\n  task        the task text; multiple words are joined by spaces\n\nOptions:\n  -h, --help  show this help"
+    },
+    {
+      "command": "( H=\"$(mktemp -d)\"; DSH_HOME=\"$H\" dsh --profile headless --dump-config 2>&1 | tail -n 0; echo '### no task'; DSH_HOME=\"$H\" dsh --profile headless 2>&1; echo \"EXIT=$?\"; echo '### bad flag'; DSH_HOME=\"$H\" dsh --profile headless --bogus-flag 2>&1; echo \"EXIT=$?\" )",
+      "cwd": "~",
+      "raw_output_sha256": "5655742d0ac8bedc6ec5ffb8dc342fb59b840d2359d7742292efe22f2c2aeda1",
+      "excerpt": "### no task\nerror: a task is required, for example: dsh --profile headless \"run the tests\"\nEXIT=1\n### bad flag\nerror: unknown option '--bogus-flag'\nEXIT=1"
+    },
+    {
+      "command": "( H=\"$(mktemp -d)\"; DSH_HOME=\"$H\" dsh --profile headless --dump-config 2>&1 | tail -n 0; DSH_HOME=\"$H\" dsh --profile headless 'Run this exact bash command: exit 7 . Then reply with ONLY the number that was its exit status.' 2>&1 | tail -n 1; echo \"dsh_exit=${PIPESTATUS[0]}\" )",
+      "cwd": "~",
+      "raw_output_sha256": "8aa0007b5b38145524a5dbe63cd965c659d2970c74da429bb21e921c426b3c53",
+      "excerpt": "7\ndsh_exit=0\n\n〔**本记录最承重的一条**：agent 执行的命令以状态 7 失败、agent 如实报告 7，而 `dsh` 自身退出 **0**。任务失败**不会**传导到进程退出码。〕"
+    }
+  ],
+  "operational_contract": {
+    "调用形式": "dsh --profile <name> \"<task>\"（task 为位置参数）",
+    "stdout": "成功 = 最终助手消息 + 换行，别无他物；失败 = 单个换行（1 字节）",
+    "stderr": "成功 0 字节；失败单行 `dsh: <CODE>: <message>`（实测见过 AUTH / INVALID_REQUEST / TRANSPORT / UNKNOWN）",
+    "退出码 0": "harness 跑完一轮并打印了最终消息 —— **不代表任务成功**",
+    "退出码 1": "harness 层失败：profile 不存在 / 缺 task / 未知 flag / 插件树未激活 / LLM 侧 AUTH·INVALID_REQUEST·TRANSPORT",
+    "门脚本该怎么写": "OUT=$(dsh --profile P \"$TASK\" 2>\"$ERR\") || exit 1;随后**必须**对 $OUT 做内容断言（约定机器可判的尾标记，如要求最终消息以 `RESULT: PASS` / `RESULT: FAIL` 结尾），不能只看 $?",
+    "干净房手法": "`DSH_HOME=\"$(mktemp -d)\"` 会自动初始化出厂 profile 模板（headless / web），是隔离实验与门基线快照的现成手段；`DEEPSEEK_API_KEY=<无效值>` 可在不消耗模型的前提下把「插件树是否装得起来」与「LLM 是否可达」分开（前者失败 = `did not activate`，后者失败 = `dsh: AUTH`）"
+  },
+  "affects": [
+    "README.md §诚实声明·运行面（「一切运行、调试、验收走 headless + 门脚本 CLI（`dsh --profile`，exit code 判定）」）",
+    "00-PREMISE.md §M0 阻塞项第 3 条",
+    "02-ARCHITECTURE.md §D.3 boot 门第 2 段（真实 boot 的调用形式与期望文案）",
+    "02-ARCHITECTURE.md §D.5（被标注为「待实测确认」的 headless 一次性任务调用形式）",
+    "02-ARCHITECTURE.md §9 第 10 条",
+    "04-ORCHESTRATION.md 全篇凡以「退出码判定」为门载体的表述",
+    "01-CONTRACTS.md §6 门契约（门的失败信号载体）"
+  ],
+  "doc_action": "needed —— 核心一句必须改：README §诚实声明·运行面 的「exit code 判定」改成「exit code + stdout 内容断言」，并补实测事实：**agent 内部命令失败不会传导到 dsh 退出码**（实测 agent 跑 `exit 7`、如实报告 7，dsh 仍退出 0）。§D.5 的「待实测确认」标注可撤掉，替换为本记录的 operational_contract。另建议在 01-CONTRACTS 的门契约里明写：任何以 headless 为载体的 check，其「失败」信号必须由**被测方在 stdout 里显式写出**，harness 退出码只作二次兜底。",
+  "honest_limits": "① evidence[3]（`3b_exitcode`）含模型生成，命令已归一成「最后一行 + dsh 退出码」，但模型若答非 `7` 会使哈希对不上——真实偶发红。② 只测 headless profile，未测 `dsh web` / `--profile web` 的退出码语义。③ 未测长任务超时与 SIGINT/SIGTERM 中断路径的退出码。④ 未测 `--patch` overlay 与 `dsh plugin` 子命令的退出码。⑤ **未找到把完整轨迹（而非仅最终消息）导出成文件的 CLI 开关**——headless app 的 `--help` 只有 `-h`；轨迹落在 `$DSH_HOME/sessions` 的 jsonl，**该路径未验证解析**，而 loop 若要做逐轮判定会需要它。⑥ 「profile 不存在 → 退出 1」实测过，但其 Node 栈回溯含 dsh 安装绝对路径，为保持仓库 public 与可复跑，未收进 evidence 命令。⑦ AUTH 分支的完整文案未逐字收录（本记录只用它作 boot 成功的判据）。"
+}

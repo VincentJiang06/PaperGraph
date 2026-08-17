@@ -1,0 +1,52 @@
+{
+  "id": "M0-6",
+  "question": "中央限速网关是纯自建的跨进程单点、DSH 侧零支撑；DSH 到底提供了哪些可用的进程管理/健康检查/重试语义，网关挂掉时正在跑的 worker 应该阻塞、失败还是降级直连？",
+  "verdict": "design-changed",
+  "answer": "DSH 侧并非零支撑：dsh-mcp-client 提供了真实可用的子进程托管（spawn + 指数退避重连 + 每次 outage 的尝试预算 + failOnStartupError 启动期 fail-closed），实测把网关做成 MCP stdio server 后，网关起不来时 dsh 退出码 1、stdout 0 字节、一个 LLM turn 都没跑。但两条实测结果推翻了规划前提：①网关中途崩溃后被 DSH 静默换进程（pid 71338→71389），五次调用全部成功、DSH 自身 stderr 零行、退出码 0、模型报告 no errors——网关内存态（令牌桶、429 集体退避、跨 agent 缓存）被静默清零而取证链上无任何记录；②stdio 传输下网关是每 harness 进程一个子进程（两个并发 dsh 拿到两个不同 pid），不是跨进程单例，而本 build 出厂 headless profile 的 subagent/workflow/code-runtime 全部是同进程实现，所以 O-9 依据 1「子代理可能是独立进程」在 DSH 的 subagent 机制上不成立。故失效行为定为：启动期必须 fail-closed（failOnStartupError: true，出厂默认是 false），运行期允许被监管重启但重启必须在证据上留痕（gateway_epoch/boot_id 进每条证据卡，同一 run 内 boot_id 变更后的证据判 source_integrity=not_covered → ST-N），降级直连一律禁止。",
+  "evidence": [
+    {
+      "command": "bash .loop/m0/M0-6.fixture.gateway_failure_matrix.sh",
+      "cwd": "~/playground/dsh-projects/academic-research-plugin",
+      "raw_output_sha256": "n/a-不可逐字复现：A/C/D/E 四格各跑一次真实 LLM 会话，模型行为逐次不同，且整条 fixture 耗时远超门的 120 秒重跑预算。本次实测输出的 sha256 = c595ded89c71c88fa1fe3c0c11a86c8389e2b7088526178a3458f2c22190622c，仅作本次留痕，不得用于比对；可比对的是下面 excerpt 里的那几个断言值（退出码、字节数、pid 计数）。",
+      "excerpt": "== A. gateway healthy ==\nexit=0  stdout_contains_GATEWAY-OK=yes\n== B. gateway dead, failOnStartupError=true ==\nexit=1  stdout_bytes=0  boot_error_names_mcp_client=yes\n== C. gateway dead, failOnStartupError=false (the DEFAULT) ==\nexit=0  stdout_bytes_nonzero=yes  gateway_spawn_attempts=4\n== D. gateway crashes mid-run (supervised restart) ==\nexit=0  distinct_gateway_pids=2  dsh_own_stderr_lines=0\n== E. two concurrent harness processes ==\ndistinct_served_by_pid=2"
+    },
+    {
+      "command": "DSH_HOME=$(mktemp -d) dsh --profile headless --dump-config 2>/dev/null | grep -E \"subagent-(spawn|fork)-in-process|workflow-worker-thread|code-runtime-worker-thread\"",
+      "cwd": "~",
+      "raw_output_sha256": "4d3a23454631d61f53c7d5b3702e8c2bead1d9b0452ef7c852588054afe67888",
+      "excerpt": "- id: subagent-spawn-in-process\n  name: '@deepseek-ai/dsh-subagent-spawn-in-process'\n- id: subagent-fork-in-process\n  name: '@deepseek-ai/dsh-subagent-fork-in-process'\n- id: workflow-worker-thread\n  name: '@deepseek-ai/dsh-workflow-worker-thread'\n  name: '@deepseek-ai/dsh-code-runtime-worker-thread'"
+    },
+    {
+      "command": "D=~/.volta/tools/image/packages/@deepseek-ai/dsh/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai; grep -rn \"concurren\\|semaphore\\|inFlight\\|maxSockets\\|rateLimit\\|token.bucket\" \"$D/dsh-llm/lib\" \"$D/dsh-llm-deepseek/lib\" \"$D/dsh-llm-retry/lib\"; echo \"grep exit=$? (1 = zero matches)\"",
+      "cwd": "~",
+      "raw_output_sha256": "f29b956048b074886691682a5d52508b29a686745f698dba86bbcf02738edc13",
+      "excerpt": "grep exit=1 (1 = zero matches)"
+    },
+    {
+      "command": "D=~/.volta/tools/image/packages/@deepseek-ai/dsh/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai; grep -h \"contract is in-process\" \"$D/dsh-jobs/README.md\"",
+      "cwd": "~",
+      "raw_output_sha256": "f592557aa8e807da8315a75a9ffa0ba17c8ef4096cbe1fce8939ac0a6ba18263",
+      "excerpt": "- **The contract is in-process** — `JobStart.run()` passes callbacks and exact `Agent` objects; a durable or cross-process backend must reshape identity, restart, ownership, and observation semantics before it can implement this seam."
+    },
+    {
+      "command": "D=~/.volta/tools/image/packages/@deepseek-ai/dsh/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai; grep -h \"Reconnection is budgeted\\|During the outage\\|Reconnect triggers on transport close\\|Reconnect states are user-visible\" \"$D/dsh-mcp-client/README.md\"",
+      "cwd": "~",
+      "raw_output_sha256": "5ddf5dae4836fc2a59774979862f0e100bea01a0a81f8c24e0cb2044c121c0be",
+      "excerpt": "During the outage the last good generation stays registered; calls against it fail until recovery.\n- Reconnection is budgeted per outage: after `reconnect.maxAttempts` consecutive failures the server's tools are unregistered and reconnection stops until an HMR reload or Host restart. A connection that survives past `maxDelayMs` resets the budget\n- **Reconnect triggers on transport close** — a crashed stdio child fires it; Streamable HTTP failures surface per request and through the SDK transport's own SSE-stream recovery, so an unreachable HTTP server is retried per call rather than respawned by the supervisor."
+    }
+  ],
+  "affects": [
+    "04-ORCHESTRATION.md §6.1 规则 O-9 的三条依据之第 1 条（「子代理可能是独立进程，任何每 agent 内存计数器在超并行下必然击穿」）——在 DSH 的 subagent 机制上被实测证伪：出厂 headless profile 只挂 subagent-spawn-in-process / subagent-fork-in-process，workflow 是 worker-thread，code-runtime 是 worker-thread，全部同进程。该条依据只在「同时跑多个 dsh 调用」这一种形态下成立，必须改写为这个更窄的条件。",
+    "04-ORCHESTRATION.md §6.1 O-9 正文「网关是独立进程（或 SQLite + 文件锁的跨进程实现）」——需补：DSH 里跨进程共享（streamable-http）与被监管重启（stdio）是二选一，不能同时要。",
+    "02-ARCHITECTURE.md §5 表 C-20（中央限速网关「需 harness 改造 → 自建」）——判定要改为「限速逻辑自建，进程托管/重连由 dsh-mcp-client 提供」，并写明该托管的静默性。",
+    "02-ARCHITECTURE.md §未决问题第 3 条（第 737 行，「本文件没有为它设计故障模式与降级路径，只把它列为 C-20」）——本记录即是该缺口的答案，需回填。",
+    "04-ORCHESTRATION.md §6.4 末条（证据必填 fetched_at / provider / endpoint / cache_policy_used）——须并列增补 gateway_epoch 与 gateway_boot_id。",
+    "04-ORCHESTRATION.md §6.7 可检验断言 V-4.23–V-4.28——须增补 V-4.29（同一 run 内 gateway_boot_id 变更 → 变更点之后的证据判 source_integrity=not_covered）与 V-4.30（配置断言：failOnStartupError 必须为 true）。",
+    "04-ORCHESTRATION.md §6.5 边界 (b1)「绕过没有收益」——实测 C 补充一条新的现实风险：网关缺席时模型会主动用 bash 搜寻替代通道（which / PATH 扫描 / npm / python，并发现了本机 127.0.0.1:6152 代理），只因 prompt 写了 must 才没有 curl。prompt 纪律不是门，须显式点名。",
+    "03-EVIDENCE-ENGINE.md §5.7 EE-S-12（限速拒绝时输出 not_applicable + F-11，不得重试到成功）——需与「网关重启窗口」语义区分：限速拒绝是 not_applicable，网关重启窗口是 not_covered → ST-N。",
+    "01-CONTRACTS.md §6.3 硬要求 5（限速按 host 分桶、由中央网关决定并行度）——须补一句网关重启后桶状态归零的事实与 epoch 记账义务。",
+    "00-PREMISE.md B1 反对证据第 8 条（并行度必须由中央限速网关决定）——结论不变，但其「子代理各自发检索」的进程模型描述需按同进程事实收窄。"
+  ],
+  "doc_action": "needed",
+  "honest_limits": "①本轮只测了 stdio 传输；streamable-http 形态的网关（跨进程共享的唯一形态）一次都没跑过，「DSH 不会 respawn 一个 HTTP 网关」这一条是读 dsh-mcp-client README 的 Known Limitations 得来的，不是运行实测。②没有测 reconnect.maxAttempts 耗尽后工具被注销时模型的实际行为（实测 C 的 4 次 spawn 说明预算是 3+1，但那一轮工具从未注册成功过，所以没观测到「工具中途消失」这条路径）。③fixture 的 A/C/D/E 四格都要跑真实 LLM，模型措辞每次不同；我把断言压成退出码/字节数/pid 计数以求稳定，但「模型是否愿意调用工具」这类行为断言原理上不保证逐次一致，sha256 可比性弱于 M0-7 的两个 fixture。④gateway_epoch 方案本身只有设计，没有实现，没有红样本；它防的是「重启未留痕」，防不了「网关自己撒谎报一个假 epoch」。⑤没有测 DSH 的日志等级是否可调高到让 reconnect 的 warn/info 出现在 stderr——实测的「dsh_own_stderr_lines=0」是出厂 headless profile 下的观测，不等于「DSH 从不记录」。⑥没有测网关子进程 stderr 会不会污染 headless 的 stdout 契约（本轮观测到它进了 stderr，但只是一次观测）。"
+}

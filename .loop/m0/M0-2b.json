@@ -1,0 +1,36 @@
+{
+  "id": "M0-2b",
+  "question": "DSH 的 session JSONL 落盘是否真的是多个独立 zstd frame 串接，且 Node 内置 zstd API 真的只解第一帧？两条路径解出来的行数差多少？",
+  "verdict": "resolved",
+  "answer": "是。本机一个 28 frame 的真实 session 日志：`zstd -dc` 解出 55 行，Node v24.16.0 的 `zlib.zstdDecompressSync` 解出 1 行，流式 `createZstdDecompress` 同样只有 1 行，手动按 magic 28 B5 2F FD 切帧循环解回到 55 行。这不是边缘情况——本机 ~/.dsh/sessions 下全部 155 个 session 日志无一例外，Node 内置 API 合计只读到 155 行，`zstd -dc` 合计 182212 行（即每个文件恰好只读到第一帧的那一行 header）。",
+  "evidence": [
+    {
+      "command": "cd ~ && F=~/.dsh/sessions/--private-tmp--/session-0b19c9b9-7b33-49e7-8866-cf8b5117a4e8/session.jsonl.zstd; { echo \"== zstd -l frames ==\"; zstd -l \"$F\" 2>&1 | sed -n '2p' | awk '{print $1}'; echo \"== zstd -dc line count ==\"; zstd -dc \"$F\" | wc -l | tr -d ' '; echo \"== node zstdDecompressSync line count ==\"; node -e 'const{readFileSync}=require(\"node:fs\"),{zstdDecompressSync}=require(\"node:zlib\");console.log(zstdDecompressSync(readFileSync(process.argv[1])).toString(\"utf8\").split(\"\\n\").filter(Boolean).length)' \"$F\"; echo \"== node createZstdDecompress stream line count ==\"; node -e 'const{createReadStream}=require(\"node:fs\"),{createZstdDecompress}=require(\"node:zlib\");let n=\"\";createReadStream(process.argv[1]).pipe(createZstdDecompress()).on(\"data\",c=>n+=c).on(\"end\",()=>console.log(n.split(\"\\n\").filter(Boolean).length))' \"$F\"; echo \"== node frame-loop line count ==\"; node -e 'const{readFileSync}=require(\"node:fs\"),{zstdDecompressSync}=require(\"node:zlib\");const b=readFileSync(process.argv[1]);const o=[];for(let i=0;i<=b.length-4;i++)if(b[i]===0x28&&b[i+1]===0xb5&&b[i+2]===0x2f&&b[i+3]===0xfd)o.push(i);let s=\"\";for(let k=0;k<o.length;k++){const e=k+1<o.length?o[k+1]:b.length;try{s+=zstdDecompressSync(b.subarray(o[k],e)).toString(\"utf8\")}catch(x){}}console.log(s.split(\"\\n\").filter(Boolean).length)' \"$F\"; } > /tmp/m0-2b-final.txt 2>&1; shasum -a 256 /tmp/m0-2b-final.txt",
+      "cwd": "~",
+      "raw_output_sha256": "93290a1ba4331e402dce169cc0292436a7b9540d2d56ecbdcf740f6d76e16004",
+      "excerpt": "== zstd -l frames ==\n28\n== zstd -dc line count ==\n55\n== node zstdDecompressSync line count ==\n1\n== node createZstdDecompress stream line count ==\n1\n== node frame-loop line count ==\n55"
+    },
+    {
+      "command": "cd ~ && node --no-warnings -e 'const {globSync,readFileSync}=require(\"node:fs\"),{execFileSync}=require(\"node:child_process\"),os=require(\"node:os\"),path=require(\"node:path\");const root=path.join(os.homedir(),\".dsh\",\"sessions\");const files=globSync(\"**/*.zstd\",{cwd:root}).map(f=>path.join(root,f)).sort();let mismatch=0,nodeTotal=0,cliTotal=0;for(const f of files){const b=readFileSync(f);let nl=0;try{nl=require(\"node:zlib\").zstdDecompressSync(b).toString(\"utf8\").split(\"\\n\").filter(Boolean).length}catch(e){nl=-1}let cl=0;try{cl=execFileSync(\"zstd\",[\"-dc\",f],{maxBuffer:1<<30}).toString(\"utf8\").split(\"\\n\").filter(Boolean).length}catch(e){cl=-1}nodeTotal+=nl;cliTotal+=cl;if(nl!==cl)mismatch++;}console.log(\"files=\"+files.length);console.log(\"files_where_node_builtin_disagrees_with_zstd_cli=\"+mismatch);console.log(\"total_lines_node_builtin=\"+nodeTotal);console.log(\"total_lines_zstd_cli=\"+cliTotal);'",
+      "cwd": "~",
+      "raw_output_sha256": "4f66bdb9c98607e172367796f5c8c4bb919a6f36cbaa44a9f12d5e3aaf20b50a",
+      "excerpt": "files=155\nfiles_where_node_builtin_disagrees_with_zstd_cli=155\ntotal_lines_node_builtin=155\ntotal_lines_zstd_cli=182212"
+    },
+    {
+      "command": "cd ~ && node --no-warnings -e 'const {globSync,readFileSync}=require(\"node:fs\"),{execFileSync}=require(\"node:child_process\"),os=require(\"node:os\"),path=require(\"node:path\");const root=path.join(os.homedir(),\".dsh\",\"sessions\");for(const f of globSync(\"**/*.zstd\",{cwd:root}).map(f=>path.join(root,f)).sort()){let n=0;try{n=execFileSync(\"zstd\",[\"-dc\",f],{maxBuffer:1<<30}).toString(\"utf8\").split(\"\\n\").filter(Boolean).length}catch(e){continue}if(n===3675){const b=readFileSync(f);let m=0;for(let i=0;i<=b.length-4;i++)if(b[i]===0x28&&b[i+1]===0xb5&&b[i+2]===0x2f&&b[i+3]===0xfd)m++;const l=execFileSync(\"zstd\",[\"-l\",f]).toString(\"utf8\").split(\"\\n\")[1].trim().split(/\\s+/)[0];console.log(\"lines=\"+n+\" magicScan=\"+m+\" zstd_l_frames=\"+l+\" size=\"+b.length)}}'",
+      "cwd": "~",
+      "raw_output_sha256": "n/a — 该条只为核对文档里既有的 3675/3403 两个数字，输出未单独存盘算 sha",
+      "excerpt": "lines=3675 magicScan=3403 zstd_l_frames=3403 size=1070235"
+    }
+  ],
+  "affects": [
+    "00-PREMISE.md 第 750 行（§B6 不可继承/一手真值条目：多 frame zstd 地雷）",
+    "01-CONTRACTS.md 第 710 行（§6.5.4 读日志三条规则之第 1 条）",
+    "01-CONTRACTS.md 第 723 行（§8.7 V6.6）",
+    "02-ARCHITECTURE.md 第 251/258/340/464 行（M0 第一件代码：多帧 zstd 解帧器 + 红样本）",
+    "02-ARCHITECTURE.md 第 497 行（约束表 C-7 多帧 zstd）",
+    "03-EVIDENCE-ENGINE.md 第 1283–1286 行（EE-F-1）与第 1570 行（NT-F-1）"
+  ],
+  "doc_action": "none —— 三份文档里「Node 内置只解第一帧、实测 1 行 vs 3675 行」「3403 个 frame magic 起点」逐字复现成功（本机 ~/.dsh/sessions/--Users-vince-playground-dsh-runs--/cff9adb4-.../session.jsonl.zstd：lines=3675, magicScan=3403, zstd -l frames=3403，magic 扫描与 zstd -l 完全一致、无假阳性）。可选增强（非纠错）：01-CONTRACTS §6.5.4 与 03 EE-F-1 现在可以把「实测」的样本面从单个文件扩到「本机 155/155 个 session 日志全部多帧，Node 内置合计只读到 155 行 vs 实际 182212 行」，把它从「会发生」升格为「必然发生」。",
+  "honest_limits": "① 只在 macOS 26.5.2 / Node v24.16.0 / zstd(homebrew) / DSH 0.1.0-rc.6 这一个组合上测过；Node 未来版本若改成自动串帧，本结论会失效，V6.6 的红样本门正是为此存在。② 第二条聚合命令不可逐字节复比：~/.dsh/sessions 会随每次 DSH 运行增长（本轮开始时 153 个文件，结束时 160 个），文件数与总行数都会变；只有第一条单文件命令是确定性的（该 fixture 文件 sha256 = 90d6e98a61d91eae74cf51bca85cb5bb1eceddbf813611ec5cd54b64a51d9089，位于 /private/tmp 下的已结束会话，本轮内两次运行 sha 一致）。③ 没有测 `ctx.sessionPersistence.readRaw` 与 `/api/session.export` 这两条文档推荐的替代读法是否真的能拿到全部帧——它们仍是未验证的建议。④ 没有测 chunk-row 打包行（`decodeStorageRecord`）这条并列地雷，那是 EE-F-2，不在本条范围内。"
+}

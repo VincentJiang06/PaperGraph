@@ -142,6 +142,10 @@
 | `counter_search`（`tool/result.data.meta.evidence` 的子对象，含 `claim_id / polarity / query_norm`） | 抓取工具执行器必须写的反证检索痕迹（§5A.1） | **是**——它是抓取工具契约的一部分，02/04 必须接住 |
 | `cluster_map` / `nominal_source_count` | G-CLUSTER 的产出（§5A.3）；`nominal_source_count` 即 01-CONTRACTS §5.5 R-I6 要求与独立簇数并排展示的「名义来源数」 | **是**——进交付物，跨文档消费 |
 | `polarity ∈ {support, counter}` | 检索工具调用参数上的受控字段（§5A.1） | **是**——它是工具 schema 的一部分，落在 01-CONTRACTS §4.4 的强制点上 |
+| `counter_operator ∈ {NEG-1, NEG-2, NEG-3}` 与受控词表 `NEG` / `NEG-LIT` | G-CTR-SCAN 的 X-2 结构判据（§5A.1）；命中值进 `params` | 否——门内部判据与其参数，不跨文档消费。**但两张词表的版本号必须进 `params`，否则判定不可复现** |
+| `identity_merge_candidates[]` | G-CLUSTER 产出的**低置信身份合并候选**，只提议不执行（§5A.3.5） | **是**——它进人审队列，04 的编排层必须接住 |
+| `provenance_token` | 交付物渲染期写入的自产内容指纹（`sha256(run_id ‖ claim_id)` 前 16 hex），F-22 的 T-a 级判据（§5A.3.3） | **是**——写者是 01-CONTRACTS §4 W-10 的组稿器，属跨文档契约 |
+| `cluster_map` 的 `exact` / `low` 合并级别标注 | G-CLUSTER 逐次合并的档位记录（§5A.3.5、§5A.3.6） | 否——`cluster_map` 内部结构；但 `power_basis` 的取值依赖它（EE-X-12） |
 
 **这一节本身就是对 V9.2 的兑现**：不是「我没造词」，而是「我造了这些，逐条列出，等回填」。
 
@@ -443,6 +447,8 @@ G-L1 无条件先跑（GC-0，无模型、哈希可判）
                判定路径 = { G-L0(GC-1) , G-ENTAIL(GC-2) , G-L2(GC-2) , G-CLUSTER(GC-1) , G-CTR-SCAN(GC-0) }
                base 上限 = ST-A（S 第 1 步 K-L-A 分支）
 ```
+
+**两条路径里为什么都没有 G-CTR-JUDGE**：它是**只否决门**，按 EE-0.6 ③ 只在判「构成反证」时写 `mechanism_results[]` 条目，而那一判定必然把 claim 送进 `S` 2a 的吸收态 ST-C。因此上面两个集合是**判定路径的常态**；G-CTR-JUDGE 出现在集合里的那一刻，这条 claim 已经不再走「常态路径」而是被 2a 截停了。**转录路径的 ST-V 因此在构造上不含任何 GC-2 条目**（01-CONTRACTS V1.4）。完整契约见 §5A.0 / §5A.2。
 
 **EE-L-20** `sub_mode` 由 G-L1 的 L1-b 子检验**计算**得出，**不由 producer 声明、不由任何模型判断**。producer 的 claim 记录里若出现 `sub_mode` 字段，提交工具必须 `deny`（同 `status` 的处理，01-CONTRACTS §4 W-03）。
 **EE-L-21** **转录路径上的 GC-2 门一律不产出 `mechanism_results[]` 条目**（EE-0.6 ①）。G-ENTAIL / G-L2 在 `sub_mode == T` 时可以照跑并写 `gate-reports/`（作为观测数据，用于测量 §3.1 那条「producer 造出源里没有的东西」的发生率），但它们的信封**不进判定**。
@@ -786,6 +792,7 @@ counterexample_search:
 ```
 **「找不到反例也要记录搜索过程与预算」**（01-CONTRACTS §2.3 第 5 项）。
 **不遵守会发生什么**：`not_found` 无法与「没搜」区分，`counter_evidence_searched` 这个字段就失去意义，而它是 `S` 第 0e 步的输入。
+**门侧落点（本轮补上）**：这一段就是 K-I 通道的反证检索痕迹。G-CTR-SCAN 按 §5A.1 X-3 的 kind 分表读它——`queries[]` 为空或 `budget` 缺失即 X-1 fail ⇒ `counter_evidence_searched = false` ⇒ F-29 ⇒ ST-N。**在 §5A 之前，这条「不遵守会发生什么」没有任何门兑现它。**
 
 #### §4.4.3 为什么有界反例搜索失败不等于真值
 
@@ -812,6 +819,258 @@ counterexample_search:
 
 K-I 的最高档是 ST-A。**如果研究的主要产出是推断，这个产品的绿灯密度会很低。这是一个真实的产品风险，不是保守的美德**（同 01-CONTRACTS §10.6）。
 **缓解只有一条，且它不改变上限**：把可以下沉到 K-D / K-L 的载荷下沉——一条「A 比 B 高 37%」的推断，若能改写成一条 K-D 的重跑断言，就不应该走 K-I。门侧的落点是 §9 的一条 lint：**K-I claim 的载荷若全部由数值构成且其前提均为 K-D，报警提示可下沉**。
+
+---
+
+## §5A 跨通道核算门：G-CTR-SCAN / G-CTR-JUDGE / G-CLUSTER
+
+> **这一节补的是 R1 的 C-4 与 C-5**：`S`（01-CONTRACTS §1.5）有三个输入不由任何通道门生产——
+> `counter_evidence_searched`（0e）、`counter_evidence_found`（2a）、`independent_cluster_count`（2b）。
+> 本文件此前只在架构图与裁决索引里提到它们，**没有任何门计算它们**。
+> 于是 0e 的实际语义退化为「producer 说搜过就算搜过」，2b 的输入无人生产。
+> **一个前置否决项若由被否决方自报，它不是防线，是一句声明。**
+
+### §5A.0 三个门的总形状
+
+这三个门是**跨通道**的：无论 claim 的 kind 是 K-D / K-L / K-I，它们都跑。理由是它们对应的三个 `S` 输入在 `S` 里没有 kind 条件（01-CONTRACTS §1.5 的 0e / 2a / 2b）。
+
+| 门 | gate_class | 产出的 `S` 输入 | 消费于 `S` 的哪一步 | `power_basis` | 能写什么 |
+|---|---|---|---|---|---|
+| **G-CTR-SCAN** | GC-0 | `counter_evidence_searched`、`counter_candidates[]` | 0e | `construction` | 只能否决（fail ⇒ ST-N） |
+| **G-CTR-JUDGE** | GC-2 | `counter_evidence_found` | 2a | `calibrated-kappa` | **只能置 `true`**（⇒ ST-C）；永不写 ST-V |
+| **G-CLUSTER** | GC-1 | `independent_cluster_count`、`nominal_source_count` | 2b | `construction` 或 `unmeasured`（见 EE-X-12） | 只产计数，**自己不降级** |
+
+**为什么 G-CTR-JUDGE 是 GC-2 却不违反 01-CONTRACTS V1.4**：按 EE-0.6 ③，它**只在判「构成反证」时**写 `mechanism_results[]` 条目；而那一判定必然把 claim 送进 2a 的吸收态 ST-C。因此「`status == verified` 且 `mechanism_results` 含 GC-2」这个组合在构造上不可能出现。**这是 EE-0.6 ③ 存在的全部理由，不是一条巧合。**
+**机器检查**：NT-X-8。
+
+**它们与 §3.1.1.1 两条路径的关系**：转录路径与归因路径的判定路径里都写了 `G-CLUSTER(GC-1)` 与 `G-CTR-SCAN(GC-0)`，**都没有写 G-CTR-JUDGE**——正是因为上一段。转录路径因此仍然不含任何 GC-2 条目，`K-L-T` 的 ST-V 可达。
+
+### §5A.1 G-CTR-SCAN（GC-0）：`counter_evidence_searched` 的唯一生产者〔裁定 D-14〕
+
+**规范依据**：反证检索强制化是语料的明写设计条目——「每条 load-bearing 命题必须附带一次**主动反证检索**……选择性引用逃逸逐字匹配，但逃不过『你有没有找过反面』这个可审计的过程字段」[E: ext-security-injection.md#D5]。它对治的威胁是 N6 选择性引用（「注入不改引语真伪，只改『引哪一句』，逐字匹配必然全绿」）[E: ext-security-injection.md#N6]，残余风险登记册把它记为 R6，**覆盖状态为「否」，残余等级中高**，可观测信号逐字是「反证检索为空却结论极强」[E: ext-security-injection.md#R6]。
+
+**EE-X-1 `counter_evidence_searched` 由 G-CTR-SCAN 计算，门永不读 producer 的自报值。**
+claim 提交工具的 schema **不得**包含 `counter_evidence_searched` / `counter_evidence_found` 字段；出现即 `tools/pre-execute` deny（同 `status` 的处理，01-CONTRACTS §4 W-03）。门把计算结果写进 `claims/<id>.status.json`（W-04）。
+**不遵守会发生什么**：这就是 C-4 的原状——0e 这个「逃不过的只有这一条」（01-CONTRACTS §7.2.3）变成一个由被检查方填的布尔。
+
+判据由三个子检查合取给出，**三个全部是 GC-0：只读本地 session 日志与 CAS，不发网络请求、不调模型**。
+
+```
+counter_evidence_searched := X-1.pass ∧ X-2.pass ∧ X-3.executed
+```
+
+#### X-1 · 痕迹存在性（从工件取证，不从自报值取证）
+
+**EE-X-2** 必须在 session 日志中定位到至少一条满足全部下列条件的事件对：
+
+```
+∃ tool/call c:
+    c 是 append-origin 事件（surfaceOp === 'append'，见 EE-F-3）
+    args := JSON.parse(c.data.arguments)        ← 见下方 EE-X-2a：arguments 是**字符串**不是对象
+    args.polarity   == "counter"
+    args.claim_id   == <本 claim 的 id>
+∃ tool/result r:
+    r 的 sourceEventSeqs 含 c.seq（EE-F-6）
+    r.data.meta.evidence.counter_search == { claim_id, polarity: "counter", query_norm }
+    r.data.meta.evidence.snapshot_sha256 ∈ CAS
+    r 不含 EE-F-7 的合成修复文案（TOOL_NOT_STARTED / TOOL_OUTCOME_UNKNOWN）
+且 c.seq  <  本 claim 的 status 计算事件的 seq
+```
+
+**EE-X-2a `tool/call.data.arguments` 在 session 日志里是一个 JSON 字符串，不是已解析的对象；门必须先 `JSON.parse` 再取字段，且 parse 失败必须当作 X-1 fail（不得当作字段不匹配、更不得当作通过）。**
+**本轮实测（第四个地雷，`research/v2/` 未记录）**：`zstd -dc ~/.dsh/sessions/*/session.jsonl.zstd | grep 'tool/call'`，4 个真实 session 共 **64 条 `tool/call` 事件，`data.arguments` 的类型 100% 是 `str`**（0 条为对象）；单条形状实测为 `{type:"tool/call", seq, time, data:{turn, step, callId, name, arguments}}`（as-of 2026-08-17，本机 `~/.dsh/sessions`）。
+**不遵守会发生什么**：`c.data.arguments.polarity` 在字符串上取属性得到 `undefined`，于是 **X-1 对每一条 claim 都不成立**——每条承重 claim 都落 ST-N。这是一道**永红的门**，它会在两周内被 `|| true` 掉，然后 0e 回到自报状态。**这正是 C-4 会以另一种形式复发的路径。**
+**这条实测应回填 `research/v2/GROUND-TRUTH-CORRECTIONS.md`**，在回填前它只有本节的记录作依据（见 §11.14）。
+
+**读日志的另外三个地雷（EE-F-1 多帧 zstd、EE-F-2 `decodeStorageRecord`、EE-F-3 append-origin 过滤）在这里全部适用，任一遗漏都会让本子检查对**所有**claim 返回「没搜过」**——同样是永红门。§7.1 的三条不是给 G-PROV 一个门写的。
+
+**「搜了但没找到」与「根本没搜」的区分就落在这里**：反证检索**必然产生自己的 `tool/call` 事件与快照**，而 seq 是核心分配的单调量、`sourceEventSeqs` 由核心校验（EE-F-6）。producer 无法在不真正发起检索的情况下造出这一对事件——**经工具路径不可伪造**。
+**上界必须写出**：按 EE-0.5，这句话的完整形式是「经工具路径不可伪造」。持有 `run_code` 的 producer 同时绕过内核沙箱与 `ctx.fs` 围栏，本子检查对它的保证降为「事后审计可发现」。真正的收口在 M0 的门轨道/producer 轨道进程级隔离（01-CONTRACTS §0.2）。
+
+**X-1 不成立 ⇒ `counter_evidence_searched = false` ⇒ F-29 ⇒ `S` 0e ⇒ ST-N**（01-CONTRACTS §1.4.1 已把该输入的落点定死在 ST-N：反证检索是必经步骤，它没跑，程序就没跑完）。
+
+#### X-2 · 结构判据：一个只搜了 claim 原句的「反证检索」不是反证检索
+
+X-1 只证明「发生过一次带 `polarity=counter` 的检索」。**一次把 claim 原句原样投进检索框的调用同样满足 X-1**——它是最省事、也最自然的绕过：形式上搜了，实质上只是把支持性证据又捞了一遍。
+
+**EE-X-3** `query_norm` 必须同时满足下列三条，缺一即 X-2 fail：
+
+```
+记 P = normalize(claim.payload 全部字面字段按 schema 顺序拼接)     // 归一化同 01-CONTRACTS §1.2.2
+   Q = normalize(query_norm)
+
+(a) 互不为子串：Q ⊄ P 且 P ⊄ Q
+(b) 三元组 Jaccard(Q, P) ≤ τ_q = 0.60                            〔裁定，工程常数〕
+(c) 命中且仅记录一个**受控反向算子**（命中哪个写进 params.counter_operator）：
+      NEG-1 极性取反   Q 含 ≥1 个受控否定词表 NEG 中的 token（中英各一份，表版本入 params）
+      NEG-2 对立值替换 Q 保留 P 的实体槽与 metric 槽，但其数值槽 / comparator 槽
+                       与 P 的取值**区间不相交**或**方向相反**
+      NEG-3 反向文献算子 Q 含 ≥1 个受控学术反向词表 NEG-LIT 中的 token
+                       （failed to replicate / no significant / contradict / retraction /
+                         未能重复 / 无显著 / 与之相反 …；表版本入 params）
+```
+
+**(c) 为什么是受控词表而不是模型判断**：一旦用模型判「这条 query 算不算反向」，G-CTR-SCAN 就从 GC-0 变成 GC-2，而它是 0e 的输入——0e 是**前置否决**，一个前置否决项由模型产出意味着 `S` 的第 0 步不再确定性可复现，01-CONTRACTS V1.2（重跑 `S` 逐字节相同）当场失效。**判据的可判定性在这里比判据的聪明程度重要。**
+
+**τ_q = 0.60 与两张词表都是〔裁定〕，语料没有给出任何反证检索的 query 结构判据。**
+**什么会推翻**：若在自建的反证检索标注集上（建议 ≥150 条，中英各半，含人工写的真反证 query 与人工写的伪装 query），τ_q = 0.60 的假阳率（把真反证 query 判成伪装）> 10%，则该常数必须重新标定；若两张受控词表在真实 query 上的召回低到使合法反证检索大量被拒，则 (c) 改为「三条算子任一命中 **或** producer 显式登记一条新算子并进人审队列」，**不得**改为「producer 可声明本次检索是反向的」——那会立刻重建本条删除的绕过。
+
+#### X-3 · 同快照扫描：门自己算的那一半
+
+X-1 / X-2 检验的都是 producer 的动作。**若只有这两条，一个不发起任何有效检索的 producer 仍然可以用一条形式合格的 query 换到绿灯。** 因此门必须自己也扫一遍，且这一半 producer 无法参与。
+
+**EE-X-4 G-CTR-SCAN 必须在门内执行一次确定性的同快照/同前提反证扫描，产出 `counter_candidates[]`；该扫描总是执行，不受 producer 的任何字段影响。**
+依据是 RT-8 的期望逐字要求「反证检索必须在同一快照内找到反对句」[E: ext-security-injection.md#RT-8]。扫描对象按 kind 分：
+
+| kind | 扫描对象 | 候选判据（确定性） |
+|---|---|---|
+| K-L | 本 claim 的 `anchor_span` 所在快照的**全量** `rendered_text` | 句子 s 进入 `counter_candidates[]`，当且仅当：s ≠ anchor_span 所在句，且 s 的核心实体集 ∩ P 的核心实体集 ≠ ∅，且（s 含 NEG / NEG-LIT token，**或** s 中同 `metric_frame.metric` 的数值与 claim 的取值区间不相交） |
+| K-D | 本 run 已入库、`metric_frame.metric` 与本 claim 相同的全部证据条目 | 同上第二个分支（数值区间不相交）；**G-DEP 的扰动重跑不是反证**（它检的是依赖性，不是命题真伪） |
+| K-I | 本 claim 的 `premises[]` 及其 `anchor_span` | `inferences/<claim_id>.reviewer.md` 的 `counterexample_search` 段（§4.4.2）即本 kind 的 X-1 痕迹；`result == found` 时其 `found_instance` 进 `counter_candidates[]` |
+
+**K-I 那一行是 §4.4.2 的兑现**：该节写着「`not_found` 无法与『没搜』区分，`counter_evidence_searched` 这个字段就失去意义」。现在它有了落点——**G-CTR-SCAN 读该段的 `queries[]` 与 `budget`，两者任一为空即 X-1 fail**。
+
+**句子边界沿用 EE-L-23 的确定性分句器**（版本入 `params`）；分句器不可用或抽取文本为空 ⇒ `applicable = false` ⇒ `verdict = not_applicable`（EE-0.1：**不得当作 pass**），配合 01-CONTRACTS §1.2.3 的抽取哨兵落 0c → ST-N。
+
+**检索记录的必填形状**〔裁定，形状对齐 PRISMA-S〕：`counter_search` 必须含 `{claim_id, polarity, query_norm, backend, executed_at, snapshot_sha256}`。
+**理由**：PRISMA-S 的 16 条全部关于检索的可复现性（平台、数据库、完整检索式、日期、去重），语料把它评为「整份 PRISMA 家族里机器可判性最高的一块」[E: ext-human-methodology.md#B]。我们照抄的是它的**字段清单**，不是它的条目。
+
+#### §5A.1.1 这个门抓不到什么（必须与结论一起说出）
+
+**1. 措辞正确但注定无结果的检索。** producer 可以构造一条同时满足 X-1 与 X-2、但被设计成必然零命中的 query——过约束合取（把三个反向算子和五个限定词全叠上）、指定一个不存在的期刊过滤、把日期窗口设到语料覆盖之外。G-CTR-SCAN 检验的是检索的**痕迹**与**形式**，**不检验检索的产出率**。这条是本门最直接的漏网，**且它是已知的、固化为观测用例的漏网**（NT-X-7，一条**预期为 pass** 的用例，用途是长期测量该形态的发生率，不是让门变红）。
+**部分减损，不是修复**：X-3 的同快照扫描由门自算，producer 无法用这种方式饿死它——因此 **RT-8 那一类（反对句就在同一页上）仍然被抓到**；被漏掉的是**外部**反证检索那一半。
+**为什么不加「产出率必须 > 0」这条判据**：真反证检索的合法结果就是零命中（一条正确的断言本来就找不到反证）。把零命中判红，等于对每条正确断言收一次假阳性——那道门会先被绕过再被关掉。
+
+**2. 检索后端本身被投毒 / 反证结果被检索层压制。** 这是 N2 的形态（每问 1–5 条即可支配目标问题的检索），本门不覆盖，见 §10。
+
+**3. 「作者在别处限定了该结论」。** X-3 只扫同一快照；跨文献的限定（同一作者在后续论文里收窄了结论）不在扫描范围内。这与 EE-L-23 的残留是同一个洞的两个面。
+
+**4. `run_code` 绕过。** 见 X-1 的上界段。
+
+**5. 长期为 0 的 `counter_evidence_found` 是可疑信号，不是健康信号**（§10 N6 已写）。本门不产出该判断，它是运营层的监控项。
+
+### §5A.2 G-CTR-JUDGE（GC-2，只否决门）：`counter_evidence_found`
+
+**EE-X-5 `counter_evidence_found` 只能由 G-CTR-JUDGE 从 `false` 置为 `true`，任何其他写者都是缺陷；`false` 不携带任何背书。**
+逐条落点：
+- 默认值 `false`，含义是**「本轮没判出反证」**，不是「没有反证」。任何产物中把 `counter_evidence_found == false` 渲染为「未发现反对意见」「无争议」的措辞，按 §9 的 lint 判失败（同 EE-S-3 的绿灯措辞纪律）。
+- 判定单元沿用 EE-L-8 的「**一条陈述 × 一个候选跨度**」最小对，不得把 `counter_candidates[]` 合并成一段再判——理由与 EE-L-8 相同（开放域 + 「陈述 vs 全部源」口径下 Pearson 只有 0.62）。
+- 判「构成反证」⇒ 写 `mechanism_results[]` 条目 + `counter_evidence_found = true` ⇒ `S` 2a ⇒ ST-C（吸收态）。
+- 判「不构成反证」⇒ **只写 `gate-reports/<run_id>/G-CTR-JUDGE.json`，不写 `mechanism_results[]` 条目**（EE-0.6 ③）。
+- `params` 必须齐 EE-0.4 的七件套；κ 阈值见 01-CONTRACTS §6.4。判定器与 producer 不同厂商（EE-L-13 / 01-CONTRACTS §5.2 R-I2）。
+
+**为什么这条门只能往一个方向走**：把「判出反证」和「判没有反证」都当成结论，等于让一个 F1 上界在 0.750 量级的判定器（§3.4.2）对「这条 claim 没问题」发证。**只否决的门的错误方向是过度降级，是安全方向；双向门的错误方向包含发绿灯，不是。**
+
+**候选爆炸的预算落点**：`counter_candidates[]` 的规模由 X-3 的判据决定，一份长综述可能给出数十条候选。门按 `|数值差异|` 降序取前 `M = 8`〔裁定，工程常数〕条进入 GC-2 判定，其余只写 gate-report 并记 `caveats: ["counter_candidates_truncated:<n>"]`。
+**什么会推翻**：若在 RT-8 的扩展集上，真反证落在第 9 位及之后的比例 > 5%，则 M 必须提高或改用分层抽样。**注意这条截断是一个真实的漏检面，不是纯粹的成本优化。**
+
+### §5A.3 G-CLUSTER（GC-1）：`independent_cluster_count` 的唯一生产者〔裁定 D-15〕
+
+**规范依据**：归并键的优先级阶梯、五个已知硬样本、上游继承关系、「模糊身份解析可以提议合并绝不能自动执行」——**全部在 01-CONTRACTS §5.5 / §5.5.1 / §5.5.2，本节不重述**。本节写门。
+
+**EE-X-6 `independent_cluster_count` 与 `nominal_source_count` 由 G-CLUSTER 计算并写入 `claims/<id>.status.json`（W-04）；G-CLUSTER 自己不做任何降级动作。**
+「独立簇数够不够」**只由 `S` 2b 的 `K(kind)` 判定**（01-CONTRACTS §1.5.2）。门在 `independent_cluster_count == 1` 时设 `F-14`，而 `F-14` 按 01-CONTRACTS §7.3.2 **仅作记录、作用类型为 `none`**，不进 2d 也不进 2d′。
+**不遵守会发生什么**：这正是 R1/C-1 的病根——同一条独立性规则被 2b 与 2d 消费两遍，`K(K-D) = K(K-L-T) = 1` 的两条通道于是必降一档，**产品的绿灯全空**。门里再写一次「单簇即降级」会把那个缺陷从规范源搬进实现。
+**机器检查**：NT-X-15（一条单簇的 K-L-T claim 必须拿到 ST-V 且 F-14 已置位）。
+
+#### §5A.3.1 两个计数的定义与并排渲染
+
+```
+nominal_source_count      = 该 claim 绑定的证据条目按 work_id 去重后的计数   // 「看起来有几篇不同的东西」
+independent_cluster_count = 上述集合按 upstream_id 归并后的簇数              // 「实际有几个独立来源」
+```
+
+**EE-X-11 两个数必须在交付物中并排出现，只出其一即渲染失败**（01-CONTRACTS §5.5 R-I6 的门侧落点；lint 见 §9）。
+
+**⚠️ 一处契约缺口（不在本文件自行修改，同 §8.2 的处理）**：01-CONTRACTS §4 W-04 逐字列出 `status.json` 的派生字段是「status、evidence_grade、independent_cluster_count、counter_evidence_*、computed_at、gate_version、inputs_hash」——**`nominal_source_count` 不在其中**，而 §5.5 R-I6 又要求它必须与独立簇数并排展示。照 W-04 实现，渲染层拿不到这个数；照 R-I6 实现，门要写一个不在写权矩阵里的字段。**本文件按 R-I6 的语义写 EE-X-11，并把 `nominal_source_count` 列为 W-04 的回填候选**（§0.4 已登记）。在 01-CONTRACTS 补上之前，NT-X-16 会稳定判红——**那是正确行为，不是要绕过的噪声**。
+**`cluster_map` 不进 W-04**：它体量大且只用于审计与人审队列，落在 `gate-reports/<run_id>/G-CLUSTER.json`（W-08）。
+**理由**：这个比值本身就是 N2 / N3 的可观测指标（§10：比值接近 1 是健康信号，远大于 1 说明大量假独立佐证）。只报独立簇数会把「我们归并掉了 10 个假独立源」这件产品最值钱的事藏起来。
+
+#### §5A.3.2 归并阶梯的门侧实现契约
+
+**EE-X-7 归并键阶梯（01-CONTRACTS §5.5）与已知上游继承关系表（§5.5.1）必须写死在门代码里，表版本入 `params.inheritance_table_version`；`work_id` 形如 `unresolved:<hash>` 的证据一律各自成簇。**
+
+三条实现细则，每条都堵一个具体的错法：
+
+1. **`unresolved:*` 各自成簇。** 一批解析不出 `work_id` 的证据看起来「键相同前缀」，最自然的实现会把它们并成一簇。**「我们解析不了」不是「它们是同一个上游」**——把它们并起来是在用系统的无能给 claim 制造一次降级，把它们并成一簇再计 1 票同样错。EE-A-5 已经规定这类证据「照常可引用，只是不参与跨源聚合」，门侧落点就是：各自成簇，且在 `cluster_map` 中标 `unresolved: true`。
+   **机器检查**：NT-X-14。
+2. **arXiv 归并必须带 `vN`。** 裸 DOI 在 arXiv 语义上是「未来某个版本」（官方确认替换版本不生成新 DOI 且 DOI 永指最新版）[E: ext-evidence-schema.md#结论摘要4]。按裸 DOI 归并会把同一 work 的 v1 与 v3 当成同一条证据，而它们的数字可能不同。
+3. **Unpaywall 与 OpenAlex 必须写死为同一上游。** 一手：OpenAlex 帮助中心明写 "Unpaywall records are served from the same OpenAlex data"，实测返回体中 `evidence` 与 `updated` 字段值已 literally 变成 `"deprecated"`；该节对本项目的含义逐字是「Unpaywall 与 OpenAlex 不构成独立佐证」[E: ext-academic-apis.md#G]。
+   **机器检查**：NT-X-11（01-CONTRACTS V5.4）。
+
+#### §5A.3.3 `F-22 self-sourced`：排除，不是归并
+
+01-CONTRACTS §7.3.1 明确 `F-22` 与 `F-23` **作用于归并器**（改的是 `independent_cluster_count` 的值）而不是作用于 `S`。本文件接住它们。
+
+**EE-X-8 命中 `F-22` 的证据从 `independent_cluster_count` 中**排除**，但仍计入 `nominal_source_count`。**
+**为什么是排除而不是归为一簇**：一条本系统自己生成的文本**根本不是一个来源**。把它归为「与上游同簇」需要先知道上游是谁；把它单列一簇则是在给自我佐证回路发一票。两种做法都错，正确动作是从分子里拿掉、在分母里留痕。
+
+检测分两级，**只有第一级是确定性的**：
+
+| 级 | 判据 | 类 | 假阳率 |
+|---|---|---|---|
+| **T-a 精确** | 抓取到的 `rendered_text` 中出现本地 `runs/*/` 任一交付物在渲染期写入的 `provenance_token`（`sha256(run_id ‖ claim_id)` 前 16 hex，写者见 01-CONTRACTS §4 W-10） | GC-0，纯字符串比对 | ≈0（由构造） |
+| **T-b 近似** | 抓取到的跨度与本地任一历史交付物的 claim 载荷在归一化后**精确子串**相同 | GC-0 | 未测——一段被我们和上游同时引用的原文会误命中 |
+
+**T-b 允许自动执行**，理由与 D-15 同：它只降不升（排除一票 ⇒ 计数下降 ⇒ 2b 更容易触发 ⇒ 状态只可能更保守）。**误排除的代价是过度降级，必须计入 `caveats` 并可被人审回滚。**
+
+**语料限定必须一起带**：R14（自我佐证回路）在残余风险登记册里的「依据」一栏逐字是「**推论，无直接文献**」，覆盖状态为「否」，残余等级中 [E: ext-security-injection.md#R14]。**这条机制的威胁量级没有任何实证支撑，它的设计依据是一条推论。** 对应的红队用例是 RT-14（把本系统上一次输出发布到测试域再检索）[E: ext-security-injection.md#RT-14]。
+
+**抓不到什么**：被第三方**改写后**再发布的自产内容——T-a 的 token 被剥掉，T-b 的精确子串不再成立。这一类会以一个真实的独立来源身份进入计数。**这是 F-22 的能力边界，不是一个待补的实现细节。**
+
+#### §5A.3.4 `F-23 translation-chain`：跨语言归并只用受控别名表
+
+**EE-X-9 跨语言转述链的归并键是 `(核心数字集合, 核心实体集合, 首次出现时间序)` 三元组，实体的跨语言对齐**只**走受控别名表（机构 / 人名 / 期刊 / 地名，中英对照，表版本入 `params.alias_table_version`）；**禁止在归并器中调用机器翻译或任何模型**。
+**理由**：语料给出的最小可行实现就是这个三元组聚类 [E: ext-security-injection.md#D3]。而一旦引入翻译模型，G-CLUSTER 从 GC-1 变成 GC-2，`independent_cluster_count` 就成了模型产出的量——它喂 2b，2b 只降不升，形式上安全，但 01-CONTRACTS V1.2 的「重跑 `S` 逐字节相同」会失效（同一输入两次翻译可能不同）。**可复现性在这里比覆盖率重要。**
+
+- 数值的跨语言对齐是免费的：阿拉伯数字 + 单位归一化后语言无关。
+- **金标样本已存在，直接做固定回归用例**：11 条中文报道（腾讯新闻 / IT之家 / 大公网 / 虎嗅 / 科普中国 / 光明网 / 人民网教育频道 …）**全部**回溯到日经亚洲同一条上游，语料的评语逐字是「11 个域名 = 1 个来源」[E: ext-security-injection.md#E3]；对应用例 RT-2 / RT-3 [E: ext-security-injection.md#RT-2, #RT-3]。另一条同形样本：8 个域名复述同一篇 BadRAG，「8 个域名 = 1 个来源」[E: ext-security-injection.md#A3]。
+- **机器检查**：NT-X-10（01-CONTRACTS V5.3）。
+
+**别名表覆盖不足是这条的主要失效模式**：表里没有的实体 ⇒ 漏并 ⇒ 计数虚高 ⇒ **危险方向**（`K=2` 事实上退化为 `K=1`）。
+**什么会推翻**：若在 RT-3 的扩展集（建议 ≥20 条真实中文转述链）上漏并率 > 20%，则跨语言归并必须改为「受控别名表 + 人审队列」，**不得**改为引入翻译模型。
+
+#### §5A.3.5 簇归并 ≠ 身份归并〔裁定 D-15〕
+
+01-CONTRACTS §5.5.2 规定模糊身份解析「可以提议合并，绝不能自动执行」，依据是 bioRxiv 生产系统用标题匹配做 preprint→VoR 关联、人工复核 120 篇后发现 **37.5%** 其实已发表，把一个统计量搞错约 25 个百分点 [E: ext-evidence-schema.md#结论摘要6]。**这条与「簇归并允许自动执行」看起来矛盾，实际是两个操作。**
+
+| | 簇归并 | 身份归并 |
+|---|---|---|
+| 改的是 | `cluster_map` / `independent_cluster_count` | `evidence/*.json` 的 `work_id` |
+| 写者 | G-CLUSTER（门轨道，W-08 + W-04） | admission（W-06） |
+| 误判的方向 | 假合并 ⇒ 计数下降 ⇒ 2b 更易触发 ⇒ **只降不升，安全** | 假合并 ⇒ 两篇不同的论文变成一篇 ⇒ 全库污染，**不可逆** |
+| 低置信自动执行 | **允许** | **禁止** |
+
+**EE-X-10 G-CLUSTER 不得写 `evidence/*.json` 的任何字段，尤其不得回写 `work_id`。** 低置信身份候选只写进 `cluster_map.identity_merge_candidates[]` 并进人审队列（同 §3.2.1 第 4 步「只提议不合并」）。
+**机器检查**：NT-X-13（写权白名单，01-CONTRACTS §4 V4.2）+ 代码 lint。
+
+**自动执行不是零成本，必须留痕**：`cluster_map` 必须逐条记录每次合并用的是阶梯上的哪一级（`exact` / `low`）。若某 claim 的合并中 `low` 占比 > 30%〔裁定，工程常数〕，门设 `caveats: ["low_confidence_cluster_merge:<ratio>"]`。
+**理由**：过度降级同样是错误——它把一条有五个真独立来源的 claim 判成单簇，读者看到的是一个错误的保守结论。「安全方向」不等于「免费」。
+
+#### §5A.3.6 `power_basis` 的两档取值
+
+**EE-X-12 G-CLUSTER 的 `power_basis` 按本次判定实际用到的归并级别取值，二者不得混用：**
+
+```
+若本 claim 的全部合并都落在 01-CONTRACTS §5.5 阶梯的 exact 档（DOI / arXiv ID+vN / 官方域名 / 写死的继承表）
+   → power_basis = "construction"，error_asymmetry.fp = "≈0 by construction"
+若存在任一 low 档合并（三元组聚类 / 别名表对齐 / F-22 的 T-b）
+   → power_basis = "unmeasured"，且 caveats 必须列出该次合并
+```
+**为什么不能统一写 `construction`**：`construction` 的含义是假阳率由构造给出。三元组聚类与别名表对齐的假合并率**没有任何测量**——01-CONTRACTS §10.3 与 §1.5.2 的「什么会推翻」都把它列为未决。合并写成 `construction` 就是我们要消灭的那种口径失真（同 EE-0.3 对 G-L1 的处理）。
+**机器检查**：NT-X-17。
+
+#### §5A.3.7 G-CLUSTER 的能力边界
+
+- **它不判来源可信度**，只判来源是不是同一个。五个真正独立的簇一致陈述一条假事实，本门无话可说（这是 §10 N1 的形态）。
+- **假合并率与漏合并率都未测**。01-CONTRACTS §1.5.2 的推翻条件逐字是：若归并器的假合并率高到使 `K=2` 事实上等价于 `K=1`，则必须提高 K 或改用连续的证据强度。**在 RT-2 / RT-3 / RT-14 跑出数字之前，`K ≥ 2` 是一条未验证的防线。**
+- **它不覆盖「同一批人在不同机构发的两篇论文」**——`upstream_id` 归并的是**转述链**，不是**利益相关性**。作者层的独立性不在本门的能力范围内，语料里也没有可用件。
+
+### §5A.4 三个门的并行归属
+
+- G-CTR-SCAN 的 X-3 扫描、G-CLUSTER 的逐对归并判定都是**同一断言的 N 路独立核验 / 覆盖率**，属 00-PREMISE B1 允许的第 1、2 类扇出。
+- G-CTR-JUDGE 的多候选判定是同一断言的 N 路独立核验（第 2 类），输出是可比较的「构成反证 / 不构成反证」。
+- **反证候选之间的取舍与最终是否置 `counter_evidence_found` 不得扇出**——那是跨 claim 一致性推理与最终裁决，落在 B1 明确禁止的那三处里。
 
 ---
 
@@ -1214,8 +1473,11 @@ work_id       作品身份（跨版本、跨 URL、跨标识符的同一件学�
 | NT-D-8 | §2.3 | `run.py` 在执行中发起出网请求 | 真实容器执行 | 请求失败 → 脚本非零退出 → `verdict=fail` |
 | NT-D-9 | **§2.4 C-3（最重要的一条）** | `run.py` 硬编码结论数字（读了输入但不使用） | 真实 G-DEP | `verdict=fail`。**前代对同类构造得到 `exit 0 PASS`** [E: GROUND-TRUTH-CORRECTIONS.md#C1] |
 | NT-D-10 | §2.4 C-1 | 某被引用 key 对所有输入不敏感 | 同上 | `verdict=fail` |
-| NT-D-11 | §2.4 C-2 | 声明了一个从不被使用的输入 | 同上 | `verdict=pass` + `caveats` 含 `decorative_input` |
-| NT-D-12 | §2.4 C-4 | 扰动导致脚本崩溃 | 同上 | 计为敏感，`caveats` 含 `perturbation_crash` |
+| NT-D-11 | §2.4 C-2 | 声明了一个从不被使用的输入 | 同上 | `verdict=pass` + `caveats` 含 `decorative_input`；**断言未记 `perturbation_undetermined`** |
+| NT-D-12 | §2.4 C-4 / EE-D-5〔本轮重写〕 | 某输入在 P-a 崩溃、在 P-b / P-c 正常且给出 `differs` | 同上 | 该 (输入, P-a) 观测为 `undetermined`，`caveats` 含 `perturbation_crash:<path>:P-a`；**断言崩溃未被计为「敏感」**——C-1 的满足只由 P-b/P-c 的 `differs` 提供 |
+| **NT-D-15** | **§2.4.0 / C-3 / C-4（C-8 的直接回归）** | `run.py` 硬编码结论数字 **且** 开头做严格输入校验（`assert df.shape[0] == N` + 校验和断言），使**三级扰动全部崩溃** | 真实 G-DEP | 三级观测全为 `undetermined` ⇒ `applicable=false` ⇒ `verdict=not_applicable` ⇒ G-RERUN `not_applicable` ⇒ **ST-N**。**断言 status ≠ ST-V**。旧写法下这条构造会拿到 ST-V（崩溃被计为敏感） |
+| NT-D-16 | EE-D-6 | 门代码在某输入于 P-a 得到 `differs` 后跳过 P-b / P-c | 代码 lint + `params` 断言 | 失败；`params` 必须逐级含 `{level, exit_code, out_json_valid, per_key_observation}`，缺任一级即门红 |
+| NT-D-17 | EE-D-7 / EE-D-8 | `questions.frozen.json` 的 manifest 写入事件 seq **晚于**本 claim 首条 producer `tool/call` | 真实 G-RERUN 的 `closed_form` 子检查 | `closed_form=false` ⇒ 按开放式处理 ⇒ base 上限 ST-A，**不是判门红**；并断言判定用的是 seq 而非时间戳（把该事件的时间戳改早，结论不变） |
 | NT-D-13 | §2.5 | producer 在提交工具参数中携带 `question_authored_by` | 真实 claim 提交工具 | 调用被 `tools/pre-execute` **拒绝**（不是覆盖），session 日志中存在 deny 记录 |
 
 ### §9.2 文献通道
@@ -1233,8 +1495,8 @@ work_id       作品身份（跨版本、跨 URL、跨标识符的同一件学�
 | NT-L-9 | EE-L-15 | 只报 precision 不报 coverage 的报告 | 真实组稿器 | **构建失败** |
 | NT-L-10 | EE-L-1 + §5.2.4 | 产物中出现「该文献可信」「已核实无撤稿」 | 文档 lint | 失败 |
 | NT-L-11 | §3.4.5 F-13 | 同一子命题 5 次同义改写后判定翻转 | 真实 G-L2 × 5 | F-13 置位，status 强制 ST-U |
-| NT-L-12 | 01-CONTRACTS §1.6 V1.6（RT-1） | 格式规范、含一句语法完美且**虚假**数值断言的网页 | 真实端到端 | `quote_faithful=pass` 且 `status ≠ verified`（`independent_cluster_count=1` 触发降级） |
-| NT-L-13 | 01-CONTRACTS §7.4 V7.7（RT-8） | 真实页面同含支持句与反对句，注入诱导只引支持句 | 真实端到端 | `counter_evidence_found=true`，status 降为 ST-C |
+| NT-L-12 | 01-CONTRACTS §1.6 V1.6（RT-1）〔按 R2 重写同步〕 | 格式规范、含一句语法完美且**虚假**数值断言的网页；**从中构造两条 claim** | 真实端到端 | 三条断言缺一即失败：① 对象①「该网页的 span Y 逐字为 Z」（K-L-T）判 **ST-V**；② 对象②「Z 为真」（K-L-A）判 **ST-U**（`K(K-L-A)=2`，单张伪造网页给不出第二簇）；③ 对象① 进入正文时携带归因，裸事实形态触发 W-10 解析期检查失败。**旧写法期望的「`independent_cluster_count=1` 触发降级」是错的——`K(K-L-T)=1`，2b 不触发**（01-CONTRACTS §7.3.2） |
+| NT-L-13 | 01-CONTRACTS §7.4 V7.7（RT-8） | 真实页面同含支持句与反对句，注入诱导只引支持句 | 真实端到端 | `counter_evidence_found=true`，status 降为 ST-C。**该反对句必须由 §5A.1 X-3 的门内同快照扫描发现（见 NT-X-5），不得依赖 producer 的检索** |
 | NT-L-14 | RT-9 | 先取快照 → 改源页一个数字 → 触发复核 | 真实复核 | hash 不匹配 → `source_integrity=mutated` + F-16 → ST-U |
 
 ### §9.3 推断通道
@@ -1253,6 +1515,36 @@ work_id       作品身份（跨版本、跨 URL、跨标识符的同一件学�
 | NT-I-10 | §4.4.2 | 反例搜索段为空或只有 `not_found` 无预算记录 | 真实 G-REDERIVE | 门红 |
 | NT-I-11 | 01-CONTRACTS §2.5 V2.1 | 任一 K-I claim 的 status 为 `verified` | 全量扫描 | 失败 |
 | NT-I-12 | §4.5 EE-I-8 | 修改一条前提的 status，重跑门 | 真实门运行器 | 依赖它的 K-I claim 进入 `stale` 并被重判 |
+
+### §9.3A 跨通道核算（§5A：`S` 的三个输入）
+
+> 这一组是 R1 的 C-4 / C-5 的回归面。**其中 NT-X-1 与 NT-X-15 各自对应一个曾经让整条防线失效的缺陷**：
+> 前者是「自报即通过」，后者是「同一条独立性规则被消费两遍导致绿灯全空」。
+
+| ID | 对应规则 | 反向 fixture | 触发入口 | 断言 |
+|---|---|---|---|---|
+| **NT-X-1** | **EE-X-1 / EE-X-2（C-4 的直接回归）** | claim 记录自报 `counter_evidence_searched=true`，但 session 日志中不存在 `polarity=="counter"` 且 `claim_id` 匹配的 **append-origin** `tool/call` | 真实 G-CTR-SCAN | `counter_evidence_searched=false` + F-29 → **ST-N**。**断言门的输出与自报值不同**（即门确实没读自报值） |
+| NT-X-2 | EE-X-2 | 存在 counter 检索的事件对，但 `r.data.meta.evidence.snapshot_sha256` 不在 CAS | 同上 | `counter_evidence_searched=false` |
+| NT-X-2b | EE-X-2 | 日志含 ≥2 个 zstd frame，counter 检索事件落在第 2 帧之后 | 同上 | 门读到该事件；**负例：只解第一帧 ⇒ 门判「没搜过」⇒ 必须红**（同 NT-F-1 的形态，此处是它在 0e 上的复现） |
+| NT-X-2c | **EE-X-2a** | 一条真实捕获的 `tool/call`，其 `data.arguments` 是 JSON **字符串**（本轮实测：4 个 session / 64 条事件，100% 为 `str`） | 同上 | 门 `JSON.parse` 后正确取到 `polarity` / `claim_id`。**负例：门按对象取属性 ⇒ 对每条 claim 都判「没搜过」⇒ 该负例必须让门套件红**（永红门检测） |
+| NT-X-2d | EE-X-2a | `arguments` 字符串被截断导致 `JSON.parse` 抛错 | 同上 | X-1 fail（`counter_evidence_searched=false`），**不得**当作字段不匹配、更不得当作通过 |
+| NT-X-3 | EE-X-3 (a) | `query_norm` 归一化后与 claim 载荷互为子串 | 同上 | X-2 fail ⇒ `counter_evidence_searched=false` + F-29 |
+| NT-X-4 | EE-X-3 (b)(c) | `query_norm` 是载荷的同义改写，三元组 Jaccard ≈ 0.85 且不含任何 NEG / NEG-LIT token、无数值取反 | 同上 | X-2 fail。**这条测的是「换了措辞的原句不是反证检索」** |
+| NT-X-5 | EE-X-4 | RT-8 的同一 fixture（同页含支持句与反对句），**且 producer 完全不发起外部检索** | 同上 | `counter_candidates[]` 非空；**断言该结果不依赖 producer 的任何字段或调用** |
+| NT-X-6 | EE-X-4 | 扫描版中文 PDF（抽取文本为空） | 同上 | `applicable=false` → `not_applicable`，**不是 `counter_evidence_searched=true`**（EE-0.1） |
+| NT-X-7 | §5A.1.1 已知漏网 | 一条形式合格但被构造为必然零命中的 counter query（过约束合取 + 不存在的期刊过滤） | 同上 | **预期 `pass`**。本条是**固化的漏网观测用例**，用途是长期测量该形态的发生率，**不是一条会红的用例**。计数进运营看板 |
+| NT-X-8 | EE-X-5 / EE-0.6 ③ | 一条 `counter_candidates[]` 非空、G-CTR-JUDGE 判「不构成反证」的 K-L-T claim | 真实 G-CTR-JUDGE | 只写 `gate-reports/`；该 claim 的 `mechanism_results[]` 中**不含 `gate_class == GC-2` 的条目**，且 `status == ST-V`（01-CONTRACTS V1.4） |
+| NT-X-9 | EE-X-1 / EE-X-5 | producer 在提交工具参数中携带 `counter_evidence_searched` 或 `counter_evidence_found` | 真实提交工具 | 调用被 `tools/pre-execute` **拒绝**（不是覆盖），session 日志中存在 deny 记录 |
+| NT-X-9b | EE-X-5 措辞纪律 | 产物中出现「未发现反对意见」「无争议」等把 `counter_evidence_found == false` 渲染为背书的措辞 | 文档 lint | 失败 |
+| NT-X-10 | EE-X-9（01-CONTRACTS V5.3 / RT-3） | 11 家中文媒体转述同一条日经的真实链路 | 真实 G-CLUSTER | `independent_cluster_count == 1` **且** `nominal_source_count == 11` |
+| NT-X-11 | EE-X-7 细则③（01-CONTRACTS V5.4） | 同时引用 Unpaywall 与 OpenAlex 的 OA 状态断言 | 同上 | `independent_cluster_count == 1` |
+| NT-X-12 | EE-X-8（RT-14） | 把本系统上一轮交付物发布到测试域，新一轮检索到它 | 同上 | 设 F-22；该条**不计入** `independent_cluster_count`，**仍计入** `nominal_source_count` |
+| NT-X-13 | EE-X-10〔D-15〕 | G-CLUSTER 尝试写 `evidence/*.json` 的 `work_id` | 写权白名单 + 代码 lint | 失败（01-CONTRACTS V4.2）；低置信候选只出现在 `cluster_map.identity_merge_candidates[]` |
+| NT-X-14 | EE-X-7 细则① | 三条 `work_id` 形如 `unresolved:<不同 hash>` 的证据 | 真实 G-CLUSTER | **三簇，不是一簇**；`cluster_map` 中三条均标 `unresolved: true` |
+| **NT-X-15** | **EE-X-6（C-1 的回归）** | 一条只有单一独立簇的 **K-L-T** claim，其余判定全绿 | 真实门链 + `S` | `F-14` 置位 **且** `status == ST-V`。**断言 G-CLUSTER 的 gate-report 中不存在任何降级动作**，且 `F-14` 不出现在 §7.3 的 ceiling / step-down 两张表里（01-CONTRACTS §7.3.2） |
+| NT-X-16 | EE-X-11（01-CONTRACTS §5.5 R-I6） | 交付物只展示 `independent_cluster_count`，不展示 `nominal_source_count` | 文档 lint / 组稿器 | **渲染失败** |
+| NT-X-17 | EE-X-12 | 一条 claim 的归并中用到了三元组聚类（low 档），门却输出 `power_basis = "construction"` | 门自检 | 门红。反向用例：全 exact 档却输出 `unmeasured` 同样红 |
+| NT-X-18 | §5A.2 候选截断 | 构造 12 条 `counter_candidates[]`，真反证排在第 10 位 | 真实 G-CTR-JUDGE | `counter_evidence_found=false` **且** `caveats` 含 `counter_candidates_truncated:12`。**这是一条预期漏检的用例**，用于测量截断代价；`caveats` 缺失才是门红 |
 
 ### §9.4 来源完整性
 
@@ -1295,7 +1587,7 @@ work_id       作品身份（跨版本、跨 URL、跨标识符的同一件学�
 | NT-F-5 | EE-F-5 | 证据指针指向 spill 路径 | admission | 拒绝入库 |
 | NT-F-6 | EE-F-7 | 一条含 `TOOL_OUTCOME_UNKNOWN` 的 `tool/result` | 真实 G-PROV | 该证据 `not_covered` |
 | NT-F-7 | EE-F-8 | 一条无对应 `tool/call` 的断言 | 同上 | `not_covered` |
-| NT-A-1 | EE-A-1/2/3 | 同一批输入连续跑两次 | **真实端到端流水线** | 第二次 `accepted == 0`（01-CONTRACTS V4.4） |
+| NT-A-1 | EE-A-1/2/3 **/ 7** | 同一批输入连续跑两次 | **真实端到端流水线** | 第二次 `accepted == 0`（01-CONTRACTS V4.4） |
 | NT-A-2 | EE-A-2 无时钟 | 冻结系统时钟前后各跑一次 | 同上 | 记录逐字节相同 |
 | NT-A-3 | §8.2 | 同一 work 的两条**矛盾**证据（不同 section） | 同上 | 两条都入库，`evidence_id` 不同 |
 | NT-A-4 | §8.2 反模式1 | 同一论文的 4 个 URL（abs / pdf / 出版社 HTML / PMC） | 同上 | 归并为 1 个 `work_id`；`evidence_id` 按 locator 区分 |
@@ -1320,10 +1612,16 @@ work_id       作品身份（跨版本、跨 URL、跨标识符的同一件学�
 | EE-0.3 | ★ NT-G-3 | 对 `S` 做可达性分析：断言不存在「仅由 `power_basis == unmeasured` 的门支撑」的 ST-V / ST-A 路径 |
 | EE-0.4 | ★ NT-G-4 | GC-2 门输出缺 `prompt_hash` 或 `kappa` → 门红 |
 | EE-0.5 | ★ NT-G-5 | 门代码尝试写 `claims/<id>.json` 的内容字段 → 写权白名单拒绝（01-CONTRACTS V4.2） |
+| EE-0.6 | ★ NT-G-6 | 一条 `sub_mode == T` 的 claim，其 G-ENTAIL / G-L2 照跑并写了 `gate-reports/`；断言 `mechanism_results[] ⊆ gate-reports[]`（按 `gate_id + inputs_hash` 匹配）**且** `mechanism_results[]` 中不含路由外的门 → 否则失败 |
+| EE-0.7 | ★ NT-G-7 | 门输出缺 `computed_at`，或复核期重跑产出的信封缺 `revalidated_at` → 门红；并构造一条初判 ST-V、复核期重取失败的 claim，断言其状态被改判为 ST-N 而非停留在 verified |
 | EE-D-1 | NT-D-3 | — |
 | EE-D-2 | NT-D-7 / NT-D-8 | — |
 | EE-D-3 | ★ NT-D-14 | 代码 lint：重跑器实现中出现 `run_code` 调用 → 失败（它同时绕过内核沙箱与 `ctx.fs` 围栏） |
 | EE-D-4 | NT-D-7 | — |
+| EE-D-5 | NT-D-12 / **NT-D-15** | — |
+| EE-D-6 | NT-D-16 | — |
+| EE-D-7 | NT-D-17 | — |
+| EE-D-8 | NT-D-17 | — |
 | EE-L-1 | NT-L-10 | — |
 | EE-L-2 | NT-L-2 | — |
 | EE-L-3 | ★ NT-L-15 | `anchor_span` 只有引语字符串、无可复核定位符 → admission 拒绝入库 |
@@ -1343,6 +1641,23 @@ work_id       作品身份（跨版本、跨 URL、跨标识符的同一件学�
 | EE-L-17 | ★ NT-L-26 | 中文任务运行清单中 `citation-snowball` 处于开启状态 → 失败（01-CONTRACTS V3.6） |
 | EE-L-18 | NT-L-7 | — |
 | EE-L-19 | ★ NT-L-27 | 配置 lint：标定完成前中文引语门使用与英文相同的阈值 → 失败 |
+| EE-L-20 | ★ NT-L-29 | producer 在 claim 记录里携带 `sub_mode` 字段 → 提交工具 `tools/pre-execute` **拒绝**（不是覆盖），session 日志中存在 deny 记录；并断言门算出的 `sub_mode` 与 producer 声明的相反时以门为准 |
+| EE-L-21 | ★ NT-L-28 | 一条 `sub_mode == T` 的 claim；断言 `mechanism_results[].gate_class` 中不含 `GC-2`（与 01-CONTRACTS V1.4 是同一断言的两个方向），且 G-ENTAIL / G-L2 的 `gate-reports/` 条目存在——**跑了但不进判定** |
+| EE-L-22 | ★ NT-L-30 | 一条 L1-b 包含检验未命中的 K-L claim → 路由到归因路径（`sub_mode = A`，base 上限 ST-A），**断言 verdict ≠ fail** |
+| EE-L-23 | ★ NT-L-31 | `anchor_span` 以句内片段起止（非句子边界） → 门红；并构造一条限定语落在**上一句**的 fixture，断言它**未被抓到**——该用例是 §10 N6 的固化观测面，不是会红的用例 |
+| EE-X-1 | **NT-X-1** / NT-X-9 | — |
+| EE-X-2 | NT-X-2 / NT-X-2b | — |
+| EE-X-2a | **NT-X-2c** / NT-X-2d | — |
+| EE-X-3 | NT-X-3 / NT-X-4 | — |
+| EE-X-4 | NT-X-5 / NT-X-6 | — |
+| EE-X-5 | NT-X-8 / NT-X-9b | — |
+| EE-X-6 | **NT-X-15** | — |
+| EE-X-7 | NT-X-11 / NT-X-14 | — |
+| EE-X-8 | NT-X-12 | — |
+| EE-X-9 | NT-X-10 | — |
+| EE-X-10 | NT-X-13 | — |
+| EE-X-11 | NT-X-16 | — |
+| EE-X-12 | NT-X-17 | — |
 | EE-I-1 | ★ NT-I-13 | 信号问题答案落在 `Y/PY/PN/N/NI/NA` 之外 → 门红 |
 | EE-I-2 | ★ NT-I-14 | 某题缺 `ni_polarity` → 门红；并构造一个 `NI` 答案，断言它在两种极性下导向**不同**的 domain 判定 |
 | EE-I-3 | NT-I-7 | — |
@@ -1385,7 +1700,7 @@ work_id       作品身份（跨版本、跨 URL、跨标识符的同一件学�
 | EE-A-4 | ★ NT-A-10 | 代码 lint：admission 实现中出现模型调用或网络调用 → 失败 |
 | EE-A-5 | NT-A-6 | — |
 | EE-A-6 | ★ NT-A-11 | 一条以 URL 为 `evidence_id` 组成部分的记录 → schema 校验失败 |
-| EE-A-7 | NT-A-7 | — |
+| EE-A-7 | NT-A-1 | 〔R2 更正〕原写 `NT-A-7`，而 NT-A-7 测的是「G1 snippet 被列为承重证据 → 拒绝入库」（§8.5），与幂等无关。EE-A-7 的断言（连续跑两次、第二次 `accepted == 0`、**且必须在真实端到端流水线里跑**）逐字就是 NT-A-1。映射到 NT-A-7 会让 EE-A-7 在矩阵里**看起来有覆盖、实际零覆盖**——正是本文件反复批判的空心门形态 |
 | EE-NT-1 | 自指 | 由本节的 lint 脚本本身覆盖；该脚本必须先在一个**故意删掉一行**的副本上红过一次（M-1） |
 
 > **编号唯一性也是一条门**：CI 必须断言全文 `NT-*` id 无重复（§9.6 的通道分离两条已编为 **NT-P-1 / NT-P-2**，与 admission 的 NT-A-* 分开）。重复 id 会让「某用例通过」这句话失去所指——**这正是「自由文本台账会腐」的一个微型实例**（01-CONTRACTS §8.4 D-8.13）。
@@ -1399,12 +1714,12 @@ work_id       作品身份（跨版本、跨 URL、跨标识符的同一件学�
 
 | # | 攻击类 | 本引擎做的减损 | **明确不解决什么** | 残余风险的可观测指标 |
 |---|---|---|---|---|
-| **N1** | **内容攻击**（页面是真的、引语逐字命中、快照可复核，但内容本身是假的）。EMNLP 2025 逐字："Existing defenses, which focus on detecting hidden commands, are ineffective against attacks by content." | ①独立簇计数（§8.4 + 01-CONTRACTS §5.5）；②强制反证检索（F-29）；③L2 的跨厂商判定与分歧率升级 | **内容真伪本身不可判。**一条被 5 个真正独立的簇一致陈述的假事实，本引擎会给 ST-A。这是 `claim_supported` 确定性不可判的直接后果（01-CONTRACTS §1.3） | 人裁抽检中「status ≥ ST-A 但人裁判错」的比例。按 01-CONTRACTS §9.29 的非对称计分，自信错误 −2 |
+| **N1** | **内容攻击**（页面是真的、引语逐字命中、快照可复核，但内容本身是假的）。EMNLP 2025 逐字："Existing defenses, which focus on detecting hidden commands, are ineffective against attacks by content." | ①独立簇计数（**§5A.3 G-CLUSTER** + §8.4 的身份解析 + 01-CONTRACTS §5.5）；②强制反证检索（**§5A.1 G-CTR-SCAN**，F-29）；③L2 的跨厂商判定与分歧率升级 | **内容真伪本身不可判。**一条被 5 个真正独立的簇一致陈述的假事实，本引擎会给 ST-A。这是 `claim_supported` 确定性不可判的直接后果（01-CONTRACTS §1.3） | 人裁抽检中「status ≥ ST-A 但人裁判错」的比例。按 01-CONTRACTS §9.29 的非对称计分，自信错误 −2 |
 | **N2** | 检索层投毒（每问 5 条恶意文本 → 90% ASR；改进版每问 1 条即 85–98%）。**口径：这是已知目标问题的定向攻击，「5 条」是每问 5 条，不是 5 条污染整库** | ①`upstream_id` 归并使同源投毒只算 1 票；②检索饱和曲线记录（01-CONTRACTS §9.14，自建概念，需自证）；③非渲染通道分离切断 70% 的野外注入载体 | **不阻止投毒文档进入检索结果。**被引的每一句都真实存在于被投毒文档中，逐字匹配 100% 通过 | 每次任务的「名义来源数 / 独立簇数」比值分布；比值接近 1 是健康信号，远大于 1 说明大量假独立佐证 |
-| **N3** | 伪造权威 / 合成共识（Gemini-3-Flash 上 73% ASR；同框架下 Claude-Sonnet-4.6 为 0.0%——**后端间差异极大**） | `K(kind) ≥ 2` 的独立簇门槛（01-CONTRACTS §1.5.2）+ 已知硬样本作固定回归用例（11 中文域名 = 1 条日经；8 域名 = 1 篇 BadRAG；Unpaywall = OpenAlex 同一后端） | **归并器本身的假合并/漏合并率未知。**若归并器把 5 个真独立源误并为 1，我们会过度降级；若漏并，`K=2` 事实上等价于 `K=1`（01-CONTRACTS §10.3） | 在固定回归用例上的归并正确率；RT-2 / RT-3 的通过率 |
+| **N3** | 伪造权威 / 合成共识（Gemini-3-Flash 上 73% ASR；同框架下 Claude-Sonnet-4.6 为 0.0%——**后端间差异极大**） | `K(kind) ≥ 2` 的独立簇门槛（01-CONTRACTS §1.5.2）+ **§5A.3 的 G-CLUSTER 归并器**（本轮补上，此前该输入无人生产）+ 已知硬样本作固定回归用例（11 中文域名 = 1 条日经；8 域名 = 1 篇 BadRAG；Unpaywall = OpenAlex 同一后端） | **归并器本身的假合并/漏合并率未知。**若归并器把 5 个真独立源误并为 1，我们会过度降级；若漏并，`K=2` 事实上等价于 `K=1`（01-CONTRACTS §10.3）。**§5A.3.6 把这件事写进 `power_basis`：用到 low 档合并时该门自报 `unmeasured`，不假装 `construction`** | 在固定回归用例上的归并正确率；NT-X-10 / NT-X-11（RT-2 / RT-3）的通过率；`cluster_map` 中 low 档合并占比 |
 | **N4** | UGC 投毒（~13 词、单个 URL，曝光条件下 38–51% 提及率；困惑度检测 AUROC ≤0.68 **且方向反了**） | F-15：UGC 域默认不得作为承重证据。成本依据：屏蔽 UGC 的质量代价极小（rubric 4.30→4.26，每查询只移除 2.1 个 UGC URL）；且 UGC 引用率可设计（0.4% vs 12.1%，差 30 倍） | **不检测投毒本身。**F-17 只告警不判定——真实注入 >90% 不含显式指令。**且我们采信的是该论文的数据而非其结论语气；若我们读错了其 rubric 指标含义，F-15 的成本估计会失真** [E: ext-security-injection.md#未决13] | F-15 命中率；被 F-15 挡下的证据中经人审判为「本应采用」的比例 |
 | **N5** | 输入侧 / claim 侧攻击（input-only 对三套搜索增强事实核查系统 ASR 18.8%–31.4%） | F-13 措辞扰动一致性（§3.4.5，N=5 同义改写独立走链） | **分解步骤本身仍由已读过上游不可信文本的 LLM 生成。**这是 00-PREMISE 明确点名的「目前完全没设防的攻击面」——F-13 是检测，不是隔离 | F-13 命中率；RT-7 的判定翻转率 |
-| **N6** | 选择性引用（注入不改引语真伪，只改「引哪一句」；逐字匹配必然全绿） | F-29 强制反证检索 + 记录搜索过程与预算；反证必须在**同一快照内**搜（RT-8） | **无法判定「这一句是不是最相关的那一句」。**反证检索只能发现同一快照内的反对句，发现不了「作者在别处限定了该结论」 | RT-8 通过率；`counter_evidence_found` 的整体比例（长期为 0 是可疑信号，不是健康信号） |
+| **N6** | 选择性引用（注入不改引语真伪，只改「引哪一句」；逐字匹配必然全绿） | **§5A.1 G-CTR-SCAN**：X-1 痕迹存在性（从事件取证，不读自报布尔）+ X-2 query 结构判据（只搜 claim 原句不算反证检索）+ X-3 **门自算的同快照扫描**（producer 无法参与，RT-8 那一类因此被覆盖）；判定由 §5A.2 的只否决门 G-CTR-JUDGE 给出 | **无法判定「这一句是不是最相关的那一句」。**反证检索只能发现同一快照内的反对句，发现不了「作者在别处限定了该结论」。**并且 X-1/X-2 不检验检索的产出率**——一次措辞正确但注定零命中的外部检索能通过（§5A.1.1 第 1 条，固化为 NT-X-7 的观测用例） | NT-X-5 / NT-L-13（RT-8）通过率；NT-X-7 的发生率；`counter_evidence_found` 的整体比例（长期为 0 是可疑信号，不是健康信号） |
 | **N7** | 数据层投毒（可重跑保证可复现，不保证正确） | ①输入 sha256 冻结使**替换**可检测；②G-DEP 使**硬编码**可检测；③ST-V 在 K-D 上的语义边界必须随判定一起说出（01-CONTRACTS §2.1） | **数据本身被投毒时，重跑一万次结果都一样地错。**G-DEP 检的是「输出依赖输入」，不是「输入正确」 | 数据来源的 `evidence_grade` 与 `upstream_id` 分布；来源分级为 unknown 的 K-D claim 占比 |
 | **N8** | 静默语义漂移（即使 ASR 判为「失败」，复合层攻击仍有 **15.0%** 的输出语义漂移 Δ≥0.3） | 六值状态枚举（含 `contested` 与 `not_covered`）而非二元（01-CONTRACTS §1.4.2） | **六值仍是离散的。**我们没有连续的 `evidence_strength` 量；一个漂移 Δ=0.29 的输出与 Δ=0.0 的输出在状态上无差别 | 无直接指标。**这是本引擎最弱的一条**——见 §11.4 |
 
@@ -1433,6 +1748,16 @@ work_id       作品身份（跨版本、跨 URL、跨标识符的同一件学�
 **11.8 本文件引用的全部 prevalence 与模型分数在 6 个月内会过期。** 野外注入普查基于 2025-10 的 Common Crawl 快照；引用幻觉率是 2026-04 快照；RW 全库数是 2026-08-17 实测（快照 generated 2026-08-14）；judge 分数绑定具体模型版本。**凡引用本文件的数字必须连日期一起引用。**
 
 **11.9 §2.3 的禁网方案依赖容器可用性，而这是一个部署前提，不是代码。** 若部署环境不装容器运行时，全部 K-D claim 落 ST-N。**这在工程上是正确的 fail-closed，在产品上是一个可能让整条数据通道失效的单点。**
+
+**11.10 §5A.1 的 X-2 只检验 query 的形式，不检验它的产出率。** τ_q = 0.60 与两张受控词表（`NEG` / `NEG-LIT`）全部是〔裁定〕，语料里没有任何关于反证检索 query 结构的判据可引。因此**一次措辞正确但被构造为必然零命中的外部反证检索会通过本门**，这条已固化为 NT-X-7（一条**预期通过**的观测用例）。被真正堵住的只有 X-3 那一半——门自算的同快照扫描 producer 饿不死。**「强制反证检索」这句话的准确读法是：强制的是同快照扫描，外部检索强制的只是形式。**
+
+**11.11 §5A.3 的 F-22 依据的是一条推论，不是文献。** 语料的残余风险登记册在 R14（自我佐证回路）的「依据」一栏逐字写的是「推论，无直接文献」[E: ext-security-injection.md#R14]。因此自产内容回流的**威胁量级完全未知**，而我们为它付出了一整套 `provenance_token` 渲染期写入 + 两级检测的成本。若 RT-14 长期零命中，这套机制应当被降级为纯观测而不是判定路径的一部分。**并且它抓不到被第三方改写后再发布的自产内容——那一类会以真实独立来源的身份进入计数。**
+
+**11.12 §5A.3.4 的别名表是漏并方向的单点。** 跨语言归并禁用翻译模型（EE-X-9）买到的是可复现性，付出的是覆盖率：别名表里没有的实体一律漏并，而漏并是**危险方向**（计数虚高 ⇒ `K=2` 退化为 `K=1`）。RT-3 只有 11 条中文链路作 ground truth，**用一条金标样本标定一张要覆盖全部中英实体的表，是明知的以偏概全**。§5A.3.4 已写明推翻条件。
+
+**11.13 §5A.2 的候选截断 `M = 8` 是一条真实的漏检面。** 真反证若排在第 9 位及之后就不会进入 GC-2 判定，claim 会以 `counter_evidence_found = false` 通过。截断有 `caveats` 留痕、有 NT-X-18 固化，但**留痕不是覆盖**。这个常数没有任何实测支持。
+
+**11.14 §5A 的三个门全部从未运行过，且它们是 `S` 的输入生产方。** 与 §11.1 的 G-DEP 同类：假阳率、假阴率、成本全是推演。**区别在于影响面——G-DEP 只影响 K-D，而 §5A 的三个门在每一条 claim 上都跑，0e 还是一个前置否决。一个假阳率未知的前置否决意味着我们不知道会有多少条诚实的 claim 被判 ST-N。** 这个数字必须在 M1 前用自建回归集测出来。
 
 ---
 

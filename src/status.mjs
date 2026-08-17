@@ -1,0 +1,259 @@
+// 状态函数 S —— 01-CONTRACTS.md §1.5 的可执行实现
+//
+// 这是本项目最承重的一段代码：它是**唯一**把证据核算记录变成 status 的地方。
+// 契约要求它是**纯函数**（V1.2：重跑必须得到与存档逐字节相同的值）
+// 且是**全函数**（V1.7：完整输入向量空间内每一格都有唯一返回值）。
+//
+// 实现纪律：
+//   1. 逐条对应 §1.5 的步骤编号，不重排、不合并、不"优化"。
+//      规范里步骤的**顺序本身是契约**——2d 在 2d′ 之前不是随意的。
+//   2. 不读文件、不看时钟、不调模型、不联网。所有输入由调用方备齐。
+//   3. 任何"这里规范没说清"的地方，抛 ContractGap 而不是猜。
+//      猜出来的默认值会变成一条没人知道存在的规则。
+
+// ── 格结构（§1.5.1.1） ─────────────────────────────────────────────────
+//
+//         ST-V
+//        /    \
+//    ST-A      ST-E        ← 同层，互不可比
+//        \    /
+//         ST-U
+//
+// ST-C / ST-N 是吸收态，在第 0 步或 2a 已返回，不参与格运算。
+export const ST = Object.freeze({
+  V: 'verified',
+  A: 'attributed',
+  E: 'estimated',
+  C: 'contested',
+  U: 'unverified',
+  N: 'not_covered',
+})
+
+const LATTICE = [ST.V, ST.A, ST.E, ST.U]
+const RANK = { [ST.V]: 3, [ST.A]: 2, [ST.E]: 2, [ST.U]: 1 }
+
+export class ContractGap extends Error {
+  constructor(where, detail) {
+    super(`契约缺口 @ ${where}: ${detail}`)
+    this.name = 'ContractGap'
+    this.where = where
+  }
+}
+
+/** §1.5.1.1 降一档。下界饱和——ST-U 再降还是 ST-U。 */
+export function stepDown(x) {
+  switch (x) {
+    case ST.V: return ST.A
+    case ST.A: return ST.U
+    case ST.E: return ST.U
+    case ST.U: return ST.U
+    default: throw new ContractGap('stepDown', `${x} 不在格 {V,A,E,U} 内`)
+  }
+}
+
+/**
+ * §1.5.1.1 meet —— 格上的下确界。
+ * 关键一条：meet(ST-A, ST-E) = ST-U。
+ * 两个同层不可比元素的下确界只能是它们共同的下界。语义上也对：
+ * 证据等级只撑得起"归因"、同时数值又来自图形几何读数，
+ * 那么既没有干净的归因、也没有干净的估计——诚实的答案就是 unverified。
+ */
+export function meet(x, y) {
+  if (!LATTICE.includes(x)) throw new ContractGap('meet', `左操作数 ${x} 不在格内`)
+  if (!LATTICE.includes(y)) throw new ContractGap('meet', `右操作数 ${y} 不在格内`)
+  if (x === y) return x
+  if (x === ST.V) return y
+  if (y === ST.V) return x
+  if (x === ST.U || y === ST.U) return ST.U
+  return ST.U // {A, E} 的两种混合序，下确界都是 U
+}
+
+const meetAll = (...xs) => xs.reduce(meet)
+
+// ── §1.5.2 K(kind) ──────────────────────────────────────────────────────
+// 数据推导的独立性由**重跑**保证，不由多源保证 → K=1
+// 转录只需要一个真实锚点 → K=1
+// 归因与推断必须扛住"合成共识"，最低防线是两个独立簇 → K=2
+export const K = Object.freeze({
+  'K-D': 1,
+  'K-L-T': 1,
+  'K-L-A': 2,
+  'K-I': 2,
+})
+
+// ── §3.4 evidence_grade → 状态上限 ──────────────────────────────────────
+// G2/G3 在契约里还带**断言类型**限制（G3 仅限"关于摘要内容本身"，G2 仅存在性、
+// 不得支撑数值断言）。那两条是**门**的职责，不是 S 的——S 只消费等级给出的状态上界。
+// 这个分工写在这里，免得后来的人以为 S 漏检了。
+const GRADE_CEILING = Object.freeze({
+  G5: ST.V,
+  G4: ST.A,
+  G3: ST.A,
+  G2: ST.A,
+  G1: ST.N, // 不得作为任何 claim 的承重证据 → 本项目的证据标准没覆盖它
+  G0: ST.N,
+})
+
+// ── §8.6.2 retention_tier → 状态上限 ────────────────────────────────────
+// Tier C 的真实作用是把 evidence_grade 压到 ≤ G2，因而它对状态的影响**已经**
+// 经由 GRADE_CEILING 体现。这里保留一层独立上界只是为了让 2c 的两个上限都显式存在——
+// 若将来 tier 有了不经由 grade 的直接影响，改这里而不是改 2c 的结构。
+const TIER_CEILING = Object.freeze({
+  A: ST.V,
+  B: ST.V,
+  C: ST.A,
+})
+
+// ── §7.3 flag 作用表 ────────────────────────────────────────────────────
+// 只列**进入 S 的判定**的那些。§7.3.1 里"已在第 0 步/2a/第 1 步返回"的 flag
+// 不在此表——它们若也进 2d/2d′ 就是重复计算（R1/C-1 打穿的正是这一类）。
+const FLAG_CEILING = Object.freeze({
+  'F-13': ST.U, // unstable-decomposition
+  'F-12': ST.U, // metric-frame-mismatch
+  'F-03': ST.A, // cherry-picking:window
+  'F-04': ST.A, // best-case-ratio
+})
+
+const FLAG_STEPDOWN = Object.freeze(new Set([
+  'F-01', // uncertainty:no-ci
+  'F-02', // secondhand
+  'F-09', // preprint-only
+  'F-15', // ugc-source
+  'F-24', // pricing-promo
+  'F-25', // as-of-stale
+]))
+
+/**
+ * 状态函数 S。
+ *
+ * @param {object} c 证据核算记录（§1.3 的字段 + kind + 三个正交谓词）
+ * @returns {{status: string, trace: string[]}} status 与逐步判定轨迹
+ *
+ * trace 不是日志——它是**审计工件**。V1.2 要求重跑得到逐字节相同的结果，
+ * 而当两次结果不同时，人需要能立刻看出是在哪一步分岔的。
+ */
+export function S(c) {
+  const trace = []
+  const ret = (step, status) => {
+    trace.push(`${step} → ${status}`)
+    return { status, trace }
+  }
+
+  // ── 第 0 步 · 前置否决（任一命中，立即返回） ────────────────────────
+  const si = c.source_integrity
+  if (si === undefined) throw new ContractGap('0', 'source_integrity 缺失')
+
+  if (si === 'mutated' || si === 'missing') return ret('0a', ST.U)
+  if (si === 'contaminated') return ret('0b', ST.C)
+  if (si === 'not_covered') return ret('0c', ST.N)
+
+  // §1.2.1.1 `na` 只对 K-I 合法（它的输入是别的 claim，没有抓取事件）。
+  // 其余 kind 取 na 是 V1.8 失败，不是 S 该容忍的输入。
+  if (si === 'na' && c.kind !== 'K-I') {
+    throw new ContractGap('0', `source_integrity=na 只允许 kind=K-I，本条是 ${c.kind}（V1.8）`)
+  }
+  if (si !== 'intact' && si !== 'na') {
+    throw new ContractGap('0', `source_integrity 取值 ${JSON.stringify(si)} 不在值域内`)
+  }
+
+  if (c.has_verbatim_quote && c.quote_faithful === 'fail') return ret('0d', ST.U)
+  if (c.counter_evidence_searched === false) return ret('0e', ST.N)
+  if (c.budget_state === 'exhausted') return ret('0f', ST.N)
+  if (!Array.isArray(c.mechanism_results) || c.mechanism_results.length === 0) return ret('0g', ST.N)
+
+  // ── 第 1 步 · 按 kind 取 base ────────────────────────────────────────
+  let base
+  switch (c.kind) {
+    case 'K-D':
+      // 封闭式 / 开放式不是自报字段，是三条硬条件（§1.5 R1/C-9 后收紧）。
+      // 调用方必须把三条的**合取结果**放进 question_frozen。
+      if (c.question_frozen === undefined) {
+        throw new ContractGap('1/K-D', 'question_frozen 缺失——封闭式判据是三条硬条件的合取，不能省')
+      }
+      base = c.rerun_gate_passed
+        ? (c.question_frozen ? ST.V : ST.A) // 开放式端到端永不可达 ST-V（§2.1）
+        : ST.U
+      break
+
+    case 'K-L-T':
+      // 锚点包含检验不过 → 降为 K-L-A 处理（不是判 ST-U）
+      if (c.anchor_containment_passed) base = ST.V
+      else base = c.attribution_verdict === 'support' ? ST.A : ST.U
+      break
+
+    case 'K-L-A':
+      base = c.attribution_verdict === 'support' ? ST.A : ST.U
+      break
+
+    case 'K-I':
+      base = c.inference_gate_passed ? ST.A : ST.U // K-I 永不可达 ST-V（§2.3.1）
+      break
+
+    default:
+      throw new ContractGap('1', `kind ${JSON.stringify(c.kind)} 不在 §2 的封闭枚举内`)
+  }
+  trace.push(`1 kind=${c.kind} → ${base}`)
+
+  // §3.5 图形几何读数强制 ST-E，覆盖上述结果
+  if (c.chart_extracted) {
+    base = ST.E
+    trace.push(`1 chart_extracted → ${base}`)
+  }
+
+  // ── 第 2 步 · 单调降级 ──────────────────────────────────────────────
+  // 2a 吸收态，覆盖任何 base
+  if (c.counter_evidence_found === true) return ret('2a', ST.C)
+
+  // 2b 独立簇数不足 —— **唯一**判定独立性是否足够的地方。
+  // F-14 single-cluster 在这里**不参与**（R1/C-1：它被 2b 与 2d 消费两遍，
+  // 而 K(K-D)=K(K-L-T)=1 意味着单簇是正常态，2d 必降会让 ST-V 全局不可达）。
+  const kNeeded = K[c.kind]
+  if (kNeeded === undefined) throw new ContractGap('2b', `K(${c.kind}) 未定义`)
+  if (typeof c.independent_cluster_count !== 'number') {
+    throw new ContractGap('2b', 'independent_cluster_count 缺失或非数值')
+  }
+  if (c.independent_cluster_count < kNeeded) {
+    base = stepDown(base)
+    trace.push(`2b cluster ${c.independent_cluster_count} < K=${kNeeded} → ${base}`)
+  }
+
+  // 2c 证据等级上限 + 留存分档上限
+  const g = GRADE_CEILING[c.evidence_grade]
+  if (g === undefined) throw new ContractGap('2c', `evidence_grade ${JSON.stringify(c.evidence_grade)} 不在 G0..G5 内`)
+  const t = TIER_CEILING[c.retention_tier]
+  if (t === undefined) throw new ContractGap('2c', `retention_tier ${JSON.stringify(c.retention_tier)} 不在 A/B/C 内`)
+
+  // G1/G0 的上限是 ST-N —— 吸收态，不能喂给 meet（meet 只定义在 {V,A,E,U} 上）。
+  // 语义：本项目的证据标准根本没覆盖这条 claim，而不是"覆盖了但没通过"。
+  if (g === ST.N) return ret(`2c grade=${c.evidence_grade}`, ST.N)
+
+  base = meetAll(base, g, t)
+  trace.push(`2c meet(grade=${g}, tier=${t}) → ${base}`)
+
+  // 2d ceiling 类 flag
+  const flags = Array.isArray(c.flags) ? c.flags : []
+  const ceilings = flags.map(f => FLAG_CEILING[f]).filter(Boolean)
+  if (ceilings.length) {
+    base = meetAll(base, ...ceilings)
+    trace.push(`2d ceilings ${flags.filter(f => FLAG_CEILING[f]).join(',')} → ${base}`)
+  }
+
+  // 2d′ step-down 类 flag —— 每命中一条降一档，**叠加**。
+  // 叠加而非"命中任意一条降一档"，是为了关掉"已经有一个缺陷了，多几个免费"这个博弈面。
+  const downs = flags.filter(f => FLAG_STEPDOWN.has(f))
+  for (const f of downs) {
+    base = stepDown(base)
+    trace.push(`2d′ ${f} → ${base}`)
+  }
+
+  // 2e 预算降级
+  if (c.budget_state === 'degraded') {
+    base = stepDown(base)
+    trace.push(`2e budget=degraded → ${base}`)
+  }
+
+  trace.push(`返回 ${base}`)
+  return { status: base, trace }
+}
+
+export default S
