@@ -139,9 +139,39 @@ export function S(c) {
     return { status, trace }
   }
 
+  // ── 第 0 步之前 · 必填字段 fail-closed ──────────────────────────────
+  // §1.3：「必填字段（缺任一 → 该 claim 直接 not_covered）」
+  // §9.19：「fail-open 是禁止的；MISSING == FAIL」
+  //
+  // 〔R3/P1-3 修复〕原实现只对 5 个字段抛，其余静默走通。最要命的是
+  // `counter_evidence_searched`：0e 写成 `=== false`，所以**字段缺失时不触发**，
+  // 而 §7.2.3 恰恰称它是「逃不过的只有这一条」——它是最容易漏掉的那一个。
+  // 实测：省略该字段的 K-L-T 向量返回 verified。
+  // 穷举 oracle 抓不到，因为它只枚举 true/false，从不枚举「字段缺失」。
+  const REQUIRED = [
+    'evidence_grade', 'independent_cluster_count', 'counter_evidence_searched',
+    'counter_evidence_found', 'mechanism_results', 'flags', 'budget_state',
+    'source_integrity', 'kind', 'retention_tier',
+  ]
+  const missing = REQUIRED.filter(k => c[k] === undefined || c[k] === null)
+  if (missing.length) {
+    trace.push(`必填字段缺失: ${missing.join(', ')}`)
+    return ret('0-required', ST.N)
+  }
+
+  // 值域校验也是 fail-closed 的一部分：`quote_faithful: 'PASS'`（大小写错）
+  // 原本会静默绕过 0d。取值域外即视为「程序没跑完」。
+  if (c.quote_faithful !== undefined && !['pass', 'fail', 'na'].includes(c.quote_faithful)) {
+    trace.push(`quote_faithful 取值域外: ${JSON.stringify(c.quote_faithful)}`)
+    return ret('0-domain', ST.N)
+  }
+  if (!['ok', 'degraded', 'exhausted'].includes(c.budget_state)) {
+    trace.push(`budget_state 取值域外: ${JSON.stringify(c.budget_state)}`)
+    return ret('0-domain', ST.N)
+  }
+
   // ── 第 0 步 · 前置否决（任一命中，立即返回） ────────────────────────
   const si = c.source_integrity
-  if (si === undefined) throw new ContractGap('0', 'source_integrity 缺失')
 
   if (si === 'mutated' || si === 'missing') return ret('0a', ST.U)
   if (si === 'contaminated') return ret('0b', ST.C)
@@ -162,6 +192,7 @@ export function S(c) {
   if (!Array.isArray(c.mechanism_results) || c.mechanism_results.length === 0) return ret('0g', ST.N)
 
   // ── 第 1 步 · 按 kind 取 base ────────────────────────────────────────
+  let effectiveKind = c.kind
   let base
   switch (c.kind) {
     case 'K-D':
@@ -176,9 +207,20 @@ export function S(c) {
       break
 
     case 'K-L-T':
-      // 锚点包含检验不过 → 降为 K-L-A 处理（不是判 ST-U）
-      if (c.anchor_containment_passed) base = ST.V
-      else base = c.attribution_verdict === 'support' ? ST.A : ST.U
+      // §1.5：锚点包含检验不过 → **降为 K-L-A 处理**（不是判 ST-U）
+      //
+      // 〔R3/P1-4 修复〕「降为 K-L-A 处理」必须改**有效 kind**，不能只改 base。
+      // 原实现只改 base，于是 2b 仍用 K('K-L-T')=1 而不是 K('K-L-A')=2，
+      // 造出一条洗白通道：同样的证据，声明成 K-L-T 再让锚点检验失败（→ attributed），
+      // 比诚实声明成 K-L-A（→ unverified）拿到**更高**的 status。
+      // 实测复现：两条只差 kind 的向量，(a) attributed / (b) unverified。
+      if (c.anchor_containment_passed) {
+        base = ST.V
+      } else {
+        effectiveKind = 'K-L-A'
+        base = c.attribution_verdict === 'support' ? ST.A : ST.U
+        trace.push('1 K-L-T 锚点检验未过 → 有效 kind 降为 K-L-A（K 值随之变为 2）')
+      }
       break
 
     case 'K-L-A':
@@ -194,6 +236,22 @@ export function S(c) {
   }
   trace.push(`1 kind=${c.kind} → ${base}`)
 
+  // §6.1 + V1.4 · 决定性机制含 GC-2 → 上限 ST-A
+  //
+  // 〔R3/P1-2 修复，本轮最重的一条〕原实现**从不读 mechanism_results 的内容**，只判非空。
+  // 于是「GC-2 永远不得写 ST-V」——被 §6.1 表、§6.4、V1.4、V6.2 四处规范化、
+  // 被两份下游文档当作唯一依据的规则——在唯一的可执行规范里**没有任何载体**。
+  // 实测：一条机制全为 GC-2 的 K-L-T claim 直接返回 verified。
+  //
+  // 更糟的是穷举 oracle 看不见它：向量生成器把 gate_class 硬编码成 'GC-0'，
+  // 只让 mechanism_results 的**长度**变化。550 万向量全绿与这条产品最承重的
+  // 分界线完全无关。这是本轮对「穷举即覆盖」这个直觉最有力的反例——
+  // **枚举的是维度，不是空间；没进枚举的维度，穷举再多也照不亮。**
+  if (c.mechanism_results.some(m => m?.gate_class === 'GC-2')) {
+    base = meet(base, ST.A)
+    trace.push(`1 mechanism_results 含 GC-2 → meet(base, ST-A) = ${base}`)
+  }
+
   // §3.5 图形几何读数强制 ST-E，覆盖上述结果
   if (c.chart_extracted) {
     base = ST.E
@@ -207,14 +265,14 @@ export function S(c) {
   // 2b 独立簇数不足 —— **唯一**判定独立性是否足够的地方。
   // F-14 single-cluster 在这里**不参与**（R1/C-1：它被 2b 与 2d 消费两遍，
   // 而 K(K-D)=K(K-L-T)=1 意味着单簇是正常态，2d 必降会让 ST-V 全局不可达）。
-  const kNeeded = K[c.kind]
-  if (kNeeded === undefined) throw new ContractGap('2b', `K(${c.kind}) 未定义`)
+  const kNeeded = K[effectiveKind]
+  if (kNeeded === undefined) throw new ContractGap('2b', `K(${effectiveKind}) 未定义`)
   if (typeof c.independent_cluster_count !== 'number') {
     throw new ContractGap('2b', 'independent_cluster_count 缺失或非数值')
   }
   if (c.independent_cluster_count < kNeeded) {
     base = stepDown(base)
-    trace.push(`2b cluster ${c.independent_cluster_count} < K=${kNeeded} → ${base}`)
+    trace.push(`2b cluster ${c.independent_cluster_count} < K(${effectiveKind})=${kNeeded} → ${base}`)
   }
 
   // 2c 证据等级上限 + 留存分档上限

@@ -36,7 +36,18 @@ const D = {
   counter_evidence_searched: [true, false],
   counter_evidence_found: [true, false],
   budget_state: ['ok', 'degraded', 'exhausted'],
-  mechanism_empty: [false, true],
+  // 〔R3/P1-2 修复〕原本这里只有 mechanism_empty: [false, true]，
+  // 而向量生成器把 gate_class 硬编码成 'GC-0'。于是「GC-2 永不得写 ST-V」
+  // ——被四处规范化、被两份下游文档当作唯一依据的那条规则——**从未被枚举到**。
+  // 550 万向量全绿与产品最承重的分界线完全无关。
+  // 教训：**枚举的是维度，不是空间；没进枚举的维度，穷举再多也照不亮。**
+  mechanism: [
+    { label: 'empty', value: [] },
+    { label: 'gc0', value: [{ gate_class: 'GC-0', gate_id: 'x', verdict: 'pass' }] },
+    { label: 'gc1', value: [{ gate_class: 'GC-1', gate_id: 'x', verdict: 'pass' }] },
+    { label: 'gc2', value: [{ gate_class: 'GC-2', gate_id: 'x', verdict: 'support' }] },
+    { label: 'gc0+gc2', value: [{ gate_class: 'GC-0', gate_id: 'a', verdict: 'pass' }, { gate_class: 'GC-2', gate_id: 'b', verdict: 'support' }] },
+  ],
   evidence_grade: ['G5', 'G4', 'G3', 'G2', 'G1', 'G0'],
   retention_tier: ['A', 'B', 'C'],
   independent_cluster_count: [0, 1, 2, 3],
@@ -81,7 +92,7 @@ function* vectors() {
           for (const counter_evidence_searched of D.counter_evidence_searched)
             for (const counter_evidence_found of D.counter_evidence_found)
               for (const budget_state of D.budget_state)
-                for (const mechanism_empty of D.mechanism_empty)
+                for (const mech of D.mechanism)
                   for (const evidence_grade of D.evidence_grade)
                     for (const retention_tier of D.retention_tier)
                       for (const independent_cluster_count of D.independent_cluster_count)
@@ -95,7 +106,7 @@ function* vectors() {
                               counter_evidence_searched,
                               counter_evidence_found,
                               budget_state,
-                              mechanism_results: mechanism_empty ? [] : [{ gate_class: 'GC-0', gate_id: 'x', verdict: 'pass' }],
+                              mechanism_results: mech.value,
                               evidence_grade,
                               retention_tier,
                               independent_cluster_count,
@@ -189,6 +200,46 @@ function withAutoFlags(v) {
 // 五个独立攻击者共识：F-14 被 2b 与 2d 消费两遍，导致 ST-V 全局不可达。
 // 这条路径必须真的到达 verified，否则产品的绿灯是空的。
 // 全部用例都过 withAutoFlags —— 单簇必然带 F-14，这正是缺陷的触发条件。
+const BASE_OK = {
+  source_integrity: 'intact', has_verbatim_quote: false, quote_faithful: 'na',
+  counter_evidence_searched: true, counter_evidence_found: false, budget_state: 'ok',
+  evidence_grade: 'G5', retention_tier: 'A', independent_cluster_count: 3,
+  chart_extracted: false, flags: [],
+}
+
+// R3 fix-audit 的三条 P1 各配一个回归用例。它们全都能在旧实现上复现，
+// 而旧的穷举 oracle 一个都抓不到——这正是「穷举全绿」需要被质疑的理由。
+const R3_CASES = [
+  {
+    name: 'R3/P1-2 · 决定性机制含 GC-2 → 不得为 verified（§6.1 / V1.4）',
+    v: { ...BASE_OK, kind: 'K-L-T', anchor_containment_passed: true, attribution_verdict: 'support',
+         mechanism_results: [{ gate_class: 'GC-2', gate_id: 'G-L2', verdict: 'support' }] },
+    want: ST.A,
+  },
+  {
+    name: 'R3/P1-3 · 必填字段缺失 → not_covered（§1.3 / §9.19 fail-closed）',
+    v: (() => { const v = { ...BASE_OK, kind: 'K-L-T', anchor_containment_passed: true,
+                            attribution_verdict: 'support',
+                            mechanism_results: [{ gate_class: 'GC-0', gate_id: 'x', verdict: 'pass' }] }
+                delete v.counter_evidence_searched; return v })(),
+    want: ST.N,
+  },
+  {
+    name: 'R3/P1-3b · quote_faithful 取值域外（大小写错）→ not_covered',
+    v: { ...BASE_OK, kind: 'K-L-T', anchor_containment_passed: true, attribution_verdict: 'support',
+         has_verbatim_quote: true, quote_faithful: 'PASS',
+         mechanism_results: [{ gate_class: 'GC-0', gate_id: 'x', verdict: 'pass' }] },
+    want: ST.N,
+  },
+  {
+    name: 'R3/P1-4 · K-L-T 锚点失败必须按 K-L-A 的 K=2 处理（堵洗白通道）',
+    v: { ...BASE_OK, kind: 'K-L-T', anchor_containment_passed: false, attribution_verdict: 'support',
+         independent_cluster_count: 1,
+         mechanism_results: [{ gate_class: 'GC-0', gate_id: 'G-L1', verdict: 'pass' }] },
+    want: ST.U,
+  },
+]
+
 const C1_CASES = [
   {
     name: 'K-D 封闭式 + 重跑通过 + G5 + Tier A + 单簇 + 无 flag',
@@ -241,7 +292,7 @@ const C1_CASES = [
 ]
 
 const regressions = []
-for (const c of C1_CASES) {
+for (const c of [...C1_CASES, ...R3_CASES]) {
   let got
   const vec = withAutoFlags(c.v)
   try { got = S(vec).status } catch (e) { got = `抛出：${e.message}` }
@@ -287,10 +338,10 @@ if (missing.length) {
 // C-1 回归
 if (regressions.length) {
   failed++
-  console.log(`FAIL  C-1    产品绿灯回归测试（${regressions.length}/${C1_CASES.length} 条不符）`)
+  console.log(`FAIL  回归   产品绿灯 + R3 回归（${regressions.length}/${C1_CASES.length + R3_CASES.length} 条不符）`)
   for (const r of regressions) console.log(`      ${r.name}\n        期望 ${r.want}，实得 ${r.got}`)
 } else {
-  console.log(`PASS  C-1    产品绿灯回归测试 ${C1_CASES.length}/${C1_CASES.length}`)
+  console.log(`PASS  回归   产品绿灯 + R3 fix-audit 回归 ${C1_CASES.length + R3_CASES.length}/${C1_CASES.length + R3_CASES.length}`)
 }
 
 console.log(`\n${failed ? `${failed} 项失败` : '全部通过'}`)

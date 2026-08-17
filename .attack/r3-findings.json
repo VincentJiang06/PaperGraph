@@ -1,0 +1,646 @@
+[
+ {
+  "location": "01-CONTRACTS.md:572 (§4.1 I-W1) vs 01-CONTRACTS.md:44 (§0.2) vs 03-EVIDENCE-ENGINE.md:90",
+  "claim": "C-2 只关了一半。§0.2 明令「本文件不得声称『不存在任何一条从 agent 输出到 status 的写路径』」，但同一文件 §4.1 的 I-W1 仍然逐字保留这句话——而 §4.1 的标题就是「不变量（原文，可逐字引用）」，是全文档集里唯一被授权原样复制的段落。03-EVIDENCE-ENGINE.md:90 进一步断言「那句话已在 R2 从规范源删除」，这句话本身是假的。修复动了 §0.2，没动它要治的那个复制源。",
+  "reproduction": "steps: grep -n \"从 agent 输出到\" *.md\nexpected: 01-CONTRACTS 里只在 §0.2 的禁令语境中出现该句；§4.1 的 I-W1 已按 §0.2 的「准确表述」改写。\nobserved: 01-CONTRACTS.md:572 仍为『系统中不存在任何一条从 agent 输出到 `status` 字段的写路径。』，与基线 attack-v2/01-CONTRACTS.md:346 逐字相同（零改动）；03-EVIDENCE-ENGINE.md:90 与 05-TESTING.md:895 都以「该句已删除」为前提写作。实现者按 §4.1 的授权逐字引用，就把 00-PREMISE B8 禁止的保障重新播散到下游。",
+  "severity": "P1",
+  "axis": "not-closed"
+ },
+ {
+  "location": "src/status.mjs:162 与 gates/check_status_exhaustive.mjs:98",
+  "claim": "S 从不读 mechanism_results 的内容，只判它非空。因此「GC-2 永远不得写 ST-V」（§6.1 表、§6.4、V1.4、V6.2）在唯一的可执行规范里没有任何载体：一条决定性机制全部为 GC-2 的 claim 可以直接判 verified。穷举 oracle 看不见这一点，因为它的向量生成器把 gate_class 硬编码成 'GC-0'（第 98 行），只让 mechanism_empty 变化。550 万向量全绿与这条产品最承重的分界线完全无关。",
+  "reproduction": "steps: node -e \"import('~/.../src/status.mjs').then(m=>console.log(m.S({kind:'K-L-T',anchor_containment_passed:true,attribution_verdict:'support',source_integrity:'intact',has_verbatim_quote:true,quote_faithful:'pass',counter_evidence_searched:true,counter_evidence_found:false,budget_state:'ok',mechanism_results:[{gate_class:'GC-2',gate_id:'G-L2',verdict:'support'}],evidence_grade:'G5',retention_tier:'A',independent_cluster_count:1,chart_extracted:false,flags:[]}).status))\"\nexpected: 按 §6.1「Class-2 … 永远不得写 ST-V」与 V1.4，返回值最高只能是 attributed。\nobserved: 返回 verified，trace 为 `1 kind=K-L-T → verified ; 2c meet(...) → verified`。K-D + 纯 GC-2 机制同样返回 verified。grep gate_class src/status.mjs 零命中。",
+  "severity": "P1",
+  "axis": "not-closed"
+ },
+ {
+  "location": "src/status.mjs:159-162（0d/0e/0f/0g 的守卫）对照 01-CONTRACTS.md:185 (§1.3) 与 :1183 (§9.19)",
+  "claim": "S 对必填字段缺失 fail-open。§1.3 写「必填字段（缺任一 → 该 claim 直接 not_covered）」，§9.19 写「fail-open 是禁止的；MISSING == FAIL」。实现只对 source_integrity / independent_cluster_count / evidence_grade / retention_tier / question_frozen 抛 ContractGap；counter_evidence_searched、quote_faithful、budget_state、flags 缺失或取值域外时静默走通。0e 写成 `=== false`，所以 undefined 不触发；0d 依赖 producer 侧的 has_verbatim_quote 布尔，且 quote_faithful 的值域从不校验。§7.2.3 称反证检索是「逃不过的只有这一条」，它恰好是最容易漏掉的那一个。",
+  "reproduction": "steps: 用一条除 counter_evidence_searched 外全部齐备的 K-L-T 向量调 S（省略该字段）；再用 quote_faithful:'PASS'（大小写错）与 quote_faithful 缺失各调一次。\nexpected: 三次都落 not_covered 或抛 ContractGap（§1.3 + §9.19）。\nobserved: 三次都返回 verified。counter_evidence_searched 缺失 → 0e 不触发；quote_faithful='PASS' 与缺失 → 0d 不触发。穷举 oracle 只枚举 true/false 与 pass/fail/na，从不枚举「字段缺失」，因此全绿。",
+  "severity": "P1",
+  "axis": "new-defect"
+ },
+ {
+  "location": "01-CONTRACTS.md:269 (§1.5 第 1 步 K-L-T 行) 对照 src/status.mjs:178-182 与 :210",
+  "claim": "§1.5 规定 K-L-T 锚点包含检验不通过时「降为 K-L-A 处理」，但实现只改 base、不改 kind，于是 2b 仍用 K('K-L-T')=1 而不是 K('K-L-A')=2。后果是一条洗白通道：同样的证据基础，声明成 K-L-T 再让锚点检验失败，比诚实声明成 K-L-A 得到更高的 status。",
+  "reproduction": "steps: 两条向量只差 kind——(a) kind='K-L-T', anchor_containment_passed=false, attribution_verdict='support'；(b) kind='K-L-A', attribution_verdict='support'。其余相同：G5 / TierB / independent_cluster_count=1 / intact / 无 flag。\nexpected: 按「降为 K-L-A 处理」，两者同为 unverified（K=2，单簇触发 2b 降一档）。\nobserved: (a) attributed，(b) unverified。差异全部来自 2b 读的是 K['K-L-T']=1。",
+  "severity": "P1",
+  "axis": "not-closed"
+ },
+ {
+  "location": "01-CONTRACTS.md:311 (§1.5.1.1 格结构注) 与 :334 (§1.5.1.2) 对照 src/status.mjs:228",
+  "claim": "C-1b 的全函数论证有洞。§1.5.1.1 写「ST-C / ST-N 是吸收态，在第 0 步/2a 已返回，不参与」，§1.5.1.2 据此宣布 S 是全函数、V1.7 穷举验证之。但 §3.4 给 G0 的上限就是 ST-N，2c 又要求 `base = meet(base, 两个上限)`——这是 ST-N 的第三个入口，且 meet(x, ST-N) 在 §1.5.1.1 里无定义。实现用一行契约里没有的补丁 `if (g === ST.N) return ret(...)` 绕过（G1 也被实现自行判成 ST-N，§3.4 对 G1 根本没给状态）。因此「550 万向量证明 S 是全函数」证的是实现的补丁，不是规范文本。",
+  "reproduction": "steps: 只按 §1.5 + §1.5.1.1 + §3.4 的文本重新实现 2c，喂 evidence_grade='G0' 的合法向量。\nexpected: §1.5.1.2 承诺「对任意合法输入向量 S 都有唯一返回值」。\nobserved: 需要求 meet(ST-V, ST-N)，而 §1.5.1.1 的 meet 只在 {ST-V, ST-A, ST-E, ST-U} 上逐点定义，此处无定义——即 S 在规范文本下不是全函数，正是 C-1b 声称已消灭的那一类缺陷。src/status.mjs:228 的 early-return 在 §1.5 里没有对应步骤。",
+  "severity": "P1",
+  "axis": "new-defect"
+ },
+ {
+  "location": "01-CONTRACTS.md:980 (V7.2) 对照 :325 (§1.5.1.1 meet(ST-A,ST-E)=ST-U) 与 :883 (F-10)",
+  "claim": "C-1b 取 meet(ST-A, ST-E) = ST-U，却没有回改 V7.2。V7.2 断言「每条含 F-10 的 claim … 其 status == ST-E」；F-10 由抽取工具在「数值来自图形几何读数」时无条件置位（oracle 的 withAutoFlags 第 183 行就是这么做的），而 §3.5 强制 base=ST-E。于是任何 evidence_grade ≤ G4 的图形读数 claim 在 2c 必被 meet 打成 ST-U，V7.2 恒假。ST-E 只在 G5 + TierA/B + 簇数达标 + 零 step-down flag 时存活——而 PDF 里的图表恰恰是 G4 的典型形态。",
+  "reproduction": "steps: S({kind:'K-D',rerun_gate_passed:true,question_frozen:true,chart_extracted:true,flags:['F-10'],evidence_grade:'G4',retention_tier:'B',independent_cluster_count:3, ...其余齐备})\nexpected: V7.2 要求 status == estimated。\nobserved: unverified。G3/G2 同；G5 + F-09(preprint) 亦为 unverified。V7.2 在整个 G4 档上无法满足，且没有任何门检查 V7.2。",
+  "severity": "P1",
+  "axis": "weakened-elsewhere"
+ },
+ {
+  "location": "01-CONTRACTS.md:585 (§4 W-04) 与 :188-197 (§1.3) 对照 src/status.mjs 的入参",
+  "claim": "S 的输入没有工件。§4 自称「本节穷举，不留『等等』」，但 W-04 枚举 status.json 的字段时不含 mechanism_results[]、flags[]、budget_state——这三个正是 0g / 2d·2d′ / 0f·2e 的判定输入，也是 §1.3 的必填字段。更进一步，实现实际消费的 7 个字段 has_verbatim_quote / question_frozen / anchor_containment_passed / rerun_gate_passed / inference_gate_passed / chart_extracted / attribution_verdict 在全部 8 份文档里出现次数为 0。V1.2「重跑 S 必须得到与存档逐字节相同的值（输入全在 CAS 与注册表快照里）」因此不可判定；§0.2 唯一剩下的审计兜底（inputs_hash 与门重跑比对）覆盖不到这些无载体的输入。",
+  "reproduction": "steps: for f in has_verbatim_quote question_frozen anchor_containment_passed rerun_gate_passed inference_gate_passed chart_extracted attribution_verdict; do grep -l \"$f\" *.md; done；再读 01-CONTRACTS.md:585 的 W-04 字段清单。\nexpected: S 的每个输入要么在 W-03/W-04/W-06/W-13/W-14 的某个工件里，要么在 §1.3 的记录里有规范字段名。\nobserved: 7 个字段零命中（8 份文档全部）；W-04 的枚举里没有 mechanism_results / flags / budget_state；§8.1 的目录布局也没有 claim_supported 的落点。S 的四个形式参数之一（claim_supported）在整个写权矩阵里没有物理写者。",
+  "severity": "P1",
+  "axis": "not-machine-decidable"
+ },
+ {
+  "location": "01-CONTRACTS.md:91-101 (§1.2.1.1) 与 :507-516 (§3.4) 对照 src/status.mjs:221-228",
+  "claim": "F014 的修复（给 source_integrity 补 na）只把 K-I 的死点从 0c 移到了 2c。K-I 的输入是别的 claim，不存在任何证据工件，因此语义正确的 evidence_grade 只能是 G0（「无任何可复核工件」）→ ST-N；retention_tier 同样无定义（§8.9 要求每条 evidence 携带 tier，而 K-I 没有 evidence）。文档补了 na 却没有给 evidence_grade / retention_tier 补对应的「不适用」值，也没有任何规则说 K-I 的这两个字段取什么。「逻辑推断这条通道在契约上整条死掉」这句诊断仍然成立，只是死在下一步。",
+  "reproduction": "steps: 对 kind='K-I', source_integrity='na', inference_gate_passed=true, independent_cluster_count=3 逐个枚举 evidence_grade ∈ {G5..G0}。\nexpected: §1.2.1.1 声称已恢复 K-I 通道，K-I 的 base 上限为 ST-A，应能稳定到达 attributed。\nobserved: G5/G4/G3/G2 → attributed（但这四个等级对一条没有证据的 claim 都是假的），G1/G0 → not_covered。文档全文 grep「K-I」+「evidence_grade」无任何赋值规则。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "01-CONTRACTS.md:953 (§7.3.1 F-21 行) 对照 :259 (§1.5 0c) 与 :894 (§7.2 F-21) 与 :721 (§6.2.1)",
+  "claim": "C-1 新写的 §7.3.1 把 F-21 grim-not-applicable 映到「0c → ST-N」，但 0c 的触发条件是 source_integrity == not_covered，而 GRIM 功率为 0 是 mechanism_results 里的一条 not_applicable 裁决，根本不改 source_integrity。§1.5 的 0c 自己列的 flag 是 F-18/F-30/F-32/F-33，不含 F-21。于是 §6.2.1 那条方法论级结论「功率为 0 时输出 not_applicable → ST-N，不是通过」在 S 里没有任何执行路径：0g 只判 mechanism_results 非空，一条 not_applicable 记录足以让它通过。V7.9 抓不到，因为它只数 flag 出现次数，不校验映射是否成立。（同类但较轻：§7.3.1 说 F-07 在 0b 返回，§1.5 0b 的 flag 列表只有 F-05/F-06。）",
+  "reproduction": "steps: 构造 source_integrity='intact'、mechanism_results=[{gate_class:'GC-0',gate_id:'GRIM',verdict:'not_applicable'}]、其余齐备的 K-L-T 向量。\nexpected: 按 §6.2.1 与 §7.2 F-21，返回 not_covered。\nobserved: 返回 verified。0c 不触发（si=intact），0g 不触发（数组非空），S 从不读 verdict 字段。",
+  "severity": "P2",
+  "axis": "not-machine-decidable"
+ },
+ {
+  "location": "01-CONTRACTS.md:228-241 (§1.4.1 新判据) 对照 :257 (0a) 与 :900 (F-27)",
+  "claim": "F006 的修复把 ST-U/ST-N 的分界线从「能力」改成「程序是否跑完」，但没有回头重算已有的前置否决。按新判据，F-27 snapshot-missing（快照文件不存在）意味着 quote_faithful 与 source_integrity 两个程序根本无法运行 → 应落 ST-N；0a 却判 ST-U。同一份文档里语义更轻的 F-30（抽取文本为空，程序至少跑了）反而落 ST-N。新判据在文档里做出了一个它自己的规则不满足的承诺。",
+  "reproduction": "steps: 拿 §1.4.1 的两行判据表逐条套 §1.5 第 0 步的七条前置否决。\nexpected: 每条前置否决的落点与「程序是否跑完」一致。\nobserved: 0a 的 missing 分支（F-27）落 ST-U 但程序没跑完；0c 的 F-30（抽取为空）落 ST-N。两者是同一类事实，落点相反。文档没有为这个不一致给出任何理由，也没有把它列进 §10。",
+  "severity": "P2",
+  "axis": "new-defect"
+ },
+ {
+  "location": "01-CONTRACTS.md:1096-1107 (§8.6.2.1 ①) 对照 :103 (§1.2.2 归一化) 与 .loop/m0/M0-2.fixture.norm.py:strip_running_headers",
+  "claim": "C-7 新写的字节区间锚定不成立。§8.6.2.1 把 Tier B 下可离线复核的内容定义为「引语的字节区间落在摘录的字节区间内（摘录确实覆盖了被判定的那段）」，但 §1.2.2 的归一化含**删行**（页眉页脚去重）与**跨行连字符还原**两个非保序重写，归一化文本不是原文的连续投影。一次归一化子串命中可以跨越被删掉的页眉、把两页的句子拼成一段原文里从不存在的连续文本，而它在原文里的「字节区间」包含不属于引语的内容。于是那三条「较弱但非空」的离线复核里的第 2 条既不蕴含也无法重建「这段引语出现过」。",
+  "reproduction": "steps: 用 .loop/m0/M0-2.fixture.norm.py 的 strip_running_headers + compare_key_v3，三页文档每页带同一条页眉『软件学报 Vol.35』，引语取『未做显著性检验。本文方法优于所有基线。』（跨第 2、3 页）。\nexpected: 引语不是原文子串（跨页且中间隔着页眉），应判 fail。\nobserved: `引语是 raw 的子串 = False`，`§1.2.2 判定 = pass`。该 pass 的原文对应区间包含被删掉的页眉。",
+  "severity": "P2",
+  "axis": "new-defect"
+ },
+ {
+  "location": "01-CONTRACTS.md:181 (§1.2.3) 与 :205 (§1.3 结尾) 对照 .loop/m0/M0-2.json 的 doc_action_detail 四条",
+  "claim": "S0 实测自己开出的四条 doc_action 只落实了两条，且 check_m0 只校验 doc_action 字段本身、不校验文档是否真的改了（gates/check_m0.mjs:191 只 assert doc_action 以 'needed' 开头）。未落实的两条都不是小事：(a) §1.2.3 仍写「中文 PDF 抽取是该假阴性的最大来源；阈值未标定前，中文引语门偏保守」——与基线逐字相同，而 M0-2 的 answer 逐字推翻它（「拦路的不是抽取管线，是 §1.2.2 的归一化算法本身」）；(b) §1.3 结尾仍写「quote_faithful 与 source_integrity 是**可以 100% 兑现**的产品承诺」——与基线逐字相同，而同一文件 §1.2.2.2 刚写下「产品页上不得再出现不带口径的『100%』」。另外 doc_action (2)（为跨行连字符还原补「不保子串 / 判 fail 并置 F-28a」）在 §1.2.2 里完全没有出现，而它正是 M0-2 诊断出的两条根因之一——只修了 (A)，(B) 原样留在规范算法里。",
+  "reproduction": "steps: diff 基线与现状的 §1.2.3 与 §1.3 结尾；再 grep 「连字符」「不保子串」于 01-CONTRACTS.md；再看 gates/check_m0.mjs:187-192。\nexpected: 四条 doc_action 全部落地，或 M0-2.json 记录哪几条未落地及理由。\nobserved: §1.2.3（01:181）与基线 attack-v2/01-CONTRACTS.md:53 逐字相同；§1.3 结尾（01:205）与基线 :77 逐字相同；跨行连字符还原全文只有一处提及且无任何 caveat；check_m0 全绿。M0 门是空心的——它验证「实测者填了 needed」，不验证「文档改了」。",
+  "severity": "P2",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "01-CONTRACTS.md:164-169 (§1.2.2.1 / W-16) 对照 :1091-1098 (§8.6.2.1 ①) 与 :1076 (Tier B 定义)",
+  "claim": "C-3 与 C-7 两个修复在默认档下互斥。C-3 把近似命中改成「门把快照里的真实跨度写进 claims/<id>.quote-repair.json」，C-7 则收口为「quote_faithful 的判定只发生一次，在抓取工具执行内，对全量抽取文本判定」，而 Tier B（默认档）只保留围绕引语裁出的 ≤300 字摘录。于是：门在离线复核时手上没有全文，F-28a 的修复建议只能在那段构造性恒真的摘录里找跨度，等于把 §8.6.2.1 自己判定为「为空」的那种复核重新当成修复依据。更根本的是，抓取工具执行时 producer 还没写 claim（W-03 是另一次工具调用），它不可能知道要比对哪句引语——C-7 的「判定只发生一次、在抓取执行内」在 §4 的写权顺序下无法实施。",
+  "reproduction": "steps: 按 §4 W-01/W-02/W-03/W-16 的写者与时序，把「抓取 → producer 写 claim（含引语）→ 门判 quote_faithful → 门写 quote-repair.json」排成一条时间线。\nexpected: 每一步的输入都在上一步的产物里。\nobserved: 第 3 步需要全量抽取文本，Tier B 不保留；把判定前移到第 1 步（§8.6.2.1 的收口）则第 1 步需要第 2 步才产生的引语。两个修复各自自洽，合起来无解，且没有任何一节承认这个冲突。",
+  "severity": "P2",
+  "axis": "new-defect"
+ },
+ {
+  "location": "01-CONTRACTS.md:1120 (§8.6.2.1 ②) 对照 :585 (§4 W-04 字段枚举)",
+  "claim": "C-7 要求 status.json 携带 computed_at 与 revalidated_at，但 W-04 枚举 status.json 全部派生字段时只有 computed_at。同一轮修复记得把 nominal_source_count 补进 W-04（并为此写了一整段理由），却漏了自己刚创造的 revalidated_at。03-EVIDENCE-ENGINE EE-0.7 与 05-TESTING §T2.7 都已经在消费这个字段，规范源反而没有。§4 自称穷举，这类遗漏就是它要治的跨文档漂移本身。",
+  "reproduction": "steps: grep -rn revalidated_at *.md；再读 01-CONTRACTS.md:585 的 W-04 单元格。\nexpected: revalidated_at 出现在 W-04 的字段清单里（它是门写的派生字段）。\nobserved: revalidated_at 在 00/01(§8.6.2.1)/03/05/07 共 9 处被要求，W-04 的枚举里没有。没有门检查 W-04 与其他文档的字段集一致性。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "07-ATTACK-LEDGER.md:263 / :281-286 / :288-293 与 :271-276",
+  "claim": "裁决台账自身腐化，而它是本轮 fix-audit 的事实基础。同一份文件里有两个互相矛盾的 coverage_gaps 小节：「本轮 coverage_gaps」记 fix-audit 状态=待、并在上文详述 R1-p provenance 补轮跑过；「本轮诚实交代（coverage_gaps）」记 fix-audit=not-applicable、且写「provenance 透镜未跑 ⇒ 本轮不能声称未发现事实性改写」。另外「当前 5/5 门通过」与实际 8/8 不符；「03 的 C-4/C-5/C-6/C-8 未修，零编辑」与现状不符（03 §5A 已有 G-CTR-SCAN / G-CLUSTER 与 NT-X-* 负例）。这正是 §8.4 D-8.13 点名的前代失效模式（「r1-ledger.md 有截断与重复小节」），而 D-8.13 的结论是「可信度产品的证据台账若是自由文本会腐，必须有格式门」——07-ATTACK-LEDGER 自己是无门的自由文本 Markdown，不在 gates/ 任何一道门的覆盖内。",
+  "reproduction": "steps: sed -n '260,298p' 07-ATTACK-LEDGER.md；./gates/run_all.sh everything | tail -3；grep -n 'G-CTR-SCAN\\|G-CLUSTER' 03-EVIDENCE-ENGINE.md\nexpected: 单一 coverage_gaps 小节，自述门数与实际一致，未修项与现状一致；或该台账被某道格式门覆盖。\nobserved: 两个 coverage_gaps 小节且结论相反；台账写 5/5 而 run_all 输出 8/8；台账写 C-4 未修而 03:848 已有「G-CTR-SCAN（GC-0）：counter_evidence_searched 的唯一生产者」。gates/ 下无任何门读 07-ATTACK-LEDGER.md。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "01-CONTRACTS.md:514 (§3.4 G2 行) 对照 src/status.mjs:88-95 与 :11 的自述纪律",
+  "claim": "§3.4 的表列名是「允许的最高 status」，但 G2 那格根本没写状态（只写「仅存在性断言；不得支撑任何数值断言」），G1 那格也没写（只写「不得作为承重证据」）。实现自行填了 GRADE_CEILING.G2 = ST-A、G1 = ST-N——而 src/status.mjs 第 11 行的自述纪律恰恰是「任何『这里规范没说清』的地方，抛 ContractGap 而不是猜。猜出来的默认值会变成一条没人知道存在的规则」。这个猜是承重的：G2 取 ST-A 意味着「这篇文献存在」这类可由 Crossref 确定性解析的存在性断言永远到不了 ST-V，与 §2.2.2「存在性可做到高精度」的分工相抵。",
+  "reproduction": "steps: 读 01-CONTRACTS.md:509-516 的表；再读 src/status.mjs:88-95。\nexpected: 表里每个等级都给出一个 §1.4 枚举内的状态，或实现对 G2/G1 抛 ContractGap。\nobserved: 表里 G2/G1 两格无状态值；实现静默取 ST-A / ST-N。穷举 oracle 把这两个猜出来的值当作规范全程枚举，因此永远不会红。",
+  "severity": "P3",
+  "axis": "not-machine-decidable"
+ },
+ {
+  "location": "gates/check_status_exhaustive.mjs:158-170 对照 01-CONTRACTS.md:346 (V1.3)",
+  "claim": "门打的 `PASS V1.3` 名不副实。V1.3 的原文是「符号执行 S 的**第 2 步全部规则**，断言每条规则的输出状态在偏序下不高于输入」，门实际只对 stepDown 与 meet 两个算子做了 4×4 遍历，从不对 S 的 2a/2b/2c/2d/2d′/2e 做任何断言。2c 还能返回不在偏序里的 ST-N，这条路径完全不在检查内。",
+  "reproduction": "steps: 读 gates/check_status_exhaustive.mjs:158-170 与 report('V1.3', ...) 的描述串。\nexpected: 对 S 的第 2 步逐规则断言 output ≤ input。\nobserved: 循环体只调 stepDown(x) 与 meet(x,y)；报告行写「格运算单调」，但门 ID 挂的是 V1.3。覆盖被标签放大了。",
+  "severity": "P3",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "src/status.mjs:223-224 对照 01-CONTRACTS.md:1153 (V8.11) 与 :1085 (§8.6.2)",
+  "claim": "实现静默接受 V8.11 明令不存在的组合 retention_tier='C' 且 evidence_grade='G5'，返回 attributed；穷举 oracle 把 3×6=18 个 tier×grade 组合全部当作合法向量枚举，其中 5 个（C×G5..G3 等）是契约禁止的记录。这让「550 万合法向量」的分母虚高，也让 §8.6.2「Tier C → evidence_grade ≤ G2」失去在 S 侧的任何兑现。",
+  "reproduction": "steps: S({... retention_tier:'C', evidence_grade:'G5' ...})\nexpected: 抛 ContractGap（与 source_integrity='na' 用错 kind 时的处理一致），或至少被 oracle 的 isLegal 过滤掉。\nobserved: 返回 attributed，trace 显示 `2c meet(grade=verified, tier=attributed)`；gates/check_status_exhaustive.mjs:109 的 isLegal 只过滤 na×kind 一种非法组合。",
+  "severity": "P3",
+  "axis": "new-defect"
+ },
+ {
+  "location": "03-EVIDENCE-ENGINE.md:866-870（X-1 谓词）；同一假设复现于 03-EVIDENCE-ENGINE.md:885 与 NT-X-1（:1527）",
+  "claim": "G-CTR-SCAN 的 X-1 要求 `tool/call` 事件是 append-origin（`surfaceOp === 'append'`）。DSH 运行时规定 `surfaceOp` 只存在于 `user/message` / `assistant/message` / `tool/result` 三类事件上，`tool/call` 永远没有这个字段。该谓词恒假 ⇒ `counter_evidence_searched` 对每一条 claim 都是 false ⇒ F-29 ⇒ 0e ⇒ 全部承重 claim 落 ST-N。这正是本节自己在 :63 预言的「永红门 → 两周内被 `|| true` → 0e 回到自报」路径，修复者测了 `arguments` 的类型却没测 `surfaceOp` 的归属。",
+  "reproduction": "steps: (1) 读 03-EVIDENCE-ENGINE.md:866-870，X-1 的第一个合取项逐字是「c 是 append-origin 事件（surfaceOp === 'append'，见 EE-F-3）」，c 被限定为 `tool/call`。(2) 读装机 @deepseek-ai/dsh-session 0.1.0-rc.6 的 lib/types/types.d.ts:362 —— `export type SurfaceEventType = 'user/message' | 'assistant/message' | 'tool/result'`，注释逐字「Only these event types may carry SurfaceOp and SessionEvent.sourceEventSeqs」；lib/types/surface.js 的 `isSurfaceEvent` 先查 `SURFACE_EVENT_TYPES.has(event.type)`，`isAppendSurfaceEvent = isSurfaceEvent(e) && e.surfaceOp === 'append'`。(3) 对本机 ~/.dsh/sessions 全部 27 个 session 解 zstd 后统计：`tool/call` 2600 条，`surfaceOp` 字段存在数 0；`tool/result` 2598 条 surfaceOp='append' + 6 条 replace。\nexpected: 一次真实发起的反证检索能让 X-1 成立，`counter_evidence_searched = true`。\nobserved: `isAppendSurfaceEvent(tool/call)` 由类型系统与运行时守卫双重保证恒为 false（源码级）+ 2600/2600 实测确认。X-1 对任何输入都不成立，G-CTR-SCAN 是一道永红门；NT-X-1 的 fixture 逐字写「append-origin `tool/call`」，期望值又恰好是 ST-N，所以负例套件对该缺陷**恒绿**，抓不到它。",
+  "severity": "P1",
+  "axis": "new-defect"
+ },
+ {
+  "location": "03-EVIDENCE-ENGINE.md:877-892（EE-X-3 的 (a)(b)(c) 三条）与 :96-97（「什么会推翻」）",
+  "claim": "X-2 号称堵住「把 claim 原句原样投进检索框」这条最自然的绕过，但三条判据可被一个**固定模板**同时满足：删掉 payload 的任一 token（破坏 (a) 的子串关系）+ 追加一段常量反向样板（把 (b) 的 Jaccard 压到阈值以下、同时命中 (c) 的 NEG-LIT）。这不是 §11.10 已认领的「注定零命中」那一类——这条 query 会返回结果，它就是 claim 自己的题目加几个反向词。并且 τ_q 取任何值都拦不住：填充是免费且无界的，J 可被单调压到任意小。0e 因此仍然是「producer 发一条模板 query 就算搜过」，C-4 换了措辞没有关闭。",
+  "reproduction": "steps: 取 P = payload 按 schema 顺序拼接归一化 = \"vitamin D supplementation all-cause mortality 30% reduction adults RCT\"；构造 Q = \"vitamin D supplementation all-cause mortality reduction adults RCT failed to replicate contradicting retraction erratum\"（删 \"30%\"，追加只命中 NEG-3 的常量样板）。按 01-CONTRACTS §1.2.2 归一化（NFKC + 折叠空白）后算字符三元组 Jaccard。中文同构：P=\"维生素D补充 全因死亡率 下降30% 成年人 随机对照试验\"，Q 去掉 \"30%\" 后加 \"未能重复 与之相反 撤稿\"。再把互异的合法反向扩展词逐个追加，观察 J 的走向。\nexpected: X-2 fail —— 这是「又把原句搜了一遍」，X-2 存在的全部理由就是判它 fail。\nobserved: (a) P⊄Q 且 Q⊄P 成立；(b) EN J=0.5364、ZH J=0.5238，均 ≤ τ_q=0.60；(c) 命中 NEG-3（failed to replicate / contradicting / retraction）。X-2 **pass**。τ_q 独立性实测：同一 stem 追加 0/2/4/6/8/10/12 个互异反向词，J = 0.5728 / 0.4958 / 0.4403 / 0.3856 / 0.3471 / 0.3155 / 0.2770 —— 把 τ_q 调到 0.30 也只需要多写 10 个词。对照 NT-X-4（同义改写、J≈0.85、无 NEG token）J 实测 0.6667，确实 fail —— 即测试集只覆盖了不加样板的那一半。",
+  "severity": "P1",
+  "axis": "not-closed"
+ },
+ {
+  "location": ".attack/pointer-debt.json（109 条，`generated_by: node gates/check_pointers.mjs --update-debt`）+ gates/check_pointers.mjs:11-19（棘轮说明）+ 07-ATTACK-LEDGER.md:272",
+  "claim": "[E:] 指针门的欠债登记表在 R2 之后被 `--update-debt` 重新生成（台账逐字写「108 条已知欠债」，文件现为 109），棘轮的「只能下降」被一次重基线抹掉；更严重的是登记表**只按指针文本作键**，不绑文档、不绑行号、不计出现次数。于是 R2 写 07-ATTACK-LEDGER 时把门自己的反面教材字符串 `我瞎编的.md#根本不存在的锚` 登记成了「已知欠债」，从此**任何文档**都可以用这条捏造引用而门保持绿。这道门是全文档集对「编造证据引用」唯一的机器防线，它的头注逐字说自己就是为了让这个字符串判红而存在。",
+  "reproduction": "steps: (1) 把 academic-research-plugin 的 *.md / research / .attack 复制到临时目录；(2) 向 02-ARCHITECTURE.md 末尾追加一行 `**伪造的一条证据引用** [E: 我瞎编的.md#根本不存在的锚]`；(3) 跑 `node gates/check_pointers.mjs --root <临时目录>`。\nexpected: 门判红（gates/check_pointers.mjs:5-8 逐字：「`[E: 我瞎编的.md#根本不存在的锚]` 能过 … 本文件是它的替代」）。\nobserved: 门输出「文件不存在 3」（原为 2，涨了一条），但仍打印 `PASS 新增不可解析指针 · 0 条（已知欠债 109 条）` / `PASS 欠债登记表与现状一致`，整体 `通过`，退出码 0。",
+  "severity": "P1",
+  "axis": "weakened-elsewhere"
+ },
+ {
+  "location": "03-EVIDENCE-ENGINE.md:437-449（路由）+ :454（EE-L-21）+ :1108（X-3 的 K-L 行「s ≠ anchor_span 所在句」）+ 01-CONTRACTS.md:417",
+  "claim": "C-6 的修法是把 GC-2 门从 sub_mode==T 的判定路径上拿掉，论证是「载荷的每个 token 都来自源句，所以不可能出现源句没说的限定或因果方向」。这条论证只对「载荷 == 整句」成立。载荷是源句 token 的**真子集**时，它可以断言源句所否定的东西——学术散文里最常见的形态就是否定句里带着数字。此时 sub_mode=T、判定路径 {G-L0, G-L1, G-CLUSTER, G-CTR-SCAN} 无一读极性，base = ST-V；而 X-3 的 K-L 扫描又**明确排除 anchor_span 所在句**，那句恰恰是唯一带着否定词的句子，于是它永远不会进 counter_candidates[]，G-CTR-JUDGE 也永远看不到。修复前 G-ENTAIL（其职责逐字是判「是否混入了源句没说的限定、条件、因果方向」）在这条路径上；修复后它照跑但 EE-L-21 规定其信封**不进判定**——一个跑出来的 fail 被设计性地丢弃。",
+  "reproduction": "steps: anchor_span（按 EE-L-23 取整句）= \"There was no significant difference in all-cause mortality between groups (30% vs 28%, p = 0.41).\"；claim payload = {entity: \"all-cause mortality\", value: \"30%\", metric_frame.sample_or_tier: \"between groups\"}。逐字段跑 L1-b 包含检验（03:459 定义为「载荷里的每个数字、命名实体、口径三元组、比较对象是否逐字出现在锚点跨度内」）。\nexpected: 这条 claim 语义上是归因甚至是反向的，不应拿 ST-V。\nobserved: 三个字段全部逐字命中 ⇒ L1-b 命中 ⇒ sub_mode = T ⇒ 判定路径不含任何读极性的门 ⇒ S 第 1 步 K-L-T 分支 base = ST-V；X-3 因 `s ≠ anchor_span 所在句` 跳过该句，counter_candidates[] 为空，2a 不触发；K(K-L-T)=1 使 2b 不触发。最终 status = ST-V，读者看到「来源 X：全因死亡率 30%〔已核验〕」，而源句说的是两组无显著差异。",
+  "severity": "P1",
+  "axis": "new-defect"
+ },
+ {
+  "location": "03-EVIDENCE-ENGINE.md:142 / :144 / :147（§0.4 声明）、:874（X-1 消费 counter_search）、:1012（T-a 消费 provenance_token）；对照 01-CONTRACTS.md:583（W-02）与 :591（W-10）",
+  "claim": "两道新门的载重输入**没有生产方**——即 C-4/C-5 的缺陷类别（「S 的输入无人生产」）在修复内部下沉了一层。X-1 依赖 `tool/result.data.meta.evidence.counter_search`，01-CONTRACTS W-02 逐字列出 `meta.evidence` 的字段是 `object_sha256/url/retrieved_at/http_status/bytes/extractor_version`，不含 `counter_search`；F-22 的 T-a 依赖 `provenance_token`，03 逐字写「写者见 01-CONTRACTS §4 W-10」，而 W-10 那一行只讲 `{{claim:<id>.<field>}}` 占位符解析，通篇没有这个词。另外 `polarity` 是 producer 在工具调用参数里自填的字段（X-1 读 `args.polarity == \"counter\"`），所以 EE-X-1 那句「门永不读 producer 的自报值」在极性这一层是不准确的——门读的是 producer 声明的标签，只是又叠了 X-2 的形式约束（而 X-2 已被上一条打穿）。",
+  "reproduction": "steps: 在仓库根跑 `grep -rn \"counter_search\" --exclude-dir=.git .` 与 `grep -rn \"provenance_token\" --exclude-dir=.git .`。再逐字读 01-CONTRACTS.md:583（W-02 行）与 :591（W-10 行）。\nexpected: 03 §0.4 声称 `counter_search`「02/04 必须接住」、`provenance_token`「写者是 01-CONTRACTS §4 W-10 的组稿器，属跨文档契约」，那么这两个名字应出现在 01/02/04。\nobserved: `counter_search` 只出现在 03（:142/:874/:935），01/02/04/05/00/06 零命中；`provenance_token` 只出现在 03（:147/:1012/:1754），全仓库其余零命中；W-02 的字段清单是封闭列举且不含 counter_search，W-10 全行不含 provenance_token。照现有契约实现抓取工具与组稿器，X-1 的第二个合取项恒假、F-22 的 T-a 永不触发。注：同轮的 `nominal_source_count` **确实**被回填进了 01 W-04，说明这五项跨文档回填只落了一项。",
+  "severity": "P2",
+  "axis": "not-machine-decidable"
+ },
+ {
+  "location": "03-EVIDENCE-ENGINE.md:985（§5A.3.1 的「⚠️ 一处契约缺口」整段）vs 01-CONTRACTS.md:585（W-04）与 :668（R-I6）",
+  "claim": "该段逐字断言「01-CONTRACTS §4 W-04 逐字列出 status.json 的派生字段是『status、evidence_grade、independent_cluster_count、counter_evidence_*、computed_at、gate_version、inputs_hash』——`nominal_source_count` 不在其中」，并据此宣布「在 01-CONTRACTS 补上之前，NT-X-16 会稳定判红——那是正确行为，不是要绕过的噪声」。但 01 的 W-04 在同一轮已经补入了 `nominal_source_count`。修复动了 01 却没回头改 03，留下一段对兄弟文档的**事实性错述**，并且把一条本已不该红的测试写成「预期永红」——在这份文档自己的论证体系里（:63「永红的门会在两周内被 `|| true` 掉」），把永红正常化是头号失败模式的入口。",
+  "reproduction": "steps: 读 03-EVIDENCE-ENGINE.md:985 全段；再读 01-CONTRACTS.md:585 的 W-04 行。\nexpected: 两处对 W-04 字段清单的陈述一致。\nobserved: 01:585 的 W-04 逐字含「**nominal_source_count**」并附注「**`nominal_source_count` 于本轮补入**：写者是门代码（03-EVIDENCE-ENGINE 的 **G-CLUSTER**…）」，01:668 的 R-I6 也已写明「两者同为 W-04 的派生字段、同由 G-CLUSTER 写入」；03:985 仍在说它不在其中，并指示 NT-X-16 稳定判红。",
+  "severity": "P2",
+  "axis": "new-defect"
+ },
+ {
+  "location": "03-EVIDENCE-ENGINE.md:311-317（§2.4.0 观测三值的定义块）+ :338-343（C-3）",
+  "claim": "C-8 的修复把二值拆成三值以杜绝「崩溃顶替敏感」，但这个三值函数**不是全函数**：`differs` 与 `same` 都要求 `|v'_f − v_f|` 与 τ_f 可比，`undetermined` 只覆盖「非零退出 / 超时 / out.json 缺失或不符 schema」。当脚本 exit 0、out.json 存在且合 schema、但字段值是 NaN 或 ±Inf 时，`|NaN − v| > τ_f` 为假、`≤ τ_f` 也为假，三个分支全部落空。而 P-c 的构造是「数值列全 NaN」——NaN 输出恰恰是任何诚实聚合脚本在 P-c 下最可能的产物。这与本项目对 `S` 的要求（check_status_exhaustive 花 550 万向量去证 S 是全函数）是同一条纪律，观测函数却没被同样对待。",
+  "reproduction": "steps: 取一条诚实的 K-D claim，`run.py` 计算 `df['x'].mean()`。P-c 喂入 schema 相同、数值列全 NaN、行数保留的输入。pandas 返回 NaN，脚本 exit 0，out.json 写出 `{\"mean\": NaN}`（或 null）。按 §2.4.0 的三条定义逐条求值。\nexpected: 该 (输入, P-c, key) 得到三值之一，且规则唯一确定 G-DEP 的 verdict。\nobserved: `differs` 的条件 `|NaN − v| > τ_f` = false；`same` 的条件 `|NaN − v| ≤ τ_f` = false；`undetermined` 的条件（非零退出/超时/缺失/不符 schema）三项都不成立。观测无定义。两种合理的实现者补全给出相反结论：补成 `same` ⇒ C-3「P-c 观测 == same ⇒ verdict = fail」⇒ 每一条诚实的聚合类 K-D claim 落 ST-U；补成 `undetermined` ⇒ C-4 第 3/4 条 ⇒ not_applicable ⇒ ST-N。文档未选边，V1.2「重跑 S 逐字节相同」在这条输入上无法成立。",
+  "severity": "P2",
+  "axis": "not-machine-decidable"
+ },
+ {
+  "location": "07-ATTACK-LEDGER.md:277-283（「未完成（诚实交代）」）与 :288-290（本轮 coverage_gaps）",
+  "claim": "任务把 07-ATTACK-LEDGER 指为裁决全文，但它记录的修复状态已经和树上的状态相反：它逐字说 C-4/C-5/C-6/C-8「未修 … 四个修复子代理全部因会话额度失败，零编辑」，又说「R3 fix-audit 未跑——R2 本身没完成」「本轮不构成收敛」。而 03-EVIDENCE-ENGINE 已经从 1319 增到 1764 行、§5A 整节存在、S0 实测已回填。一个记录「哪些已闭合」的台账写错方向，直接后果是下一轮要么重做已做的、要么信任未做的——这正是 fix-audit 要消除的那种不确定性。",
+  "reproduction": "steps: 读 07-ATTACK-LEDGER.md:277-283；再对比 03-EVIDENCE-ENGINE.md 的 §5A（:825-1105）、§2.4.0（:296-330）、§3.1.1.1（:431-482）与 .attack/r3-target-hashes.json 记录的 03 行数。\nexpected: 台账的「未完成」清单与当前树一致。\nobserved: 台账称四条 P1「零编辑」，实际四条都已落文本（新增 445 行）；台账称 fix-audit「未跑」并把 coverage_gaps.fix_audit 记为「待」，而本轮 R3 正在跑。同一段里的 108 条指针欠债也与 .attack/pointer-debt.json 的 109 不符。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "03-EVIDENCE-ENGINE.md:1057-1058（EE-X-12）+ :1069（low 合并占比 > 30% 的 caveats）+ :138（caveats 的性质声明）",
+  "claim": "提问要求找出「哪个工程常数取值改动会翻转判定」。答案是：**M = 8 是唯一一个**（它落在 ST-C/ST-V 的边界上，且失效方向是危险方向——真反证排在第 9 位则 claim 以 counter_evidence_found=false 通过）；而 low 档合并占比 30% 与 EE-X-12 的 power_basis 两档取值**翻转不了任何判定**，它们是装饰性的。30% 的唯一后果是写一条 `caveats`，而 03 自己在 :138 逐字规定「`caveats` 是自由标签位，但若要进判定则必须先进 §7.2 的 flag 词表」，`low_confidence_cluster_merge` 不在 §7.2；`power_basis` 在 00/01/02/04/05 五份文档中零出现，唯一的内部消费者 NT-G-3 判的是「仅由 unmeasured 的门支撑」，而 T 路径上还有 construction 档的 G-L1，条件永不成立。τ_q 则在对抗方向上取任何值都无效（见上文填充实测）。",
+  "reproduction": "steps: (1) `grep -rn \"power_basis\" 00-PREMISE.md 01-CONTRACTS.md 02-ARCHITECTURE.md 04-ORCHESTRATION.md 05-TESTING.md`；(2) 在 01-CONTRACTS §7.2 flag 词表中检索 `low_confidence_cluster_merge`；(3) 读 03:1612 的 NT-G-3 断言，代入 sub_mode==T 的判定路径 {G-L0, G-L1(construction), G-CLUSTER(unmeasured), G-CTR-SCAN}。\nexpected: 至少一条下游规则会因 power_basis 从 construction 变成 unmeasured、或因 low 占比越过 30% 而改变 status 或触发红灯。\nobserved: (1) 五份文档 0 命中；(2) 不在 flag 词表；(3) NT-G-3 的「仅由」条件因 G-L1 是 construction 而不成立。改动 30% 这个常数、或把 power_basis 两档全写成同一个值，全套门与 S 的输出**逐字节不变**；NT-X-17 只测标签与合并档位的自洽，不测任何下游后果。",
+  "severity": "P3",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "03-EVIDENCE-ENGINE.md:1012（T-a 判据行）+ :147（§0.4 条目）",
+  "claim": "provenance_token 的**落点**未定义，而两种可能的落点各自让 T-a 失效。若写成交付物正文里可见的 16 位十六进制串：01-CONTRACTS W-10 规定正文数字一律走 `{{claim:<id>.<field>}}` 占位符、解析不到即构建失败，文档没有给这个 token 任何渲染槽位；而且它可见即可被转载方剥掉。若写成不可见标记（HTML 注释 / meta / 零尺寸节点）：按 D1 通道分离，再抓取时它必然落进 `non_rendered_text`，而 T-a 的判据逐字是「抓取到的 `rendered_text` 中出现 … provenance_token」——那它永远不会命中。另外 `sha256(run_id ‖ claim_id)` 的 `‖` 没有分隔符规范，边界移位可让不同 (run_id, claim_id) 对撞出同一 token。",
+  "reproduction": "steps: 读 03:1012 的 T-a 行（判据基底逐字是 `rendered_text`）；对照 01-CONTRACTS.md:591（W-10 正文数字规则）与 03/02 的通道分离规则（02-ARCHITECTURE.md:307：`rendered_text` / `non_rendered_text` / `structured_data` / `http_headers` 四路分离，只有 rendered_text 进可引用证据池）。再在 03 全文检索 token 的写入位置规范。\nexpected: 文档指明 token 写在交付物的哪个位置，并说明它在第三方转载后仍落在 rendered_text 一路。\nobserved: 03 只写「交付物在渲染期写入」，没有任何位置规范；可见落点与 W-10 的占位符纪律冲突且易剥离，不可见落点与 T-a 的 rendered_text 基底直接矛盾。RT-14 因此不可能在任一实现下稳定通过，而 §11.11 只承认「抓不到被改写后再发布的」，没承认 token 本身没有落点。",
+  "severity": "P3",
+  "axis": "not-machine-decidable"
+ },
+ {
+  "location": "gates/check_m0.mjs:132-179 (以及 gates/test_check_m0.sh 的负例清单)",
+  "claim": "check_m0.mjs 对 `verdict=design-changed` 的记录不施加任何证据要求——evidence 可以为空、可以整个字段不存在。12 条记录全部改写成纯编造的 design-changed，门仍然 exit 0、8/8 全绿。这正是该文件第 7–10 行自称要排除的 passing_but_wrong，而 6/12 条真实记录（M0-1/2/3b/3c/6/7，即全部推翻了设计前提的那些）都落在这个豁免里。",
+  "reproduction": "steps: (1) `cp -R .loop $SC/.loop`；(2) 对 $SC/.loop/m0/*.json 全部置 `verdict='design-changed'`、`doc_action='needed —— 编的'`、`evidence=[]`、`answer='全部凭代码阅读推理写成，一条命令都没跑。'`；(3) `node gates/check_m0.mjs --root $SC`。\nexpected: 红（门的头注宣称 §3 的重跑机制排除「全部凭推理写成、一次都没真跑」）。\nobserved: `记录 12/12 / resolved 0 design-changed 12 / 重跑验证：无可重跑的 resolved 记录 / PASS`，退出码 0。另一次更小的复现：只把 M0-7 的 evidence 置空 + M0-1 删掉 evidence 字段，同样 exit 0。根因是 §2 里 `for (const [i,e] of ev.entries())` 与「至少一条可复现」两处检查都嵌在 `if (r.verdict === 'resolved')` 内；负例套件有 R-9 守住 resolved 的豁免口子，没有 design-changed 的对应项。",
+  "severity": "P1",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "02-ARCHITECTURE.md:485（另见 :367 :479 :601；01-CONTRACTS.md:769 :853 :1186；03-EVIDENCE-ENGINE.md:1457；04-ORCHESTRATION.md:947；07-ATTACK-LEDGER.md:180）",
+  "claim": "M0-7 的 doc_action 点名了 6 处「锚点从 tag 改成 40 位 commit sha」，实际只改了 00-PREMISE §B8 与 README 第 7 条两处。被红样本 R3 明确证伪的候选解在 02-ARCHITECTURE §B 里逐字幸存，且 01-CONTRACTS（README 自称的唯一规范源，规定「其他文档只引用不复述」）的术语定义 §9.22、可检验断言 V6.5、§6.5.2 三处仍以 tag 为锚。",
+  "reproduction": "steps: 读 .loop/m0/M0-7.json 的 doc_action/affects，再 `grep -n 'gates-baseline\\|检出一份干净副本\\|自指' 01-CONTRACTS.md 02-ARCHITECTURE.md 03-EVIDENCE-ENGINE.md 04-ORCHESTRATION.md 07-ATTACK-LEDGER.md`，并 `grep -c M0-7` 各文件。\nexpected: 六处锚点改为 commit sha；02-ARCH §B 的「候选解：由 conductor 从 tag 检出一份干净副本到 checks/ 之外的路径执行」被改写为「该动作必须由仓库外入口发起」。\nobserved: 02-ARCHITECTURE.md:485 逐字仍为「候选解：由 conductor 从 tag 检出一份干净副本到 `checks/` 之外的路径执行。**本文件不裁定这一条**，列入 open questions。」；02-ARCH:367/479/601、01-CONTRACTS:769/853/1186、03-EE:1457 全部仍写 `<gates-baseline-tag>`；04-ORCHESTRATION.md:947 §10 第 8 条逐字仍为「**`gate_integrity.sh` 的自指问题无解**（谁证明它没被改）。house 无答案，本文件也没有。」；07-ATTACK-LEDGER.md:180 的 C-11 未回填裁决。`grep -c M0-7` 在 01/02/03/07 四份文件里全为 0。结果是 README 与 00-PREMISE 说 tag 锚点已死，规范源说它还活着。",
+  "severity": "P1",
+  "axis": "not-closed"
+ },
+ {
+  "location": "01-CONTRACTS.md:918 与 :986；02-ARCHITECTURE.md:294 与 :307；01-CONTRACTS.md:181",
+  "claim": "M0-1 的 doc_action_detail 写明「三处必须改」，三处一处都没改。被实测判为部分错误的那句前提在唯一规范源里逐字幸存，V7.8 的通过判据仍是被证伪的写法，RT-5 红样本段仍无阈值标定与像素渲染差分裁决器，取证抓取管线表仍未钉死 PDF 后端。M0-1 的结论只活在 README 里。",
+  "reproduction": "steps: 读 .loop/m0/M0-1.json 的 doc_action_detail 三条，再 `grep -n '大多数 PDF\\|V7.8\\|RT-5 红样本' 01-CONTRACTS.md 02-ARCHITECTURE.md`；`grep -c M0-1 01-CONTRACTS.md 02-ARCHITECTURE.md 03-EVIDENCE-ENGINE.md`。\nexpected: (1) :918 改为「pdftotext 与 pypdf 拿不到任何可见性元数据且会逐字吐出隐藏文本，pdfplumber 有颜色与字号但无渲染模式，PyMuPDF get_texttrace() 六项全有——PDF 抽取后端是契约项」；(2) V7.8 加「良性对照组的 non_rendered_text 不要求为空」；(3) RT-5 段补阈值标定与像素差分裁决器。\nobserved: 01-CONTRACTS.md:918 逐字仍为「（大多数 PDF 文本抽取库确实拿不到颜色/字号/图层）」；:986 V7.8 仍只写「能否把白色/极小字号文本归入 `non_rendered_text`」，无良性基线条款；02-ARCHITECTURE.md:294 RT-5 红样本段与基线一致，无 7.4% 精确率与像素差分；:307 通道分离行未指定后端；01-CONTRACTS §1.2.3（:181）未新增 non_rendered_text 占比异常哨兵。三份文件的 `grep -c M0-1` 均为 0。后果：按规范源实现的人会选 pdftotext/pypdf（M0-1 证明这两者逐字吐出隐藏文本且零可见性元数据），并把良性判据写成「non_rendered_text 为空」（M0-1 证明真实论文上必然误报）。",
+  "severity": "P1",
+  "axis": "not-closed"
+ },
+ {
+  "location": "01-CONTRACTS.md:205（§1.3 结尾）与 01-CONTRACTS.md:181（§1.2.3 末句）",
+  "claim": "M0-2 的 doc_action 第 (3)(4) 条未执行。§1.2.2.2 新写了「100% 兑现必须收窄」并以「产品页上不得再出现不带口径的「100%」」收尾，但它要修的那句原文在同一文件 50 行后原封不动；§1.2.3 里被实测判为错误处方的「中文引语门偏保守」也没删。单一规范源内部自相矛盾。",
+  "reproduction": "steps: 读 .loop/m0/M0-2.json 的 doc_action_detail 第 (3)(4) 条，`sed -n '141,156p;181p;205p' 01-CONTRACTS.md`。\nexpected: :205 限定为「在同一次抽取的文本上、且归一化为幂等保子串变换时」；:181 末句「阈值未标定前，中文引语门偏保守」被删除。\nobserved: :205 逐字仍为「**因此**：`quote_faithful` 与 `source_integrity` 是**可以 100% 兑现**的产品承诺；`claim_supported` 只能是分级判断。」——无任何口径限定，且它就是 M0-2 affects 点名的「§1.3 结尾」那句；:181 末句「中文 PDF 抽取是该假阴性的最大来源；阈值未标定前，中文引语门偏保守。」原样保留，而 M0-2 实测证明保守化会放大假阴性、正确处方是先修归一化。",
+  "severity": "P1",
+  "axis": "not-closed"
+ },
+ {
+  "location": ".loop/m0/M0-4.json evidence[2] 与 .loop/m0/M0-2b.json evidence[1]；gates/check_m0.mjs:201-215",
+  "claim": "两条证据带着 64 位十六进制 raw_output_sha256，而同一份记录的 honest_limits 明写它们逐字不可复比。它们因此通过结构检查并进入重跑池，`--rerun-all` 今天是红的（9/11，退出码 1）。默认抽样是确定性的 `12 % 11 = 1`，恒定命中 C-12a evidence[1]——所以对外宣称的 8/8 全绿是抽样器选中好样本的产物，不是记录可复现的证据。",
+  "reproduction": "steps: `node gates/check_m0.mjs --rerun-all; echo $?`（注意不要用管道，管道会吞掉退出码）。\nexpected: 若 8/8 绿代表记录来自实测，全跑应同样绿。\nobserved: `重跑验证 9/11 条哈希对上`，`FAIL 2 处`，退出码 1。M0-2b evidence[1]：记录 4f66bdb9c986… 两次重跑分别得 75d0e261c685… 与 456efd3529d7…（~/.dsh/sessions 随每次 dsh 运行增长，其 honest_limits ② 早已写明不可逐字节复比），却未置 `reproducible:false`。M0-4 evidence[2]：命令逐字以中文散文开头「（同上一条会话，STEP 1 用 bash 工具做对照）cd \"$SC/ws\" && …」，`$SC` 未定义、prompt 以「...」截断，根本不可执行，重跑稳定得到同一个错误输出的哈希 4355a46b19d3…，而记录写的是 1277678d69b8…；M0-4 honest_limits ③ 明说真实会话那两条 LLM 驱动、逐字不可复比，却只给 evidence[1] 打了 `reproducible:false`。",
+  "severity": "P1",
+  "axis": "not-machine-decidable"
+ },
+ {
+  "location": "04-ORCHESTRATION.md:777-778（新增）与 :838-839（原有）；引用点 :605 :656 :745",
+  "claim": "M0-6 回填新增的 V-4.29 / V-4.30 与既有的 V-4.29 / V-4.30 编号撞车。04-ORCHESTRATION 的 V-4.xx 是一个平坦命名空间（V-4.20…V-4.32 跨 §5–§7 连续编号，:840-841 的 V-4.31/V-4.32 紧接 :838-839 即为证），修复者直接在 §6.7 末尾续写了两个已被占用的号。这是修复本身引入的新缺陷，且三处交叉引用因此不可判。",
+  "reproduction": "steps: `grep -n 'V-4\\.\\(2[0-9]\\|3[0-9]\\)' 04-ORCHESTRATION.md`；再看 :605 「见 V-4.30」、:656 「见 V-4.29」、:745 「判据见 … V-4.29」。\nexpected: 新断言取未占用的号（V-4.33/V-4.34），或全表重排。\nobserved: V-4.29 有两条定义——:777「网关换进程必须留痕」与 :838「CP-1 通过时 checklist 被冻结」；V-4.30 也有两条——:778「启动期 fail-closed 的配置断言」与 :839「CP-2 队列容量闸」。:605/:656/:745 三处引用无法判定指向哪一条。gates 全部看不见：check_contracts.mjs 只校验 01-CONTRACTS 的 F-id/V-id 完备性，check_doc_metrics.mjs 只统计 01-CONTRACTS 的 V-id 条数，8/8 仍绿。",
+  "severity": "P2",
+  "axis": "new-defect"
+ },
+ {
+  "location": "gates/check_pointers.mjs:53 与 :64（parsePointer 的两条 target 正则）",
+  "claim": "S0 回填引入了一个全新的证据指针类 `[E: .loop/m0/*.json]`（全仓 41 处），而 check_pointers 的 target 正则只接受 `.md`，这 41 条指针从未被解析、计数或登记为欠债。另有 17 处 S0 引用写成裸反引号 `` `.loop/m0/M0-6.json` ``，连 `[E:]` 形式都不是。README 把「`[E:]` 指针全文强制」列为 v1 欠债还清项，并以「可解析率 90.0%」作为门的成绩——那个分母恰好排除了最新、最承重的证据类。",
+  "reproduction": "steps: (1) `cp -R *.md .attack .loop research $SC/`；(2) 在 $SC/02-ARCHITECTURE.md 里把全部 `[E: .loop/m0/M0-4.json]` 替换为 `[E: .loop/m0/M0-DOES-NOT-EXIST.json]`（3 处）；(3) `node gates/check_pointers.mjs --root $SC`。\nexpected: 至少「文件不存在」计数 +3 或判红。\nobserved: 输出与真实树逐字相同——`共 1364 个 (目标, 锚) 实例 / … 找不到 127 文件不存在 2 / PASS 新增不可解析指针 · 0 条`，退出码 0。根因：:53 `s.match(/^([^#\\s]+\\.md|<[^>]+>)\\s*#\\s*(.+)$/)` 与 :64 `s.match(/^([^#\\s]+\\.md)$/)` 都硬编码 `.md`，`.json` 目标直接落空。后果：任何一条 M0 记录被改名或删除，58 处引用会静默腐烂而全部门保持绿。",
+  "severity": "P2",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "03-EVIDENCE-ENGINE.md（全文，mtime 17:22:28）与 05-TESTING.md（全文，mtime 17:12:34）",
+  "claim": "这两份文件在 5 条记录的 affects 里被点名、并且是至少三条 doc_action 的显式目标，却一个字都没被 S0 回填过——它们的修改时间早于对应记录的产生时间。最刺眼的是 03-EE:1313 仍写「本机 139 个 session」，而 M0-5 的 doc_action 第 (1) 条逐条说明了该把它改成什么。",
+  "reproduction": "steps: `stat -f '%Sm %N' -t '%H:%M:%S' 03-EVIDENCE-ENGINE.md 05-TESTING.md .loop/m0/*.json`；`grep -c 'M0-' 03-EVIDENCE-ENGINE.md 05-TESTING.md`；`sed -n '1313p;1185p;1457p' 03-EVIDENCE-ENGINE.md`。\nexpected: 03-EE:1307 区域按 M0-5 加「M0-5 已人为触发：thresholdRatio 压到 0.02 后产出 6 条 compaction/prune + 6 条 replace」并把 139 更新为实测时刻数字；EE-S-12 按 M0-6 区分「限速拒绝 = not_applicable」与「网关重启窗口 = not_covered → ST-N」；NT-00 按 M0-7 换锚点；05-TESTING 按 M0-2 新增同工具对照组回归基线与两条最小复现回归用例。\nobserved: 03-EVIDENCE-ENGINE.md 17:22:28 早于 M0-7(17:28)/M0-6(17:30)/M0-1(17:36)/M0-2(17:37)/M0-4,M0-5(17:39)；05-TESTING.md 17:12:34 早于全部 12 条记录。两文件 `grep -c 'M0-'` 均为 0。:1313 逐字仍为「实证：本机 139 个 session、**0 条 replace、0 条 `compaction/*`**」，成为全仓第三个互不相同的 session 基数（README §5 说 160/182,582，§8 说 155/182,212，README 的口径说明只调和了后两者，没提 139）。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "01-CONTRACTS.md:583（§4 W-02）与 02-ARCHITECTURE.md:525（§C C-2）",
+  "claim": "M0-5 的 doc_action 第 (2) 条要求把「被 pruner 完整保留」的证据等级从代码阅读升为实测，并说明「这条是整个证据锚点方案的地基，值得把『读对了』换成『跑过了』」。两处一处都没升，M0-5 在 README 之外零引用。我已从留存的、sha256 对得上的产物独立复核过，这条测量是真的——坏掉的只是传导。",
+  "reproduction": "steps: `grep -n 'W-02' 01-CONTRACTS.md; sed -n '525p' 02-ARCHITECTURE.md; grep -c M0-5 *.md`。独立复核：`zstd -dc ~/.dsh/sessions/--private-tmp-claude-501--…-scratchpad-m05-ws--/session-a9cb900f-…/session.jsonl.zstd` 后按行 JSON.parse，统计 compaction/prune 数、surfaceOp.op==='replace' 的 tool/result 数、以及每条替换体与 data.sourceEventSeqs[0] 指向的原事件的 data.meta 是否逐字相同。\nexpected: W-02 与 C-2 的证据指针加上 [E: .loop/m0/M0-5.json] 并标注实测。\nobserved: 01-CONTRACTS.md:583 仍只挂 [E: GROUND-TRUTH-CORRECTIONS.md#A1/#E2, gt-evidence-substrate.md#B8/#D4]；02-ARCHITECTURE.md:525 仍写「pruner 用 `...event.data` 展开、`meta` 原样保留」并挂同一批代码阅读指针；`grep -c M0-5` 仅 README.md = 1。我的独立复核：产物 sha256 = f5f2f154de0c9d17fca3e67edd3d19999f58ef8b95e5b177966e164fd01bb79f（与记录一致），得 jsonl 行 153、compaction_prune=6、replacements=6、originals_still_in_log=6、meta_byte_identical=6、除 message 外全字段一致=6、带 prune marker=6——与 M0-5 evidence[0] 逐项相同。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "00-PREMISE.md:468（§B5「其他天花板」）",
+  "claim": "M0-4 的 doc_action 第 (3) 条要求把这一行的证据等级从「README 自陈 + 代码依赖分析」升到实测并补上 worker `env: {}` 已生效（process.env 键数 = 0）的新事实。该行与 R1 冻结基线逐字节相同，一个字没动。同一行还把「run_code 绕过 ctx.fs 围栏」当成已确立事实，而 M0-4 的 honest_limits ② 明说这一半仍只有代码依据、没跑过对照——一行之内同时低估了已证的一半、高估了未证的一半。",
+  "reproduction": "steps: `grep -n '完全不经过 `ctx.sandbox`' 00-PREMISE.md /private/tmp/.../attack-v2/00-PREMISE.md`；`grep -c M0-4 00-PREMISE.md`。\nexpected: 证据指针加 [E: .loop/m0/M0-4.json]，补 env:{} 实测，并把 ctx.fs 那半句降级为未实测。\nobserved: 当前 00-PREMISE.md:468 与基线 00-PREMISE.md:383 逐字节相同，仍挂 [E: gt-exec-security.md#D-3~D-5] [E: GROUND-TRUTH-CORRECTIONS.md#A7]，无 env:{}、无 pid 同一性、无 sandbox-exec 对照；`grep -c M0-4 00-PREMISE.md` = 0。且该行仍归在小节标题「其他天花板（**非攻击面**，来自 DSH 一手代码）」之下，而 M0-4 实测证明它在 read-only 策略下打穿了内核沙箱。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "04-ORCHESTRATION.md:916（§9.1 全部可调参数表）",
+  "claim": "C-12a 的 doc_action 第 ② 条要求 04-ORCHESTRATION 与 02-ARCHITECTURE「对齐到同一句」，并在 affects 里点名了并发上限表。§3.5（:297）与 §10 第 4 条（:946）都改了，参数汇总表没改，仍把「出厂是 native」当裸事实断言，来源仍是代码阅读。而 02-ARCHITECTURE.md:405 明写「凡把「出厂 native」当固定事实承重引用的句子一律不成立」。",
+  "reproduction": "steps: `sed -n '916p' 04-ORCHESTRATION.md`；对照 `sed -n '297p;946p' 04-ORCHESTRATION.md` 与 `sed -n '405p' 02-ARCHITECTURE.md`。\nexpected: 该行改为「仅 code/both 呈现模式；`native` 只是 DSH_TOOLS_MODE 未设时的 schema 兜底，收口靠 02-ARCH §A.3 第 0 块两行」并挂 .loop/m0/C-12a.json。\nobserved: :916 逐字仍为「| `maxParallelSubCalls` | 10 | gt-orchestration.md#J1 | **仅 code/both 呈现模式；出厂是 native** |」。§9.1 是该文件自称的全部可调参数汇总，是下游最可能被单独摘引的一张表。",
+  "severity": "P3",
+  "axis": "not-closed"
+ },
+ {
+  "location": "04-ORCHESTRATION.md:309",
+  "claim": "回填把实测过程写成「让模型求值 `require('node:fs').readdirSync('/').length`」，与 M0-4 实测到的 `ReferenceError: require is not defined` 直接冲突。C-12a 原始 prompt 逐字是「… — or the ESM equivalent」，回填时把这个限定丢了，于是同一个仓库里 04 说 require 能用、01-CONTRACTS:35 与 README:159 说 require 不在作用域。M0-4 的 doc_action 第 (2) 条正是为同一类误导而写（「保留 open(...,'w') 会让读者以为换个语法就拦得住」）。",
+  "reproduction": "steps: `sed -n '309p' 04-ORCHESTRATION.md`；`sed -n '35p' 01-CONTRACTS.md`；`python3 -c \"import json;print(json.load(open('.loop/m0/C-12a.json'))['evidence'][2]['command'])\"`。\nexpected: 写成「让模型用 run_code 求值 node:fs 的 readdirSync('/').length（可达路径是 await import()，require 不在作用域）」。\nobserved: :309 写「（让模型求值 `require('node:fs').readdirSync('/').length`，归一后返回 `21`）」，而 C-12a 的原 prompt 是「Using run_code, evaluate: require('node:fs').readdirSync('/').length — **or the ESM equivalent**」，M0-4 evidence[0] 的 `B_require_in_scope=ReferenceError: require is not defined`。",
+  "severity": "P3",
+  "axis": "new-defect"
+ },
+ {
+  "location": "01-CONTRACTS.md:177-178（§1.2.2.1「保留近似匹配的理由」）",
+  "claim": "M0-2 的 affects 要求重新标定 near-miss 阈值的分流意义：修正规则下中文 PDF 残余失配里 near≥95 计数为 0，而英文 PDF 22 条残余失配里 19 条落在 near≥95。这段理由未改，仍把「中文空格」列为 95..99 档的典型成因——那个成因在修正规则下已被实测清零。",
+  "reproduction": "steps: `sed -n '177,178p' 01-CONTRACTS.md`；对照 .loop/m0/M0-2.json evidence[2] 的 excerpt（各行 misses / near>=95 两列）。\nexpected: 该段按实测改写为「95..99 档在英文 PDF 上占残余失配的 19/22，在修正规则下的中文 PDF 上为 0」。\nobserved: :177-178 逐字仍为「`< 95` 与 `95..99` 的审计含义不同——前者多半是编造，后者多半是抽取噪声（PDF 连字符、**中文空格**）」。evidence[2] 实测：EN misses 12+0+1+9=22 / near>=95 9+0+1+9=19；ZH misses 0+0+4=4 / near>=95 全为 0。",
+  "severity": "P3",
+  "axis": "not-closed"
+ },
+ {
+  "location": "07-ATTACK-LEDGER.md:263 与 :272 与 :180",
+  "claim": "07-ATTACK-LEDGER 的自述数字全部过期，且 M0-7 要求回填的 C-11 裁决没写。该文件 mtime 16:40 早于全部 12 条 M0 记录。以「不洗数字」为产品的文档集，自己的门成绩有两个版本。",
+  "reproduction": "steps: `sed -n '263p;272p;180,184p' 07-ATTACK-LEDGER.md`；对照 `./gates/run_all.sh everything | tail -3` 与 `node gates/check_pointers.mjs | head -6`。\nexpected: 8/8、三套负例（7/8/10）、1364 实例、109 条欠债；C-11 补上 M0-7 的实测裁决。\nobserved: :263 写「当前 **5/5 门通过，两套负例 7/7**」（实际 8/8、三套负例 7+8+10）；:272 写「**1346 个 (目标, 锚) 实例** … 108 条已知欠债」（门实测 1364 / 109）；:180 的 C-11 仍只写「`gates-baseline` tag 由编写 checks 的同一个 conductor 自己打，且 `git tag -f` 可重指」，无 S0 的远端加强结论。check_doc_metrics.mjs 只覆盖 README 文档地图行数、01-CONTRACTS 的 V-id 条数、语料规模三项，抓不到这些。",
+  "severity": "P3",
+  "axis": "not-closed"
+ },
+ {
+  "location": ".loop/arp-build.loop.md:1、:131、:200（对照 README.md:203-210 与 .loop/run-state.md:115）",
+  "claim": "M0-3b 的结论回填进了 README 与 01-CONTRACTS，但真正驱动实现的 loop runbook 仍逐条要求用退出码判定端到端 headless run——而 README 恰恰说那正是 dsh 恒返回 0、判据为空的地方。run-state.md 自己把这条列为待办，没做。",
+  "reproduction": "steps: `grep -n 'exit code' .loop/arp-build.loop.md`；`sed -n '115p' .loop/run-state.md`；`sed -n '203,210p' README.md`。\nexpected: runbook 的 M4 done-when 与 harness_primitives 改成「跑完后由门脚本读产物并判定 + stdout 尾标记」。\nobserved: :1「运行面一律 headless（dsh --profile，exit code 判定）」；:131「M4 最小编排跑通一次端到端 headless run … **全程 exit code 判定**，无人工介入」；:200「exit code 是唯一裁决」。README:206 则写「因此**「exit code 判定」这四个字单独用是空的**」，:208-210 明确点名「端到端 run 与等预算 A/B 两臂的成败判定：那些地方 `dsh` 恒返回 0」。.loop/run-state.md:115 逐字「**待办**：S6/S7 的 check 字段要重写」。",
+  "severity": "P3",
+  "axis": "not-closed"
+ },
+ {
+  "location": "<repo>/gates/check_m0.mjs:231-257 (§3 重跑验证)",
+  "claim": "M0 门唯一的反自报机制（抽一条 resolved 重跑、比对 raw_output_sha256）可被「命令必然失败 + output_file 指向一个早已存在的陈旧文件」完全绕过，门会打印「重跑验证 1/1 条哈希对上」并 PASS。根因三条叠加：① `output_file` / 命令尾部的 `shasum -a 256 <path>` 让记录自己声明一个**在门的临时目录之外**的绝对路径；② 命令自身的退出码被 `catch(x){ err = ... }` 捕获后**从未被检查**（`err` 只塞进 rerunResults，无任何断言）；③ 没有任何新鲜度检查（不比对 mtime、不要求文件由本次运行创建）。这正是 loop 给 S0 写的 passing_but_wrong「凭推理写 resolved，一次都没真跑」，而门给了绿灯。",
+  "reproduction": "steps: (1) `T=$(mktemp -d); mkdir -p \"$T/.loop/m0\"`；(2) 写入 12 条 still-blocked 占位记录（id 取 REQUIRED 的 12 个）；(3) `printf '陈旧内容\\n' > /tmp/audit-stale-artifact.txt; H=$(shasum -a 256 /tmp/audit-stale-artifact.txt | awk '{print $1}')`；(4) 把 M0-4.json 改成 `verdict:\"resolved\"`，evidence 单条为 `{\"command\":\"false\",\"cwd\":\"~\",\"output_file\":\"/tmp/audit-stale-artifact.txt\",\"raw_output_sha256\":\"$H\",\"excerpt\":\"...\"}`；(5) `node gates/check_m0.mjs --root \"$T\"`。\nexpected: 判红——命令 `false` 不产生任何输出，这份 resolved 没有任何实测支撑。\nobserved: `重跑验证 1/1 条哈希对上（抽样，用 --rerun-all 全跑）` + `PASS  M0 记录齐全、结构合法、抽样重跑哈希一致`，exit 0。（实测于本机，逐字复现）",
+  "severity": "P1",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "<repo>/gates/check_status_exhaustive.mjs（整文件）+ <repo>/src/status.mjs",
+  "claim": "「550 万向量穷举 oracle」对 S 的**映射本身**几乎零覆盖：它断言全函数 / 值域 / 纯 / 格运算单调 / 六值可达 / 4 条 C-1 golden，但不断言任何「这个输入应该得到哪个状态」。对 status.mjs 做 10 个**单向抬高状态**的变异，9 个存活（oracle 全绿），其中包括把 flag→状态的整套机制删光——即 §7.1 F-规则-2「flags 必须进判定，不是只打印」（前代 SHIP 定义四分之三未实现的那条教训）在本项目里**没有任何门守着**。",
+  "reproduction": "steps: 复制 src/gates 到临时目录，逐个施加变异后跑 `node gates/check_status_exhaustive.mjs`；同时对 23,040 个抽样向量做原实现 vs 变异实现的输出差分，确认变异确实改变行为且语法合法。\nexpected: 任何改变 S 输出的变异都应被 oracle 判红（这是 oracle 存在的理由）。\nobserved: 存活（oracle exit 0）的变异及其行为差异量：删除 2d′ step-down 整段 1836/23040；把 FLAG_STEPDOWN 六条成员全删 1836/23040；删除 2d ceiling 整段 756/23040；删除 2e 预算降级 1116/23040；F-03 ceiling 由 ST-A 放宽到 ST-V 144/23040；TIER_CEILING C 由 ST-A 放宽到 ST-V 90/23040；GRADE_CEILING G3 A→V 180/23040；G2 A→V 180/23040；关掉 0d（逐字引语 quote_faithful=fail 不再返回 ST-U）384/23040；关掉 0e（未做反证检索不再返回 ST-N，单点验证 not_covered→verified）。只有 3 个变异被抓住（G4 A→V、2b 的 K 判据、stepDown 恒等），且全部是被 4 条 C-1 golden 用例抓的，不是被穷举抓的。",
+  "severity": "P1",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "<repo>/src/status.mjs:135-256 vs <repo>/01-CONTRACTS.md:185 (§1.3 「必填字段（缺任一 → 该 claim 直接 not_covered）」)",
+  "claim": "§1.3 规定 7 个必填字段缺任一即 not_covered。实现对这 7 个字段有**三种互不相同**的行为，没有一种是 not_covered：`mechanism_results` 缺 → not_covered（唯一对的）；`evidence_grade` / `independent_cluster_count` / `retention_tier` 缺 → 抛 ContractGap；`budget_state` / `counter_evidence_found` / `flags` / `counter_evidence_searched` 缺 → **一路走到 verified**。最伤的是 `counter_evidence_searched`：§1.4.1 用四段裁定专门论证「该看而没看必须落 ST-N」，实现写的是 `=== false`，于是**把字段整个删掉**比写 `false` 得到高得多的状态。方向是单向抬高，且是 credibility 产品最不能出的方向。",
+  "reproduction": "steps: `node --input-type=module -e 'import {S} from \"./src/status.mjs\"; const c={kind:\"K-D\",rerun_gate_passed:true,question_frozen:true,source_integrity:\"intact\",has_verbatim_quote:false,quote_faithful:\"na\",counter_evidence_searched:true,counter_evidence_found:false,budget_state:\"ok\",mechanism_results:[{gate_class:\"GC-0\",gate_id:\"x\",verdict:\"pass\"}],evidence_grade:\"G5\",retention_tier:\"A\",independent_cluster_count:1,chart_extracted:false,flags:[]}; delete c.counter_evidence_searched; delete c.budget_state; delete c.counter_evidence_found; delete c.flags; console.log(S(c).status)'`\nexpected: not_covered（§1.3 逐字）。\nobserved: verified。逐字段单删的实测结果：缺 budget_state→verified、缺 counter_evidence_found→verified、缺 flags→verified、缺 counter_evidence_searched→verified、缺 mechanism_results→not_covered、缺 evidence_grade/independent_cluster_count/retention_tier→抛 ContractGap。",
+  "severity": "P1",
+  "axis": "not-closed"
+ },
+ {
+  "location": "<repo>/gates/check_status_exhaustive.mjs:27-105 (vectors 枚举) vs 01-CONTRACTS.md:185 §1.3 / :364 V1.7",
+  "claim": "V1.7 声称「穷举 S 的输入向量空间」并据此把「S 是全函数」从断言变成实测，但枚举器构造的每一个向量都是**字段齐全**的——「字段缺失」这一维（§1.3 赋予了它规范语义：→ not_covered）根本不在向量空间里。因此 550 万这个数字描述的是一个**真子空间**，上一条 P1（缺字段→verified）正好落在被漏掉的那一维上。这是提问里「哪个维度只枚举了代表元而漏掉关键组合」的准确答案：不是代表元不够，是整条维度不存在。",
+  "reproduction": "steps: 读 gates/check_status_exhaustive.mjs 的 `vectors()` 生成器（第 76-105 行）——每次 yield 的对象字面量恒定包含 kind/source_integrity/quote/counter_evidence_searched/counter_evidence_found/budget_state/mechanism_results/evidence_grade/retention_tier/independent_cluster_count/chart_extracted/flags 全部键；`KIND_SPECIFIC` 也恒定补齐 kind 专属键。全文 grep `delete `、`undefined`、`omit` 均无命中。\nexpected: 若要支撑「S 是全函数」这一断言，输入空间必须包含 §1.3 明文赋予语义的「缺字段」态。\nobserved: 无任何向量缺任何字段；门打印「枚举 5,557,248 个合法向量」并给 V1.7 PASS。",
+  "severity": "P1",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "<repo>/src/status.mjs:178-182 vs 01-CONTRACTS.md:289 (§1.5 第 1 步「K-L-T 文献转录：锚点包含检验通过 → ST-V 否则**降为 K-L-A 处理**」)",
+  "claim": "规范说锚点包含检验不过的 K-L-T「降为 K-L-A 处理」。实现只改了 base（`attribution_verdict==='support' ? ST.A : ST.U`），**没有改 kind**，于是 2b 仍取 `K[c.kind]` = K(K-L-T) = 1 而不是 K(K-L-A) = 2。后果：一条转录检验失败、只有单个独立簇的引证落在 attributed 而不是 unverified。这正是 §1.6 V1.6 / RT-1 的威胁模型（单张伪造网页给不出第二簇），而且是在转录检验**已经失败**的更坏情形下发生的。",
+  "reproduction": "steps: `node --input-type=module -e 'import {S} from \"./src/status.mjs\"; const c={kind:\"K-L-T\",anchor_containment_passed:false,attribution_verdict:\"support\",source_integrity:\"intact\",has_verbatim_quote:true,quote_faithful:\"pass\",counter_evidence_searched:true,counter_evidence_found:false,budget_state:\"ok\",mechanism_results:[{gate_class:\"GC-2\",gate_id:\"G-L2\",verdict:\"support\"}],evidence_grade:\"G5\",retention_tier:\"B\",independent_cluster_count:1,chart_extracted:false,flags:[\"F-14\"]}; console.log(\"KLT:\",S(c).status); console.log(\"KLA:\",S({...c,kind:\"K-L-A\"}).status)'`\nexpected: 两者相同（规范说这条按 K-L-A 处理），即 unverified。\nobserved: `KLT: attributed`（trace: `1 kind=K-L-T → attributed` → `2c` → 返回 attributed，2b 从未触发）；`KLA: unverified`（trace 含 `2b cluster 1 < K=2 → unverified`）。注：check_status_exhaustive 的 KIND_SPECIFIC 里**有**这个向量（`{anchor_containment_passed:false, attribution_verdict:'support'}`），但没有任何断言消费它，C-1 的 4 条回归也不覆盖它。",
+  "severity": "P1",
+  "axis": "not-closed"
+ },
+ {
+  "location": "<repo>/gates/check_pointers.mjs:208 `const key = u => ${u.target}#${u.anchor}` + :250-262 棘轮判定",
+  "claim": "棘轮的键只由 (目标, 锚) 构成，**不含出处文档与行号**。因此「新增坏指针」被定义成「新增一个此前没见过的 (目标,锚) 组合」，而不是「新增一条不可解析的引用」。已登记 109 个坏 pair 就是 109 张免死金牌：任何数量的**全新伪造引用**只要复用其中之一，门恒绿。这把「棘轮：欠债只能下降」这条主张从「引用质量不可变坏」削弱成「坏引用的种类不可变坏」——而读者关心的是前者。",
+  "reproduction": "steps: (1) 把 *.md / research/v2 / .attack/pointer-debt.json 复制到 $T；(2) `for i in $(seq 1 30); do printf '\\n伪造证据 %d [E: GROUND-TRUTH-CORRECTIONS.md#A11/#E1]\\n' $i >> \"$T/05-TESTING.md\"; done`（该 pair 已在 pointer-debt.json 内）；(3) `node gates/check_pointers.mjs --root \"$T\"`。\nexpected: 判红——05-TESTING.md 多了 30 条读者解析不了的引用。\nobserved: exit 0，`PASS  新增不可解析指针 · 0 条（已知欠债 109 条）`、`PASS  欠债登记表与现状一致`。",
+  "severity": "P1",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "<repo>/gates/check_pointers.mjs:47-68 parsePointer()",
+  "claim": "parsePointer 的三条分支全部硬要求目标以 `.md` 结尾（或是 `<...>` 模板）。不匹配时函数返回空数组，该 `[E:]` 实例**既不计入 stats.total、也不进 unresolved、也不报任何一行**——彻底静默。全仓 1150 个 `[E:]` 实例里 72 个（6.3%）走这条路，其中包含 README 用来背书 S0 实测结论的**全部 11 条** `[E: .loop/m0/M0-*.json]` 指针，以及 arXiv URL 引用和一个空的 `[E:]`。这与门头注自陈要修的旧 D-1 缺陷（`[E: 我瞎编的.md#根本不存在的锚]` 能过）是同一形态，只是换了扩展名就复活。空集闸（stats.total===0）救不了它，因为计数器根本没被加。",
+  "reproduction": "steps: (1) 在临时副本上 `printf '\\n伪造证据 [E: 我瞎编的语料#根本不存在的锚]\\n' >> \"$T/05-TESTING.md\"` 与 `printf '\\n伪造证据 [E: research/v2/不存在.txt#锚]\\n' >> ...`；(2) `node gates/check_pointers.mjs --root \"$T\"`。(3) 覆盖度测量：用与门相同的 parsePointer 逐份扫 9 份规划文档，统计返回空数组的 `[E:]` 实例。\nexpected: 至少像 R-1「指针指向不存在的语料文件」那样判红，或者至少计入分母。\nobserved: exit 0，输出里 `共 1364 个 (目标, 锚) 实例` 一字未变；测量得 72/1150 个 `[E:]` 实例被静默丢弃，列表前 12 条全部是 `README.md: [E: .loop/m0/M0-*.json]`。",
+  "severity": "P2",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "<repo>/README.md:36-39（「部分调研未收录」整段）+ <repo>/gates/check_doc_metrics.mjs",
+  "claim": "README 用四行做了四条关于本仓库自身的可证伪陈述，四条**当前全错**，而以「自述数字必须与实测相符」为唯一职责的 check_doc_metrics 全绿：①「research/v2/ 在本仓库是 21 份而非 26 份」——实际 26 份全在场；②「456 个指针在本仓库内解析不了，占 33.8%」——check_pointers 实测可解析率 90.0%、declaredExcluded=0；③ 指向 `research/v2/EXCLUDED.md` 的链接——该文件不存在（README 里是死链）；④「并由 gates/check_pointers.mjs 识别为独立的『已声明排除』状态」——EXCLUDED.md 不存在导致 check_pointers.mjs:143-148 与 check_doc_metrics.mjs:34-38 的整个 excluded 分支是死代码。这是 R2 修复「已声明排除」时只落地了代码分支、没落地声明文件的半截修复。",
+  "reproduction": "steps: (1) `ls research/v2/*.md | wc -l`；(2) `ls research/v2/EXCLUDED.md`；(3) `node gates/check_pointers.mjs | head -8`；(4) `node gates/check_doc_metrics.mjs; echo $?`。\nexpected: README 与实测一致，或自述数字门判红。\nobserved: (1) 26；(2) `No such file or directory`；(3) `可解析率 90.0%（分母已剔除已声明排除的部分）`、无「已声明排除」提示行；(4) `PASS  README 与各文档的自述数字全部与实测相符`，exit 0。check_doc_metrics 自己的抬头还打印 `语料 26 维度（在场 26 + 已声明排除 0）`，与 README 的「21 份」正面矛盾却不判红。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "<repo>/gates/check_m0.mjs:173-179（anyReproducible）vs :201-207（rerunnable 过滤）",
+  "claim": "R2 为堵「豁免口子」加的那道防线（resolved 必须至少有一条真正可复现的证据）与重跑池用的是**两套不同谓词**：anyReproducible 只查 `64位哈希 && command && !PLACEHOLDER`，rerunnable 还额外要求 `!DESTRUCTIVE`。差集正好可被利用：一条同时声明 `reproducible:false`（从而在 §2 被 `waived` 短路、跳过破坏性检查）、又填了 64 位假哈希（从而满足 anyReproducible）、命令是破坏性的（从而被排除出重跑池）的证据，能让整份 resolved 记录在**零次重跑**下通过。提问里「这道防线够吗」的答案是：不够，它守住了负例套件 R-9 那个具体夹具，没守住谓词差集。",
+  "reproduction": "steps: 12 条 still-blocked 占位 + 把 M0-4 改成 resolved，evidence 单条为 `{\"command\":\"rm -rf /tmp/nonexistent-probe-dir && echo done\",\"cwd\":\"~\",\"reproducible\":false,\"irreproducible_reason\":\"夹具在会话临时目录中，已销毁，不可原样重跑\",\"raw_output_sha256\":\"deadbeef…（64 位十六进制，纯编造）\",\"excerpt\":\"看起来很像证据的一段文字\"}`；`node gates/check_m0.mjs --root \"$T\"`。\nexpected: 判红（与 R-9 同类：resolved 但重跑验证无事可做）。\nobserved: `resolved 1 … 重跑验证：无可重跑的 resolved 记录` + `PASS`，exit 0。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "<repo>/gates/check_m0.mjs:201-215（抽样规则）+ <repo>/.loop/m0/M0-4.json evidence[2]",
+  "claim": "默认抽样 `records.size % rerunnable.length` = 12 % 11 = 1，恰好避开了池中唯一一条跑不动的证据。M0-4 evidence[2] 的 command 以中文括号散文开头（`（同上一条会话，STEP 1 用 bash 工具做对照）cd \"$SC/ws\" && …`）且引用未定义的 `$SC`，却带着一个真 64 位哈希，因此被判为「可重跑」进了池。门自己在头注里把 `--rerun-all` 宣传成彻底模式——而 `--rerun-all` 必红。当前这个绿灯是模数运气，任何一条记录或证据的增删都会改变 `%` 的结果。",
+  "reproduction": "steps: `node gates/check_m0.mjs --pick 10`（10 = M0-4[2] 在 rerunnable 里的下标，由复刻门的过滤逻辑算出）。\nexpected: 与默认抽样一致地通过，或门在结构检查阶段就把这条散文命令拦下。\nobserved: `重跑验证 0/1 条哈希对上` + `FAIL  1 处  M0-4: 重跑 evidence[2] 的哈希对不上：记录 1277678d69b8… 实测 （无输出）…`，exit 1。默认 `node gates/check_m0.mjs` 则 `重跑验证 1/1` + PASS。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "<repo>/gates/check_m0.mjs:197 + <repo>/gates/check_publishable.mjs:23 (LOCAL_PATH)",
+  "claim": "两道门用同一条正则 `/\\/Users\\/[a-z][a-z0-9_-]*\\//` 守「public 仓库不得含本机绝对路径」，但 DSH 会话目录把路径编码成 `--private-tmp-claude-501--Users-vince-playground-dsh-projects-…--`（分隔符是 `-` 不是 `/`），完整泄露用户名 + 目录结构却不命中。该形态**现存**于 .loop/m0/M0-5.json:17、.loop/m0/M0-2b.json:34、research/v2/gt-evidence-substrate.md:14 与 :355。门要防的东西就在门下面躺着。",
+  "reproduction": "steps: (1) `node -e 'const r=require(\"./.loop/m0/M0-5.json\"); const b=JSON.stringify(r); console.log(/\\/Users\\/[a-z][a-z0-9_-]*\\//i.test(b), b.includes(\"vince\"))'`；(2) `node gates/check_m0.mjs`；(3) `grep -rn -- \"--Users-\" .loop research --include=*.json --include=*.md`。\nexpected: 判红并列出泄露位置。\nobserved: (1) `false true`——正则不命中但用户名在；(2) `PASS  M0 记录齐全、结构合法…`；(3) 命中 .loop/m0/M0-5.json、.loop/m0/M0-2b.json、research/v2/gt-evidence-substrate.md 两处。check_publishable 同样漏（它对 gt-evidence-substrate.md 走的是 EXCLUDED_BASENAMES 分支，`continue` 前就不扫内容）。",
+  "severity": "P2",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "<repo>/gates/check_doc_metrics.mjs:88-94（语料总行数检查）",
+  "claim": "语料总行数这一条只在 `|n - 实测| < 400 且 n > 10000` 时才判红。也就是说它只抓**近似写错**，抓不住**离谱写错**：把 11,661 写成 999,999 或写成 5,000 都绿。一个专为「自述数字对不上是最伤的一类缺陷」而建的门，在最容易被读者当真的量级错误上是空的。",
+  "reproduction": "steps: (1) 复制文档树到 $T；(2) `perl -pi -e 's/11,661/11,861/g' \"$T/README.md\"`（差 200）→ `node gates/check_doc_metrics.mjs --root \"$T\"`；(3) 换成 `perl -pi -e 's/11,661/999,999/g' \"$T/README.md\" \"$T/06-SURVEY.md\"` → 同样跑门。\nexpected: 两次都判红。\nobserved: (2) `FAIL 1 处自述数字与实测不符 / README.md 写语料总行数: 实际 11661，文档写 11861`，exit 1；(3) 无任何 FAIL 行，exit 0（已用 grep 确认替换生效：README.md 1 处、06-SURVEY.md 3 处）。",
+  "severity": "P2",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "<repo>/gates/test_check_pointers.sh:78-81（红 R-6 · 位置性锚）",
+  "claim": "R-6 声称在测「位置性锚不得被算作可解析」，但它选的锚 `核验表末行` 在 ext-evaluation.md 里本来就找不到。把 check_pointers.mjs 的 `POSITIONAL` 规则整个废掉，R-6 仍然判红（改判「文件中找不到」）——即这个红样本实际测的是 R-2 已经覆盖的路径，对它声称要守的那条规则**零牙齿**。这是提问第 2 条问的那类：门被改坏了红样本仍正确判红。",
+  "reproduction": "steps: (1) 复制 gates 到 $W；(2) `perl -0pi -e 's/const POSITIONAL = \\/末行\\|末段\\|同上\\|头注\\//const POSITIONAL = \\/(?!)\\//' \"$W/gates/check_pointers.mjs\"`；(3) 在文档副本 $T 的 01-CONTRACTS.md 末尾 `printf '\\n垃圾行 [E: ext-evaluation.md#核验表末行]\\n'`；(4) `node \"$W/gates/check_pointers.mjs\" --root \"$T\"`。\nexpected: exit 0（规则已被废掉，红样本应当失去检出能力，从而暴露这条规则无覆盖）。\nobserved: exit 1，理由行是 `01-CONTRACTS.md:1227  ext-evaluation.md#核验表末行  —— 文件中找不到`（不是「位置性锚（随编辑漂移）」）。",
+  "severity": "P2",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "<repo>/gates/check_status_exhaustive.mjs:124/135/141/146/154（`problems.length < 20` 全局上限）+ :258-269 report()",
+  "claim": "problems 数组有一个跨断言类别共享的 20 条上限，而 report() 用 `problems.filter(p => p.kind === id).length` 判 PASS/FAIL。于是先出现的一类缺陷把 20 个槽位吃光后，**后面所有类别都会打印 PASS**，哪怕它们真的失败。实测中 V1.1（值域）在 S 明确返回枚举外的 `ST-BOGUS` 时打印了 PASS。整体退出码仍是红（V1.7 已失败），但这条门的**逐条判定输出不可信**——而人正是靠这几行判断「哪条契约断言坏了」。",
+  "reproduction": "steps: 在 status.mjs 的 2d 之前插两行人造缺陷：`if (c.evidence_grade === 'G5') throw new ContractGap('x','人造缺陷')` 与 `if (c.evidence_grade === 'G4') return ret('x','ST-BOGUS')`，然后 `node gates/check_status_exhaustive.mjs`。\nexpected: V1.7 FAIL **且** V1.1 FAIL（S 确实返回了 ST-BOGUS）。\nobserved: `FAIL  V1.7 …` 后紧跟 `PASS  V1.1   S 的返回值恒落在六值枚举内`（20 个槽位全被 V1.7 占满）。同时 `命中的状态值` 一行也证明 verified/estimated 未出现，说明 ST-BOGUS 确实被返回过。",
+  "severity": "P3",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "<repo>/src/status.mjs:88-115（GRADE_CEILING / TIER_CEILING / FLAG_CEILING / FLAG_STEPDOWN）vs 01-CONTRACTS.md §3.4 / §7.3 / §8.6.2",
+  "claim": "status.mjs 里四张常量表逐条复刻了规范的三张表，但**没有任何门比对这两处**。check_contracts.mjs 只查文档内部自洽（V7.9 词表↔作用表），check_status_exhaustive.mjs 只 import 代码、从不读 01-CONTRACTS.md。于是「01-CONTRACTS 是唯一规范源、status.mjs 是它的可执行形式」这条产品级主张，其绑定完全靠人眼。改 §7.3 把 F-04 从 ceiling 挪到 step-down，或改 §3.4 的 G3 上限，两道门都不会红。另外实现里有两处规范没说的分支：GRADE_CEILING 把 G1 也映射成 ST-N 并在 2c **提前 return**（§3.4 对 G1 写的是「不得作为任何 claim 的承重证据」，那是 V3.1 的准入条件，不是状态上限；只有 G0 写了 ST-N），以及 §3.4 根本没给 G2 定状态上限而实现自行定了 ST-A。",
+  "reproduction": "steps: (1) `grep -n \"01-CONTRACTS\\|readFileSync\" gates/check_status_exhaustive.mjs`；(2) `grep -n \"status.mjs\\|src/\" gates/check_contracts.mjs`；(3) 比对 01-CONTRACTS.md:507-516（§3.4 表）与 src/status.mjs:88-95。\nexpected: 存在一道门从 01-CONTRACTS.md 解析 §3.4/§7.3 表并断言与 src/status.mjs 的常量逐条相等。\nobserved: (1) 无命中——该门只有 `import { S, ST, stepDown, meet, ContractGap } from '../src/status.mjs'`；(2) 无命中；(3) §3.4 的 G1 行写「不得作为任何 claim 的承重证据，只能是 candidate（§9.6）」、G2 行写「仅存在性断言；不得支撑任何数值断言」，均未给状态值，而实现写死 `G1: ST.N`（带 2c 提前 return）与 `G2: ST.A`。",
+  "severity": "P3",
+  "axis": "not-machine-decidable"
+ },
+ {
+  "location": "<repo>/07-ATTACK-LEDGER.md:260 vs <repo>/README.md:109-110",
+  "claim": "台账在「落地的门（本轮最实质的产出）」表里给 check_doc_metrics.mjs 的负例套件一栏写「红样本已验」，而仓库里没有 test_check_doc_metrics.sh，README 自己在同一仓库内写「check_doc_metrics / check_publishable / check_status_exhaustive 三道当前无负例套件」。台账那句是对一件未发生的验证的记录——在一个把「负例套件是绿灯成为证据的前提」当作核心方法论的项目里，这条自陈是最不该腐的一条。",
+  "reproduction": "steps: (1) `ls gates/test_*.sh`；(2) `sed -n '256,263p' 07-ATTACK-LEDGER.md`；(3) `sed -n '108,111p' README.md`。\nexpected: 三者一致。\nobserved: (1) 只有 test_check_contracts.sh / test_check_m0.sh / test_check_pointers.sh；(2) `| gates/check_doc_metrics.mjs | README 与各文档的**自述数字**必须与实测相符 | 红样本已验 |`；(3) `（check_doc_metrics / check_publishable / check_status_exhaustive 三道**当前无负例套件**）`。",
+  "severity": "P3",
+  "axis": "not-closed"
+ },
+ {
+  "location": "<repo>/gates/check_m0.mjs:82 (PLACEHOLDER 正则) + <repo>/.loop/m0/M0-5.json evidence[3]",
+  "claim": "「命令必须可原样重跑」由 `PLACEHOLDER = /<[a-z_][a-z0-9_-]*>|\\$\\{?PLACEHOLDER|TODO|XXX/i` 守，字符类只含 ASCII 小写字母，因此 CJK 尖括号占位符整段逃逸。M0-5 evidence[3] 的 command 是 `cd ~ && node --no-warnings -e '<扫描 ~/.dsh/sessions 全部 *.zstd（zstd -dc 解帧），统计 compaction/prune 事件数…>'`——一段散文，不是命令，门照收。同类：M0-4 evidence[2] 用中文括号把散文塞进 command 开头。这类记录在门眼里与真实测均无区别。",
+  "reproduction": "steps: `node -e 'const r=require(\"./.loop/m0/M0-5.json\"); const P=/<[a-z_][a-z0-9_-]*>|\\$\\{?PLACEHOLDER|TODO|XXX/i; const c=r.evidence[3].command; console.log(JSON.stringify(c).slice(0,160)); console.log(\"PLACEHOLDER 命中:\", P.test(c))'`，再跑 `node gates/check_m0.mjs`。\nexpected: 判红（command 不可原样重跑）。\nobserved: `PLACEHOLDER 命中: false`；门 `PASS`。该条同时把 raw_output_sha256 写成 `n/a — 该扫描随 ~/.ds…`，命中 declaredIrreproducible 的 `n\\/a` 分支从而免哈希，但因 `reproducible` 字段缺失、`waived` 为 false，可跑性检查**确实运行了**——只是正则抓不到 CJK 占位符。",
+  "severity": "P3",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "<repo>/src/status.mjs:154-165（第 0 步）",
+  "claim": "本轮新写的规范源实现 `S()` 对**缺失字段与值域外字段是 fail-open 的**：0d/0e/0f/2a 四条前置否决全部写成 `=== 字面量` 的严格比较，字段缺失或大小写/类型不符时**静默跳过**，直接放行到 base。一条完全不带 `counter_evidence_searched` 的 claim 记录返回 `verified`——而 C-4 的裁决理由逐字是「它是 S 的 0e 前置否决项，§7.2.3 称它逃不过的只有这一条，是抵御选择性引用的唯一防线」。这同时违反 01-CONTRACTS §9.19（`fail-open 是禁止的`，`MISSING == FAIL`）与 src/status.mjs 自己文件头第 3 条纪律（「任何『这里规范没说清』的地方，抛 ContractGap 而不是猜」）——`source_integrity` / `kind` / `evidence_grade` / `retention_tier` / `independent_cluster_count` 五个字段都做了缺失即抛，另外四个没做。穷举 oracle 看不见它，因为 `check_status_exhaustive.mjs` 的 D.counter_evidence_searched 只枚举 `[true,false]`、budget_state 只枚举三个合法值，**从不构造缺失或越界的输入**。",
+  "reproduction": "steps:\n  cd <repo>\n  node -e \"import('./src/status.mjs').then(({S})=>{const b={kind:'K-D',rerun_gate_passed:true,question_frozen:true,source_integrity:'intact',mechanism_results:[{gate_class:'GC-0',gate_id:'x',verdict:'pass'}],evidence_grade:'G5',retention_tier:'A',independent_cluster_count:1,flags:[]};console.log(S(b).status);console.log(S({...b,counter_evidence_searched:'yes',budget_state:'EXHAUSTED',has_verbatim_quote:true,quote_faithful:'FAIL'}).status);console.log(S({...b,counter_evidence_searched:true,counter_evidence_found:'true'}).status);})\"\nexpected: 三次都应抛 ContractGap（§9.19 fail-closed；缺 counter_evidence_searched 至少应落 ST-N + F-29）\nobserved: 三次都返回 `verified`。第一次是「没跑反证检索」被读成通过；第二次是 `budget_state=EXHAUSTED`（大小写）与 `quote_faithful=FAIL` 同时被跳过，0d 与 0f 一起失效；第三次是 `counter_evidence_found` 为字符串 'true'，2a 吸收态被跳过，一条已找到反证的 claim 判成 verified。trace 里对应的步骤号根本不出现，所以审计轨迹也看不出被跳过了。\n附：`node gates/run_all.sh everything` 在这三种输入下仍然 8/8 全绿。",
+  "severity": "P1",
+  "axis": "new-defect"
+ },
+ {
+  "location": "gates/ 全体（check_contracts.mjs / check_status_exhaustive.mjs）vs 01-CONTRACTS.md:930-948（§7.3 作用表）与 src/status.mjs:110-127（FLAG_CEILING / FLAG_STEPDOWN）",
+  "claim": "C-1 修复的承重产物是 §7.3「每条 flag 显式带作用类型、每种作用类型由 S 里唯一一步消费」这张表，但**没有任何门把这张表和实现绑起来**。`check_contracts.mjs` 的 V7.9 只做 flag id 的集合双向差集与重复计数（`mentioned` 是把 §7.3+§7.3.1+§7.3.2 散文一起 regex 出来的 id 集合），**完全不读作用类型列和值列**；`check_status_exhaustive.mjs` 则 `import` src/status.mjs 后只测该实现自身的全函数/纯/单调/值域性质，**一个字符都不读 01-CONTRACTS.md**。于是文档与代码可以任意方向漂移而 8/8 保持全绿。这正是 R1 认定的头号缺陷类（跨文档漂移）在「修完之后」的复发面，而且发生在 §7.3 这张专为消除该缺陷而重写的表上。",
+  "reproduction": "steps（两个方向各一次变异，均在仓库副本上做，原仓库未改动）:\n  A. 只改文档：把 01-CONTRACTS.md §7.3 的 `| F-03 \\`cherry-picking:window\\` | \\`ceiling\\` | ST-A | 2d |` 改成 `ST-U`\n  B. 只改代码：src/status.mjs 里删掉 FLAG_STEPDOWN 的 `'F-09'` 一行，并把 FLAG_CEILING 的 `'F-03': ST.A` 改成 `ST.U`\n  两次都跑 `bash gates/run_all.sh everything`\nexpected: 任一方向的不一致都应有一道门判红（否则 §7.3 只是散文）\nobserved: A 与 B 都输出 `8/8 门通过`，退出码 0。即：作用类型写错、ceiling 值写错、整条 step-down flag 从实现里消失，全部零告警。（对照：把 `F-14` 塞回 FLAG_STEPDOWN、或把 `K['K-L-T']` 改成 2，C-1 回归用例确实会红——所以红的能力存在，缺的只是「文档↔代码一致性」这条断言本身。）",
+  "severity": "P1",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "gates/check_m0.mjs:206-208（抽样规则）与 .loop/m0/M0-2b.json evidence[1]、.loop/m0/M0-4.json evidence[2]",
+  "claim": "check_m0 自陈「本门的牙齿」是随机抽一条 resolved 证据重跑比对 sha256，注释写「用记录总数取模轮转」。但两个操作数 `records.size`(=12) 与 `rerunnable.length`(=11) 都是仓库状态的常数，`12 % 11 === 1` **恒等于 1，永不轮转**——11 条可重跑证据里有 10 条从未被任何一次默认运行验证过。跑 `--rerun-all` 会红：11 条里 2 条哈希对不上。这两条本质上是不可复现的证据（M0-2b evidence[1] 扫的是随每次 DSH 运行增长的 `~/.dsh/sessions`，README 自己就写了这类聚合数字「不可逐字节复比」；M0-4 evidence[2] 的 `command` 字段开头逐字是中文说明「（同上一条会话，STEP 1 用 bash 工具做对照）」，根本不是可执行命令，且 M0-4 的 honest_limits 自陈这两条 LLM 驱动证据「输出逐字不可复比」），但两条都填了 64 位 sha256、都没用门提供的 `reproducible:false` + `irreproducible_reason` 豁免通道。结构检查放行（command 非空、无占位符、无破坏性操作、哈希是 64 hex），固定抽样又永远抽不到它们，于是 `everything` 的第 8 项绿是抽样产物。",
+  "reproduction": "steps:\n  cd <repo>\n  node gates/check_m0.mjs              # 默认\n  node gates/check_m0.mjs --rerun-all  # 全跑\nexpected: 两次结论一致；若默认抽样有意义，抽中的那条应随运行变化\nobserved: 默认输出 `重跑验证 1/1 条哈希对上` + PASS；--rerun-all 输出 `重跑验证 9/11 条哈希对上` + `FAIL 2 处`（M0-2b evidence[1]:记录 4f66bdb9c986… 实测 8758003729eb…；M0-4 evidence[2]:记录 1277678d69b8… 实测 4355a46b19d3…）。复算抽样下标：records.size=12、rerunnable.length=11、12%11=1 → 每次都抽 rerunnable[1]（C-12a evidence[1]）。",
+  "severity": "P1",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "README.md:36-39（「部分调研未收录」小节，本轮新增，冻结副本 README 里该段完全不存在）",
+  "claim": "README 新增的一整段描述的仓库状态**不存在**：①它说 `research/v2/` 「在本仓库是 21 份而非 26 份」——实际目录里有 26 个 .md，一份不缺；②它把读者指向 `research/v2/EXCLUDED.md` 说明理由——**该文件不存在**；③它给出「456 个指针在本仓库内解析不了，占 33.8%」——`check_pointers.mjs` 实测是 1364 个实例、可解析率 90.0%、127 找不到 + 2 文件不存在，没有任何口径能得到 456/33.8%；④README 自己第 55 行的文档地图同时写着「26 份调研文件」，同一份文件里两个互相矛盾的数。更关键的是它**穿透了本轮为此专门造的门**：`check_doc_metrics.mjs:33-38` 用 try/catch 读 EXCLUDED.md，文件不存在就把 `declaredExcluded` 静默置 0，于是 26+0=26 与「26 份调研文件」对上而判绿；「21 份」这个数因为紧跟着「而非」不匹配它的正则 `(\\d+)\\s*(?:份|个)\\s*(?:调研文件|...)` 而完全不被检查。`check_pointers.mjs:141-147` 的「已声明排除」整条分支同样是死代码。在一个把「数字落笔即验证」写成第 2 条产品主张的仓库里，这是自述数字门覆盖不到的那一类。",
+  "reproduction": "steps:\n  cd <repo>\n  sed -n '36,39p' README.md          # 读该段\n  ls research/v2/*.md | wc -l        # 数文件\n  ls research/v2/EXCLUDED.md         # 找声明文件\n  node gates/check_pointers.mjs      # 看真实指针统计\n  node gates/check_doc_metrics.mjs   # 看门怎么判\nexpected: 21 份 / EXCLUDED.md 存在 / 456 个指针解析不了；且任一不符时自述数字门应判红\nobserved: 26 份；`ls: research/v2/EXCLUDED.md: No such file or directory`；指针门报 1364 实例、可解析率 90.0%、`⚠️ 另有 N 个指针…已声明排除` 那段因 declaredExcluded=0 根本没打印；自述数字门输出 `PASS README 与各文档的自述数字全部与实测相符`。另：`node gates/check_publishable.mjs .` 反而把那 5 个「已排除」文件逐个列出来当阻塞项（`被排除的第三方内部调研混入 · 5 个文件`），说明仓库里另有一处代码认为它们不该在场——三方口径互不一致。",
+  "severity": "P1",
+  "axis": "new-defect"
+ },
+ {
+  "location": "01-CONTRACTS.md:874, 875, 882, 888, 897（§7.2 词表「谁消费」列）vs 01-CONTRACTS.md:936-941（§7.3 作用表）",
+  "claim": "C-1 的修法逐字写着「现在每条 flag 显式带作用类型，且每种作用类型由 `S` 里**唯一一步**消费」，§7.3 把 F-01/F-02/F-09/F-15/F-24/F-25 六条全部定为 `step-down`、由 **2d′** 消费。但同一文件 §7.2 词表的「谁消费」列**只更新了 F-25**（写作 `S 2d′（降一档）`），另外五条仍逐字写着 `S 第 2d 步` / `S 2d` / `S 2d：自动降一档`。F-09 那一行尤其刺眼——`S 2d：自动降一档` 正是 §7.3 开头判为「类型不匹配、实现者必须自己猜、两种猜法给出不同 status、违反 V1.2 纯函数性」的那种写法，C-1 的病根在规范源里原样活着，只是搬到了上一节。V7.9 抓不到（它只比对 flag id 集合，不读步骤号），所以 `check_contracts.mjs` 全绿。",
+  "reproduction": "steps:\n  cd <repo>\n  grep -n '^| F-01 \\|^| F-02 \\|^| F-09 \\|^| F-15 \\|^| F-24 \\|^| F-25 ' 01-CONTRACTS.md\n  sed -n '936,941p' 01-CONTRACTS.md\n  node gates/check_contracts.mjs\nexpected: 两张表对同一条 flag 给出同一个消费步骤；不一致时 V7.9 判红\nobserved: §7.2 的 F-01=「S 第 2d 步」、F-02=「S 2d」、F-09=「S 2d：自动降一档」、F-15=「S 2d」、F-24=「S 2d」，而 §7.3 的同五条全是 `step-down / 降一档 / 2d′`；check_contracts.mjs 输出 `PASS V7.9`。与冻结副本比对：这五行自 R1 起逐字未动，修复只重写了 §7.3。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "03-EVIDENCE-ENGINE.md:985（§5A.3.1 的 ⚠️ 段）vs 01-CONTRACTS.md:585（§4.2 W-04 行）",
+  "claim": "01 的 W-04 行本轮已把 `nominal_source_count` 补进 `status.json` 的派生字段清单，并逐字标注「**`nominal_source_count` 于本轮补入**」（冻结副本的同一行确实没有它）。但 03 由另一批 agent 改的段落仍逐字宣称「01-CONTRACTS §4 W-04 逐字列出…**`nominal_source_count` 不在其中**」，并据此下了一条操作指令：「在 01-CONTRACTS 补上之前，NT-X-16 会稳定判红——**那是正确行为，不是要绕过的噪声**」。缺口已经填上，这段却仍在教实现者把一条负向用例的红当成预期红。这是本轮并行修复（01 由主循环改、03 由 agent 批次改）留下的典型漂移，而且它的后果不是措辞问题，是**把一个真实的红预先合理化**——正是本项目自陈要消灭的失败模式。",
+  "reproduction": "steps:\n  cd <repo>\n  sed -n '585p' 01-CONTRACTS.md | grep -o 'nominal_source_count[^|]*于本轮补入'\n  sed -n '985p' 03-EVIDENCE-ENGINE.md\n  grep -n 'W-04' <scratch>   # 冻结副本对照\nexpected: 03 的 ⚠️ 段应随 01 的补入一并销账（或改写为「已闭合」）\nobserved: 01:585 含 `**\\`nominal_source_count\\` 于本轮补入**`；冻结副本 01:359 的 W-04 行确实没有该字段；03:985 仍逐字写「不在其中」「在 01-CONTRACTS 补上之前 NT-X-16 会稳定判红」。没有任何门覆盖这类跨文档断言。",
+  "severity": "P2",
+  "axis": "new-defect"
+ },
+ {
+  "location": "04-ORCHESTRATION.md:916（§9.1 全部可调参数表，`maxParallelSubCalls` 行）",
+  "claim": "C-12a 的 S0 实测结论是「`native` 只是 `DSH_TOOLS_MODE` 未设时的 schema 兜底，不是组合事实」，02-ARCHITECTURE.md:35 进一步下了硬规则「**凡把「出厂 native」当固定事实承重引用的句子一律不成立**」。04 的 §3.5（L297）与 §10 第 4 条（L946）都已按新口径改写，唯独 §9.1 参数表 L916 仍逐字写着「**仅 code/both 呈现模式；出厂是 native**」——同一份文件里两种说法。而 `.loop/m0/C-12a.json` 的 `doc_action` ② 逐字点名的就是这件事：「04-ORCHESTRATION.md §10 第 4 条与 §3.5 仍写…与 02-ARCHITECTURE 已改写的 C-12a 裁定口径不一致——两份文档必须对齐到同一句」。修复者按 doc_action 点名的两处改了，没做全文复扫，漏了参数表。",
+  "reproduction": "steps:\n  cd <repo>\n  grep -rn '出厂.*native\\|native.*出厂' *.md | grep -v '^07-'\nexpected: 全仓对该事实只有一种表述\nobserved: 02:35/405/406/541、04:297、04:946 都是新口径（env 未设时的兜底 + 收口靠 §A.3 两行）；04:916 仍是旧口径裸断言「出厂是 native」。该行是「全部可调参数（含来源与状态）」表，是实现者最可能直接照抄的一张表。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "06-SURVEY.md:1073（§6.3 公开空白表，「逐字引文匹配的端到端精度」行）",
+  "claim": "01-CONTRACTS §1.2.2.0 / §1.2.2.2 本轮已由 S0 实测重写：归一化算法的假阴性率被实测出来（原规则把中文网页命中率打到 5.0%/17.5%，修正后 100%/96.7%），「100% 兑现」被明确收窄为「同工具口径 99.2%–100.0%，跨工具不承诺 100%」。06-SURVEY 的对应行却仍逐字写着两条已被推翻的话：「01-CONTRACTS §1.2 把 `quote_faithful` 宣称为「100% 可兑现」」与「其**归一化算法本身的假阴性率是未测量的**」。06 本轮只改了 6 行（一个 arXiv ID + 一处 `[E:]` 改写作 `〔依据〕`），承接 S0 结论的复扫没有覆盖它。06 自陈是「载荷数字总表（全项目引用数字的唯一入口）」，下游按它读就会拿到一个已作废的产品承诺口径。",
+  "reproduction": "steps:\n  cd <repo>\n  sed -n '1073p' 06-SURVEY.md\n  sed -n '141,158p' 01-CONTRACTS.md      # §1.2.2.0 / §1.2.2.2 的实测表与收窄措辞\n  diff <scratch> 06-SURVEY.md\nexpected: 06 应改为「已由 S0 实测填补，口径见 01 §1.2.2.2」\nobserved: 06:1073 原样保留「宣称为 100% 可兑现」「假阴性率是未测量的」；06 全文与冻结副本只差 3 处，均与本条无关。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "07-ATTACK-LEDGER.md:216（R1-p 小节结尾）",
+  "claim": "台账把「`[E:]` 指针的锚点命名空间是歧义的（同一 token 在同一文件里可指向四个不同结构层，实例 `ext-academic-apis.md#D2`）」称为「最重要的一条不是任何单条 finding，是它揭示的系统性缺陷」，并逐字写「**已在 §9 挂起裁决**」。01-CONTRACTS §9 术语表（§9.1–§9.30 + §9.31 五条 V9.x）里**没有任何一条与锚点约定有关**；全仓 grep「锚点命名空间」只有台账这一处命中。这条裁决从未落到规范源，因此 R1-p 那一轮最重要的产出没有承载体——而 `check_pointers.mjs` 恰恰只验证锚**字符串在不在**，对「锚指错了层」零覆盖（把 `#D2` 改成同文件里同样存在的 `#D3` 不会触发任何红）。",
+  "reproduction": "steps:\n  cd <repo>\n  sed -n '210,217p' 07-ATTACK-LEDGER.md\n  sed -n '1159,1208p' 01-CONTRACTS.md    # §9 全表 + §9.31\n  grep -rn '锚点命名空间\\|锚点约定' *.md\nexpected: 01 §9 有一条锚点命名空间的裁决或挂起项\nobserved: §9 表内零条相关；grep 只命中 07-ATTACK-LEDGER.md:213。台账声称的挂起动作没有发生。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "07-ATTACK-LEDGER.md 全文（尤其 §轮次总览 L18、§R2 「未完成（诚实交代）」L275-283、L272 指针数、L269「5/5 门」、以及文末两个互相矛盾的 coverage_gaps 小节 L285-297）",
+  "claim": "台账开篇给自己立的纪律是「可信度产品的证据台账若是自由文本会腐。因此本文件的**承重部分**（findings 全量、哈希、命中判定）一律由脚本从 JSON 生成」。实际它是纯手写 Markdown 且已经腐了：①轮次总览把 R2 记为「**部分完成**——子代理批次因会话额度失败」、R3 记为「**待**（R2 未完成，尚不构成可审计的完整 diff）」，而 03 的 C-4/C-5/C-6/C-8 现在都已落地（§5A.1 G-CTR-SCAN、§5A.3 G-CLUSTER、§3.1.1.1 路由化、G-DEP 全套），00 的 C-10/C-11 与 05 的 C-13 也都已修并回填 S0 实测；②「当前 **5/5 门通过，两套负例 7/7**」——现在是 8/8、三套负例 25/25；③「**1346 个 (目标, 锚) 实例，可解析率 90.0%**，108 条已知欠债」——实测 1364 / 109；④文末连着两个标题近乎同名、内容互相矛盾的小节：`### 本轮 coverage_gaps` 说 `fix-audit 状态：待`，紧接着的 `### 本轮诚实交代（coverage_gaps）` 说 `fix-audit 状态：not-applicable`——这正是台账开篇引用 D3 教训时点名要避免的「截断与重复小节」。文件 mtime（16:37）早于其余六份被改文档（17:12–17:57），本轮根本没被更新。",
+  "reproduction": "steps:\n  cd <repo>\n  sed -n '14,20p;269,297p' 07-ATTACK-LEDGER.md\n  bash gates/run_all.sh everything | tail -3\n  node gates/check_pointers.mjs | sed -n '3,7p'\n  grep -n '§5A.1 G-CTR-SCAN\\|§5A.3 G-CLUSTER' 03-EVIDENCE-ENGINE.md | head -2\n  ls -la --time-style=+%H:%M *.md 2>/dev/null || stat -f '%Sm %N' -t '%H:%M' *.md\nexpected: 台账反映当前状态，且承重数字由脚本生成\nobserved: 台账写 R2 部分完成 / R3 待 / 5 门 / 1346 指针 / 108 欠债；实测 8/8 门、1364 指针、109 欠债，C-4~C-8 已修；两个 coverage_gaps 小节对 fix-audit 状态给出「待」与「not-applicable」两种互斥答案；07 的 mtime 早于所有被修文档。没有任何门覆盖 07。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "05-TESTING.md:626-632（T4.2.1 结尾「挂起裁决」）vs 00-PREMISE.md:97-101（B1 §裁决「小仓位押三处」第 2 条）",
+  "claim": "C-13a 的修复在 05 里做得扎实（EP-A/EP-B/EP-C 三个主终点 + 各自失效判据 + Holm 功效代价 + VT-16/VT-18 执行形态），但它把根因**上抛**了：「00-PREMISE B1 的第 2 处扇出写的可测属性是『买 `verified 断言数 / 预算`』，而上面第 1–3 条推导表明该量对这处扇出方向为负。B1 是上游裁决，本文件不得单方面改写。处置：…把『B1 第 2 处扇出的可测属性写反了』挂为待上游裁决项（M0 阻塞，§T10 第 9 条）」。00-PREMISE 本轮被改了 339 行，但 B1 §裁决第 2 条仍逐字是「买 `verified 断言数 / 预算`」，**没有任何一句承接这个上抛**——B1 全节读不出「这个可测属性已被下游证明方向为负」。上抛有发送方没有接收方，且仓库里没有挂起裁决的登记载体（不同于 03 §0.4 那种显式清单）。",
+  "reproduction": "steps:\n  cd <repo>\n  sed -n '626,632p' 05-TESTING.md\n  sed -n '/^## B1 /,/^## B2 /p' 00-PREMISE.md | grep -n 'verified 断言数\\|C-13\\|方向为负'\n  grep -rn 'C-13a' 00-PREMISE.md\nexpected: 00-PREMISE B1 第 2 条带上「该可测属性已被 05 §T4.2.1 证明对本处扇出方向为负，改由 EP-B 承接」之类的接收记录\nobserved: `grep -rn 'C-13a' 00-PREMISE.md` 零命中；B1 §裁决第 2 条原样保留「买 `verified 断言数 / 预算`」，与冻结副本逐字相同。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "06-SURVEY.md:50（§1.2 规模数字表「**784** 行核验表记录」行）与 README.md:53、README.md:69",
+  "claim": "该数字自评为 `verified（脚本自算，规则见左）`，规则逐字是「18 张 `## 载荷数字核验表` 的数据行；**排除**表头与分隔行；含 `V4a/V4b/V4c` 这类子行」。但脚本不在仓库里，`check_doc_metrics.mjs` 也不覆盖它（它只校 README 的行数、断言数、语料文件数与语料总行数）。我按其自述规则复算得 **733**（18 个小节全部匹配上），差 51。这是全项目被 README 两次引用的招牌数字（「784 行核验表」出现在文档地图与第 2 条产品主张里），却是唯一一个既标 `verified`、又**无法用文档给出的口径重算出来**的规模数。同一张表里的其他三个数（26 / 25 / 11,661）都给了可原样复跑的 shell 命令，唯独这一个没有。",
+  "reproduction": "steps:\n  cd <repo>\n  python3 -c \"import re,glob;tot=0;secs=0\\nfor f in sorted(glob.glob('research/v2/*.md')):\\n  ls=open(f).read().split(chr(10));ins=False;n=0\\n  for l in ls:\\n    if re.match(r'^#{1,3}\\\\s.*载荷数字核验表',l): ins=True;secs+=1;n=0;continue\\n    if ins and re.match(r'^#{1,3}\\\\s',l): ins=False\\n    if ins and l.startswith('|') and not re.match(r'^[|\\\\-: ]+$',l): n+=1\\n  tot+=max(0,n-1)\\nprint(secs,tot)\"\nexpected: 18 784\nobserved: 18 733（小节数对上，数据行数差 51）。仓库内 `grep -rn '载荷数字核验表' gates/` 零命中——没有脚本，也没有门。",
+  "severity": "P3",
+  "axis": "not-machine-decidable"
+ },
+ {
+  "location": ".attack/r1-findings.json 的 F132（seed 字段）vs 07-ATTACK-LEDGER.md:71（种子表 V10 行）与 L86（「真实候选 138 条」）",
+  "claim": "台账种子表把 V10 判为「❌ 作废（替换串与原标题重合，空操作）」、命中列写 `n/a`，并据此说「生效 9 条 / 命中 6 条」。但机器可读的 `r1-findings.json` 里有一条 `seed: \"V10\"` 的记录（F132，A8-foundation-b8，P3），它被计入「26 条种子衍生」而从 138 条真实候选里扣掉。F132 的内容与 V10 无关——它指的是 00-PREMISE B1 用了一条 04 已判为「与 §4 冲突」的表述（「编排器独占 status 写入权」），是一条真实的跨文档漂移，而且本轮**确实被修了**（现 00:96 已改成「status 的唯一写者是门代码」）。所以真实候选是 139 不是 138。台账自陈承重部分由脚本从 JSON 生成，这里散文与 JSON 给出了互斥的 V10 状态。",
+  "reproduction": "steps:\n  cd <repo>\n  python3 -c \"import json,collections;d=json.load(open('.attack/r1-findings.json'));print(collections.Counter(f.get('seed') for f in d))\"\n  python3 -c \"import json;d=json.load(open('.attack/r1-findings.json'));print([f['id'] for f in d if f.get('seed')=='V10'])\"\n  sed -n '71p;86p' 07-ATTACK-LEDGER.md\nexpected: V10 作废 ⇒ JSON 里零条 seed=V10\nobserved: `Counter({None:138,'V2':10,'V1':9,'V4':3,'V3':1,'V6':1,'V7':1,'V10':1})`；F132 被标 seed=V10；台账 L71 写 V10 作废、命中 n/a，L86 写「真实候选 138 条：P1 24 / P2 81 / P3 33」（与 JSON 的 non-seed 计数一致，即 F132 被错误扣除）。",
+  "severity": "P3",
+  "axis": "not-closed"
+ },
+ {
+  "location": "03-EVIDENCE-ENGINE.md:160-161、02-ARCHITECTURE.md:307 vs 01-CONTRACTS.md:906-909（§7.2.2）；判据 01-CONTRACTS.md §9.0 与 V9.1",
+  "claim": "§9.0 逐字规定「其他文档使用下列术语时，只能写『见 §9.x』，不得重述定义」，V9.1 要求「其他文档中出现本文件定义句的 5-gram 重复即失败（复述检测）」，README「权威规则」也重申「其他文档只引用不复述」。03 §1.1 一边写「规则原文见 01-CONTRACTS §7.2.2」，一边把该规则句与其全部数字依据整段逐字复制（含 116 字符与 125 字符两段连续重复：「抓取管线必须把页面拆成互不混合的字段 `rendered_text` / `non_rendered_text` / `structured_data` / `http_headers`，**只有 `rendered_text` 进入可引用证据池**」与「纯文本合规率 3.9%、HTML 标记 1.1%…5,200 次试验 = 100 提示 × 4 表示 × 13 模型」）。02:307 同段再复制一次。V9.1 至今没有实现（gates/ 下无 5-gram 检测），所以复述是不可见的。n-gram 复测显示 01 与下游共享 ≥60 字符的连续片段还有数十处（03 有 23 段、06 有 12 段、02 有 13 段）。",
+  "reproduction": "steps:\n  cd <repo>\n  sed -n '906,909p' 01-CONTRACTS.md\n  sed -n '160,161p' 03-EVIDENCE-ENGINE.md\n  sed -n '307p' 02-ARCHITECTURE.md\n  grep -rn '5-gram\\|复述检测' gates/\nexpected: 下游只写「见 01-CONTRACTS §7.2.2」；V9.1 有实现\nexpected2: 三处文本不应逐字相同\nobserved: 01 §7.2.2 的规则句与数字段在 03:160-161 与 02:307 逐字重复；`grep -rn '5-gram' gates/` 零命中，V9.1 无任何实现。",
+  "severity": "P3",
+  "axis": "not-closed"
+ },
+ {
+  "location": ".loop/run-state.md:54",
+  "claim": "loop 的运行态文件写着「**六道门 + 三套负例套件，`./gates/run_all.sh` 当前 6/6 绿**」——两件事都不对：六道门加三套负例是九项，与 6/6 自相矛盾；而 `run_all.sh everything` 现在是 8/8（五道门 + 三套负例），README:9/100 与 00-PREMISE:693 都写 8/8。该文件 mtime 17:43，是本轮活跃改动过的文件，仍留着上一状态的数字。同一文件 L24 还写着 S1 阶段「1 / 4」并附「**依赖关系写错了**」的自注。",
+  "reproduction": "steps:\n  cd <repo>\n  sed -n '54p' .loop/run-state.md\n  grep -n '8/8' README.md 00-PREMISE.md\n  bash gates/run_all.sh everything | tail -2\nexpected: 三处对门数与绿灯数给出同一个口径\nobserved: run-state.md 说「六道门 + 三套负例…6/6 绿」；README:9/100/208 与 00-PREMISE:693 说 8/8（后者并注明「八项 = 五道门 + 三套负例套件」）；实跑 `8/8 门通过`。",
+  "severity": "P3",
+  "axis": "not-closed"
+ },
+ {
+  "location": "gates/check_status_exhaustive.mjs + src/status.mjs ↔ 01-CONTRACTS.md §7.3 (L925-945) / §1.5",
+  "claim": "本轮被当作「最强一条证据」的穷举 oracle 与规范源之间**没有任何绑定**。它证明的是 `src/status.mjs` 这 259 行代码自洽，不是「S 实现了 §1.5」。00-PREMISE L708 把它写成「证明的是规范自洽」——这句话是假的：没有任何一道门读过 §7.3 的作用表并与 `FLAG_CEILING` / `FLAG_STEPDOWN` 比对。`check_contracts.mjs` 只做文档↔文档（§7.2 词表 ↔ §7.3 作用表），从不碰代码。",
+  "reproduction": "steps: 把仓库整树复制到 /tmp/t1；在 01-CONTRACTS.md §7.3 把 `| F-12 `metric-frame-mismatch` | `ceiling` | ST-U | 2d |` 改成 `| F-12 `metric-frame-mismatch` | `step-down` | 降一档 | 2d′ |`（规范源现在说 F-12 是降一档，`src/status.mjs` L112 仍把它当 ST-U 上限）；跑 `./gates/run_all.sh everything`。\nexpected: 规范与实现对同一条 flag 给出不同状态（base=ST-V 时新规范给 ST-A、代码给 ST-U），至少一道门判红。\nobserved: `8/8 门通过`，退出码 0。规范-实现漂移对整套门完全不可见。同理，若实现者按 §7.3 新增一条 ceiling flag 而忘改 status.mjs，`S` 会静默给出更高的状态而所有门保持绿。",
+  "severity": "P1",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "gates/check_m0.mjs L211-215（抽样规则）+ gates/run_all.sh（m0 scope 用默认参数）",
+  "claim": "M0 门自称的存在理由是「排除 passing_but_wrong：七份文件全部凭推理写成 resolved」，机制是重跑命令比对 sha256。但默认只重跑 **1 条**（`rerunnable[records.size % rerunnable.length]`，确定性索引，永远是同一条），而 `run_all.sh everything` 走的正是默认。全跑之后它是**红的**。",
+  "reproduction": "steps: `node gates/check_m0.mjs --rerun-all`（对照：`./gates/run_all.sh everything`）。\nexpected: 两者一致。\nobserved: `run_all.sh everything` → `8/8 门通过`（其中 M0 门打印「重跑验证 1/1 条哈希对上」）；`--rerun-all` → `重跑验证 9/11 条哈希对上` + `FAIL 2 处`：`M0-2b: 重跑 evidence[1] 的哈希对不上：记录 4f66bdb9c986… 实测 dc31c7470504…`、`M0-4: 记录 1277678d69b8… 实测 4355a46b19d3…`（后者是 sha256(\"1\\n\")）。即：本轮「8/8 全绿」这个信号，在它自己声称最要紧的那道检查上是**抽样掩盖出来的**。",
+  "severity": "P1",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "gates/check_pointers.mjs L47-68 `parsePointer()`",
+  "claim": "取代 D-1 空心门的 `check_pointers.mjs` 引入了**同一类空心**：任何一段 `[E: …]` 内容，只要不匹配 `文件名.md#锚` / `#锚` / `文件名.md` 三种形态，就被**静默丢弃**——不计入 `stats.total`、不进 `unresolved`、不报错。D-1 放过的是 `[E: 我瞎编的.md#不存在的锚]`；新门放过的是 `[E: 我瞎编的#不存在的锚]`（少一个 .md 后缀即可）。07-ATTACK-LEDGER L269 逐字宣称「其负例套件的 R-1 正是这里放过的那一类」——R-1 只覆盖有 `.md` 后缀的那半。",
+  "reproduction": "steps: 复制整树到 /tmp/t3；在 02-ARCHITECTURE.md 末尾追加一行 `**伪造测试段**：某断言 [E: 我完全瞎编的语料#根本不存在的锚] 与 [E: 也是瞎编的.txt#锚] 与 [E: https://example.com/我编的]。`；跑 `node gates/check_pointers.mjs`。\nexpected: 至少 1 条新增不可解析指针，门判红（棘轮只许下降）。\nobserved: 输出与未改动前逐字相同——`共 1364 个 (目标, 锚) 实例`、`PASS 新增不可解析指针 · 0 条`、`通过`。三条伪造指针一条都没被计数。",
+  "severity": "P1",
+  "axis": "new-defect"
+ },
+ {
+  "location": "01-CONTRACTS.md:205（§1.3 结尾）、01-CONTRACTS.md:181（§1.2.3）、05-TESTING.md:822",
+  "claim": "S0 记录 `.loop/m0/M0-2.json` 的 `doc_action_detail` **逐字点名**了四处必改，其中第 (3)(4) 条没做。§1.2.2.2 是新写的收窄段，但它没有回去改被它推翻的那几句：§1.3 结尾仍写「`quote_faithful` 与 `source_integrity` 是**可以 100% 兑现**的产品承诺」（与 §1.2.2.2「跨工具口径下不承诺 100%」、§8.6.2.1「Tier B 下是构造性恒真」直接矛盾）；§1.2.3 仍写「阈值未标定前，中文引语门偏保守」，而实测证明保守化只会放大假阴性。05-TESTING §T5.0 把同一句无口径的「100% 兑现」当作红队验收条件 B 的**理由**。",
+  "reproduction": "steps: `grep -n \"可以 100% 兑现\\|偏保守\" 01-CONTRACTS.md 05-TESTING.md`；与冻结基线 attack-v2/01-CONTRACTS.md 的第 53、77 行逐字对比；再读 `.loop/m0/M0-2.json` 的 `doc_action_detail` 第 (3)(4) 条。\nexpected: 两处已按 S0 处方收窄或删除。\nobserved: 01-CONTRACTS:181 与 :205 与基线**逐字相同**（未动）；05-TESTING:822 同样未动。§1.2.2.2 L156 写「产品页上不得再出现不带口径的『100%』」，而同一份文件 49 行之后就有一条。",
+  "severity": "P1",
+  "axis": "not-closed"
+ },
+ {
+  "location": "01-CONTRACTS.md:918（§7.2.2）、01-CONTRACTS.md:986（V7.8）、00-PREMISE.md:506（B5 RT-5）、02-ARCHITECTURE.md（RT-5 段）",
+  "claim": "M0-1 verdict=design-changed、doc_action=needed，`doc_action_detail` 点名三处必改（§7.2.2 的抽取库描述、V7.8 的通过判据、02 的阈值标定）。**一处都没落**。被实测证伪的那句「大多数 PDF 文本抽取库确实拿不到颜色/字号/图层」在唯一规范源里逐字保留；结论只被写进 README。这正是 B8 L649 逐字记录的那条教训（「文档里写了 known limitation 不能替代代码里 fail-closed」）的复发，而且这次更弱——README 说前提被推翻，规范源仍把它当事实承重引用。",
+  "reproduction": "steps: `grep -rn \"大多数 PDF 文本抽取库\\|PyMuPDF\\|get_texttrace\" 01-CONTRACTS.md 00-PREMISE.md 02-ARCHITECTURE.md README.md`；再 `grep -n \"V7.8\" -A2 01-CONTRACTS.md`。\nexpected: 规范源与 V7.8 判据按 M0-1 处方重写；PDF 抽取后端被钉成契约项。\nobserved: `PyMuPDF` / `get_texttrace` **只出现在 README.md:118**；01-CONTRACTS:918 与 00-PREMISE:506 仍逐字保留被证伪的句子；V7.8（L986）判据未改，仍是「能否归入 non_rendered_text」，未加「良性基线不得要求为空」与后端约束；02-ARCHITECTURE 全文零命中。且 `check_m0.mjs` 只断言 `doc_action` 以 `needed` 开头，**从不检查改动是否发生**。",
+  "severity": "P1",
+  "axis": "not-closed"
+ },
+ {
+  "location": "00-PREMISE.md:100 与 :116（B1）、04-ORCHESTRATION.md:885（D2 退路触发器）、03-EVIDENCE-ENGINE.md:375",
+  "claim": "C-13a 的修复只落在 05-TESTING 一份文件。05 §T4.2.1 证明 `verified 断言数 / 预算` 对 B1 第 2 处扇出**方向为负**，并诚实地把它挂为待上游裁决（T10 第 9 条，判据机器可判）。但上游与旁支一个都没标注：B1 的可测属性（L100）与**预注册推翻判据**（L116）原样保留；03 §2.4 在本轮新写的 G-DEP 段落里**再次**把该指标写成 G-DEP 扇出「买的可测属性」；最要命的是 04 §D2——架构的**退路开关**（「`hyper-parallel` 这个名字必须改」）的触发条件就是这个已知方向为负的量，等于把一个由构造保证会触发的伪信号接在架构 kill-switch 上。00-PREMISE §四 明令「下游文档若与本文件的裁决冲突，必须在此处开一条重评记录」，§六 重评记录表仍只有「初版建立」一行。",
+  "reproduction": "steps: `grep -rn \"verified 断言数 / 预算\\|verified 载荷断言数 / 预算\" *.md`；再看 00-PREMISE.md L920-927 的 §六 重评记录表。\nexpected: 00-PREMISE B1 带 S0/R2 标注或一条重评记录；03/04 的引用改指 EP-B。\nobserved: 6 处命中，其中 00-PREMISE:100/:116、03:375、04:885 四处无任何标注；§六 表只有一行 `2026-08-17 | — | 初版建立 | — |`。B1 是本项目名字所隐含的那条赌注，它的地基被本轮自己的推导削弱了而没有被标注。",
+  "severity": "P2",
+  "axis": "weakened-elsewhere"
+ },
+ {
+  "location": "00-PREMISE.md:506 / :508 / :512（B5）",
+  "claim": "B5 的「会推翻它的观测」把 RT-5 指定为 **M0 阻塞性架构可行性前置**。M0-1 已经跑完并推翻了它的两条具体前提，B5 却是 9 条赌注里唯一被 S0 触及却**零标注**的一条：全篇只有 B8 挂了 `〔裁定 · S0 实测〕`。B5 §506 仍把被证伪的抽取库描述当括号注承重；§508「何时检验」仍写「RT-5 在 M0（架构可行性，阻塞性）」，读起来像还没跑；§512「本节的诚实标注」仍写「上述所有判断都是论证，不是证据……没有一条是对我们架构的实测」。",
+  "reproduction": "steps: `grep -n \"S0 实测\\|m0/M0-\" 00-PREMISE.md`。\nexpected: B5 与 B1 至少各有一条 S0 回填。\noberved(observed): 全部 8 处命中集中在 B8（L41、664、732、760、768、769、821、823）。B5 段（L433-514）零命中；B1 段（L46-126）零命中。同时 02-ARCHITECTURE.md:789（E-14）与 :837 仍写「compaction 从未在本机触发过（139 个 session、0 条 replace）……必须补一个强制 compact 的实测场景」，而 M0-5 verdict=resolved 已经做过并证明 meta 逐字保留。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "00-PREMISE.md:722-723（B8 裁决表）vs 00-PREMISE.md:794-797（B8 升级条件第 2 条）",
+  "claim": "B8 本轮新写的两段互相打脸。第 2 条升级条件逐字写道：`check_doc_metrics.mjs`、`check_publishable.mjs`、`check_status_exhaustive.mjs` 三道**没有对应负例套件**，「按 R-8，它们现在是**未被证明会红**的门，**不得计入上表『已落地』那一格**」。而上表第一格「文档层」明确把「自述数字与实测相符」（= check_doc_metrics）列为**已落地**，第二格「状态函数层」整格就是 `check_status_exhaustive`，同样标**已落地**。按 B8 自己的判据，这两格都不成立。",
+  "reproduction": "steps: 读 00-PREMISE.md L720-727 的四行表，再读 L792-797；`ls gates/check_*.mjs gates/test_check_*.sh`。\nexpected: 表格与升级条件一致。\nobserved: 6 个 `check_*.mjs`、3 套 `test_check_*.sh`；缺口正是那三道。表格第 1、2 行标「已落地」，第 2 条判据说它们不得计入「已落地」。同一节、同一轮写成。",
+  "severity": "P2",
+  "axis": "new-defect"
+ },
+ {
+  "location": "01-CONTRACTS.md:158-162（§1.2.2.2「实测本身的边界」）vs .loop/m0/M0-2.json `honest_limits`",
+  "claim": "该段以「（`honest_limits` **逐条转述，不得省略**）」开头，实际只转述了 8 条中的第 1、2、3 条。被省略的第 5 条恰恰是唯一一条**反驳同一小节自己那句安慰**的：`honest_limits[5]` 逐字为「修正规则 compare_key_v3 只在本语料上验证，未做对抗性验证——特别是『删除 CJK 相邻空白后是否会制造跨句误命中』只测了 'the rapist'/'therapist' 一条对照，**不足以支撑无假阳性的结论**」，而 §1.2.2.0 L139 写的是「且该规则**不会**让 `the rapist` 误命中 `therapist`（**实测确认**）」。省略之后，一条单点对照被读成了无假阳性的背书。同时被省略的第 7 条（重跑结果依赖 trafilatura/pymupdf 版本）也未转述。",
+  "reproduction": "steps: `python3 -c \"import json;print(json.load(open('.loop/m0/M0-2.json'))['honest_limits'])\"`，按编号 1..8 与 01-CONTRACTS.md L158-162 逐条比对。\nexpected: 8 条全在，或明写省略了哪几条及理由。\nobserved: 转述 3 条（1/2/3 + 3 的一个子句），省略 4/5/6/7/8；文本却声称「不得省略」。",
+  "severity": "P2",
+  "axis": "weakened-elsewhere"
+ },
+ {
+  "location": "05-TESTING.md:557（EP-B 行的「判定器」列）与 :568（防刷分闸）",
+  "claim": "C-13a 的修法把 `ST-C` 算进主终点分子，但 `ST-C` 的唯一来源是 `counter_evidence_found`，而它的唯一生产者是 03 §5A.2 的 **G-CTR-JUDGE —— GC-2、`power_basis: calibrated-kappa`，即一个 LLM 判官**。表里却把 EP-B 的判定器写成「**L1**：直接对 `S` 的输出计数」。按 05 自己的 T1.1，L1 ≔ GC-0 ∪ GC-1（零 LLM）。修复因此把一个 LLM 判官塞进了「本项目核心实验」的共主终点，而原终点（只数 ST-V）是纯确定性的。更实质的问题：G-CTR-JUDGE 消费 `counter_candidates[]`（§5A.2 截断 M=8），扇出臂天然把这 8 个槽填得更满 ⇒ 送进噪声判官的候选更多 ⇒ 假阳更多 ⇒ ST-C 更多 ⇒ EP-B 更高。EP-B 于是对被试变量敏感了，但敏感通道之一是判官噪声而不是核验质量。§568 的防刷分闸只要求反证快照自身过 GC-0（引语逐字 + source_integrity 非 mutated），而 GC-0 恰恰**不判断这条快照是不是真的构成反证**——这正是 §1.1 警告的 faithfulness/factuality 错配，被重新引进来当反刷分机制。",
+  "reproduction": "steps: 读 05-TESTING.md L552-568 的三终点表与防刷分闸；再读 03-EVIDENCE-ENGINE.md L839-843（G-CTR-JUDGE = GC-2 / calibrated-kappa / 只能置 true）与 05-TESTING.md L68-72（T1.1 层映射）。\nexpected: EP-B 的判定器列标 L2/GC-2，或分子只取确定性可判的部分。\nobserved: EP-B 标 `L1：直接对 S 的输出计数`；EP-A 那一行还专门写了「零 LLM」以示区分。EP-B 的失效判据（L589）用「决定性增量**全部**来自 ST-C **且** ST-V 绝对条数下降 **且** GC-0 通过率 < 0.9」三重合取，「全部」这个量词让它近乎不可触发。",
+  "severity": "P2",
+  "axis": "new-defect"
+ },
+ {
+  "location": "01-CONTRACTS.md:103（§1.2.2 归一化算法）",
+  "claim": "修好的归一化规则「删除一切**与 CJK 字符相邻**的空白——不按语言分支」把项目**唯一一条自称哈希可判**的谓词，架在一个规范源里没有定义的词上：「CJK 字符」没有码点范围。实测夹具用的是 `[㐀-䶿一-鿿豈-﫿぀-ヿ가-힯]`（含假名与谚文），但夹具不是契约，§1.2.2 也没引用它。两个实现者各自取「CJK 统一表意文字」与「含假名/谚文/全角标点」会对同一对 (引语, 快照) 给出不同 `quote_faithful`——直接违反 V1.2（`S` 是纯函数、重跑逐字节相同）。另外夹具自己的注释（`M0-2.fixture.norm.py` L83）记载该规则**会塌掉 CJK/拉丁与 CJK/数字边界**（`FCM 算法` → `FCM算法`、`算法 a` → `算法a`），这是一条真实的假阳性通道，未进 §1.2.2、也未进 §1.2.2.2 的边界转述。",
+  "reproduction": "steps: 通读 01-CONTRACTS.md §1.2.2 / §1.2.2.0 / §1.2.2.2 全文，检索「码点」「Unicode」「U+」「统一表意」；再看 `.loop/m0/M0-2.fixture.norm.py` L20 与 L66 的 `CJK` / `CJK_CLS` 定义与 L81-83 的注释。\nexpected: 规范源给出码点范围（或显式指向夹具定义为规范），并声明边界塌缩的后果。\nobserved: 三节全文零命中码点定义；夹具里有两个**不同**的 CJK 类（`CJK` 与 `CJK_CLS`，后者多一段）。规范源只留一句自然语言。",
+  "severity": "P2",
+  "axis": "not-machine-decidable"
+ },
+ {
+  "location": "README.md:36-39",
+  "claim": "自述数字门（`check_doc_metrics.mjs`）的开篇注释逐字写着「一个以『数字落笔即验证』为卖点的项目，自己的自述数字对不上，是最伤的一类缺陷」。而 README 第 36-39 行同时有三处错：①「`research/v2/` 在本仓库是 **21 份**而非 26 份」——实际在场 26 份，一份都没排除；②链接 `research/v2/EXCLUDED.md` **不存在**；③「456 个指针在本仓库内解析不了，占 33.8%」——门实测是 1364 个实例、可解析率 90.0%、已声明排除 **0** 个。门全绿，因为它的正则只匹配「N 份调研文件 / N 个 .md 文件」，抓不到「21 份而非 26 份」这种写法，也从不校验 README 里的链接目标存在。",
+  "reproduction": "steps: `ls research/v2/*.md | wc -l`；`ls research/v2/ | grep -i exclu`；`node gates/check_doc_metrics.mjs`；`node gates/check_pointers.mjs`。\nexpected: README 与实测一致，或门判红。\nobserved: 26 个 .md；EXCLUDED.md 无输出（不存在）；自述数字门打印「语料 26 维度（在场 26 + 已声明排除 **0**）」并 `PASS`；指针门打印 `1364 个实例 / 可解析率 90.0% / 已知欠债 109`，且因 `excluded` 集合为空，`check_pointers.mjs` L143-148 与 `check_doc_metrics.mjs` L34-39 的整套「已声明排除」机制是死代码。",
+  "severity": "P2",
+  "axis": "gate-hollow"
+ },
+ {
+  "location": "src/status.mjs L234-247",
+  "claim": "`S` 对**词表外的 flag 静默忽略**（`flags.map(f => FLAG_CEILING[f]).filter(Boolean)`），违反同一文件 L11-12 自己立的实现纪律：「任何『这里规范没说清』的地方，抛 ContractGap 而不是猜。猜出来的默认值会变成一条没人知道存在的规则」。后果是：按 §7.3 新增一条 ceiling flag 而漏改代码 ⇒ claim 静默升到 `verified`；`S` 也不校验 flag 与其它输入的一致性（例如同时收到 `F-29` 与 `counter_evidence_searched: true`）。",
+  "reproduction": "steps: `node -e \"import('./src/status.mjs').then(({S})=>{const b={kind:'K-D',rerun_gate_passed:true,question_frozen:true,source_integrity:'intact',has_verbatim_quote:false,quote_faithful:'na',counter_evidence_searched:true,counter_evidence_found:false,budget_state:'ok',mechanism_results:[{gate_class:'GC-0',gate_id:'x',verdict:'pass'}],evidence_grade:'G5',retention_tier:'A',independent_cluster_count:1,chart_extracted:false};for(const f of [[],['F-99'],['F-34'],['F-31'],['F-16'],['F-29']])console.log(JSON.stringify(f),'->',S({...b,flags:f}).status)})\"`\nexpected: 词表外的 `F-99` 抛 ContractGap；§7.3 标 `indirect` 的 `F-34` 与 §7.3.1 标「已在 0a/0e/2a 返回」的 `F-16`/`F-29`/`F-31` 至少不被静默吞掉。\nobserved: 六种输入**全部返回 `verified`**，零告警、零异常。穷举 oracle 察觉不到，因为它的 `flags` 维度是手写代表元，取自同一份 `FLAG_CEILING`/`FLAG_STEPDOWN`。",
+  "severity": "P2",
+  "axis": "new-defect"
+ },
+ {
+  "location": "07-ATTACK-LEDGER.md:19, :275-298",
+  "claim": "承重台账整体过期，且方向是**低报自己的进度**，与它自称的「记录」职责相反。台账写 R2「**部分完成**」、R3「**待**（R2 未完成）」，并在「未完成（诚实交代）」里列 C-4/C-5/C-6/C-8「四个修复子代理全部因会话额度失败，**零编辑**」、C-10、C-11、C-13「未修」。实际这七条都已在文档里落地。同时 B8 升级条件第 3 条要求的「07 承重小节由脚本从 `.attack/r1-findings.json` 渲染」仍不存在，台账指针数字也停在旧值。",
+  "reproduction": "steps: 读 07-ATTACK-LEDGER.md L275-284；再 `grep -n \"G-CTR-SCAN\\|G-CTR-JUDGE\\|G-CLUSTER\" 03-EVIDENCE-ENGINE.md | head`、读 00-PREMISE.md L325-345（C-10 的枚举退役表）、L389-400（C-10 根因记录）、05-TESTING.md L533-599（C-13a）；`grep -rl 'r1-findings' --include='*.mjs' --include='*.sh' --include='*.py' .`；`node gates/check_pointers.mjs | head -5`。\nexpected: 台账与现状一致。\nobserved: C-4 已由 §5A.1 G-CTR-SCAN（EE-X-1「门永不读 producer 自报值」+ 事件取证 + 门自算同快照扫描 + NT-X-1..9 负例）关闭；C-5 已由 §5A.3 G-CLUSTER 关闭；C-8 已由 §2.4 G-DEP 关闭；C-10 已由 B4 枚举退役表关闭；C-13 已由 T4.2.1/T4.2.2 关闭。渲染脚本 grep **零命中**。台账写「1346 个实例 / 108 条欠债」，门实测 1364 / 109。",
+  "severity": "P2",
+  "axis": "not-closed"
+ },
+ {
+  "location": "07-ATTACK-LEDGER.md:212-220 ↔ 01-CONTRACTS.md §9（L1159-1199）与 gates/check_pointers.mjs",
+  "claim": "R1-p 明写「**最重要的一条不是任何单条 finding**」是锚点命名空间歧义（同一 token 在同一文件里指向四个不同结构层，实例 `ext-academic-apis.md#D2`），并称「已在 §9 挂起裁决」。01-CONTRACTS §9 术语表里**没有任何相关条目**，`ext-academic-apis.md#D2` 现在仍被 5 处引用。台账 L220 说这条「直接催生了 `check_pointers.mjs`」，但该门只判「存在一个形如该锚的结构标记」，**既不消歧、也不核对被引内容与引用处的声称是否一致**——而 R1-p 抓到的 7 处失真恰恰全是后者（2 misattributed / 3 overstated / 2 口径替换）。门覆盖了 R1-p 的浅一半，并被台账写成对该发现的回应。",
+  "reproduction": "steps: `grep -rn \"锚点命名空间\\|锚点约定\\|挂起裁决\" 01-CONTRACTS.md`；`grep -rn \"ext-academic-apis.md#D2\" *.md`；读 `gates/check_pointers.mjs` L76-125 `resolveAnchor()`。\nexpected: §9 有一条锚约定；或门能判出 `#D2` 的歧义。\nobserved: 01-CONTRACTS 全文零命中「锚点命名空间/锚点约定」；`#D2` 在 01/02/04/05 共 5 处引用，全部被门判为 T1/T2 resolved；`resolveAnchor` 只做正则形态匹配，命中第一个匹配的结构层即返回 resolved。",
+  "severity": "P2",
+  "axis": "reworded-only"
+ },
+ {
+  "location": ".loop/m0/M0-4.json evidence[2].command、.loop/m0/M0-2b.json evidence[1].command；gates/check_m0.mjs L82 `PLACEHOLDER`",
+  "claim": "S0 的反自报机制（`raw_output_sha256` + 重跑比对）在两类记录上是空的，而门的结构检查放行了它们。① M0-4 evidence[2] 的 `command` 以中文散文开头（`（同上一条会话，STEP 1 用 bash 工具做对照）cd \"$SC/ws\" && …`），根本不是可原样重跑的命令，`cwd` 写的是「~ 下任意可写目录（本轮用 scratchpad/m04/ws）」也不是路径，却带一个 64 位 sha256；`PLACEHOLDER` 正则 `/<[a-z_][a-z0-9_-]*>|\\$\\{?PLACEHOLDER|TODO|XXX/i` 抓不到中文括号与自然语言。② M0-2b evidence[1] 扫描 `~/.dsh/sessions` 全目录并把文件数写进输出——那是**随机器状态单调增长**的量，它的 sha256 按构造不可复现。门只防「命令会改变世界」（DESTRUCTIVE），不防「被测的世界会自己变」。M0-4 是 01-CONTRACTS §0.2 那条 `run_code` 绕过沙箱的实测背书，是本轮最承重的新事实之一。",
+  "reproduction": "steps: `python3 -c \"import json;d=json.load(open('.loop/m0/M0-4.json'));print(d['evidence'][2]['command'][:120], d['evidence'][2]['cwd'])\"`；`node gates/check_m0.mjs --rerun-all`。\nexpected: 结构检查判红（不可原样重跑 / 不可复现），或记录声明 `reproducible: false` 并给理由。\nobserved: 结构检查全过；`--rerun-all` 两条哈希对不上，M0-4 实测得到 `4355a46b19d3…` = sha256(\"1\\n\")。另注：重跑时 `cwd` 不存在会回落到 `ROOT`（仓库根），门会在工作树里 `execSync` 记录中的命令。",
+  "severity": "P2",
+  "axis": "not-machine-decidable"
+ },
+ {
+  "location": "gates/check_doc_metrics.mjs L91",
+  "claim": "语料总行数这条检查只抓**近似错**，放过**大错**：判据是 `Math.abs(n - corpusLines) > 0 && Math.abs(n - corpusLines) < 400 && n > 10000`。README 写 11,700（差 39）会红，写 99,999（差 88,338）静默通过。一道以「自述数字必须与实测相符」为职责的门，其触发窗口是一个宽 400 的带子。",
+  "reproduction": "steps: 读 gates/check_doc_metrics.mjs L86-95；把 06-SURVEY.md L28 的 `11,661 行` 改成 `99,999 行`，跑 `node gates/check_doc_metrics.mjs`。\nexpected: 判红。\nobserved: 上界条件 `< 400` 使该数落在窗口外，门 PASS（同一处改成 `11,700 行` 则判红）。",
+  "severity": "P3",
+  "axis": "gate-hollow"
+ }
+]
