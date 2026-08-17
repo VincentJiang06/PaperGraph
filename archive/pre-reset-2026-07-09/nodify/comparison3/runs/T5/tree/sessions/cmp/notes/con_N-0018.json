@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0018",
+ "lean": "supports",
+ "summary": "高相对水平锚点:CBO对$15联邦(2025)测算中位约130万人失业(就业约-0.8%),两成把握区间约0到370万,同时1700万人加薪、130万人脱贫。$15在低薪州意味着很高的最低/中位比值,正是CBO预测明显负就业之处——非线性的上端。",
+ "confidence": "high",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "CBO:中位失业约130万",
+    "doc_id": "DOC-0008",
+    "quote": "1.3 million Americans could potentially be out of work",
+    "url": "https://www.cbo.gov/publication/55410",
+    "locator": "report",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "title": "CBO:区间0到370万",
+    "doc_id": "DOC-0008",
+    "quote": "resulting job losses could range between 'about zero and 3.7 million'",
+    "url": "https://www.cbo.gov/publication/55410",
+    "locator": "report",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "CBO弹性假设主要基于旧文献,是否高估了当代温和城市上调的负效应?"
+ ]
+}

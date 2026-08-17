@@ -1,0 +1,143 @@
+{
+  "n_judges": 3,
+  "per_topic": {
+    "T1": {
+      "raw": {
+        "structure_logic": 5.0,
+        "evidence_quality": 4.0,
+        "adversarial_rigor": 4.67,
+        "calibration": 5.0,
+        "overall": 5.0
+      },
+      "skills": {
+        "structure_logic": 4.33,
+        "evidence_quality": 4.0,
+        "adversarial_rigor": 4.0,
+        "calibration": 4.0,
+        "overall": 4.0
+      },
+      "tree": {
+        "structure_logic": 4.33,
+        "evidence_quality": 5.0,
+        "adversarial_rigor": 5.0,
+        "calibration": 5.0,
+        "overall": 5.0
+      }
+    },
+    "T2": {
+      "raw": {
+        "structure_logic": 5.0,
+        "evidence_quality": 4.33,
+        "adversarial_rigor": 4.33,
+        "calibration": 5.0,
+        "overall": 4.33
+      },
+      "skills": {
+        "structure_logic": 4.0,
+        "evidence_quality": 4.33,
+        "adversarial_rigor": 4.0,
+        "calibration": 4.0,
+        "overall": 4.0
+      },
+      "tree": {
+        "structure_logic": 5.0,
+        "evidence_quality": 4.33,
+        "adversarial_rigor": 4.67,
+        "calibration": 5.0,
+        "overall": 4.67
+      }
+    },
+    "T3": {
+      "raw": {
+        "structure_logic": 5.0,
+        "evidence_quality": 4.0,
+        "adversarial_rigor": 5.0,
+        "calibration": 5.0,
+        "overall": 5.0
+      },
+      "skills": {
+        "structure_logic": 5.0,
+        "evidence_quality": 5.0,
+        "adversarial_rigor": 5.0,
+        "calibration": 5.0,
+        "overall": 5.0
+      },
+      "tree": {
+        "structure_logic": 5.0,
+        "evidence_quality": 5.0,
+        "adversarial_rigor": 5.0,
+        "calibration": 5.0,
+        "overall": 5.0
+      }
+    },
+    "T4": {
+      "raw": {
+        "structure_logic": 4.33,
+        "evidence_quality": 4.0,
+        "adversarial_rigor": 4.0,
+        "calibration": 4.0,
+        "overall": 4.0
+      },
+      "skills": {
+        "structure_logic": 5.0,
+        "evidence_quality": 4.67,
+        "adversarial_rigor": 5.0,
+        "calibration": 5.0,
+        "overall": 5.0
+      },
+      "tree": {
+        "structure_logic": 4.33,
+        "evidence_quality": 4.0,
+        "adversarial_rigor": 4.33,
+        "calibration": 4.67,
+        "overall": 4.33
+      }
+    },
+    "T5": {
+      "raw": {
+        "structure_logic": 4.0,
+        "evidence_quality": 5.0,
+        "adversarial_rigor": 4.33,
+        "calibration": 4.67,
+        "overall": 4.33
+      },
+      "skills": {
+        "structure_logic": 5.0,
+        "evidence_quality": 5.0,
+        "adversarial_rigor": 5.0,
+        "calibration": 5.0,
+        "overall": 5.0
+      },
+      "tree": {
+        "structure_logic": 5.0,
+        "evidence_quality": 3.67,
+        "adversarial_rigor": 4.67,
+        "calibration": 5.0,
+        "overall": 4.67
+      }
+    }
+  },
+  "by_mode_mean": {
+    "raw": {
+      "structure_logic": 4.67,
+      "evidence_quality": 4.27,
+      "adversarial_rigor": 4.47,
+      "calibration": 4.73,
+      "overall": 4.53
+    },
+    "skills": {
+      "structure_logic": 4.67,
+      "evidence_quality": 4.6,
+      "adversarial_rigor": 4.6,
+      "calibration": 4.6,
+      "overall": 4.6
+    },
+    "tree": {
+      "structure_logic": 4.73,
+      "evidence_quality": 4.4,
+      "adversarial_rigor": 4.73,
+      "calibration": 4.93,
+      "overall": 4.73
+    }
+  }
+}

@@ -1,0 +1,7 @@
+Jardim, Long, Plotnick, van Inwegen, Vigdor, Wething (2017/2022), "Minimum Wage Increases, Wages, and Low-Wage Employment: Evidence from Seattle," NBER WP 23532 (University of Washington team).
+
+Key findings (verbatim from abstract/summary):
+"the second wage increase to $13 reduced hours worked in low-wage jobs by 6-7 percent"
+"the Ordinance lowered the amount paid to workers in low-wage jobs by an average of $74 per month per job in 2016"
+
+Note: Using Washington State administrative payroll (hours) data, the UW team finds the employment adjustment falls on HOURS rather than headcount; hourly wages rose ~3% but total payroll to low-wage jobs fell. Demonstrates that a near-zero headcount effect can coexist with a real reduction in hours and total low-wage earnings.

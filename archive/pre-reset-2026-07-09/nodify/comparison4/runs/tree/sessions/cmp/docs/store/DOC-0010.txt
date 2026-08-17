@@ -1,0 +1,9 @@
+Cui, Demirer, Jaffe, Musolff, Peng & Salz — "The Effects of Generative AI on High-Skilled Work: Evidence from Three Field Experiments with Software Developers" — SSRN 4945566 (posted Aug 20, 2025); Management Science (2026).
+
+KEY RESULT (verbatim, abstract): "our analysis reveals a 26.08% increase (SE: 10.3%) in completed tasks among developers using the AI tool."
+
+SCOPE (verbatim): the study covers "4,867 developers" across three randomized field experiments at "Microsoft, Accenture, and an anonymous Fortune 100 company" (a Fortune 100 electronics manufacturer), each randomly providing a subset of developers access to GitHub Copilot.
+
+HETEROGENEITY (verbatim): "less experienced developers had higher adoption rates and greater productivity gains." Inexperienced and short-tenured developers used the tool more and gained more; more experienced developers showed little effect.
+
+DESIGN: three randomized controlled field experiments inside real firms (scaled real deployment, not a lab task). TIER: RCT / field experiment (high). LIMITS: outcome = number of completed tasks/PRs, not firm output, headcount, or wages; developers only; ~2023-2024 window.

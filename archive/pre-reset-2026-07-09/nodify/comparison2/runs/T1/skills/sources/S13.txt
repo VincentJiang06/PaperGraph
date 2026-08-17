@@ -1,0 +1,21 @@
+Title: AI and Job Postings: From Destruction to Creation?
+Publisher: Indeed Hiring Lab
+Date: 2026-07-08
+URL: https://www.hiringlab.org/2026/07/08/ai-and-job-postings-from-destruction-to-creation/
+Accessed via: WebFetch, 2026-07-09
+
+Verbatim key quotes:
+
+"the more exposed to AI an occupation is, the more it declined" (job postings, May 2022 to May 2026)
+
+"the more exposed to AI an occupation is, on average, the more it rebounded" (since 2025) — described as a reversal from destruction to creation.
+
+On the software-development rebound coinciding with the launch of Claude Code (late Feb 2025): postings "has risen almost 15%, while job postings overall have declined by 7%" over the same window.
+
+"71% of the increase in Software Development job postings between May 2025 and May 2026 came from senior roles, and 37% came from jobs that mention AI in their title."
+
+"even after the recent rise, software development job postings remain about 27.5% below their pre-pandemic level."
+
+Causal caveat (authors' own words): "While correlation does not imply causation, the introduction of Claude Code...is a coincidence that cannot be ignored," while acknowledging "many other factors influencing the market" and describing the finding as "preliminary evidence."
+
+Notes: Directly relevant to the task-vs-job distinction: even in an occupation (software development) with very high AI task-exposure, job postings first fell sharply, then partially rebounded — but the rebound is concentrated in senior/AI-adjacent roles, not a simple return to junior hiring. This complicates a simple "task exposure -> job loss" reading and also complicates simple "AI creates net new jobs" optimism, since junior-level postings remain depressed.

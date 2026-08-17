@@ -1,0 +1,14 @@
+{
+ "kind": "paper",
+ "title": "Acemoglu — The Simple Macroeconomics of AI (NBER 32487, 2024)",
+ "url": "https://www.nber.org/papers/w32487",
+ "text_file": "sessions/cmp/notes/doc05_acemoglu_macro.txt",
+ "summary": "任务级自底向上测算:AI十年TFP增幅≤0.66%(更保守<0.53%),效应'非平凡但温和'。若生产率冲击小,则总劳动需求冲击也小——支持净效应本就近中性。",
+ "bindings": [
+  {
+   "node_id": "N-0008",
+   "relation": "supports",
+   "note": "宏观测算温和→净效应可能真近中性"
+  }
+ ]
+}

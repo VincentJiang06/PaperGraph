@@ -1,0 +1,11 @@
+{
+  "kind": "report",
+  "title": "FRBSF Economic Letter 2023-16: Global Supply Chain Pressures and U.S. Inflation",
+  "url": "https://www.frbsf.org/research-and-insights/publications/economic-letter/2023/06/global-supply-chain-pressures-and-us-inflation/",
+  "text_file": "notes/scratch/doc_gscpi.txt",
+  "summary": "供应链压力指数(GSCPI)冲击平均解释2021年4月-2023年3月约60%的趋势外通胀上升;峰值贡献约2.5个百分点(2022年中),到2023年降至1.4个百分点,与整体通胀放缓同步。",
+  "bindings": [
+    {"node_id": "N-0010", "relation": "supports", "note": "GSCPI冲击平均解释约60%的趋势外通胀上升,峰值贡献约2.5个百分点"},
+    {"node_id": "N-0013", "relation": "context", "note": "供应链压力贡献从2.5pp降至1.4pp与headline通胀放缓同步,但不能单独解释2023年核心服务通胀的粘性"}
+  ]
+}

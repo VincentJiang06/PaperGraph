@@ -1,0 +1,63 @@
+{"schema":"event.v1","event_id":"EV-000001","at":"2026-07-09T07:05:08Z","actor":"main","command":"init","mutating":true,"touched":["cmp"],"summary":"init: 最低工资上调是否降低就业?请以2015-2024年美国州级/城市级『自然实验』为主要证据,调和Card-Krueger式准实验(常发现就业效应很小甚至接近零)与竞争性劳动力市场理论(预测就业下降)之间的张力。垄断买方(monopsony)、"}
+{"schema":"event.v1","event_id":"EV-000002","at":"2026-07-09T07:05:15Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (388 chars)"}
+{"schema":"event.v1","event_id":"EV-000003","at":"2026-07-09T07:05:15Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (0 nodes)"}
+{"schema":"event.v1","event_id":"EV-000004","at":"2026-07-09T07:07:09Z","actor":"main","command":"add","mutating":true,"touched":["N-0001"],"summary":"add 1 under root: N-0001"}
+{"schema":"event.v1","event_id":"EV-000005","at":"2026-07-09T07:07:21Z","actor":"main","command":"add","mutating":true,"touched":["N-0002"],"summary":"add 1 under N-0001: N-0002"}
+{"schema":"event.v1","event_id":"EV-000006","at":"2026-07-09T07:07:21Z","actor":"main","command":"add","mutating":true,"touched":["N-0003"],"summary":"add 1 under N-0001: N-0003"}
+{"schema":"event.v1","event_id":"EV-000007","at":"2026-07-09T07:07:21Z","actor":"main","command":"add","mutating":true,"touched":["N-0004"],"summary":"add 1 under N-0001: N-0004"}
+{"schema":"event.v1","event_id":"EV-000008","at":"2026-07-09T07:07:21Z","actor":"main","command":"add","mutating":true,"touched":["N-0005"],"summary":"add 1 under N-0001: N-0005"}
+{"schema":"event.v1","event_id":"EV-000009","at":"2026-07-09T07:07:21Z","actor":"main","command":"add","mutating":true,"touched":["N-0006"],"summary":"add 1 under N-0001: N-0006"}
+{"schema":"event.v1","event_id":"EV-000010","at":"2026-07-09T07:07:36Z","actor":"main","command":"add","mutating":true,"touched":["N-0007"],"summary":"add 1 under N-0002: N-0007"}
+{"schema":"event.v1","event_id":"EV-000011","at":"2026-07-09T07:07:37Z","actor":"main","command":"add","mutating":true,"touched":["N-0008"],"summary":"add 1 under N-0002: N-0008"}
+{"schema":"event.v1","event_id":"EV-000012","at":"2026-07-09T07:07:37Z","actor":"main","command":"add","mutating":true,"touched":["N-0009"],"summary":"add 1 under N-0003: N-0009"}
+{"schema":"event.v1","event_id":"EV-000013","at":"2026-07-09T07:07:37Z","actor":"main","command":"add","mutating":true,"touched":["N-0010"],"summary":"add 1 under N-0003: N-0010"}
+{"schema":"event.v1","event_id":"EV-000014","at":"2026-07-09T07:07:37Z","actor":"main","command":"add","mutating":true,"touched":["N-0011"],"summary":"add 1 under N-0006: N-0011"}
+{"schema":"event.v1","event_id":"EV-000015","at":"2026-07-09T07:07:37Z","actor":"main","command":"add","mutating":true,"touched":["N-0012"],"summary":"add 1 under N-0006: N-0012"}
+{"schema":"event.v1","event_id":"EV-000016","at":"2026-07-09T07:07:58Z","actor":"main","command":"promote","mutating":true,"touched":["N-0004"],"summary":"promote N-0004 -> claim"}
+{"schema":"event.v1","event_id":"EV-000017","at":"2026-07-09T07:07:58Z","actor":"main","command":"promote","mutating":true,"touched":["N-0005"],"summary":"promote N-0005 -> claim"}
+{"schema":"event.v1","event_id":"EV-000018","at":"2026-07-09T07:07:58Z","actor":"main","command":"promote","mutating":true,"touched":["N-0007"],"summary":"promote N-0007 -> claim"}
+{"schema":"event.v1","event_id":"EV-000019","at":"2026-07-09T07:07:58Z","actor":"main","command":"promote","mutating":true,"touched":["N-0008"],"summary":"promote N-0008 -> claim"}
+{"schema":"event.v1","event_id":"EV-000020","at":"2026-07-09T07:07:58Z","actor":"main","command":"promote","mutating":true,"touched":["N-0009"],"summary":"promote N-0009 -> claim"}
+{"schema":"event.v1","event_id":"EV-000021","at":"2026-07-09T07:07:58Z","actor":"main","command":"promote","mutating":true,"touched":["N-0010"],"summary":"promote N-0010 -> claim"}
+{"schema":"event.v1","event_id":"EV-000022","at":"2026-07-09T07:07:58Z","actor":"main","command":"promote","mutating":true,"touched":["N-0011"],"summary":"promote N-0011 -> claim"}
+{"schema":"event.v1","event_id":"EV-000023","at":"2026-07-09T07:07:58Z","actor":"main","command":"promote","mutating":true,"touched":["N-0012"],"summary":"promote N-0012 -> claim"}
+{"schema":"event.v1","event_id":"EV-000024","at":"2026-07-09T07:08:31Z","actor":"main","command":"recall","mutating":false,"touched":[],"summary":"recall N-0007: 0 hits"}
+{"schema":"event.v1","event_id":"EV-000025","at":"2026-07-09T07:08:31Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0007"],"summary":"N-0007 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000026","at":"2026-07-09T07:11:52Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0001"],"summary":"ingest DOC-0001: Dube & Lindner (2024) Minimum Wages in the 21st Century, NBER WP 32878"}
+{"schema":"event.v1","event_id":"EV-000027","at":"2026-07-09T07:12:14Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0001","N-0004"],"summary":"bind DOC-0001 -> N-0004 (supports)"}
+{"schema":"event.v1","event_id":"EV-000028","at":"2026-07-09T07:12:14Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0001","N-0005"],"summary":"bind DOC-0001 -> N-0005 (supports)"}
+{"schema":"event.v1","event_id":"EV-000029","at":"2026-07-09T07:12:14Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0001","N-0008"],"summary":"bind DOC-0001 -> N-0008 (supports)"}
+{"schema":"event.v1","event_id":"EV-000030","at":"2026-07-09T07:12:14Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0001","N-0010"],"summary":"bind DOC-0001 -> N-0010 (supports)"}
+{"schema":"event.v1","event_id":"EV-000031","at":"2026-07-09T07:12:14Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0001","N-0011"],"summary":"bind DOC-0001 -> N-0011 (supports)"}
+{"schema":"event.v1","event_id":"EV-000032","at":"2026-07-09T07:12:14Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0001","N-0012"],"summary":"bind DOC-0001 -> N-0012 (supports)"}
+{"schema":"event.v1","event_id":"EV-000033","at":"2026-07-09T07:16:04Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0002"],"summary":"ingest DOC-0002: Neumark & Shirley (2022) Myth or Measurement, NBER WP 28388 / Industrial Relatio"}
+{"schema":"event.v1","event_id":"EV-000034","at":"2026-07-09T07:16:04Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0003"],"summary":"ingest DOC-0003: 西雅图与加州快餐业$20最低工资三份实证材料(Jardim et al. NBER w23532; Shift Project 2024; Clemens/Ed"}
+{"schema":"event.v1","event_id":"EV-000035","at":"2026-07-09T07:17:57Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0004"],"summary":"ingest DOC-0004: Chan & Zamanzadeh (2025) Minimum wage and employment in the U.S.: Bayesian quant"}
+{"schema":"event.v1","event_id":"EV-000036","at":"2026-07-09T07:18:10Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0008"],"summary":"N-0008 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000037","at":"2026-07-09T07:18:10Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0009"],"summary":"N-0009 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000038","at":"2026-07-09T07:18:10Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0010"],"summary":"N-0010 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000039","at":"2026-07-09T07:18:10Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0004"],"summary":"N-0004 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000040","at":"2026-07-09T07:18:10Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0005"],"summary":"N-0005 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000041","at":"2026-07-09T07:18:10Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0011"],"summary":"N-0011 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000042","at":"2026-07-09T07:18:10Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0012"],"summary":"N-0012 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000043","at":"2026-07-09T07:19:01Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0001","N-0007"],"summary":"conclude N-0007 [supports]"}
+{"schema":"event.v1","event_id":"EV-000044","at":"2026-07-09T07:19:25Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0002","N-0008"],"summary":"conclude N-0008 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000045","at":"2026-07-09T07:19:47Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0003","N-0009"],"summary":"conclude N-0009 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000046","at":"2026-07-09T07:20:11Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0004","N-0010"],"summary":"conclude N-0010 [supports]"}
+{"schema":"event.v1","event_id":"EV-000047","at":"2026-07-09T07:20:36Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0005","N-0004"],"summary":"conclude N-0004 [supports]"}
+{"schema":"event.v1","event_id":"EV-000048","at":"2026-07-09T07:20:36Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0006","N-0005"],"summary":"conclude N-0005 [supports]"}
+{"schema":"event.v1","event_id":"EV-000049","at":"2026-07-09T07:21:08Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0007","N-0011"],"summary":"conclude N-0011 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000050","at":"2026-07-09T07:21:32Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0008","N-0012"],"summary":"conclude N-0012 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000051","at":"2026-07-09T07:21:44Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (12 nodes)"}
+{"schema":"event.v1","event_id":"EV-000052","at":"2026-07-09T07:22:18Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0009","N-0002"],"summary":"conclude N-0002 [supports]"}
+{"schema":"event.v1","event_id":"EV-000053","at":"2026-07-09T07:22:18Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0010","N-0003"],"summary":"conclude N-0003 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000054","at":"2026-07-09T07:22:18Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0011","N-0006"],"summary":"conclude N-0006 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000055","at":"2026-07-09T07:22:46Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0012","N-0001"],"summary":"conclude N-0001 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000056","at":"2026-07-09T07:23:01Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 2 soft"}
+{"schema":"event.v1","event_id":"EV-000057","at":"2026-07-09T07:23:48Z","actor":"main","command":"article outline","mutating":true,"touched":["OL-01"],"summary":"outline: 最低工资上调与就业:近零效应为何站得住脚,又在何处失效 (4 sections)"}
+{"schema":"event.v1","event_id":"EV-000058","at":"2026-07-09T07:27:20Z","actor":"main","command":"article section","mutating":true,"touched":["S-01"],"summary":"section S-01: 354 words, 2 cites"}
+{"schema":"event.v1","event_id":"EV-000059","at":"2026-07-09T07:27:20Z","actor":"main","command":"article section","mutating":true,"touched":["S-02"],"summary":"section S-02: 491 words, 2 cites"}
+{"schema":"event.v1","event_id":"EV-000060","at":"2026-07-09T07:27:20Z","actor":"main","command":"article section","mutating":true,"touched":["S-03"],"summary":"section S-03: 455 words, 3 cites"}
+{"schema":"event.v1","event_id":"EV-000061","at":"2026-07-09T07:27:20Z","actor":"main","command":"article section","mutating":true,"touched":["S-04"],"summary":"section S-04: 365 words, 0 cites"}
+{"schema":"event.v1","event_id":"EV-000062","at":"2026-07-09T07:27:32Z","actor":"main","command":"article assemble","mutating":true,"touched":[],"summary":"assemble -> article/final.md"}
+{"schema":"event.v1","event_id":"EV-000063","at":"2026-07-09T07:28:00Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 2 soft"}

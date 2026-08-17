@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0010",
+ "lean": "mixed",
+ "summary": "识别风险真实但有界:Meer-West显示含州趋势的水平型设定会漏掉经由job growth实现的负效应,支持'零可能是测不出'的担忧;但Cengiz的bunching对pooled估计给出较窄置信区间,直接压制了'功效不足'这一路。结论:单个合成控制研究功效常有限,应看设计互补的证据体(bunching+边界断点+动态)而非任一单点。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Meer-West:水平设定漏动态",
+    "doc_id": "DOC-0010",
+    "quote": "the minimum wage reduces job growth over a period of several years. These effects are most pronounced for younger workers and in industries with a higher proportion of low-wage workers.",
+    "url": "https://www.nber.org/papers/w19262",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "title": "Cengiz:pooled估计精度较高",
+    "doc_id": "DOC-0001",
+    "quote": "the overall number of low-wage jobs remained essentially unchanged over five years following the increase",
+    "url": "https://www.nber.org/papers/w25434",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "跨研究的最小可检测效应(MDE)分布有多大?"
+ ]
+}

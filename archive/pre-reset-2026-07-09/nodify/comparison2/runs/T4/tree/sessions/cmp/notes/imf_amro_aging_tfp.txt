@@ -1,0 +1,9 @@
+Source: China Daily, "Demography presents both challenges and opportunities" (summarizing IMF and AMRO/Fan Zhai & Jae Young Lee analysis)
+URL: https://www.chinadaily.com.cn/a/202404/11/WS6617164ba31082fc043c1474.html
+
+Key extracted quotes:
+"The International Monetary Fund estimates that China's aging workforce could curtail the country's total factor productivity growth by 0.3 percent a year from 2020 to 2050."
+
+"China's potential GDP growth is projected to average 3.2 percent, indicating a gradual deceleration, that is, declining from 4.9 percent in the early 2020s to 3.7 percent by 2030 and further easing to about 2.4 percent in the 2040s."
+
+Note: The AMRO projection (potential growth path 4.9% early-2020s -> 3.7% by 2030 -> ~2.4% in 2040s) reflects analysis by authors Fan Zhai and Jae Young Lee, factoring in an assumed 1.7 percent total factor productivity growth rate from 2023 to 2050. This is a separate estimate from the IMF's -0.3pp/year TFP drag figure above; both point in the same direction (aging drags on TFP and thus potential growth) but are not directly additive.

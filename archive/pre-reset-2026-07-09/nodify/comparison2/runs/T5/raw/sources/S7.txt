@@ -1,0 +1,13 @@
+Source: Card, David (2022). "Who Set Your Wage?" American Economic Review, 112(4): 1075-1090 (AEA Presidential Address).
+URL: https://ideas.repec.org/a/aea/aecrev/v112y2022i4p1075-90.html
+Retrieved via WebFetch on 2026-07-09.
+
+Extracted content:
+
+The paper's abstract states:
+"I discuss the recent literature that has led to new interest in the idea of monopsonistic wage setting."
+
+On firm wage-setting power, Card notes:
+"A growing consensus is that firms have some wage-setting power, though many questions remain about the sources of that power."
+
+The research examines how economists have identified employer labor market power through various methodological approaches, including search theory and differentiated product models. The address builds on advances in search theory and in models of differentiated products, and examines strategies researchers have used to identify the elasticity of firm-specific labor supply.

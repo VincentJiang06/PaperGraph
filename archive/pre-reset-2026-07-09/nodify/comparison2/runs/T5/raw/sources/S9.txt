@@ -1,0 +1,18 @@
+Source: Harasztosi, Péter and Attila Lindner (2019). "Who Pays for the Minimum Wage?" American Economic Review, 109(8): 2693-2727.
+URL: https://www.aeaweb.org/articles?id=10.1257%2Faer.20171445
+Retrieved via WebFetch on 2026-07-09.
+
+Extracted content:
+
+**Cost Pass-Through:**
+"around 75 percent of the minimum wage increase was paid by consumers and 25 percent by firm owners"
+
+**Capital-Labor Substitution:**
+"firms responded to the minimum wage by substituting labor with capital"
+
+**Disemployment Variation:**
+"disemployment effects were greater in industries where passing the wage costs to consumers is more difficult"
+
+The researchers also note that employment elasticities remained negative but modest even four years post-reform.
+
+(Additional context from earlier search snippet on this paper: the paper analyzes a large (~60%) and persistent increase in Hungary's minimum wage instituted in 2001, where the minimum-to-median wage ratio rose from about 35% before 2000 to about 55% two years later; effects were stronger in low-wage segments and depressed regions where the minimum wage "bites" deeper into the wage distribution.)

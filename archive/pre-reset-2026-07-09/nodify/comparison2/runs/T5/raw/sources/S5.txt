@@ -1,0 +1,17 @@
+Source (as conveyed by): American Action Forum, "Assessing CBO's Report on the Raise the Wage Act," summarizing Congressional Budget Office (CBO), "The Budgetary Effects of the Raise the Wage Act of 2021" (Feb. 2021).
+URL: https://www.americanactionforum.org/insight/assessing-cbos-report-on-the-raise-the-wage-act/
+(Primary CBO source: https://www.cbo.gov/publication/56975 and https://www.cbo.gov/system/files/2021-02/56975-Minimum-Wage.pdf — both returned HTTP 403 Forbidden when fetched directly on 2026-07-09; content below retrieved via secondary source that quotes CBO's findings.)
+Retrieved via WebFetch on 2026-07-09.
+
+Extracted content:
+
+**Job Loss Projection:**
+"The Raise the Wage Act is projected to reduce employment by 1.4 million workers by the year 2025."
+
+**Affected Demographics:**
+"The drop in employment would be felt most strongly by the youngest and least educated workers."
+
+**Employer Response:**
+"Employers may choose to shift spending toward employing fewer higher-wage workers or investing in technology at the expense of low-wage workers."
+
+(Cross-checked against WebSearch summary of the original CBO report: CBO's average estimate was that employment would be reduced by 1.4 million workers, or 0.9 percent, by 2025 when the federal minimum wage would reach $15; roughly half of displaced workers were projected to leave the labor force entirely; 17 million workers would be directly affected; poverty would fall by 0.9 million people; the 10-year budget deficit would rise by $54 billion.)

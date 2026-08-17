@@ -1,0 +1,132 @@
+{
+  "T1": {
+    "tree": {
+      "arm": "tree",
+      "lines_of_inquiry": 7,
+      "claims": 14,
+      "adversarial_branches": 8,
+      "max_depth": 2,
+      "dead_ends": 0,
+      "docs_archived": 12,
+      "syntheses": 21,
+      "grounded_syntheses": 21,
+      "grounding_rate": 1.0,
+      "notes_bytes": 6358
+    },
+    "notree": {
+      "arm": "notree",
+      "lines_of_inquiry": 12,
+      "adversarial_branches": 6,
+      "evidence_items": 15,
+      "grounded_lines": 12,
+      "distinct_sources": 16,
+      "converged": true,
+      "has_dead_ends": true,
+      "log_bytes": 5715
+    }
+  },
+  "T2": {
+    "tree": {
+      "arm": "tree",
+      "lines_of_inquiry": 7,
+      "claims": 16,
+      "adversarial_branches": 7,
+      "max_depth": 2,
+      "dead_ends": 0,
+      "docs_archived": 10,
+      "syntheses": 23,
+      "grounded_syntheses": 23,
+      "grounding_rate": 1.0,
+      "notes_bytes": 7916
+    },
+    "notree": {
+      "arm": "notree",
+      "lines_of_inquiry": 13,
+      "adversarial_branches": 6,
+      "evidence_items": 31,
+      "grounded_lines": 13,
+      "distinct_sources": 12,
+      "converged": true,
+      "has_dead_ends": true,
+      "log_bytes": 3954
+    }
+  },
+  "T3": {
+    "tree": {
+      "arm": "tree",
+      "lines_of_inquiry": 2,
+      "claims": 8,
+      "adversarial_branches": 3,
+      "max_depth": 2,
+      "dead_ends": 0,
+      "docs_archived": 10,
+      "syntheses": 10,
+      "grounded_syntheses": 10,
+      "grounding_rate": 1.0,
+      "notes_bytes": 29759
+    },
+    "notree": {
+      "arm": "notree",
+      "lines_of_inquiry": 13,
+      "adversarial_branches": 8,
+      "evidence_items": 29,
+      "grounded_lines": 13,
+      "distinct_sources": 15,
+      "converged": true,
+      "has_dead_ends": true,
+      "log_bytes": 6005
+    }
+  },
+  "T4": {
+    "tree": {
+      "arm": "tree",
+      "lines_of_inquiry": 7,
+      "claims": 13,
+      "adversarial_branches": 9,
+      "max_depth": 2,
+      "dead_ends": 0,
+      "docs_archived": 13,
+      "syntheses": 20,
+      "grounded_syntheses": 16,
+      "grounding_rate": 0.8,
+      "notes_bytes": 41747
+    },
+    "notree": {
+      "arm": "notree",
+      "lines_of_inquiry": 14,
+      "adversarial_branches": 8,
+      "evidence_items": 23,
+      "grounded_lines": 14,
+      "distinct_sources": 15,
+      "converged": true,
+      "has_dead_ends": true,
+      "log_bytes": 6020
+    }
+  },
+  "T5": {
+    "tree": {
+      "arm": "tree",
+      "lines_of_inquiry": 12,
+      "claims": 15,
+      "adversarial_branches": 9,
+      "max_depth": 2,
+      "dead_ends": 0,
+      "docs_archived": 14,
+      "syntheses": 27,
+      "grounded_syntheses": 27,
+      "grounding_rate": 1.0,
+      "notes_bytes": 75830
+    },
+    "notree": {
+      "arm": "notree",
+      "lines_of_inquiry": 12,
+      "adversarial_branches": 6,
+      "evidence_items": 11,
+      "grounded_lines": 12,
+      "distinct_sources": 9,
+      "converged": true,
+      "has_dead_ends": true,
+      "log_bytes": 6478
+    }
+  }
+}

@@ -1,0 +1,10 @@
+SOURCE: US Census Bureau Business Trends and Outlook Survey (BTOS) AI supplement; Census story May 2026; Fed FEDS Note Apr 2026.
+URL: https://www.census.gov/library/stories/2026/05/ai-use-businesses.html
+
+VERBATIM / KEY NUMBERS:
+"the number of businesses using AI rose from 3.7% in September 2023 to 5.4% in February 2024"
+Firm AI use "crept up from 4.6 percent at the beginning of 2024 to 10 percent in September 2025"
+After Nov 2025 broadened definition: "overall AI usage hovered between 17% and 20%" (Dec 2025-May 2026)
+Scope narrow: "65% of firms limit use to three or fewer tasks"; larger firms far more likely to adopt (37% of 250+ employee firms vs <20% of tiny firms).
+
+DISTILLED: Firm-level ADOPTION was low and shallow through 2025 (~10% producing goods/services with AI by Sep 2025; narrow use). Diffusion is early and back-loaded. So "exposure (potential) >> adoption (realized)"; a strong mechanical reason the net job effect had little chance to show up in 2020-2025 aggregates — favors "too early" over "intrinsically neutral," but does not prove which.

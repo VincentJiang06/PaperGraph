@@ -1,0 +1,1602 @@
+              Did Quantitative Easing Increase Income Inequality?∗
+                             Juan Antonio Montecino1 and Gerald Epstein2
+                                    1
+                                    Department of Economics, UMass Amherst
+          2
+              Department of Economics and Political Economy Research Institute (PERI), UMass Amherst
+
+
+                                                  April 24, 2017
+
+
+
+                                                      Abstract
+          The impact of the post-crisis Federal Reserve policy of near-zero interest rates and Quantitative
+      Easing (QE) on income and wealth inequality has become an important policy and political issue. Critics
+      have argued that by raising asset prices, near-zero interest rates and QE have significantly contributed to
+      increases in inequality, while practitioners of central banking, counter that the distributional impact have
+      probably been either neutral or even egalitarian in nature due to its employment impacts. Yet there has
+      been little academic research that addresses empirically this important question. We use data from the
+      Federal Reserve’s Tri-Annual Survey of Consumer Finances (SCF) and look at the evolution of income
+      by quantile between the “Pre-QE period” and the “QE period” analyzing three key impact channels
+      of QE policy on income distribution: 1) the employment channel 2) the asset appreciation and return
+      channel, and 3) the mortgage refinancing channel. Using recentered influence function (RIF) regressions
+      pioneered by Firpo et. al (2007) in conjunction with the well-known Oaxaca-Blinder decomposition
+      technique, we find that while employment changes and mortgage refinancing were equalizing, these
+      impacts were nonetheless swamped by the large dis-equalizing effects of asset appreciations. In order
+      to identify causality, we propose a simple counterfactual exercise building on the extensive literature on
+      macroecomic impacts of QE. We conclude that QE led to modest increases in inequality despite having
+      some positive impacts on employment and mortgage refinancing.
+
+
+
+
+JEL codes: E02, E58, E61
+Keywords: Quantitative Easing, Monetary Policy, Federal Reserve, Inequality
+  ∗ We thank the Institute for New Economic Thinking (INET) for generous financial support, as well as John Schmitt and
+
+Martin Guzman for helpful comments and suggestions.
+
+
+                                                           1
+1    Introduction
+A controversy over the distributional impact of Federal Reserve monetary policy has erupted. Some politi-
+cians, pundits and even former central bankers have argued that, since the Great Financial Crisis struck in
+2008, the Federal Reserve’s near-zero interest rate policy and rounds of “unconventional” monetary policy
+have contributed to an increase in income and wealth inequality in the United States by promoting large
+increases in asset prices, and driving down returns to middle class savers with “money in the bank” (Brook-
+ings Institution, 2015). On the other side, former Federal Reserve Chair Ben Bernanke, current Chair Janet
+Yellen, and others have argued that Fed policy has been broadly supportive of those at the bottom and in
+the middle of the income distribution, largely because policy placed a floor under the economic collapse, and,
+since then, has promoted economic recovery, employment creation, and economic growth (Bernanke, 2015;
+Appelbaum, 2015). This discussion is not just of historical interest: it interjects considerations of inequality
+into the very lively debate over whether the Federal Reserve should raise interest rates and if so, by how
+much.
+    Public debates over the distributional effects of monetary policy are certainly not unheard of but they
+tend to have a counter-cyclical profile. Politicians and mainstream economists tend to ignore the issue during
+periods of prosperity, preferring to focus on “aggregate” issues such as inflation and growth (see Gornemann
+et al., 2012, for a review of these models). By contrast, in times of financial crisis and resulting active
+intervention by the Federal Reserve, these distributional issues finally appear on the radar of politicians
+and make their way into economic discourse. A key example is the “Volcker” disinflation policy and deep
+recession of the late 1970’s and early 1980’s. At that time, the Federal Reserve was accused by some as
+raising interest rates excessively aggressively and keeping them too high for too long, leading to excessive
+levels of unemployment and job destruction, all in the interest of protecting the real wealth of bankers and
+other creditors from the scourge of inflation (Epstein, 1981; Greider, 1989).
+    Indeed, the question of the distributional impact of monetary policy has a longer history, going back, for
+example, to the writings of Keynes who criticized high interest rates pursued by the Bank of England in the
+1920’s and 30’s, and the related decision by Britain to return to the gold standard at pre-war parity after
+the First World War. Reminiscent of the discussion during the Volcker period, Keynes accused the Bank of
+England and the treasury of trying to protect creditors’ wealth, while ignoring the impacts of tight money
+and an over-valued currency on the incomes and jobs of workers (Keynes, 1931, 1936). And, going further
+back, of course one should remember the fights over the gold standard and the populist movement in the
+late 19th early 20th century US, where over-valued exchange rates and over-valued currencies were battled
+over on distributional, and highly rhetorical, terms (Goodwyn, 1976; Frieden, 2006).
+    What is striking in the current debate is this: in all the historical cases mentioned earlier, it is high
+interest rates and restrictive monetary policy that are indicted as transferring income from the poor to the
+rich, whereas in the current period, the accusation is that it is low interest rates and expansionary monetary
+policy that is making inequality worse. Can both of these claims be true? Are there special factors that
+characterize the US economy now that generate results the opposite of those historically claimed?
+    While theory has an important role to play in understanding the relationship between monetary policy
+and income distribution in different periods and structural contexts, ultimately, adjudicating these claims
+becomes an empirical question.
+    There are two broad approaches to looking at the distributional impacts of monetary policy, or any policy
+for that matter. One looks at the functional distribution of income, and the second looks at the impact of
+
+
+
+                                                       2
+policy on the personal distribution of income. In fact, the concerns expressed by Keynes and the populists,
+as mentioned above, largely relate to the functional distribution. Keynes and the populists were concerned
+about the impact of high interest rates on the incomes of the “financiers” or “rentiers” versus the workers and
+or the farmers. Concerns with the impact of monetary policy on financiers or bank profits, versus farmers
+and/or workers thus has a long history, though empirical work on this topic is thin (but see, for example,
+Epstein and Ferguson (1984) and the research summarized in Frieden (2006)).1
+    Most of the discussion on this issue, however, has focused on the impact of monetary policy on the
+distribution of personal or household income, and generally has not covered the period since the beginning
+of the Great Recession and QE. This small and relatively recent literature has found a strong relationship
+between contractionary monetary policy and increases in inequality. A careful and widely cited paper by
+Coibion et al. (2012) analyzes empirically this question for the United States, but their data ends in 2008,
+just before the beginning of QE. Drawing on quarterly distributional data from the Consumer Expenditures
+Survey (CEX), they analyze the distributional impacts of monetary policy shocks (based on the method
+of Romer and Romer (2004) for identifying monetary policy shocks), as well as the impacts of longer term
+changes in the objectives of the Federal Reserve. They find that restrictive “monetary policy shocks have
+statistically significant effects on inequality: a contractionary monetary policy shock raises the observed
+inequality across households in income, labor earnings, expenditures and consumption (emphasis added). . . In
+addition, (contractionary) monetary policy shocks appear to have played a non-trivial role in accounting for
+cyclical fluctuations in inequality over this time period. . . ” They also “show that permanent decreases in the
+inflation target also systematically increase income and consumption inequality. . . Monetary policy therefore
+may well have played a more significant role in driving recent historical inequality patterns in the US than
+one might have expected.”
+    Gornemann et al. (2012) reach a similar conclusion using a different approach. They build a New
+Keynesian model which allows for heterogeneous agents, incomplete asset markets and significant labor
+market frictions. Their approach contrasts with standard models that make assumptions that rule out
+distributional impacts of monetary policy – assumptions such as homogenous agents, perfect unemployment
+insurance, and perfect financial markets. Calibrating their model on publicly available US data, they find
+that contractionary “monetary policy shocks have strikingly different implications for the welfare of different
+segments of the population.” In particular, “while households in the top 5 percent of the wealth distribution
+benefit slightly from a contractionary monetary policy shock, the bottom 5 percent would lose from this
+measure. For example, a monetary tightening of 1 percentage point (annualized) induces a loss equivalent to
+a permanent .1 percent consumption for the lowest 5 percent of the wealth distribution. This heterogeneity
+in sign and size of welfare losses from monetary policy shocks stands in stark contrast to TFP (total factor
+   1 We have undertaken several papers looking at the distributional impacts of QE with respect to a functional or sectoral
+
+perspective. In Montecino and Epstein (2014) we assess the direct impact of the first round of asset purchases (popularly
+referred to as “QE1”) on the profits of banks that sold MBS to the Federal Reserve, as well as the indirect impact on those that
+held large quantities of such assets prior to QE. We found that QE1 led to statistically and economically significant increases
+in bank profitability after controlling for common determinants of bank profits. In Montecino and Epstein (forthcoming) we
+carried out a broader event study of all three rounds of QE (1, 2, and 3) and examined the impact of QE policy announcements
+on the equity returns of all S&P 500 firms. Our results uncovered substantial heterogeneity in the impact of QE announcements
+on equity returns across sectors and across QE rounds. Consistent with our previous study, financial institutions were expected
+to be the big beneficiaries of QE1, with consistently positive and substantial abnormal returns, but were also joined by non-
+financial firms in the construction and automobile sectors. By the time of QE3, however, the expected impact of the Federal
+Reserve’s asset purchases had waned across most sectors of the economy with the exception of financial firms, which continued
+to exhibit positive abnormal returns.
+
+
+
+                                                               3
+productivity) shocks which affect the population more uniformly.” (P. 4).
+    Empirical literature on the distributional impacts of the loose monetary policy undertaken since the Great
+Financial Crisis is quite thin. Notable contributions include Bell et al. (2012), Bivens (2015), McKinsey
+Global Institute (2013), Doepke et al. (2015), Beraja et al. (2015), Montecino and Epstein (2014), and
+Montecino and Epstein (forthcoming). The results are mixed. Part of the challenge in this literature is to
+distinguish between the impacts of the near-zero interest rate policy pursued by the Fed and QE policies
+themselves. Distinguishing these policies present both theoretical and empirical challenges. Theoretically,
+the question is whether the policies have different mechanisms and channels of influence; and empirically, it
+is difficult to ascertain whether the impacts discerned after the implementation of QE are lagged impacts of
+zero interest rate policies, or some interaction of the two. Various papers deal with these issues differently.
+    The literature on the impacts of monetary policy in general and QE in particular has tried to distinguish
+among the specific channels through which policy could affect income distribution. Ben Bernanke presents
+a useful list of proposed distributional channels of QE and low interest rates (Bernanke, 2015):
+
+  1. The “asset price appreciation” channel: Bernanke notes that “The claim that Fed policy has worsened
+     inequality usually begins with the (correct) observation that monetary easing works in part by raising
+     asset prices, like stock prices. As the rich own more assets than the poor and the middle class, the
+     reasoning goes, the Fed’s policies are increasing the already large disparities of wealth in the United
+     States.”
+
+    An additional dis-equalizing aspect of this financial asset channel is the lower interest rate on short term
+assets, which might disproportionately affect less rich households (Bell et al. (2012) and McKinsey Global
+Institute (2013) emphasize this channel).
+    Bernanke notes two important caveats about the importance of the asset price appreciation channel in
+the current context. He argues that middle class households, not just the wealthy, hold financial assets.
+And Bernanke raises questions about the extent to which asset price increases, and especially stock price
+increases are due to QE or are, rather, simply a “return to trend.” He also notes that wealthy households
+also hold short term assets whose returns decline due to zero interest rate policies.
+    Bernanke then goes on to describe what he calls the inequality countervailing channels.
+
+  2. The “employment” channel: “. . . easier monetary policies promote job creation. . . ”
+
+  3. The “debtor redistribution and refinancing” channel: “All else equal, debtors tend to benefit (and
+     creditors lose) from higher inflation which reduces the real value of debts. Debtors are generally poorer
+     than creditors, so on this count easier monetary policy. . . reduces inequality. . . Debtors are also made
+     better off by low interest rates, all else equal. For example, homeowners with mortgages benefit when
+     they can refinance at a lower rate.”
+
+   As this list of channels suggest, there are important forces that move in countervailing directions. In
+our analysis below, we try to measure the size of the impacts of these channels. The real issue of concern,
+however, is not simply the evolution of these channels over time, but the role of monetary policy and QE:
+how much of the change in income distribution via these channels is due to QE, and how much is due to
+other factors?
+   In fact, there has been an enormous amount of empirical investigation of the effects of QE on many of
+these channels considered separately. The greatest effort has been expended on analyzing the impact of
+
+
+                                                       4
+QE on various asset prices (see, for example, Krishnamurthy and Vissing-Jorgensen (2013) and Hancock
+and Passmore (2014); also see Engen et al. (2015) and Bivens (2015) reviews of this voluminous literature).
+The consensus in this literature is that QE has lowered mortgage interest rates, lowered short and long term
+treasury rates, and thereby caused appreciations in long term treasury bonds, and mortgage backed securities
+(MBS). There is also some evidence that QE has increased the price of corporate bonds. Evidence on the
+impacts on corporate equities is more mixed, but recent papers suggest that equity prices have increased
+as a result of QE (Kiley, 2014, see our discussion below). As for the employment channel, most evidence
+indicates that zero-interest rate policy and QE have contributed to employment growth, but real wages
+have been stagnant, or even declining over this period (Engen et al., 2015; Bivens and Mishel, 2015). The
+over-all impact on income distribution will thus depend on the net effect and the distribution of these two
+components across income groups.
+    There has not been much research on the debt redistribution channel during this period. Part of the
+problem is that inflation has not increased as a result of QE. Hence, this inflation channel has not been
+operative (see Doepke et al., 2015, for a discussion of this channel). The mortgage refinancing channel is
+more interesting and potentially important; indeed, creating more opportunities for refinancing and lowering
+refinancing costs, presumably were some of the goals of the low interest rate and QE policies. However, as
+Beraja et al. (2015) and others referenced there show, the steep declines in house prices, which meant that
+many borrowers were “under water”, along with other complex factors, severely limited the ability of many
+homeowners, and particularly those in the lower quantiles of the income distribution, from taking advantage
+of the lower interest rates. Thus, the distributional impacts of the refinancing channel are very much up
+for grabs empirically. Consistent with this effect, Beraja et al. show that there was a large disparity in the
+regional impacts of QE policy as a function of how far housing prices had fallen in different regions of the
+country.
+    The only previous paper that has attempted to put together many of these channels and look at the
+overall impact of QE on income distribution is Bivens (2015). Bivens does not distinguish in his analysis
+between the near-zero interest rate policy and the QE policy, arguing that it is impossible to disentangle
+the effects of these two related efforts. Bivens’ approach is to use the secondary literature rather than new
+empirical work. He has a two stage approach: first Bivens assess the overall impacts on inequality of QE
+relative to a fiscal policy that has a similar impact on employment. And then, he assesses the impact of low
+interest rates and QE relative to a neutral monetary policy. In the first case, Bivens argues that QE does
+not increase inequality relative to a fiscal policy that has a similar labor market outcome.
+    In the second case – monetary policy vs nothing – Bivens argues that the dis-equalizing effects of financial
+asset price increases are more than compensated for by increases in incomes of the non-rich due to increases
+in employment. Moreover, he argues that non-rich households’ major asset is their home, and shows that
+home price appreciation was considerable over the QE period. The bottom line in the second case, according
+to Bivens is the following: “As bad and unequal as wage growth was since the onset of the Great Recession,
+it would have been even slower and less equal had the Fed not pursued its easy money policies. In short,
+compared to a counterfactual of no change in fiscal policy in response to a recession, monetary stimulus
+reduces inequality significantly.”
+    Our paper also attempts to draw an overall picture of the net impacts of these several channels on the
+personal distribution of income.2 We use data from the Federal Reserve’s Survey of Consumer Finances
+  2 When we can, we distinguish between the low interest policy and the QE policy and mostly focus on QE. At a few points,
+
+however, we will discuss the impacts of the broader loose monetary policy since the financial meltdown.
+
+
+
+                                                              5
+(SCF) to empirically assess the quantitative contribution of each of these theoretical channels to changes in
+inequality. We focus specifically on the distribution of what we term “net income,” which consists of total
+household income minus debt payments. This makes it possible to integrate the distributional consequences
+of low interest rates on households’ interest burdens. To assess the net impact of channels associated with
+QE, we implement the distributional decompositions method proposed by Firpo et al. (2007). This approach
+enables detailed accounting of the observed change in a distributional statistic between two periods and how
+much of this change is due to channels associated with QE. Specifically, it makes it possible to decompose
+the change in, for example, the ratio of the 95th to the 10th percentiles of the net income distribution into
+the contributions of changes in employment, returns on financial assets, and other covariates. Thus, this
+decomposition method provides well defined estimates of the quantitative contribution of various factors
+affecting the distribution of household income since the implementation of QE.
+    Our overall results are the following: we find that while employment changes and mortgage refinancing
+were highly equalizing during the QE period, these impacts were nonetheless swamped by the large dis-
+equalizing effects of equity price appreciations. Reductions in returns to short term assets added further to
+dis-equalizing processes between the periods. Bond price appreciations, surprisingly, had little distributional
+impact. It is worth emphasizing that this decomposition approach does not yield causal estimates of the
+impact of QE on the distribution of income. This approach does, however, yield well defined estimates of the
+relative importance of the various channels through which QE affects inequality and thus makes it possible
+to precisely frame the upper and lower bound causal impacts of QE under plausible assumptions about the
+counterfactual paths of employment and stock prices. To get some idea of the causal influences we use the
+results from our decomposition to carry out a series of “counterfactual exercises” to assess the quantitative
+range of impacts of QE on the main channels. Drawing on consensus QE impact estimates from the empirical
+literature, we conclude that, most likely, QE was modestly dis-equalizing, despite having positive impacts
+on employment and mortgage refinancing.
+    The rest of our paper is organized as follows. In the next section we describe in more detail the channels
+of monetary policy we will study and describe the “net income” measure we will use to map these channels
+onto income changes. In section 3 we discuss important data issues that we must deal with in using our data
+set. Section 4 presents our empirical methodology for analyzing the evolution of income distribution during
+the QE period. Section 5 presents our distributional results. Section 6 attempts to frame a causal analysis
+of the impacts of QE on inequality by using a counter-factual analysis based on consensus impacts from the
+literature. Section 7 summarizes and concludes with some remarks about the implications for the debate
+over QE’s impacts on income distribution.
+
+
+2    Net income and the theoretical effects of QE
+The onset of the 2007-8 financial crisis led the Federal Reserve to lower short-term interest rates to nearly zero
+in an effort to prop up the financial sector and prevent the U.S. economy from sliding into a depression. With
+nominal rates up against the zero lower bound and thus having exhausted the traditional tools of monetary
+policy, the Fed resorted to “unconventional” measures. In particular, the Federal Reserve announced a
+program to purchase vast amounts of securities in what is known as the Large Scale Asset Purchase program
+(LSAP), or alternatively as “Quantitative Easing” (QE). The first round of asset purchases (QE1) was
+formally announced on November 25, 2008 and initially covered Agency mortgage-backed securities (MBS),
+long-term Treasuries, and government-sponsored enterprises (GSE) debt. A second round of purchases (QE2)
+
+
+                                                        6
+was subsequently announced on November 3, 2010, followed by a third and final round (QE3) beginning in
+August 2012. The Federal Reserve officially announced the end of QE3 on October 29, 2014.
+    As already noted, QE is expected to affect the distribution of income through a variety of countervailing
+channels.3 The two most commonly cited channels – and perhaps most controversial – are through the effect
+of asset purchases and low interest rates on employment and the prices of financial assets. The third channel
+we focus on is on the impact of low interest rates on household debt service.
+    The employment channel is presumed to decrease inequality, though note that this should not necessarily
+hold a priori. The overall impact of changes in employment on inequality depends both on which parts of
+the distribution experience the greater increase in employment, as well as the relative returns to employment
+across the distribution. For instance, it could be the case that firms respond to expansionary monetary policy
+by increasing total employment but by mostly hiring among high-skilled and high-paying jobs. Similarly,
+even if the bottom range of the distribution has greater employment gains, if wages in the upper tail are
+sufficiently larger, the relatively smaller employment gains at the top could still translate into increases in
+overall inequality.
+    Financial asset prices are expected to affect income inequality through capital gains and interest and
+dividend income. The sign of this channel is potentially ambiguous for two reasons. On the one hand, richer
+households are likely to reap the majority of capital gains from increases in asset prices since ownership of
+equities and bonds is highly concentrated at the top. On the other hand, QE likely reduced interest rates
+on short-term and long-term assets, potentially offsetting the capital gains.
+    In theory, expansionary monetary policy should also benefit debtors at the expense of creditors. Since low
+income households are more likely to be indebted, expansionary monetary policy should decrease inequality.
+In practice, this is expected to result from the effects of higher inflation, which reduces the real value of debt,
+and through the direct impact of lower interest rates on household debt payments. Although interest rates
+have remained at historically low levels due to the Federal Reserve’s crisis response, it is not obvious if most
+household have been able to take advantage of them. Indeed, a number of commentators have argued that
+the fall in housing prices and the tightening in lending standards have prevented indebted household from
+refinancing at a lower interest rate. For instance, a Federal Reserve White Paper on housing noted:
+
+      Many homeowners have been unable to take advantage of historically low mortgage rates because
+      of low or negative home equity, slightly blemished credit, or tighter credit standards. Perhaps only
+      about half of homeowners who could profitably refinance have the equity and creditworthiness
+      needed to qualify for traditional refinancing. (Board of Governors of the Federal Reserve System,
+      2012)
+
+This relationship between falling home prices and the ability to refinance was investigated by Feroli et al.
+(2012), who showed that states with small declines in home prices experienced booms in refinancing during
+the post-crisis period while states with large home price declines experienced a collapse in refinancing rates.
+As Feroli et al. write, “the evidence suggests that a large fraction of homeowners in large house price decline
+states are unable to take advantage of lower mortgage interest rates.”
+    Standard definitions of income are inadequate to investigate the interest burden channel since they do
+not include debt payments. Indeed, there is no reason to expect a fall in interest rates to have a direct effect
+on household income other than through a negative effect via interest-paying assets and macroeconomic
+   3 See Coibion et al. (2012) for a detailed discussion for the channels through which traditional monetary policy might affect
+
+inequality. For a discussion specifically applied to QE see Bivens (2015).
+
+
+
+                                                               7
+spillovers. To directly incorporate the distributional consequences of household debt burdens, we alterna-
+tively define net household income, which consists of total household income – wages, dividends, capital
+gains, government transfers, and business income – minus total interest payments on debt. The low interest
+rates associated with expansionary monetary policy should therefore be associated with lower debt service
+and hence higher net income. Formally, we define net income as:
+
+           Net Income = W ages + Interest + Business + Gov + Capital gains − Debt payments                 (1)
+
+In equation (1), W ages denotes total wage income, Interest denotes all interest and dividends income,
+Business stands for any income from owning a controlling share or running a business, Gov denotes gov-
+ernment transfers, Capital gains stands for realized capital gains on financial assets, and Debt payments are
+total annual expenditure on debt service. Defining net income this way has several advantages. First, it is
+not possible to directly examine the reduced debt burden channel of expansionary monetary policy using
+traditional definitions of income. Second, including capital gains as a component of net income makes it
+possible to assess the financial assets price channel.
+    Summary statistics for household total and net income are presented in Table 1. Although broadly similar,
+it is worth highlighting a few differences between the two definitions of income. As one would expect, net
+income tends to be lower than total income. Mean total income was approximately $84,000 in the 2010
+SCF sample compared to around $72,000 for net income. Net income appears to have somewhat different
+dynamics between periods than total income. For instance, while median total income fell between the 2010
+and 2013 SCF samples, median net income actually increased slightly. Finally, net income appears to be
+more concentrated at the top than total income, indicating that poorer households are either more heavily
+indebted than richer households, face higher interest rates on debt, or both. Moreover, this discrepancy
+between the two definitions is even more pronounced at the very top of the distribution. Although ratio of
+the 90th to 50th percentiles are roughly the same between the two definitions, the 90/10 and 99/10 ratio are
+much larger for net income.
+    To examine contribution of each factor to overall changes in household net income we begin by defining
+functional forms for each relevant component. Fortunately for our purposes, each of the three channels
+through which QE might affect the distribution of net income maps cleanly onto a component of net income:
+unemployment drives wage income, financial assets drive capital gains, and debt refinancing affects interest
+payments. The wage income of household i during period t is assumed to depend on:
+
+                                     W agesit = αt EM Pit + τ Xit + it                                    (2)
+
+where EM P is a dummy variable that is equal to one if the head of the household is employed and equal
+to zero otherwise. The wage function also includes a vector of controls for demographic and human capital
+factors, including race, age, and education. Total financial income, which combines interest and dividend
+income and realized capital gains, is assumed to depend linearly on the ownership of various financial assets:
+
+                                        Capital gains it = Ait βt + εit                                    (3)
+
+where Ait is a vector of dummy variables for whether or not household i owns a non-zero amount of each
+type of financial asset. We specify our model using ownership dummies due to the highly skewed distribution
+of the levels of the financial assets we consider, as well as the large proportion of households with financial
+balances of zero. Financial assets ownership is broken up into three broad categories: (1) equities, either
+
+
+                                                      8
+              Table 1: Summary statistics for household total income and net income by period.
+
+                                          Total Income                                        Net Income
+                           Pre QE (2010-08)       Post QE (2013-11)           Pre QE (2010-08)     Post QE (2013-11)
+    Mean                         83,949                  86,596                     71,595                 76,116
+    Percentiles
+      10                         14,162                  14,203                     11,393                 11,160
+      20                         21,788                  20,291                     17,619                 17,247
+      50                         49,022                  46,668                     39,218                 39,422
+      80                        101,313                 101,453                     83,363                 86,639
+      90                        152,514                 154,209                     129,989                133,711
+      99                        659,079                 692,925                     608,486                664,943
+    Percentile ratios
+      99/10                      46.54                   48.79                       53.41                  59.58
+      90/10                      10.77                   10.86                       11.41                  11.98
+      90/50                       3.11                    3.30                       3.31                   3.39
+      50/10                       3.46                    3.29                       3.44                   3.53
+
+    Note: All the distributional statistics presented above were calculated using the sampling weights provided
+    by the SCF. Total income refers to the sum of wage earnings, interest and dividends, government transfers,
+    business income, and realized capital gains. Net income refers to total income minus debt service.
+
+
+directly held stocks or in mutual funds; (2) directly held bonds; and (3) short-term/liquid assets. Each
+element of the vector βit can be interpreted as the rate of return on each financial asset in Ait .
+    Debt service is assumed to be a linear function of mortgage refinancing as well as overall credit worthiness,
+which we capture by including variables for whether or not a survey respondent has feared or actually been
+denied credit during the period or has recently filed for bankruptcy. Household interest payments thus
+depend on:
+                               Debt payments it = γt RFit + ηt Dit + µt Bit + νit                             (4)
+
+where RFit is dummy for having refinanced the primary mortgage within the last three years, Dit is a dummy
+for fearing or having been denied credit during the period, and Bit is a dummy for having recently filed for
+bankruptcy. Adding the components together, we arrive at a functional form for net household income:
+
+                  Net Income it = b1t EM Pit + τ Xit + b2t Ait + b3t RFit + b4t Dit + b5t Bit + eit                    (5)
+
+where eit is a composite error term of εit , it , and νit . In order to identify the contribution of each factor in
+the decomposition exercises reported below, we will assume:
+
+                            E{eit |EM Pit , Xit , Ait , RFit , Dit , Bit , t} = λ   for t = 0, 1                       (6)
+
+for some constant λ. This is often referred to as the ignorability assumption and is weaker than the more
+common assumption that unobservables are conditionally independent. Ignorability does not assume that
+unobservables are mean independent of covariates but instead that this dependence is the same across both
+
+
+                                                              9
+groups t. For example, for our purposes we are interested in changes in net income between the pre-QE
+(t = 0) and post-QE (t = 1) periods. In this context ignorability means that any correlation between
+unobservable factors contributing to net income and, say, stock ownership, is constant across both periods.
+
+
+3     Data Issues
+The Survey of Consumer Finances (SCF) is almost ideal for assessing the impact of financial and labor
+market factors on the distribution of income. The SCF offers an unparalleled level of detail on a household’s
+balance sheet. It also contains a full set of standard demographic and labor market variables. The SCF also
+records information on mortgage refinancing, allowing us to answer questions about the role of refinancing
+on household interest payments.
+    Nevertheless, the SCF is “almost” ideal due to several shortcomings that complicate its usage. First,
+due to its relatively small sample size, many variables that would be useful are withheld from the public
+data releases in order to prevent users from identifying the survey respondents. Specifically, geographical
+data and interview dates are omitted. The former makes it impossible to control for geographic-specific
+unobserved effects. Second, the SCF is only released every 3 years and the cross-sectional sample for each
+release spans the entire 3 year window. Combined with the absence of publicly available interview dates,
+this makes it very difficult to split the survey data across precise event dates. Specifically, the 2007 release
+includes interviews collected from 2005 to 2007, the 2010 release includes 2008 to 2010, and the 2013 release
+includes 2011 to 2013. Therefore, it is not possible to cleanly split the data between the pre and post QE
+period, which began at the end of 2010.
+    We settle on treating the observations in the 2010 survey as the pre QE period (t = 0) and the 2013
+survey as the post period (t = 1). Admittedly, our “pre QE” period is not ideal since it is contaminated
+by the first round of QE, which took place between the end of 2009 and 2010. Nevertheless, this choice of
+periods is unavoidable given the data constraints and reasonably captures the timing of the fallout from the
+crisis and the path of the subsequent recovery. In other words, the 2010 SCF release, which includes 2009
+and 2008, is the only release that includes real crisis years.4 This problem, however, is not as severe as it
+may first seem. This is because the macroeconomic effects of QE likely occurred with substantial lags. For
+instance, Engen et al. (2015) found that the peak impact of QE on employment did not take place until
+as late as 2015. Moreover, the second and third rounds of QE took place after 2010, as did most of the
+post-crisis growth in stock prices.
+    A third issue that causes more technical problems for estimation and inference is that the SCF is re-
+leased as a set of multiple imputed datasets. This means that each data release contains 5 versions of each
+observation for each different method used to impute the missing variables. Informally, this is difficult to
+deal with because it means that the SCF is actually five different datasets instead of one. More precisely,
+the presence of five imputations causes the coefficients to be biased and the standard errors to be too small.
+Although there is no perfect solution to the first two problems, there exists a more or less standard solu-
+tion to estimating and carrying out inference with multiple imputations. This is the repeated imputations
+inference (RII) method pioneered by Rubin (1987), which first estimates the empirical model separately for
+   4 Specifically, unemployment only increases during the 2010 SCF release and falls during the 2013 release. The unemployment
+
+rate for the head of the household in the 2007 release is 4.1 percent. This increased to 7.1 percent in the 2010 release and fell
+to 5.9 percent in the 2013 release.
+
+
+
+
+                                                               10
+each imputation and then combines the estimated coefficients and standard errors to carryout inference.5
+All coefficients and standard errors reported below have been adjusted using the RII method.
+    A final complication arises due to our definition of net income. It is common in applied work to transform
+earnings variables by taking logs as this renders its distribution approximately normal. This is not possible
+however in this case since net income can also take on large negative values if debt service sufficiently
+exceeds income. Since negative observations would be undefined in logs, the transformation would result
+in a significant loss of information. Note that this is also a problem for stock variables with a significant
+number of zero observations. An alternative transformation useful in this context is the inverse hyperbolic
+sine (IHS) function, which was first proposed by Johnson (1949).6 The IHS transformation is similar to
+transforming variables using logs but has the added advantage of being continually defined everywhere along
+the real numbers line. Moreover, coefficients of IHS transformed variables can also be interpreted roughly as
+elasticities. The IHS transformation has also been shown to outperform other common transformations in
+empirical applications related to household income and wealth. (Burbidge et al., 1988; Pence, 2006). Given
+these advantages, in what follows net income and all stock variables have been transformed using the IHS
+transformation.
+
+
+4      The distributional decomposition
+In order to decompose changes in the distribution of net income between the pre and post QE periods we
+implement an approach proposed by Firpo et al. (2007), which combines recentered influence functions (RIF)
+regressions with the popular Oaxaca-Blinder decomposition method. This approach is easy to implement
+and makes it possible to decompose changes in distributional statistics into the contribution of changes in
+covariates or endowments and the contribution of changes in the coefficients or returns to factors. These
+components can also be further decomposed into the contribution of each individual covariate, enabling com-
+parisons of the relative contributions of different factors to the overall observed change in the distributional
+statistic of interest.
+    First proposed by Firpo et al. (2009), a RIF regression is essentially the same as a standard regression
+except that it replaces the dependent variable Y with the recentered influence function for a chosen distribu-
+tional statistic. Adopting the notation from Firpo et al. (2007), let ν denote a given distributional statistic
+(e.g. the gini coefficient or 90th quantile). The RIF for statistic ν is defined as RIF (y; ν) = ν(Fy )+IF (y; ν),
+    5 Formally, let β̂ and se
+                           ˆ i denote the estimated coefficients and standard errors for implicates i = 1, 2, . . . , M .   Rubin’s RII
+                      i
+method is to estimate all β̂i ’s separately and then combine them by simply averaging over every implicate:
+                                                                        M
+                                                                   1 X
+                                                            β̄ =         β̂i
+                                                                   M i=1
+
+Correct standard errors can then be derived by combining the standard errors obtained from each implicate separately as
+follows:                                                       
+                                                              1
+                                               se
+                                               ˜ = se
+                                                   ¯ + 1+         V ar(β̂i )
+                                                            M
+where
+                                         M                                  M
+                                                                            X
+                                      1 X                             1
+                                se
+                                 ¯ =        se
+                                            ˆ i and V ar(β̂i ) =               (βˆi − β̄)2
+                                     M i=1                         M − 1 i=1
+The correct combined standard error is the sum of the average of the M estimated standard errors and the variance of the
+coefficients across implicates.                                                       
+                                                                                p
+   6 For a variable y , the IHS transformation is calculated as IHS(y) = ln y +  y2 + 1 .
+                     i
+
+
+
+
+                                                                   11
+where y is an individual observation of Y , Fy is the cumulative density function of Y , and IF (y; ν) denote the
+influence function corresponding to statistic ν at y. The advantage of using the recentered influence function
+is that its expectation yields the original statistic of interest, so that E{RIF (y; ν)} = ν. The RIF regression
+assumes that the conditional expectation of RIF (y; ν) is a linear function of the explanatory variables X:
+
+                                               E{RIF (Y ; ν)|X} = Xγ + 
+
+where the coefficients γ can be estimated using OLS.
+    Therefore, all that is necessary to estimate the partial effects of the dependent variables X on a statistic
+ν to first calculate the RIF
+                          [ for ν and then run a standard regression of RIF   [ on X. For example, for the
+τ th quantile, Qτ , one first calculates the RIF as
+
+                                          [ (y; Q̂τ ) = Q̂τ + τ − 1{y ≤ Q̂τ }
+                                          RIF                                                                       (7)
+                                                                  fˆy (Q̂τ )
+
+where Q̂τ and fˆy (·) are, respectively, estimates of quantile τ and the probability density function of Y , and
+1{·} is an indicator function. In practice, the density fˆy is estimated using Kernel methods.
+    As shown by Firpo et al. (2007), the linearity assumption for E{RIF (Y ; ν)|X} makes it possible to apply
+the classic Oaxaca-Blinder decomposition method to RIF regressions and decompose general distributional
+statistics other than just the mean.7 Let t = 0, 1 denote the pre and post QE time periods. The change in,
+say, the 90th net income quantile between the two periods can be written as
+
+                                          ∆90 = Q̂1,90 − Q̂0,90 = X̄1 γ̂1 − X̄0 γ̂0
+
+The decomposition is given by:
+
+                             ∆90 = ∆X + ∆γ + ∆Xγ                                                                    (8)
+                                                                              
+                             ∆90 = X̄1 − X̄0 γ̂0 + (γ̂1 − γ̂0 ) X̄0 + X̄1 − X̄0 (γ̂1 − γ̂0 )
+                                   |    {z     } |       {z       } |         {z          }
+                                       endowments         coefficients          interaction
+
+The components ∆X and ∆γ capture, respectively, the contribution of changes in endowments and the the
+contribution of changes in returns. The term ∆Xγ is referred to as the “interaction” component. Each
+component can be further decomposed into the contribution of each variable in X. For example, the
+contribution of changes in the coefficients of the k-th independent variable can be calculated simply as
+∆γ,k = (γ̂1,k − γ̂0,k ) X̄0,k .
+    The endowments and coefficients components of the decomposition have intuitive interpretations. The
+endowment component can be interpreted as the contribution of a change in the endowment of a factor Xk
+between the two periods holding its return constant. For instance, in the case of the stock of financial assets
+held by a household, the endowments component can be interpreted as the extra interest or capital gains
+income the household would receive from increasing its financial assets by X1 − X0 obtaining last period’s
+rate of return γ0 . The coefficients component, on the other hand, can be interpreted as the contribution to
+household net income of a change in the return to a given factor holding the endowment constant at last
+period’s level. In the case of financial assets, it is the extra income received from a change γ1 − γ0 in the rate
+of return on financial assets holding the stock fixed. The interaction component, which is perhaps harder
+   7 In order to identify the each component of the decomposition it is also necessary to assume common support for both
+
+comparison groups, as well as either conditional independence on observables or ignorability.
+
+
+                                                              12
+to interpret, captures the contribution of simultaneous changes in endowments and coefficients. Keeping
+with the example of financial assets, the interaction component measures the contribution of both changes
+in returns and the amount owned.
+    Putting the pieces together, the steps necessary to carry out the decomposition can be summarized as
+follows:
+
+     • Calculate the recentered influence function for net income for each period t = 0, 1.
+
+     • Run separate RIF regressions for each period, for a set of quantiles Qt,τ , and obtain the coefficients
+       γ̂0,τ , γ̂1,τ .
+
+     • Calculate the means of the explanatory variables in each period, X̄0 , X̄1 .
+
+     • Algebraically combine the estimated coefficients and means to obtain each component of the decom-
+       position.
+
+
+5      Decomposition results
+We start by calculating the recentered influence functions of net income for quantiles Qτt , τ = {5, 10, . . . , 95}.8
+In addition, we calculate the RIFs for the gini coefficient. Next, we estimate (5) replacing the dependent
+variable Nit with its RIF for each quantile τ and for both periods t = 0, 1. The coefficients from the RIF
+regressions are shown by quantile in Figure 1. The pre QE period (2008-10) coefficients are depicted with
+triangles, while the circles depict the coefficients during the post QE period (2011-13).
+    Intuitively, the RIF regression graphs show the unconditional partial effect of a variable of interest on
+each quantile of the distribution. For example, let’s consider the employment graph (panel a). The level
+of the curve at the very middle of the distribution (quantile 50) indicates the size of the coefficient on the
+employment dummy for the median. In other words, the graph shows the effect of employment on median
+income. Similarly, going right on the graph – towards, say, quantile 90 – shows the impact of employment
+on the net income of richer households. A smaller coefficient on quantile 90 indicates that employment has
+a smaller impact on the net income of the rich relative to the middle class. Thus, a downward sloping curve
+in this context indicates that a given independent variable is equalizing in the sense that it increases the
+bottom end of the distribution relative to the top. Conversely, an upward slope indicates a disequalizing or
+regressive impact on the distribution of net income.
+    Employment has a strong equalizing effect on net income, as can be seen from the downward sloping
+coefficients curve. This reflects the fact that wage income makes up a much bigger share of total income
+for lower income households than for richer ones. Since the income of households near the bottom of
+the distribution consists almost entirely of wage earnings, the coefficient on EM P is close to one for the
+poorest households. In other words, households where the primary income earner is employed have net
+incomes around 100 percent higher compared to those with an unemployed primary earner. The importance
+of employment status decreases as one moves higher up in the distribution of net income. Employment
+increases real median income by around 40 percent and has an even smaller impact on the 90th quantile –
+roughly 20 percent. The “return” to employment appears to have decreased between the two periods, as
+indicated by the downward shift in the coefficients curve. This can be interpreted as a fall in real wages over
+the two periods.
+    8 For all RIF calculations, we use the default Epanechnikov kernel when obtaining the probability density of net income.
+
+
+
+
+                                                              13
+                                                      Figure 1: RIF regression coefficients during pre and post QE periods
+
+                                            (a) Employment                                                                                       (b) Equities                                                             (c) Bonds
+
+
+
+
+ Δ Percentage Point Contribution                                                                     Δ Percentage Point Contribution                                          Δ Percentage Point Contribution
+
+
+
+
+          .5          1          1.5                                                                       .5      1        1.5      2                                        0       1       2        3      4
+
+                  0
+                                                                                                                     0
+
+                                       0 10 20 30 40 50 60 70 80 90 100                                                                   0 10 20 30 40 50 60 70 80 90 100                                        0 10 20 30 40 50 60 70 80 90 100
+                                                   Quantile                                                                                           Quantile                                                                Quantile
+
+
+
+
+                                                                  Δ Percentage Point Contribution
+                            (d) Short-term financial assets                                                                               (e) Mortgage Refinancing
+
+
+
+
+ Δ Percentage Point Contribution                                                                     Δ Percentage Point Contribution
+                                                                                                                                                                              Note: These figures show the coefficients
+                                                                                                                                                                              from the RIF regressions by period and
+                                                                                                                                                                              by quantile. The pre QE period (2010-
+
+
+
+
+                                                                 -.2    0    .2    .4    .6     .8
+                                                                                                                                                                              08), is represented by the solid line with
+
+
+
+
+       0       .5        1       1.5                                                                     0      .2     .4     .6     .8
+                                                                                                                                                                              triangles while the post QE period (2013-
+                                                                                                                                                                              11) is represented by the dashed line with
+                                                                                                                                                                              circles. The shaded areas show the 95
+                                                                                                                                                                              percent confidence intervals for both pe-
+                                                                                                                                                                              riods.
+                  -.5                                                                                                -.2
+                                       0 10 20 30 40 50 60 70 80 90 100                                                0 10 20 203030404050
+                                                                                                                          0 10            50 60  70 80
+                                                                                                                                              60 70 809090100
+                                                                                                                                                           100
+                                                   Quantile                                                                             Quantile
+                                                                                                                                     Quantile
+
+                                                                                                                                             Pre-QE                 Post-QE
+
+
+
+    As expected, equity and bond ownership are highly disequalizing. This reflects the fact that ownership
+of these types of assets is highly concentrated at the top. The return on equities increased during the post
+QE period for the upper quantiles. This increase was most pronounced for the 90th and above quantiles.
+Curiously, despite the consensus in the empirical literature that QE boosted bond prices, the return on
+directly held bonds was essentially flat over the two periods and actually decreased mildly in the middle of
+the distribution. One possible explanation for this result is that bond ownership impacts household income
+through interest revenue and not through capital gains. As a result, households would not benefit from
+increases in bond prices.
+    The RIF regression results also suggest that mortgage refinancing, as anticipated, is associated with higher
+household net income, and this holds across most quantiles. Nevertheless, mortgage refinancing appears to
+be regressive, with a much greater impact near the top of the net income distribution. This implies that even
+if poor households in need of refinancing gain access to credit, they may not receive as favorable terms as
+those received by richer households. The coefficients for refinancing also increase during the post QE period
+for middle quantiles, which is consistent with the fall in interest rates brought on by QE.
+    To assess the actual quantitative contributions of each channel on inequality, we now turn to the detailed
+
+
+                                                                                                                                                       14
+decomposition results. Recall that the point of this exercise is to decompose the overall estimated change
+in a distributional statistic into a component explained by the change in levels of the independent variables,
+and a second component due to the change in the coefficients. Also, note that in the case of financial assets,
+the coefficients component can be interpreted as the contribution of changes in the rate of return on financial
+assets. Thus, for example, the coefficients component of equities is the contribution of rising stock prices on
+net income via capital gains.
+    As alluded to in the introduction, it is worthwhile analytically to distinguish between monetary policy in
+general and specific channels associated with QE. For example, returns on short-term or liquid financial assets
+are clearly one channel through which monetary policy may generally affect the distribution of income but is
+arguably not a channel specific to QE, which aimed to boost the economy through purchases of longer-term
+assets. Therefore, it is useful to consider the contribution of QE as a subset of the broader contribution of
+monetary policy. To focus the discussion on the most hotly debated channels through which QE is expected
+to influence inequality, we will refer to QE channels as the contributions of (1) the change in the employment
+rate, (2) the change in the return on stocks, and (3) the overall contribution of mortgage refinancing. Thus,
+we are intentionally distinguishing these specific channels from those associated with monetary policy more
+generally. We are also excluding from this tally the contributions of returns on short-term assets, for reasons
+already mentioned, and bonds. Bonds are excluded from the tally because it is not possible to identify their
+maturity composition using the SCF data and therefore it is not clear what share of the observed bond
+holdings would be sensitive to price changes due to QE. The unexplained component of employment is also
+excluded from the QE channels tally. This is because it is not clear how QE should affect this component.
+It is also worth emphasizing that restricting our attention to these specific channels results in a conservative
+estimate of the overall contribution of QE channels to inequality during this period.
+    For expositional ease, Table 2 reports the decomposition results for the main theoretical channels.9
+Intuitively, each column reports the observed percentage change (“total change”) in a given distributional
+measure and breaks up this total into the percentage point contribution of each sub-component. Note that
+nothing in this exercise precludes a component from “subtracting” from the total, which means that a given
+channel may reduce inequality. Moreover, the total change in inequality may actually be smaller than the
+contribution of a component. This would imply that some components have a tendency to strongly increase
+inequality but are offset by other equalizing factors that subtract from the measure of inequality during this
+period. Each column presents the decomposition result for a separate distributional statistic, where the first
+three columns are devoted to inequality measures, including ratio of the 95th to 10th percentiles, the 90/10
+ratio, and the Gini coefficient. The second set of columns report the level effects on the 10th, 50th and 95th
+percentiles. For each decomposed statistic, the first two rows report the total change in that statistic and
+how much the combined QE channels contributed to that change.
+    The contributions of the three main theoretical channels are also depicted graphically by quantile in
+Figures 2 through 4. The graphs show how much of the change in net income of a given quantile is due
+to the component in question. As with the RIF regression graphs discussed above, a downward sloping
+curve indicates that the component is equalizing, in the sense that it contributed to a decrease in inequality.
+Conversely, an upward sloping curve indicates that the component in question increased inequality.
+   9 The complete set of results for every variable in the specification, all distributional statistics, and every decomposition
+
+component are available in the Appendix. Table A.3 reports the full results for a range of inequality measures. Tables A.4 and
+A.5 report the decomposition results for the bottom and top halves, respectively, of the distribution. These tables also include
+bootstrapped standard errors for the decomposition components.
+
+
+
+
+                                                              15
+           Table 2: Decomposition results – contributions of the three main theoretical channels.
+
+                                                       ∆ Inequality                         ∆ Level by quantile
+                                         95/10 ratio    90/10 ratio         Gini        Q = 10    Median      Q = 95
+   1     Total Change                       0.050           0.045          0.016∗         0.015        0.003      0.049∗∗
+                                           (0.043)         (0.033)         (0.009)      (0.025)       (0.012)      (0.022)
+   2     QE Channels†                      0.071∗∗         0.057∗∗          0.011        -0.003      0.030∗∗∗     0.070∗∗∗
+                                           (0.033)         (0.023)         (0.009)      (0.007)       (0.007)     (0.021)
+
+   3     Employment Channel               -0.004∗∗∗        -0.005∗∗       -0.001∗∗∗     0.007∗∗∗     0.004∗∗∗     0.003∗∗∗
+                                           (0.002)          (0.002)        (0.000)       (0.001)      (0.001)     (0.001)
+
+   4     Financial Returns                 0.264∗∗         0.218∗            0.016      -0.288∗∗       -0.012      0.046∗
+                                           (0.120)         (0.113)         (0.012)       (0.125)      (0.032)      (0.024)
+   4a      Equities                        0.063∗∗         0.041∗∗         0.013∗      -0.018∗∗∗       -0.002     0.047∗∗∗
+                                           (0.030)         (0.020)         (0.007)       (0.006)      (0.006)      (0.018)
+  4b       Bonds                            0.000           0.002            0.004      -0.002∗∗       -0.002        0.000
+                                           (0.010)         (0.005)         (0.005)       (0.001)      (0.001)      (0.006)
+   4c      Short-term Assets               0.201∗           0.175           -0.002      -0.268∗∗       -0.007       -0.001
+                                           (0.115)         (0.113)         (0.010)       (0.124)      (0.031)     (0.021)
+
+   5     Mortgage Refinancing                0.012          0.021           -0.002        0.008        0.028        0.020
+                                           (0.016)         (0.010)         (0.004)       (0.003)      (0.003)      (0.008)
+   5a      Endowments                     0.016∗∗∗         0.008∗∗           0.001      0.005∗∗∗     0.011∗∗∗     0.021∗∗∗
+                                           (0.006)         (0.003)         (0.001)       (0.001)      (0.001)      (0.003)
+  5b       Coefficients                     -0.004          0.012           -0.002        0.003      0.017∗∗∗       -0.000
+                                           (0.020)         (0.012)         (0.005)       (0.004)      (0.003)      (0.010)
+    Note: This table reports the change in a given distributional statistic between the pre and post-QE periods as well as
+    the decomposed contributions of each of the three main theoretical channels: unemployment, financial asset returns,
+    and mortgage refinancing. The employment channel refers to the contribution of the endowments component (∆X ).
+    All financial return contributions refer to the coefficients component of each financial asset (∆γ ). Bootstrapped
+    standard errors with 300 repetitions are reported in parentheses (∗ p < 0.1, ∗∗ p < 0.05, ∗∗∗ p < 0.01). † QE channels
+    = 3+4a+5.
+
+
+
+    No matter what measure of inequality one uses, changes in the level of employment unambiguously
+decreased net income inequality. As can be seen in the fist column of Table 2, although the ratio of the
+95th to 10th quantiles grew by 5 percent, the increased employment rate (i.e. the endowment component)
+partially offset this trend, subtracting nearly half a percentage point. Changes in employment also had
+equalizing effects on other measures of inequality. Specifically, the endowments component of employment
+contributed -0.5 percentage points to the 90/10 ratio and -0.001 to the Gini coefficient. All three of these
+negative contributions are statistically significant at standard significance levels using bootstrapped standard
+errors.10
+    The equalizing contribution of employment to the distribution of net income can also be inferred from
+Figure 2. The downward sloping curve for the explained component indicates that employment gains con-
+tributed to much larger increases in net income for bottom quantiles than for top quantiles. Changes in
+ 10 Standard errors were calculated using the bootstrap replication weights provided by the SCF dataset combined with the
+
+RII technique for datasets with repeated imputations. All specifications include 300 repetitions.
+
+
+
+
+                                                             16
+                     Figure 2: Contribution of changes in employment (∆X ) by quantile
+
+                                                  .02
+
+
+
+
+                                   Δ Percentage Point Contribution
+
+
+
+
+                                    .005         .01         .015
+
+
+
+
+                                                  0
+
+                                                                     0   10   20   30   40 50 60     70   80   90   100
+                                                                                          Quantile
+
+        Note: This figure shows the endowments component of employment (∆X ) by quantile. The vertical axis
+        measures the percentage point change in each net income quantile that is attributable to the change in the
+        employment rate. The decomposition corresponds to the same specification presented in Tables A.3 through
+        A.5. The shaded area represents the 95% confidence interval.
+
+
+employment contributed 0.7 percentage points of growth to the 10th quantile. The contribution to median
+income growth was roughly 0.4 of a percentage point. By contrast, the contribution of higher employment
+to the net income of the top was much smaller. A surprising result from the decompositions is that the
+coefficients component of employment – the contribution attributable to changes in the returns to employ-
+ment – has no statistically significant effect on inequality (see Table A.3 in the Appendix). Concretely, this
+means that changes in real wages were distributionally neutral between these two periods, or at least not
+pronounced enough to detect in this data and framework.
+    Equity ownership appears to have contributed to an increase in the incomes of the top of the distribution
+(see Figure 3). The main component of interest is the coefficients component, which can be interpreted as the
+increase in stock returns during the post-QE period. This component contributed a whopping 6.3 percentage
+points to the 95/10 ratio and thus was highly disequalizing, dwarfing the comparatively modest equalizing
+impact of increasing employment. This 6.3 percent contribution is actually larger than the observed growth
+of the 95/10 ratio, suggesting that this positive contribution was offset by other equalizing factors. Similarly,
+equity returns also had an oversized impact on the gini coefficient, contributing 0.013, or roughly four fifths
+of the 0.016 observed change. Nevertheless, the large contribution of stock returns is due to large effects at
+the upper end of the distribution. Indeed, the coefficients component is only statistically significant for the
+90th percentile and above.
+    Other financial assets had a mixed contribution to inequality. As expected, the return on short-term
+financial assets, which consist of checking accounts, certificates of deposit, and ordinary savings accounts,
+disproportionately decreased the income of poorer households around the 10th percentile of the distribution
+while having a nearly neutral effect on richer households. As a consequence, the contribution of short-term
+asset returns to the 90/10 ratio was sizable – roughly 17 percentage points – though this amount is not
+statistically significant. Changes in bond returns do not appear to have a significant effect on any of the
+
+
+                                                                                         17
+                                                     Figure 3: Contributions of financial assets returns (∆γ )
+
+                                                (a) Equities                                                                                 (b) Bonds
+
+               .1
+
+                                                                                                           .01
+
+
+
+
+Δ Percentage Point Contribution                                                             Δ Percentage Point Contribution
+
+
+
+
+        0              .05                                                                    -.005       0        .005
+
+
+
+               -.05                                                                                        -.01
+
+
+                                  0   10   20   30   40 50 60     70   80   90   100                                          0   10   20   30   40 50 60     70   80   90   100
+                                                       Quantile                                                                                    Quantile
+
+                                           (c) Short-term Assets
+
+
+               .2
+
+
+
+
+Δ Percentage Point Contribution
+                                                                                        Note: This figure shows the coefficients component
+                                                                                        of various financial assets (∆γ ) by quantile. The ver-
+                                                                                        tical axes measure the percentage point change in
+                                                                                        each net income quantile that is attributable to the
+
+
+
+ -.4        -.2          0
+                                                                                        change in the return on the given financial asset. The
+                                                                                        decomposition corresponds to the same specification
+                                                                                        presented in Tables A.3 through A.5. The shaded
+                                                                                        area represents the 95% confidence interval.
+
+
+               -.6
+                                  0   10   20   30   40 50 60     70   80   90   100
+                                                       Quantile
+
+
+
+
+                                                                                       18
+                                                               Figure 4: Contribution of mortgage refinancing
+
+                                         (a) Endowments component (∆X )                                                                  (b) Coefficients component (∆γ )
+
+                      .03                                                                                         .04
+
+
+
+
+       Δ Percentage Point Contribution                                                             Δ Percentage Point Contribution
+
+
+
+
+         0           .01         .02                                                                      0              .02
+
+
+
+
+                      -.01                                                                                        -.02
+                                         0   10   20   30   40 50 60     70   80   90   100                                          0    10   20   30   40 50 60     70   80   90   100
+                                                              Quantile                                                                                     Quantile
+
+              Note: This figure shows both the endowments (∆X ) and coefficients (∆γ ) components of mortgage refi-
+              nancing by quantile. The vertical axes measure the percentage point change in each net income quantile that
+              is attributable to refinancing. The decomposition corresponds to the same specification presented in Tables
+              A.3 through A.5. The shaded area represents the 95% confidence interval based on bootstrapped standard
+              errors with 100 repetitions.
+
+
+distributional statistics we consider.
+    While nearly all quantiles benefitted from both higher refinancing rates – reflecting easier access to
+credit – as well as a greater return on refinancing – reflecting lower interest rates on refinanced mortgage
+debt (Figure 4), the distributional impact of mortgage refinancing is nuanced. For example, the greater
+availability of refinancing credit was highly regressive, as can be seen by the upward sloping contribution of
+the endowments component in panel (a) of Figure 4. For instance, changes in the number of households who
+refinanced contributed to a 0.8 percentage point increase in the 90/10 ratio and an increase of 1.6 in the
+95/10 ratio. In contrast, changes in the returns to refinancing – that is, the effect of refinancing at a lower
+interest rate – only impacted the middle of the income distribution. As can be seen in panel (b), the largest
+gains from obtaining refinancing went to households between the 50th and 80th percentiles, while the effects
+on the tails of the distribution were not significantly different from zero. Adding these two components
+together, the overall contribution of refinancing to inequality is modestly positive (see row 5 of Table 2),
+though not statistically significant for any of the distributional measures considered.
+    Taking a step back, the decomposition results support the proposition that the disequalizing effects of
+increasing equity returns outweighed the equalizing effects of falling unemployment during the post-QE
+period. Netting out the equalizing impact of declining unemployment, the estimated impact of increasing
+equity returns on the 95/10 ratio is still around 6 percentage points. If this were the end of the story
+the unavoidable conclusion would be that QE, and expansionary monetary policy more generally during this
+period, greatly contributed to rising inequality. However, this conclusion is incorrect since the decomposition
+results only account for the observed changes in the explanatory variables and are completely silent on the
+counterfactual changes in these variables that would have been observed in the absence of QE. We address
+
+
+                                                                                              19
+this issue in Section 6 below.
+
+
+5.1    Contribution to growth of real median income
+Although the combined contributions of all three channels – financial returns, declining unemployment,
+and mortgage refinancing – appear to have increased inequality between the two periods, it is important
+to emphasize that these channels nevertheless boosted real median income. Indeed, while median income
+growth was flat during the post-QE period, as reported in the second to last column of Table 2, the three
+QE channels contributed a net 3 percentage points to median real income. Put differently, the contribution
+of the three QE channels offset a 3 percent decline of median income.
+     Mortgage refinancing played the biggest role, contributing 2.8 percentage points. This reflects both
+changes in the volume of refinancing (the endowments component) and reduced borrowing costs (the coef-
+ficients component). Assuming that the demand for credit has remained more or less constant between the
+two periods, the increase in refinancing rates implies an improvement in credit availability. These improved
+credit conditions contributed nearly 1.1 percentage points to median income growth. At the same time, a fall
+in mortgage rates boosted median net income by lightening households’ debt burden. This effect contributed
+around 1.7 percentage points to median income growth.
+     In contrast, financial asset returns had no significant effect on median income. Although the combined
+contribution of financial asset returns on median net income was -1.2 percentage points, led by the falling
+returns on short-term / liquid financial assets, these estimates are not statistically significant at standard
+confidence levels. Finally, increased employment contributed nearly half a percentage point to real median
+income growth.
+
+
+6     Counterfactual scenarios
+As already noted, while our decomposition provides a detailed picture of the contribution of each channel to
+the actual change in the distribution of net income between the two periods, it lacks a causal interpretation.
+This is because the decomposition was carried out using the observed changes in the independent variables
+and not the counterfactual changes that would have prevailed had the Federal Reserve abstained from
+intervening to boost employment and prop up financial markets. In other words, our decomposition estimates
+do not answer the question: “what would the distribution of income look like if the Federal Reserve had
+not undertaken QE?” Nevertheless, it is possible to use the decomposition estimates to provide a precise
+framing of the relative magnitudes of each causal channel under alternative counterfactual scenarios. This
+requires making assumptions about the path of, say, unemployment in the hypothetical absence of QE; or
+about changes in stock returns had QE not taken place.
+    Though not settling the issue of causality, this exercise places well defined upper and lower bounds
+on the effects of QE, as well as the net tradeoff between equity returns – which, as we have seen, led to
+dramatic increases in inequality – and changes in employment, which modestly decreased inequality. What
+emerges from this exercise is that for QE to have actually decreased inequality relative to a hypothetical
+counterfactual, it is necessary to either strongly downplay the potential impact of QE on stock returns
+or assume very large employment effects. In other words, it is necessary to either assume that the large
+disequalizing impact of stock returns was mostly not due to QE but a “normal” feature of the economic
+recovery, or that the Federal Reserve prevented an implausibly large increase in the unemployment rate.
+
+
+                                                     20
+    Consider the “causal” effect of QE on channel k for a given inequality statistic,
+
+                                                           ˜ k = ∆k − ∆C
+                                                           ∆           k
+
+
+where ∆C k denotes the counterfactual change of channel k (e.g. the change in employment that would have
+taken place without QE). To focus on the most controversial channels, let’s consider the contribution of
+changes in the return of owning stocks (∆γS ) and changes in employment (∆X̄E ). For simplicity, let’s
+assume that counterfactual stock returns can be modeled by replacing the estimated change in the return
+on stocks (∆γS ) with a parameter θ that stands for the percentage increase in stock prices due to QE. That
+is, we assume that the “causal” contribution of stock returns is given by:
+
+                                                          ˜ γ,S = θγ̂0,S X̄0,S
+                                                          ∆                                                                     (9)
+
+where γ̂0,S is the return on stocks during the pre-QE period.11 Intuitively, equation (9) yields the causal
+contribution of QE to inequality through stock returns if one assumes that QE was responsible for a θ percent
+increase in stock prices.
+    Turning next to the employment channel, it is extremely likely that unemployment would have continued
+to increase, instead of slowly coming down, in the absence of QE. We do not take a stand on precisely
+how much employment would have hypothetically decreased but instead present a range of estimates for
+the effect of QE via employment based on counterfactual levels of employment. Below we will discuss
+estimates reported in the literature and how these translate into contributions to inequality in our framework.
+Specifically, starting with the definition of the endowment component for employment in the Oaxaca-Blinder
+decomposition, we replace the change in mean endowments, ∆X̄E , with the hypothetical change causally
+                                  C
+attributable to QE, ∆X̄E − ∆X̄E     . The causal contribution of QE to inequality via employment is thus given
+by:
+                                                ∆˜ X,E = ∆
+                                                         ˜ X̄E γ̂0,E                                       (10)
+
+where γ̂0,E is the RIF regression coefficient for employment during t = 0. Combining the effects of stock
+returns and employment, we arrive at the net effect QE relative to the counterfactual:
+
+                                                         ˜ = ˜
+                                                         ∆          ˜ γ,S
+                                                             ∆X,U + ∆                                                          (11)
+
+Using the decomposition results, we consider two counterfactual exercises to assess the plausibility that
+QE may have decreased or increased inequality given these well defined impacts on employment and stock
+returns. Specifically, we take the coefficients from the RIF regressions and combine them with alternative
+assumptions about changes in endowments and returns to calculate the hypothetical contribution of QE to
+inequality under various counterfactual scenarios.
+    First, we examine the net causal contribution to inequality as a function of the causal effect of QE on
+                              C
+employment (∆X̄E − ∆X̄E         ) holding constant the effect on stock returns at different levels. This exercise is
+intended to answer the question: “how much would QE have contributed to inequality if its causal impact
+on employment had been x points and we assume that QE was responsible for a y percent increase in stock
+prices?” Thus, panel (a) of Figure 5 graphs the net contribution to the 95/10 ratio ( ˜        ∆) as a function of
+                                                              ˜
+the hypothetical causal effect on the employment rate (∆X,U ), holding constant the causal effect of QE on
+stock returns (θγ̂0,S X̄0,S ). As in the decomposition figures presented above, the vertical axis measures the
+  11 Algebraically, this follows from the definition of the change in the return on stocks and of θ, which is the percentage change.
+
+Since (γ̂1,S − γ̂0,S )/γ̂0,S = θ, it is easy to see that ∆γS = θγ̂0,S .
+
+
+                                                                    21
+                                               Figure 5: Impact of QE relative to various counterfactual scenarios
+
+                                    (a) Contribution to 95/10 ratio                                                  (b) Locus of contributions to inequality
+                         .04                                                                               .2
+                                            .034
+
+                                                                                                                                 .128
+
+
+
+
+ Contribution to inequality
+                                                                                      Stock return eﬀect (θ)
+                         .02                                                                               .1
+                                            .015
+
+
+                                            .005                                                                                 .02
+
+                         0                                                                                 0
+                                            -.004
+
+
+
+                                              Engen et al. (2015)                                                                -.086
+                                                  baseline
+                                                                                                           -.1
+                         -.02
+                                0     .01           .02     .03      .04       .05                               0         .01           .02   .03       .04    .05
+                                            Employment eﬀect (ΔX)                                                                Employment eﬀect (ΔX)
+                                       return to trend              5% scenario                                                   zero locus         2% locus
+                                       10% scenario                 20% scenario                                                  -2% locus
+
+Note: Panel (a) shows the net contribution of QE to the 99/10 ratio through its effect on employment and stock returns under
+alternative scenarios about the causal impact of QE on these two channels. The “return to trend” scenario assumes that all
+observed stock returns were due to stock prices returning to their trend level (θ = 0). The “5 percent” scenario assumes that QE
+increased stock prices by 5 percent. The 10 and 20 percent scenarios are defined analogously. Panel (b) reports the combinations
+of stock return and employment effects that yield a zero net impact on inequality. In both panels, “employment effect” refers
+to the hypothetical causal impact of QE on employment relative to the counterfactual absence of QE (∆X̄E − ∆X̄E      C ). In panel
+
+(b), “stock returns effect” refers to the percentage increase in stock prices causally attributable to QE.
+
+
+
+
+percentage point change in inequality due to the factors under consideration. We consider four alternative
+scenarios for stock prices in this exercise. The “return to trend” scenario makes the extreme assumption
+that none of the stock price growth observed during the recovery is causally attributable to QE and instead
+simply reflects the stock prices returning to their pre-crisis trend. This scenario is broadly compatible with
+Bernanke’s views (cited above) and corresponds to setting θ = 0. We then consider three intermediate
+scenarios where QE was causally responsible for 5, 10, and 20 percent increases in stock prices.
+    Second, we consider the locus of combinations of employment and stock returns effects necessary for
+the contribution of QE to inequality to equal zero. This second exercise answers questions of the type: “If
+QE had a zero causal impact on inequality, what combinations of stock returns and employment effects are
+consistent with this zero impact?” Phrased differently, this exercise answers: “If we assume that QE was
+only responsible for a y percent change in stock prices, how big does the effect on employment need to be
+to ensure a zero net impact on inequality?” Concretely, this exercise simply consists of setting ∆ ˜ = 0 from
+equation (11) and graphing the zero locus in ( ˜∆X̄E , θ)-space. This is shown in panel (b) of Figure 5.
+    Although the jury is still out on the overall macroeconomic impact of QE, there have been a number
+of studies quantifying its effects on employment and stock prices. These are thoroughly reviewed in Bivens
+(2015). A general reading of this literature is that QE had non-trivial effects on the unemployment rate
+and relatively modest effects on stock prices. Using estimates of the effect of QE on the term-premium
+and simulations based-on the Federal Reserves’ FRB-US model, Chung et al. (2012) report that QE likely
+
+
+                                                                                     22
+               Table 3: Counterfactual contributions to the 95/10 ratio under various scenarios
+
+                                                                                     ˜ X̄)
+                                                                  Employment effect (∆
+                                                                  1 pp    2 pp    3 pp     4 pp
+                            Equity Return Scenarios (θ)
+                              0% scenario                          -0.3    -0.6    -1.0     -1.3
+                              5% scenario                          0.6     0.3     0.0      -0.4
+                              10% scenario                         1.5     1.2     0.9      0.6
+                              20% scenario                         3.4     3.1     2.8      2.5
+
+Note: This table reports the combined contribution of returns to equities and changes in the employment rate to the 95/10
+ratio under various counterfactual scenarios. The contributions are presented as percentage changes. Each counterfactual
+contribution is calculated according to equation (11) in the text. A one pp employment effect refers to a one percentage point
+causal change in the employment rate.
+
+
+
+
+lowered the unemployment rate by 1.5 percentage points. Engen et al. (2015) reports estimates ranging from
+a 0.8 percentage point decrease to an upper bound of 1.5 points, with a baseline impact of 1.2. Estimates
+of the impact of QE on stock prices come from event-style studies measuring the response of stock prices to
+surprise monetary policy announcements related to QE (Rosa, 2012; Rogers et al., 2014; Kiley, 2014; Engen
+et al., 2015). In these types of studies, stock prices are estimated to have grown between 3 percent to around
+9 percent because of QE.12
+    Considering these estimates for the employment and stock prices effects, QE would have mildly increased
+inequality or have had an approximately neutral effect. Taking the 5 percent causal effect on stock prices
+scenario as the baseline (the solid black curve in panel (a) of Figure 5), it is evident that the net contribution
+of QE to inequality through employment and stock returns is positive for a substantial range of effects
+on employment. For example, let’s consider the net contribution to inequality assuming that the causal
+effect of QE on employment was 1.2 percentage points. This change in employment is consistent with the
+baseline estimates reported by Engen et al. (2015). As can be seen in panel (a), this corresponds to a 0.5
+percentage point increase to the 95/10 ratio under the 5 percent stock returns scenario, a 1.5 percentage
+point contribution under the 10 percent scenario, and as high as 3.4 percentage points under the 20 percent
+scenario.
+    Indeed, under the 5 percent stock returns scenario, the contribution to the 95/10 ratio only becomes
+negative for assumed employment effects exceeding 3 percentage points, which is more than double the
+baseline effect reported by Engen et al. (2015). Making the less conservative assumption that 10 percent of
+the change in stock returns was due to QE, the employment effects necessary to yield a neutral or negative
+impact on inequality become highly implausible. Perhaps the easiest way to appreciate the tradeoff between
+the equalizing effects of employment and the disequalizing effects of stock returns is by looking at panel (b) of
+Figure 5. There, the solid black curve plots the combinations of stock return effects and employment effects
+that are consistent with a neutral QE impact on inequality. A 1.2 percentage point employment effect would
+only result in a zero net impact on inequality if as little as 3.2 percent of the change in stock prices were
+   12 One limitation of these estimates is that event-studies, by design, only capture the response of stock prices during the
+
+immediate time-period of the policy announcement and as such may not capture the full effect of QE, via, for example, general
+financial market conditions. Due to this uncertainty, event-studies may understate the full effect of QE on stock prices.
+
+
+
+                                                             23
+attributable to QE. These points are also illustrated in Table 3, which reports the combined contribution of
+equity returns and changes in employment under various counterfactual scenarios.
+
+
+7    Concluding Remarks
+The unavoidable conclusion from the detailed decomposition exercise and the counterfactual analysis carried
+out above is that the impact of quantitative easing on the distribution income was at least modestly regres-
+sive. Our decomposition results imply that the disequalizing effects of equity returns far outweighed the
+equalizing effects of employment gains. While these decomposition results cannot be interpreted causally,
+the counterfactual scenarios presented in the previous section suggest that, for reasonable assumptions about
+the employment effects of QE, the causal impact of QE on stock prices would have to be implausibly small
+for the net effect to be distributionally neutral.
+    These dis-equalizing impacts were due to both policy choices and deep seated structural problems. Policy
+wise, the Federal Reserve and Treasury Department did not design effective mechanisms to clear away
+obstacles for lower income households to refinance loans at lower rates. As Bair (2012) and Barofsky (2012)
+show, helping underwater homeowners refinance their mortgages or stay in their homes was not a top priority
+of the Treasury Department. Nor did the Federal Reserve try to implement any regulatory programs to do
+so. In addition, the Federal Reserve did not try to develop innovative programs to use its lending facilities
+to lend directly to state and local governments or others who would preserve or expand employment. This
+direct lending could have lessened the Fed’s dependence on bidding up asset prices in an attempt to generate
+employment and wage increases.
+    Finally, while our results tend to support the critics who argue that QE did increase inequality, there
+is nothing in our analysis which supports those who argue that raising interest rates will have a desirable,
+equalizing impact. Tighter monetary policy would likely reduce employment growth, and make mortgage
+refinancing more expensive. While it might reduce asset price growth and raise returns on short term assets,
+the employment and refinancing impacts are likely to be dominant as earlier work on monetary policy and
+income distribution has demonstrated (e.g. Coibion et al., 2012).
+    This suggests a paradox. Given the current structure of the economy and monetary policy strategies,
+both loose and tight monetary policy are likely to be disequalizing. Future research should focus on better
+understanding the reason for this paradoxical situation. It is likely that more direct tools of monetary policy
+are needed. Perhaps more importantly, fiscal policy, and labor market policies such as changes in labor laws,
+tax laws, and minimum wage legislation will be needed to reduce the massive levels of inequality that we are
+experiencing today.
+
+
+
+
+                                                      24
+References
+Binyamin Appelbaum. Ben Bernanke Says Fed Can’t Get Caught Up in Inequality Debate. The
+  New York Times, June 2015. ISSN 0362-4331. URL http://www.nytimes.com/2015/06/02/upshot/
+  bernanke-says-fed-cant-get-caught-up-in-inequality-debate.html.
+
+Sheila Bair. Bull by the horns: fighting to save Main Street from Wall Street, and Wall Street from itself.
+  Free Press, New York, N.Y., 2012.
+
+Neil M. Barofsky. Bailout: an inside account of how Washington abandoned Main Street while rescuing Wall
+  Street. Free Press, New York, 2012.
+
+Venetia Bell, Michael Joyce, Zhuoshi Liu, and Chris Young. The Distributional Effects of Asset Purchases.
+  Bank of England Quarterly Bulletin, 2012. URL http://papers.ssrn.com/sol3/papers.cfm?abstract_
+  id=2150116.
+
+Martin Beraja, Erik Hurst, and Joseph Vavra. Regional heterogeneity and monetary policy. Working
+ Paper 13, Hutchins Center on Fiscal & Monetary Policy, 2015.
+
+Ben Bernanke.   Monetary policy and inequality, 2015. URL http://www.brookings.edu/blogs/
+  ben-bernanke/posts/2015/06/01-monetary-policy-and-inequality.
+
+Josh Bivens. Gauging the impact of the Fed on inequality during the Great Recession. Working Paper 12,
+  Hutchins Center Working Paper, June 2015. URL http://www.brookings.edu/~/media/research/
+  files/papers/2015/06/01-quantitative-easing-and-inequality/josh_bivens_inequality_
+  final.pdf.
+
+Josh Bivens and Lawrence Mishel. Understanding the historic diveergence between productivity and a typical
+  worker’s pay; why it matters and why it’s real. Briefing Paper 406, Economic Policy Institute, Washington,
+  D.C., September 2015.
+
+Josh Bivens, Elise Gould, Lawrence Mishel, and Heidi Shierholz. Raising America’s Pay: Why It’s Our
+  Central Economic Policy Challenge. Briefing Paper 378, Economic Policy Institute, Washington, D.C.,
+  June 2015.
+
+Brookings Institution. Symposium on Monetary Policy and Inequality, June 2015.
+
+John B. Burbidge, Lonnie Magee, and A. Leslie Robb. Alternative Transformations to Handle Extreme Values
+  of the Dependent Variable. Journal of the American Statistical Association, 83(401):123, March 1988. ISSN
+  01621459. doi: 10.2307/2288929. URL http://www.jstor.org/stable/2288929?origin=crossref.
+
+Hess Chung, Jean-Philippe Laforte, David Reifschneider, and John C. Williams. Have we underestimated
+  the likelihood and severity of zero lower bound events? Journal of Money, Credit, and Banking, 44(s1):
+  47–82, 2012. URL https://www.bostonfed.org/economic/conf/conf55/papers/Reifschneider.pdf.
+
+Olivier Coibion, Yuriy Gorodnichenko, Lorenz Kueng, and John Silvia. Innocent bystanders? Monetary
+  policy and inequality in the US. Technical report, National Bureau of Economic Research, 2012. URL
+  http://www.nber.org/papers/w18170.
+
+
+
+                                                    25
+Matthias Doepke, Martin Schneider, and Veronika Selezneva. Distributional effects of monetary pol-
+ icy. Technical report, Hutchins Center Working Paper, 2015. URL http://www.brookings.edu/~/
+ media/research/files/papers/2015/06/01-quantitative-easing-and-inequality/doepke-et-al_
+ inequality_final.pdf.
+
+Eric Engen, Thomas Laubach, and Dave Reifschneider. The Macroeconomic Effects of the Federal Re-
+  serve’s Unconventional Monetary Policies. Finance and Economics Discussion Series, 2015(005):1–54,
+  February 2015. ISSN 19362854. doi: 10.17016/FEDS.2015.005. URL http://www.federalreserve.gov/
+  econresdata/feds/2015/files/2015005pap.pdf.
+
+Gerald Epstein. Domestic Stagflation and Monetary Policy: The Federal Reserve and the Hidden Election.
+ In Thomas Ferguson and Joel Rogers, editors, The Hidden Election. Pantheon Press, New York, 1981.
+
+Gerald Epstein and Thomas Ferguson. Loan liquidation and industrial conflict: the federal reserve and the
+ open market operation of 1932. Journal of Economic History, 34(4):957–983, December 1984.
+
+Michael Feroli, Ethan S. Harris, Amir Sufi, and Kenneth D. West. Housing, monetary policy, and the
+ recovery. Chicago Booth Research Paper, (12-16), 2012. URL http://papers.ssrn.com/sol3/papers.
+ cfm?abstract_id=2056313.
+
+Sergio Firpo, Nicole Fortin, and Thomas Lemieux. Decomposing wage distributions using recentered influence
+  function regressions. University of British Columbia (June), 2007. URL http://www.economics.uci.
+  edu/files/docs/micro/f07/lemieux.pdf.
+
+Sergio Firpo, Nicole Fortin, and Thomas Lemieux. Unconditional quantile regressions. Econometrica, 77(3):
+  953–973, May 2009.
+
+Nicole Fortin, Thomas Lemieux, and Sergio Firpo. Decomposition Methods in Economics. In Handbook of
+  Labor Economics, volume 4, pages 1–102. Elsevier, 2011.
+
+Jeffry A. Frieden. Global Capitalistm; its fall and rise in the 20th century. Norton, New York, 2006.
+
+Lawrence Goodwyn. Democratic Promise: the populist moment in America. Oxford University Press, New
+  York, 1976.
+
+Nils Gornemann, Keith Kuester, and Makoto Nkajima. Monetary policy with heterogeneous agents. Working
+  Paper, Federal Reserve Bank of Philadelphia, Philadelphia, September 2012.
+
+Elise Gould. 2014 continues a 35-year trend of broad-based wage stagnation. Issue Brief 393, Economic
+  Policy Institute, February 2015.
+
+William Greider. Secrets of the Temple: How the Federal Reserve Runs the Country. Simon and Schuster,
+ New York, 1989.
+
+Diana Hancock and Wayne Passmore. How the Federal Reserve’s Large-Scale Asset Purchases (LSAPs)
+  Influence Mortgage-Backed Securities (MBS) Yields and U.S. Mortgage Rates. Working Paper, Federal
+  Reserve Board, 2014.
+
+Norman L. Johnson. Systems of Frequency Curves Generated by Methods of Translations. Biometrika, 36:
+  149–176, 1949.
+
+
+                                                    26
+John Maynard Keynes. The Economic Consequences of Mr. Churchill. In Essays in Persuasion. MacMillan,
+  London, 1931.
+
+John Maynard Keynes. The General Theory of Employment, Interest and Money. Harcourt Brace, New
+  York, 1964 edition, 1936.
+
+Michael T. Kiley. The Response of Equity Prices to Movements in Long-Term Interest Rates Associated
+ with Monetary Policy Statements: Before and After the Zero Lower Bound. Journal of Money, Credit and
+ Banking, 46(5):1057–1071, 2014. URL http://onlinelibrary.wiley.com/doi/10.1111/jmcb.12129/
+ pdf.
+
+Arvind Krishnamurthy and Annette Vissing-Jorgensen. The Ins and Outs of LSAPs. Working Paper,
+  September 2013.
+
+McKinsey Global Institute. QE and ultra-low interest rates: distributional effects and risks. Technical report,
+ 2013.
+
+Juan A. Montecino and Gerald Epstein. Have Large Scale Asset Purchases Increased Bank Profits. Working
+  Paper 372, PERI, December 2014.
+
+Juan A. Montecino and Gerald Epstein. The Sectoral Impact of Quantitative Easing on Expected Profits in
+  the United States. Working Paper, PERI, forthcoming.
+
+Board of Governors of the Federal Reserve System. The U.S. Housing Market: Current Conditions and
+  Policy Considerations. Technical report, Washington, D.C., January 2012.
+
+Karen M. Pence. The role of wealth transformations: An application to estimating the effect of tax incentives
+ on saving. The BE Journal of Economic Analysis & Policy, 5(1), 2006. URL http://www.degruyter.
+ com/view/j/bejeap.2005.5.issue-1/bejeap.2006.5.1.1430/bejeap.2006.5.1.1430.xml.
+
+John H. Rogers, Chiara Scotti, and Jonathan H. Wright. Evaluating asset-market effects of unconventional
+  monetary policy: a cross-country comparison. Economic Policy, 29(80):749–799, 2014.
+
+Christina Romer and David H. Romer. A New Measure of Monetary Shocks: Derivation and Implications.
+  American Economic Review, 100(3):763–801, 2004.
+
+Carlo Rosa. How ”unconventional” are large-scale asset purchases? The impact of monetary policy on asset
+  prices. Federal Reserve Bank of New York Staff Reports, (560), 2012. URL http://www.sciencedirect.
+  com/science/article/pii/S0378426610003407.
+
+Donald B. Rubin. Multiple imputation for nonresponse in surveys. John Wiley & Sons, Inc, New York, 1987.
+
+
+
+
+                                                      27
+A   Appendix: Additional Tables
+
+                                Table A.1: Description of covariates
+
+         Variable                         Definition
+         Employment                       Indicator variable for the employment status of
+                                          the head of the household.
+         Equity Ownership                 Indicator for whether or not the household holds
+                                          any type of equity, either directly or indirectly
+                                          through mutual funds.
+         Bonds, directly held             Indicator for whether or not the household di-
+                                          rectly owns any bonds.
+         Short-term / liquid assets       Indicator for owning any short-term or liquid as-
+                                          sets. These include checking accounts, cash, cer-
+                                          tificates of deposit, and other liquid assets.
+         Mortgage refinancing             Indicator for whether or not the household ob-
+                                          tained refinancing for their primary mortgage dur-
+                                          ing the previous three years.
+         College                          Indicator for whether the head of the household
+                                          has completed college.
+         Age                              Age, in years, of the household head.
+         Credit denial / fear of denial   Indicator for whether or not the household has
+                                          been denied or feared being denied credit during
+                                          the previous 5 years.
+         Bankruptcy                       Indicator for whether or not the household filed
+                                          for bankruptcy during the previous 5 years.
+         Race                             Categorical variable indicating the stated race of
+                                          the household head.
+
+
+
+
+                                                 28
+             Table A.2: Covariate means – before and after QE
+
+                             Pre-QE (2008-10)   Post-QE (2011-13)   Change
+Employment                        0.929               0.941         0.012
+Equities                          0.193               0.192         -0.011
+Bonds                             0.016               0.014         -0.002
+Short-term / liquid assets        0.926               0.932         0.006
+Mortgage refinancing              0.093               0.125         0.032
+
+
+
+
+                                     29
+                       Table A.3: Detailed decomposition results by distributional statistic
+
+                    Dependent Variable: Net Income (IHT)
+                                          (1)        (2)                    (3)          (4)          (5)
+                                         90/10      95/10                  90/50        50/10         Gini
+                                                            Overall
+                    Pre-QE                      2.467∗∗∗     2.869∗∗∗     1.232∗∗∗     1.235∗∗∗     0.600∗∗∗
+                                                 (0.024)      (0.030)      (0.019)      (0.019)      (0.007)
+                    Post-QE                     2.422∗∗∗     2.819∗∗∗     1.184∗∗∗     1.238∗∗∗     0.583∗∗∗
+                                                 (0.026)      (0.029)      (0.019)      (0.017)      (0.006)
+                    Change                        0.045        0.050       0.048∗        -0.003      0.016∗
+                                                 (0.033)      (0.043)      (0.028)      (0.026)      (0.009)
+                    Endowments                    -0.003       -0.002       -0.004       0.001        -0.004
+                                                 (0.009)      (0.012)      (0.006)      (0.004)      (0.003)
+                    Coefficients                  0.044         0.055      0.054∗        -0.010     0.022∗∗
+                                                 (0.032)      (0.043)      (0.028)      (0.026)      (0.009)
+                    Interaction                   0.004        -0.003       -0.002        0.006       -0.002
+                                                 (0.006)      (0.009)      (0.005)      (0.004)      (0.002)
+                                                     Endowments (∆X )
+                    Employment                  -0.005∗∗    -0.004∗∗∗    -0.002∗∗∗     -0.003∗∗    -0.001∗∗∗
+                                                 (0.002)      (0.002)     (0.001)       (0.001)     (0.000)
+                    Equities                     -0.007∗     -0.010∗      -0.005∗       -0.002∗     -0.002∗
+                                                 (0.004)      (0.006)     (0.003)       (0.001)     (0.001)
+                    Bonds                         -0.003       -0.007      -0.003        -0.000      -0.002
+                                                 (0.002)      (0.005)     (0.002)       (0.000)     (0.002)
+                    Short-term Assets            -0.006∗       -0.007      -0.003        -0.002      -0.001
+                                                 (0.003)      (0.005)     (0.003)       (0.002)     (0.001)
+                    Mortgage Refinancing        0.008∗∗      0.016∗∗∗      0.003       0.006∗∗∗       0.001
+                                                 (0.003)      (0.006)     (0.003)       (0.002)     (0.001)
+                                                      Coefficients (∆γ )
+                    Employment                    0.037       -0.033         0.047       -0.010      -0.005
+                                                (0.147)      (0.168)       (0.063)      (0.130)     (0.029)
+                    Equities                    0.041∗∗      0.063∗∗         0.020      0.021∗      0.013∗
+                                                (0.020)      (0.030)       (0.018)      (0.011)     (0.007)
+                    Bonds                         0.002       0.000          0.002       0.000       0.004
+                                                (0.005)      (0.010)       (0.005)      (0.002)     (0.005)
+                    Short-term Assets             0.175      0.201∗         -0.035      0.210∗       -0.002
+                                                (0.113)      (0.115)       (0.039)      (0.116)     (0.010)
+                    Mortgage Refinancing          0.012       -0.004        -0.004     0.016∗∗∗      -0.002
+                                                (0.012)      (0.020)       (0.011)      (0.005)     (0.005)
+                    Constant                     -0.317       -0.298         0.078     -0.396∗∗      -0.005
+                                                (0.210)      (0.252)       (0.093)      (0.199)     (0.033)
+Note: This table reports the results from the detailed decomposition for various distributional statistics. Detailed decomposition
+results for the interaction component are not reported. Each specification corresponds to the results reported in Figures 2 -
+4. Every model includes standard demographic controls, including age, race, education, as well as household access to credit.
+Bootstrapped standard errors with 300 repetitions are reported in parentheses (∗ p < 0.1, ∗∗ p < 0.05, ∗∗∗ p < 0.01).
+
+
+
+
+                                                               30
+            Table A.4: Detailed decomposition results by quantile, bottom half of the distribution
+
+                        Dependent Variable: Net Income (IHT)
+                                               (1)        (2)                     (3)         (4)
+                                             Q = 10     Q = 20                   Q = 40      Q = 50
+                                                          Overall
+                        Pre-QE                     10.044∗∗∗        10.461∗∗∗   11.039∗∗∗   11.275∗∗∗
+                                                    (0.012)           (0.012)     (0.010)    (0.008)
+                        Post-QE                    10.029∗∗∗        10.471∗∗∗   11.051∗∗∗   11.272∗∗∗
+                                                    (0.019)           (0.011)     (0.010)    (0.009)
+                        Change                       0.015             -0.010      -0.012     0.003
+                                                    (0.025)           (0.014)     (0.015)    (0.012)
+                        Endowments                 0.017∗∗∗          0.018∗∗∗    0.017∗∗∗   0.017∗∗∗
+                                                    (0.004)           (0.005)     (0.005)    (0.005)
+                        Coefficients                 0.001           -0.026∗     -0.033∗∗    -0.018∗
+                                                    (0.025)           (0.014)     (0.013)    (0.011)
+                        Interaction                  -0.003            -0.002     0.004∗∗    0.004∗∗
+                                                    (0.003)           (0.002)     (0.002)    (0.002)
+                                                   Endowments (∆X )
+                        Employment                  0.007∗∗∗         0.007∗∗∗    0.005∗∗∗    0.004∗∗∗
+                                                     (0.001)          (0.001)     (0.001)     (0.001)
+                        Equities                   -0.003∗∗∗        -0.004∗∗∗   -0.005∗∗∗   -0.006∗∗∗
+                                                     (0.001)          (0.001)     (0.002)     (0.002)
+                        Bonds                       -0.000∗          -0.000∗       -0.000    -0.001∗
+                                                     (0.000)          (0.000)     (0.000)     (0.000)
+                        Short-term Assets           0.006∗∗∗         0.006∗∗∗    0.004∗∗∗    0.004∗∗∗
+                                                     (0.002)          (0.002)     (0.002)     (0.001)
+                        Mortgage Refinancing        0.005∗∗∗         0.008∗∗∗    0.010∗∗∗    0.011∗∗∗
+                                                     (0.001)          (0.001)     (0.001)     (0.001)
+                                                    Coefficients (∆γ )
+                        Employment                    -0.127        -0.261∗∗∗   -0.205∗∗∗   -0.166∗∗∗
+                                                     (0.094)          (0.061)     (0.047)     (0.041)
+                        Equities                   -0.018∗∗∗           0.001       0.002       -0.002
+                                                     (0.006)          (0.006)     (0.005)     (0.006)
+                        Bonds                       -0.002∗∗           0.001       -0.000      -0.002
+                                                     (0.001)          (0.001)     (0.001)     (0.001)
+                        Short-term Assets           -0.268∗∗         -0.139∗∗       0.030      -0.007
+                                                     (0.124)          (0.067)     (0.037)     (0.031)
+                        Mortgage Refinancing          0.003           0.010∗∗    0.018∗∗∗    0.017∗∗∗
+                                                     (0.004)          (0.004)     (0.003)     (0.003)
+                        Constant                     0.510∗∗         0.376∗∗∗       0.042       0.058
+                                                     (0.209)          (0.104)     (0.060)     (0.056)
+Note: This table reports the results from the detailed decomposition for the bottom half of the distribution. Detailed de-
+composition results for the interaction component are not reported. Each specification corresponds to the results reported in
+Figures 2 - 4. Every model includes standard demographic controls, including age, race, education, as well as household access
+to credit. Robust standard errors are reported in parentheses (∗ p < 0.1, ∗∗ p < 0.05, ∗∗∗ p < 0.01).
+
+
+
+
+                                                               31
+               Table A.5: Detailed decomposition results by quantile, top half of the distribution
+
+                         Dependent Variable: Net Income (IHT)
+                                                (1)        (2)                     (3)         (4)
+                                              Q = 60     Q = 80                   Q = 90      Q = 95
+                                                           Overall
+                         Pre-QE                     11.509∗∗∗        12.064∗∗∗   12.496∗∗∗   12.910∗∗∗
+                                                      (0.008)          (0.009)    (0.015)     (0.016)
+                         Post-QE                    11.508∗∗∗        12.025∗∗∗   12.469∗∗∗   12.861∗∗∗
+                                                      (0.010)          (0.011)    (0.013)     (0.015)
+                         Change                        0.000          0.038∗∗      0.027      0.049∗∗
+                                                      (0.013)          (0.015)    (0.023)     (0.022)
+                         Endowments                 0.017∗∗∗          0.014∗∗      0.013        0.014
+                                                      (0.005)          (0.006)    (0.008)     (0.011)
+                         Coefficients                -0.023∗∗           0.019      0.013      0.041∗∗
+                                                      (0.011)          (0.013)    (0.020)     (0.020)
+                         Interaction                0.006∗∗∗          0.006∗∗∗     0.002       -0.005
+                                                      (0.002)          (0.002)    (0.003)     (0.004)
+                                                    Endowments (∆X )
+                         Employment                  0.004∗∗∗         0.002∗∗∗    0.003∗∗∗    0.003∗∗∗
+                                                      (0.001)          (0.000)     (0.001)     (0.001)
+                         Equities                   -0.006∗∗∗        -0.009∗∗∗   -0.011∗∗∗   -0.014∗∗∗
+                                                      (0.002)          (0.003)     (0.004)     (0.005)
+                         Bonds                       -0.001∗          -0.001∗     -0.003∗      -0.006∗
+                                                      (0.000)          (0.001)     (0.002)     (0.003)
+                         Short-term Assets           0.003∗∗∗         0.001∗∗∗    0.000∗∗     -0.001∗∗
+                                                      (0.001)          (0.000)     (0.000)     (0.000)
+                         Mortgage Refinancing        0.012∗∗∗         0.012∗∗∗    0.013∗∗∗    0.021∗∗∗
+                                                      (0.001)          (0.001)     (0.002)     (0.003)
+                                                      Coefficients (∆γ )
+                         Employment                 -0.152∗∗∗         -0.051∗    -0.121∗∗∗   -0.197∗∗∗
+                                                      (0.038)         (0.030)     (0.040)      (0.045)
+                         Equities                      0.002            0.005      0.021∗     0.047∗∗∗
+                                                      (0.007)         (0.008)     (0.012)      (0.018)
+                         Bonds                      -0.003∗∗∗          -0.003      -0.001       0.000
+                                                      (0.001)         (0.002)     (0.003)      (0.006)
+                         Short-term Assets             -0.001        -0.081∗∗∗    -0.028∗       -0.001
+                                                      (0.029)         (0.016)     (0.016)      (0.021)
+                         Mortgage Refinancing        0.021∗∗∗        0.018∗∗∗      0.014∗       -0.000
+                                                      (0.003)         (0.005)     (0.007)      (0.010)
+                         Constant                      -0.028          0.053       0.064        0.092
+                                                      (0.062)         (0.044)     (0.064)      (0.078)
+Note: This table reports the results from the detailed decomposition for the top half of the distribution. Detailed decomposition
+results for the interaction component are not reported. Each specification corresponds to the results reported in Figures 2 -
+4. Every model includes standard demographic controls, including age, race, education, as well as household access to credit.
+Robust standard errors are reported in parentheses (∗ p < 0.1, ∗∗ p < 0.05, ∗∗∗ p < 0.01).
+
+
+
+
+                                                                32
+
+---
+Source: Montecino, Juan Antonio, Gerald Epstein (2017), "Did Quantitative Easing Increase Income Inequality?", INET/Political Economy Research Institute Working Paper.
+URL: https://www.cepweb.org/wp-content/uploads/2017/11/Montecino-paper.pdf

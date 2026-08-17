@@ -1,0 +1,20 @@
+SOURCE: S10
+Title: The Dynamo, the Computer, and ChatGPT: Explaining Today's Productivity Paradox
+Author: James Pethokoukis
+Publisher: American Enterprise Institute (AEI)
+URL: https://www.aei.org/articles/the-dynamo-the-computer-and-chatgpt-explaining-todays-productivity-paradox/
+Fetched: 2026-07-09 (via WebFetch, content extracted and quoted verbatim below)
+
+=== EXTRACTED CONTENT / VERBATIM QUOTES ===
+
+Core Historical Analogy (Paul David's thesis):
+Electrification took decades to boost productivity despite breakthrough innovations. Paul David noted that "in 1900, an observer of the progress of the 'Electrical Age' stood as far distant in time from the carbon filament incandescent lamp" (1879) as we now stand from computing breakthroughs (1969-1970).
+
+Reason for Delay:
+Factories initially kept centralized steam systems, replacing only the power source. Real transformation came in the 1920s with "unit drive" approaches using individual electric motors. This required "working out the details in the context of many kinds of new industrial" facilities, building expertise across locations.
+
+Application to AI Today (Productivity J-Curve, Brynjolfsson/Rock/Syverson):
+Transformative technologies require "co-invention of new processes, products, business models and human capital." These "intangible" investments are "poorly measured in the aggregate economic statistics." The paradox: productivity appears undermeasured during initial adoption (capital diverts to unmeasured intangible assets), then overmeasured later when those investments yield returns.
+
+Key Takeaway:
+Current AI productivity/employment lacunae may reflect adoption lags, not technological failure — mirroring electrification's 40+ year productivity gap.

@@ -1,0 +1,15 @@
+{
+  "node_id": "N-0017",
+  "lean": "mixed",
+  "summary": "美联储官方叙事与学术模型在'事实描述'层面张力有限:Powell多次明确承认通胀'始于'供应链紧张而非工资(2022年11月)、是'需求与供给碰撞'的结果(2023年8月),方向上与Bernanke-Blanchard等模型的'早期供给主导'结论一致。但在'政策含义'层面存在张力:Powell在Jackson Hole(2022年8月)强调紧缩'将带来痛苦'、必须不计成因地压低总需求,而Storm等学术批评者认为这种紧缩力度所依赖的'工资-价格螺旋'风险被模型的实际工资刚性假设夸大,超出供给侧主导的通胀实际所需。即美联储在事实归因上与学术共识大体一致,但在政策反应函数上采取了比部分学术分解结果更保守(更依赖紧缩)的立场。",
+  "confidence": "medium",
+  "based_on": {
+    "children": [],
+    "evidence": [
+      {"ref_id": "E-01", "title": "Powell 2022年11月:通胀源于供应链而非工资", "doc_id": "DOC-0011", "url": null, "locator": null, "quote": "the inflation that we saw at the beginning of this episode in, back in March of 21, was not really related to wages at all. It was related to tightness in, in goods markets, largely due to supply chain issues.", "tool": "web_search", "note": null},
+      {"ref_id": "E-02", "title": "Powell 2023年8月:需求与供给碰撞", "doc_id": "DOC-0011", "url": null, "locator": null, "quote": "the ongoing episode of high inflation initially emerged from a collision between very strong demand and pandemic-constrained supply", "tool": "web_search", "note": null},
+      {"ref_id": "E-03", "title": "Storm对工资-价格螺旋叙事的批评", "doc_id": "DOC-0014", "url": null, "locator": null, "quote": "Storm argues that Bernanke and Blanchard exaggerate the inflationary consequences of a tight labor market and of cost shocks by building real-wage rigidity into their model through the inflation-expectations channel", "tool": "web_search", "note": null}
+    ]
+  },
+  "open_questions": ["美联储内部是否曾基于类似Storm的批评内部评估紧缩力度是否'过度',目前无公开证据"]
+}

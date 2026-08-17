@@ -1,0 +1,16 @@
+Source: Card, David and Alan B. Krueger (1994/NBER Working Paper No. 4509). "Minimum Wages and Employment: A Case Study of the Fast Food Industry in New Jersey and Pennsylvania."
+URL: https://www.nber.org/papers/w4509
+Retrieved via WebFetch on 2026-07-09.
+
+Extracted content:
+
+## Abstract
+The study examined 410 fast food restaurants in New Jersey and Pennsylvania before and after New Jersey's minimum wage increase from $4.25 to $5.05 per hour on April 1, 1992. Using Pennsylvania as a control group (where the minimum remained at $4.25), researchers compared wage, employment, and price changes.
+
+## Key Employment Finding
+The most striking result directly contradicted conventional economic predictions: "Relative to stores in Pennsylvania, fast food restaurants in New Jersey increased employment by 13 percent."
+
+The authors further noted that "Stores that were unaffected by the minimum wage had the same employment growth as stores in Pennsylvania, while stores that had to increase their wages increased their employment."
+
+## Significance
+This influential study challenged the traditional economic assumption that raising minimum wages reduces employment. The findings suggested that employment effects from minimum wage increases in the fast food industry were not negative as standard theory predicted.

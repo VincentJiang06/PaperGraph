@@ -1,0 +1,27 @@
+{
+ "node_id": "N-0003",
+ "lean": "supports",
+ "summary": "机制A—monopsony/摩擦是调和CK与竞争理论的首要通道且有可证伪支撑:DLR的分离/雇佣双降是买方势力/搜寻摩擦的直接指纹,Azar证明买方势力结构上普遍。但低薪部门的买方势力更多源于摩擦而非集中,故monopsony能解释温和上调近零的相当部分,却非全部——它需与成本转嫁、非工资边际共同作用。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [
+   "N-0011",
+   "N-0012",
+   "N-0013"
+  ],
+  "evidence": [
+   {
+    "title": "DLR:流量降存量不降",
+    "doc_id": "DOC-0002",
+    "quote": "We find that minimum wages have a sizable negative effect on employment flows but not on stocks.",
+    "url": "https://www.journals.uchicago.edu/doi/10.1086/685449",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "turnover节省能定量覆盖多大比例的加薪成本?"
+ ]
+}

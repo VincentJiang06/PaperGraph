@@ -1,0 +1,22 @@
+SOURCE: S8
+Title: The AI Job Scare Needs Better Evidence
+Author: James Pethokoukis
+Publisher: American Enterprise Institute (AEI)
+URL: https://www.aei.org/economics/the-ai-job-scare-needs-better-evidence/
+Fetched: 2026-07-09 (via WebFetch, content extracted and quoted verbatim below)
+
+=== EXTRACTED CONTENT / VERBATIM QUOTES ===
+
+Main Argument:
+Despite predictions of massive AI-driven job displacement, actual evidence shows minimal labor market disruption two years after ChatGPT's launch.
+
+Evidence of Weak Job-Loss Signal:
+"Separation rates in AI-exposed occupations haven't budged. Job-finding rates for the unemployed track normally."
+The Dallas Federal Reserve concluded: "data do not give much indication of widespread labor market disruption due to AI."
+Weakness in fields like computer science predates ChatGPT: it "began in early 2022—months before ChatGPT launched—consistent with Fed tightening."
+
+Alternative Explanation (selectivity, not destruction):
+"employment among 20-to-24-year-olds in high AI-exposure occupations has slipped nearly a percentage point since late 2022," but "employers aren't firing people. Rather, they're raising the bar for new hires." Paradoxically, those hired for AI-exposed roles "are earning higher starting salaries than their predecessors."
+
+Calibrated Conclusion:
+"The job apocalypse may yet arrive. For now, it's just early—which, in forecasting, is another way of saying wrong."

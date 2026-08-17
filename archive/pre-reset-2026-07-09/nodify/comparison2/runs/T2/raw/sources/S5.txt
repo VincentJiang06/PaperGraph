@@ -1,0 +1,13 @@
+Source S5
+Title: Economist Jason Furman Explains How Inflation Snuck Up on Us and What's Ahead in 2022
+Publisher: Institutional Investor
+URL: https://www.institutionalinvestor.com/article/2aucrzsa72lr93ypli4g0/ria-intel/economist-jason-furman-explains-how-inflation-snuck-up-on-us-and-whats-ahead-in-2022
+Fetched: 2026-07-09 (via WebFetch)
+
+Extracted verbatim quotes:
+
+"I think 90 percent of inflation is the result of excess demand driven by fiscal and monetary policy." — Jason Furman
+
+"To think $2.5 trillion in fiscal stimulus — amounting to 11 percent of GDP — would not cause inflation" required believing either that such a huge adjustment was possible within a matter of months or that fiscal policy is ineffective and does not increase aggregate demand.
+
+Furman noted that fiscal multipliers indicated 2021 spending would rise significantly while "production constraints suggested output would not increase by as much. The difference was unexpectedly higher inflation."

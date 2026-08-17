@@ -1,0 +1,7 @@
+SOURCE: Federal Reserve FEDS Notes — "Wealth Inequality and COVID-19: Evidence from the Distributional Financial Accounts" (2021-08-30)
+URL: https://www.federalreserve.gov/econres/notes/feds-notes/wealth-inequality-and-covid-19-evidence-from-the-distributional-financial-accounts-20210830.html
+VERBATIM QUOTES:
+"Real estate assets were also large contributors to wealth gains in the Rebound, as house prices rose more than 11 percent, accelerating beginning in 2020Q3."
+"For the Top 1, nearly 90% of total wealth gain in the Rebound is from corporate equities, while equities made up 60% of the gains for the Next 9."
+"However, since their wealth share is quite small, they received only 3.3% of the total wealth gain during the pandemic."
+"Despite their wealth growing at the fastest pace, the small wealth level for the Bottom 50 results in their share only increasing by 0.2 percentage points between 2019Q4 and 2021Q1."

@@ -1,0 +1,29 @@
+{
+  "_note": "Judgment panel on the REVISED nuclear paper (loop iteration 2). Blind to positions.md.",
+  "steelman_by_pos": {"K1": 2, "K2": 2, "K3": 2, "K4": 2, "K5": 1, "K6": 1, "K7": 1, "K8": 0},
+  "steelman_min": 0,
+  "objection_robust": false,
+  "stronger_objection": "By honestly loading Fukushima evacuation (~2,313) and high-end Chernobyl (~27,000) deaths into the numerator, the paper's own concession pushes nuclear to ~0.2-0.5 deaths/TWh — still below coal but now ~an order of magnitude ABOVE wind (~0.035) and solar (~0.019); the paper keeps asserting the thesis's 'comparable to wind and solar' clause and never revisits that its own tail-accounting refutes it.",
+  "total_empirical": 16,
+  "ledgered": 12,
+  "claim_coverage": 0.75,
+  "uncited_load_bearing": [
+    "'far beneath coal or gas' lifecycle emissions — no ledger row gives a coal/gas gCO2/kWh figure; n1 only compares nuclear to wind/solar, so the 'far lower emissions than fossil fuels' half of the thesis is uncited",
+    "'chronic construction overruns such as Vogtle' — asserted with no source row",
+    "'spread across the tens of thousands of TWh nuclear has generated' — the denominator of the tail-loading rebuttal, unledgered",
+    "'much of the Fukushima evacuation mortality fell on relocated elderly people' — causal/demographic claim doing rebuttal work, unledgered"
+  ],
+  "honesty_flags": [
+    "'statistically indistinguishable from wind and solar' asserts equivalence from bare point estimates with no CIs; wind 0.035 > nuclear 0.03, so 'same band' softens",
+    "nuclear 0.03 (c1) is OWID's low-end figure embedding a LOW Chernobyl count; 'already incorporates the accident tolls' obscures that the high-end n7 ~27,000 is NOT inside 0.03",
+    "n1 (IPCC 12g) and n5 (Fukushima 2,313) are sourced to the World Nuclear Association (industry body), not IPCC/official reconstruction directly",
+    "the ~27,000 Chernobyl ceiling understates higher independent projections (TORCH-type)",
+    "the c3 ~821x ratio is best-case: a modestly higher nuclear estimate (0.06-0.07) roughly halves it"
+  ],
+  "referee_verdict": "accept",
+  "referee_panel": [
+    {"lens": "methodology", "verdict": "accept", "scores": {"thesis": 4, "evidence": 4, "counterargument": 4, "calibration": 5, "prose": 4}},
+    {"lens": "counterargument", "verdict": "accept", "scores": {"thesis": 4, "evidence": 4, "counterargument": 4, "calibration": 4, "prose": 4}},
+    {"lens": "evidence", "verdict": "accept", "scores": {"thesis": 4, "evidence": 4, "counterargument": 4, "calibration": 4, "prose": 4}}
+  ]
+}

@@ -1,0 +1,6 @@
+SOURCE: Andrea Colciago, Anna Samarina & Jakob de Haan (2019), Journal of Economic Surveys 33(4):1199-1231 — "Central Bank Policies and Income and Wealth Inequality: A Survey"
+URL: https://onlinelibrary.wiley.com/doi/10.1111/joes.12314
+VERBATIM QUOTES:
+"Our review suggests that empirical research on the effects of conventional monetary policy on income and wealth inequality yields mixed findings"
+"In contrast to common wisdom, conclusions concerning the impact of unconventional monetary policies on inequality are also not clear cut."
+"Most empirical studies, however, analyze each potential channel of redistribution in isolation."

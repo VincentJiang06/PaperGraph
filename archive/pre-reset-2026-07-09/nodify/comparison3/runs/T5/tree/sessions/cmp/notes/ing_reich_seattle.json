@@ -1,0 +1,19 @@
+{
+ "kind": "report",
+ "title": "Reich, Allegretto, Godoy (UC Berkeley IRLE, 2017), Seattle food-service minimum wage studies",
+ "url": "https://irle.berkeley.edu/publications/",
+ "text_file": "notes/src_reich_seattle.txt",
+ "summary": "Berkeley团队用餐饮业机构数据+合成控制:西雅图上调至$13未见餐饮业就业损失,与UW工时下降结论相左;分歧源于数据与设定而非政策本身。",
+ "bindings": [
+  {
+   "node_id": "N-0009",
+   "relation": "context",
+   "note": "西雅图无效应一侧(餐饮)"
+  },
+  {
+   "node_id": "N-0024",
+   "relation": "supports",
+   "note": "数据更全的估计更接近零"
+  }
+ ]
+}

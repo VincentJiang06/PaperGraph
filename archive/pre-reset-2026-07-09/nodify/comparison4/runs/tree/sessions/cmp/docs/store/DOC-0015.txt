@@ -1,0 +1,7 @@
+The Budget Lab at Yale — "Evaluating the Impact of AI on the Labor Market: Current State of Affairs" (2025). Observational analysis of US Current Population Survey (CPS) occupational data since ChatGPT's release (~33 months).
+
+KEY STATEMENTS (verbatim, as quoted from the report by Fortune, Feb 2026): "The picture of AI's impact on the labor market that emerges from our data is one that largely reflects stability, not major disruption at an economy-wide level." On occupational change: the report found that while occupational composition has shifted since ChatGPT's 2022 release, "the rate of change has not increased enough to signal a massive shift." Executive Director Martha Gimbel: "No matter which way you look at the data, at this exact moment, it just doesn't seem like there's major macroeconomic effects here."
+
+FINDINGS: shares of workers across AI-exposure quintiles have not changed unusually since ChatGPT; measures of exposure/automation/augmentation show no clear relation to changes in employment or unemployment; unemployment duration for AI-exposed roles unchanged. CAVEAT: some occupational-mix shifts were already underway in 2021, before generative AI, and recent changes are not markedly more pronounced.
+
+TIER: observational (descriptive CPS analysis; supports the "no detectable aggregate shock yet" red-team line). LIMITS: descriptive dissimilarity/composition metrics, not causal; US only; early diffusion window; cannot rule out lagged effects (disruption historically unfolds over decades).

@@ -1,0 +1,14 @@
+Source: "Canaries, Interest Rates, and Timing: More on the Recent Drivers of Employment Changes for Young Workers" — Stanford Digital Economy Lab follow-up (2026-02), responding to critiques of the original "Canaries in the Coal Mine" paper.
+URL: https://digitaleconomy.stanford.edu/news/canaries-interest-rates-and-timinga-more-on-recent-drivers-of-employment-changes-for-young-workers/
+
+Verbatim key statements:
+
+"While interest rates affect overall employment, existing evidence does not suggest they are a good explanation for the disproportionate decline in entry-level hiring in AI-exposed occupations."
+
+Supporting evidence: AI-exposed occupations show LESS interest-rate sensitivity than other occupations (e.g. construction has high interest-rate exposure but low AI exposure) — so if interest rates were the true driver, the pattern of decline should track interest-rate sensitivity, not AI exposure, and it does not.
+
+"We do not believe that AI is always and everywhere the sole determinant of employment."
+
+Using stricter controls (firm-by-time fixed effects, which absorb any firm-level or macro-timing shock common to all workers within a firm at a given time), the employment decline for highly AI-exposed young workers becomes "notable in 2024 (not late 2022 or 2023)" — i.e. the effect has a specific onset timing (2024) that is distinguishable from a generic post-pandemic or generic-recession pattern, and lines up with the period of accelerating enterprise AI adoption rather than with, e.g., the 2022-2023 rate-hike cycle itself.
+
+Relevance: This is the single most direct, dedicated causal-identification exercise available in this literature for separating "AI effect" from "macro confound" (N-0010). The authors explicitly anticipate and test the interest-rate/macro-cycle alternative explanation and find it does not fit the exposure-specific, age-specific, 2024-onset pattern of the data.

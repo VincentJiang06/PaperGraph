@@ -1,0 +1,14 @@
+Source: James Bessen (Boston University) research on ATMs and bank tellers, as summarized by AEI ("What the Story of ATMs and Bank Tellers Reveals...") and davidoks.blog ("Why ATMs Didn't Kill Bank Tellers—But the iPhone Did").
+URL: https://www.aei.org/economics/what-atms-bank-tellers-rise-robots-and-jobs/ ; https://davidoks.blog/p/why-the-atm-didnt-kill-bank-teller
+
+Key statistics:
+"In 1985, the U.S. had 60,000 ATMs and 485,000 bank tellers. In 2002, there were 352,000 ATMs and 527,000 bank tellers." Despite ATM count growing ~6x, total teller employment GREW, not shrank.
+"Since 2000, not only have teller jobs increased, but they've been growing a bit faster than the labor force as a whole" (through the 2000s).
+
+Mechanism (verbatim): "The average bank branch in an urban area required about 21 tellers. That was cut because of the ATM machine to about 13 tellers. But that meant it was cheaper to operate a branch." Banks responded by opening more branches: "Banks wanted... to increase the number of branch offices. And when it became cheaper to do so, demand for branch offices increased. And as a result, demand for bank tellers increased." Bank branches in urban areas increased 43% during the ATM-proliferation period.
+
+Task recomposition: "Cash-handling has obviously become less important for tellers. But their ability to market and their interpersonal skills in terms of dealing with bank clients has become more important." Tellers shifted toward a "customer relationship team" role, with some evidence of higher wages and more college-graduate hires.
+
+CRITICAL TWIST — when the pattern reversed: "after 2010, mobile banking — a different, more complete form of automation — finally caused the teller decline that ATMs never produced... When the technology graduated from automating some of the teller's tasks to automating nearly all of them, [the job-preserving mechanism] broke down." Employment projections after 2010 shifted to an 8% projected decline over the following decade due to online/mobile banking.
+
+Relevance: This is THE canonical historical case for N-0012 (partial task automation + falling unit cost + elastic demand for the branch/service → MORE jobs, not fewer) — but it also contains the built-in counter-example for N-0013 ("this time is different"): the mechanism only holds when automation covers a SUBSET of the job's tasks (freeing capacity for other, still-valuable tasks) and demand for the underlying service is elastic. When a later technology (mobile banking) automated nearly ALL of the tasks rather than a subset, the same job DID decline. This is a load-bearing distinction for assessing whether AI agents — which are explicitly marketed and increasingly built for broad, multi-task, end-to-end delegation rather than single-task assistance — sit closer to the "ATM" case (partial, preserves jobs) or the "mobile banking" case (near-total, eliminates jobs).

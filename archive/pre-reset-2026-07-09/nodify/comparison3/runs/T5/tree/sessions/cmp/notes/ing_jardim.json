@@ -1,0 +1,19 @@
+{
+ "kind": "paper",
+ "title": "Jardim et al. (2017/2022), Minimum Wage Increases and Low-Wage Employment: Evidence from Seattle (UW), NBER 23532",
+ "url": "https://www.nber.org/papers/w23532",
+ "text_file": "notes/src_jardim.txt",
+ "summary": "西雅图行政工时数据(UW团队):第二次上调至$13使低薪岗位工时下降6-7%,低薪岗位月均报酬下降约$74;调整落在工时而非headcount——近零headcount可与真实工时/收入下降并存。",
+ "bindings": [
+  {
+   "node_id": "N-0009",
+   "relation": "supports",
+   "note": "西雅图负向一侧(工时)"
+  },
+  {
+   "node_id": "N-0015",
+   "relation": "supports",
+   "note": "工时边际的直接证据"
+  }
+ ]
+}

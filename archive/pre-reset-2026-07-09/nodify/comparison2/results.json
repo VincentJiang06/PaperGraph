@@ -1,0 +1,278 @@
+{
+  "mechanical": {
+    "raw": {
+      "n_topics": 5,
+      "words": 1754.8,
+      "citations_inline": 31.4,
+      "distinct_sources": 12.8,
+      "traceable_sources": 12.8,
+      "traceability": 1.0,
+      "cited_source_bytes": 159049.0,
+      "adversarial_hits": 8.8,
+      "fid_english_quotes": 9.8,
+      "fid_verbatim_in_sources": 0.6,
+      "fid_fidelity": 0.05
+    },
+    "skills": {
+      "n_topics": 5,
+      "words": 1820.0,
+      "citations_inline": 23.4,
+      "distinct_sources": 12.8,
+      "traceable_sources": 12.8,
+      "traceability": 1.0,
+      "cited_source_bytes": 260283.8,
+      "adversarial_hits": 7.0,
+      "fid_english_quotes": 8.4,
+      "fid_verbatim_in_sources": 0.0,
+      "fid_fidelity": 0.0
+    },
+    "tree": {
+      "n_topics": 5,
+      "words": 1832.6,
+      "citations_inline": 16.6,
+      "distinct_sources": 12.2,
+      "traceable_sources": 12.2,
+      "traceability": 1.0,
+      "cited_source_bytes": 29095.8,
+      "adversarial_hits": 5.8,
+      "fid_english_quotes": 1.8,
+      "fid_verbatim_in_sources": 0.0,
+      "fid_fidelity": 0.0
+    }
+  },
+  "judges": {
+    "n_judges": 3,
+    "per_topic": {
+      "T1": {
+        "raw": {
+          "structure_logic": 5.0,
+          "evidence_quality": 4.0,
+          "adversarial_rigor": 4.67,
+          "calibration": 5.0,
+          "overall": 5.0
+        },
+        "skills": {
+          "structure_logic": 4.33,
+          "evidence_quality": 4.0,
+          "adversarial_rigor": 4.0,
+          "calibration": 4.0,
+          "overall": 4.0
+        },
+        "tree": {
+          "structure_logic": 4.33,
+          "evidence_quality": 5.0,
+          "adversarial_rigor": 5.0,
+          "calibration": 5.0,
+          "overall": 5.0
+        }
+      },
+      "T2": {
+        "raw": {
+          "structure_logic": 5.0,
+          "evidence_quality": 4.33,
+          "adversarial_rigor": 4.33,
+          "calibration": 5.0,
+          "overall": 4.33
+        },
+        "skills": {
+          "structure_logic": 4.0,
+          "evidence_quality": 4.33,
+          "adversarial_rigor": 4.0,
+          "calibration": 4.0,
+          "overall": 4.0
+        },
+        "tree": {
+          "structure_logic": 5.0,
+          "evidence_quality": 4.33,
+          "adversarial_rigor": 4.67,
+          "calibration": 5.0,
+          "overall": 4.67
+        }
+      },
+      "T3": {
+        "raw": {
+          "structure_logic": 5.0,
+          "evidence_quality": 4.0,
+          "adversarial_rigor": 5.0,
+          "calibration": 5.0,
+          "overall": 5.0
+        },
+        "skills": {
+          "structure_logic": 5.0,
+          "evidence_quality": 5.0,
+          "adversarial_rigor": 5.0,
+          "calibration": 5.0,
+          "overall": 5.0
+        },
+        "tree": {
+          "structure_logic": 5.0,
+          "evidence_quality": 5.0,
+          "adversarial_rigor": 5.0,
+          "calibration": 5.0,
+          "overall": 5.0
+        }
+      },
+      "T4": {
+        "raw": {
+          "structure_logic": 4.33,
+          "evidence_quality": 4.0,
+          "adversarial_rigor": 4.0,
+          "calibration": 4.0,
+          "overall": 4.0
+        },
+        "skills": {
+          "structure_logic": 5.0,
+          "evidence_quality": 4.67,
+          "adversarial_rigor": 5.0,
+          "calibration": 5.0,
+          "overall": 5.0
+        },
+        "tree": {
+          "structure_logic": 4.33,
+          "evidence_quality": 4.0,
+          "adversarial_rigor": 4.33,
+          "calibration": 4.67,
+          "overall": 4.33
+        }
+      },
+      "T5": {
+        "raw": {
+          "structure_logic": 4.0,
+          "evidence_quality": 5.0,
+          "adversarial_rigor": 4.33,
+          "calibration": 4.67,
+          "overall": 4.33
+        },
+        "skills": {
+          "structure_logic": 5.0,
+          "evidence_quality": 5.0,
+          "adversarial_rigor": 5.0,
+          "calibration": 5.0,
+          "overall": 5.0
+        },
+        "tree": {
+          "structure_logic": 5.0,
+          "evidence_quality": 3.67,
+          "adversarial_rigor": 4.67,
+          "calibration": 5.0,
+          "overall": 4.67
+        }
+      }
+    },
+    "by_mode_mean": {
+      "raw": {
+        "structure_logic": 4.67,
+        "evidence_quality": 4.27,
+        "adversarial_rigor": 4.47,
+        "calibration": 4.73,
+        "overall": 4.53
+      },
+      "skills": {
+        "structure_logic": 4.67,
+        "evidence_quality": 4.6,
+        "adversarial_rigor": 4.6,
+        "calibration": 4.6,
+        "overall": 4.6
+      },
+      "tree": {
+        "structure_logic": 4.73,
+        "evidence_quality": 4.4,
+        "adversarial_rigor": 4.73,
+        "calibration": 4.93,
+        "overall": 4.73
+      }
+    }
+  },
+  "probes": {
+    "T1_raw": {
+      "overall": 3,
+      "aspects": {
+        "lines_of_inquiry": "partial",
+        "leanings": "lost",
+        "key_figures": "full",
+        "adversarial_lines": "full",
+        "evidence_provenance": "full",
+        "next_action": "partial"
+      }
+    },
+    "T1_skills": {
+      "overall": 5,
+      "aspects": {
+        "lines_of_inquiry": "full",
+        "leanings": "full",
+        "key_figures": "full",
+        "adversarial_lines": "full",
+        "evidence_provenance": "full",
+        "next_action": "full"
+      }
+    },
+    "T1_tree": {
+      "overall": 5,
+      "aspects": {
+        "lines_of_inquiry": "full",
+        "leanings": "full",
+        "key_figures": "full",
+        "adversarial_lines": "full",
+        "evidence_provenance": "full",
+        "next_action": "full"
+      }
+    },
+    "T3_raw": {
+      "overall": 3,
+      "aspects": {
+        "lines_of_inquiry": "partial",
+        "leanings": "partial",
+        "key_figures": "full",
+        "adversarial_lines": "full",
+        "evidence_provenance": "full",
+        "next_action": "lost"
+      }
+    },
+    "T3_skills": {
+      "overall": 5,
+      "aspects": {
+        "lines_of_inquiry": "full",
+        "leanings": "full",
+        "key_figures": "full",
+        "adversarial_lines": "full",
+        "evidence_provenance": "full",
+        "next_action": "full"
+      }
+    },
+    "T3_tree": {
+      "overall": 5,
+      "aspects": {
+        "lines_of_inquiry": "full",
+        "leanings": "full",
+        "key_figures": "full",
+        "adversarial_lines": "full",
+        "evidence_provenance": "full",
+        "next_action": "full"
+      }
+    }
+  },
+  "probe_mean": {
+    "raw": 3.0,
+    "skills": 5.0,
+    "tree": 5.0
+  },
+  "v1_reference": {
+    "model": "Opus",
+    "topics": 1,
+    "judge_overall": {
+      "raw": 3.0,
+      "skills": 4.0,
+      "tree": 5.0
+    },
+    "distinct_sources": {
+      "raw": 8,
+      "skills": 9,
+      "tree": 18
+    },
+    "probe": {
+      "raw": "unrecoverable",
+      "skills": "partial(lost cites)",
+      "tree": "full"
+    }
+  }
+}

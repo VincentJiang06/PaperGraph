@@ -1,0 +1,14 @@
+{
+ "kind": "paper",
+ "title": "Clemens, Wither (2019), Minimum Wage and the Great Recession, JPubE 170",
+ "url": "https://www.nber.org/papers/w20724",
+ "text_file": "notes/src_clemens.txt",
+ "summary": "以2007-2009联邦上调(约+30%)为准实验,比较受约束与不受约束州的target低技能工人:就业与收入增长显著受损,全国就业-人口比降约0.7个百分点——高质量、指向明显负效应(高bindingness+衰退情境)。",
+ "bindings": [
+  {
+   "node_id": "N-0023",
+   "relation": "supports",
+   "note": "指向明显负的高质量准实验"
+  }
+ ]
+}

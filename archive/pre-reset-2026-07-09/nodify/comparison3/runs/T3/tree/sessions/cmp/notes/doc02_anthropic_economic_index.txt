@@ -1,0 +1,10 @@
+SOURCE: Anthropic Economic Index — Insights from Claude 3.7 Sonnet. Published Mar 27, 2025.
+URL: https://www.anthropic.com/news/anthropic-economic-index-insights-from-claude-sonnet-3-7
+
+VERBATIM:
+"augmentation still comprising 57% of usage"
+"increase in the share of usage for coding, education and the sciences"
+"tasks associated with copywriters and editors show the highest amount of task iteration"
+"tasks associated with Translators and Interpreters show among the highest amounts of directive behavior"
+
+DISTILLED: Real usage-side data show augmentation (~57%) > automation (~43%); usage concentrated in coding/writing. Later reports (Nov 2025) put augmentation 52% vs automation 45%. Automation dominates programmatic API traffic. Interpretation: realized use is augmentation-leaning, not wholesale job automation.

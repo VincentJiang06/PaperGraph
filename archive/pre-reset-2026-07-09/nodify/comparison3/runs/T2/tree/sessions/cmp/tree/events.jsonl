@@ -1,0 +1,138 @@
+{"schema":"event.v1","event_id":"EV-000001","at":"2026-07-09T08:55:44Z","actor":"main","command":"init","mutating":true,"touched":["cmp"],"summary":"init: 量化宽松(QE,2008-2021)在多大程度上是发达经济体(以美国为主)财富不平等扩大的『原因』,而非人口老龄化、技术偏向性进步、全球化等结构性力量在反事实情形下本来也会造成的结果?请区分资产价格渠道、储蓄者/借款者再分配渠道与宏观(就业"}
+{"schema":"event.v1","event_id":"EV-000002","at":"2026-07-09T08:55:49Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (461 chars)"}
+{"schema":"event.v1","event_id":"EV-000003","at":"2026-07-09T08:55:49Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (0 nodes)"}
+{"schema":"event.v1","event_id":"EV-000004","at":"2026-07-09T08:57:21Z","actor":"main","command":"add","mutating":true,"touched":["N-0001"],"summary":"add 1 under root: N-0001"}
+{"schema":"event.v1","event_id":"EV-000005","at":"2026-07-09T08:58:04Z","actor":"main","command":"add","mutating":true,"touched":["N-0002","N-0003","N-0004","N-0005","N-0006","N-0007"],"summary":"add 6 under N-0001: N-0002, N-0003, N-0004, N-0005, N-0006, N-0007"}
+{"schema":"event.v1","event_id":"EV-000006","at":"2026-07-09T08:58:09Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (1862 chars)"}
+{"schema":"event.v1","event_id":"EV-000007","at":"2026-07-09T08:58:09Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000008","at":"2026-07-09T09:01:04Z","actor":"main","command":"add","mutating":true,"touched":["N-0008","N-0009"],"summary":"add 2 under N-0002: N-0008, N-0009"}
+{"schema":"event.v1","event_id":"EV-000009","at":"2026-07-09T09:01:04Z","actor":"main","command":"promote","mutating":true,"touched":["N-0008"],"summary":"promote N-0008 -> claim"}
+{"schema":"event.v1","event_id":"EV-000010","at":"2026-07-09T09:01:04Z","actor":"main","command":"promote","mutating":true,"touched":["N-0009"],"summary":"promote N-0009 -> claim"}
+{"schema":"event.v1","event_id":"EV-000011","at":"2026-07-09T09:01:09Z","actor":"main","command":"promote","mutating":false,"touched":[],"summary":"FAILED: N-0008 is already a claim"}
+{"schema":"event.v1","event_id":"EV-000012","at":"2026-07-09T09:01:17Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (9 nodes)"}
+{"schema":"event.v1","event_id":"EV-000013","at":"2026-07-09T09:01:24Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0009"}
+{"schema":"event.v1","event_id":"EV-000014","at":"2026-07-09T09:01:25Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000015","at":"2026-07-09T09:09:35Z","actor":"main","command":"add","mutating":true,"touched":["N-0010","N-0011"],"summary":"add 2 under N-0003: N-0010, N-0011"}
+{"schema":"event.v1","event_id":"EV-000016","at":"2026-07-09T09:09:35Z","actor":"main","command":"add","mutating":true,"touched":["N-0012","N-0013","N-0014"],"summary":"add 3 under N-0004: N-0012, N-0013, N-0014"}
+{"schema":"event.v1","event_id":"EV-000017","at":"2026-07-09T09:09:35Z","actor":"main","command":"add","mutating":true,"touched":["N-0015","N-0016","N-0017"],"summary":"add 3 under N-0005: N-0015, N-0016, N-0017"}
+{"schema":"event.v1","event_id":"EV-000018","at":"2026-07-09T09:09:35Z","actor":"main","command":"add","mutating":true,"touched":["N-0018","N-0019","N-0020","N-0021"],"summary":"add 4 under N-0006: N-0018, N-0019, N-0020, N-0021"}
+{"schema":"event.v1","event_id":"EV-000019","at":"2026-07-09T09:09:35Z","actor":"main","command":"add","mutating":true,"touched":["N-0022","N-0023"],"summary":"add 2 under N-0007: N-0022, N-0023"}
+{"schema":"event.v1","event_id":"EV-000020","at":"2026-07-09T09:10:46Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0001"],"summary":"ingest DOC-0001: Fed FEDS Notes: Wealth Inequality and COVID-19 (Distributional Financial Account"}
+{"schema":"event.v1","event_id":"EV-000021","at":"2026-07-09T09:11:24Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0002"],"summary":"ingest DOC-0002: Bivens 2015 (Hutchins/EPI WP#12): Gauging the Impact of the Fed on Inequality du"}
+{"schema":"event.v1","event_id":"EV-000022","at":"2026-07-09T09:11:25Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0003"],"summary":"ingest DOC-0003: Bernanke 2015 (Brookings): Monetary policy and inequality"}
+{"schema":"event.v1","event_id":"EV-000023","at":"2026-07-09T09:11:25Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0004"],"summary":"ingest DOC-0004: Kaplan, Moll & Violante 2018 (AER): Monetary Policy According to HANK"}
+{"schema":"event.v1","event_id":"EV-000024","at":"2026-07-09T09:11:25Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0005"],"summary":"ingest DOC-0005: Rachel & Summers 2019 (BPEA): On Falling Neutral Real Rates, Fiscal Policy, and "}
+{"schema":"event.v1","event_id":"EV-000025","at":"2026-07-09T09:11:25Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0006"],"summary":"ingest DOC-0006: Saez & Zucman 2020 (JEP): The Rise of Income and Wealth Inequality in America"}
+{"schema":"event.v1","event_id":"EV-000026","at":"2026-07-09T09:11:25Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0007"],"summary":"ingest DOC-0007: Krishnamurthy & Vissing-Jorgensen 2011 (BPEA): The Effects of Quantitative Easin"}
+{"schema":"event.v1","event_id":"EV-000027","at":"2026-07-09T09:11:25Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0008"],"summary":"ingest DOC-0008: Colciago, Samarina & de Haan 2019 (J. Economic Surveys): Central Bank Policies a"}
+{"schema":"event.v1","event_id":"EV-000028","at":"2026-07-09T09:11:25Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0009"],"summary":"ingest DOC-0009: Adam & Tzamourani 2016 (European Economic Review/ECB): Distributional Consequenc"}
+{"schema":"event.v1","event_id":"EV-000029","at":"2026-07-09T09:11:50Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0001","N-0008"],"summary":"bind DOC-0001 -> N-0008 (supports)"}
+{"schema":"event.v1","event_id":"EV-000030","at":"2026-07-09T09:11:50Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0001","N-0014"],"summary":"bind DOC-0001 -> N-0014 (supports)"}
+{"schema":"event.v1","event_id":"EV-000031","at":"2026-07-09T09:11:50Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0001","N-0021"],"summary":"bind DOC-0001 -> N-0021 (supports)"}
+{"schema":"event.v1","event_id":"EV-000032","at":"2026-07-09T09:11:50Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0001","N-0023"],"summary":"bind DOC-0001 -> N-0023 (supports)"}
+{"schema":"event.v1","event_id":"EV-000033","at":"2026-07-09T09:11:50Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0002","N-0009"],"summary":"bind DOC-0002 -> N-0009 (supports)"}
+{"schema":"event.v1","event_id":"EV-000034","at":"2026-07-09T09:11:50Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0002","N-0010"],"summary":"bind DOC-0002 -> N-0010 (supports)"}
+{"schema":"event.v1","event_id":"EV-000035","at":"2026-07-09T09:11:50Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0002","N-0011"],"summary":"bind DOC-0002 -> N-0011 (supports)"}
+{"schema":"event.v1","event_id":"EV-000036","at":"2026-07-09T09:11:50Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0002","N-0019"],"summary":"bind DOC-0002 -> N-0019 (supports)"}
+{"schema":"event.v1","event_id":"EV-000037","at":"2026-07-09T09:11:51Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0003","N-0014"],"summary":"bind DOC-0003 -> N-0014 (supports)"}
+{"schema":"event.v1","event_id":"EV-000038","at":"2026-07-09T09:11:51Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0003","N-0020"],"summary":"bind DOC-0003 -> N-0020 (context)"}
+{"schema":"event.v1","event_id":"EV-000039","at":"2026-07-09T09:11:51Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0007","N-0017"],"summary":"bind DOC-0007 -> N-0017 (supports)"}
+{"schema":"event.v1","event_id":"EV-000040","at":"2026-07-09T09:11:51Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0009","N-0008"],"summary":"bind DOC-0009 -> N-0008 (supports)"}
+{"schema":"event.v1","event_id":"EV-000041","at":"2026-07-09T09:11:51Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0009","N-0023"],"summary":"bind DOC-0009 -> N-0023 (supports)"}
+{"schema":"event.v1","event_id":"EV-000042","at":"2026-07-09T09:11:51Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000043","at":"2026-07-09T09:12:43Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0010"],"summary":"ingest DOC-0010: Bank of England (Pugh, Bunn & Yeates 2018, SWP No.720 / Bank Underground): The d"}
+{"schema":"event.v1","event_id":"EV-000044","at":"2026-07-09T09:13:02Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0010","N-0011"],"summary":"bind DOC-0010 -> N-0011 (supports)"}
+{"schema":"event.v1","event_id":"EV-000045","at":"2026-07-09T09:13:02Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0010","N-0023"],"summary":"bind DOC-0010 -> N-0023 (context)"}
+{"schema":"event.v1","event_id":"EV-000046","at":"2026-07-09T09:15:30Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0001","N-0008"],"summary":"conclude N-0008 [supports]"}
+{"schema":"event.v1","event_id":"EV-000047","at":"2026-07-09T09:15:30Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0008"}
+{"schema":"event.v1","event_id":"EV-000048","at":"2026-07-09T09:16:08Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0002","N-0009"],"summary":"conclude N-0009 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000049","at":"2026-07-09T09:16:08Z","actor":"main","command":"promote","mutating":false,"touched":[],"summary":"FAILED: promotion requires --note (attempted directions / counterfactual probe / expected evidence)"}
+{"schema":"event.v1","event_id":"EV-000050","at":"2026-07-09T09:16:08Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0003","N-0010"],"summary":"conclude N-0010 [supports]"}
+{"schema":"event.v1","event_id":"EV-000051","at":"2026-07-09T09:16:08Z","actor":"main","command":"promote","mutating":false,"touched":[],"summary":"FAILED: promotion requires --note (attempted directions / counterfactual probe / expected evidence)"}
+{"schema":"event.v1","event_id":"EV-000052","at":"2026-07-09T09:16:08Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0004","N-0011"],"summary":"conclude N-0011 [supports]"}
+{"schema":"event.v1","event_id":"EV-000053","at":"2026-07-09T09:16:08Z","actor":"main","command":"promote","mutating":false,"touched":[],"summary":"FAILED: promotion requires --note (attempted directions / counterfactual probe / expected evidence)"}
+{"schema":"event.v1","event_id":"EV-000054","at":"2026-07-09T09:16:08Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0005","N-0012"],"summary":"conclude N-0012 [supports]"}
+{"schema":"event.v1","event_id":"EV-000055","at":"2026-07-09T09:16:08Z","actor":"main","command":"promote","mutating":false,"touched":[],"summary":"FAILED: promotion requires --note (attempted directions / counterfactual probe / expected evidence)"}
+{"schema":"event.v1","event_id":"EV-000056","at":"2026-07-09T09:16:09Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0006","N-0013"],"summary":"conclude N-0013 [supports]"}
+{"schema":"event.v1","event_id":"EV-000057","at":"2026-07-09T09:16:09Z","actor":"main","command":"promote","mutating":false,"touched":[],"summary":"FAILED: promotion requires --note (attempted directions / counterfactual probe / expected evidence)"}
+{"schema":"event.v1","event_id":"EV-000058","at":"2026-07-09T09:16:09Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0007","N-0014"],"summary":"conclude N-0014 [supports]"}
+{"schema":"event.v1","event_id":"EV-000059","at":"2026-07-09T09:16:09Z","actor":"main","command":"promote","mutating":false,"touched":[],"summary":"FAILED: promotion requires --note (attempted directions / counterfactual probe / expected evidence)"}
+{"schema":"event.v1","event_id":"EV-000060","at":"2026-07-09T09:16:09Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0008","N-0015"],"summary":"conclude N-0015 [supports]"}
+{"schema":"event.v1","event_id":"EV-000061","at":"2026-07-09T09:16:09Z","actor":"main","command":"promote","mutating":false,"touched":[],"summary":"FAILED: promotion requires --note (attempted directions / counterfactual probe / expected evidence)"}
+{"schema":"event.v1","event_id":"EV-000062","at":"2026-07-09T09:16:09Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0009","N-0016"],"summary":"conclude N-0016 [supports]"}
+{"schema":"event.v1","event_id":"EV-000063","at":"2026-07-09T09:16:09Z","actor":"main","command":"promote","mutating":false,"touched":[],"summary":"FAILED: promotion requires --note (attempted directions / counterfactual probe / expected evidence)"}
+{"schema":"event.v1","event_id":"EV-000064","at":"2026-07-09T09:16:09Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0010","N-0017"],"summary":"conclude N-0017 [supports]"}
+{"schema":"event.v1","event_id":"EV-000065","at":"2026-07-09T09:16:09Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0011","N-0018"],"summary":"conclude N-0018 [supports]"}
+{"schema":"event.v1","event_id":"EV-000066","at":"2026-07-09T09:16:09Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0012","N-0019"],"summary":"conclude N-0019 [supports]"}
+{"schema":"event.v1","event_id":"EV-000067","at":"2026-07-09T09:16:09Z","actor":"main","command":"promote","mutating":false,"touched":[],"summary":"FAILED: promotion requires --note (attempted directions / counterfactual probe / expected evidence)"}
+{"schema":"event.v1","event_id":"EV-000068","at":"2026-07-09T09:16:09Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0013","N-0020"],"summary":"conclude N-0020 [supports]"}
+{"schema":"event.v1","event_id":"EV-000069","at":"2026-07-09T09:16:09Z","actor":"main","command":"promote","mutating":false,"touched":[],"summary":"FAILED: promotion requires --note (attempted directions / counterfactual probe / expected evidence)"}
+{"schema":"event.v1","event_id":"EV-000070","at":"2026-07-09T09:16:10Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0014","N-0021"],"summary":"conclude N-0021 [supports]"}
+{"schema":"event.v1","event_id":"EV-000071","at":"2026-07-09T09:16:10Z","actor":"main","command":"promote","mutating":false,"touched":[],"summary":"FAILED: promotion requires --note (attempted directions / counterfactual probe / expected evidence)"}
+{"schema":"event.v1","event_id":"EV-000072","at":"2026-07-09T09:16:10Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0015","N-0022"],"summary":"conclude N-0022 [supports]"}
+{"schema":"event.v1","event_id":"EV-000073","at":"2026-07-09T09:16:10Z","actor":"main","command":"promote","mutating":false,"touched":[],"summary":"FAILED: promotion requires --note (attempted directions / counterfactual probe / expected evidence)"}
+{"schema":"event.v1","event_id":"EV-000074","at":"2026-07-09T09:16:10Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0016","N-0023"],"summary":"conclude N-0023 [supports]"}
+{"schema":"event.v1","event_id":"EV-000075","at":"2026-07-09T09:16:10Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (5261 chars)"}
+{"schema":"event.v1","event_id":"EV-000076","at":"2026-07-09T09:16:10Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000077","at":"2026-07-09T09:16:35Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0010"}
+{"schema":"event.v1","event_id":"EV-000078","at":"2026-07-09T09:16:35Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0018"}
+{"schema":"event.v1","event_id":"EV-000079","at":"2026-07-09T09:16:35Z","actor":"main","command":"promote","mutating":true,"touched":["N-0010"],"summary":"promote N-0010 -> claim"}
+{"schema":"event.v1","event_id":"EV-000080","at":"2026-07-09T09:17:24Z","actor":"main","command":"promote","mutating":false,"touched":[],"summary":"FAILED: N-0010 is already a claim"}
+{"schema":"event.v1","event_id":"EV-000081","at":"2026-07-09T09:17:24Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0017","N-0010"],"summary":"conclude N-0010 [supports]"}
+{"schema":"event.v1","event_id":"EV-000082","at":"2026-07-09T09:17:24Z","actor":"main","command":"promote","mutating":true,"touched":["N-0011"],"summary":"promote N-0011 -> claim"}
+{"schema":"event.v1","event_id":"EV-000083","at":"2026-07-09T09:17:24Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0018","N-0011"],"summary":"conclude N-0011 [supports]"}
+{"schema":"event.v1","event_id":"EV-000084","at":"2026-07-09T09:17:24Z","actor":"main","command":"promote","mutating":true,"touched":["N-0012"],"summary":"promote N-0012 -> claim"}
+{"schema":"event.v1","event_id":"EV-000085","at":"2026-07-09T09:17:24Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0019","N-0012"],"summary":"conclude N-0012 [supports]"}
+{"schema":"event.v1","event_id":"EV-000086","at":"2026-07-09T09:17:24Z","actor":"main","command":"promote","mutating":true,"touched":["N-0013"],"summary":"promote N-0013 -> claim"}
+{"schema":"event.v1","event_id":"EV-000087","at":"2026-07-09T09:17:24Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0020","N-0013"],"summary":"conclude N-0013 [supports]"}
+{"schema":"event.v1","event_id":"EV-000088","at":"2026-07-09T09:17:24Z","actor":"main","command":"promote","mutating":true,"touched":["N-0014"],"summary":"promote N-0014 -> claim"}
+{"schema":"event.v1","event_id":"EV-000089","at":"2026-07-09T09:17:24Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0021","N-0014"],"summary":"conclude N-0014 [supports]"}
+{"schema":"event.v1","event_id":"EV-000090","at":"2026-07-09T09:17:24Z","actor":"main","command":"promote","mutating":true,"touched":["N-0015"],"summary":"promote N-0015 -> claim"}
+{"schema":"event.v1","event_id":"EV-000091","at":"2026-07-09T09:17:25Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0022","N-0015"],"summary":"conclude N-0015 [supports]"}
+{"schema":"event.v1","event_id":"EV-000092","at":"2026-07-09T09:17:25Z","actor":"main","command":"promote","mutating":true,"touched":["N-0016"],"summary":"promote N-0016 -> claim"}
+{"schema":"event.v1","event_id":"EV-000093","at":"2026-07-09T09:17:25Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0023","N-0016"],"summary":"conclude N-0016 [supports]"}
+{"schema":"event.v1","event_id":"EV-000094","at":"2026-07-09T09:17:25Z","actor":"main","command":"promote","mutating":true,"touched":["N-0017"],"summary":"promote N-0017 -> claim"}
+{"schema":"event.v1","event_id":"EV-000095","at":"2026-07-09T09:17:25Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0024","N-0017"],"summary":"conclude N-0017 [supports]"}
+{"schema":"event.v1","event_id":"EV-000096","at":"2026-07-09T09:17:25Z","actor":"main","command":"promote","mutating":true,"touched":["N-0018"],"summary":"promote N-0018 -> claim"}
+{"schema":"event.v1","event_id":"EV-000097","at":"2026-07-09T09:17:25Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0025","N-0018"],"summary":"conclude N-0018 [supports]"}
+{"schema":"event.v1","event_id":"EV-000098","at":"2026-07-09T09:17:25Z","actor":"main","command":"promote","mutating":true,"touched":["N-0019"],"summary":"promote N-0019 -> claim"}
+{"schema":"event.v1","event_id":"EV-000099","at":"2026-07-09T09:17:25Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0026","N-0019"],"summary":"conclude N-0019 [supports]"}
+{"schema":"event.v1","event_id":"EV-000100","at":"2026-07-09T09:17:25Z","actor":"main","command":"promote","mutating":true,"touched":["N-0020"],"summary":"promote N-0020 -> claim"}
+{"schema":"event.v1","event_id":"EV-000101","at":"2026-07-09T09:17:25Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0027","N-0020"],"summary":"conclude N-0020 [supports]"}
+{"schema":"event.v1","event_id":"EV-000102","at":"2026-07-09T09:17:25Z","actor":"main","command":"promote","mutating":true,"touched":["N-0021"],"summary":"promote N-0021 -> claim"}
+{"schema":"event.v1","event_id":"EV-000103","at":"2026-07-09T09:17:25Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0028","N-0021"],"summary":"conclude N-0021 [supports]"}
+{"schema":"event.v1","event_id":"EV-000104","at":"2026-07-09T09:17:25Z","actor":"main","command":"promote","mutating":true,"touched":["N-0022"],"summary":"promote N-0022 -> claim"}
+{"schema":"event.v1","event_id":"EV-000105","at":"2026-07-09T09:17:25Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0029","N-0022"],"summary":"conclude N-0022 [supports]"}
+{"schema":"event.v1","event_id":"EV-000106","at":"2026-07-09T09:17:26Z","actor":"main","command":"promote","mutating":true,"touched":["N-0023"],"summary":"promote N-0023 -> claim"}
+{"schema":"event.v1","event_id":"EV-000107","at":"2026-07-09T09:17:26Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0030","N-0023"],"summary":"conclude N-0023 [supports]"}
+{"schema":"event.v1","event_id":"EV-000108","at":"2026-07-09T09:17:26Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (5136 chars)"}
+{"schema":"event.v1","event_id":"EV-000109","at":"2026-07-09T09:17:26Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000110","at":"2026-07-09T09:19:37Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000111","at":"2026-07-09T09:19:37Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (5136 chars)"}
+{"schema":"event.v1","event_id":"EV-000112","at":"2026-07-09T09:20:28Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0031","N-0002"],"summary":"conclude N-0002 [supports]"}
+{"schema":"event.v1","event_id":"EV-000113","at":"2026-07-09T09:20:28Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0032","N-0003"],"summary":"conclude N-0003 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000114","at":"2026-07-09T09:20:28Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0033","N-0004"],"summary":"conclude N-0004 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000115","at":"2026-07-09T09:20:28Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0034","N-0005"],"summary":"conclude N-0005 [supports]"}
+{"schema":"event.v1","event_id":"EV-000116","at":"2026-07-09T09:20:28Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0035","N-0006"],"summary":"conclude N-0006 [open]"}
+{"schema":"event.v1","event_id":"EV-000117","at":"2026-07-09T09:20:28Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0036","N-0007"],"summary":"conclude N-0007 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000118","at":"2026-07-09T09:20:29Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0037","N-0001"],"summary":"conclude N-0001 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000119","at":"2026-07-09T09:20:29Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000120","at":"2026-07-09T09:20:29Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (3288 chars)"}
+{"schema":"event.v1","event_id":"EV-000121","at":"2026-07-09T09:20:49Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (23 nodes)"}
+{"schema":"event.v1","event_id":"EV-000122","at":"2026-07-09T09:21:07Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0009"}
+{"schema":"event.v1","event_id":"EV-000123","at":"2026-07-09T09:21:07Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0011"}
+{"schema":"event.v1","event_id":"EV-000124","at":"2026-07-09T09:21:07Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0014"}
+{"schema":"event.v1","event_id":"EV-000125","at":"2026-07-09T09:21:07Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0017"}
+{"schema":"event.v1","event_id":"EV-000126","at":"2026-07-09T09:21:07Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0021"}
+{"schema":"event.v1","event_id":"EV-000127","at":"2026-07-09T09:21:07Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0023"}
+{"schema":"event.v1","event_id":"EV-000128","at":"2026-07-09T09:21:07Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000129","at":"2026-07-09T09:25:07Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (3288 chars)"}
+{"schema":"event.v1","event_id":"EV-000130","at":"2026-07-09T09:25:14Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (23 nodes)"}
+{"schema":"event.v1","event_id":"EV-000131","at":"2026-07-09T09:25:14Z","actor":"main","command":"log","mutating":false,"touched":[],"summary":"log tail=20"}
+{"schema":"event.v1","event_id":"EV-000132","at":"2026-07-09T09:25:21Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0008"}
+{"schema":"event.v1","event_id":"EV-000133","at":"2026-07-09T09:25:21Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0022"}
+{"schema":"event.v1","event_id":"EV-000134","at":"2026-07-09T09:25:22Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0008: 2"}
+{"schema":"event.v1","event_id":"EV-000135","at":"2026-07-09T09:25:22Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0022: 1"}
+{"schema":"event.v1","event_id":"EV-000136","at":"2026-07-09T09:25:31Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0015"}
+{"schema":"event.v1","event_id":"EV-000137","at":"2026-07-09T09:25:31Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0016"}
+{"schema":"event.v1","event_id":"EV-000138","at":"2026-07-09T09:25:31Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0009"}

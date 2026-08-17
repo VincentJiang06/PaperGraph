@@ -1,0 +1,11 @@
+{
+  "kind": "web",
+  "title": "PolitiFact/ABC News reporting on Jason Furman's ARP inflation-impact estimate",
+  "url": "https://www.politifact.com/factchecks/2022/apr/20/jane-timken/bidens-american-rescue-plan-fueled-inflation-so-di/",
+  "text_file": "notes/scratch/doc_furman_estimate.txt",
+  "summary": "Furman估计ARP使2021年通胀率提高1-4个百分点,约占2022年3月8.5%通胀率的1/4至1/2,远高于SF Fed约0.3pp/年的估计,显示财政贡献估计模型分歧巨大。",
+  "bindings": [
+    {"node_id": "N-0007", "relation": "context", "note": "Furman的更高估计(1-4pp)与SF Fed的0.3pp/年估计形成鲜明对比,展示财政贡献估计的模型依赖性"},
+    {"node_id": "N-0004", "relation": "supports", "note": "同一财政刺激对通胀贡献的估计跨模型差异可达十倍以上,说明定量归因高度依赖模型设定"}
+  ]
+}

@@ -1,0 +1,8 @@
+Title: Minimum Wage Effects and Monopsony Explanations
+Authors: Justin C. Wiltshire, Carl McPherson, Michael Reich (working paper also circulated as Wiltshire, Reich, Sosinskiy); IRLE/CWED, UC Berkeley; forthcoming Journal of Labor Economics.
+URL: https://irle.berkeley.edu/publications/working-papers/minimum-wage-effects-and-monopsony-explanations/ ; https://irle.berkeley.edu/wp-content/uploads/2023/09/min_wage_monopsony_WMR.pdf
+
+Verbatim / closely-quoted key findings (as extracted from source summaries):
+Study covers 47 larger U.S. counties in New York and California that reached a $15 minimum wage or more by early 2022, using a stacked county-level synthetic control estimator on fast-food restaurant data: "substantial pay growth, no disemployment effects, and reduced wage inequality."
+"Minimum wage increases reduce separation rates and raise wages faster than prices at McDonald's stores; both findings imply a monopsonistic labor market with declining rents."
+Additional note: in the tight post-pandemic labor market, when labor supply becomes more elastic, the study found positive employment effects; results also hold in lower-wage counties and counties without local minimum wages.

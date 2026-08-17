@@ -1,0 +1,10 @@
+Title: China Urbanization Rate: 67.0% in 2024 — History 1978-2024
+Source: China Data Portal (chinadata.live)
+URL: https://chinadata.live/data/china-urbanization-history/
+
+Key verbatim extraction (via fetch):
+- "China's urbanization rate reached approximately 67% in 2024, meaning about 950 million of China's 1.41 billion people live in urban areas."
+- "China's urbanization rate jumped from 17.9% in 1978 to 67% in 2024 — a nearly 4x increase in 46 years."
+- "China crossed the 50% urbanization threshold in 2011, when the urban population first exceeded the rural population."
+- "China's urbanization rate of 67% is still below the world average for high-income countries (80%+), the US (83%), and Europe (75%)."
+- Context (from broader search, Statista/World Bank): Japan's urbanization rate was already ~77.3% in 1990 — well above China's current 67% (2024), i.e. Japan entered its stagnation era already far more urbanized than China is today.

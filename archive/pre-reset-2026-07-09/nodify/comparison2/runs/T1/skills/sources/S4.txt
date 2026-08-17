@@ -1,0 +1,16 @@
+Title: Generative AI and jobs: A 2025 update
+Publisher: International Labour Organization (ILO)
+URL: https://www.ilo.org/publications/generative-ai-and-jobs-2025-update
+Accessed via: WebFetch, 2026-07-09
+
+Verbatim key quotes:
+
+"One in four workers across the world are in an occupation with some degree of GenAI exposure"
+
+"most jobs will be transformed rather than made redundant"
+
+Automation potential score: mean score of 0.29 in 2025 versus 0.30 in 2023 (slight decrease), "while consistency improved considerably."
+
+Policy framing: "There is need to ensure that the transition is managed through social dialogue, to enhance both working conditions and productivity."
+
+Notes: ILO's refined global occupational exposure index frames generative AI's effect primarily as transformation of job content (task mix) rather than wholesale automation/elimination — a task-level, not job-count, measure.

@@ -1,0 +1,6 @@
+SOURCE: Klaus Adam & Panagiota Tzamourani (2016), European Economic Review 89:172-192 / ECB — "Distributional Consequences of Asset Price Inflation in the Euro Area" (VoxEU column)
+URL: https://cepr.org/voxeu/columns/distributional-consequences-asset-price-inflation-eurozone
+VERBATIM QUOTES:
+"Equity price increases largely benefit the top end of the net wealth and income distribution, thus amplifying net wealth inequality."
+"Bond price increases leave net wealth inequality largely unchanged."
+"Housing price increases display a hump-shaped pattern over the net wealth distribution, with the poorest and richest households benefitting least."

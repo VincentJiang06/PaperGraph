@@ -1,0 +1,11 @@
+{
+  "kind": "web",
+  "title": "Slate/The American Prospect reporting on Summers's sacrifice-ratio prediction and its outcome",
+  "url": "https://slate.com/business/2022/07/larry-summers-massive-unemployment-fed-inflation.html",
+  "text_file": "notes/scratch/doc_summers_sacrifice_ratio.txt",
+  "summary": "Summers基于'牺牲率'(约2pp失业对应1pp通胀回落)预测抑制通胀需要大幅提高失业率;但2023年初通胀大幅回落而失业率保持低位,与该预测不符,Summers本人承认表现'好于多数标准模型预测'。",
+  "bindings": [
+    {"node_id": "N-0015", "relation": "refutes", "note": "牺牲率论点预测的高失业代价并未兑现,2022-2023年通胀回落而失业率保持低位,对软着陆脆弱性论点构成事后反驳"},
+    {"node_id": "N-0009", "relation": "context", "note": "菲利普斯曲线传统模型对需求侧过热-通胀关系的预测失灵,间接提示需求侧解释的经典渠道可能弱于预期"}
+  ]
+}

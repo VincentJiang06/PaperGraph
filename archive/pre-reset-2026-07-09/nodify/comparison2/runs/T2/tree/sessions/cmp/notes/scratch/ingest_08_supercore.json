@@ -1,0 +1,11 @@
+{
+  "kind": "report",
+  "title": "FRBSF Economic Letter 2023-19: Will a Cooler Labor Market Slow Supercore Inflation?",
+  "url": "https://www.frbsf.org/research-and-insights/publications/economic-letter/2023/07/will-cooler-labor-market-slow-supercore-inflation/",
+  "text_file": "notes/scratch/doc_supercore.txt",
+  "summary": "'超核心'(核心服务剔除房租)通胀自2022年年中起持续高企,对失业缺口的敏感度很弱(斜率-0.09,不显著);而供应链自2022年初起持续改善,核心商品通胀随GSCPI滞后回落,两者分化明显。",
+  "bindings": [
+    {"node_id": "N-0013", "relation": "supports", "note": "供应链自2022年初已在改善,但核心服务(超核心)通胀持续到2023年中仍高企,证明持续性主因并非供给侧自然改善"},
+    {"node_id": "N-0011", "relation": "context", "note": "超核心通胀对劳动力市场松弛度不敏感,说明劳动力市场紧张对通胀持续性的传导可能比预期更顽固"}
+  ]
+}

@@ -1,0 +1,4 @@
+Source: Lisbeth Gronlund, "How Many Cancers Did Chernobyl Really Cause? — Updated Version," Union of Concerned Scientists (blog), 2011.
+URL: https://blog.ucs.org/lisbeth-gronlund/how-many-cancers-did-chernobyl-really-cause-updated/
+
+However, based on the data given below, 53,000 and 27,000 are reasonable estimates of the number of excess cancers and cancer deaths that will be attributable to the accident, excluding thyroid cancers. (The 95% confidence levels are 27,000 to 108,000 cancers and 12,000 to 57,000 deaths.) In addition, as of 2005, some 6,000 thyroid cancers and 15 thyroid cancer deaths have been attributed to Chernobyl. That number will grow with time.

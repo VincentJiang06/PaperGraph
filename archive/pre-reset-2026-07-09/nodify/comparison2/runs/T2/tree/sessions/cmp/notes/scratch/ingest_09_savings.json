@@ -1,0 +1,11 @@
+{
+  "kind": "report",
+  "title": "San Francisco Fed: The Rise and Fall of Pandemic Excess Savings (2023-2024 series)",
+  "url": "https://www.frbsf.org/research-and-insights/publications/economic-letter/2023/05/rise-and-fall-of-pandemic-excess-savings/",
+  "text_file": "notes/scratch/doc_excess_savings.txt",
+  "summary": "疫情期超额储蓄峰值约2.1万亿美元;2023年9月降至约4300亿美元;截至2024年3月SF Fed估计已基本耗尽(另有方法认为截至2024年5月仍有至少1.6万亿美元,存在争议)。",
+  "bindings": [
+    {"node_id": "N-0015", "relation": "supports", "note": "超额储蓄这一需求侧缓冲垫到2024年基本耗尽,构成软着陆脆弱性的滞后效应证据之一"},
+    {"node_id": "N-0009", "relation": "context", "note": "超额储蓄规模庞大且消耗缓慢,说明需求侧韧性并非短期现象,但其有限性也预示需求拉动终将减弱"}
+  ]
+}

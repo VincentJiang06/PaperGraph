@@ -1,0 +1,2944 @@
+Wealth Inequality in the United States since 1913:
+Evidence from Capitalized Income Tax Data∗
+Emmanuel Saez
+UC Berkeley
+
+Gabriel Zucman
+UC Berkeley
+
+August 2015
+
+Abstract
+This paper combines income tax returns with macroeconomic household balance sheets to
+estimate the distribution of wealth in the United States since 1913. We estimate wealth
+by capitalizing the incomes reported by individual taxpayers, accounting for assets that do
+not generate taxable income. We successfully test our capitalization method in three micro
+datasets where we can observe both income and wealth: the Survey of Consumer Finance,
+linked estate and income tax returns, and foundations’ tax records. We find that wealth
+concentration was high in the beginning of the twentieth century, fell from 1929 to 1978,
+and has continuously increased since then. The top 0.1% wealth share has risen from 7%
+in 1978 to 22% in 2012, a level almost as high as in 1929. Top wealth-holders are younger
+today than in the 1960s and earn a higher fraction of the economy’s labor income. The
+bottom 90% wealth share first increased up to the mid-1980s and then steadily declined.
+The increase in wealth inequality in recent decades is due to the upsurge of top incomes
+combined to an increase in saving rate inequality. We explain how our findings can be
+reconciled with Survey of Consumer Finances and estate tax data.
+
+∗
+
+Emmanuel Saez: saez@econ.berkeley.edu; Gabriel Zucman: zucman@berkeley.edu. A complete set of Appendix tables and figures supplementing this article is available online at http://eml.berkeley.edu/~saez and
+http://gabriel-zucman.eu/uswealth. We thank the editors Lawrence Katz and Andrei Shleifer, five anonymous referees, Tony Atkinson, Mariacristina DeNardi, Matthieu Gomez, Barry W. Johnson, Maximilian Kasy,
+Arthur Kennickell, Wojciech Kopczuk, Moritz Kuhn, Thomas Piketty, Jean-Laurent Rosenthal, John Sabelhaus,
+Amir Sufi, Edward Wolff, and numerous seminar and conference participants for helpful discussions and comments. Juliana Londono-Velez provided outstanding research assistance. We acknowledge financial support from
+the Center for Equitable Growth at UC Berkeley, INET, the Sandler foundation, and the MacArthur foundation.
+
+1
+
+Introduction
+
+Income inequality has sharply increased in the United States since the late 1970s, but currently
+available evidence about wealth inequality is mixed. According to the Survey of Consumer
+Finances (SCF), wealth concentration is high and growing: the 1 percent richest households
+own 36% of wealth in 2013, up from 30% in 1992 (Bricker et al., 2014; Kennickell, 2011; Wolff,
+2012). Estimates based on estate tax returns, by contrast, find that US wealth inequality is low
+and stable, with a top 1% share of barely 20% (Kopczuk and Saez, 2004), less than in countries
+like Denmark, Finland, and France (Roine and Waldenström, 2015). Is wealth inequality high
+or low in the United States? Has it been increasing and by how much exactly?
+In this paper, we attempt to shed new light on the long-run evolution of US wealth inequality
+by capitalizing income tax data. We start with the capital income reported by taxpayers to
+the Internal Revenue Service, which is broken down into many categories: dividends, interest,
+rents, profits, etc. For each asset class we compute a capitalization factor that maps the total
+flow of tax income to the amount of wealth recorded in the household balance sheet of the
+US Financial Accounts. We then obtain wealth by multiplying individual income components
+by the corresponding capitalization factors. For example, if the stock of fixed-income claims
+(bonds, deposits, etc.) recorded in the balance sheet of households is equal to 50 times the
+flow of interest income in tax data, we attribute $50,000 in fixed-income claims to a tax unit
+with $1,000 in interest. By construction, the wealth distribution we estimate is consistent
+with the Financial Accounts totals. Our paper can thus be seen as a first attempt at creating
+distributional Financial Accounts that decompose aggregate wealth and saving by fractiles.
+This allows us to analyze growth and distribution in a common framework, and in particular to
+provide the first annual, long-run, homogeneous series of US top wealth shares consistent with
+macroeconomic totals.
+Our results show that US wealth concentration is high by international standards and has
+considerably increased in recent decades. By our estimates, the share of wealth owned by the
+top 1% families has regularly grown since the late 1970s and reaches 42% in 2012. Most of
+this increase is driven by the top 0.1%, whose wealth share has grown from 7% of in 1978 to
+22% in 2012, a level comparable to that of the early 20th century (Figure 1). Although the top
+0.1% is a small group—it includes about 160,000 tax units with net assets above $20 million
+in 2012—carefully measuring its wealth is important. The public cares about the distribution
+of economic resources, and since wealth is highly concentrated (much more than labor income,
+due to the dynamic processes that govern wealth accumulation), producing reliable estimates
+1
+
+requires to pay careful attention to the top. This is difficult to achieve with surveys, even the
+SCF (Kennickell, 2015), and motivates our attempt at using tax records covering all the richest
+families. The top 0.1% also matters from a macroeconomic perspective: it owns a sizable share
+of total wealth and accounts for a large fraction of its growth. From 1986 to 2012, for example,
+almost half of US wealth accumulation has been due to the top 0.1% alone.
+A number of studies have used the income capitalization method in the past, notably King
+(1927), Stewart (1939), Wolff (1980), Greenwood (1983) in the United States, and Atkinson
+and Harrison (1978) in the United Kingdom. But these studies provide estimates for just a few
+years in isolation, do not use micro-data, or have a limited breakdown of capital income by asset
+class. Our main advantage is that we have more and better data.1
+The capitalization method faces two main potential obstacles. We carefully deal with them
+and provide checks suggesting that the method delivers reliable results. First, not all assets
+generate taxable investment income—main homes and pensions, in particular, do not. These
+assets are well covered by a number of sources and we account for them by combining the
+available information—surveys, property taxes paid, pension distributions, wages reported on
+tax returns, etc.—in a systematic manner. Second, within a given asset class, rates of returns
+may vary with wealth. For instance, wealthy households might report little dividends and
+capital gains relative to the equity wealth they own, in particular because of tax avoidance.
+Conversely, well-off families might have access to higher-yielding investment opportunities than
+the rest of the population. We have investigated all the situations where both US wealth and
+capital income can be observed at the micro level: the SCF, matched estate and individual
+income tax data, and the publicly available tax returns of foundations. In each case, we find
+that within asset-class realized rates of returns are similar across groups, and that top wealth
+shares obtained by capitalizing income are very close to the directly observed top shares in both
+level and trend. At the individual level, the relationship between capital income and wealth
+is noisy, but the capitalization method works nonetheless because the noise cancels out when
+considering groups of thousands of families, which is what matters for our purposes.2
+1
+
+King (1927) and Stewart (1939) relied on tabulations of tax data by income size (instead of micro-data).
+Atkinson and Harrison (1978) lacked sufficiently detailed income data (they had tabulations by size of capital
+income but with no composition detail). Greenwood (1983) uses one year (1973) of micro tax return data and
+various capital income categories but does not use the balance sheet of households to estimate returns by asset
+class so that her estimates are not consistent with the Financial Accounts aggregates. She relies instead on
+market price indexes to infer wealth from income. Asset price indexes, however, have shortcomings (such as
+survivor bias for equities) that can cause biases when analyzing long-time periods. Recently, Mian et al. (2014)
+use the capitalization method and zip code level income tax statistics to measure wealth by zip code.
+2
+A number of studies have documented the noisy relationship at the individual level between income and
+wealth, see, e.g., Kennickell (2001, 2009a) for the SCF, and Rosenmerkel and Wahl (2011) and Johnson et al.
+(2013) for matched estate-income tax data.
+
+2
+
+The analysis of the distribution of household wealth since 1913 yields two main findings.
+First, wealth inequality is making a comeback. In 2012, the top 0.1% wealth share is three
+times higher than in 1978, and almost as high as in the 1916 and 1929 historical peaks. The key
+driver of the rapid increase in wealth at the top is the upsurge of top incomes. Income inequality
+has a snowballing effect on the wealth distribution. Top incomes are being saved at high rates,
+pushing wealth concentration up; in turn, rising wealth inequality leads to rising capital income
+concentration, which contributes to further increasing top income and wealth shares. Our core
+finding is that this snowballing effect has been sufficiently powerful to dramatically affect the
+shape of the US wealth distribution over the last 30 years. We also find that todays’s rich are
+younger than half a century ago and have much more labor income, but due to data limitations
+we cannot provide yet formal decompositions of the relative importance of self-made vs. dynastic
+wealth, and we hope our results will motivate further research in this area.
+The second key result involves the dynamics of the bottom 90% wealth share. There is a
+widespread view that a key structural change in the US economy since the beginning of the
+twentieth century has been the rise of middle-class wealth, in particular because of the rise of
+pensions and home ownership rates. And indeed our results show that the bottom 90% wealth
+share gradually increased from 20% in the 1920s to a high of 35% in the mid-1980s. But in
+a sharp reversal of past trends, the bottom 90% wealth share has fallen since then, to about
+23% in 2012. Pension wealth has continued to increase but not enough to compensate for a
+surge in mortgage, consumer credit, and student debt. The key driver of the declining bottom
+90% share is the fall of middle-class saving, a fall which itself may owe to the low growth of
+middle-class income, to financial deregulation leading to some forms of predatory lending, or to
+growing behavioral biases in the saving decisions of the middle-class.
+Our results confirm some earlier findings using different data but contradict some others.
+We attempt to reconcile our results with previous studies of US wealth inequality.
+First, our results are consistent with Forbes data on the wealth of the 400 richest Americans.
+Normalized for population growth, the wealth share of the top 400 has increased from 1% in
+the early 1980s to over 3% in 2012-3, on par with the tripling of our top 0.01% wealth share.
+Second, the SCF finds clear evidence of rising wealth inequality, but smaller increases in the
+top 1% and especially top 0.1% shares than we do (Bricker et al., 2015). The SCF is a highquality survey that itself relies on the capitalization method to sample wealthy individuals. The
+bulk of the discrepancy between our findings and the SCF can be explained by three factors:
+by design, the SCF excludes Forbes 400 individuals; aggregate wealth in the survey and in the
+Financial Accounts differs (Henriques and Hsu, 2013); and the unit of observation in the SCF
+3
+
+(the household) is larger than the one we use (the tax unit). After adjusting for these factors,
+the SCF displays a large rise in top wealth shares from 1989 to 2013. There remains, however,
+a residual gap with our estimates. We provide evidence that this residual discrepancy probably
+owes to sampling and non-sampling errors in the SCF.
+Last, the top 0.1% wealth share estimated by Kopczuk and Saez (2004) from estate tax
+returns is remarkably close in level and trend to the one we obtain up to the late 1970s, but then
+hardly increases. Estate-based estimates attempt to capture the distribution of wealth among
+the living by weighting individual estates by the inverse of the mortality rate conditional on
+age, gender, and wealth. The estimates of Kopczuk and Saez (2004) assume that the mortality
+differential between the wealthy and the overall population has not changed over time. There is
+evidence that differential mortality by socio-economic status has in fact increased in the United
+States in recent decades (see, e.g., Waldron, 2004, 2007), partly explaining why estate-based
+estimates fail to uncover the recent surge in top wealth shares. We discuss other pitfalls faced
+by the estate multiplier technique, including changes in tax avoidance and real responses to the
+approach of death. In the end, our results on the rise of wealth inequality are close to those
+found by Wolff (2002), who combined estate tax data before 1980 with SCF data after.
+Despite our best effort, we stress that we still face limitations when measuring wealth inequality. The development of the offshore wealth management industry, changes in tax optimization
+behaviors, indirect wealth ownership (e.g., through trusts and foundations) all raise challenges.
+Because of the lack of administrative data on wealth, none of the existing sources offer a definitive estimate. We see our paper as an attempt at using the most comprehensive administrative
+data currently available, but one that ought to be improved in at least two ways: by using
+additional information already available at the Statistics of Income division of the IRS and new
+data that the US Treasury could collect at low cost. A modest data collection effort would make
+it possible to obtain a better picture of the joint distributions of wealth, income, and saving, a
+necessary piece of information to evaluate proposals for consumption or wealth taxation.
+The remainder of the paper is organized as follows. Section 2 discusses our definition and
+aggregate measure of wealth. In Section 3 we analyze the distribution of taxable capital income
+and present our method for inferring wealth from income. Section 4 discusses the pros and cons
+of the capitalization method and provides a number of checks suggesting that it delivers reliable
+results. We present our results on the distribution of wealth in Section 5, and analyze the
+role played by changes in income inequality and saving rates in Section 6. Section 7 compares
+our estimates to previous studies. Section 8 concludes. Complete tabulations of results with
+detailed methodological notes are posted in a set of Excel files on the authors’ websites.
+4
+
+2
+
+What is Wealth? Definition and Aggregate Measures
+
+2.1
+
+The Wealth Concept We Use
+
+Let us first define the concept of wealth that we consider in this paper. Wealth is the current
+market value of all the assets owned by households net of all their debts. Following international
+standards codified in the System of National Accounts (United Nations, 2009), assets include
+all the non-financial and financial assets over which ownership rights can be enforced and that
+provide economic benefits to their owners.
+Our definition of wealth includes all pension wealth—whether held in individual retirement
+accounts, or through pension funds and life insurance companies—with the exception of Social
+Security and unfunded defined benefit pensions.3 Although Social Security matters for saving
+decisions, the same is true for all promises of future government transfers. Including Social
+Security in wealth would thus call for including the present value of future Medicare benefits,
+future government education spending for one’s children, etc., net of future taxes. It is not clear
+where to stop, and such computations are inherently fragile because of the lack of observable
+market prices for these types of assets. Unfunded defined benefit pensions are promises of future
+payments which are not backed by actual wealth. The vast majority (94% in 2013) of unfunded
+pension entitlements are for government employees (federal and local), thus are conceptually
+similar to promises of future government transfers, and just like those are better excluded from
+wealth. According to the Financial Accounts, unfunded defined benefit pensions represent the
+equivalent of 5% of total household wealth today, down from 10-15% in the 1960s-1970s.4
+Our wealth concept excludes human capital, which contrary to non-human wealth cannot
+be sold on markets. Because the distributions of human and non-human capital are shaped
+by different economic forces (savings, inheritance, and rates of returns matter for non-human
+capital; technology and education, among others, matter for human capital), it is necessary
+to start by studying the two of them separately. We also exclude the wealth of nonprofit
+institutions, which amounts to about 10% of household wealth.5 The bulk of nonprofit wealth
+belongs to hospitals, churches, museums, and education institutions, and thus cannot easily
+be attributed to any particular group of households. Part of nonprofit wealth also belongs
+to private foundations, such as the Bill and Melinda Gates foundation. It would probably be
+desirable to attribute this wealth to specific families, but this cannot always be done easily, as in
+3
+
+We include all funded defined benefit pensions in wealth, just like defined contribution pensions.
+Since unfunded pensions are relatively equally distributed, treating them as wealth would reinforce our
+finding of an inverted-U shaped evolution of the bottom 90% wealth share.
+5
+See Appendix Tables A31 and A32 for data on nonprofit institutions’ wealth and income.
+4
+
+5
+
+the case of foundations created long ago, like the Ford or MacArthur foundations. The wealth
+of foundations is still modest compared to that of the very top groups, but it is growing—from
+0.8% of total household wealth in 1985 to 1.2% in 2012.6 Last, we exclude consumer durables
+(about 10% of household wealth) and valuables from assets. Durables are not treated as assets
+by the System of National Accounts and there is no information on tax returns about them.7
+
+2.2
+
+Aggregate Wealth: Data and Trends
+
+With this definition in hand, we construct total household wealth—the denominator we use
+when computing wealth shares—as follows. For the post-1945 period, we rely on the latest
+household balance sheets of the US Financial Accounts (US Board of Governors of the Federal
+Reserve System, 2014), formerly known as the Flow of Funds. The Financial Accounts report
+wealth as of December 31 and we compute mid-year estimates by averaging end-of-year values.
+For the 1913-1945 period, we combine balance sheets from Goldsmith et al. (1956), Wolff (1989),
+and Kopczuk and Saez (2004) that are based on the same concepts and methods as the Financial
+Accounts, although they are less precise than post-1945 data.
+For our purposes, the Financial Accounts have three main limitations. First, they fail to
+capture most of the wealth held abroad, such as the portfolios of equities and bonds held by US
+persons through offshore financial institutions in the Cayman Islands and similar tax havens, as
+well as foreign real estate. Zucman (2013, 2014) estimates that offshore financial wealth amounts
+to about 8% of household financial wealth at the global level and to about 4% in the U.S. case.
+We will examine how imputing offshore wealth to households affects our estimates. Second,
+the Financial Accounts evaluate bonds at face value instead of market value. Bonds are very
+unequally distributed.8 Hence face-value pricing means that we might under-estimate wealth
+inequality since the beginning of the low interest rate period in 2008. Third, the household
+balance sheet currently published in the Financial Accounts includes non-profit institutions and
+hedge funds. We have estimated and excluded the wealth of non-profits. The inclusion of hedge
+funds is unlikely to affect our top shares much, as it mostly affects the composition of household
+wealth rather than its level.9 Just like all macroeconomic statistics, the Financial Accounts are
+6
+
+See Appendix Table C9. Note that Forbes Magazine does not include the wealth transferred to private
+foundations in its estimates of the 400 richest Americans either.
+7
+In the SCF, cars–which represent the majority of durables wealth–are very equally distributed (Kennickell,
+2009b) so adding durables would reduce the level of wealth disparity but may not have much impact on trends.
+8
+According to our estimates, the top 0.1% of the wealth distribution owns about 39% of all fixed-income
+claims (vs. 22% of all wealth), see Appendix Table B11.
+9
+If hedge funds were excluded from the household sector, then households would own equities in hedge funds.
+Currently, by contrast, households directly own the funds’ assets, which are partly equity, partly bonds and
+other assets. Because a fraction of hedge funds do not belong to households but to corporations, the inclusion
+
+6
+
+regularly improved and revised. We see our estimates of US wealth inequality as living series
+that we will update annually using the most recent tax data and Financial Accounts.
+As depicted on Figure 2, the key fact about aggregate US wealth is that it is growing fast.
+The ratio of household wealth to national income has followed a U-shape evolution over the
+past century, a pattern also seen in other advanced economies (Piketty and Zucman, 2014a).10
+Household wealth amounted to about 400% of national income in the early 20th century, fell
+to around 300% in the post-World War II decades, and has been rising since the late 1970s to
+around 430% in 2013 (Figure 2). But the composition of wealth has changed markedly. Pensions
+were negligible a century ago and now amount to over 100% of national income, while there
+has been a secular fall in unincorporated business assets, driven primarily by the decline of the
+share of agriculture in the economy. One should not interpret the rise of pension wealth as a
+proof that inherited wealth is bound to play a minor role in the future: about half of pension
+wealth is bequeathable in 2013, namely all individual retirement accounts, defined contribution
+pensions (such as 401(k)s), and non-annuitized life insurance assets.
+
+3
+
+From Reported Income to the Distribution of Wealth
+
+Our goal is to allocate total household wealth depicted in Figure 2 to the various groups of
+the distribution. We begin by looking at the distribution of reported capital income. We then
+capitalize this income, and account for wealth that does not generate taxable income.
+
+3.1
+
+The Distribution of Taxable Capital Income
+
+The starting point is the capital income reported on individual tax returns. For the post1962 period, we rely on the yearly public-use micro-files available at the NBER that provide
+information for a large sample of taxpayers, with detailed income categories. We supplement
+this dataset using the internal use Statistics of Income (SOI) individual tax return sample files
+from 1979 forward.11 For the pre-1962 period, no micro-files are available so we rely instead
+on the Piketty and Saez (2003) series of top incomes which were constructed from annual
+tabulations of income and its composition by size of income (US Treasury Department, Internal
+Revenue Service, 2012). Our unit of analysis is the tax unit, as in Piketty and Saez (2003).
+of hedge funds in the household balance sheet generates some limited double counting.
+10
+National income data are from the NIPAs, Kuznets (1941) for 1919-1929 and King (1930) for 1913-1919.
+11
+SOI maintains high quality individual tax sample data since 1979 and population wide data since 1996, with
+information that could be used to refine our estimates. We use the public files up to 1995 and the internal files
+starting in 1996 (due to methodological changes in the public use files altering representativity at the high-end
+since 1996). All the results using internal data used in this paper are published in Saez and Zucman (2014).
+
+7
+
+A tax unit is either a single person aged 20 or above or a married couple, in both cases with
+children dependents if any. Fractiles are defined relative to the total number of tax units in
+the population—including both income tax filers and non-filers—as estimated from decennial
+censuses and current population surveys. In 2012, there are 160.7 million tax units covering
+the full population of 313.9 million US residents.12 The top 0.1% of the distribution, therefore,
+includes 160,700 tax units.
+Figure 3 provides the first evidence that capital inequality has increased dramatically in the
+United States. It displays the share of taxable capital income earned by the top 0.1% capital
+income earners. Capital income includes dividends, taxable interest, rents, estate and trust
+income, the profits of S-corporations, sole proprietorships and partnerships; we also present
+a series including realized capital gains. Three results are worth noting. First, the top 0.1%
+share excluding capital gains used to be 10% in the 1960s-1970s; in 2012, the latest data point
+available, it is 33%. Second, part of this upsurge occurs at the time of the Tax Reform Act
+of 1986, and may thus reflects changes in tax avoidance rather than in the distribution of true
+income. Yet the top 0.1% share including capital gains—which were heavily tax-favored up to
+1986—has increased in similar proportions with no trend break in 1986, suggesting that the
+rise in capital income concentration is a real economic phenomenon. Third, some of the profits
+of partnerships and S-corporations include a labor income component, so that part of the rise
+of the top 0.1% share reflects a rise of top entrepreneurial rather than pure capital income.
+However, the concentration of pure capital income has also increased significantly. The share of
+dividends earned by the top 0.1% dividend-income earners has risen from 35% in 1962 to 50%
+in 2012.13 The increase is even more spectacular for taxable interest, from 12% to 47%. In brief,
+the tax-return data are consistent with the view that capital inequality has risen enormously
+over the last decades. As we shall see, however, the concentration of wealth has increased
+less than that of taxable capital income, in particular because of the rise of relatively equally
+distributed pensions, which do not generate taxable capital income.14
+12
+
+US citizens are taxable in the United States even when living abroad. In 2011, about 1.5 million nonresident citizens filed a 1040 return (Hollenbeck and Kahr, 2014, Figure B p.143, col. 2). These families should
+in principle be added to our tax units total. We ignore this issue and leave the task of accounting for the
+income and wealth of non-resident citizens to future research. The total number of US citizens living abroad is
+uncertain (a recent estimate of the Association of American Resident Overseas puts it at 6.3 million, excluding
+government employees). The lack of exchange of information between countries makes it difficult to enforce taxes
+on non-residents, so that a large fraction of them do not appear to be filing a return. Our estimates should be
+seen as representative of the distribution of income among US residents rather than US citizens.
+13
+See Appendix Table B23. At the very top of the distribution, the concentration of taxable dividend income
+is at an all-time high: 31% of taxable dividends accrue to 0.01% of tax units, which is more than in 1929 (26%),
+see Appendix Figure B11.
+14
+By our estimates, the top 1% wealth share increased 19 points over the 1978-2012 period, against 29 points
+
+8
+
+3.2
+
+The Capitalization Technique
+
+The second step of the analysis involves capitalizing the investment income reported by taxpayers. The capitalization method is well suited to estimating the US wealth distribution, for
+one simple reason: the US income tax code is designed so that capital income flows to individual returns for a wide variety of ownership structures, resulting in a large amount of wealth
+generating taxable income. In particular, dividends and interest earned through mutual funds,
+S-corporations, partnerships, holding companies, and some trusts end up being included in the
+“interest” and “dividends” lines of the ultimate individual owner’s tax return, just as income
+from directly-owned stocks and bonds. Many provisions in the tax code prevent individuals
+from avoiding the income tax trough the use of wealth-holding intermediaries or exotic financial
+instruments. One of the most important one is the accumulated earnings tax—in force since
+1921—levied on the undistributed corporate profits deemed to be retained for tax avoidance
+purposes (Elliott, 1970).15 Similarly, the personal holding company tax—in place since 1937—
+effectively prevents wealthy individuals from avoiding the income tax by retaining income in
+holding companies. Imputed interest on zero-coupon bonds is taxed like regular interest. Admittedly, not all assets generate taxable income, and incentives to report income have changed
+over time, but the capitalization method constitutes a reasonable starting point.
+How the capitalization technique works. There are nine categories of capital income in
+the tax data. We carefully map each of them (e.g., “dividends”, “rents”) to a wealth category in the balance sheet of households (e.g.,“corporate equities”, “tenant-occupied housing”).
+Then, for each category we compute a capitalization factor as the ratio of aggregate household
+wealth to tax return income, every year since 1913.16 By construction, this procedure ensures
+consistency with the household balance sheet totals. For example, in 2000 there is about $5
+trillion of household wealth in the Financial Accounts that generates taxable interest—bonds
+except municipal securities, bank deposits, loans, etc.—and about $200 billion of reported taxable interest income. The capitalization factor for taxable interest is thus equal to 25, i.e., the
+for the top 1% taxable capital income share.
+15
+Before 1921, shareholders could be directly taxed on the excessive retained earnings of their corporations.
+16
+In recent years, capitalizing income tax returns allows us to capture 8 asset classes: corporate equities
+(excluding S corporations), taxable fixed income claims (taxable bonds, deposits, etc.), tax-exempt bonds (i.e.,
+municipale securities), tenant-occupied housing, mortgages, sole proprietorships, partnerships, and equities in S
+corporations. One tax-returns income category, “estate and trust income”, does not correspond to any specific
+asset class (see below). In addition, our analysis includes all other asset classes that do not generate taxable
+income: owner-occupied housing, non-mortgage debt, non-interest bearing deposits and currency, pensions, and
+life insurance (see below). Further back in time, the number of asset classes is slightly more limited, but in all
+cases we cover 100% of wealth. The mapping process and construction of the capitalization factor is detailed in
+Appendix Tables A1 to A11. Our capitalization factors are shown in Appendix Figures A13 to A19.
+
+9
+
+aggregate rate of return on taxable fixed-income claims is 4%. The capitalization factor varies
+over asset classes—e.g., it is higher for rental income (37 in 2000) than for partnership profits
+(7 in 2000)—and over time. We capitalize only positive business profits, ignoring losses.
+For the post-1962 period, we impute wealth at the individual level by assuming that within
+a given asset class, everybody has the same capitalization factor. Before 1962, we impute it at
+the group level by capitalizing the income of top 1%, top 0.1%, etc., income earners.17 In both
+cases, computing top wealth shares by capitalizing income essentially amounts to allocating the
+fixed-income wealth recorded in the balance sheet of households across group based on how
+interest income is distributed, and similarly for each other asset class. This procedure does not
+require us to know what the “true” rate of return to capital is. For example, business profits
+include a labor income component, which explains why the capitalization factor for business
+income is small. But as long as the distribution of business income is similar to that of business
+wealth, the capitalization method delivers good results. Section 4 provides a detailed discussion
+of the pros and cons of this method and evidence suggesting that it works well.
+How we deal with capital gains. In general there is no ambiguity as to how income should
+be capitalized. The only exception is for equities, which generate both dividends and capital
+gains. There are three ways to deal with equities. One can first capitalize dividends only. In
+2000 for instance, the ratio of households’ equities to dividends reported on tax returns is 54,
+so equity wealth can be captured by multiplying individual-level dividends by 54 and capital
+gains by 0. But realized gains also provide useful information on stock ownership, so that
+we could capitalize them as well. In 2000, the ratio of equities to the sum of dividends and
+capital gains is 10, so equity wealth can be captured by multiplying the sum of dividends and
+capital gains by 10. Realized capital gains, however, are lumpy. A business-owner might sell all
+her stock once in a lifetime upon retirement so that we would exaggerate the concentration of
+equity wealth. A third method can be applied, whereby capital gains are ignored when ranking
+individuals into wealth groups but taken into account when computing top shares. To determine
+a family’s ranking in the wealth distribution, dividends are multiplied by 54 in 2000, and to
+compute top shares both dividends and capital gains are multiplied by 10.18 This mixed method
+smoothes realized capital gains.19 Given that it uses all the available information and works
+17
+
+Top 1% income earners are not exactly the same as top 1% wealth-holders, and we correct for such reranking. The margin of error here is limited, because prior to 1962 top income earners derived most of their
+income from capital rather than labor (Piketty and Saez, 2003). See Appendix Tables for complete details.
+18
+This mixed method is similar to the mixed series of Piketty and Saez (2003) which exclude realized capital
+gains for ranking families but adds back realized capital gains to income when computing top shares.
+19
+Aggregate realized capital gains also vary significantly from year to year due to stock prices (and tax reforms
+that create incentives to realize gains prior to tax hikes, as in 1986 and 2012). However, such spikes in realized
+
+10
+
+best in situations where we can observe both income and wealth at the micro level, our baseline
+estimates rely on this mixed strategy.
+Although our treatment of capital gains is imperfect—it could be improved, for instance, if we
+had long panel data that would enable us to attribute equities to taxpayers in the years preceding
+gains realizations—there is no evidence that it biases the results in any specific direction. In
+particular, whether one disregards capital gains, fully capitalizes them, or adopts the mixed
+method does not affect the results much. The reason is that groups who receive lots of dividends
+also receive lots of capital gains, so that allocating the total amount of household equity wealth
+on the basis of how dividends alone or the sum of dividends and gains are distributed across
+groups makes little difference. The top 0.1% wealth share was 7-8% in 1977 whatever way capital
+gains are dealt with. In 2012, the top 0.1% is equal to 21.6% when capitalizing dividends only,
+23.6% when fully capitalizing gains, and 22.1% in the baseline mixed method.20 Our baseline
+estimates are always close to those obtained by capitalizing dividends only.
+
+3.3
+
+Accounting for Wealth that Does not Generate Taxable Income
+
+The third step of our analysis involves dealing with the assets that do not generate taxable
+income. In 2012, the most important ones are pensions and owner-occupied houses. Although
+these assets are sizable, they do not raise insuperable problems, for two reasons. First, there
+is limited uncertainty on the distribution of pensions and main homes across families, as they
+are well covered by micro-level survey sources. We have conducted our imputations so as to be
+consistent with all the available evidence. Second, surveys, individual income tax returns (and
+estate tax returns) all show that pensions (and main homes) account for a small fraction of
+wealth at the top-end of the distribution, so that any error in the way we allocate these assets
+across groups is unlikely to affect our top 1% or top 0.1% wealth shares much.
+Owner-occupied housing. We infer the value of owner-occupied dwellings from property
+taxes paid. These taxes are itemized on tax returns by roughly the top third of the income
+distribution. Using information on total property taxes paid in the NIPAs, and consistent with
+what SCF data show, we estimate that itemizers own 75% of homes each year. We assume that
+gains do not create discontinuities in our estimates as the capitalization factor adjusts correspondingly.
+20
+See Appendix Tables B1, B34, B36, and Appendix Figure B27. Capital gains are usually more concentrated
+than dividends (due to lumpy realizations), so that top wealth shares obtained by fully capitalizing gains tend to
+be higher than those obtained by capitalizing dividends only—but only slightly so. The difference between the
+top 0.1% share including and excluding capital gains is higher today than in the 1970s because high dividend
+earners tend to realize large capital gains today while this was less true in the 1970s.
+
+11
+
+they all face the same effective property tax rate.21 In actual facts, property tax rates differ
+across and within States; our computations could thus be improved, for instance by matching
+taxpayers’ addresses to third-party real estate databases and by explicitly accounting for yearto-year variations in the fraction of itemizers.22 For our purposes, however, these problems are
+second-order, as only about 5% of the wealth of the top 0.1% takes the form of housing today.
+We similarly estimate mortgage debt using mortgage interest payments. Consistent with NIPA
+and SCF data, we assume that itemizers have 80% of all mortgage debt.
+Life insurance and pension funds. Life insurance and pension funds—both individual
+accounts and defined benefits plans—do not generate taxable capital income. Pensions have
+been growing fast since the 1960s and now account for a third of household wealth. Since many
+regulations prevent high income earners from contributing large amounts to their tax-deferred
+accounts, pension wealth is more evenly distributed than overall wealth. We allocate pension
+wealth based on how pension income and wages—that we both observe at the micro-level—
+are distributed, in such a way as to match the distribution of pension wealth in the SCF.23
+Our resulting distribution of pension wealth is consistent with the distribution of individual
+retirement accounts (IRAs) whose balances are automatically reported to the IRS (Bryant and
+21
+
+The amount of owner-occupied housing wealth in the household balance sheet of the Financial Accounts is
+about 100 times bigger than the property taxes recorded in the NIPAs, that is, the average property tax rate is
+about 1%, see Appendix Table A11. According to the SCF, however, property taxes are regressive: on average
+over 1989-2013 the effective property tax rate is equal to about 1% for the full population, but declines to as
+little as 0.4% for households in the top 0.1% of the wealth distribution. Property tax rates could be mildly
+declining with wealth if rich taxpayers tend to live in low property tax States, but there are two reasons why
+assuming a flat property tax rates seems the most reasonable starting point for our purposes. First, some rich
+SCF respondents might over-estimate the value of their houses, maybe because they tend to exaggerate house
+price appreciation during booms and to be in denial during busts (Henriques, 2013). Second, the share of housing
+owned by the top 10% of the wealth distribution is lower in the SCF (49.8% on average from 1989 to 2013) than
+in our series (58.2%); assuming that property tax rates fall with wealth would increase the gap. (In both our
+series and the SCF, the housing share of the top 10% increases by about 10 points over the 1989-2013 period).
+22
+32% of tax units were itemizing in 2008, down from 37% in 1962. The fraction of itemizers declined in the
+early 1970s and again at the time of the Tax Reform Act of 1986 (from 37% in 1986 to 28% in 1988). We have
+checked, however, that accounting for these trends has only a negligible effect on our series. There are very few
+non-itemizers at the top; 90% of top 10% income earners and more than 95% of top 1% income earners itemize.
+23
+Specifically, we allocate 60% of pension wealth to current pensioners (proportionally to pensions received)
+and the remaining 40% to wage earners (proportionally to wage earnings above the median wage, as only about
+50% of wage earners have access to pensions). The 60%-40% split was chosen so as to ensure consistency with
+the share of pension wealth held by the top 10% in the SCF. The top 10% owns 65% of defined contribution (DC)
+pensions in the SCF in 2013, up from 56% in 1989. Although defined benefit (DB) pensions are not directly
+observable in the SCF, it can be estimated that the top 10% SCF respondents own about 38% of DB pension
+wealth (Wolff, 2014b), with no time trend. Factoring in the relative importance of DC vs. DB pensions, the
+SCF data suggest that the top 10% owns 53% of all (funded) pension wealth in 2013, up from 44% in 1989. Our
+method replicates well the level and increase in pension wealth concentration from the SCF: In our series, the
+top 10% owns 55% of pension wealth in 2012, up from 47% in 1989.
+
+12
+
+Gober, 2013), and which account for 30% of all pension wealth today.24 Life insurance is small
+on aggregate and we assume that it is distributed like pension wealth.
+Just like in the case of housing, the way we deal with pensions could be improved—in
+particular if 401(k) balances were reported to the IRS like balances on IRAs—, but this would
+not affect our top wealth shares much, because pension wealth accounts for only 5% of the
+wealth of the top 0.1% today. Better data on pensions would make it possible to have a more
+accurate picture of the distribution of wealth among the bottom 90%, though.
+Non-taxable fixed income claims. Although interest from State and local government
+bonds is tax exempt, it has been reported on individual tax returns since 1987. Before 1987,
+we assume that it is distributed as in 1987, with 97% of municipal bonds belonging to the top
+10% of the wealth distribution and 32% to the top 0.1%. Tax exempt interest might have been
+even more concentrated before 1987 when top tax rates were higher, but the margin of error is
+limited, as on aggregate tax exempt bonds amounted to only 0.5%-1.5% of household wealth
+from 1913 to the mid-1980s. The Statistics of Income division at IRS also produced tabulations
+in the 1920s and 1930s showing that tax exempt interest was always a minor form of capital
+income, even in very top brackets. Currency and non-interest deposits—which account for about
+1% of total wealth today—and non-mortgage debt do not generate taxable income or reportable
+payments either. We allocate these assets so as to match their distribution in the SCF.25
+Trust wealth. Our estimates fully incorporate the wealth held by individuals through trusts.
+Trusts are entities set to distribute income—and possibly wealth—to individual beneficiaries
+and charities. Trust income distributed to individuals flows to the beneficiaries’ individual tax
+returns, directly to the dividend, realized capital gain, or interest lines for such income, and
+to Schedule E fiduciary income for other income such as rents and royalties. Retained trust
+income is taxed directly at the trust level. Total trust wealth decreased from 7-8% of household
+wealth in the 1960s to around 5% today, and the portion of trust wealth that generates retained
+income from 3-4% to 2%.26 We allocate this wealth to families on the basis of how schedule E
+trust income is distributed. Up to the late 1960s, income taxes could be avoided by splitting
+wealth in numerous trusts, so that each would be subject to a relatively low marginal tax rate.
+24
+
+Over the 2004-2011 period, the top 1% IRA wealth-holders (defined relative to the full population, including
+those with zero IRA balances) own 36.1% of total IRA balances. The top 0.1% owns 10.2% and the top 0.01%
+owns 3.3%. The famous case of 2012 presidential candidate Mitt Romney with a huge IRA balance seems to be
+truly exceptional. IRAs are more concentrated than overall pension wealth (by our estimates, the top 1% of the
+distribution of pension wealth owns about 25% of pensions in recent years; see Appendix Table B16).
+25
+Before 1987, non-mortgage interest payments were tax-deductible and so we can account for non-mortgage
+debt by capitalizing non-mortgage interest. See Appendix Tables B42 and B43.
+26
+See Appendix Tables A33 and A34, and Appendix Figures A29 to A34.
+
+13
+
+Such splitting might account for part of the variations in top wealth shares we find in the early
+1920s when trust splitting might have been used to avoid the high top tax rates of 1917-1924.
+Stronger anti-deferral rules were gradually put into place, and since 1987 retained trust income
+has been taxed at the top individual tax rate above a very low threshold. Our estimates fully
+take into account that the use of trusts was more prevalent in the past.27
+Offshore wealth. Last, we attempt to account for tax evasion. US financial institutions
+automatically report to the IRS the dividends, interest, and capital gains earned by their clients,
+making tax evasion through US banks virtually impossible. But absent similar reporting from
+foreign institutions, taxpayers can evade taxes by holding wealth through foreign banks. Zucman
+(2013, 2014) estimates that about 4% of US household net financial wealth (i.e., about 2% of
+total US wealth) is held in offshore tax heavens in 2013. There is evidence that the bulk of the
+income generated by offshore assets up to 2013 was not reported to the IRS.28 Furthermore,
+the share of wealth held offshore has considerably increased since the 1970s.29 We account for
+offshore wealth in supplementary series by assuming that it is distributed as trust income, i.e.,
+highly concentrated. Top wealth shares rise even more when including offshore wealth: the top
+0.1% owns 23.0% of total wealth—instead of 22.1% in our baseline estimate—in 2012. This
+correction should be seen as a lower bound as it only accounts for offshore equity and bond
+portfolios, disregarding real estate, derivatives, cash, and so on.
+After supplementing capitalized incomes by estimates for assets that do not generate taxable
+income, we each year cover 100% of the identifiable wealth of US households. Due to data
+limitations, imputations are cruder prior to 1962.30 At that time, however, pension wealth was
+27
+
+Trusts remain useful to avoid the estate tax. The general idea is for wealthy individuals to keep control of
+the trust and its income while alive but give the remainder to their heirs. When such a trust is created (perhaps
+decades before death), the gift value is small and hence the gift tax liability is modest (the trust has zero value
+for estate tax purposes at death because the remainder has already been given).
+28
+As documented in US Senate (2008, 2014), in 2008 about 90%-95% of the wealth held by US citizens at UBS
+and Credit Suisse in Switzerland is unreported to the IRS. Reporting, however, might be improving following
+the implementation in 2014 of new regulations (the Foreign Account Tax Compliance Act) that compel foreign
+financial institutions to automatically report to the IRS the income earned by US citizens.
+29
+Treasury International Capital data show that, from the 1940s to the late 1980s, the share of US corporations’
+listed equities held by tax-haven firms and individuals was about 1%. This share has gradually increased to
+close to 10% in 2013 (see Zucman (2014), and this paper’s Appendix Figure A35). Only a fraction of these
+assets belong to US individuals evading taxes, but the low level of offshore wealth prior to the 1980s shows that
+offshore tax evasion was not a big concern then, presumably because it was harder to move funds abroad.
+30
+The Piketty and Saez (2003) top income series do not provide information on capital income for net housing,
+pensions, tax-exempt bonds, currency and deposits, and non-mortgage debt. We assume that the fraction of
+these assets held by each wealth group is constant and equal to the average for 1962-1966. These components
+are small for the top 1% and above, hence this assumption has only a minimal impact on the estimates (pensions
+are small before the 1960s). Census data on home ownership and mortgages could be used to improve upon our
+housing wealth series.
+
+14
+
+small, so that the vast majority of household wealth (70-80%) did generate investment income,
+thus limiting the potential margin of error. To obtain reliable top wealth shares, accurately
+measuring the distribution of equities and fixed-income claims—which constitute the bulk of
+large fortunes—is key.
+
+4
+
+Pros and Cons of the Capitalization Method
+
+To capture the distribution of equities, business assets, and fixed-income claims, we capitalize
+the dividends, business profits, and interest income reported by taxpayers, assuming a constant
+capitalization factor within asset class. Here we discuss the pros and cons of this approach and
+provide evidence that it delivers accurate results, in particular by successfully testing it in three
+situations where both capital income and wealth can be observed at the micro level.
+
+4.1
+
+Idiosyncratic Returns
+
+The first potential problem faced by the capitalization method is that within a given asset class
+not all families have the same rate of return. How does that affect our estimates? Suppose there
+is a single asset like bonds and that individual returns ri are orthogonal to wealth Wi . In that
+case, capital income ri Wi will be positively correlated with ri and the capitalization method
+will attribute too much wealth to high capital income earners. If wealth is Pareto-distributed
+with Pareto parameter a > 1, then top wealth shares will be over-estimated by a factor ra /r,
+where r = Eri is the straight mean rate of return and ra = (Eria )1/a is the power mean rate of
+return.31 By Jensen inequality, r < ra .
+Such idiosyncratic returns cannot create much bias, for three reasons. First, since wealth is
+very concentrated, idiosyncratic variations in returns (say, from 2% to 4%) are small compared
+to variations in wealth (say, from $1 million to $100 million) and so ra /r tends to be close
+to 1. To see this, start with the extreme case where the Pareto coefficient a is equal to 1,
+i.e., the very top virtually owns all the wealth. Then ra /r = 1 and there is no bias. Now
+consider a wealth distribution with a realistically shaped fat tail, namely a = 1.5. Assume that
+individual returns ri are distributed uniformly on the interval [0, 2r]. Then ra /r = 2/(1+a)1/a =
+31
+
+To see this, suppose the wealth distribution F (W ) is Pareto above percentile p0 so that P r(Wi ≥ W ) =
+1 − F (W ) = p0 · (Wp0 /W )a with Wp0 the wealth threshold at percentile p0 . Let Fc (W ) be the distribution
+of capitalized wealth defined as Wic = (ri /r) · Wi where ri is the individual rate Rof return (and r the average
+rate of return). Suppose ri ⊥ Wi . Then 1 − Fc (W ) = P r(ri Wi ≥ rW ) = ri P r(Wi ≥ (r/ri )W |ri ) =
+R
+p · (ri /r)a · (Wp0 /W )a = P r(Wi ≥ W ) · Eria /ra = (1 − F (W )) · (ra /r)a . This immediately implies that
+ri 0
+c
+Wp = Wp · (ra /r) and hence shcp = shp · (ra /r) where shp and shcp are the share of wealth and the share of
+capitalized income owned by the top p fractile.
+
+15
+
+1.086: the capitalization method exaggerates top wealth shares by 8.6% only. A more realistic
+distribution of ri more concentrated around its average r produces a smaller upward bias.
+Second, the presence of different asset classes—from which the above computations abstract—
+further dampens the bias. Third, equities are the only asset class for which returns dispersion
+might be large, because of capital gains. But as we have seen, our baseline estimates are very
+close to those obtained by ignoring capital gains and capitalizing dividends only, so this concern
+does not seem to be quantitatively important in practice.
+
+4.2
+
+Returns Correlated With Wealth
+
+A more serious concern is that returns ri not only differ idiosyncratically across individuals, they
+might also be correlated with wealth Wi . For instance, wealthy individuals might be better at
+spotting good investment opportunities and thus earn higher equity and bond returns, perhaps
+thanks to financial advice. This differential might even have increased over time with financial
+globalization and innovation.
+The potential correlation of returns with wealth does not necessarily bias our estimates.
+First, returns can rise with wealth because of portfolio compositions effects. This will be the
+case, for instance, if the wealthy hold relatively more equities and equities have higher returns
+than other assets. Since our capitalization factors vary by asset class, our top wealth share
+series are immune to portfolio composition effects. Second, rates of return may rise with wealth
+because the rate of unrealized capital gains may rise with wealth. In that case, our top wealth
+shares will not be biased either, because what matters for the capitalization technique is that,
+within each asset class, realized rates of return (i.e., the returns reported on tax forms) be the
+same across wealth groups. One striking illustration is provided by the case of foundations.
+
+4.3
+
+Test of the Capitalization Method With Foundations Data
+
+Foundations are required to annually report on both their wealth and income to the IRS in form
+990-PF. These data are publicly available in micro-files created by the Statistics of Income that
+start in 1985. Our analysis first shows that total rates of returns—including unrealized capital
+gains—rise sharply with foundation wealth (see Appendix Figure C4), just like total returns on
+university endowments (Piketty, 2014, Chapter 12). On average over 1990-2010, foundations
+with assets between $1 million and $10 million (in 2010 dollars) have a yearly total real return
+of 3.9%. For foundations with $10-$100 million in assets the return is 4.5% and it is as high as
+6.3% for foundations with more than $5 billion. But the positive correlation between foundation
+
+16
+
+wealth and return is mainly due to the fact that unrealized capital gains rise with wealth, and
+secondarily to a mild portfolio composition effect.
+As a result, by capitalizing the income reported by foundations to the IRS (which includes
+realized but not unrealized capital gains), one captures wealth concentration among foundations
+extremely well, as shown in the bottom Panel of Figure 5. On average over the 1985-2009
+period, when capitalizing income we find that the top 1% foundations own 62.2% of wealth,
+which is almost indistinguishable from the true figure of 62.8%.32 The capitalization method
+also correctly captures the level and rising share of the top 0.1%. The method works well
+because although total rates of returns rise with wealth, realized rates of returns are flat within
+asset class. Neither idiosyncratic return heterogeneity, nor the correlation of total returns with
+wealth prevents it from delivering reliable results.
+The foundation test is useful because wealthy foundations have portfolios that are not dissimilar to those of very rich families—both are often managed by the same private banks and
+investment funds. As shown in Appendix Figure C2, the top 1% foundations—about 1,000
+entities that have assets above $80 million in 2010—own large portfolios of listed equities and
+bonds as well as a large and growing amount of business assets (through private equity and
+venture capital funds rather than directly as in the case of successful entrepreneurs). Cash,
+deposits, real estate, and other assets are negligible. This pattern is similar to the one found for
+top 0.01% families, which have more than $100 million in assets in 2012. There are two caveats,
+however: foundations have minimum spending rules that might lead them to have different
+realization patterns than wealthy families, and they are tax exempt, an issue we now turn to.
+
+4.4
+
+How Tax Avoidance May Affect our Estimates
+
+The third potential problem faced by our method is that although within-asset-class realized
+returns are flat for foundations, they might differ across households because of tax avoidance.
+Wealthy individuals might own assets that generate little taxable income in order to avoid the
+income tax. They might, for instance, disproportionately invest in corporations that never
+pay dividends but retain all their profits.33 Because of tax progressivity, the incentives to do
+so are higher for wealthier individuals—what is known as tax clienteles effects in the public
+finance literature (see Poterba, 2002, for a survey). That form of tax avoidance would lead us
+32
+
+In Figure 5, capital gains are disregarded for ranking foundations but included to compute top shares, just as
+we do for families. As shown in Appendix Figure C5, fully capitalizing capital gains would lead to over-estimating
+foundation wealth concentration while capitalizing dividends only would slightly underestimate it.
+33
+Retained earnings raise equity prices and ultimately generate capital gains. If equities are transmitted at
+death, no capital gain is reportable by heirs because of a provision known as the “step-up basis at death.”
+
+17
+
+to under-estimate top wealth shares.
+Conversely, the rich might have larger taxable rates of returns than average, as they might
+be able to re-classify labor income into more lightly taxed capital income. This form of tax
+avoidance would lead us to over-estimate top shares. For instance, hedge and private equity
+fund managers are rewarded for managing their clients’ wealth through a share of the profits
+made. This “carried interest” is usually taxed as realized capital gains although economically, it
+is labor compensation, since the fund managers do not own the assets that generate the gains.
+Capitalizing carried interest thus exaggerates the wealth of fund managers. A similar issue
+arises with some other compensation schemes, for instance with some forms of stock options.34
+The biases due to tax avoidance might also have changed over time in response to changes
+in tax laws. Wealthy individuals might have owned a lot of wealth that did not generate
+much taxable income in the 1970s when ordinary tax rates were high, and the reduction in tax
+progressivity in the 1980s could then have led them to report more capital income. Conversely,
+in the 1970s, there were strong incentives to reclassify labor as capital gains, because gains were
+taxed at a much lower rate, while such shifting has been less advantageous since 1988.
+One major change in tax laws that deserves special attention is the Tax Reform Act of 1986.
+The reform reduced the top personal income tax rate from 50% in 1986 to 28% in 1988, below the
+corporate tax rate of 35%. This change created incentives for businesses to organize themselves
+as pass-through entities (partnerships and S-corporations) rather than C-corporations, thus
+increasing the amount of capital income observable on individual tax returns. The capitalization
+technique, however, is immune to changes in the total amount of income reported on individual
+versus corporate returns. If for $100 of business wealth each taxpayer reports $5 in business
+income before TRA86 and $10 after, then the capitalization factor for business income adjusts
+from 20 to 10 at the time of the reform, leaving the distribution of wealth unchanged.35 What
+34
+
+The vast majority of stock options profits are taxed as wages. When they are exercised, the difference between
+the market value of the stock and the exercise price (the amount the stock can be bought for according to the
+option agreement) is reportable on forms W-2 as wage income. But a small amount of options, known as incentive
+or qualified stock options, are taxed as realized capital gains. More broadly, most forms of reclassification involve
+transforming labor income into capital gains rather than dividends or interest. For instance, private equity funds
+essentially realize capital gains, which in turn flow to the partners’ individual income tax returns as a payment
+for their managing the fund (part of the carried interest of hedge fund managers can take the form of interest
+and dividend income, however). Since our top wealth shares are very close to those obtained by completely
+ignoring capital gains, reclassification of labor income into capital income is unlikely to play a big role in the
+rise of wealth concentration we document.
+35
+The actual capitalization factor for business income (i.e., the ratio of business wealth to business income
+reported by individuals to the IRS) decreases from about 10 in the early 1980s to about 7 in the late 1980s;
+see Appendix Table A11). The distribution of reported business income does not change much at the time of
+TRA86, and thus there is little discontinuity in our estimated top wealth shares in 1986-1988 (see Figure 1).
+This stands in contrast to the Piketty and Saez (2003) top income shares series, which in the short-run are
+affected by the level of business income reported in individual vs. corporate tax returns.
+
+18
+
+matters is that, for a given asset class and in a given year, the ratio between wealth and taxable
+income be the same across wealth groups. This seems to be generally the case in the situations
+where both wealth and personal taxable income can be observed, as we shall now see.
+
+4.5
+
+Rates of Returns in Linked Estates-Income Tax Data
+
+The first situation where both personal wealth and taxable income can be observed is matched
+estates and income tax data. There is a long tradition at the Statistics of Income Division
+of the IRS investigating the link between income and wealth using matched estates-income
+returns (Bourne and Rosenmerkel, 2014; Johnson et al., 2013). In our analysis of matched
+estates-income, we focus on non-married individuals, since income tax returns sum the incomes
+of spouses, and on the two asset classes for which we have data on both wealth and income:
+equities and fixed-income claims. We analyze three datasets.
+First, we use publicly available SOI tabulations of matched estate-income returns for estates
+filed in 2008, typically 2007 decedents matched to their 2006 income. As shown in the top Panel
+of Figure 4, within-asset-class returns appear constant across wealth groups. In each estate tax
+bracket, the interest yield is about 3% and the dividend yield close to 3.5%. When including
+realized capital gains, the equity return is about 8-9% across the board.36 Although taxable
+rates of returns vary across individuals, they are similar across wealth groups.
+Second, we use the internal SOI matched estate and income tax files to conduct a systematic,
+micro analysis of rates of return at death for each year from 1996 to 2011. We match the estate
+tax returns of non-married decedents to their prior-year income tax returns. As shown in the
+bottom Panel of Figure 4, the interest rate on taxable bonds and deposits for each wealth group
+tracks pretty closely the aggregate interest rate we use when capitalizing interest income over
+the 1996-2011 period. Furthermore, in each year, the interest rate does not vary much with
+wealth. In 1997, for example, the interest rate is 3.9% on aggregate, and between 4.1% and
+4.3% for all groups of estate tax payers ranging from $0.5–1 million to more than $20 million.
+As reported in Appendix Tables C6b, we find similarly negligible returns differentials for taxexempt municipal bonds. The one exception is that we find a modest taxable interest rate
+premium for estates above $20 million in 2003, 2005 and since 2008, discussed below.
+Last, we also exploit a publicly available sample of estates filed in 1977—80% of which are
+for individuals who died in 1976—matched to the decedents’ 1974 individual tax returns (see
+36
+
+This evidence is consistent with the more detailed analysis by Johnson et al. (2013) using micro estate tax
+data of 2007 decedents matched to 2006 income tax returns. If anything, Johnson et al. (2013) find slightly
+decreasing rates of returns for some asset classes (see their Figure 2), suggesting that our capitalization method
+might actually slightly understate wealth concentration in 2006.
+
+19
+
+Kopczuk, 2007, for a presentation of the data). At that time of low wealth concentration and
+high top tax rates, rates of return within asset class were also very similar across wealth groups.
+Strikingly, despite facing a 70% top marginal income tax rate, individuals in the top 0.1% and
+top 0.01% had a high dividend yield (4.7%), almost as large as the average dividend yield of
+5.1% among all decedents (Appendix Figure C10). Wealthy people were unable or unwilling
+to avoid the income tax by investing in non-dividend paying stocks: tax clientele effects were
+quantitatively small.37
+Overall, these findings suggest that the rising wealth concentration we document is unlikely
+to be due to a rising gradient in taxable rates of return. Both in 1976 and since 1996, within
+asset class, taxable capital income and wealth are generally similarly distributed, which is the
+key condition for the capitalization method to deliver reliable results.
+There are two caveats, however. First, the wealth-return profile might not be the same
+in the overall population as in the sample of decedents, because old and young people might
+make different investments. To deal with this issue, one should weight matched estate-income
+observation by the inverse of the mortality rate conditional on age, gender, and wealth. We
+leave this difficult task to future research.38 Second, in 2003, 2005 and since 2008, we observe a
+modest taxable interest rate premium for the largest estates (bottom panel of Figure 4). In these
+years, the interest rate for estates above $20 million is 1.6 times bigger than the economy-wide
+interest rate (for instance, 1.9% vs. 1.2% in 2011). Rich people may have been less affected by
+the recent drop in interest rates, perhaps because a greater fraction of their wealth is invested
+in high-yield corporate and foreign bonds rather than low-yield bank deposits.
+To assess the quantitative implications of the interest rate differential seen in estates-income
+data, from 1996 to 2012, we recapitalize the interest income of the top 0.1% wealth holders
+using itop , the interest rate of decedents with more than $20 million in estates (from Figure 4),
+instead of the population interest rate i (Appendix Table B41c). Since itop /i rises from about 1
+in 1996 to about 1.6 in 2008-2012, this procedure reduces the fixed claims at the top by about
+40% in recent years. This correction exaggerates the implications of the interest rate differential
+for the top 0.1%, since the differential is seen only for estates significantly above the top 0.1%
+threshold. Yet as shown by Appendix Figure B27b, our top 0.1% wealth share series is only
+moderately affected. In 2012, the top 0.1% now reaches 18.7%, against 22.0% in our baseline
+37
+
+As a result, top wealth and taxable capital income shares in the sample of decedents turn out to be extremely
+close. The top 1% stock-owners owned 69.5% of all the corporate stocks of decedents, and the top 1% dividend
+income earners had 68.6% of all dividends (Appendix Table C5). The top 1% fixed-income claims share (37.8%)
+was almost the same as the top 1% interest income share (38.8%).
+38
+Another problem is that rates of returns in matched-estates income tax data may be inflated by valuation
+discounts (e.g., for lack of control and lack of marketability) on wealth held in estates.
+
+20
+
+estimates, but it still appears to be regularly and quickly rising since the early 1980s.39
+Kopczuk (2015) and Bricker et al. (2015) puzzle over the fact that a large part of the increase
+in our top 0.1% wealth share since 2003 owes to bonds. Our analysis shows that the upsurge of
+fixed-income wealth at the top is robust to growing interest rate differentials. It is important to
+realize there has been a truly enormous increase in the concentration of interest income. Top
+0.01% interest income earners had 2.6% of all taxable interest in 1980; in 2012 they have 10
+times more, 27.3%. Half of the increase has taken place from 1980 to 2003 and half from 2003
+to 2012 (Appendix Figure B11b). This is primarily due to the increase in the concentration of
+bonds, as the interest rate differential itop /i has increased by a factor 1.6 only, and not tenfold.40
+
+4.6
+
+Test of the Capitalization Method with SCF Data
+
+Another indication that the capitalization method works well comes from the SCF. In addition to
+wealth, SCF respondents are asked about their income as reported on their prior year tax return.
+We capitalize SCF income and compare the resulting top shares to those obtained by looking at
+directly reported SCF wealth (Figure 5, top panel). Four categories of investment income are
+capitalized separately: taxable interest (generated by fixed-income claims), tax-exempt interest
+(generated by state and local bonds), dividends and capital gains (generated by corporate
+equities), and business and rental income (generated by closely held businesses and non-home
+real estate). As in our baseline method, we exclude capital gains when ranking individuals but
+take them into account when computing top shares. We disregard owner-occupied housing and
+pensions which, by construction, are benchmarked to the SCF in our series.
+The capitalization method captures the level of wealth concentration in the SCF extremely
+well. On average over 1989-2013, when using the direct SCF wealth information, the top ten
+percent owns 87.7% of household wealth (excluding pensions and main homes), the top one
+percent has 50.8%, and the top point one percent has 20.3%. When capitalizing income, the
+39
+
+Appendix Figures B6b and B6c depict the top .01% wealth share and its composition in the baseline and
+with the corrected interest itop . The top .01% grows from 2.2% to 11.2% in the baseline and from 2.2% to 9.2%
+in the series with differentiated interest rate. Complete results are presented in Appendix Table B41c. We had
+also experimented with capitalizing interest of top wealth holders using the 10-year US treasury bond rate, and
+found quantitatively similar effects (see Appendix Table B41).
+40
+Apart from a steeply rising interest rate differential, the only other reason why we could over-estimate
+the amount of fixed-income wealth at the top is if we over-estimate the total amount of fixed-income wealth
+in the economy. Just like for other assets, we rely on the figures published in the Financial Accounts, with
+no correction whatsoever. These series are established by combining a large number of reports from financial
+institutions and are regularly improved. Future revisions of the Financial Accounts might find less fixed income
+wealth than currently published, but they could also find more, in particular if bonds were priced at market
+value rather than face value as is currently done. In the long run, the Financial Accounts are the most reliable
+source of information on aggregate wealth, as they use far many more sources of data than surveys, and do so
+in a consistent, internationally agreed and regularly improved accounting framework.
+
+21
+
+figures are 89.0%, 48.8%, and 20.7%, respectively. Trends in wealth concentration are very
+similar as well: the top 10% and top 1% wealth shares increase slightly, while the top 0.1% is
+flat. There is no evidence that taxable rates of returns at the top tend to be systematically
+too high (e.g., as in the case of hedge fund managers) or too low (e.g., as in the case of savers
+investing in non-dividend paying equities and never realizing gains). On the contrary, taxable
+returns appear to be similar across groups. The last notable result is that in the SCF, the top
+0.1% wealth share either directly observed or obtained by capitalizing incomes increases only
+modestly. This reflects the fact that capital income concentration increases less in the SCF than
+in tax data over the period 1989-2013, an issue we examine in detail in Section 7.
+In sum, the main pitfall of the capitalization method we implement is that it is in principle
+sensitive to tax avoidance. If wealthy individuals were able to report abnormally high or low
+taxable returns in a systematic way, then assuming a constant capitalization factor within asset
+class would produce biased top wealth shares. In practice, however, this concern does not seem
+important in the data. Although the relationship between taxable income and wealth is noisy
+at the individual level, taxable rates of returns appear to be roughly flat at the group level, the
+key condition for our method to produce unbiased results. There is some indication that the
+richest individuals may have recently benefited from a small interest rate premium, but this
+premium seems too small to significantly affect the level or trend of our top wealth shares.
+
+5
+
+Trends in the Distribution of Household Wealth
+
+5.1
+
+The Comeback of Wealth Inequality at the Top
+
+Our new series on wealth inequality reveal a number of striking patterns. To fix ideas, consider
+first in Table 1 the distribution of wealth in 2012. The average net wealth per family is close to
+$350,000, but this average masks a great deal of heterogeneity. The bottom 90% (144 million
+families with $84,000 on average) owns about as much as the top 0.1% (160,700 families with
+net assets above $20 million). Both groups have about 22% of US wealth today. The top 0.1%
+wealth share is about as large as the top 1% income share in 2012: by that metric, wealth is
+ten times more concentrated than income.
+Top wealth shares have followed a U-shaped evolution since the early twentieth century. As
+shown by the top panel of Figure 6, the top 10% wealth share peaked at 84% in the late 1920s,
+then dropped down to 63% in the mid-1980s, and has been gradually rising ever since then, to
+77.2% in 2012. The rising share of the top 10% is uncontroversial: In the SCF official statistics,
+the top 10% share is very similar in both level and trends to the one we obtain (Bricker et al.,
+22
+
+2014; Kennickell, 2009b). In contrast to the SCF, we find that it is only at the very top-end
+of the distribution (top 0.1% and above) that wealth is booming. The top 1% share has risen
+even more than the top decile from 1986 to 2012 (+ 16.7 points vs. 13.6 points), so that the
+top 10-1% wealth share has actually declined by 3.1 points (Figure 6, bottom panel). In turn,
+almost all the rise in the top 1% wealth share since 1986 owes to the increase in the top 0.1%
+share. Wealth is getting more concentrated in the United States, but this trend owes to the
+spectacular dynamics of fortunes of dozens and hundreds of million dollars, not to the growth
+in fortunes of a few million. Inequality within rich families is increasing.
+The long run dynamics of the very top group we consider—the top 0.01%—are particularly
+striking. The losses experienced by the wealthiest families from the late 1920s to the late 1970s
+were so large that in 1980, the average real wealth of top 0.01% families ($44 million in constant
+2010 prices) was half its 1929 value. It took almost 60 years for the average real wealth of
+the top 0.01% to recover its 1929 value—which it did in 1988. These results confirm earlier
+findings of a dramatic reduction in the concentration of wealth (Kopczuk and Saez, 2004) and
+capital income (Piketty and Saez, 2003) in the 1930s and 1940s. The most likely explanation
+is the drastic policy changes of the New Deal. The development of progressive income and
+estate taxation made it difficult to accumulate and pass on large fortunes. Financial regulation
+limited the role of finance and the ability to concentrate wealth as in the Gilded age model of
+the financier-industrialist. These policies were reversed in the 1980s, and top 0.01% average
+wealth has been growing at a real rate of 7.8% per year since 1988.
+The growth of wealth at the very top since the 1980s is driven by both corporate equities
+and fixed income claims. As we have seen, the upsurge in the largest fortunes is robust to
+capitalizing interest income at higher rates at the top. It is also robust to alternative capitalization techniques for equities. The amount of equities held by the top 0.01% rises similarly when
+we capitalize dividends only and ignore capital gains. In both cases, it increases from 1.2% of
+household wealth in the mid-1980s to 4.5% in 2012. Therefore, neither re-classification of wages
+into capital gains like in the case of “carried interest,” nor changes in patterns of capital gains
+realization can explain the rise in the top 0.01% wealth share.
+
+5.2
+
+The Rise and Fall of Middle-Class Wealth
+
+The second key result of our analysis involves the dynamics of the bottom 90% wealth share.
+Since the bottom half of the distribution always owns close to zero wealth on net,41 the bottom
+41
+
+According to survey data, the wealth share of the bottom half of the distribution is 1.1% in 2010, the lowest
+point since the 1962 Survey of Financial Characteristic of Consumers (Kennickell, 2011, Table 5).
+
+23
+
+90% wealth share is the same as the share of wealth owned by top 50-90% families—what can
+be described as the middle class. We find that despite the rise in pensions and home ownership
+rates, the middle class owns the same share of wealth today as 70 years ago.
+The share of wealth owned by the middle class first increased from the early 1930s to the
+1980s, peaked in the mid-1980s, and has continuously declined since then (Figure 7, top panel).
+The large rise in the bottom 90% share from 16% in the early 1930s to 35% in the mid-1980s
+was driven by the accumulation of housing, and more importantly pensions. Pensions were
+almost non-existent at the beginning of the twentieth century; they first developed in the form
+of defined benefits plans, then from the 1980s in the form of defined contribution plans such
+as IRAs and 401(k)s. The decline in the bottom 90% wealth share since the mid-1980s owes
+to a fall of the housing (net of mortgage debt) and fixed income (net of non-mortgage debt)
+components. This fall is mostly the consequence of an upsurge in debt. On aggregate, household
+debt—mortgages, student loans, credit card and other debts—increased from 75% of national
+income in the mid-1980s to 135% in 2009 and, despite some deleveraging in the wake of the
+Great Recession, still amounts to close to 110% of national income in 2012. Since about 90% of
+(non-mortgage) debt belongs to the bottom 90% of the wealth distribution, the upsurge in debt
+has had a dramatic effect on middle-class wealth, more than offsetting the rise of pensions.
+The financial crisis of 2007-2009 and the Great Recession hit the middle class hard (see also
+Wolff, 2014a). The bottom 90% share collapsed between mid-2007 and mid-2008 because of
+the crash in housing price. The recovery was uneven: over 2009-2012, real wealth per family
+declined 0.6% per year for the bottom 90%, while it rose 7.9% for the top 0.1%.42 Strikingly,
+average real wealth of bottom 90% families is no higher in 2012 than in 1986. It rose a lot
+during the late 1990s tech-boom and the mid-2000s housing bubble, peaking at $130,000 (in
+2010 dollars) in 2006, but then collapsed to about $85,000 in 2009 (bottom panel of Figure 7).
+
+5.3
+
+The Age Composition of Wealth
+
+In addition to a rise in wealth concentration, our results reveal a number of structural changes
+over the last decades. First, the share of wealth held by elderly families is slowly rising. As
+shown by the top panel of Figure 8, elderly families—tax units where the primary filer (or
+his/her spouse when married) is aged 65 or more—own about one third of US wealth. This
+fraction was stable from 1962 to 2007 (around 30-33%) and has slightly increased since 2007 to
+about 37-38%. But that increase is small compared to the rise in the fraction of elderly families
+42
+
+See Appendix Table B3.
+
+24
+
+in the total population, from 18% in 1960 to 25% in 2010.43 As a result, elderly families are
+relatively poorer today than half a century ago: they were about twice as wealthy as average in
+the 1960s but are only 40% wealthier today.
+While wealth is getting older on aggregate, in the top 0.1% of the distribution wealth is
+actually getting younger: the share of top 0.1% wealth held by elderly households is lower in
+2012 (39%) than in 1962 (46%). In 1962, top wealth was significantly older than average, while
+today it is about as old as average.44 Today’s rich also have more labor income than in the past.
+In the bottom panel of Figure 8 we depict the share of U.S. labor income accruing to top 0.1%
+wealth holders. Labor income is equal to compensation of employees, including fringe benefits,
+plus the labor share of non-corporate profits, before any tax. Before 1970, top 0.1% wealth
+holders earned slightly less than 0.5% of all labor income (5 times the average labor income)
+while in 2012, they earn 3.1% (31 times the average labor income). In the 1960s, the rich were
+not very likely to be working, often because they were retired, or widowed from a rich husband.
+Today, they are younger and more likely to earn high wages. They also have much more income
+from capital, so that the share of total (labor plus capital) pre-tax income earned by top 0.1%
+wealth-holders has surged, from about 3% in 1960 to 8% in 2012.
+At first glance, the facts that wealthy families tend to be younger than half a century ago
+and earn more labor income suggest that much of the rise in wealth inequality may owe to the
+creation of new self-made fortunes rather than a revival of dynastic wealth. But a lot of care
+is needed when interpreting these facts. First, from a purely logical standpoint, the increase
+in the number of young, wealthy individuals could in principle partly be due to a rise in large
+inheritances: there may be more Mark Zuckerbergs at the top of the wealth distribution than
+in the 1960s, but also more Paris Hiltons—the evidence in Figure 8 does not directly address
+this issue. Second, the share of labor income earned by top 0.1% wealth-holders seems to have
+peaked in 2000 and has slightly decreased since then. In other words, the share of self-made
+wealth at the top might be stabilizing: the retired rich and their offsprings may be starting
+to replace the working rich.45 Relatedly, in recent years, a large fraction of the increase in
+43
+
+US Statistical Abstract 2012, Population Table 62, online at https://www.census.gov/compendia/
+statab/2012/tables/12s0062.pdf for 2010 numbers and http://www.census.gov/hhes/families/data/
+households.html for 1960 numbers. In the Census, elderly families are defined as families with head of household aged 65 or more. This is not exactly the same definition as in the tax data but is very close as, in the vast
+majority of cases, the head of household is the oldest member of the couple.
+44
+This finding is consistent with the results of Edlund and Kopczuk (2009) showing that there were relatively
+more widowed women in top wealth groups in the 1960s than in the 1990s.
+45
+In principle, one could use the capitalization method to analyze the intra- and intergenerational mobility of
+wealth. Matching income tax data to gift and estate tax data could also shed light on the fraction of wealth
+coming from inheritances (as opposed to self-made). These important extensions are left to future research.
+Chetty et al. (2014b) analyze intergenerational income mobility using US tax data; Boserup et al. (2014) use
+
+25
+
+top wealth shares is due to the growth of fixed-income claims rather than increases in business
+assets or equities—and similarly much of the increase in capital income concentration comes
+from interest. Entrepreneurial wealth might already be in the process of being diversified into
+established wealth. Last, the rise in the labor share of top wealth-holders does not simply
+capture the fact that wealthy individuals are more likely to be working today; it also reflects
+the mechanical effect of growing labor income inequality. To see this, consider the following
+fact: in the early 1960s, 15% of the families in the top 0.1% of the wealth distribution were also
+in the top 0.1% of the labor income distribution, and while this fraction increased to a third in
+the early 1980s, it is still equal to a third in 2012. All of the increase in the share of labor income
+earned by top 0.1% wealth-holders since the 1980s owes to the rise of labor income inequality.
+
+6
+
+Decomposing Wealth Accumulation
+
+6.1
+
+The Role of Income, Saving, and Returns in Wealth Dynamics
+
+Let us start by outlining our conceptual framework. We define individual saving Sti as the net
+increase in wealth Wti that is not due to changes in asset prices (denoted by qti ):
+i
+Wt+1
+= (1 + qti ) · (Wti + Sti ),
+
+where, by convention, savings are assumed to be made before the asset price effect qti is realized.
+By analogy, we define the synthetic savings Stp of fractile p (e.g., p can be the top 1%) as
+p
+Wt+1
+= (1 + qtp ) · (Wtp + Stp ),
+
+where Wtp is average wealth in fractile p, 1 + qtp =
+
+P
+
+i
+i
+i∈p (1 + qt )Wt /
+
+(1)
+i
+i∈p Wt is the average asset
+
+P
+
+price effect (weighted by wealth) for wealth held in year t by fractile p. In words, the synthetic
+saving of the top 1% in 2010 is the saving flow that reconciles the change in the wealth of the
+top 1% between 2010 and 2011 given the change in the price of assets held by top 1% individuals
+in 2010. This definition of saving is synthetic because the identity of individuals in the top 1%
+changes from year to year due to wealth mobility. If top 1% individuals remained the same over
+time, synthetic saving would equal actual saving. This is the case when the fractile p represents
+the full population.
+The synthetic saving rate of fractile p in year t is the ratio of fractile’s p synthetic saving
+Danish wealth data from tax records to estimate intergenerational wealth mobility in Denmark.
+
+26
+
+flow to fractile’s p income: spt = Stp /Ytp .46 The wealth accumulation (1) of fractile p becomes:
+p
+Wt+1
+= (1 + qtp ) · (Wtp + spt · Ytp ),
+
+(2)
+
+We denote shpY t = |p|Ytp /Yt the share of income earned by fractile p in year t, where Yt is
+the average income in the full population and |p| is the fraction of the population in fractile
+p (e.g., |p| = .01 when p is the top 1%). Similarly, we denote shpW t = |p|Wtp /Wt the share of
+wealth owned by fractile p in year t. Using these definitions and the fact that, on aggregate,
+Wt+1 = (1 + qt )(Wt + st Yt ), the wealth accumulation of fractile p can be rewritten as
+p
+
+s
+p
+p
+s t Yt
+1 + qtp shW t + shY t · stt · W
+p
+t
+shW t+1 =
+·
+.
+s t Yt
+1 + qt
+1 + Wt
+
+(3)
+
+This equation shows the dynamics of the wealth share of fractile p as a function of the relative
+1+q p
+
+asset price 1+qtt , the relative synthetic saving rate spt /st , the share of income shpY t earned by
+fractile p, and the aggregate wealth formation ratio st Yt /Wt . In words, the synthetic saving
+rate spt is the saving rate that accounts for the evolution of fractile p’s wealth share given its
+income share, the price effects on its wealth, and aggregate wealth, income, saving rate, and
+price effects.
+In steady state, top wealth and income shares are stable, and relative saving rates are stable.
+If there are no differential asset price effects, equation (3) becomes
+shpW = shpY ·
+
+sp
+.
+s
+
+(4)
+
+The wealth share of fractile p is simply equal to the income share of fractile p times the relative
+saving rate of fractile p. If saving rates rise with wealth, then wealth will be more concentrated
+than income. Equation (4) can be understood as a generalization of the economy-wide steadystate equation β = s/g where β ≡ W/Y is the ratio of aggregate wealth to income and g the
+growth rate of income discussed in Piketty and Zucman (2014a,b), and Piketty (2014).47
+p
+
+Starting from a steady state with shpW = shpY · ss , the share of wealth owned by fractile p
+increases with a positive shock to p’s relative asset prices, or its income share shpY , or its relative
+saving rate sp /s. If the shock is permanent, fractile p’s wealth share will reach a new steady
+state. For example, if the income share of top 1% wealth holders doubles, then the top 1%
+wealth share will also double in the long-run, provided their saving rate does not change.
+Note that we define the saving rate based on pre-tax income Ytp (that we compute making full use of the
+available information of the distribution of taxable and non-taxable income). For a constant saving rate out of
+disposable income, if taxes increase for fractile p, disposable income falls, and our saving rate decreases.
+47
+In steady-state, for each fractile p it must be the case that W p /Y p = sp /g (as all income and wealth groups
+grow at the same rate g). Taking ratios, we have (W p /W )/(Y p /Y ) = sp /s which is equivalent to equation (4).
+46
+
+27
+
+Equation (4) was derived under the assumption of no differential asset price effects. Conceivably, however, there can be sizable relative price effects due to differences in portfolio composition: the wealthy tend to have more equities, which can increase more in value than, say,
+housing. In addition, there might be within-asset class differential price effects, even in the long
+run. Wealthy households may be more able to pick the stocks of companies which will grow
+fast, for instance by investing in non-publicly traded stocks through private equity funds. If
+private equity funds tend to spot good investment opportunities such as the future Googles or
+Facebooks, they will generate large capital gains for their investors. The broader public can
+invest in such companies only after they go public at which time premium price effects may have
+run their course.48 Similarly, the rich tend to live in cities such as New York and San Francisco
+where real estate prices tend to rise faster than average, maybe because of limited supply of
+land and restrictions on development. Last, there might be size effects in portfolio management
+enabling large fortunes to get higher rates of capital gains, as is the case for foundations.
+Let’s denote by 1+dq p = (1+q p )/(1+q) the asset price premium of fractile p in the long-run.
+Equation (4) becomes:
+shpW = shpY ·
+
+sp
+1 + dq p
+·
+.
+W
+s 1 − dq p · s·Y
+
+(5)
+
+If dq p > 0, it is as if the saving rate sp of fractile p were augmented by a factor (1 + dq p )/(1 −
+W
+dq p · s·Y
+) > 1. This factor can be substantial. Suppose that top 1% wealth-holders own assets
+
+whose price increases 1% faster per year than average (dq p = 1%). If the economy’s growth rate
+g is 2%, a 1% annual price effect is equivalent to a doubling of the saving rate of the top 1%.49
+
+6.2
+
+Trends in Saving Rates and Income Shares Across Wealth Groups
+
+Saving rates. Using the observed annual wealth, income, and price effects for each wealth
+group, we compute annual synthetic saving rates using equation (2). We first compute price
+effects for each asset class using aggregate data on wealth and investment flows. We then
+compute qtp by combining these price effects with the composition of wealth for fractile p. Last,
+we infer spt . The top panel of Figure 9 plots the synthetic saving rates for the top 1%, the
+48
+
+This phenomenon might have become stronger in recent decades with the development of private equity
+funds, combined with the fact that firms tend to have their initial public offering at a later stage of development
+than a few decades ago.
+49
+In the long-run steady state with no aggregate price effects, W/(s · Y ) = 1/g where g is the real growth rate
+W
+= 1 − dq p /g = 1 − 1/2 = 1/2 so that equation (5)
+of the economy. With dq p = 1% we would have 1 − dq p · s·Y
+p
+p
+2.02·sp
+W
+becomes shW = shY · s . In the long-run, the denominator 1 − dq p · s·Y
+in equation (5) cannot fall below
+zero. If the wealth share of fractile p reaches 100%, the price effect on fractile p is the economy-wide price effect
+and dq p = 0. In other words, dq p depends on shpW and falls to zero when shpW converges to one.
+
+28
+
+next 9%, and the bottom 90%.50 These saving rates include all the saving made by households,
+either directly or indirectly through the corporations they own. Two results are worth noting.
+First, saving rates tend to rise with wealth. Bottom 90% wealth-holders save around 3% of
+their income on average, the next 9% save about 15% of their income, while the top 1% save
+about 20-25% of their income. The main exception is the Great Depression, during which the
+top 1% saving rate was negative, because corporations had zero or even negative profits yet still
+paid out dividends, so that they had large negative saving. This period of negative saving at
+the top greatly contributed to the fall in top wealth shares during the 1930s. As equation (4)
+shows, since saving rates sharply rise with wealth, when ranking individuals by wealth long-run
+top wealth shares are bound to be much higher than long-run top income shares.
+Second, saving rate inequality has increased in recent decades. The saving rate of bottom
+90% families has sharply fallen since the 1970s, while it has remained roughly stable for the top
+1%. The annual saving rate of the bottom 90% fell from around 5%-10% in the late 1970s and
+early 1980s to around -5% in the mid-2000s, and bounced back to about 0% after the Great
+Recession (Appendix Figure B37). From 1998 to 2008, the bottom 90% dis-saved each year,
+due to massive increases in debt, in particular mortgages, fuelled by an unprecedented rise in
+housing prices (see e.g. Mian and Sufi, 2014). At the same time, the top 1% continued to save at
+a high rate, and so the relative saving rate sp /s of the bottom 90% and of the next 9% collapsed.
+As equation (3) makes clear, the sharp fall in the relative saving rates of these groups means
+that their share of wealth would have fallen even if their income share had remained the same.
+Income Shares. The fall of middle-class saving explains much of the decline in the bottom
+90% wealth share. As shown in the bottom panel of Figure 9, families in the bottom 90% of the
+wealth distribution have a significantly higher fraction of national income (around 70%) than
+wealth (around 30%), consistent with the fact that their relative saving rate sp /s is well below
+1. The share of income earned by the bottom 90% fell from 70% in the early 1980s to 60% in
+2012, but while this fall is significant, it is smaller than the decline in the bottom 90% wealth
+share. The dynamics of the bottom 90% wealth share is thus primarily explained by the sharp
+fall in its relative saving rate. If the bottom 90% had been saving 3% per year from 1986 to
+2012, then all else equal it would own 30% of US wealth in 2012 instead of the current 23%.
+Rising income inequality does nonetheless matter a lot for the dynamics of wealth inequality.
+First, the fall in bottom 90% saving might itself be a consequence of the increase in income
+inequality and the lackluster growth of middle-class income (Bertrand and Morse, 2013). Second,
+50
+
+Complete results are reported in Table B33. A related exercise is Maki and Palumbo (2001) who compute
+saving rates by age and education by combining SCF and Financial Accounts data.
+
+29
+
+as the bottom panel of Figure 9 shows, if in addition to saving 3% per year the bottom 90%
+had also kept a constant share of income, then its wealth share would have declined little since
+the mid-1980s—according to our simulations, it would be equal to about 33% in 2012. Third,
+rising income inequality matters a lot at the top. The share of income earned by families in
+the top 1% of the wealth distribution has doubled since the late 1970s, to about 16% in recent
+years. This increase is relatively larger than the increase in the top 1% wealth share, suggesting
+that the main driver of the growth in the top 1% wealth share is the upsurge of their income.
+
+7
+
+Comparison and Reconciliation with Other Sources
+
+A number of previous studies have attempted to measure the distribution of US wealth. In some
+cases our results are consistent with earlier estimates, while in other cases they differ. In this
+Section, we attempt to understand the source of these discrepancies. In addition to capitalized
+income tax returns, there are three main sources to analyze US wealth inequality in the modern
+era: survey data, estate tax data, and named lists of rich individuals.51
+
+7.1
+
+Survey of Consumer Finances
+
+The Survey of Consumer Finances (SCF) is available on a triennial basis from 1989 to 2013. It
+is a high quality survey that over-samples wealthy individuals.52 In spite of a different source
+and methodology, the top 10% wealth share in the SCF is close in both level and trend to the
+one we obtain by capitalizing income (Figure 6). It rises markedly, from 67% in 1989 to 75.3%
+in 2013 (Bricker et al., 2014; Kennickell, 2009b, 2011; Wolff, 2012). However, for the top 1%
+and especially top 0.1%, the SCF baseline estimates differ from our results. In 1989, the SCF
+and capitalized income estimates coincide, but the SCF top 0.1% wealth share then rises only
+modestly from 10.8% in 1989 to 13.5% in 2013. As a result, the wealth share of families in the
+top 10% but below the top 0.1% rises in the SCF, while we find it is almost stable.53
+Three factors explain a significant fraction of the discrepancy between our results and the
+SCF official estimates. First, the unit of observation is the tax unit in our study but the
+household in the SCF. There are about 25% more tax units than households, as unmarried
+51
+
+Lindert (2000) provides a survey of earlier historical estimates often based on probate records. Davies and
+Shorrocks (2000) survey more recent estimates.
+52
+Earlier SCF surveys are available for 1962, 1983, and 1986 but are not directly comparable due to differences
+in sampling. See Kennickell (2011) for a detailed description.
+53
+In the SCF, the top 10-1% wealth share rises modestly from 37.0% in 1989 to 38.5% in 2013, while by our
+estimates it declines modestly from 37.2% to about 35.4% in 2012. In the SCF, the top 1-0.1% wealth share
+rises from 19.3% in 1989 to 22.3% in 2013, while by our estimates it increases from 16.3% in 1989 to 19.8% in
+2012; see Appendix Table C4 and Appendix Figures C6 and C7.
+
+30
+
+partners, a parent with an adult child, or two roommates living together form a single household
+but two tax units. Second, the SCF and household balance sheet aggregates differ (Antoniewicz,
+2000; Henriques, 2013; Henriques and Hsu, 2013). The value of housing wealth is about 30%
+larger in the SCF—and has grown faster since 2001—than in the Financial Accounts, and the
+SCF includes vehicles, art and antiques but excludes defined benefit pensions, contrary to the
+Financial Accounts. Third, by design the SCF excludes the Forbes 400 richest individuals. In
+the top panel of Figure 10, for comparison with our top 0.1% wealth share, we report an adjusted
+SCF top 0.1% share in which the unit of observation is the tax unit, totals by asset class match
+the Financial Accounts aggregate, and the Forbes 400 are added back. The adjusted top 0.1%
+SCF wealth share rises markedly from 12.1% in 1989 to 17.2% in 2013.54
+After correcting the SCF, there remains a residual gap with our series. There are several
+potential explanations. First, SCF estimates have a margin of error at the top due to limited
+sample size and imputations (Kennickell, 2009a). Second, there might be sampling errors in the
+SCF as wealthy families have low response rates—in the top SCF stratum, the response rate is
+around 12 percent (Kennickell, 2009a, 2015). The SCF has substantially improved its sampling
+design in 2001 by using more information on capital income reported on tax returns to create its
+high wealth sample target list (see Kennickell, 2001, 2015). Third, there might be non-sampling
+errors: some of the rich respondents who accept to participate might under-report their assets.
+To investigate potential sampling and non-sampling errors, it is useful to compare the distribution of capital income in the tax data and in the SCF. It turns out that capital income
+inequality has grown much less in the SCF than in tax data. The bottom panel of Figure
+10 compares the top 0.1% capital income share in the SCF to that in the full population, as
+computed from exhaustive tax data. In both cases, we use the same unit of observation (tax
+units), we rank tax units by the size of their capital income, and capital income is defined in
+the same way as the sum of dividends, taxable interest, capital gains, rents, business income
+and royalties reported on tax returns. Remember that SCF respondents are asked about the
+income reported on their prior-year tax return line by line, for example: “In total, what was
+your family’s annual income from dividends in 2009, as reported on IRS form 1040 line number
+9a?”. As the bottom panel of Figure 10 shows, however, the top 0.1% capital income share
+54
+
+See appendix Table C4b. In the SCF baseline estimate, the top 0.1% wealth share increases 2.6 points
+from 1989 (10.6%) to 2013 (13.2%). The shift from households to tax units adds 0.6 point to the increase, the
+adjustment to the Financial Accounts totals .8 point, and accounting for the Forbes 400 an extra 1.1 point,
+so that the adjusted SCF top 0.1% wealth share grows 5.1 points in total. To move to the tax-unit level of
+observation in the SCF, we assume that for top fractile households with multiple tax units, all the household
+wealth belongs to the tax unit which includes the head of the household. To match Financial Accounts totals
+by asset class, we blow uniformly each wealth component for all individuals.
+
+31
+
+increases only modestly in the SCF, while it surges in the tax data.55
+This difference is too big to be entirely explained by the missing Forbes 400 in the SCF.
+This leaves only two possibilities: sampling and non-sampling errors in the survey. The response
+rate falls sharply with wealth in the SCF: it is 50% in bottom wealth strata, 25% in the second
+highest stratum, and 12% in the top stratum (Bricker et al., 2015). The response rate may well
+decrease with wealth within the top stratum, biasing SCF top shares down. Respondents might
+also understate their income compared to what they report to the IRS. Whatever its source, the
+lower capital income concentration in the SCF is likely to explain the residual gap between the
+SCF top wealth shares and ours. The SCF may fail to fully capture the booming top wealth as
+it fails to capture booming top capital incomes.
+The SCF is essential to accurately measure housing and pension wealth, the main forms
+of wealth for the bottom 90%, and indeed our own estimates for housing and pension wealth
+rely on it. The value added of our estimates relative to the SCF is that they cover a longer
+period, are annual, and are more suited to capture the very top, if only because they include
+the 400 richest Americans. We view the two datasets as complementary. Looking forward, a
+systematic analysis of the discrepancy between income in the SCF and the SOI data would be
+valuable. Comparing the distribution of income in the full list sample originally selected by SOI
+and in the actual SCF sample would shed light on potential sampling errors. Comparing the
+income reported by SCF respondents in the survey vs. to the IRS would allow to investigate
+non-sampling errors. These are critical steps to improve the representativity of the SCF.56
+
+7.2
+
+Estate Multiplier Method
+
+A large body of work has used the estate multiplier method in which wealth-at-death is weighted
+by the inverse mortality rate conditional on age, gender, and wealth. Lampman (1962) is the
+classic US study and has been followed by many others, including the official personal wealth
+estimates from the Statistics of Income (see Johnson (1994, 2011) for a compendium of these
+studies). Kopczuk and Saez (2004) have produced top wealth shares for the 1916-2000 period
+using the estate multiplier method; we extend these series to 2012 using the same methodology.
+As shown in the top panel of Figure 10, from 1916 to 1976 the estate-based top 0.1% wealth
+share is remarkably similar to the one we obtain by capitalizing incomes in both level and
+trend. The similarity despite different sources and methods gives credibility to the finding that
+55
+
+As shown in the Online Appendix Table C2, there is a similar divergence for top income shares and not only
+top capital income shares. Bricker et al. (2015) also provide the same comparisons and find the same results.
+56
+Kennickell (2015) analyzes some of these issues in depth, and notes the challenges for the SCF to capture
+the very top well. He offers a number of valuable propositions to improve SCF representativity at the top.
+
+32
+
+wealth concentration declined a lot during the first half of the 20th century (see also Wolff,
+2002). However, there is a large discrepancy between the two sources after 1976: we find a
+sharp increase in wealth concentration, while estate data display no increase at all since 1985.57
+How can we explain the gap between estate-mutliplier estimates and ours?58
+The estate-multiplier method weights estate tax returns by the inverse probability of death.
+The probability of death is based on mortality tables by age and gender and factors in a
+correction to take into account that the wealthy live longer than the average population. In
+Kopczuk and Saez (2004), the corrective term is obtained from data by Brown et al. (2002) on
+the relative mortality rates of college graduates, a rough proxy for the wealthy. Kopczuk and
+Saez (2004) use the same correction factors for all years thereby assuming that the mortality
+gradient by wealth has not changed overtime. This raises two issues.
+First, a number of recent studies have documented that differential mortality by socioeconomic status has grown. Using Social Security data, Waldron (2007) finds that the top
+half of the earnings distribution has experienced faster mortality improvement than the bottom
+half. For example, male workers born in 1941, with average earnings in the top half of the
+distribution, and who reach age 60, live 5.8 years longer than their counterparts in the bottom
+half of the earnings distribution. For the 1912 cohort, the corresponding difference is only 1.2
+years. A number of earlier studies have found that the mortality differential by lifetime earnings
+or educational achievement is growing in the United States.59 Growing mortality differentials
+introduce mechanical biases in the estate-multiplier method.
+Second, the estate-multiplier technique assumes that conditional on age and gender, death is
+a random event. In reality, it often is not—and the approach of death affects behavior. People
+who will die soon may reduce their labor supply, become unable to manage their wealth well,
+consume or give more, spend large amounts on health care services; they may also organize
+their wealth so as to shelter it from the estate tax, for example by transferring it to foundations
+or children. Kopczuk (2007) finds evidence that the onset of a terminal illness leads to a very
+large reduction in the value of estates reported on tax returns. Because behavior changes just
+before death, some people with high lifetime earnings will tend to die with little wealth, and
+57
+
+The 3 percentage point spike in 2011 could be due to the death of Steve Jobs. A 56 year old male carries a
+weight of 200, and hence weighs $1.4 trillion (or 3% of total wealth) if his wealth is $7 billion, which was Forbes
+magazine’s estimate in 2011. This illustrates the sensitivity of the estate multiplier method at the very top.
+58
+Estate series are based on individual adults while we use the tax unit in capitalized income series. In the
+Online Appendix Table B1b and Appendix Figure B1b we report individual-level top wealth shares obtained by
+capitalizing the income of tax units and splitting the wealth of married couples equally; moving to the individual
+unit makes a negligible difference. Estate series do not include annuitized wealth but such wealth is part of
+pension wealth which is negligible at the very top.
+59
+See e.g., Duleep (1989), Feldman et al. (1989), Pappas et al. (1993), Waldron (2004).
+
+33
+
+this phenomenon may vary over time. For instance, progress in medical care may have enabled
+wealthy individuals affected by a terminal illness to stay longer in life, but in ways that reduce
+their wealth at death. Estate tax avoidance through trusts may also have increased.60 In the
+extreme case where people always die with zero wealth, the mortality rate of wealthy individuals
+is zero and the estate multiplier technique cannot be applied.
+Using the SOI individual income tax samples which have information on age and date of
+death, in Appendix Table C7 we compute mortality rates by age × wealth groups among tax
+filers. These mortality rates not only capture differential mortality by lifetime income, but
+also estate tax planning and any effect that the approach of death may have on real wealth.
+As shown in Appendix Figures C11 to C14, there is a clear mortality gradient within the top
+10%: the top 10% live less long than the top 1% who in turn live less long than the top 0.1%.
+More importantly, the mortality gradient is sharply increasing over time; the trend is especially
+pronounced for men. In recent years, the mortality rate for men aged 65-79 in the top 1% of
+the wealth distribution is only 60% of the average mortality rates of male tax filers aged 65-79,
+versus 90% in 1979-83. We leave to future research the difficult task of identifying what part
+of this phenomenon owes to rising mortality differential by lifetime income, to rising estate tax
+avoidance, and to changes in how the approach of death affects real wealth.
+To illustrate the pitfalls of the estate multiplier technique, we run a simple and direct test:
+we apply this technique not to wealth but to capital income, using the income tax returns of
+decedents the year before they die. We compute the distribution of capital income at death
+weighting each observation by the Kopczuk and Saez (2004) inverse mortality rates. If the estate
+multiplier technique worked well, the distribution of capital income in the weighted decedent
+sample should be similar as that in the living population. However, as the bottom panel of
+Figure 10 shows, it is not. In 1976, the top 0.1% capital income share was about 15% in
+both weighted estate-income data and in the overall population. But according to the estate
+multiplier method, the concentration of capital income has barely increased since 1976, while
+it has surged in the overall population. The discrepancy is similar when excluding realized
+capital gains; it is similar when focusing on “passive” capital income only—dividends, interest,
+and rents—so as to exclude business profits, that contain a labor income component potentially
+affected by the approach of death (Appendix Figures C14 and C15). The weighted decedent
+sample has become less and less representative of the living population.
+60
+
+Family trusts are designed to have zero value at death to avoid estate taxes. Wealth transmission through
+trusts (especially at early ages) could severely affect the mortality multiplier technique, but does not affect the
+income capitalization technique nearly as much, since trust income has to be reported by the trust, the donor,
+or the donee—whomever receives the income—and hence is visible in capital income tax data.
+
+34
+
+7.3
+
+Forbes 400 List
+
+The Forbes 400 list can be used to estimate very top wealth shares (see e.g. Kopczuk and Saez,
+2004). Appendix Figure C17 shows that, normalized for population growth, the share of wealth
+owned by the 400 richest Americans has increased from 1% in the early 1980s to over 3% in
+2012-3. Hence, the top 400 accounts for 2 percentage points of the increase in the top wealth
+shares. The tripling of the share held by the Forbes 400 is on par with the tripling of our top
+0.01% wealth share from 3.5% to 11% over the same period. We also find that the top 400
+wealthiest taxpayers based on our capitalized income method have a wealth level comparable
+to the Forbes 400 in recent years. In contrast, the top 400 wealthiest households in the public
+use 2010 SCF have an average wealth of $645m, only 19% of the average Forbes 400 wealth of
+$3.4bn in 2010.61 Similarly, the estate based series produce a top 400 average wealth that is
+only around 25% of the Forbes top 400 wealth in 2000 (see footnote 57, p. 480 in Kopczuk and
+Saez, 2004). While the Forbes list might overestimate wealth, it seems unlikely that it would
+over-estimate wealth by a factor of 4 or 5. At the very very top, the capitalization method
+seems to produce much more realistic results than the SCF or the estate multiplier method.
+
+8
+
+Conclusion
+
+Our new wealth distribution series reveal three trends. First, wealth inequality is high and rising
+fast in the United States: the top 0.1% share has increased from 7% in the late 1970s to 22%
+in 2012. Second, the wealth share of the middle-class has followed an inverted-U evolution over
+the course of the twentieth century: it is no higher today than in 1940. Third, the combination
+of rising income and saving rate inequality is fueling wealth inequality.
+The relative decline of middle-class wealth was apparent in survey data, but the rapid growth
+of fortunes of dozens of millions of dollars was not. Only the tip of the iceberg was visible from
+the Forbes 400. Yet accurate inequality measures are important to inform the public debate and
+calibrate tax policy. While the capitalization method sheds new light, more could be done to
+better measure trends in wealth concentration. First, an array of additional existing data could
+be mobilized. The value of homes could be estimated by matching the addresses in tax data
+to third-party home price databases. Employer pensions—both defined benefits and defined
+contributions—could be estimated using matched employer-employee data and past individual
+employment status and contributions. The wealth of partnerships and S-corporations could be
+61
+
+Based on the difference between the top 1% wealth shares from the internal SCF files (Kennickell, 2009a,
+2011) and the public use file, the high wealth records excluded from the public use SCF are only about 0.2
+percentage point of total wealth hence represent a very small portion of the gap.
+
+35
+
+estimated by matching individual returns to business tax-return balance sheets.
+Second, enhanced information reporting could greatly improve the quality of US wealth
+data. The most important step would be for financial institutions to report year-end wealth
+balances on the information returns they currently send to the IRS about capital income payments. For example, mortgage balances could be reported on form 1098 that currently reports
+interest payments.62 This requirement could be extended to student loans, which generate information returns, and other forms of consumer credit, which currently do not. Forms 1099-INT
+for interest income could report outstanding account balances and could be extended to noninterest-paying accounts; forms 1099-DIV for dividends could report the market value of the
+corresponding stock holdings, and this requirement could be extended to non-dividend paying
+stocks. Turning to pensions, the universal balance reporting requirement of IRAs (through
+forms 5498) could be extended to all defined contribution plans such as 401(k)s; and forms
+1099-R could report whether the pension being distributed is an annuity, so as to be able to
+compute the value of defined benefits pensions for current pensioners.63 The cost of collecting all
+this extra information would be modest, because it is already generated by financial institutions
+to manage the accounts of their clients. In many cases, additional reporting could help better
+enforce taxes, and so would not require congressional action.
+A small extra step would make it possible to measure saving flows, which are poorly captured
+in existing US datasets. A sale of asset already generates a 1099-B form for taxing realized
+capital gains; a purchase of asset could generate a similar information return.64 Comprehensive
+information on assets sales and purchases would make it possible to compute individual saving
+flows, an information needed to evaluate or implement a progressive consumption tax.
+
+62
+
+This would help enforce the $1 million mortgage debt limit for interest deductions. This change has been
+recommended by the US GAO (2009) and has been under consideration by Congress.
+63
+The value of Defined Benefits for workers not yet getting benefits is harder to evaluate both conceptually
+and practically and could be estimated approximately as discussed above.
+64
+This purchase of asset information is now already stored by financial companies as forms 1099-B require,
+since 2011, to state the basis price when the asset is sold. Feldstein and Yitzhaki (1982) used information on
+equity purchase and sale prices in a sample of income tax returns in 1973 to compute rates of capital gains on
+equities by income group. Net savings in year t on regular accounts can be inferred by differencing end-of-year
+balances in year t and year t − 1 (less interest earned during year t) with no additional reporting requirement.
+
+36
+
+Appendix
+A complete set of Appendix Tables and Figures supplementing this article is available online
+at http://eml.berkeley.edu/~saez and http://gabriel-zucman.eu/uswealth. The Appendix is organized as 4 Excel files:
+(i) Appendix Tables A (file AppendixTables(Aggregates).xlsx): presents our aggregate
+series on wealth, income, saving, and returns. Starting from the publicly available household
+balance sheet of the Financial Accounts, National Income and Product Accounts, and Integrated
+Macroeconomic Accounts series, we present each step of the data construction process.
+(ii) Appendix Tables B (file AppendixTables(Distributions).xlsx): reports our results on
+the distribution of US household wealth, saving, and rates of return, as obtained by capitalizing
+income tax returns. We provide baseline estimates and a number of supplementary robustness
+checks.
+(iii) Appendix Tables C (file AppendixTables(OtherEstimates).xlsx): presents estimations of the distribution of wealth and of rates of returns obtained in other datasets: the Survey
+of Consumer Finances, estates tax returns, foundation tax returns, etc.
+(iv) Appendix Figures (file AppendixFigures.xlsx): reports a number of supplementary
+figures constructed from the above Appendix Tables.
+
+37
+
+References
+Antoniewicz, R. 2000. A Comparison of the Household Sector from the Flow of Funds Accounts
+and the Survey of Consumer Finances. Federal Reserve Board of Governors Survey of Consumer
+Finances Working Paper.
+Atkinson, A. and Harrison, A. 1978. Distribution of Personal Wealth in Britain. Cambridge
+University Press, Cambridge, UK.
+Bertrand, M. and Morse, A. 2013. Trickle-down consumption. Working Paper 18883, NBER.
+Boserup, S., Kopczuk, W., and Kreiner, C. 2014. Intergenerational wealth mobility: Evidence
+from danish wealth records of three generations. University of Copenhagen Working Paper.
+Bourne, J. and Rosenmerkel, L. 2014. Over the top: How tax returns show that the very rich
+are different from you and me. Statistics of Income, IRS Working Paper.
+Bricker, J., Dettling, L., Henriques, A., Hsu, J., Moore, K., Sabelhaus, J., Thompson,
+J., and Windle, R. 2014. Changes in U.S. family finances from 2010 to 2013: Evidence from the
+Survey of Consumer Finances. Board of Governors of the Federal Reserve System.
+Bricker, J., Henriques, A., Krimmel, J., and Sabelhaus, J. 2015. Measuring income and
+wealth at the top using administrative and survey data. working.
+Brown, J., Liebman, J., and Pollet, J. 2002. Estimating life tables that reflect socioeconomic
+differences in mortality, pp. 447–457. In M. Feldstein and J. Liebman (eds.), The Distributional
+Aspects of Social Security and Social Security Reform. University of Chicago Press, Chicago and
+London.
+Bryant, V. and Gober, J. 2013. Accumulation and distribution of individual retirement arrangements, 2010. Internal Revenue Service: Statistics of Income Bulletin, Washington D.C.
+Chetty, R., Friedman, J., Leth-Petersen, S., Nielsen, T., and Olsen, T. 2014a. Active vs.
+passive decisions and crowd-out in retirement savings accounts: Evidence from Denmark. Quarterly
+Journal of Economics 129:1141–1219.
+Chetty, R., Hendren, N., Kline, P., and Saez, E. 2014b. Where is the land of opportunity? the
+geography of intergenerational mobility in the united states. Quarterly Journal of Economics 129.
+Davies, J. and Shorrocks, A. 2000. The Distribution of Wealth, pp. 605–675. In A. Atkinson
+and F. Bourguignon (eds.), Handbook of Income Distribution, volume 1. Elsevier/North Holland,
+Amsterdam; New York.
+Duleep, H. 1989. Measuring socioeconomic mortality differentials over time. Demography 26:345–351.
+Edlund, L. and Kopczuk, W. 2009. Women, Wealth and Mobility. American Economic Review
+99:146–78.
+Elliott, H. 1970. The accumulated earnings tax and the reasonable needs of the business: A proposal.
+William and Mary Law Review 12:34–50.
+Feldman, J., Makuc, D., Kleinman, J., and Cornoni-Huntley, J. 1989. National trends in
+education differentials in mortality. American Journal of Epidemiology 129:919–933.
+Feldstein, M. and Yitzhaki, S. 1982. Are high income individuals better stock market investors?
+Technical Report 948, NBER working paper.
+Forbes Magazine 2014. The Forbes 400: The Richest People in America. September, annual since
+
+1982.
+Goldsmith, R., Brady, D., and Mendershausen, H. 1956. A Study of Saving in the Unites
+States, volume 3. Princeton University Press, Princeton.
+Greenwood, D. 1983. An estimation of US family wealth and its distribution from microdata, 1973.
+Review of Income and Wealth 29:23–43.
+Henriques, A. 2013. Are homeowners in denial about their house values? Comparing owner perceptions with transaction-based indexes. Federal Reserve Board of Governors Working Paper.
+Henriques, A. and Hsu, J. 2013. Analysis of wealth using micro and macro data: A comparison of
+the Survey of Consumer Finances and Flow of Funds Accounts. Federal Reserve Board of Governors
+Working Paper.
+Hollenbeck, S. and Kahr, M. 2014. Individual foreign-earned income and foreign tax credit, 2011.
+Internal Revenue Service: Statistics of Income Bulletin, Washington D.C.
+B. Johnson (ed.) 1994. Compendium of Federal Estate Tax and Personal Wealth Studies. Number
+4–94. Department of Treasury, Internal Revenue Service, Statistics of Income.
+B. Johnson (ed.) 2011. Compendium of Federal Estate Tax and Personal Wealth Studies, volume 2.
+Department of Treasury, Internal Revenue Service, Statistics of Income.
+Johnson, B., Moore, K., and Rosenmerkel, L. 2011. The income-wealth paradox: Connections
+between realized income and wealth among America’s aging top wealth-holders. In B. Johnson
+(ed.), Compendium of Federal Estate Tax and Personal Wealth Studies, volume 2. Department of
+Treasury, Internal Revenue Service, Statistics of Income.
+Johnson, B., Raub, B., and Newcomb, J. 2013. A new look at the income-wealth connection for
+america’s wealthiest decedents. IRS Statistics of Income Working Paper Series.
+Johnson, B. and Wahl, J. 2004. The mismeasurement of man’s well-being: Refining realized income
+measures with wealth, portfolio, and mortality information. IRS Statistics of Income Working Paper
+Series.
+Johnson, B. W. and Raub, B. 2005. Personal wealth, 2001. Internal Revenue Service: Statistics of
+Income Bulletin pp. 120–146.
+Kennickell, A. 2001. Using income data to predict wealth. FEDS Working Paper, Board of Governors of the Federal Reserve System.
+Kennickell, A. 2009a. Getting to the top: Reaching wealthy respondents in the SCF. FEDS Working
+Paper, Board of Governors of the Federal Reserve System.
+Kennickell, A. 2009b. Ponds and streams: Wealth and income in the US, 1989 to 2007. FEDS
+Working Paper, Board of Governors of the Federal Reserve System.
+Kennickell, A. 2011. Tossed and turned: Wealth dynamics of US households 2007–2009. FEDS
+Working Paper, Board of Governors of the Federal Reserve System.
+Kennickell, A. 2015. Lining up: Survey and administrative data estimates of wealth concentration.
+FEDS Working Paper, Board of Governors of the Federal Reserve System.
+King, W. 1927. Wealth distribution in the continental United States at the close of 1921. Journal of
+the American Statistical Association 22:135–153.
+King, W. 1930. The National Income and Its Purchasing Power. National Bureau of Economic
+
+39
+
+Research.
+Kopczuk, W. 2007. Bequest and tax planning: Evidence from estate tax returns. Quarterly Journal
+of Economics 122:1801–1854.
+Kopczuk, W. 2015. What do we know about the evolution of top wealth shares in the united states.
+Journal of Economic Perspectives 29:47–66.
+Kopczuk, W. and Saez, E. 2004. Top wealth shares in the United States, 1916–2000: Evidence
+from estate tax returns. National Tax Journal 52:445–487.
+Kuznets, S. 1941. The National Income and Its Composition, 1919–1938. National Bureau of Economic Research.
+Lampman, R. 1962. The Share of Top Wealth-Holders in National Wealth, 1922–56. Princeton
+University Press, Princeton.
+Lindert, P. 2000. Three centuries of inequality in Britain and America, pp. 167–216. In A. Atkinson
+and F. Bourguignon (eds.), Handbook of Income Distribution, volume 1. Elsevier/North Holland,
+Amsterdam; New York.
+Maki, D. and Palumbo, M. 2001. Disentangling the wealth effect: A cohort analysis of household
+saving in the 1990s. Board of Governors of the Federal Reserve System, Finance and Economics
+Discussion Series no. 2001–21.
+Mian, A., Rao, K., and Sufi, A. 2014. Household balance sheets, consumption, and the economic
+slump. Quarterly Journal of Economics . Forthcoming.
+Mian, A. and Sufi, A. 2014. House of Debt. Chicago University Press, Chicago.
+Pappas, G., Queen, S., Hadden, W., and Fisher, G. 1993. The increasing disparity in mortality between socioeconomic groups in the United States, 1960 and 1986. New England Journal of
+Medicine 329:103–109.
+Piketty, T. 2014. Capital in the 21st Century. Harvard University Press, Cambridge.
+Piketty, T. and Saez, E. 2003. Income inequality in the United States, 1913–1998. Quarterly
+Journal of Economics 118:1–39.
+Piketty, T. and Zucman, G. 2014a. Capital is back: Wealth-income ratios in rich countries,
+1700–2010. Quarterly Journal of Economics 129:1255–1310.
+Piketty, T. and Zucman, G. 2014b. Wealth and inheritance in the long run, pp. 167–216. In A.
+Atkinson and F. Bourguignon (eds.), Handbook of Income Distribution, volume 2. Elsevier/North
+Holland, Amsterdam; New York.
+Poterba, J. 2002. Taxation, risk taking, and household portfolio behavior, pp. 1109–1171. In
+A. Auerbach and M. Feldstein (eds.), Handbook of Public Economics, volume 3. Elsevier/North
+Holland, Amsterdam; New York.
+Raub, B. 2008. Personal wealth, 2004. Internal Revenue Service: Statistics of Income Bulletin pp.
+282–308.
+Roine, J. and Waldenström, D. 2015. Long-run Trends in the Distribution of Income and Wealth,
+pp. 469–592. In A. B. Atkinson and F. Bourguignon (eds.), Handbook of Income Distribution,
+volume 2, chapter 7. Elsevier/North Holland.
+Rosenmerkel, L. and Wahl, J. 2011. Crossing the bar: Predicting wealth from income and estate
+
+40
+
+tax records. In B. Johnson (ed.), Compendium of Federal Estate Tax and Personal Wealth Studies,
+volume 2. Department of Treasury, Internal Revenue Service, Statistics of Income.
+Saez, E. and Zucman, G. 2014. Who Benefits from Tax Expenditures on Capital? Evidence on
+Capital Income and Wealth Concentration. Working Paper Series, IRS Statistics of Income.
+Stewart, C. 1939. Income capitalization as a method of estimating the distribution of wealth by size
+group. In Studies in Income and Wealth, volume 3. National Bureau of Economic Research, New
+York.
+United Nations 2009. System of national accounts 2008. European Communities, International
+Monetary Fund, Organisation for Economic Co-operation and Development, United Nations and
+World Bank.
+US Board of Governors of the Federal Reserve System 2014. Z.1 Financial Accounts of
+the United States, Fourth Quarter 2013. Downloaded, March 6, 2014.
+US GAO 2009. Home mortgage interest deduction. Report to the Joint Committee on Taxation,
+GAO-09-769.
+US Senate 2008. Tax haven banks and us tax compliance. Staff Report of the Permanent Subcommittee on investigations.
+US Senate 2014. Offshore tax evasion: The effort to collect unpaid taxes on billions in hidden offshore
+accounts. Staff Report of the Permanent Subcommittee on investigations.
+US Treasury Department, Internal Revenue Service, S. o. I. 1916–2012. Statistics of income:
+Individual income tax return.
+Waldron, H. 2004. Heterogeneity in health and mortality risk among early retiree men. ORES
+Working Paper Series, No. 105.
+Waldron, H. 2007. Trends in mortality differentials and life expectancy for male social security
+covered workers, by average relative earnings. ORES Working Paper Series, No. 105.
+Wolff, E. 1980. Estimates of the 1969 size distribution of household wealth in the U.S. from a synthetic data base, pp. 223–272. In J. D. Smith (ed.), Modeling the Distribution and Intergenerational
+Transmission of Wealth. University of Chicago Press.
+Wolff, E. 1989. Trends in Aggregate Household Wealth in the United States, 1900–1983. Review of
+Income and Wealth 35:1–29.
+Wolff, E. 2002. Top Heavy: A Study of Increasing Inequality of Wealth in America. The New Press,
+New York.
+Wolff, E. 2012. The Asset Price Meltdown and the Wealth of the Middle Class. NYU Working
+Paper.
+Wolff, E. 2014a. Household wealth trends in the United States, 1962-2013: What happened over
+the great recession? NBER working paper.
+Wolff, E. 2014b. U.S. pensions in the 2000s: The lost decade? Review of Income and Wealth .
+Zucman, G. 2013. The Missing Wealth of Nations, Are Europe and the US net Debtors or net
+Creditors? Quarterly Journal of Economics 128:1321–1364.
+Zucman, G. 2014. Taxing across borders: Tracking personal wealth and corporate profits. Journal of
+Economic Perspectives 28:121–148.
+
+41
+
+Table 1: Thresholds and average wealth in top wealth groups, 2012
+
+Wealth
+group
+
+Number of families
+
+Wealth threshold
+
+Average wealth
+
+Wealth share
+
+$343,000
+
+100%
+
+A. Top Wealth Groups
+Full Population
+
+160,700,000
+
+Top 10%
+
+16,070,000
+
+$660,000
+
+$2,560,000
+
+77.2%
+
+Top 1%
+
+1,607,000
+
+$3,960,000
+
+$13,840,000
+
+41.8%
+
+Top 0.1%
+
+160,700
+
+$20,600,000
+
+$72,800,000
+
+22.0%
+
+Top .01%
+
+16,070
+
+$111,000,000
+
+$371,000,000
+
+11.2%
+
+$84,000
+
+22.8%
+
+B. Intermediate Wealth Groups
+Bottom 90%
+
+144,600,000
+
+Top 10-1%
+
+14,463,000
+
+$660,000
+
+$1,310,000
+
+35.4%
+
+Top 1-0.1%
+
+1,446,300
+
+$3,960,000
+
+$7,290,000
+
+19.8%
+
+Top 0.1-0.01%
+
+144,600
+
+$20,600,000
+
+$39,700,000
+
+10.8%
+
+Top .01%
+
+16,070
+
+$111,000,000
+
+$371,000,000
+
+11.2%
+
+Notes: This table reports statistics on the wealth distribution in the United States in 2012 obtained by capitalizing income tax returns. The
+unit is the family (either a single person aged 20 or above or a married couple, in both cases with children dependents if any). Fractiles are
+defined relative to the total number of families in the population. Source: Appendix Table B1.
+
+Top 0.1% wealth share in the United States, 1913-2012
+
+25%
+
+15%
+
+10%
+
+2013
+
+2008
+
+2003
+
+1998
+
+1993
+
+1988
+
+1983
+
+1978
+
+1973
+
+1968
+
+1963
+
+1958
+
+1953
+
+1948
+
+1943
+
+1938
+
+1933
+
+1928
+
+1923
+
+0%
+
+1918
+
+5%
+
+1913
+
+% of total household wealth
+
+20%
+
+This figure depicts the share of total household wealth held by the 0.1% richest families, as estimated by capitalizing income tax
+returns. In 2012, the top 0.1% includes about 160,000 families with net wealth above $20.6 million. Source: Appendix Table B1.
+
+Figure 1: Top 0.1% Wealth Share in the United States, 1913-2012
+Notes: The figure plots the top 0.1% wealth share in the United States from 1913 to 2012. The unit is the family (either a single person aged 20 or above or
+a married couple, in both cases with children dependents if any). Fractiles are defined relative to the total number of tax units in the population. Source:
+Appendix Table B1.
+
+The composition of household wealth in the U.S., 1913-2013
+500%
+
+% of national income
+
+400%
+
+Pensions
+
+300%
+Equities
+
+Currency, deposits and bonds
+
+200%
+Sole
+proprietorships &
+partnerships
+
+100%
+
+2013
+
+2008
+
+2003
+
+1998
+
+1993
+
+1988
+
+1983
+
+1978
+
+1973
+
+1968
+
+1963
+
+1958
+
+1953
+
+1948
+
+1943
+
+1938
+
+1933
+
+1928
+
+1923
+
+1918
+
+0%
+
+1913
+
+Housing (net of
+mortgages)
+
+This figure depicts the evolution of the ratio of total household wealth to national income. This ratio has followed a Ushaped evolution and the composition of wealth has changed markedly since 1913. Source: Appendix Table A1.
+
+Figure 2: Aggregate US Household Wealth, 1913-2013
+Notes: The figure depicts the level and composition of aggregate household wealth from 1913 to 2013 expressed as a percentage of national income.
+Net housing includes owner- and tenant-occupied housing net of mortgage debt. Business assets include sole proprietorships, farms including land and
+equipment, partnerships, and intellectual property products. Corporate equities cover both publicly traded and closely held corporations, and include
+shares of S-corporations. Fixed income claims include bonds, saving and current deposits, and currency, and are net of non-mortgage debt. Pensions
+include individual retirement accounts, defined contribution pensions funds such as 401(k)s, funded defined benefits pensions, and life insurance reserves,
+but exclude unfunded defined benefit entitlements and Social Security. Pensions are typically invested in both fixed income claims and corporate equities.
+Source: Appendix Table A2.
+
+The top 0.1% taxable capital income share
+45%
+
+% of taxable capital income
+
+40%
+35%
+30%
+Including capital gains
+
+25%
+20%
+15%
+
+Excluding capital gains
+
+10%
+5%
+0%
+1960
+
+1965
+
+1970
+
+1975
+
+1980
+
+1985
+
+1990
+
+1995
+
+2000
+
+2005
+
+2010
+
+2015
+
+Figure 3: The Top 0.1% Taxable Capital Income Share in the United States, 1962-2012
+Notes: The figure plots the top 0.1% taxable capital income share in the United States from 1962 to 2012. Taxable capital income includes dividends,
+taxable interest, positive rents, estate and trust income, as well as the positive profits of S-corporations, sole proprietorships and partnerships (negative
+profits and negative rental income are disregarded). It excludes tax exempt interest paid by state and local bonds (munis). The top curve includes positive
+realized capital gains. The unit is the family (either a single person aged 20 or above or a married couple, in both cases with children dependents if any).
+Source: Appendix Tables B21 and B22.
+
+10%
+
+Returns by asset and wealth class, 2007
+(matched tabulated estates and income tax data)
+
+9%
+8%
+
+(Dividends + capital gains) / corporate stocks
+
+7%
+6%
+5%
+4%
+
+Dividends / corporate stocks
+
+3%
+2%
+
+Interest / fixed income assets
+
+1%
+0%
+up to $3.5m
+
+$3.5m-$5m
+
+$5m-$10m $10m-$20m
+Total gross wealth at death
+
+$20m+
+
+All
+
+The figure reports returns for various assets classes by size of gross worth using matched estate and prior year income tax data
+for 2008 estate tax filers (mostly 2007 decedents), excluding joint filers. Source: Appendix Table C6.
+
+6%
+5%
+4%
+
+Interest rate by wealth class, 1996-2011
+(matched micro estates and income tax data)
+$0.5m-1m
+
+$1m-1.5m
+
+$1.5m-2m
+
+$2m-3m
+
+$3m-5m
+
+$5m-10m
+
+$10m-20m
+
+$20m+
+
+Aggregate
+
+3%
+2%
+1%
+0%
+1996 1997 1998 1999 2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011
+The figure shows how the interest rate varies across the distribution of wealth at death using matched estate and prior
+year income tax data for 1997 to 2012 decedents, excluding joint filers. Source: Appendix Table C6b.
+
+Figure 4: Taxables Rates of Returns by Wealth
+Notes: The figure displays how taxable rates of returns vary across the distribution of wealth at death, using
+estate tax returns matched to prior year income tax returns of non-married filers. Individuals are ranked by their
+size of wealth at death. The top panel uses tabulated data for estates filed in 2008 (typically 2007 decedents).
+The bottom panel uses internal SOI estate tax returns matched to prior-year income tax returns; the year
+denotes the income-tax year (for instance, 1996 refers to estates for 1997 decedents matched to the decedent’s
+1996 income tax return). In all cases, within-asset class returns appear to be fairly stable across wealth groups.
+The bottom panel shows that interest rate for each wealth group tracks pretty well the aggregate interest rate
+used for capitalization. Source: Appendix Tables C6 and C6b.
+
+100%
+
+Top 10%
+80%
+Wealth
+60%
+Top 1%
+40%
+
+Capitalized income
+
+20%
+
+2012
+
+2010
+
+2008
+
+2006
+
+2004
+
+2002
+
+2000
+
+1998
+
+1996
+
+1994
+
+1992
+
+0%
+
+1988
+
+Top 0.1%
+1990
+
+% of household wealth excluding pensions and owneroccupied housing
+
+Top household wealth shares: reported SCF wealth vs.
+capitalized SCF incomes
+
+The figure compares direct SCF wealth shares to wealth shares estimated by capitalizing SCF income. Wealth excludes
+pensions and owner-occupied net housing. Source: Appendix Table C1.
+
+Top foundations wealth shares: reported wealth vs.
+capitalized income
+
+80%
+
+Wealth
+Top 1%
+
+60%
+50%
+40%
+
+Capitalized income
+
+Top 0.1%
+
+2009
+
+2007
+
+2005
+
+2003
+
+2001
+
+1999
+
+1997
+
+1995
+
+1993
+
+1991
+
+1989
+
+20%
+
+1987
+
+30%
+
+1985
+
+% of foundation net wealth
+
+70%
+
+The figure compares top foundation wealth shares obtained by using balance sheet wealth data as reported to the IRS and
+obained by capitalizing IRS-reported income. Source: Appendix Tables C11 and C13.
+
+Figure 5: Testing the Capitalization Method using SCF and Foundation data
+Notes: The top panel depicts top household wealth shares using the reported wealth (solid line) and the capitalized incomes (dashed line) of Survey of Consumer Finances respondents. Wealth includes fixed income claims
+(savings, checking, money market, and call accounts, certificates of deposits, holdings of savings bonds, direct
+holding of taxable bonds, and holdings of taxable bonds through mutual funds), corporate equities (held directly
+and through mutual funds), business assets, rental real estate, and miscellaneous financial assets. It excludes
+the net value of owner-occupied houses and pension wealth. For the SCF of year t, wealth is measured in t but
+capital income is measured in year t − 1. Sources: SCF micro-data, see Appendix Table C1. The bottom panel
+depicts top foundation wealth shares using balance sheet wealth (solid line) and foundations’ capitalized incomes
+(dashed line). Since income from bonds and stocks is lumped together on form 990-PF, we only capitalize dividends and interest on the one hand and rents on the other. Sources: publicly available Statistics of Income tax
+data, see Appendix Tables C11 and C13.
+
+Top 10% wealth share in the United States, 1917-2012
+90%
+
+% of total household wealth
+
+85%
+80%
+Capitalized income
+75%
+
+SCF
+
+70%
+
+2012
+
+2007
+
+2002
+
+1997
+
+1992
+
+1987
+
+1982
+
+1977
+
+1972
+
+1967
+
+1962
+
+1957
+
+1952
+
+1947
+
+1942
+
+1937
+
+1932
+
+1927
+
+1922
+
+60%
+
+1917
+
+65%
+
+The figure depicts the share of total household wealth owned by the top 10%, obained by capitalizing income tax returns
+versus in the Survey of Consumer Finances. The unit of analysis is the familly. Source: Appendix Tables B1 and C4.
+
+Top 10-1% and 1% wealth shares, 1913-2012
+55%
+
+% of total household wealth
+
+50%
+Top 10% to 1%
+
+45%
+40%
+35%
+
+Top 1%
+30%
+
+2013
+
+2008
+
+2003
+
+1998
+
+1993
+
+1988
+
+1983
+
+1978
+
+1973
+
+1968
+
+1963
+
+1958
+
+1953
+
+1948
+
+1943
+
+1938
+
+1933
+
+1928
+
+1923
+
+1918
+
+20%
+
+1913
+
+25%
+
+Figure 6: Top Wealth Shares in the United States, 1913-2012
+Notes: The top panel plots the top 10% wealth share in the United States from 1917 to 2012 using the capitalization method. We also report the top 10% wealth shares estimates from the SCF for the period 1989-2013
+from Kennickell (2009b, 2011) and Bricker et al. (2014). The bottom panel plots the top 1% and next 9% wealth
+shares in the United States from 1913 to 2012. The unit is the family (single adult person with or without
+children dependents, or married couple with or without dependents). Source: Appendix Table B1 and C4.
+
+Composition of the bottom 90% wealth share
+
+40%
+35%
+
+25%
+
+Pensions
+
+20%
+
+Equities & fixed claims
+(net of non-mortgage debt)
+
+15%
+
+Business assets
+
+10%
+5%
+
+2012
+
+2007
+
+2002
+
+1992
+
+1987
+
+1982
+
+1977
+
+1972
+
+1967
+
+1962
+
+1957
+
+1952
+
+1947
+
+1942
+
+1937
+
+1932
+
+1927
+
+1922
+
+1917
+
+0%
+
+Housing (net of mortgages)
+1997
+
+% of total household wealth
+
+30%
+
+Real average wealth of bottom 90% and top 1% families
+140,000
+
+Top 1% (left y-axis)
+
+Top 1% real average welath
+
+12,000,000
+
+120,000
+
+Bottom 90% (right y-axis)
+
+10,000,000
+
+100,000
+
+8,000,000
+
+80,000
+
+6,000,000
+
+60,000
+
+4,000,000
+
+40,000
+
+2,000,000
+
+20,000
+
+2010
+
+2006
+
+2002
+
+1998
+
+1994
+
+1990
+
+1986
+
+1982
+
+1978
+
+1974
+
+1970
+
+1966
+
+1962
+
+1958
+
+1954
+
+1950
+
+0
+
+1946
+
+0
+
+Bottom 90% real average wealth
+
+14,000,000
+
+Real values are obtained by using the GDP deflator, 2010 dollars. Source: Appendix Tables B3.
+
+Figure 7: The Dynamics of Wealth for the Bottom 90% of the Distribution
+Notes: The top panel plots the bottom 90% wealth share and its composition from 1917 to 2012 lumping together
+the category of equities, fixed claim assets, and non-mortgage debt. The bottom panel depicts the average real
+wealth of bottom 90% families (right y-axis) and top 1% families (left y-axis) from 1946 to 2012. Wealth is
+expressed in constant 2010 US dollars, using the GDP deflator. Source: Appendix Tables B3 and B5.
+
+Share of wealth held by elderly households (65+)
+60%	  
+
+% of each group's total wealth
+
+50%	  
+
+Top 0.1%
+
+40%	  
+30%	  
+
+Total population
+
+20%	  
+Bottom 90%
+10%	  
+0%	  
+1960
+
+1965
+
+1970
+
+1975
+
+1980
+
+1985
+
+1990
+
+1995
+
+2000
+
+2005
+
+2010
+
+Share of income earned by top 0.1% wealth-holders
+8%
+
+% of total pre-tax income
+
+7%
+6%
+National income
+
+5%
+4%
+3%
+2%
+
+Labor income
+
+1%
+0%
+1960
+
+1965
+
+1970
+
+1975
+
+1980
+
+1985
+
+1990
+
+1995
+
+2000
+
+2005
+
+2010
+
+2015
+
+This figure shows the share of total pre-tax national income and pre-tax labor income earned by top 0.1% wealth-holders. Labor
+income includes employee compensation and the labor component of business income. Source: Appendix Tables B25 and B28.
+
+Figure 8: Share of Wealth Held by the Elderly and Income Share of Top 0.1% Wealth Holders
+Notes: The top panel depicts the fraction of wealth held by elderly families for 3 groups : (1) the full population,
+(2) the bottom 90%, and (3) the top 0.1%. An elderly family is defined as a tax unit where either the primary
+filer or the secondary filer (for married tax units) is aged 65 or more. The series covers 1962 to 2012, years for
+which this information is available. The bottom panel depicts that share of total national income and total labor
+income accruing to top .1% wealth holders from 1960 to 2012. Source Appendix Tables B4, B25, and B28.
+
+Top 1%
+
+Top 10 to 1%
+
+2010-12
+
+2000-09
+
+1990-99
+
+1980-89
+
+1970-79
+
+1960-69
+
+1950-59
+
+1940-49
+
+1930-39
+
+1920-29
+
+Bottom 90%
+1917-19
+
+% of each group's total primary income
+
+Saving rates by wealth class (decennial averages)
+55%
+50%
+45%
+40%
+35%
+30%
+25%
+20%
+15%
+10%
+5%
+0%
+-5%
+-10%
+-15%
+
+Share of income and wealth of bottom 90% wealth holders
+70%
+
+Income share
+
+60%
+50%
+Simulated 1985-2012 wealth share (constant
+3% saving rate and constant income share)
+
+40%
+30%
+
+Observed wealth share
+
+20%
+
+Simulated 1985-2012 wealth share
+(constant 3% saving rate)
+
+2010
+
+2005
+
+2000
+
+1995
+
+1990
+
+1985
+
+1980
+
+1975
+
+1970
+
+1965
+
+0%
+
+1960
+
+10%
+
+Since the 1980s the share of total household wealth owned by families in the bottom 90% of the wealth distribution has fallen
+proportionally more than the share of pre-tax national income earned by these families. Source: Appendix Tables B1, B25 and B33c.
+
+Figure 9: Saving Rate Inequality and its Effect on the Bottom 90% Wealth Share
+Notes: The top panel plots the synthetic saving rates (see definition in the text) for the top 1%, the top 10-1%
+(next 9%), and the bottom 90% averaged by decade from 1913 to 2012 (the first dot includes only 3 years 1917
+to 1919 while the last dot includes only 3 years 2010 to 2012). The average private (household + corporate)
+saving rate has been 11.4% over 1913-2013, but the rich save more as a fraction of their income, except in the
+1930s when there was large dis-saving through corporations. The bottom panel plots the share of wealth and
+income of the bottom 90% wealth holders. Income is defined so as to match (pre-tax) national income in the
+national accounts. If the bottom 90% saving rate had been equal to 3% every year from 1985 to 2012, then all
+else equal (in particular keeping top 10% saving constant) the bottom 90% wealth share would be 29.7% in 2012
+instead of 22.8% in the data. If in addition the income share of the bottom 90% had remained equal to 70% (its
+1970-1985 average value) then the bottom 90% wealth share would be 32.7% in 2012. Source: Appendix Tables
+B1, B25, B33, and B33c.
+
+Top 0.1% wealth share: comparison of estimates
+25%
+Wealth obtained by
+capitalizing income
+
+% of total household wealth
+
+20%
+
+Wealth reported
+in SCF
+(adjusted)
+
+15%
+
+10%
+
+5%
+
+2012
+
+2007
+
+2002
+
+1997
+
+1992
+
+1987
+
+1982
+
+1977
+
+1972
+
+1967
+
+1962
+
+1957
+
+1952
+
+1947
+
+1942
+
+1937
+
+1932
+
+1927
+
+1917
+
+0%
+
+1922
+
+Wealth of decedents
+(weighted by Kopczuk-Saez inverse mortality rates)
+
+The figure depicts the top 0.1% wealth share obtained by capitalizing income, by using the SCF (adjusted to move to tax-unit level,
+include Forbes 400, and match Financial Accounts totals), and by using estate tax data. Source: Appendix C4 and C4b.
+
+Top 0.1% capital income shares: income tax vs. SCF vs. decedents
+45%
+
+Taxable capital income in
+income tax data
+
+35%
+
+Taxable capital income in SCF
+
+30%
+25%
+20%
+15%
+Taxable capital income of decedents
+(weighted by Kopczuk-Saez inverse mortality rates)
+
+10%
+
+2011
+
+2009
+
+2007
+
+2005
+
+2003
+
+2001
+
+1999
+
+1997
+
+1995
+
+1993
+
+1991
+
+1989
+
+1987
+
+1985
+
+1983
+
+0%
+
+1981
+
+5%
+1979
+
+% of total household capital income
+
+40%
+
+The figure depicts the top 0.1% taxable capital income share (including realized capital gains) in (i) the SOI income tax
+data; (ii) the sample of decedents weighted using the Kopczuk-Saez (2004) estate mutiplier weights; (iii) the SCF. For
+both the SCF and SOI income tax data, fractiles are defined relative to the total number of tax units.
+
+Figure 10: Comparing our Top Wealth Shares with Other Estimates
+Notes: The top panel compares our top 0.1% wealth share estimates with top wealth shares estimates from
+using estate tax returns (Kopczuk and Saez (2004) for 1917-2000, extended to 2001-2012) and the Survey of
+Consumer Finances (SCF). To improve comparability, starting from the SCF baseline estimates of Kennickell
+(2009b, 2011), we adjust the SCF series by: (1) defining fractiles relative to total tax units instead of households,
+(2) adjusting individual wealth components to match household balance sheet totals asset class by asset class,
+(3) adding back the Forbes 400 that are excluded by design from the SCF. The bottom panel compares the top
+0.1% capital income shares estimates from the SOI income tax data, the SCF, and decedents using the weights
+of Kopczuk and Saez (2004) (income is measured the calendar year before death). In the three cases, we use
+the same definition of capital income (as the SCF reports income following the lines of the income tax return).
+Namely, capital income is the sum of (taxable) interest income, dividends, realized capital gains, profits from sole
+proprietorships, partnerships and S-corporations, rents, royalties (schedule C and schedule E income). Source:
+Appendix Tables C2, C3, C4, C4b, and C8.
+
+

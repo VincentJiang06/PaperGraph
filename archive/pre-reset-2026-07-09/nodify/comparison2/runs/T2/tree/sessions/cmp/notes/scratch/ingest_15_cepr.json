@@ -1,0 +1,10 @@
+{
+  "kind": "web",
+  "title": "CEPR VoxEU: Navigating the 2022 inflation surge - lessons for monetary policy frameworks",
+  "url": "https://cepr.org/voxeu/columns/navigating-2022-inflation-surge-lessons-monetary-policy-frameworks",
+  "text_file": "notes/scratch/doc_cepr_supply_limits.txt",
+  "summary": "论证紧缩政策难以解决供给驱动型通胀('加息无法解开供应链或恢复战区粮食出口'),不同可信度央行的通胀结果趋同,建议央行透明承认工具局限、与财政/结构性政策协调,而非机械捍卫通胀目标。",
+  "bindings": [
+    {"node_id": "N-0016", "relation": "supports", "note": "供给驱动型通胀下,加息的边际有效性受限,过度紧缩可能造成不必要的经济损害而未改善通胀结果"}
+  ]
+}

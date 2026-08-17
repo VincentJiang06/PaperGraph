@@ -1,0 +1,132 @@
+{
+  "T1": {
+    "A": {
+      "structure_logic": 5,
+      "evidence_quality": 4,
+      "adversarial_rigor": 4,
+      "calibration": 5,
+      "overall": 5,
+      "rationale": "Cleanest task/job-level separation plus an unusually sophisticated 'asymmetry of evidence' discussion that explicitly rates its own confidence as medium-not-high. Slightly less counter-evidence breadth than C (no engagement of findings that heavy adopters hire more)."
+    },
+    "B": {
+      "structure_logic": 5,
+      "evidence_quality": 4,
+      "adversarial_rigor": 4,
+      "calibration": 4,
+      "overall": 4,
+      "rationale": "Broad, current evidence base that symmetrically rejects both 'pure neutral' and 'pure lag' with specific reasons. Marginally more assertive on a 'clear net-negative direction' and leans a bit more on journalistic intermediaries for key figures."
+    },
+    "C": {
+      "structure_logic": 4,
+      "evidence_quality": 5,
+      "adversarial_rigor": 5,
+      "calibration": 5,
+      "overall": 5,
+      "rationale": "Most complete adversarial coverage: METR self-perception bias, the Revelio/Ramp finding that heavy adopters hire more, and the Stanford follow-up rebutting the rate-hike confound. The dense, run-on thesis sentence hurts readability."
+    }
+  },
+  "T2": {
+    "A": {
+      "structure_logic": 5,
+      "evidence_quality": 4,
+      "adversarial_rigor": 5,
+      "calibration": 5,
+      "overall": 5,
+      "rationale": "Sharpest analytical move: distinguishing who led the surge (~2/3 supply) from who led the 2023 disinflation (~70% demand), plus a genuine Storm steelman of the model-misspecification critique. Demand-side magnitudes are honestly flagged as order-of-magnitude uncertain."
+    },
+    "B": {
+      "structure_logic": 5,
+      "evidence_quality": 4,
+      "adversarial_rigor": 4,
+      "calibration": 5,
+      "overall": 4,
+      "rationale": "Methodology-first framing with explicit contribution ranges and a clean 2026 Iran natural experiment as a sample-out test. Its counter-views section, while genuine, is more compact than A's."
+    },
+    "C": {
+      "structure_logic": 4,
+      "evidence_quality": 4,
+      "adversarial_rigor": 4,
+      "calibration": 4,
+      "overall": 4,
+      "rationale": "Nice insight that supply and demand were multiplicative not additive ('6% not 9%') and a tariff pass-through sample-out test. Demand-side evidence is a grab-bag drawn more heavily from journalistic secondary sources."
+    }
+  },
+  "T3": {
+    "A": {
+      "structure_logic": 5,
+      "evidence_quality": 5,
+      "adversarial_rigor": 5,
+      "calibration": 5,
+      "overall": 5,
+      "rationale": "Cleanest three-channel netting with the deepest endogeneity point (QE responds to structurally-low rates from the rich saving glut) and a baseline-dependence argument. Weakest link is citing the employment-channel wage evidence loosely via a survey."
+    },
+    "B": {
+      "structure_logic": 5,
+      "evidence_quality": 5,
+      "adversarial_rigor": 5,
+      "calibration": 5,
+      "overall": 5,
+      "rationale": "Best identification-strategy discussion in the topic: high-frequency event studies isolate QE's flow effect but not the cumulative stock question, plus a powerful African-American-wealth-loss counterfactual. Occasionally leans on working-paper point estimates."
+    },
+    "C": {
+      "structure_logic": 5,
+      "evidence_quality": 4,
+      "adversarial_rigor": 5,
+      "calibration": 5,
+      "overall": 5,
+      "rationale": "Rare, valuable move of steelmanning the strongest counter to its own conclusion and giving an explicit numerical range with a stated confidence level. The Card-DiNardo detour is tangential and its ~13% figure rests on an assumption-heavy estimate it acknowledges."
+    }
+  },
+  "T4": {
+    "A": {
+      "structure_logic": 4,
+      "evidence_quality": 4,
+      "adversarial_rigor": 4,
+      "calibration": 4,
+      "overall": 4,
+      "rationale": "Comprehensive channel coverage with a useful stock-risk-vs-flow-space asymmetry framing and properly formatted citations. Leans on official Chinese-media sources for the optimistic case and engages the strongest 'China is more fragile' counter only lightly."
+    },
+    "B": {
+      "structure_logic": 4,
+      "evidence_quality": 4,
+      "adversarial_rigor": 4,
+      "calibration": 4,
+      "overall": 4,
+      "rationale": "Incisive empirical catches (female participation is falling, robot scale does not equal TFP efficiency) and engagement of the Posen/Pettis debate over whether the comparison is even valid. Its reference list is informal topic-labels rather than proper author-title citations."
+    },
+    "C": {
+      "structure_logic": 5,
+      "evidence_quality": 4,
+      "adversarial_rigor": 5,
+      "calibration": 5,
+      "overall": 5,
+      "rationale": "Strongest reframe: Japan itself deployed massive automation yet still stagnated, and capital-return/debt fragility preceded the demographic shock, yielding a grounded, contrarian 'not safer than Japan' verdict. A load-bearing robot-dominance claim rests on a fund-marketing source."
+    }
+  },
+  "T5": {
+    "A": {
+      "structure_logic": 5,
+      "evidence_quality": 4,
+      "adversarial_rigor": 5,
+      "calibration": 5,
+      "overall": 5,
+      "rationale": "Tightest reconciliation, recasting the debate as a quantified non-linear threshold function (elasticity -1.01 vs +0.46; turning negative at ~40-55% of median) with honest evidence-polarization at high bite. Relies on a few aggregated surveys rather than primary papers for several figures."
+    },
+    "B": {
+      "structure_logic": 5,
+      "evidence_quality": 5,
+      "adversarial_rigor": 5,
+      "calibration": 5,
+      "overall": 5,
+      "rationale": "Richest primary-evidence base with the strongest extra arguments (Godoey-Reich pushing testable bite to 82%, CBO's national-uniform-removes-heterogeneity logic) and an honest distributional-cost caveat. No notable weakness."
+    },
+    "C": {
+      "structure_logic": 4,
+      "evidence_quality": 5,
+      "adversarial_rigor": 4,
+      "calibration": 5,
+      "overall": 4,
+      "rationale": "Solid, primary-sourced synthesis with a good hidden-margins caveat and the original Card-Krueger anchor. Covers the same ground as A/B but with a less quantified threshold and a more list-like structure."
+    }
+  }
+}

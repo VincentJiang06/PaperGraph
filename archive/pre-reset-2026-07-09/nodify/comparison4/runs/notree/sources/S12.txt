@@ -1,0 +1,21 @@
+SOURCE S12  [REAL-USAGE proxy: augmentation vs automation]
+Title: Anthropic Economic Index (Insights from Claude 3.7 Sonnet; later reports)
+Authors/Org: Anthropic (Handa, Tamkin, et al.)
+Venue: Anthropic research reports, 2025-2026
+URLs fetched: https://www.anthropic.com/news/anthropic-economic-index-insights-from-claude-sonnet-3-7 ; https://www.anthropic.com/research/anthropic-economic-index-january-2026-report
+Fetched: 2026-07-09
+
+VERBATIM POINTS:
+- Split (Sonnet 3.7 report): "augmentation still comprising 57% of usage" with automation the remainder (~43%); "The balance of augmentation and automation has stayed relatively constant."
+- Later report: "Augmentation (52% of conversations) has overtaken automation (45%)" on Claude.ai — a reversal from a period when "automation led by 49% to 47%." Learning interactions rose "from ~23% to ~28%."
+- API vs consumer: "API customers use Claude for task automation much more often than Claude.ai users, with 77% of API conversations showing automation patterns."
+- Concentration: "computer and mathematical tasks ... about a third of all conversations on Claude.ai, and nearly half of API traffic"; "The ten most common tasks represent 24% of observed usage."
+- Depth: "about 40% of occupations see AI usage in at least 20% of their tasks."
+- Caveat: "the O*NET descriptions may not be optimally representative of what Claude is being used for"; measurement "does not equal economic consequence."
+
+DESIGN: Observational analysis of millions of anonymized Claude.ai + API conversations mapped to O*NET tasks (Clio privacy pipeline).
+SAMPLE: Claude users (self-selected, unrepresentative of workforce).
+TIER: D — usage/exposure proxy, NOT an outcome measure.
+DIRECTION: Current real usage leans AUGMENTATION over automation on consumer surface, but automation-heavy via API; heavily concentrated in coding/math.
+KEY LIMITS: One vendor's users; a "conversation" ≠ a completed job task ≠ labor substitution; consumer vs API mix shifts the headline; augmentation/automation is a coarse self-classified split.
+CROSS-REF: Nuances L1 — even where AI is used, most usage is worker-augmenting, consistent with S1-S3; but concentration in coding intersects S15 (METR) & S6 (dev youth decline).

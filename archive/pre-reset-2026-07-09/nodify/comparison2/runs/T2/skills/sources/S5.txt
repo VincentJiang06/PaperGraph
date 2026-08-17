@@ -1,0 +1,17 @@
+Title: How Much Did Supply Constraints Boost U.S. Inflation? (Liberty Street Economics)
+Authors: Julian di Giovanni, Şebnem Kalemli-Özcan, et al.
+Publisher: Federal Reserve Bank of New York, Liberty Street Economics
+URL: https://libertystreeteconomics.newyorkfed.org/2022/08/how-much-did-supply-constraints-boost-u-s-inflation/
+Date: August 2022
+
+Key verbatim extracted content:
+
+Headline decomposition: "60 percent of U.S. inflation over the 2019-21 period was due to the jump in demand for goods while 40 percent owed to supply-side issues."
+
+Counterfactual magnitude: "inflation in the U.S. would have been 6 percent instead of 9 percent at the end of 2021 without supply bottlenecks" — i.e., a roughly 3-percentage-point boost attributable to supply constraints.
+
+Model decomposition: aggregate demand shock accounted for roughly 60% of model-based inflation; sectoral supply shocks explained the remaining 40%.
+
+Interaction/amplification conclusion: "fiscal stimulus and other aggregate demand factors would not have driven inflation this high without the pandemic-related supply constraints" — i.e., supply constraints amplified the effect of demand rather than driving inflation independently.
+
+[Related NBER working paper: "Global Supply Chain Pressures, International Trade, and Inflation" NBER WP 30240, by the same author group, finds for the broader country panel that "aggregate demand shocks explain roughly two-thirds of total model-based inflation" in the US, with "fiscal stimulus contributed half or more of the total aggregate demand effect" over Dec 2019-June 2022, versus the Euro Area where "foreign shocks and global supply chain bottlenecks played an outsized role relative to domestic aggregate demand shocks."]

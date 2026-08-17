@@ -1,0 +1,14 @@
+Title: Is the American Rescue Plan Taking Us Back to the '60s? (FRBSF Economic Letter 2021-27)
+Publisher: Federal Reserve Bank of San Francisco
+URL: https://www.frbsf.org/research-and-insights/publications/economic-letter/2021/10/is-american-rescue-plan-taking-us-back-to-1960s/
+Date: October 2021
+
+Key verbatim extracted content:
+
+Inflation increase estimate: the ARP is estimated to raise inflation by "about 0.3 percentage point per year through 2022."
+
+Mechanism: operates through the vacancy-to-unemployment ratio — the ARP was projected to "push the vacancy-to-unemployment ratio up further by approximately 0.6 units over 2021, and less than 0.5 units by the end of 2022," tightening labor markets, which then translates into inflation via a Phillips-curve-type relationship.
+
+Time horizon / persistence: effects expected to be temporary — "the impact in 2023 is negligible and is not shown in the figure." Most significant pressure occurs during 2021-2022.
+
+Uncertainty caveat: estimate comes with "considerable uncertainty because the available sample is too short for any greater precision."

@@ -1,0 +1,32 @@
+{
+  "topic": "T1",
+  "mode": "raw",
+  "recovered": {
+    "lines_of_inquiry": {
+      "status": "partial",
+      "detail": "The 10 saved sources cluster cleanly into recoverable viewpoints that map onto the topic's two sub-questions (task substitution vs. net job change; genuinely near-neutral vs. effects not yet visible): (a) theoretical task framework, displacement vs. reinstatement (S5 Acemoglu-Restrepo); (b) real near-term harm to early-career workers (S1 Stanford, S6 IMF); (c) economy-wide near-neutrality (S3 Yale Budget Lab, S2 NY Fed, S8 AEI); (d) the identification problem, macro/Fed-tightening confound and pre-ChatGPT trend (S2, S8); (e) diffusion-lag / 'too early' hypothesis (S3, S10); (f) exposure potential (S4 OpenAI, S6 IMF); (g) actual augmentation-vs-automation usage (S7 Anthropic, S9). But these lines are INFERRED from source selection; no artifact explicitly states the agent's chosen sub-questions, decomposition, or which lines it prioritized."
+    },
+    "leanings": {
+      "status": "lost",
+      "detail": "No synthesis or verdict persisted. Individual sources carry their own stances (S1 'meaningful concern'; S3 'stability, not disruption'; S8 'just early, another way of saying wrong'), and some fetch annotations editorialize per-source, but the AGENT's own overall thesis and how it weighed the S1 alarm against the S2/S3/S8 near-neutral evidence is entirely absent. It is impossible to tell whether the investigation concluded the effect is genuinely near-neutral, or near-neutral-but-effects-not-yet-materialized, or leaning toward real displacement. The core interpretive output did not survive."
+    },
+    "key_figures": {
+      "status": "full",
+      "detail": "Abundant and verbatim with provenance: 16% relative employment decline for early-career workers (22-25) in most AI-exposed occupations (S1); a 13% variant attributed via IMF (S6), a visible cross-source discrepancy; 80% of workforce with >=10% of tasks affected, 19% with >=50%, 15% of tasks faster with LLM alone / 47-56% with tooling (S4); 40% global employment exposed, 60% advanced economies vs. 26% low-income (S6); 57% augmentation vs. 43% automation, 37.2% coding queries, jobs using AI for >=25% of tasks rising 36% to 49%, API deployments 77% automation vs. 12% augmentation (S7); 14% average productivity gain, 34% for novices (S9); ~1 percentage-point employment slip for 20-24 year-olds in high-exposure roles (S8); occupational-mix change ~7pp over 1996-2002 vs. only ~1pp higher now (S3)."
+    },
+    "adversarial_lines": {
+      "status": "full",
+      "detail": "Counter-arguments are explicitly present and verifiable within the saved sources: (1) macro, not AI, is the driver, Fed funds tightening from March 2022 strongly correlated with the postings decline (S2, S8); (2) the divergence pre-dates ChatGPT and shows no clean post-release break (S2, S3, S8); (3) selectivity not destruction, employers raising the hiring bar while new hires earn higher starting salaries (S8); (4) diffusion lag / productivity J-curve / electrification analogy, so effects are simply delayed (S3, S10); (5) measurement limits and the need for better usage data (S3); (6) reinstatement / augmentation as a counterweight to displacement (S5, S9, S7). Thesis (S1) and antithesis (S2/S3/S8) were both deliberately saved, implying an adversarial design; only the agent's own rebuttals/resolution are not recorded."
+    },
+    "evidence_provenance": {
+      "status": "full",
+      "detail": "Excellent and verifiable. Every source file carries a stable ID, Title, Authors, Publisher, URL(s), fetch method and date (2026-07-09), and verbatim quotes explicitly separated from added WebSearch context. Each figure is traceable to a named source: Stanford Digital Economy Lab ADP paper, NY Fed Liberty Street Economics, Yale Budget Lab, OpenAI/arXiv 2303.10130, Acemoglu-Restrepo NBER w25684, IMF SDN 2024/001, Anthropic Economic Index, AEI (Pethokoukis), Brynjolfsson-Li-Raymond NBER w31161. Which source backs which claim is unambiguous, and one inter-source conflict (16% in S1 vs. 13% via S6) is itself visible for a resumer to reconcile."
+    },
+    "next_action": {
+      "status": "partial",
+      "detail": "No queue, todo, or explicit next-step note persisted. But the gap is obvious from the corpus: a two-sided evidence base is assembled while the synthesis is missing, so a fresh agent could resume by weighing the conflicting evidence into a verdict on the two sub-questions, no re-fetching required. What is NOT recoverable: whether the search was considered complete (exactly S1-S10, none more planned), what specific analytical step came next, or how the agent intended to resolve the near-neutral-vs-not-yet-visible tension. S3's 'better data needed / monitor monthly' is the only forward-looking hint on disk."
+    }
+  },
+  "overall_recoverability": 3,
+  "narrative": "Evidence survived; reasoning did not. A fresh agent inherits a clean, well-provenanced, deliberately two-sided corpus (10 named sources, verbatim quotes, URLs) covering both the task-substitution/net-jobs question and the near-neutral-vs-not-yet-visible identification problem, and could skip all re-fetching to go straight to synthesis. But the agent's actual leanings, overall thesis, and planned next step were never written to disk, so the interpretive core must be rebuilt from scratch. Net: continue, don't restart, yet re-derive the conclusion. Recoverability is capped by the absence of any reasoning log; the raw sources strongly scaffold the analysis and even expose a 16%-vs-13% conflict to reconcile, without ever revealing where the investigation landed."
+}

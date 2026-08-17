@@ -1,0 +1,11 @@
+Title: The Low Birthrate and Aging Population in China—A comparison with Japan
+Source: RIETI (Research Institute of Economy, Trade and Industry, Japan)
+URL: https://www.rieti.go.jp/en/china/22102701.html
+
+Key verbatim extraction (via fetch):
+- "China's total population grew from 982 million in 1980 to 1.425 billion in 2020" but "peaked at 1.426 billion in 2021 and began to decline." Japan's population peaked in 2009 at 128 million and declined to 125 million by 2020.
+- "The age structure of the population in China in 2020 was similar to that of Japan around 1990." China's child population (18.0%) and elderly population (17.8%) in 2020 matched Japan's respective proportions from roughly three decades earlier.
+- Fertility: Between 1980 and 2020, Japan's total fertility rate fell from 1.75 to 1.29, while China's dropped from 2.74 to 1.28—now below Japan's rate.
+- "China's median age in 2020 was 10.6 years lower than that of Japan's and resembled that of Japan in 1991." China reached 37.4 years vs Japan's 48.0 years.
+- Life expectancy gap narrowed from 11.7 years (1980) to 6.6 years (2020); China's 78.1 years corresponds to Japan's 1986 level.
+- Also (from search synthesis on same site, companion piece): Japan's labour force began to decline in 1996, China's in 2014 — an ~18-year lag. By 1992 Japan's median age reached 38.5 (China hit this in 2016); Japan's old-age dependency ratio hit 18% in 1992 (China predicted ~2023).

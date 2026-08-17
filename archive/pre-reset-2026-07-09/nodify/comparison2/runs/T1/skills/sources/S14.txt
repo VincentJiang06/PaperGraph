@@ -1,0 +1,15 @@
+Title: The Dynamo, the Computer, and ChatGPT: Explaining Today's Productivity Paradox
+(Covering Paul David, "The Dynamo and the Computer: An Historical Perspective on the Modern Productivity Paradox," 1990)
+Publisher: American Enterprise Institute (AEI)
+URL: https://www.aei.org/articles/the-dynamo-the-computer-and-chatgpt-explaining-todays-productivity-paradox/
+Accessed via: WebFetch, 2026-07-09
+
+Verbatim key quotes:
+
+"It would take until the 1920s for those measures of diffusion for lighting and motors to hit 50 percent and have an impact on productivity growth."
+
+"The proximate source of the delay in the exploitation of the productivity improvements potential incipient in the dynamo revolution was, in large part, the slow pace of factory electrification."
+
+Robert Solow's paraphrased/updated quip as applied to AI: "You can see the age of AI/machine learning everywhere but in the productivity statistics. At least so far." (Framed as a modern echo of Solow's original 1987 remark about computers.)
+
+Notes: Historical analogy: electrification's economy-wide productivity/labor effects were delayed roughly three decades because factories had to reorganize around the "unit drive" principle (individual motors per machine) rather than simply swap a steam engine for a dynamo. This is the historical-precedent evidence for the "lag hypothesis" as applied to today's mild AI employment data.

@@ -1,0 +1,24 @@
+{
+ "kind": "report",
+ "title": "UC Berkeley IRLE (2024/2025), Effects of the $20 California Fast-Food Minimum Wage (AB 1228)",
+ "url": "https://irle.berkeley.edu/publications/brief/effects-of-the-20-california-fast-food-minimum-wage/",
+ "text_file": "notes/src_ca20_irle.txt",
+ "summary": "Berkeley评估加州快餐$20:覆盖工人加薪8-9%,价格上升约1.5%(四美元汉堡约6美分),无显著就业损失,亦无削减工时/加剧即时排班的证据。",
+ "bindings": [
+  {
+   "node_id": "N-0025",
+   "relation": "supports",
+   "note": "高相对水平仍近零一侧"
+  },
+  {
+   "node_id": "N-0014",
+   "relation": "context",
+   "note": "快餐价格转嫁"
+  },
+  {
+   "node_id": "N-0017",
+   "relation": "supports",
+   "note": "该案例中工时/排班未见削减"
+  }
+ ]
+}

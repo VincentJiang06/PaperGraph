@@ -1,0 +1,41 @@
+{
+ "node_id": "N-0005",
+ "lean": "mixed",
+ "summary": "红队(能力怀疑)部分成立:至2025年agents在长程/多步真实任务上仍不可靠(SWE-bench 70%+的模型长程掉到~23%),企业采用仅~10%——能力与部署双双限制'已实现'替代,故大规模整岗替代在2020-25被高估;但可靠时程在快速外推,'永不到来'的强命题不被支持。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Agent reliability bundle (METR/SWE-Bench Pro)",
+    "doc_id": "DOC-0008",
+    "quote": "agents in Mid 2025 are 'impressive in theory but in practice unreliable.'",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "长程可靠性不足"
+   },
+   {
+    "title": "SWE-Bench Pro long-horizon",
+    "doc_id": "DOC-0008",
+    "quote": "models scoring 70%+ on standard SWE-bench drop to ~23% on long-horizon tasks involving multi-file refactors and cross-repository changes",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "长程多步任务大幅掉分"
+   },
+   {
+    "title": "Census BTOS adoption",
+    "doc_id": "DOC-0010",
+    "quote": "crept up from 4.6 percent at the beginning of 2024 to 10 percent in September 2025",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "采用率低"
+   }
+  ]
+ },
+ "open_questions": [
+  "可靠时程跨过整工作日阈值后,能力瓶颈是否骤然让位于采用瓶颈?"
+ ]
+}

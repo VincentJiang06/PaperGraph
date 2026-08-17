@@ -1,0 +1,25 @@
+SOURCE: David Neumark & Peter Shirley (2021, revised 2022), "Myth or Measurement: What
+Does the New Minimum Wage Research Say about Minimum Wages and Job Loss in the United
+States?", NBER Working Paper No. 28388 (published in Industrial Relations 2022, 61(4):
+384-417).
+URL: https://www.nber.org/system/files/working_papers/w28388/w28388.pdf
+
+[ABSTRACT, verbatim]
+"The disagreement among studies of the employment effects of minimum wages in the United
+States is well known. Less well known, and more puzzling, is the absence of agreement on
+what the research literature says – that is, how economists summarize the body of evidence
+on the employment effects of minimum wages. Summaries range from "it is now well-established
+that higher minimum wages do not reduce employment," to "the evidence is very mixed with
+effects centered on zero so there is no basis for a strong conclusion one way or the other,"
+to "most evidence points to adverse employment effects."
+
+We explore the question of what conclusions can be drawn from the literature, focusing on
+the evidence using subnational minimum wage variation within the United States that has
+dominated the research landscape since the early 1990s. To accomplish this, we assembled the
+entire set of published studies in this literature and identified the core estimates that
+support the conclusions from each study, in most cases relying on responses from the
+researchers who wrote these papers. Our key conclusions are: (i) there is a clear
+preponderance of negative estimates in the literature; (ii) this evidence is stronger for
+teens and young adults as well as the less-educated; (iii) the evidence from studies of
+directly-affected workers points even more strongly to negative employment effects; and (iv)
+the evidence from studies of low-wage industries is less one-sided."

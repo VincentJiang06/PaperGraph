@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0009",
+ "lean": "supports",
+ "summary": "假设B(滞后)机制同样真实:通用技术需无形/组织互补投资,早期系统性低估(J曲线);且人群/职业层信号(入门级下降 vs 资深稳增)先于总量出现——'尚未显现'而非'不存在'有据。与假设A在现有总量数据上观测等价。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Productivity J-Curve (Brynjolfsson/Rock/Syverson)",
+    "doc_id": "DOC-0007",
+    "quote": "leads to an underestimation of productivity growth in the early years of a new GPT",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "GPT效应早期被系统性低估"
+   },
+   {
+    "title": "Canaries in the Coal Mine (Stanford)",
+    "doc_id": "DOC-0003",
+    "quote": "employment for workers in less exposed fields and more experienced workers in the same occupations has remained stable or continued to grow",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "人群层信号先于总量"
+   }
+  ]
+ },
+ "open_questions": [
+  "J曲线的'收获期'对就业是净正(生产率红利)还是净负(替代兑现)?"
+ ]
+}

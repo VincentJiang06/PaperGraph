@@ -1,0 +1,19 @@
+{
+ "kind": "report",
+ "title": "AI agent reliability bundle — METR / tau-bench / SWE-Bench Pro (2025)",
+ "url": "https://ai2027-tracker.com/predictions/long-horizon-struggle/",
+ "text_file": "sessions/cmp/notes/doc08_agent_reliability.txt",
+ "summary": "至2025年agents'理论惊艳、实操不可靠':50%成功时程仅~50分钟;标准SWE-bench 70%+的模型在长程多文件任务掉到~23%;tau-bench pass@1 61%但pass@8仅25%。能力(非仅扩散)限制已实现替代。",
+ "bindings": [
+  {
+   "node_id": "N-0005",
+   "relation": "supports",
+   "note": "长程可靠性不足→整岗替代被高估"
+  },
+  {
+   "node_id": "N-0006",
+   "relation": "context",
+   "note": "暴露远大于可靠端到端执行"
+  }
+ ]
+}

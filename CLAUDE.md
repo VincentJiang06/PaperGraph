@@ -1,37 +1,46 @@
 # Claude Code Instructions
 
-PaperGraph runs under Claude Code. The main session is the **Orchestrator**; bounded subagents act as **ProofWorker**, **DocsWorker**, **CoverageCritic**, or **CompileWorker**.
+Follow `AGENTS.md` first. This file adds only Claude-specific operating rules.
 
-Before acting, read `docs/00-overview.md`; then the doc for the stage you are working on (`docs/01`–`07`). On any boundary question, `docs/08-module-contracts.md` is authoritative; checks are the V-* rules in `docs/09-verification.md`; scope + CLI surface is `docs/10-v1-design.md`; test structure is `docs/11-test-suite.md`; WebUI design is `docs/12-webui-spec.md`; the search program (waves, source tiers, saturation, semantic retrieval) is `docs/13`–`18` — all ADOPTED and binding. `docs/` is the only source of truth. `archive/` is superseded — never follow it.
+## Active direction
 
-## Orchestrator rules
+PaperGraph is a deliberately small, file-based topic-to-paper workflow. The old Logic Graph,
+`paperproof`/`nd` CLIs, schemas, queues, database, and WebUI are archived failed attempts. Never
+read `archive/**` as guidance and never resurrect those components.
 
-```text
-Drive all state changes through the paperproof CLI; never hand-edit JSONL.
-Get explicit user acceptance of the ProjectContract before expanding the graph.
-Dispatch parallel workers only with distinct task_ids and distinct output files.
-Judgment belongs to workers; bookkeeping (validate/commit/freeze/compile) belongs to code.
-```
+The current repository mode is documentation-only unless the user explicitly requests executable
+implementation. Do not edit Python, data, generated reports, or run artifacts during documentation
+work.
 
-## Worker rules (ProofWorker / DocsWorker / CoverageCritic)
+## Native subagents
 
-```text
-Read only the task's input files (ProofTask, ContextPack, DocsPack; DocsWorkers additionally read docs/raw/** — that search IS their task).
-Write only the task's declared output file (always under agent_outputs/). Never touch graph/, commit/, freeze/, compiler/, docs/*.jsonl, queue/.
-Never choose a verdict — walk the evaluation ladder and fill the check form (closed enums, docs/03); code computes the verdict.
-Cite only from the provided DocsPack; missing evidence => evidence_check=insufficient + DocsRequest.
-Never invent citations. No numeric scores.
-Inference gap => at most two bridge proposals; never expand bridges recursively.
-CoverageCritic (docs/15): READ-ONLY audit of one wave — never searches, never adds evidence; fills the closed coverage form (no documents/evidence_units keys) and writes one file to agent_outputs/coverage_reports/; code computes the wave verdict.
-No essay prose anywhere except CompileWorker output; notes ≤ 150 words (critic notes ≤ 100).
-Write the output file and stop.
-```
-
-## Non-negotiables (all roles)
+Use Claude Code's native subagents; PaperGraph itself needs no model API key. Keep each task bounded
+and dispatch independent work in parallel:
 
 ```text
-JSONL is canonical and append-only; DB is derived.
-Committer is the only Logic Graph mutator.
-No prose before the Compiler stage.
-Any deviation from docs/ requires updating the doc in the same change.
+author wave A   one Advocate per P-id + one Adversary
+author wave B   one ClaimGrounder per claim_id
+eval wave       one EvalAdvocate per K-id + one EvalAdversary + one ClaimAuditor
+                + at least three blind Referees
 ```
+
+The main Claude session is the Orchestrator. It is the only agent allowed to merge shared files.
+Workers return structured findings or write only a pre-assigned disjoint path. Never allow two
+agents to edit `paper.md`, `positions.md`, `claims.tsv`, `gate_report.md`, or the merged eval verdict
+concurrently.
+
+## Decision discipline
+
+- Run both in-loop gates mechanically; do not replace their result with prose judgment.
+- Treat both gates green as a candidate, not a release.
+- Apply `eval/EVAL.md` fail-closed: no `SHIP` while D2, D3, D4b, or D5 is absent, even if the current
+  harness exits successfully.
+- Never use the author's position map as held-out ground truth.
+- Never fabricate citations, quotes, numbers, or data provenance.
+- Never weaken a gate or eval to clear an existing paper.
+
+Read `DESIGN.md` for intent, `WORKFLOW.md` for execution, the two `gates/*.md` files for author-side
+interfaces, and `eval/EVAL.md` plus `eval/protocol.md` for held-out evaluation.
+
+Commit and push only when explicitly requested. If asked to push, use only
+`github.com/VincentJiang06/PaperGraph` and branch before changing `main`.

@@ -1,0 +1,5 @@
+SOURCE: Emmanuel Saez & Gabriel Zucman (2020), Journal of Economic Perspectives — "The Rise of Income and Wealth Inequality in America: Evidence from Distributional Macroeconomic Accounts"
+URL: https://gabriel-zucman.eu/files/SaezZucman2020JEP.pdf
+VERBATIM QUOTES:
+"As shown in Figure 1, in both cases, the top 10 percent wealthiest tax units owned 77–78 percent of wealth in 2018, an increase of 10 points since 1989."
+"In both cases, the top 1 percent wealthiest tax units owned 38 percent of wealth in 2018, also an increase of 10 points since 1989."

@@ -1,0 +1,20 @@
+Source: Cengiz, Doruk; Dube, Arindrajit; Lindner, Attila; Zipperer, Ben (2019). "The Effect of Minimum Wages on Low-Wage Jobs: Evidence from the United States Using a Bunching Estimator." Quarterly Journal of Economics, 134(3): 1405-1454. Also NBER Working Paper No. 25434.
+URL: https://www.nber.org/papers/w25434
+Retrieved via WebFetch on 2026-07-09.
+
+Extracted content:
+
+## Abstract Summary
+The researchers developed a novel bunching estimator comparing excess jobs at the new minimum wage to missing jobs below it. They analyzed 138 state minimum wage changes between 1979-2016.
+
+## Key Findings on Overall Employment Effect
+"the overall number of low-wage jobs remained essentially unchanged over five years following the increase"
+
+This suggests minimal aggregate job loss from minimum wage increases.
+
+## Findings on Wage "Bite" Effects
+The paper states: "We also find no evidence of disemployment when we consider higher levels of minimum wages. However, we do find some evidence of reduced employment in tradable sectors."
+
+This indicates employment impacts varied by sector rather than showing clear patterns related to the minimum wage's relative magnitude (its "bite" as a ratio to median wages). The researchers noted wage spillover effects amplified earnings gains at the bottom of the wage distribution alongside stable overall employment.
+
+(Additional context from search results, Department of Labor CLEAR summary and press coverage: the paper uses data through 2016 and separately reports heterogeneity by the "bite" of the minimum wage, i.e., the minimum-to-median wage ratio, finding little indication of job losses for minimum-wage events reaching up to roughly 59% of the local median wage.)

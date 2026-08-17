@@ -1,0 +1,14 @@
+Source: "Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence" — Erik Brynjolfsson, Bharat Chandar, Ruyu Chen. Stanford Digital Economy Lab, 2025 (updated Nov 2025).
+URL: https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recent-employment-effects-of-artificial-intelligence/
+
+Verbatim / key extracted findings:
+
+"early-career workers (ages 22-25) in the most AI-exposed occupations have experienced a 16 percent relative decline in employment" (updated figure through October 2025; original July 2025 version reported approximately 13%, revised upward as more data accrued — i.e. the effect has been GROWING over 2025, not shrinking).
+
+"employment declines are concentrated in occupations where AI is more likely to automate, rather than augment, human labor."
+
+Methodology: high-frequency, individual-level administrative payroll data from ADP (the largest U.S. payroll provider), covering employment since generative AI's widespread adoption in late 2022. This allows age x occupation x AI-exposure panel analysis at much higher frequency and disaggregation than official BLS/CPS survey data.
+
+Mechanism proposed by the authors: young/entry-level workers depend more on "codified knowledge" (formal, textbook/rule-based knowledge that LLMs are trained on and can replicate), while experienced workers rely more on "tacit knowledge" (intuition, social skills, judgment built through years of on-the-job experience) that current AI cannot easily replicate. This predicts a specific, testable pattern: decline should be concentrated among the young AND in automation-leaning (not augmentation-leaning) occupations — which is what the data show.
+
+Relevance: This is disaggregated, high-frequency, causally-identified (age x exposure interaction, controlling for firm-level factors) evidence that a real, non-trivial net employment effect (~13-16% relative decline for a specific vulnerable subgroup) IS already visible in the data as of 2025 — even though aggregate/topline labor statistics look mild. This is central both to N-0009 (exposure-grouped net divergence) and N-0011 (vulnerable subgroup early-warning signal), and bears directly on the root identification question: the "mild" read is an aggregation artifact that masks a real, concentrated, already-detectable effect.

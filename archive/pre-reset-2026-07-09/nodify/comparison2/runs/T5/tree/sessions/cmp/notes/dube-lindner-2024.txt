@@ -1,0 +1,154 @@
+SOURCE: Arindrajit Dube & Attila S. Lindner (2024), "Minimum Wages in the 21st Century",
+NBER Working Paper No. 32878, August 2024, revised October 2024.
+URL: https://www.nber.org/system/files/working_papers/w32878/w32878.pdf
+Chapter prepared for the Handbook of Labor Economics, Volume 5.
+
+Extracted verbatim excerpts (page numbers refer to the PDF as fetched):
+
+[ABSTRACT, p.2]
+"This chapter surveys the literature on the impact of minimum wages on low-wage labor
+markets. We describe and critically review the empirical methods in the new minimum wage
+literature, particularly those leveraging quasi-experimental variation. We provide a
+quantitative overview of the most recent evidence on the employment and wage effects of the
+policy. We also explore emerging research on its impact on other margins, including
+amenities, other inputs (such as capital and high-skilled workers), firm entry and exit, as
+well as output prices, demand, profits, and productivity."
+
+[EVENT-STUDY / MODERN DiD METHODS ARE UNBIASED, p.21]
+"Overall, our take-away from the recent literature is that an event-based
+difference-in-differences design (which has become increasingly popular) is a much more
+promising approach and should be the default among researchers using a DiD approach.
+Estimates from a TWFE panel regression with log minimum wage have proved opaque and
+fragile, and we think they are unlikely to yield convincing evidence going forward."
+[p.21, re: Monte Carlo simulation] "modern difference-in-differences event study
+approaches–such as Callaway and Sant'Anna (2021), Cengiz et al. (2019) or Dube et al.
+(2023)–yield unbiased estimates and correctly show a null effect."
+
+[EVENT STUDY POINT ESTIMATES, p.19]
+"Averaged over a maximum of 6 years following the initial increase, treated states saw a
+rise in minimum wages of 0.26 log points, a rise in restaurant earnings of 0.03 log points,
+and a fall in employment of -0.001 log points (statistically indistinguishable from zero).
+This yields a small OWE of -0.03 (s.e.=0.15). Focusing on the 46 events after 1998 yields
+an OWE of 0.15 (s.e.=0.14). ... The other columns present outcomes for other groups of
+workers than restaurants, including for teens, as well as a demographic prediction-based
+group ("high recall") that captures most minimum wage workers. As we can see, the
+event-based OWE estimates for these groups are small or positive, falling between -0.07
+and 0.34."
+
+[CENTRAL TENDENCY ACROSS 72 STUDIES, p.34]
+"We begin by describing the central tendencies in the OWE estimates, drawing from the
+discussion in Dube and Zipperer (2024). Spanning more than thirty years of research and a
+wide range of affected workers, the estimates from the OWE repository suggest that the
+overall impact of minimum wages on employment is small. The median OWE estimate from the
+analysis of 72 published studies is -0.13, suggesting a minor impact of the minimum wage on
+jobs. This estimate implies that the total earnings of low-wage workers rise by 87% of what
+one would expect if there were no job losses due to the policy. Put differently, employment
+reductions offset only about 13% of the potential earnings gains. While the mean OWE
+estimate of -0.25 is somewhat larger in magnitude, it is still consistent with fairly modest
+job losses and relatively large earnings gains."
+[p.34] "Figure 5 shows the distribution of OWE for the 70 published studies. 51 (or around
+71%) of the published studies have positive or small negative estimates; in contrast, 21
+studies (or around 29%) have estimates that would imply a large or medium negative effect."
+
+[BROAD-GROUP STUDIES CLOSER TO ZERO, p.35]
+"Broad-group studies tend to have estimates closer to zero, with a median OWE estimate of
+0.02. 19 of the studies (or 90%) have OWE estimates that are either positive or small
+negative."
+
+[DISSENTING / ADVERSARIAL VIEW WITHIN THE SAME REVIEW, p.33]
+"Neumark and Wascher (2008) and Neumark and Shirley (2022), mixing various elasticities,
+concluded that the average elasticity is negative. On the other hand, Doucouliagos and
+Stanley (2009) and Belman and Wolfson (2014) focus on the elasticity of employment with
+respect to the minimum wage, suggesting that the overall impact of minimum wages on
+employment is minimal."
+
+[NON-LINEARITY / SIZE-OF-INCREASE HETEROGENEITY, p.38]
+"Cengiz et al. (2019) use event-by-event estimate to assess heterogeneity by the bite of
+minimum wage (as measured by the Kaitz index) at the state level, and finds no heterogeneity
+for events up to 2016. Godoey and Reich (2021) estimate impact for broad group of low-wage
+workers at the sub-state level and does not find larger job losses in more binding areas.
+Clemens and Strain (2021) consider heterogeneity by size of increases in the post-2013
+period using an event study design. Considering all 27 events, their preferred
+specification find a small overall OWE of -0.26 for their "low-skill" group (individuals
+ages 25 and under without a high school degree); for the six states (and D.C.) raising
+their minimums by $2.50/hour or more, they find an OWE of -1.01, while for the states
+raising less the OWE estimate is 0.46."
+[p.39, footnote 32] "Hourly wages increased 18% in the six states, raising their minimums
+by $2.50/hour following the minimum wage, while 11% in other treated states. Therefore,
+these OWE estimates imply a very high degree of non-linearity in employment responses."
+[p.39] "There is an overall positive association between the wage estimates and the log
+minimum wage change, with correlation coefficients of 0.43 for restaurants, and 0.27 for
+high recall. However, there is no evidence of a negative association between employment
+estimates and the minimum wage change; the correlation coefficients are 0.17 and 0.12 for
+restaurants and high recall, respectively."
+[p.39] "Going forward, we think further research is needed to carefully assess possible
+"non-linearities" from minimum wage increases that are both large and are at high levels."
+
+[MARKET CONCENTRATION / MONOPSONY, p.39]
+"Models of imperfect competition in the labor market imply more positive employment effects
+when the labor market is more monopsonistic. Azar et al. (2023) assess this by considering
+heterogeneous effects of minimum wage hikes during the 2010-2016 period, focusing on the
+retail sector. Using a similar bunching approach as Cengiz et al. (2019), they show that in
+non-concentrated markets (HHI<0.25), there is a negative (but statistically insignificant)
+overall OWE of around -0.50. In contrast, for concentrated markets (HHI≥0.25) there is a
+sizable positive and statistically significant OWE of 1.8."
+
+[TURNOVER CONFIRMS DYNAMIC MONOPSONY, p.54]
+"A key adjustment channel predicted by various models of dynamic monopsony (Burdett and
+Mortensen, 1998; Manning, 2003) is that minimum wages reduce worker turnover
+(separations)... Table 5 summarizes the key results on turnover from these studies. Of the
+14 studies that directly examine the impact on turnover, 12 find a significant reduction in
+worker turnover rates... This evidence also confirms a key prediction of the dynamic
+monopsony framework and, more broadly, underscores the role of labor market frictions in
+understanding the impact of minimum wages."
+
+[HOURS, p.41]
+"Overall, most U.S. evidence—especially more recent, higher quality estimates—do not
+suggest large adjustments to hours of work conditional on employment. This is particularly
+true for low-wage workers generally; for particular subsets of workers, there are some
+estimates in both negative and positive directions."
+
+[AMENITIES / FRINGE BENEFITS, p.45]
+"Simon and Kaestner (2004) use various measures from the National Longitudinal Survey of
+Youth (NLSY) and the Current Population Survey (CPS) to assess this channel. Exploiting
+state-level variation in the level of minimum wages and applying a TWFE design, they find no
+discernible change in fringe benefits (employer provision of health insurance, pension
+coverage, dental insurance, vacation pay, and training/educational benefits) and working
+conditions."
+[p.45] "Clemens et al. (2018) also provide a back-of-the-envelope estimate implying that
+roughly 9-16% of the wage increase of low wage workers is offset via reductions in
+insurance. This suggests that workers benefit substantially from the policy even after any
+fringe benefit offset is taken into account."
+
+[PRICE PASS-THROUGH, p.52]
+"There is an extensive literature studying the effect of the minimum wage on output prices.
+... The evidence almost uniformly suggests that output prices increase following a minimum
+wage change. The magnitude of the price increase is also noteworthy. ... most papers find
+full pass-through. In other words, the unit labor cost increase is fully covered by the unit
+price increase; and in some cases, we see even more than full pass-through."
+[p.52, footnote 36] "Harasztosi and Lindner (2019) find a close to full price pass-through,
+but only 75% of the total wage bill increase is paid for by consumers. The discrepancy
+between the two can be explained by quantity responses to the price change."
+
+[CAPITAL-LABOR SUBSTITUTION / AUTOMATION, p.47]
+"Both Lordan and Neumark (2018) and Aaronson and Phelan (2019) find that the minimum wage
+reduces the employment of the lowest-wage workers in routine automatable occupations.
+However, the two studies disagree on the overall employment implications of these results.
+Lordan and Neumark (2018) argue that the reduction in automatable jobs contributes to a
+lower overall employment level of low-wage workers, while Aaronson and Phelan (2019) find
+that workers laid off from routine jobs are able to move into other expanding low-wage
+occupations. The broader evidence on employment reviewed in Section 3.3 appears to be more
+consistent with the interpretation of Aaronson and Phelan (2019)."
+
+[HIRING STANDARDS / SKILL UPGRADING, p.47]
+"Clemens et al. (2021) find that workers in low-wage occupations are more likely to be
+older and have a high school degree following minimum wage changes. They also document an
+increase in skill requirement in low-wage occupations using Burning Glass data on job
+postings."
+
+[FIRM EXIT AND REALLOCATION, p.48]
+"In terms of firm exit, Draca et al. (2011), Harasztosi and Lindner (2019), Mayneris et al.
+(2018), and Dustmann et al. (2022) find that exposed firms exit at a faster rate following a
+minimum wage hike... the weight of evidence on firm dynamics suggests that the number of
+firms probably falls following a minimum wage increase (as the exit rate increases, while
+the entry rate likely does not rise—at least not strongly)."

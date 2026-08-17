@@ -1,0 +1,17 @@
+Source S8
+Title: Why haven't workers returned to the labor force after COVID-19?
+Publisher: Brookings Institution
+URL: https://www.brookings.edu/articles/why-havent-workers-returned-to-the-labor-force-after-covid-19/
+Fetched: 2026-07-09 (via WebFetch)
+
+Extracted verbatim quotes:
+
+"participation has stagnated at about 1 percentage point below its pre-pandemic level" (as of December 2022).
+
+Researchers identified approximately 1.5 million workers missing from the labor force beyond what pre-pandemic demographic trends would predict.
+
+"long COVID accounts for around 700,000 workers missing from the labor force."
+
+Fear of COVID: an estimated 790,000 workers stayed out of the workforce due to infection concerns; Census data showed "about 0.4% of the population said that they were not working because of fear of COVID."
+
+Average weekly hours dropped by 0.6 hours between late 2019 and late 2022, "equivalent to a loss of approximately 2.5 million workers" — a larger effect than the participation-rate decline itself.

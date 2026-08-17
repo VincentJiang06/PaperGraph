@@ -1,0 +1,8 @@
+{
+  "parent_id": "N-0003",
+  "children": [
+    {"statement": "分离率/离职下降是monopsony的直接指纹:Dube-Lester-Reich(2016)用相邻县边界断点发现最低工资上调降低了员工流失(separations/turnover)而就业不降。", "why_helps_parent": "为monopsony提供可证伪的直接经验指纹,而非事后合理化", "orientation": "neutral"},
+    {"statement": "买方势力/搜寻摩擦普遍存在:劳动力市场集中度与向上倾斜的公司层劳动供给弹性证据(Azar等;Manning),尤其低薪部门,为'温和上调不降就业'提供结构条件。", "why_helps_parent": "确立monopsony的前提在美国低薪市场是否成立", "orientation": "neutral"},
+    {"statement": "monopsony质疑:低薪快餐/零售是雇主众多、离职频繁的高竞争行业;工人流动性有限≠单一买方势力;monopsony常被用作近零效应的事后解释。", "why_helps_parent": "对首要调和机制的红队检验:若monopsony弱,则调和依赖别的机制", "orientation": "adversarial"}
+  ]
+}

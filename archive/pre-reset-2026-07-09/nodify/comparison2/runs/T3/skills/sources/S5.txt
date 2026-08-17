@@ -1,0 +1,1615 @@
+Working Paper #12                                                                                        June 1, 2015
+
+
+
+GAUGING THE IMPACT OF THE FED ON
+INEQUALITY DURING THE GREAT
+RECESSION
+Josh Bivens
+Research and Policy Director
+Economic Policy Institute
+
+SUMMARY
+Criticism that the Federal Reserve’s very low interest rates and large-scale asset purchases (LSAPs),
+commonly known as quantitative easing, increased inequality by driving up the price of stocks and other assets
+is misplaced. To the extent that the Fed pushed the economy closer to full employment, it reduced inequality.
+Critics of the Fed ignore the crucial “compared to what” question. Bivens compares the distributional
+consequences of Fed policy to two counterfactuals: (1) a fiscal stimulus that with roughly the same boost to
+output as low interest rates and LSAPs produced and (2) no macroeconomic stimulus at all.
+Monetary Stimulus versus Equivalent Fiscal Stimulus
+A 2010 fiscal deal—which included a two-year payroll tax cut, an extension of the emergency unemployment
+compensation, and accelerated depreciation— produced roughly the same positive effect on output and
+employment as all the Fed’s LSAPs. Comparing the distributional effects of these similar-sized policies, the
+relative impact on inequality of monetary policy seems quite small; it’s not even clear if it is slightly
+progressive or slightly regressive.
+The reason: Housing is a much larger share of assets for the middle-class than it is for wealthier households as
+the accompanying table shows. Wealthier households hold a disproportionate share of stocks and bonds.
+Houses, stocks and bonds all benefitted from the Fed’s LSAPs. Stock price increases disproportionately benefit
+the top 1%; house price increases, the bottom 90%. Drawing from the other research, Bivens estimates home
+prices were boosted by 7 percent due to LSAPs, stock prices by 5% and bond prices between 9% and 14%.
+Boosting house prices reduces inequality because home equity represents such a large share of middle-class
+wealth; boosting stock prices increases inequality. These effects are largely offsetting. Moreover, the effects of
+LSAPs on asset prices are likely to dissipate over time when credit is tightened.
+Monetary Stimulus versus No Stimulus
+But Fed officials in 2007 had little influence over fiscal stimulus; they had to decide what monetary policy to
+pursue given what Bivens considers to be inadequate fiscal stimulus. As bad and unequal as wage growth was
+since the onset of the Great Recession, it would have been even slower and less equal had the Fed not pursued
+its easy money policies. In short, compared to a counterfactual of no change in fiscal policy in response to a
+recession, monetary stimulus reduces inequality significantly. If the Fed were to tighten credit before the
+economy reaches full employment, Bivens argues, this would hurt low- and moderate-wage workers and
+increase inequality. In addition, the unconventional monetary policies of recent years, including LSAPs, don’t
+have a substantially different effect on inequality than changes in short-term interest rates.
+                                                                    Hutchins Center Working Paper #12
+
+
+
+INTRODUCTION
+The Federal Reserve exhausted its conventional macroeconomic stabilization tool—lowering short-term
+interest rates—in December 2008, when it lowered overnight interest rates to essentially zero. Because
+the U.S. economy remained in a deep recession even after this tool was exhausted, the Fed turned to less
+conventional tools, with large-scale asset purchases (LSAP, popularly known as “quantitative easing”)
+being the most well-known and controversial. These purchases, undertaken in three rounds (QE1, QE2,
+and QE3, popularly) have increased the value of the Fed’s balance sheet from just under $1 trillion in
+2007 to well over $4 trillion by the end of 2014.
+
+While most of the debate over the desirability of large-scale asset purchases has focused on their
+effectiveness in spurring growth and boosting inflation expectations, some observers have raised concerns
+about the effects of LSAP on income inequality. For example, William D. Cohan, writing in The New
+York Times’ Dealbook, asserted that the recent Fed policies have “compounded the problem” of
+inequality.1 Mitt Romney identified quantitative easing as the leading cause of the recent increases in
+income inequality.2 Even some Fed insiders have made the argument. Former Fed Governor Kevin Warsh
+has called Fed policies a “reverse Robin Hood,” making the well-to-do even more well-to-do.3 These
+concerns have been taken seriously enough to spur some preliminary research from sources like the Bank
+of England and the McKinsey Global Institute (MGI). However, many of these investigations have
+suffered from a failure to articulate clear benchmarks against which to gauge the distributional
+consequences of LSAP.
+
+This paper examines the distributional consequences of the Fed’s LSAPs in recent years, and aims to
+provide clear benchmarks against which to judge them, with a particular focus on comparing monetary
+stimulus to fiscal stimulus. The key findings are as follows:
+
+    •   Monetary stimulus does not necessarily increase inequality, even when ignoring its effects on
+        output stabilization. Instead, monetary stimulus (including LSAPs) has cross-cutting effects. For
+        example, if home values (one type of asset price) are boosted more by LSAPs than equity prices,
+        this actually has a progressive impact on the wealth distribution.
+    •   Aside from an effect on output stabilization, the inequality implications of fiscal stimulus are
+        nearly impossible to generalize. Some discretionary fiscal stimulus programs have been quite
+        progressive (cutting taxes and boosting transfers to the bottom half of the income distribution),
+        while others have been quite regressive (cutting income taxes across the board). In fact, the two
+        methods used by the Congressional Budget Office (CBO) to assess the distributional effect of
+        government consumption and investments yield starkly different outcomes. One approach
+        (allocating spending proportional to population) is progressive, while another (allocating
+        spending proportional to household income) is not.
+
+
+1
+  Link: http://dealbook.nytimes.com/2014/10/22/how-quantitative-easing-contributed-to-the-nations-inequality-
+problem/?_r=1
+2
+  Link: https://www.youtube.com/watch?v=gAoTEDlxznc
+3
+  Link: http://video.cnbc.com/gallery/?video=3000287822
+
+
+                                                                                                                2
+                                                                              Hutchins Center Working Paper #12
+
+       •    Indirect impacts of fiscal and monetary stimulus, aside from output stabilization, are likely to
+            have very minor impacts on inequality. For example, the rise in employment in interest-sensitive
+            industries following a monetary stimulus may push employment into generally higher-wage
+            sectors (especially after accounting for the labor force characteristics) but will generally not be
+            large enough to significantly affect the earnings distribution.
+       •    The output stabilization effects of both fiscal and monetary stimulus have large and progressive
+            effects on income distribution. Stimulus that reduces unemployment disproportionately benefits
+            low and moderate-wage workers and leads to a compression of earnings.
+       •    The post-2008 stance of monetary policy has significantly favored reduction in inequality relative
+            to a baseline of less expansionary policy. However, with pressure building to begin unwinding the
+            last major component of monetary stimulus—the near-zero short-term policy rates that have
+            prevailed since the end of 2008—this could change in coming years. Ample historical evidence
+            suggests that ex ante estimates of the natural rate of unemployment are often too high, and
+            inequality (particularly inequality of labor earnings) can be strongly reduced at only minimal risk
+            of sparking undesired rates of inflation if the Fed allows a genuinely high-pressure labor market
+            to develop.
+
+
+QUICK BACKGROUND ON UNCONVENTIONAL MONETARY POLICY
+SINCE 2008
+During the Great Recession, the Fed expanded its balance sheet (roughly doubling it) to provide direct
+lending via emergency facilities in order to restore financial market functioning following the banking
+crisis in fall 2008. This direct lending roughly doubled the size of the Fed’s overall balance sheet (raising
+it from just below $1 trillion to roughly $2 trillion). By the spring of 2009, this direct lending through the
+emergency lending facilities had substantially declined. Without further action, the size of the Fed’s
+balance sheet (and hence the liquidity being provided to the U.S. economy) would have shrunk back
+down to pre-recession levels.
+
+Largely driven by the desire to keep providing monetary support to a still-contracting economy, the first
+round of LSAPs (known popularly as QE1) began when the Fed announced in March 2009 that it would
+commit to purchasing $300 billion in Treasury securities, $200 billion in agency debt, and $1.25 trillion
+in mortgage-backed securities.4 The purchases were completed by the spring of 2010. This raised the
+question of what to do about maturing assets; if the Fed did not replace them as they matured, the balance
+sheet would decline by $100 to $200 billion annually. To forestall this, the Fed announced in August
+2010 that it would purchase Treasury securities to replace the maturing securities to keep the size of its
+balance sheet stable.
+
+It’s important to remember the economic context behind the decision to engage in LSAP. Prior to the first
+round in March 2009, the previous six months had seen the U.S. economy lose a staggering 4.2 million
+jobs, despite the fact that the Fed had begun cutting conventional short-term interest rates in August 2007,
+had reached zero on these rates by December 2008, and had already instituted unprecedented levels of
+
+4
+    In November 2009 it announced it would only purchase $175 billion in agency debt because of limited availability.
+
+
+                                                                                                                        3
+                                                                            Hutchins Center Working Paper #12
+
+direct lending to financial institutions to alleviate financial market distress. The job loss persisted despite
+the fact that in May President George W. Bush signed into law the Economic Stimulus Act of 2008
+(which Congress had already passed) to provide $160 billion in fiscal stimulus.
+
+The second round of LSAPs (QE2) began in November 2010 with an announcement that the Fed would
+purchase an additional $600 billion in Treasury securities (at a pace of roughly $75 billion per month) by
+June 2011. It further committed to continuing to replace maturing securities with Treasury purchases.
+While the official end of the Great Recession had occurred in June 2009, more than a year before, the
+U.S. unemployment rate in November 2010 was higher than at the recession’s trough (9.8 versus 9.5
+percent). Employment had fallen by nearly 300,000 since the recession’s trough and contracted in four of
+the five months before November 2010. In retrospect, a consistent round of job growth (which of course
+could be in part endogenous to the introduction of QEII) actually began in October 2010, but in real-time
+the recovery seemed to be stubbornly stalled.
+
+The final round of LSAPs (QE3) began with an announcement in September 2012 that the Fed would
+purchase $40 billion in market-backed securities (MBS) per month. This announcement had no end date
+and no ceiling on the total amount that would be purchased. In December of 2012, the Fed then
+announced that it would also begin purchasing $45 billion in Treasury securities (in addition to the MBS
+purchases).5 In December 2013, the Fed announced that it would begin reducing the size of monthly
+purchases, and in February the pace of total purchases declined from $85 billion to $65 billion. The
+purchases ended in October 2014, with the Fed’s balance sheet at roughly $4.5 trillion. When QE3 was
+announced, the unemployment rate stood at 7.8 percent after having declined a full percentage point in the
+previous year.
+
+Yet there were reasons to think this progress could slow. For one, about a third of the change in
+unemployment between November 2010 (the beginning of QE2) and September 2012 (QE3) was due to
+falling participation rather than employment growth. Further, the “fiscal cliff” was clearly on the horizon.
+In January 2013 a number of fiscal stimulus measures were set to expire, and the long-scheduled
+expiration of tax cuts passed in 2001 and 2003 was set to occur. If all the different elements of the fiscal
+cliff had come to pass, there would have been a very large increase in fiscal drag in 2013, and the first
+half of that year would likely have seen negative output growth. It seems hard to believe that this worry
+was not a significant part of the Fed’s decision making regarding QE3.
+
+
+DID LSAPS LEAD TO INCREASED INEQUALITY?
+The rise of income inequality in the United States during the past few decades has garnered interest and
+concern in recent years. This concern is completely understandable. The scale of income concentration
+has become so large that it has significantly impacted the trajectory of income growth for the vast
+majority of American households. Table 1 below shows the share of average household income growth
+that can be accounted for by the top 10 and top 1 percent of households over various time periods.
+
+
+5
+  These purchases were largely to offset the end of the Maturity Extension Program (MEP), a program started in September 2011
+that swapped long-term for short-term Treasuries on the Fed’s balance sheet. Because this move had no effect on the overall size
+of the Fed’s balance sheet or the size of the monetary base, it is not included in the discussion here of LSAPs.
+
+
+                                                                                                                               4
+                                                                              Hutchins Center Working Paper #12
+
+Between 1979 and 2007, for example, the top 1 percent accounted for 59.8 percent of the average growth
+in cash and market-based income, and 36.3 percent of growth in comprehensive income (income that
+includes transfers and noncash income sources).
+
+Table 1: Share of Average Income Growth Accounted
+for by Different Income Groupings
+                      Top 1             Top 5              Top 10             Bottom 90
+                                 CBO comprehensive incomes
+ 1979-2007            34.6%            49.8%                59.2%                40.8%
+ 2007-2009            67.2%            82.0%                87.0%                13.0%
+ 2009-2011            66.9%            80.8%                84.8%                15.2%
+ 1979-2011            35.7%            59.0%                75.5%                24.5%
+
+
+                           Piketty-Saez cash, market-based incomes
+ 1947-1979            7.8%             21.1%              34.1%                65.9%
+ 1979-2007            59.8%            80.9%              91.4%                 8.6%
+ 2007-2009            49.0%            60.2%              65.1%                34.9%
+ 2009-2011           135.6%            170.3%            171.5%                -71.5%
+ 2009-2012            94.8%            112.5%            115.7%                -15.7%
+ 1935-1980            7.1%             19.2%              30.3%                69.7%
+ 1980-2012            74.6%            103.0%            116.6%                -16.6%
+    Author's analysis based on data from Piketty and Saez (1998, updated) and the
+Congressional Budget Office (CBO). The Piketty-Saez data only includes cash, market-
+ based incomes, while the CBO data also included non-cash income and government
+ transfer payments. 2007-2009 saw income losses across-the-board. So, the numbers
+reported here show the share of average income losses accounted for by each group.
+
+
+
+In order to assess the overall desirability of LSAPs as economic policy, the potential of LSAPs to cause
+inequality needs to be addressed. Among other things, a counterfactual (or baseline) should be specified
+against which the LSAP can be judged.6 The rest of this paper will consider two such counterfactual
+baselines: (1) a fiscal stimulus that equals the output effects of any LSAP and (2) no macroeconomic
+stimulus at all.
+
+The first counterfactual—a fiscal stimulus that equals the output effects of any LSAP—likely holds more
+interest for academics, for a couple of reasons. First, academics presumably take it for granted that the
+precise degree of economic stimulus is knowable and politically achievable, hence less of any one type of
+stimulus means policymakers will provide more of another type of stimulus. One can see this thinking
+clearly in a blog post by Rowe (2012), who writes:
+
+
+6
+  For the purposes of this paper, unless otherwise separated, the term LSAP is used to mean the combination of extremely low
+short-term policy interest rates and the large-scale asset purchases undertaken by the Fed to lower longer-term rates. Given that
+such asset purchases only occur because short-term policy rates are at zero, it makes sense to use as shorthand.
+
+
+                                                                                                                                    5
+                                                                           Hutchins Center Working Paper #12
+
+     Does monetary policy have (bad) distributional consequences? Some questions are bad
+     questions. This is one of them. We can get a lot clearer and more useful answer if we change the
+     change the question…Here’s a better question: “If we used fiscal policy instead of monetary
+     policy to remove a shortage of aggregate demand, would that switch from one policy to another
+     have distributional consequences?”
+
+This takes for granted that the specific output stabilization goal (to remove a shortage of aggregate
+demand) will be met regardless of the precise monetary/fiscal mix.
+
+The second counterfactual—the absence of any additional offsetting macroeconomic stimuli—is one
+that is likely more interesting to policy-minded macroeconomists (like the author). Economic history
+since the onset of the Great Recession should have made clear that one should not take for granted in
+federal policy debates that less of one type of macroeconomic stimulus (such as a scaling back of
+LSAPs) will be met by a concomitant increase in another type of stimulus (a boost to fiscal
+measures, for example). Instead, recent history has shown that the most likely response from other
+policymakers to a change in monetary policy is no predictable response at all.
+
+Given this unpredictability, the impacts on inequality of pushing the economy closer to full
+employment—which is not considered at all in the first counterfactual—must be considered. As we
+will see, the evidence indicates that this effect of lowering unemployment is by far the largest impact
+of monetary policy changes on inequality.
+
+
+LSAPS AND INEQUALITY, COUNTERFACTUAL I: A MONETARY 2010
+EQUIVALENT OF THE 2010 FISCAL DEAL?
+This section examines the aspects of LSAPs that generate inequality relative to a baseline
+counterfactual of an equivalent fiscal stimulus. Again, this approach tends to remove from
+consideration the most interesting inequality impact of LSAPs: their role in pushing the economy
+closer to full employment. However, it is useful to explore this scenario because many who complain
+about the inequality-generating effects of LSAPs are likely to have the counterfactual in mind.7 In
+essence, the question this answers is whether or not the impact on inequality provides another
+compelling factor to consider when comparing the desirability of fiscal versus monetary stimulus as
+a method of macroeconomic stabilization.
+
+
+FISCAL VERSUS MONETARY STIMULUS: OVERVIEW OF DIRECT DISTRIBUTIONAL CHANNELS
+One direct impact on inequality of monetary stimulus is relatively straightforward: by increasing the
+demand for certain types of financial assets, monetary stimulus boosts their prices and lowers the
+interest rates associated with them. Proof in point, LSAPs have boosted the price of U.S. Treasuries
+and MBS directly. Because financial assets are (imperfect) substitutes, the LSAPs have also likely
+
+
+7
+ Of course, some complaining about the inequality-generating effects of LSAPs may simply not accept that fact that the
+economy has had a shortfall of aggregate demand needing to be filled since the onset of the Great Recession.
+
+
+                                                                                                                         6
+                                                                    Hutchins Center Working Paper #12
+
+boosted asset prices across the board. Those concerned with the inequality-generating aspects of
+LSAPs often highlight the large stock market increases since their implementation. There is some
+basis for this worry, given the extraordinary concentration of stock ownership: roughly 90 percent of
+all stock market wealth is held by only 10 percent of households.
+
+The direct impact of fiscal policy on inequality is much less general. The first-round impacts of some
+forms of fiscal stimulus are keenly inequality reducing, such as refundable tax credits targeted to
+lower-income families or unemployment insurance extensions. Other types of fiscal stimulus—such
+as across-the-board cuts in individual income tax brackets or business tax cuts—could actually
+increase inequality. As a general rule of thumb, however, the most effective fiscal stimulus (meaning
+the greatest amount of output response per dollar increase in deficits) undertaken through tax and
+transfer changes is progressive in terms of income distribution. So, expanding means-tested transfers
+like food stamps and Medicaid provide greater macroeconomic stimulus than policies whose direct
+benefits disproportionately accrue to higher-income households like cutting rates for all income
+taxpayers. The reason why progressive tax and transfer policies make for more effective
+macroeconomic stimulus is straight-forward: low- and moderate-income households tend to have
+higher propensities to consume than higher income families; effective stimulus should therefore aim
+to boost incomes lower in the distribution curve.
+
+Finally, the direct incidence of increases in government consumption and investment spending is far
+from straightforward. Given that theoretical models often identify increases in government purchases
+as the most effective form of stimulus, the distributional implications of such spending is important
+to know. The Congressional Budget Office (CBO) has provided two methods of allocating
+government consumption and investment spending across the household income distribution: (1)
+allocating it proportionately to population or (2) allocating it proportionately to household market
+income. The first method is clearly progressive—essentially constituting a lump-sum payment across
+the income distribution, with the sum being a larger share of household income for lower- and
+moderate-income households. The second method is regressive, as the distribution of market income
+is much less than the distribution of comprehensive income.8
+
+In fact, subject to only very loose limits, fiscal stimulus can essentially have any distributional
+impact that policymakers want it to have. But evidence strongly suggests there is a correlation
+between how progressive fiscal policy is and how effective it is at stabilizing output and employment
+(see, for example, the assessment of fiscal multipliers provided by Zandi (2009). For taxes and
+transfers, more progressive fiscal policy changes are nearly unambiguously more effective as a
+macroeconomic stimulus. And this same evidence strongly indicates that increases in government
+consumption and investment spending are highly effective as macroeconomic stimuli, but
+assessments of their progressivity depend strongly on how the incidence of these direct spending
+increases are estimated. And this assessment of the incidence of spending increases across income
+groups may differ strongly depending on the specific type of spending. Increases in investment in
+
+
+
+8
+ See Congressional Budget Office (2014) for a discussion of their methodology in estimating the incidence of
+government spending.
+
+
+                                                                                                               7
+                                                                             Hutchins Center Working Paper #12
+
+public transit, for example, could be more progressive than spending on highways. And means-tested
+spending on school facilities could be more progressive than spending on defense-related equipment.
+
+
+LSAPS AND THE 2010 FISCAL DEAL
+To avoid the ambiguities of talking generically about the first-round distributional implications of
+fiscal policy, this section compares an actual fiscal policy measure to a monetary stimulus that
+yielded equivalent output gains. Given that the most famous fiscal policy measure passed in recent
+years was the American Recovery and Reinvestment Act (ARRA) of 2009, this would seem to be the
+most obvious case to use for comparison. But the estimated macroeconomic effects of ARRA are
+quite a bit larger than the estimated macroeconomic effects of the Fed’s LSAPs of recent years. So a
+key question emerges regarding how linear one thinks the effects of LSAPs are. If one is comfortable
+assuming linear effects, then it’s not a big problem to extrapolate an alternative LSAP program that
+matched the macroeconomic effects of ARRA. But given the very large uncertainty around the
+impacts of LSAPs, this linear assumption is potentially problematic. What this means in practice is
+that we should compare the LSAPs to a fiscal policy stimulus that provided roughly equivalent
+increases to output and employment.
+
+A discrete fiscal policy stimulus that yielded estimated output and employment gains comparable to
+those generated by the LSAPs is the deal struck at the end of 2010. Undertaken explicitly to provide
+fiscal stimulus, the deal provided a payroll tax cut for 2011 and 2012, an extension of the emergency
+unemployment compensation program (EUC) for the next year, an extension of expanded refunds of
+some tax credits, and accelerated depreciation.9 Because the combined impact of these stimulus
+measures was substantially smaller than that of the full ARRA package (in its peak years), and the
+largest item included in the measures—payroll tax cuts—was not the most efficient fiscal stimulus
+alternative in terms of output gains relative to deficit additions, it is much easier to use in-sample
+estimates of monetary stimulus of equivalent effect as our comparison. In fact, recent analysis of the
+Fed’s LSAPs since 2009 show a pre-2015 peak impact in reducing unemployment (1 percent) that is
+quite close to the unemployment impact that was estimated for the 2010 fiscal deal (0.8 percent).
+
+Table 2 provides an estimate of the output effects of the payroll tax cuts and the three rounds of
+LSAPs per dollar committed. The fact that the U.S. economy was at the zero lower bound (ZLB) for
+short-term interest rates during the period in question strongly affects estimates of each policy’s
+effect.
+
+
+
+
+9
+  The total 2010 fiscal deal included many more components—most notably postponing the expiration of the 2001 and 2003 tax
+cuts. However, relative to current policy (as opposed to current law) the components identified above provided all of the net new
+fiscal stimulus to the economy.
+
+
+                                                                                                                                8
+                                                                          Hutchins Center Working Paper #12
+
+Table 2: Output and Employment Effects of LSAPs and 2010
+Fiscal Deal Stimulus
+                            Fiscal        Federal Reserve                GDP        Unemployment
+                             cost      Balance Sheet Change             effect       effect (peak)
+                                                                        (peak)
+
+2010 fiscal                 $235                   N/A                   1.7%               -0.8
+stimulus                    billion
+    Payroll tax cut          120                   N/A                   0.9%               -0.4
+     EUC extension            50                   N/A                   0.5%               -0.3
+     Tax extenders            20                                         0.2%               -0.1
+      Accelerated             45                                         0.1%               0.0
+      Depreciation
+
+LSAP                         N/A               ~$4 trillion                2                 -1
+Note: Estimates on fiscal cost of 2010 deal from Zandi (2010). Multipliers from Zandi as well. GDP and
+unemployment impacts from LSAP from Engen et al. (2014) - only pre-2015 effects included. GDP
+effects inferred from Engen et al. (2014) estimates of GDP impact of LSAP with an Okun coefficient of
+2 applied (they note this is their preferred value in footnote 43). Same Okun coefficient is applied to
+fiscal GDP estimates to yield unemployment impact.
+
+
+
+With regard to fiscal policy, the existence of the ZLB is almost universally thought to greatly
+increase the effectiveness of fiscal stimulus and provide a basis for potential fiscal multiplier effects.
+Essentially, the effectiveness of deficit-financed fiscal stimulus when the economy is not near the
+ZLB is thought to be severely blunted by the upward pressure on interest rates that will result from it.
+Interest rates can rise in response to deficit-financed fiscal stimulus either (1) due to the increased
+demand for money that results from the output boost it provides (as in old-fashioned textbook
+investment-saving (IS)–liquidity preference money supply (LM) models or (2) because the monetary
+authorities raise interest rates more than one-for-one with the increase in inflation expected to result
+from the fiscal stimulus (as in New Keynesian models). Either way, some private absorption (either
+consumption or investment) is crowded out by the higher interest rates resulting from fiscal stimulus.
+However, when the economy is stuck at the ZLB, only fiscal stimulus large enough to completely
+erase the output gap will begin putting upward pressure on interest rates, so its effectiveness is not
+blunted at all.
+
+Traditional monetary stimulus—lowering short-term interest rates controlled directly by the Fed—
+works to boost demand by inducing more private investment in both equipment and structures (both
+residential and commercial structures) and more private consumption of interest-sensitive sectors
+(mostly durable goods). Monetary stimulus works by lowering short-term rates, which puts
+downward pressure on long-term rates resulting from arbitrage, and the resulting drop in long-term
+rates makes investments more attractive by lowering the cost of capital. Lower interest rates can also
+put downward pressure on the value of the dollar, and hence boost demand by increasing net exports.
+
+At the ZLB, further exchange of short-term bonds for reserves held at the Fed will not push interest
+rates lower than zero. This means that the ZLB requires the Fed to act directly on longer-term
+interest rates if they want these lowered to provide stimulus. Because the stock of outstanding U.S.
+Treasuries and MBS are so large, a three-fold increase in the size of the Fed’s balance sheet would
+
+                                                                                                              9
+                                                                Hutchins Center Working Paper #12
+
+likely have only modest direct impacts on long-term rates. Further, while a key transmission
+mechanism for long-term rates to boost consumer spending has traditionally been the refinance of
+residential mortgages, the housing price decline in the years before 2013 meant that millions of
+homeowners that could have theoretically benefited from the LSAPs through this refinancing
+channel were not eligible. Their home’s loan-to-value ratios were simply too large for banks to allow
+refinancing and this had potentially significant effects on blunting the impacts of LSAPs.
+
+On a more hopeful note, demand can be boosted via wealth and net export effects resulting from
+LSAPs. Lower interest rates and higher bond prices stemming from LSAPs are generally have
+spillover effects on other asset markets (like currency markets and the stock market).
+
+Finally, in theoretical models predicting the effects of LSAPs, the impacts stemming from the
+changes in expectations that result from Fed purchases are large. Such expectational changes are
+very hard to empirically quantify, and thus make the output and employment estimates of LSAPs
+subject to large uncertainties. Failing to observe the expectational effects, however, is likely make
+estimates of LSAP’s effect on output and employment lower than suggested by the direct effects on
+interest rates and asset prices.
+
+
+THE INEQUALITY IMPACTS OF EQUIVALENT FISCAL AND
+MONETARY STIMULUS
+From here we can provide some rough estimates of the impacts on inequality of two policies: (1) the
+2010 fiscal deal and (2) LSAPs in recent years that yielded an equivalent macroeconomic stimulus.
+Much like in our assessments of the employment and output effects of fiscal versus monetary policy,
+the distributional outcomes of the fiscal policy interventions examined here are much more straight-
+forward to assess than the monetary interventions.
+
+
+FISCAL STIMULUS AND DISTRIBUTION
+The first-round distributional impacts of the 2010 fiscal deal are straightforward to track. The CBO
+estimates the incidence of payroll taxes throughout the income distribution, and using their estimates
+we can assign this incidence by income group. Because the payroll tax cut included in the 2010 tax
+deal was on the workers’ side of the payroll tax, we need not be too concerned about the accuracy of
+CBO assumptions regarding the incidence of employer-side payroll taxes, nor the pace at which
+employer-side payroll tax changes are passed on to wage changes. Similarly, we can use the same
+data to allocate the EUC payments by income group, as the CBO data provide an estimate of cash
+transfers besides Social Security for each household income group. It is likely that unemployment
+insurance is a very large part of these non-Social Security cash transfers, so we can use the CBO
+estimates on these to allocate gains from EUC extension.
+
+The same data can be used to roughly allocate the benefits of extending refundability in certain tax
+credits by assigning benefits only to those income percentiles that have negative personal income tax
+liability. Table 3 shows the income impacts of the payroll tax cut, EUC extension, and refundable
+extenders by income grouping, and then calculates the total benefits of the 2010 fiscal deal
+
+
+                                                                                                         10
+                                                                           Hutchins Center Working Paper #12
+
+accounted for by each of these income groups. We do not provide a distributional analysis of the
+accelerated depreciation components because while these provisions were relatively expensive in
+budget terms (as shown earlier in Table 2), they had very little impact on output or employment.
+
+Table 3: First-Round Distributional Consequences of the 2010
+Fiscal Deal
+                     Payroll tax             EUC            Refundable           Overall income
+                        cut               extension           credits
+
+
+Lowest fifth             5.6%                15.0%              75.0%                  5.1%
+Second fifth             9.9%                23.6%              25.0%                  9.3%
+Middle fifth            15.6%                24.3%                 -                  13.7%
+Fourth fifth            24.0%                20.8%                 -                  19.8%
+81-90th pct             17.6%                9.2%                  -                  14.2%
+91-95th pct             11.4%                3.8%                  -                   9.8%
+96-99th pct             11.0%                2.8%                  -                  12.7%
+Top 1                    4.3%                0.3%                  -                  16.7%
+Overall                100.0%               100.0%             100.0%                 100.0%
+
+Note: Author's analysis using Congressional Budget Office (2012) data on household income
+distribution. For EUC extension, benefits allocated based on income shares of cash transfers
+excluding Social Security. Benefits of extending refundability of tax credits restricted to those
+household groupings with negative personal income tax liability in CBO data. The negative income
+tax rate is multiplied by pre-tax income to gauge total benefit of refundability, and then benefit is
+allocated across bottom two fifths of distribution in proportion.
+
+
+
+Table 3 shows the share of overall income earned by each income group to use as a benchmark to
+assess the progressivity of each policy. The payroll tax cut is slightly progressive for the bottom four
+quintiles of the household income distribution. The bottom fifth sees 5.6 percent of the benefits of an
+across-the-board payroll cut, compared to their overall income share of 5.1 percent. The middle fifth
+sees 15.6 percent of the benefits of an across-the-board cut while they claim 13.7 percent of overall
+income. The CBO data may slightly overstate the benefits of the payroll tax cut for the top 5 percent
+of the household income distribution because their overall payroll tax burden includes Medicare
+taxes, which are not capped. The 2010 payroll tax holiday only applied to the Social Security portion
+of the payroll tax, and hence the lower tax rate was capped to the first $106,800 of labor earnings in
+2011.
+
+The benefits of the EUC extension are, unsurprisingly, much more progressive. The bottom three-
+fifths of the household income distribution claim a combined 62.9 percent of all non-Social Security
+cash transfers, compared to 28.1 percent of overall income.
+
+Finally, the benefits of the refundable extenders are even more progressive, with the large majority
+going to families in the lowest fifth in income, and the remainder going to households in the second
+fifth. Given that refundability of tax credits, by definition, only helps tax filers with relatively low
+incomes, this seems sensible enough.
+
+
+                                                                                                               11
+                                                                Hutchins Center Working Paper #12
+
+MONETARY STIMULUS AND DISTRIBUTION
+The first-round distributional implications of the LSAPs are much less straightforward to track than
+those of the 2010 fiscal deal. Given their importance to both the output and employment impacts as
+well as to distributional outcomes, our preferred estimates of the LSAP effects on interest rates and
+asset prices are provided in Table 4. The key indicator in each of these is the effect of LSAPs on
+long-term Treasury yields, since the estimates for other asset prices tend to be derived from historic
+estimating relationships between these yields and other financial markets. These Treasury estimates
+are a key issue in judging the robustness of assessments about LSAPs effects on either stabilization
+or distribution; assessments of what LSAPs have done for asset markets hinge largely on what they
+were estimated to have done to Treasury yields. Though an oversimplification of the impact of
+LSAPs, for our purposes here we estimate that the combined LSAPs reduced long-term Treasury
+yields by an average of 100 basis points since their introduction in March 2009.
+
+Much of the empirical research on the financial market effects of LSAPs uses event studies to track
+changes in Treasury yields following successive announcements or implementations of LSAP
+programs (see for example, Gagnon et al. (2011) and Krishnamurthy and Vissing-Jorgensen (2011)) .
+This means that the effects of LSAPs are not uniform over time; the effects tend to spike upon
+announcement and then fade over time. Further, the impact of LSAPs hinges crucially on the overall
+state of financial markets at times of announcement and implementation, with LSAPs thought to be
+particularly effective in changing interest rates during periods of keen financial market distress. As
+financial markets stabilized over the 2009–2014 period, it is possible that larger asset purchases were
+needed to provide the same downward pressure on interest rates.
+
+The empirical research on the impacts of LSAPs on long-term Treasury yields is generally consistent.
+Most studies find a significant non-zero effect of LSAPs, most agree clearly on the direction of LSAP’s
+effects (i.e., they reduced long-term Treasury rates) and the estimates for the first round of purchases
+(QE1) are quite large—tending to fall in the 30 to 150 basis point range following initial announcement.
+The estimated effects of QE2 are substantially smaller, and the effects of QE3 (having just ended at the
+end of 2014) have not yet been fully estimated. Undertaken during times of less financial market distress
+and including only purchases of Treasuries (as opposed to mortgage-back securities), QE2 had smaller
+estimated effects. This strongly suggests that the market stabilization effects of LSAPs are a key channel
+through which they boost bond prices and reduce yields. This supports the assumption that non-Treasury
+yields fell more than one-for-one with Treasury yields due to LSAPs. Even with relatively weak estimated
+effects of QE2, our estimates of LSAPs’ effects on long-term interest rates over the entire period since
+March 2009 may not be too optimistic. For one, QE3 was weighted more heavily towards MBS than
+QE2, so perhaps this could boost its effectiveness. Further, QE3 was open-ended: no total value of
+purchases was specified by the Fed. This total limit on purchases was identified by some as a potential
+weakness in earlier rounds of LSAPs.
+
+Finally, Engen et al. (2015) estimate that the macroeconomic impact of the combined LSAPs has only
+reached its peak in recent years. This does not guarantee that their impact on long-term interest rates peak
+in the same year, but it does suggest that the large estimated effects of QE1 likely did not fade completely
+away as successive rounds of LSAPs were undertaken.
+
+
+
+                                                                                                          12
+                                                                 Hutchins Center Working Paper #12
+
+Table 4: Financial Market Effects of LSAPs
+Financial yield or      Assumed        General range in survey literature
+price                   LSAP
+                        effect
+10-year Treasury        100 bps        38-150 basis points for QE1. More mixed results
+interest rates                         for QE2 and very little direct estimates of QE3
+                                       extant.
+10-year MBS             150 bps        Gagnon et al. (2011) and Krishnamurthy and
+                                       Vissing-Jorgensen (2011) find larger impacts on
+                                       non-Treasury rates. Rough ratios from their
+                                       papers applied to Treasury rate above.
+10-year bond            9-14           Given starting interest rate of 3 percent on 10-
+prices                  percent        year bond, then assuming 100-150 basis point
+                                       decline.
+Equity prices           5 percent      Range from < 3 percent in Dobbs et al. (2013)
+                                       to 8.5 percent in Engen (2014).
+Home prices             7 percent      Constructed from existing literature on elasticity
+                                       of home prices to long-term rates. Also in line
+                                       with Dobbs et al. (2014) finding.
+
+
+Using our baseline estimate that LSAPs reduced long-term Treasury rates by 100 basis points, we
+can provide estimates of changes in other asset markets such as non-Treasury interest rates, bond
+prices, equity prices, and home prices.
+
+Non-Treasury Interest Rates
+The LSAP programs purchased MBS as well as Treasuries, and interest rates on these mortgage-backed
+securities are thought to be more closely tied to other market interest rates that could affect households
+and businesses (home mortgage rates, consumer credit rates, and rates for industrial loans, for example).
+Most research shows that the LSAPs reduced long-term rates more in the MBS market than the Treasury
+market (Gagnon et al., 2011; Krishnamurthy and Vissing-Jorgensen, 2011). The main rationale for this
+amplified effect is that the market for MBS was more impaired by the financial crisis of late 2008, and so
+LSAPs provided a bigger boost to MBS prices (reducing interest rates more) through this market
+stabilization effect. The rest of this analysis generally uses the ratio estimated by Gagnon et al. (2011) and
+assumes interest rates on MBS and mortgages fell by 150 basis points over the time period that LSAPs
+were in force.
+
+Bond Prices
+LSAPs started when interest rates were already historically low, and these purchases changed long-
+term interest rates directly. The resulting 100 to 150 basis point change in rates induced by LSAPs
+has the potential to make a large impact on long-term bond prices. Take a 10-year bond with par
+value of $1,000 and a 3 percent coupon rate before the announcement of LSAPs: If the subsequent
+LSAPs lowered market interest rates by 100 to 150 basis points, this implies an increase in bond
+prices of 9 percent to 14 percent.
+
+Equity Prices
+Perhaps surprisingly (given all the discussion of the effect of LSAPs on equity prices), a number of
+researchers find quite modest LSAP effects on equity prices. Both Kiley (2014) and Rogers et al.
+
+
+                                                                                                           13
+                                                                  Hutchins Center Working Paper #12
+
+(2014) find that policy-induced declines in long-term interest rates have substantially fewer effects
+on equity prices in normal circumstances than they do when the economy is at the ZLB.
+
+For a 100-basis-point decline in Treasury rates, we will assume a 5 percent rise in equity prices. This
+is actually larger than either the Kiley (2014) or the Rogers et al. (2014) results, both of which imply
+a 3 percent rise in equity prices following a 100-basis-point decline in long-term rates. This is also
+larger than the Dobbs et al. (2013) finding of only a 3 percent increase in equity prices. It is a slightly
+smaller effect, however, than reported by Engen et al. (2015) in their survey of event studies, which
+shows a 100-basis-point decrease in long-term interest rates associated with a 8.5 percent rise in
+stock prices. Given that the effect of LSAPs on stock prices is a key distributional variable, and
+given that it is one parameter around which there is the least agreement regarding the effect of
+LSAPs, it is probably the most uncertain piece of the following analysis.
+
+Home Prices
+Few studies seem to directly estimate the effect of LSAPs on home prices. But given that homes are
+by far the largest asset holding of the nonwealthy in the United States, this parameter is key in any
+distributional assessment of LSAPs. Luckily, there is a significant amount literature that estimates
+the elasticity of home prices to mortgage interest rates.10 If we assume that mortgage interest rates
+are reduced 100 basis points in response to LSAPs (i.e., falling one-for-one with Treasury rates, but
+less than one-for-one with MBS), then home prices are boosted by 7 percent due to LSAPs.
+
+Existing Distribution of Assets and Implications of LSAPs
+Table 5 shows the distribution of assets by wealth class in the U.S. economy. Panel A shows what
+share of total wealth is held in various assets for the overall population, the top 1 percent, the 80th to
+99th percentiles (“Net 19”), and the middle three quintiles (“Middle 3,” or middle class). A number
+of things stand out. First, housing is a much larger share of assets for the broad middle class than for
+other wealth classes. The middle class has 62.5 percent of total assets tied up in their principal
+residence, while the 80th to 99th percentiles have 28 percent, and the top 1 percent just 8.7 percent of
+total assets in residential real estate. Conversely, stocks and bonds combined constitute just 3.4
+percent of total assets for the middle class, but make up more than a quarter of the holdings of the top
+1 percent. The middle class holds a higher share of assets as liquid assets than the top 1 percent, but
+less than the 80th to 99th percentiles. Similarly, the middle class holds more of their total assets in
+the form of pension entitlements than the top 1 percent, but less than the 80th to 99th percentiles.
+Finally, the ratio of total debt to income shows that the middle three-fifths of the population have
+much higher debt burdens than either of the two wealth classes above them.
+
+
+
+
+10
+     See, for example, Kuttner (2012) or IMF (2008).
+
+
+                                                                                                              14
+                                                                           Hutchins Center Working Paper #12
+
+Table 5: Distribution of Assets by Wealth
+Class, 2013
+Panel A: Composition of Household Wealth by Wealth Class, 2013
+(Share of gross assets)
+
+                                   Share of Wealth Class Holdings                          Nominal rates of return
+                           All        Top 1     Next 19        Middle 3          1983-      2007-2013          1983-
+                                                                                 2007                          2013
+Housing                   28.5         8.7         28             62.5            4.6           -1.2            3.5
+Stocks and                17.4        27.3        16.3             3.4            10.5           4.9             9.2
+securities
+Liquid assets              7.6         6.1         8.4             8.1            5.3            0.7             4.0
+Pensions                  16.5         9.2        21.7            16.1            9.0            4.0             7.6
+Business equity           28.5        46.9        24.2             8.6              -             -               -
+Misc                       1.5         1.9         1.4             1.2              -             -               -
+Total                     100          100         100             100
+
+Debt/income              107.1        38.2        96.6             125
+Panel B: Percent of Total Assets Held by Wealth Class
+(Share of gross assets)
+                             Share of asset class                                        Share of total assets
+                           Total      Top 1      Next 9       Bottom           Top 1          Next 9          Bottom
+                                                                90                                              90
+Housing                     28.5       9.8        31.1         59.2             2.8              8.9           16.9
+Stocks and mutual           12.7      49.8        41.2           9.1            6.3              5.2             1.2
+funds
+Liquid assets               7.6       24.8        42.4          32.8            1.9              3.2             2.5
+Pensions                    16.5      17.8        47.5          34.8            2.9              7.8             5.7
+Securities (bonds)          1.5       54.7        39.6           5.7            0.8              0.6             0.1
+Business equity             18.3      62.8         31            6.2            11.5             5.7             1.1
+Commericial RE              10.2      33.7        44.1          22.2            3.4              4.5             2.3
+Misc                        3.2       49.5         34           16.5            1.6              1.1             0.5
+Total                                                                           31.3            37.0            30.3
+
+Debt                        15.2       5.4        21.1          73.5
+Source: Wolff (2014). Panel A shows what proportion of wealth holdings are in a particular asset class and what the
+historical rates of return associated with that asset class are. Panel B shows what share of total assets are held by a
+particular wealth class, and then estimates how much each wealth class's holdings of a particular asset are as a
+share of total national wealth.
+
+
+
+Panel B shows the share of total wealth that is held by the particular asset holdings of each wealth
+class (note here that the breakdowns are different than above: top 1 percent, 90th to 99th percentiles,
+and bottom 90 percent). So, for example, the first row shows that the top 1 percent holds 9.8 percent
+total housing wealth, as compared to 59.2 percent held by the bottom 90 percent. However, the top 1
+percent holds 49.8 percent of wealth in stocks and mutual funds, while the bottom 90 percent holds
+just 9.1 percent. The right-hand block of columns in Panel B shows each wealth class’s holding of a
+
+
+                                                                                                                          15
+                                                                                Hutchins Center Working Paper #12
+
+particular asset expressed as a share of total national asset holdings. So, the right-hand side of the
+first row shows that residential real estate holdings of the top 1 percent constitute 2.8 percent of total
+national asset holdings. The right-hand side of the second row shows that stock and mutual fund
+holdings of the top 1 percent account for 6.3 percent of total national asset holdings. Summed across
+wealth classes, this shows that the top 1 percent holds 30.3 percent of total gross wealth holdings,
+while the bottom 90 percent holds 31.3 percent.11
+
+The rough impact of LSAPs on relative wealth holdings is fairly easy to extrapolate from this basic
+data. While stock price increases stemming from LSAPs accrue disproportionately to the top 1
+percent, home price appreciation disproportionately benefits the bottom 90 percent. In fact, the
+symmetry of the respective holdings of stocks and home equity is striking: the top 1 percent owns
+just 9.8 percent of total housing wealth while the bottom 90 percent owns just 9.1 percent of total
+stock and mutual fund wealth. Given this pattern, there would have to be a very large difference in
+the effect of LSAPs on the prices of stocks versus the prices of homes to really gain distributional
+traction. Not only is there no particularly large difference in the effects of LSAPs on these prices, but
+the impact on home prices (the more democratically held asset) seems in our estimate to be larger.
+
+Beyond these two asset classes, there is very little that can be said about the effects of LSAPs on
+prices that would have large distributional consequences. The share of total assets held in liquid
+deposits is not that different for the top 1 percent and bottom 90 percent, for example. And while the
+top 1 percent has nearly 10 times as much in bond holdings as the entire bottom 90 percent, bond
+holdings among households are small enough as a share of total wealth (just 1.5 percent) to make
+these not a big distributional player in assessing the impact of LSAPs.
+
+Business equity is a very important wealth class (18.3 percent of total wealth holdings) that is quite
+concentrated at the top (with the top 1 percent holding nearly 63 percent of it). However, pensions
+(compared to overall wealth) are concentrated in the bottom 90 percent, with the top 1 percent
+accounting for only 17.8 percent of pension wealth. It seems that the assets of pensions are at least as
+likely to see valuation boosts from LSAPs as business equity, so it is again a bit hard to see where
+LSAP valuation effects could have great traction in boosting wealth inequality relative to current
+levels.
+
+
+ARE STATIC WEALTH IMPACTS A GOOD MEASURE OF LSAP DISTRIBUTIONAL EFFECTS?
+These effects of LSAPs in boosting asset values and the concentration of asset-holding seem to be
+what is fueling much of the concern over the possible regressive implications of LSAPs. However,
+even these relatively mechanical wealth impacts are far often less straightforward than some might
+imagine. While ownership of corporate equities is indeed quite concentrated, as we noted above the
+boost to equity prices provided by LSAPs is often estimated in the academic literature to be quite
+modest – almost certainly smaller than what is commonly alluded to in popular discussions. In
+
+
+
+11
+  It should be stressed that this shows each wealth class’s share of gross assets, not net worth. Given that debt as a share of gross
+assets is smaller for the top 1 percent than for the bottom 90 percent, the top 1 percent’s share of national net worth is larger than
+their share of gross asset holdings.
+
+
+                                                                                                                                    16
+                                                                 Hutchins Center Working Paper #12
+
+addition, the boost to home prices—and the relatively democratic holding of housing wealth—is
+often overlooked in this sort of balance sheet accounting of LSAP impacts.
+
+Further, a static look at wealth holdings and the estimated impact on asset values from the LSAPs
+presents far too simple-minded a model of how to think about the distributional implications of
+LSAPs. For example (a further section will touch on this issue), while asset purchases by the Fed put
+upward pressure on asset prices, eventually these purchases will be reversed and symmetric asset
+price reductions will likely ensue. For those who simply held on to a given asset over both the run-up
+and the (future) winding down of LSAPs, there is little reason to expect any permanent increase in
+wealth. Further, while LSAPs bid up the price of assets, this also bids down expected returns for
+holding them.
+
+Take the case of bonds held for retirement in pension funds. When the existing stock of bonds held
+by a pension fund has risen in price, replacing those bonds in the fund’s portfolio when they mature
+becomes more expensive, meaning that the long-run value of bonds for meeting future retirees’
+income obligations has not risen. Given that equity ownership has always been extraordinarily
+concentrated, higher stock prices can be seen largely as a transfer from tomorrow’s wealthy
+households to today’s wealthy households.
+
+Importantly, the reduction in interest rates provides a potentially progressive boost to wealth and
+income, as debt is a much larger ratio of either income or gross assets for the bottom 90 percent of
+households. Essentially, net borrowers (holders of mortgages, credit card debt, and student debt) see
+incomes rise after accounting for debt burdens due to the LSAPs. Conversely, if home prices rise
+sharply with mortgage rate declines, housing affordability might not be boosted as much by
+reduction in interest costs.
+
+In the end, one key reason to suspect why LSAPs will have only relatively modest impacts on wealth
+holdings and distribution over any lengthy period of time is that returns on wealth have powerful
+fundamental drivers. Home prices, for example, are mostly a function of the demand and supply for
+land and housing. In contrast, stock prices are mostly a function of the economic growth and
+profitability of corporations. While the price of assets traded in markets can diverge from these
+fundamental determinants for periods of time, they will eventually move back much closer to their
+fundamental values.
+
+
+DISTRIBUTIONAL IMPLICATIONS OF LSAPS COMPARED TO CONVENTIONAL
+MONETARY POLICY
+Finally, it is worth asking whether there is anything particularly different about the impact of LSAPs
+on distributional outcomes when compared to more conventional monetary stimulus (i.e., the
+lowering of Federal Reserve policy rates). After all, it can be hard to see what is particularly unique
+about LSAPs. The goal of conventional expansionary policy is to lower longer-term interest rates;
+the same is true for LSAPs. So while the mechanism that causes long-term interest rates to decline is
+different from LSAPs, the purpose is the same. Given that other asset market effects of LSAPs are
+driven by lower interest rates, it is not clear why there is anything noteworthy about the distributional
+implications of LSAPs relative to conventional monetary expansion.
+
+
+                                                                                                            17
+                                                                Hutchins Center Working Paper #12
+
+In fact, while much of the attention on monetary policy’s distributional effects has focused on
+LSAPs, some asset prices—like equity prices—have likely been more affected since 2008 by
+conventional monetary expansion of lowering short-term interest rates to zero by reducing
+corporations’ interest payments and lower discount rates applied to dividends.
+
+The most direct channel that people have identified as a conduit through which LSAPs can lead to
+regressive outcomes is their effect on equity prices. Yet this channel has been shown by a number of
+authors (Kiley, 2014; Rogers et al., 2014) to actually be much weaker at the ZLB when LSAPs
+stand-in for conventional monetary easing.
+
+In short, there is very little in the distributional critique of LSAPs and unconventional monetary
+policy that could not be said about conventional expansionary monetary policy as well.
+
+
+WHAT HAPPENS WHEN STIMULUS IS REVERSED?
+It is worth thinking about the implications of the reversal of macroeconomic stimulus on inequality.
+For a fiscal stimulus, the reversal comes when debt accumulated to finance the period of stimulus
+must be amortized. This requires either tax increases or spending cuts. In theory, either could
+increase or decrease income progressivity. In recent decades, the two clearest episodes of tax
+increases undertaken (at least in part) to reduce primary budget deficits have been the 1993 tax
+increases and the 2013 negotiated phase-out of some of the 2001 and 2003 tax cuts. Both of these
+episodes saw quite progressive tax increases. Similarly, both episodes were also associated with
+spending cuts—particularly to discretionary spending. The assessed impact of these spending cuts
+depends on how one assigns the value of government spending across the income distribution.
+
+Reversal of monetary stimulus occurs when the stock of assets accumulated by the Fed begins to fall,
+either through outright asset sales undertaken by the Fed or because they do not replace securities
+that reach maturity. This stimulus reversal seems much more straightforward than the fiscal policy
+reversal in its inequality impact: it should essentially be the mirror-image of whatever impact on
+inequality accompanied the asset purchases. As the stock of assets held by the Fed falls, this implies
+upward pressure on interest rates and potential downward pressure on asset prices.
+
+The impact on inequality from both the adoption of LSAPs and their unwinding is likely to be quite
+idiosyncratic. The likely “winners” are those who held assets whose value increased during the
+LSAPs and then sold before the LSAPs were completely reversed. Those who did not hold assets
+during the LSAPs but who sold assets during or after the unwinding of the Fed’s balance sheets are
+likely to be “losers.”
+
+There is a caveat to the argument for the symmetric effect of LSAPs and their future reversal. If
+LSAPs helped stabilize financial markets in the wake of the 2008 financial crisis—and boosted asset
+prices sufficiently to allow some economic agents to avoid bankruptcy until asset values rose enough
+for them to regain solvency––they could have boosted wealth during the run-up more than
+depressing it during the reversal. An argument against this interpretation is that the LSAPs generally
+began only after the clearest period of financial market dysfunction. For example, the large increase
+in the spread between short-term US Treasuries and the interest rate banks charge each other for
+short-term loans (sometimes known as the TED spread) had already been substantially reduced
+
+                                                                                                         18
+                                                                 Hutchins Center Working Paper #12
+
+relative to its crisis high by the time the first round of LSAPs began in March 2009. But if one
+includes the lending facilities that pre-dated the LSAPs in the consideration of unconventional
+monetary policy since the Great Recession began, then this interpretation may well hold.
+
+
+INDIRECT EFFECTS FROM STIMULUS-EQUIVALENT FISCAL AND MONETARY POLICY
+INTERVENTIONS
+The indirect effects on inequality from these two policy interventions that are nearly equivalent in
+their output effects are quite a bit less straightforward to track. However, we can discuss the likely
+transmission mechanisms of each for inequality and provide a qualitative sense of how important
+they’re likely to be.
+
+The fiscal indirect effects are likely to be very small when compared to a benchmark of equivalent
+alternative stimulus (again, abstracting from its effects in boosting output growth and reducing
+unemployment). In theory, debt-financed fiscal stimulus can put upward pressure on interest rates,
+which could have distributional consequences. However, a key (and now famous) feature of the
+Great Recession and subsequent recovery is that the U.S. economy seems firmly entrenched in a
+“liquidity trap,” whereby aggregate demand shortfalls are putting such intense downward pressure on
+interest rates that only a fiscal stimulus sufficient to wholly close the output gap will begin boosting
+interest rates. As such, there is likely insignificant upward pressure that was placed on interest rates
+as a result of the 2010 fiscal deal.
+
+The monetary indirect effects have a little more scope to operate. While fiscal stimulus at levels
+below what is necessary to fully close the output gap are unlikely to place upward pressure on
+interest rates, monetary stimulus only works if it manages to reduce interest rates. The lower interest
+rates that prevail in a scenario of monetary stimulus could have second-round effects on inequality
+over and above those sketched out in the previous section. For example, the distribution of output
+and employment growth could be different in a monetary stimulus. Low interest rates could lead to
+reductions in the value of the dollar, which boosts tradable goods production in the U.S. economy.
+Tradable goods employment tends to pay higher wages than other economic sectors, even after
+including controls for workers’ characteristics, so there is a possibility that boosting international
+competitiveness through exchange rate depreciation may lead to a shift in the factor shares of income
+towards labor. Another key economic sector that could benefit (in theory) from lower interest rates is
+housing construction. Like manufacturing, construction tends to pay higher wages than average,
+particularly when controlling for the labor force characteristics of its workforce.
+
+Table 6 provides a quick survey of hourly wages and total compensation per full-time employee for
+construction and durable goods manufacturing (the most obviously interest-sensitive sector of the
+economy outside of construction). Compensation per full-time employee (FTE) is significantly
+higher in durable goods production than the rest of the economy, while it is slightly higher in
+construction. Moreover, the comparison between hourly wages and education credentials in each
+sector makes clear that both provide disproportionately good (and compressed) wages for a
+workforce that has fewer formal educational credentials than the rest of the economy. For example,
+the number of workers with a 4-year college degree or greater in the construction workforce is less
+than 13 percent, compared to over 30 percent for the nonconstruction, nondurable goods workforce.
+
+                                                                                                           19
+                                                                     Hutchins Center Working Paper #12
+
+Yet only 10 percent of construction jobs pay wages in the bottom fifth of the overall wage
+distribution, and fully 70 percent of its jobs are in the middle 60 percent of the overall wage
+distribution.
+
+Table 6: Wages and Educational Attainment in Interest-Sensitive
+Industries
+                   FTE (000s)    COMP ($Bil)     COMP/      Percent with      Share          Share       Share
+                                                   FTE         4-year          low-         middle       high-
+                                                 ($000s)      college         wage           wage        wage
+                                                              degree         (Bottom       (Middle 3     (Top
+                                                                               fifth)       Fifths)      Fifth)
+
+
+Total                106,911       7,094,310       66.4          29.8           20            60           20
+Durable               7,414         613,122        82.7          27.2           8.1          66.8          25
+goods
+Construction          5,809         390,384        67.2          12.8          10.1          70.1         19.8
+All other            93,688        6,090,804       65.0          30.5          23.5          57.9         18.5
+
+
+Note: Author's analysis using data on FTEs and Compensation per FTE from the Bureau of Economic Analysis (BEA),
+Tables 6.2D and 6.5D. Data on share of employment by wage fifth and percent with 4-year college degree based on
+calculations with the Current Population Survey Outgoing Rotation Groups (CPS-ORG)
+
+
+
+Despite these significant wage differences, the impact LSAPs have on inequality by boosting jobs in
+interest-sensitive sectors is likely very modest. Engen et al. (2015) estimates a 1.5 percent reduction
+in the value of the dollar resulting from the LSAPs. Using conventional estimates of the effect of the
+dollar’s value on net exports, this implies a boost in net exports of roughly 0.15 percent of U.S. GDP.
+
+Similarly, the IMF World Economic Outlook (2008) has estimated an elasticity of roughly 5 for
+residential investment to short-term interest rates for the United States. Given research by Hanson
+and Stein (2015) that each 100-basis-point change in the short-term rate is associated with a 42-
+basis-point change in long-term rates, this likely implies one can double this estimated elasticity for
+the response of residential investment to long-term rates.
+
+Combining this elasticity estimate with the Engen et al. (2014) estimate on the effect of LSAPs on
+long-term interest rates, this implies a 10 percent increase in residential investment stemming from a
+100-basis-point fall in long-term Treasury rates. This is not trivial. But because this implies a
+roughly 0.5 percent increase in construction as a share of GDP, the wage differences of construction
+would have to be much higher than the rest of the economy for this shift to either boost the economy-
+wide wage share or compress the economy-wide earnings distribution.
+
+The last indirect channel through which macroeconomic stimulus could plausibly affect inequality is
+through its impact on inflation. There is extensive literature examining the impact of inflation on
+inequality. Macroeconomic stimulus impacts inequality to the degree to which it keeps inflation
+higher than it would have been otherwise.
+
+The most direct way that higher inflation has distributional implications is through its effect in
+transferring wealth from net lenders to net borrowers. Doepke and Schneider (2006) quantitatively
+evaluate this channel. They find that young, middle-wealth households gain substantially from
+
+                                                                                                                  20
+                                                                 Hutchins Center Working Paper #12
+
+inflation shocks (as high as 30.9 percent of net worth for middle-class households under the age of
+35 with an inflation shock of 5 percent), while wealthier households—particularly older ones—suffer
+nontrivial losses (as large as 2.5 percent for households over the age of 56 following a 5 percent
+inflation shock). Young wealth-poor households see net worth gains of nearly 20 percent, though this
+group generally has very low levels of net worth to begin with.
+
+Several attempts have been made to identify the impact of inflation on income inequality beyond its
+impact on wealth valuations. A number of studies examining cross-country evidence seem to show
+that inflation is positively correlated with inequality (for example, Albanesi, 2006). Albanesi shows
+that in a cross-section including both developed and developing economies, there is a positive
+correlation between inflation and inequality. While the association is stronger for developing
+countries, Albanesi estimates that it is statistically significant even for pre-1973 Organisation for
+Economic Co-operation and Development (OECD) countries. Albanesi hypothesizes that this
+positive correlation is the result of distributional conflict over government policies.
+
+However, Galli and van der Hoeven (2001) have disputed the findings from cross-country
+regressions estimating the link between the levels of inflation and income inequality by highlighting
+the importance of controlling for the initial level of inflation. Specifically, they argue: “Though in
+high inflation countries restrictive monetary policy is often beneficial for inequality, reducing
+inflation in economies with initially low inflation might increase inequality. Empirical investigations
+for the U.S. and a sample of 15 OECD countries seem to support this hypothesis.” They find for the
+U.S. that at initial inflation rates as high as 6 percent, further reductions in inflation are likely to
+increase inequality. Given today’s very low rates of inflation, the Galli and van der Hoeven results
+seem to directly contradict the Albanesi findings.
+
+Alcalá and Sancho (2000) examine the empirical relationship between inflation and another measure
+of inequality: the factor share distribution of income. They found a robust positive relationship
+between inflation and the labor share of income in a group of 15 OECD countries (including the
+U.S.). The positive and significant (5 percent) relationship between inflation and labor shares holds
+in 12 of 15 separate, country-specific regressions examined by the authors, including U.S. data.
+
+All in all, there is no consensus on whether or not higher rates of inflation have clear causal effects
+on income inequality. It is especially hard to gauge the causal impact of inflation rates on inequality
+because inflation changes nearly always come bundled with changes in many other changes in the
+state of the economy: the stance of monetary policy, output gaps, etc. This ambiguity in evidence
+regarding inflation, as well as the relative modest magnitudes of the findings either way, argue for
+caution in trying to estimate inflation’s impact on income inequality.
+
+Finally on this score, there is the difficulty of assessing which type of stimulus—fiscal or monetary–
+is more powerful in boosting inflation (or at least muffling disinflation). Macroeconomic theory—
+particularly newer models relevant to issues regarding economies mired in a liquidity trap—strongly
+indicates that it is monetary policy that can affect inflation most powerfully and directly. This theory
+has clearly influenced the actual decision making of the Fed in recent years, as the LSAPs have been
+complemented by “forward guidance”—a clear attempt by the Fed to reassure market participants
+that it will try hard to not consistently miss their long-run inflation target on the down side.
+
+
+                                                                                                           21
+                                                                    Hutchins Center Working Paper #12
+
+Both macroeconomic data (see inflation trends in Figure 1) and the estimates of Engen et al. (2015),
+however, seem to indicate that the LSAPs had limited effect in boosting inflation; they estimate that
+the peak boost to inflation from the LSAPs is 0.5 percent, and this is forecast to occur in 2016. Even
+if one assumes that fiscal policy interventions have had zero effect in boosting inflation, this means
+that the relative boost to inflation stemming from monetary policy in recent years is quite small.
+
+
+  Figure 1: Year-over-year change in CPI-U-RS core and market-based core
+  PCE deflator, 2007–2014
+3.0%                                                                                          CPI-U-RS Core
+
+2.5%                                                                                          Market-based
+                                                                                              PCE Core
+2.0%
+
+1.5%
+
+1.0%
+
+0.5%
+
+0.0%
+       2007-I     2008-I       2009-I       2010-I       2011-I        2012-I     2013-I      2014-I
+ Source: EPI analysis of Bureau of Labor Statistics' Consumer Price Index (CPI)
+ and of BEA NIPAs Tables 2.3.4 Prices Indexes for Personal Consumption
+ Expenditures by Major Type of Product
+
+
+
+SUMMING UP DISTRIBUTIONAL IMPLICATIONS
+In conclusion, the relative effects of monetary or fiscal stimulus on inequality seem poor criteria
+upon which to judge the desirability of one versus the other. The relative impact on inequality of
+monetary policy stabilizations seems likely to be quite small, and even the direction of distributional
+effects (progressive or regressive) is far from clear. In practice, the inequality effect of fiscal policy
+stabilizations are impossible to generalize because they depend entirely on the specific set of fiscal
+instruments chosen. Fiscal stimulus can be progressive (targeted tax credits and transfers), regressive
+(across-the-board individual income tax cuts), or ambiguous (increases in government consumption
+and investment). For taxes and transfers, efficient fiscal stimulus (that associated with larger output
+effects per dollar increase in the fiscal deficit) is progressive; and likely more so than monetary
+policy stabilization that yields the same output and employment outcomes. Yet the recoveries of the
+early 1980s and early 2000s were boosted by quite large and quite regressive fiscal impulses.
+
+
+FISCAL VERSUS MONETARY IS THE WRONG BASELINE
+The discussion above argues that if one is concerned simply about inequality, a fiscal stimulus whose
+first-round distributional outcomes were strongly progressive would dominate a monetary stimulus
+that was equivalent in its effects on overall output. But while there might be academic interest in the
+relative inequality outcomes of stabilization-equivalent policy interventions, recent history has
+shown clearly that this has not been the real choice facing American policymakers. Instead, fiscal
+
+                                                                                                              22
+                                                                                                  Hutchins Center Working Paper #12
+
+policy became steeply contractionary relative to historic performance during recoveries beginning in
+2011, even in the face of the following: (1) a very large output gap, (2) lack of evidence that this gap
+would, or could, be closed by more aggressive monetary policy, (3) and no obvious assurance from
+monetary policymakers that the fiscal contraction would (or even could) be met one-for-one with
+monetary stimulus.
+
+The best summary indicator of this can be seen in Figure 2, which charts real government
+expenditures (including transfers) over a range of business cycles. Government expenditures rose
+more sharply in the recession phase of the most recent business cycle, due both to automatic
+stabilizers that were larger than most previous cycles and to the Recovery Act passed in early 2009.
+Over the recovery phase, however, even with the ad hoc stimulus measures (like the payroll tax cuts
+and EUC extensions at the end of 2010), total government expenditures have risen more slowly than
+during any other post World War II business cycle.12
+
+                 Figure 2: Real government spending in recessions and subsequent
+                 recoveries
+                                 1.2                                                                                    1981 recession
+                                                                                                                 Average of pre-1980s
+                                                                                                                     recessions*
+                                1.15                                                                                    2001 recession
+
+
+                                 1.1                                                                                    1990 recession
+
+
+
+
+Index, recession's trough = 1
+                                1.05
+
+
+                                  1                                                                                     2007 recession
+
+
+                                0.95
+
+
+                                 0.9
+
+
+                                0.85
+                                       -6 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22
+                                                     Quarters before and after recession's trough (trough = 0)
+              Note: The average of all pre-1980s recessions is the average of government
+              expenditures for the six recessions and subsequent recoveries between 1953 and 1981.
+              Source: Author's analysis of Bureau of Economic Analysis National Income and Product
+              Accounts (Tables 1.1.4 and 3.1)
+
+
+
+
+12
+  The figure shows federal, state, and local expenditures. The same pattern holds if one examines federal spending only.
+However, since only federal policymakers have autonomy to run large deficits during economic downturns, and since these
+federal policymakers have the ability to provide large transfers to state and local governments, we think that examining total
+government expenditures as a measure of the policy stance of federal fiscal policy makes sense.
+
+
+                                                                                                                                         23
+                                                                Hutchins Center Working Paper #12
+
+If the pace of public spending simply matched its pace during the recoveries following the recessions
+of the early 1980s, 1990s, or 2000s, it would have been between 10 to 20 percent higher at the end of
+2014. This would correspond into at least $600 billion in additional GDP and the economy today
+would almost surely be very close (at least) to full employment (Bivens, 2014).
+
+And this spending contraction was surely not swamped by tax stimulus. While the end of 2010 saw
+the beginning of the payroll tax holiday (which did constitute fiscal stimulus), its impact was
+swamped by the cutback in spending. Further, it is far from clear that tax changes provided more
+fiscal stimulus in the current recovery than in previous ones. The early 1980s and early 2000s, for
+example, saw recoveries accompanied by large income tax cuts.
+
+The sharp contraction of fiscal policy that was not fully offset by monetary stimulus does not imply
+that monetary policy decisions are completely exogenous to what fiscal policymakers do. It seems
+clear that Fed policymakers were aware of fiscal policy trends, and decisions to expand LSAPs to
+QE2 and QE3 were at least in part an effort to provide an offset to the fiscal contraction. But the
+evidence from the first section of this paper seems clear: the entire macroeconomic stimulus
+provided by the LSAPs essentially equaled only the stabilization impact of one discrete, ad hoc
+stimulus measure: the fiscal deal of 2010. Given this, it seems ill advised to insist on grading the
+inequality-generating aspects of monetary policy only against a baseline that sees an equal
+countervailing fiscal stimulus.
+
+
+OUTPUT STABILIZATION AND EMPLOYMENT GENERATION AS
+INEQUALITY FIGHTERS
+The scope of the Fed’s actions to affect inequality becomes much greater once one changes implicit
+counterfactuals and allows for the impact of monetary stimulus on output stabilization to be
+considered as a contributor to inequality.
+
+Coibion et al. (2012) undertake a detailed and comprehensive empirical investigation assessing the
+general link between expansionary monetary policy and reduced inequality. They identify monetary
+policy “shocks” using the methodology pioneered by Romer and Romer (2004) to extend the dataset
+to the end of 2008. However, beyond the response of usual macroeconomic variables like GDP,
+inflation, consumption, investment, and unemployment, they also examine the response of various
+types of income flows—labor earnings, interest income, and transfer income—to monetary policy
+shocks. They also use measures of inequality within total income, and each of the income categories,
+and assess how they change in response to monetary policy shocks.
+
+Their results for both total income and labor earnings show statistically significant effects of
+monetary policy shocks on inequality, with contractionary shocks being associated with higher levels
+of inequality. They further show that the effects on wage income are larger than for total income.
+
+Importantly, the Coibion et al. (2012) results on labor earnings mirror a large and growing body of
+empirical literature that identifies the level of unemployment as a key driver of trends in wage and
+income inequality. Among the first empirical studies identifying a positive relationship between
+
+
+                                                                                                        24
+                                                                   Hutchins Center Working Paper #12
+
+unemployment and inequality of labor earnings were Galbraith (1998), Katz and Krueger (1999) and
+Baker and Bernstein (2002, updated in 2013).
+
+Galbraith (1998) used the inter-industry dispersion of average hourly earnings as his measure of
+inequality. He finds that over the time period from 1958 to 1992 this dispersion is positively related
+to unemployment in a regression that controls for GDP growth, inflation, the real exchange rate, and
+the real value of the federal minimum wage.
+
+Katz and Krueger (1999) estimate Phillips curves for different deciles of the hourly wage distribution
+that relate the growth rate of real wages to the level of unemployment, along with controls for the
+real value of the minimum wage (for the 10th percentile) and time period dummy variables. They
+find that wage growth is negatively related to unemployment across all deciles, but is more sensitive
+to unemployment for low- and moderate-wage workers.
+
+Baker and Bernstein (2002) estimate decile-specific wage curves (along the lines of those first
+identified by Blanchflower and Oswald, 1995) relating the level of real wages to unemployment
+rates. Like Katz and Krueger (1999), they find that wages for low- and moderate-wage workers are
+more negatively impacted by higher rates of unemployment than they are for higher-wage workers.
+
+Recent work has confirmed that this differential impact of unemployment on wages persists. Gregg
+and Machin (2012) estimated decile-specific wage curves for the U.S. over the 1986–2010 period
+and confirmed that low- and moderate-wage workers’ pay is more sensitive to unemployment
+changes. They also provide evidence that this sensitivity of wages to unemployment may actually be
+rising over time. Updating their earlier work for 1973–2011 following the Gregg and Machin (2012)
+methods, Baker and Bernstein (2013) confirmed the much-larger impact of unemployment on low-
+and moderate-wage workers’ pay.
+
+
+HOW IMPORTANT IS STABILIZATION FOR DISTRIBUTIONAL OUTCOMES?
+To assess the resulting impact on wages, we follow the Katz and Krueger (1999) methodology and
+estimate decile-specific wage Phillips curves. We use national data and regress the log change in
+nominal hourly wages at various points in the wage distribution on the contemporaneous
+unemployment rate, lagged values of price inflation, various time-period dummies, lagged
+productivity, and (for the 10th and 20th percentiles) the value of the federal minimum wage.
+
+ Regression results for male hourly wages are provided in Table 7. The rough summary of the results
+is that for men, the sensitivity of wage growth to unemployment is largest for 10th percentile
+workers, falls in half (but is still statistically significant at the 1 percent level) for median wages, and
+is statistically insignificant for the 95 percentile wage. For women (not shown here), the same
+general pattern holds, with wages at the 10th percentile more sensitive to unemployment rates than
+median wages. For women, however, the 95th percentile wage responds to unemployment, and the
+point estimate of this elasticity—though smaller than for median wages—is not significantly
+different from the median wage response.
+
+
+
+
+                                                                                                               25
+                                                                       Hutchins Center Working Paper #12
+
+Table 7: Phillips Hourly Wage Inflation Regressions
+for Men, 1973–2014
+                                      10th              Median             95
+                                    percentile                          percentile
+
+Unemployment rate                     -1.522             -0.887           -0.289
+                                     [6.45]***          [4.14]***         [0.83]
+1979-1989                             -0.001             -0.002            0.02
+                                       [0.08]            [0.27]           [1.54]
+1989-1995                             -0.007             -0.017           0.003
+                                       [0.34]            [1.93]*          [0.19]
+1996-2001                             -0.004             -0.008           0.022
+                                       [0.12]            [0.74]           [1.26]
+2002-2007                             -0.019             -0.019           0.009
+                                       [0.57]            [1.85]*          [0.52]
+2008-2014                              0.029             0.001            0.016
+                                       [0.57]            [0.08]           [1.16]
+
+Observations                            40                 40               40
+Minimum wage control                    yes                no               no
+Productivity (-1)                       yes               yes               yes
+CPI inflation (-1)                      yes               yes               yes
+
+Note: OLS regression of log change in wage. Hourly wages calculated from CPS-ORG
+Controls for productivity growth and minimum wage levels included in all regressions
+Coefficient on lagged value of consumer price inflation rate constrained to equal 1.
+*** = significant at 1 percent level
+** = significant at 5 percent level
+* = significant at 10 percent level
+
+
+
+Table 8 displays results from a similar regression of changes in comprehensive household income
+growth (as measured by the CBO) and unemployment rates. The CBO comprehensive income
+measure includes market incomes (wages, dividends, rents, and capital incomes) as well as transfer
+incomes (both cash and in-kind transfers). We examine this to see if, for example, a rise in transfer
+incomes due to automatic stabilizers might counteract (or even completely swamp) the wage declines
+accompanying the higher unemployment rates estimated in the previous regressions.
+
+
+
+
+                                                                                                           26
+                                                                       Hutchins Center Working Paper #12
+
+Table 8: Regression Results of Comprehensive Income Growth and
+Unemployment
+                                    Bottom Fifth       Middle Fifth     Top Fifth       Top 5         Top 1
+                                                                                       percent       percent
+
+Unemployment rate, 1979-                -1.4***          -1.04***           -.18         -0.26         0.88
+2007
+                                          [.4]             [.39]           [1.0]         [.75]         [2.4]
+
+
+1989-1995                                0.015            -0.001           -.014        -0.006        -0.037
+                                         [.01]             [.01]           [.027]        [.02]        [.068]
+1996-2001                               -0.018             -.005           0.011        0.008         0.032
+                                         [.015]           [.014]           [.037]        [.02]        [.094]
+2002-2007                                0.003            0.002            0.037        0.029         0.087
+                                         [.013]           [.013]           [.035]       [.027]        [.088]
+
+
+Unemployment rate, 1979-                -0.79**           -0.51*           0.61          0.46           2.1
+2011
+                                         [.36]             [.30]           [.93]         [.72]         [2.3]
+
+
+1989-1995                                0.021            0.004           -0.004           0          -0.023
+                                         [.011]           [.011]           [.029]       [.022]         [.07]
+1996-2001                               -0.001            0.009            0.03         0.028         0.066
+                                         [.014]            [.15]           [.038]       [.029]        [.092]
+2002-2007                                0.017            0.014            0.054        0.045         0.114
+                                         [.014]           [.014]           [.036]       [.028]        [.088]
+2008-2011                                0.012            -0.006          -0.06*        -0.042        -0.15*
+                                         [.013]           [.013]           [.032]       [.026]         [.08]
+
+Note: OLS regression of log change in household comprehensive income using data from the Congressional
+Budget Office. Dependent variable is the annual log-change in (inflation-adjusted) comprehensive household
+income.
+*** = significant at 1 percent level
+** = significant at 5 percent level
+* = significant at 10 percent level
+
+
+
+Prior to the Great Recession, there does not seem to be much of a compensating effect for
+comprehensive income growth. The size of the coefficient relating comprehensive income growth to
+unemployment for the bottom fifth of households is nearly identical to the one relating hourly wage
+growth for the 10th percentile to unemployment. One thing to note here is that our hourly Phillips
+wage regressions do not account for the effect of fewer hours worked when the economy slows. We
+know (based on work by Mishel et al., 2012) that annual hours of work is much more cyclically
+sensitive for lower-income households, so this effect goes in the opposite direction of counter-
+cyclical transfers.
+
+
+
+
+                                                                                                               27
+                                                               Hutchins Center Working Paper #12
+
+Further, in regressions looking at comprehensive income growth, the overall pattern that emerges is
+that unemployment is more negatively related to income growth the lower down the income
+distribution one looks. A negative relationship between income growth and unemployment is large
+and statistically significant for the bottom fifth and middle fifth household income groups, but is
+statistically insignificant (and positive in magnitude) for higher income groups.
+
+When examining the entire sample period, including the Great Recession through 2011, the
+relationship between comprehensive income growth and unemployment is substantially attenuated,
+indicating that transfers did a better job blunting the decline in wages in the post Great Recession
+period.
+
+
+HOW EFFECTIVE IS QE IN PUSHING DOWN UNEMPLOYMENT?
+To get a sense of how important avoiding large spikes in unemployment can be for measures of
+inequality, Mishel et al. (2012) replicated the Katz and Krueger (1999) methodology described above
+to assess what brief periods of high and low unemployment did to hourly wage growth at different
+points in the wage distribution. They find substantial negative results on hourly wage growth from
+the high unemployment periods of 1979–1985 and 2006–2011, and substantial positive results on
+hourly wage growth during the low unemployment period of 1995 to 2000. Their results are
+replicated in Table 9.
+
+
+
+
+                                                                                                       28
+                                                                        Hutchins Center Working Paper #12
+
+Table 9: Effect of High and Low Unemployment Spells on Wages
+                                1979 - 1985                    1995 - 2000                     2006 - 2011
+                           (High unemployment)             (Low unemployment)             (High unemployment)
+
+                          Men         Women                     Men         Women               Men         Women
+Panel A: Basic trends (actual change)
+Unemployment rate               1.4             1.4              -1.6          -1.6              4.3           4.3
+change
+Cumulative                     13.9            13.9               -5            -5              15.2          15.2
+higher/lower
+unemployment
+rate*
+50/10 wage gap                  9.6            17.2              -4.1          -1.8              2.7           -0.4
+(log)
+90/50 wage gap                  8.7              8                3             1                3.1           2.7
+(log)
+
+Panel B: Estimated cumulative impact of unemployment on:
+1) Hourly wages**
+   Low wage                   -25.2%          -18.4%           11.1%          8.2%            -29.4%         -21.5%
+   Median wage                 -11.1           -11.6             4.9           5.2               -13          -13.6
+   High wage                    -6.6           -10.2             2.9           4.6              -7.7          -11.9
+2) Wage ratios (log)
+   50/10                       14.1             6.8              -6.2          -2.9             16.4           7.9
+   90/50                        4.5             1.5               -2           -0.6              5.3           1.7
+
+
+Panel C: Unemployment contribution to change in:
+50/10 wage gap                 146%            39%              150%          168%             617%         -2123%
+(log)
+90/50 wage gap                  52              18               -66           -61              169            64
+(log)
+
+*How much the unemployment rate exceeded or fell below the starting level across the span of the period, measured in
+percentage points
+** Wages at the 10th, 50th, and 90th percentiles of the wage distribution
+Source: EPI Authors' analysis of Current Population Survey Outgoing Rotation Group microdata and Current Population
+Survey public data series using model from Katz and Krueger (1999)
+
+
+
+Between 2006 and 2011, Mishel et al. (2012) find that a cumulative 15.2 percent unemployment gap
+kept nominal wages at the 10th and 50th percentiles 29 and 13 percentage points lower, respectively,
+at the end of the period than before, compared to declines of just 7.7 percent (not statistically
+significant) for wages at the 95th percentile.
+
+Estimates in Engen et al. (2015) indicate (see their Figure 12) that between 2009 and 2014, LSAPs
+provided roughly a 5 percent cumulative decline in excess unemployment. This degree of success in
+muting unemployment would translate into wages at the 10th and 50th percentiles by the end of 2014
+being 10 and 4 percent higher today due to the impacts of the LSAPs, with wages at the 95 percentile
+being just 2.5 percent higher.
+
+
+                                                                                                                       29
+                                                                Hutchins Center Working Paper #12
+
+Further, unlike the mechanical effect of LSAPs on asset prices, there is no reason to suspect that the
+benefits of LSAPs on wage growth will reverse, as long as policymakers wait for the economy to
+stabilize at full employment before unwinding the asset purchases.
+
+
+CONCLUSION: EXPANSIONARY MONETARY POLICY STRONGLY
+REDUCES INEQUALITY
+Recent concerns that the Fed’s expansionary stance since the onset of the Great Recession may have
+exacerbated long-running trends towards greater income inequality seem quite misplaced. If a
+monetary policy stimulus is compared to an equal fiscal policy stimulus that also directly boosts low
+and moderate incomes through tax cuts or transfers, then it is indeed possible for the monetary
+stimulus to have less progressive, or possibly regressive, outcomes. However, the scale of any
+regressive effects stemming from efforts to engage in expansionary monetary policy—particularly
+measured over any long time period—is much smaller than what is implied in the popular remarks
+referenced at the beginning of this paper (i.e., Kevin Warsh’s claim that the Fed is a “reverse Robin
+Hood”). The scale of these effects is kept modestly largely because the effects of expansionary
+monetary policy on asset prices is likely to be unwound in the future as the economy stabilizes at
+higher output levels and the Fed begins unwinding asset purchases. Further, housing is an asset
+whose value is likely boosted by LSAPs; it is also the most democratically held asset across wealth
+classes.
+
+Most importantly, compared to a baseline of no change in fiscal policy, when the economy is
+operating below potential a monetary stimulus is a strongly progressive policy. The most important
+distributional effect of expansionary monetary policy is by far the impact that lower unemployment
+rates have on wages at the bottom and middle of the wage distribution. As weak as wage growth has
+been since the onset of the Great Recession, it would have been much weaker if monetary policy had
+been less expansionary. Besides being strongly progressive, wage gains that are realized when
+expansionary monetary policy keeps unemployment lower than it otherwise would have been are not
+reversed if monetary policy does not contract before the economy is stabilized near full employment.
+
+However, just because the Fed’s actions since 2008 have clearly ameliorated inequality relative to a
+realistic baseline, it does not mean those concerned about the rise of income inequality would never
+have grounds to criticize monetary policy. If, for example, the Fed should move monetary policy in a
+contractionary direction before the economy was stabilized at full employment, this would
+disproportionately harm the wages of low- and moderate-wage workers. The recent debate about the
+proper future path of Federal Reserve tightening in the next couple of years, for example, is one in
+which distributional concerns should rightly be front and center.
+
+Similarly, in the years before the Great Recession, excessively contractionary monetary policy may
+have played a contributing role in the large rise in earnings inequality that characterized the years
+between 1979 and 2007. A suggestive piece of evidence in this regard is the amount of time the U.S.
+economy spent above measures of the natural rate of unemployment since 2007 compared to decades
+previous (see Figure 3).
+
+
+
+                                                                                                         30
+                                                                          Hutchins Center Working Paper #12
+
+Figure 3: The NAIRU* versus actual unemployment rate,
+1949–2014
+ 12.0
+
+                                                                       1979–1995
+ 10.0
+
+                                                                               Actual
+                                                                               Unemployment
+  8.0
+
+                                  NAIRU
+  6.0
+
+
+
+  4.0
+
+
+
+  2.0
+
+
+
+  0.0
+        1949          1959              1969             1979              1989         1999        2009
+ Source: Authors' analysis of Congressional Budget Office (2012) and Current
+ Population Series public data series.
+ * non-accelerating inflation rate of unemployment (NAIRU)
+
+
+In short, a central irony of the debate over the distributional consequences of Fed actions since 2008
+is that this period began an episode when Fed policies seem unambiguously progressive (from a
+distributional point of view) after an extended period of more mixed actions.
+
+
+
+
+                                                                                                              31
+                                                                    Hutchins Center Working Paper #12
+
+REFERENCES
+Albanesi, Stephania, 2006. “Inflation and Inequality.” Journal of Monetary Economics, Vol. 54(7). 1088–1114.
+Alcalá, Francisco J., and Ferrán Sancho, 2000. “Inflation and Factor Shares,” Working Paper, University of Murcia.
+Baker, Dean, and Jared Bernstein, 2003. The Benefits of Full Employment: When Markets Work for People.
+        Economic Policy Institute.
+Baker, Dean, and Jared Bernstein, 2013. Getting Back to Full Employment: A Better Bargain for Working People.
+        Free e-book. Center for Economic and Policy Research, Washington, DC.
+Bivens, Josh, 2014. “Nowhere Close: The Long March Between Here to Full Employment,” Economic Policy
+         Institute. Washington, DC.
+Blanchflower, David G., and Andrew J. Oswald, 2003. The Wage Curve. The MIT Press.
+Congressional Budget Office, 2014, “The Distribution of Household Income and Federal Taxes, 2011,” CBO
+        Report.
+Coibion, Oliver, Yuriy Gorodnichenko, Lorenz Kueng, John Silvia, 2012, “Innocent Bystanders? Monetary
+         Policy and Inequality in the U.S.,” Working Paper 18170, National Bureau of Economic Research.
+         Cambridge, MA.
+Dobbs, Richard, Susan Lund, Tim Koller, and Ari Shwayder, 2013. “QE and Ultra-Low Interest Rates:
+        Distributional Effects and Risks,” Discussion Paper, Mckinsey Global Institute (MGI).
+Doepke, Matthias and Martin Schneider (2006). “Inflation and the Redistribution of Nominal Wealth,”
+        Journal of Political Economy Vol. 114, No. 6, 1069–1097.
+Engen, Eric M., Thomas T. Laubach, and David Reifschneider, 2015. “The Macroeconomic Effects of the
+        Federal Reserve’s Unconventional Monetary Policies,” Finance and Economic Discussion Series
+        2015–005. Board of Governors of the Federal Reserve System.
+Gagnon, Jospeh, Matthew Raskin, Julie Remache, and Brian Sack, 2011. The Financial Market Effects of the
+        Federal Reserve’s Large-Scale Asset Purchases. International Journal of Central Banking, 7(1), 3–43.
+Galbraith, James K., 1998. Created Unequal: The Crisis in American Pay. University of Chicago Press.
+Galli, Rossana, and Rolph van der Hoeven, 2001. “Is Inflation Bad for Income Inequality: The Importance of the
+         Initial Rate of Inflation,” Working Paper. International Labour Organization. Geneva, Switzerland.
+Hanson, Samuel G., and Jeremy C. Stein, 2015. “Monetary Policy and Long-Term Real Rates.” Journal of Financial
+        Economics, Vol. 115(3). 429–448.
+International Monetary Fund (2008). World Economic Outlook 2008: Housing and the Business Cycle.
+Katz, Lawrence F., and Alan B. Krueger, 1999. “The High-Pressure U.S. Labor Market of the 1990s.” Brookings
+        Papers on Economic Activity, 1–87.
+
+Kiley, Michael T., 2014. “The Response of Equity Prices to Movements in Long‐Term Interest Rates Associated
+        with Monetary Policy Statements: Before and After the Zero Lower Bound,” Journal of Money, Credit and
+        Banking, Vol. 46(5), 1057–1071.
+Krishnamurthy, Arvind, and Annette Vissing-Jorgensen , 2011. “The Effects of Quantitative Easing on Interest
+        Rates: Channels and Implications for Policy,” Brookings Papers on Economic Activity, 215.
+
+
+
+
+                                                                                                                 32
+                                                                   Hutchins Center Working Paper #12
+
+Kuttner, Kenneth N., 2012. “Low Interest Rates and Housing Bubbles: Still No Smoking Gun,” Working Paper,
+         Williams College Department of Economics. Williamstown, MA.
+Li, Canlin, and Min Wei, 2012. “Term Structure Modelling with Supply Factors and the Federal Reserve’s Large
+         Scale Asset Purchase Programs,” Working Paper. The Federal Reserve Board.
+Mishel, Lawrence, Josh Bivens, Elise Gould, and Heidi Shierholz, 2012. The State of Working America, 12th
+         Edition. Economic Policy Institute. Cornell University Press.
+Rogers, John H., Chiara Scotti, and Jonathan H. Wright, 2014. “Evaluating Asset-Market Effects of Unconventional
+         Monetary Policy: A Cross-Country Comparison,” Economic Policy, Vol. 29(80), 749–799.
+Romer, Christina D., and David H. Romer, 2004. “A New Measure of Monetary Shocks: Derivation and
+        Implications.” The American Economic Review, Vol. 94(4), 1055-1084.
+Rowe, Nick, 2012. “Does Monetary Policy Have (Bad) Distributional Consequences?” Blog Post.
+       http://worthwhile.typepad.com/worthwhile_canadian_initi/2012/06/does-monetary-policy-have-bad-
+       distributional-consequences.html
+Zandi, Mark (2008). “Assessing the Macroeconomic Impact of Fiscal Stimulus. Moody’s Economy.com
+        https://www.economy.com/mark-zandi/documents/Stimulus-Impact-2008.pdf
+
+
+
+
+                                                                                                               33
+
+---
+Source: Bivens, Josh (2015), "Gauging the Impact of the Fed on Inequality During the Great Recession", Hutchins Center Working Paper #12, Brookings Institution / Economic Policy Institute.
+URL: https://files.epi.org/2015/quantitative-easing-and-inequality-josh-bivens.pdf

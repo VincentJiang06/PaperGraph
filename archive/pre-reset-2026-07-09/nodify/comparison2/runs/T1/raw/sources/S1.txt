@@ -1,0 +1,26 @@
+SOURCE: S1
+Title: Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence
+Authors: Erik Brynjolfsson, Bharat Chandar, Ruyu Chen
+Publisher: Stanford Digital Economy Lab (working paper, using ADP payroll microdata)
+URL: https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recent-employment-effects-of-artificial-intelligence/
+Also see PDF: https://digitaleconomy.stanford.edu/app/uploads/2025/11/CanariesintheCoalMine_Nov25.pdf
+Fetched: 2026-07-09 (via WebFetch, content extracted and quoted verbatim below)
+
+=== EXTRACTED CONTENT / VERBATIM QUOTES ===
+
+(1) Early-Career vs. Experienced Workers
+Early-career workers hit hardest: "early-career workers (ages 22-25) in the most AI-exposed occupations have experienced a 16 percent relative decline in employment" while "employment for workers in less exposed fields and more experienced workers in the same occupations has remained stable or continued to grow."
+
+(2) Employment vs. Wages
+Adjustment through employment, not compensation: "adjustments occur primarily through employment rather than compensation."
+
+(3) Automation vs. Augmentation
+Task-level distinction: "employment declines are concentrated in occupations where AI is more likely to automate, rather than augment, human labor."
+
+(4) Net Employment Effect Scale
+The abstract characterizes findings as "early, large-scale evidence consistent with the hypothesis that the AI revolution is beginning to have a significant and disproportionate impact on entry-level workers in the American labor market."
+
+The framing suggests meaningful concern rather than modest effects, particularly given the 16% relative decline figure and the distinction between automation-prone vs. augmentation-prone roles.
+
+=== ADDITIONAL CONTEXT FROM SEARCH (WebSearch) ===
+The paper analyzes high-frequency administrative payroll data from ADP to understand how generative AI is reshaping the U.S. labor market. Early-career workers (ages 22-25) in AI-exposed occupations experienced 16% relative employment declines, controlling for firm-level shocks, while employment for experienced workers remained stable. Companies aren't laying off young workers; they are simply not backfilling entry-level positions as they become vacant — the adjustment is quiet but systematic, effectively removing the bottom rungs of the traditional career ladder. Adjustments occur primarily via employment rather than compensation, with employment changes concentrated in occupations where AI automates rather than augments labor. The paper uses the "canaries in the coal mine" metaphor: early-career workers as canaries providing early evidence of AI's labor-market impact.

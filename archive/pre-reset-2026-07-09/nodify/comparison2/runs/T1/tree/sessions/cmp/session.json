@@ -1,0 +1,14 @@
+{
+  "schema": "session.v1",
+  "session_id": "cmp",
+  "question": "AI agents 2020-2025 对就业的净效应是什么?请区分『任务层面的替代』与『岗位层面的净增减』,并直面一个核心的因果识别难题:当前观测到的温和就业数据,究竟是 AI 的净效应本来就接近中性,还是效应存在滞后、尚未在数据中显现?给出有校准的判断。",
+  "boundary_note": "聚焦2020-2025年AI(尤其生成式AI/AI agents)对劳动力市场的因果效应研究;涵盖任务替代(task displacement)与岗位净增减(job-level net change)的区分;涵盖就业总量、职位发布、失业率、工资等实证数据;涵盖滞后效应/扩散速度的因果识别问题;不含长期(2030+)预测性研究,不含纯技术性AI能力评测",
+  "language": "zh",
+  "budgets": {
+    "max_depth": 4,
+    "max_children": 5,
+    "max_open_claims": 12
+  },
+  "schema_set_hash": "sha256:4dac83cac00627ca5aafa74a2d3b9bf1ebb54f397cf91ac8c575c51a9eb2b2b0",
+  "created_at": "2026-07-09T06:31:23Z"
+}

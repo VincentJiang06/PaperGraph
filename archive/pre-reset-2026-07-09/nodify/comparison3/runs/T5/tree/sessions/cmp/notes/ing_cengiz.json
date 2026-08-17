@@ -1,0 +1,10 @@
+{
+  "kind": "paper",
+  "title": "Cengiz, Dube, Lindner, Zipperer (2019), The Effect of Minimum Wages on Low-Wage Jobs, QJE 134(3)",
+  "url": "https://www.nber.org/papers/w25434",
+  "text_file": "notes/src_cengiz.txt",
+  "summary": "Bunching estimator over 138 state MW changes 1979-2016: total low-wage jobs essentially unchanged 5 years post-increase; no disemployment even at higher MW levels; some reduced employment in tradable sectors; lack of job loss not from labor-labor substitution.",
+  "bindings": [
+    {"node_id": "N-0008", "relation": "supports", "note": "核心近零证据"}
+  ]
+}

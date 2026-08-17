@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0023",
+ "lean": "supports",
+ "summary": "Clemens-Wither提供指向明显负效应的高质量准实验:以2007-2009联邦上调(约+30%)为冲击,受约束州的target低技能工人就业与收入增长显著受损,全国就业-人口比降约0.7个百分点(对target群体隐含弹性近-1)。但情境是大衰退+高bindingness,外推到常态温和上调需谨慎。",
+ "confidence": "high",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Clemens-Wither:target群体明显受损",
+    "doc_id": "DOC-0011",
+    "quote": "binding minimum wage increases had significant, negative effects on the employment and income growth of targeted workers",
+    "url": "https://www.nber.org/papers/w20724",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "title": "Clemens-Wither:就业-人口比降0.7pp",
+    "doc_id": "DOC-0011",
+    "quote": "minimum wage increases reduced the national employment-to-population ratio by 0.7 percentage point",
+    "url": "https://www.nber.org/papers/w20724",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "衰退期的负效应有多少可外推到经济扩张期的城市上调?"
+ ]
+}

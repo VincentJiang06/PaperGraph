@@ -1,0 +1,24 @@
+{
+ "kind": "report",
+ "title": "Yale Budget Lab (Gimbel et al.) — Impact of AI on Labor Market: Current State (2025-10-01)",
+ "url": "https://budgetlab.yale.edu/research/evaluating-impact-ai-labor-market-current-state-affairs",
+ "text_file": "sessions/cmp/notes/doc04_yale_budget_lab.txt",
+ "summary": "总量口径(职业/行业结构相异度):至2025年中后期无可归因于AI的扰动;暴露/自动化/增强与就业变化无显著关联。作者自陈33个月窗口太短、毕业生信号微弱且可能早于ChatGPT。",
+ "bindings": [
+  {
+   "node_id": "N-0003",
+   "relation": "supports",
+   "note": "总量层无AI可归因扰动"
+  },
+  {
+   "node_id": "N-0010",
+   "relation": "supports",
+   "note": "窗口短+混杂,数据尚不能裁决"
+  },
+  {
+   "node_id": "N-0004",
+   "relation": "context",
+   "note": "作者承认无法预测未来,识别悬而未决"
+  }
+ ]
+}

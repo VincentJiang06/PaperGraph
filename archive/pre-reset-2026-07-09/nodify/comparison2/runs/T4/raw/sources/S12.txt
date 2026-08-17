@@ -1,0 +1,15 @@
+Source: CEPR VoxEU — "China's real estate reckoning: Lessons from Japan's lost decade"
+URL: https://cepr.org/voxeu/columns/chinas-real-estate-reckoning-lessons-japans-lost-decade
+(related mirrors: https://www.rieti.go.jp/en/special/p_a_w/235.html ; https://www.nakedcapitalism.com/2026/05/chinas-real-estate-reckoning-lessons-from-japans-lost-decade.html)
+Fetched via WebFetch (extracted key content and verbatim quotes below).
+
+Housing stock comparison:
+The authors note that "by the late 2010s, China's per capita housing stock had reached levels comparable to far richer economies," indicating China achieved advanced-economy housing density while remaining less developed overall.
+
+Development stage acknowledgment:
+The piece states: "China today is poorer, less financially liberalised, and operates under a very different political system" than Japan was in the 1990s, but provides no specific GDP-per-capita metrics.
+
+Structural differences:
+The article emphasizes China's faster aging and lack of "Japan's extensive social safety net," but avoids quantifying convergence gaps or urbanization potential comparisons.
+
+Other content (from earlier search synthesis of the same underlying research thread): Returns to new investment in China declined steadily, particularly in real estate and infrastructure. Japan experienced a remarkably similar dynamic in the 1980s; in Japan, the negative growth impact of real estate investment persisted for more than a decade after the bubble burst. Cumulative investment, often exceeding underlying demand, gradually builds up excess supply and places sustained downward pressure on prices, especially in cities characterised by significant investment overhang.

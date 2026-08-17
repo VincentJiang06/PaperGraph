@@ -1,0 +1,18 @@
+schema: '2.0'
+stages:
+  c1:
+    cmd: python3 runs/_smoke/transforms/c1.py
+    deps:
+    - path: data/_smoke_postings.csv
+      hash: md5
+      md5: f30eec066fefb0f9391521c10ec5eaac
+      size: 63
+    - path: runs/_smoke/transforms/c1.py
+      hash: md5
+      md5: 6065c002ad601d6638e398a773313907
+      size: 487
+    outs:
+    - path: runs/_smoke/metrics/c1.json
+      hash: md5
+      md5: 1519d2ad47b7a18705ec658a3cf4a945
+      size: 17

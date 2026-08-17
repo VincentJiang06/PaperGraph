@@ -1,0 +1,6 @@
+Dube, Lester, Reich (2016), "Minimum Wage Shocks, Employment Flows, and Labor Market Frictions," Journal of Labor Economics 34(3):663-704.
+
+ABSTRACT (verbatim):
+"We provide the first estimates of the effects of minimum wages on employment flows in the US labor market, identifying the impact by using policy discontinuities at state borders. We find that minimum wages have a sizable negative effect on employment flows but not on stocks. Separations and accessions fall among affected workers, especially those with low tenure. We do not find changes in the duration of nonemployment for separations or hires. This evidence is consistent with search models with endogenous separations."
+
+Note (from paper body, reported in summaries): border county-pair estimates give separation elasticities of about 0.23 for restaurant workers and teens; interpreted via a job-ladder model in which minimum wage increases reduce job-to-job transitions. Reduced turnover lowers hiring/vacancy costs, a monopsony/search-frictions channel consistent with employment stocks not falling.

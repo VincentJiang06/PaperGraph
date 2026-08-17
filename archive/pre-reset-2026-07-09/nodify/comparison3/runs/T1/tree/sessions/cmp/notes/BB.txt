@@ -1,0 +1,9 @@
+What Caused the US Pandemic-Era Inflation? (Bernanke & Blanchard, NBER WP 31417, 2023)
+URL: https://www.nber.org/papers/w31417
+
+most of the inflation surge that began in 2021 was the result of shocks to prices given wages. These shocks included sharp increases in commodity prices, reflecting strong aggregate demand, and sectoral price spikes, resulting from changes in the level and sectoral composition of demand together with constraints on sectoral supply.
+
+although tight labor markets have thus far not been the primary driver of inflation, we find that the effects of overheated labor markets on nominal wage growth and inflation are more persistent than the effects of product-market shocks.
+
+Controlling inflation will thus ultimately require achieving a better balance between labor demand and labor supply.
+

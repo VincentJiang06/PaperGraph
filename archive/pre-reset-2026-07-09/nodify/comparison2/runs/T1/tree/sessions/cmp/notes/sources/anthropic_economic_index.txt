@@ -1,0 +1,17 @@
+Source: Anthropic Economic Index — launch report (Feb 2025) "Introducing the Anthropic Economic Index", and January 2026 report "Economic primitives".
+URL: https://www.anthropic.com/news/the-anthropic-economic-index ; https://www.anthropic.com/research/anthropic-economic-index-january-2026-report
+
+Feb 2025 launch report, verbatim:
+"Overall, we saw a slight lean towards augmentation, with 57% of tasks being augmented and 43% of tasks being automated."
+"AI was not being used to replace people doing tasks, but instead worked with them, engaging in tasks like validation, learning, and task iteration."
+Breakdown: Augmentation 57.4% (Validation 2.8%, Task Iteration 31.3%, Learning 23.3%); Automation 42.6% (Feedback Loop 14.8%, Directive 27.8%).
+
+Methodology: ~1 million Claude.ai conversations mapped via an automated classifier ("Clio") onto O*NET occupational task taxonomy (US Dept. of Labor), preserving privacy, then aggregated to occupation / occupational-category level.
+
+January 2026 report, verbatim, tracking the automation/augmentation split over time within 2025:
+January 2025: "56% of conversations were classified as augmentation compared to 41% automated."
+August 2025: trend reversed — "directive" (fully-delegated / automation-style) conversations rose from 27% to 39% between January and August 2025, and automated interactions exceeded augmented ones for the first time.
+November 2025: "The share of conversations classified as augmented jumped 5pp to 52% and the share deemed automated fell 4pp to 45%" — i.e. "augmentation once again became more prevalent on Claude.ai than automation."
+Even after this reversion toward augmentation, automation's share stayed elevated versus the January 2025 baseline (45% vs 41%), i.e. a net drift toward more automation-style usage over the year despite the within-year oscillation.
+
+Relevance: this is real-world, large-N, non-pilot usage data spanning the full economy (not a single-firm case study), directly measuring how AI is actually being used at the task level via the O*NET taxonomy. It shows task-level "automation" (full delegation) is a large but not dominant share of usage (41-45%) and co-exists with even larger "augmentation" share, and that the mix moves over time in both directions — evidence against a simple monotonic "automation share is rising toward full job replacement" narrative, and evidence that a meaningful share of task-level AI use is complementary rather than substitutive even as of late 2025.

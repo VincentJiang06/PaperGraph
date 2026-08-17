@@ -1,0 +1,27 @@
+{
+  "T1": {
+    "A": "raw",
+    "B": "skills",
+    "C": "tree"
+  },
+  "T2": {
+    "A": "tree",
+    "B": "raw",
+    "C": "skills"
+  },
+  "T3": {
+    "A": "skills",
+    "B": "tree",
+    "C": "raw"
+  },
+  "T4": {
+    "A": "raw",
+    "B": "tree",
+    "C": "skills"
+  },
+  "T5": {
+    "A": "tree",
+    "B": "skills",
+    "C": "raw"
+  }
+}

@@ -1,0 +1,27 @@
+S18 — Philippe Aghion & Simon Bunel, "AI and Growth: Where Do We Stand?" (FRBSF, June 2024)
+URL: https://www.frbsf.org/wp-content/uploads/AI-and-Growth-Aghion-Bunel.pdf
+Facet/Line: L2, L3, L6 (macro ceiling) — COUNTER-VIEW to Acemoglu S14
+Tier: D / structural model (task-based Acemoglu-2024 formula + historical-analogy approach; forecast,
+not first-hand outcome data). Included for BALANCE against S14.
+
+DESIGN: Two approaches. (1) Historical analogy to electricity/digital tech waves. (2) The SAME task-based
+model Acemoglu (2024) uses, but with Aghion-Bunel's own reading of the empirical literature for each
+component (AI-exposed task share, profitability of AI use, cost savings, labor share).
+EFFECT + DIRECTION: MUCH LARGER macro upside than Acemoglu — median ~0.68pp/yr extra TFP (vs Acemoglu 0.07pp).
+
+VERBATIM QUOTES:
+- "Based on the first approach, we estimate that the AI revolution should increase aggregate productivity
+  growth by between 0.8 and 1.3pp per year over the next decade."
+- "Using the second approach but with our own reading of the recent empirical literature on the various
+  components of the task-based formula, we obtain a median estimate of 0.68pp additional annual total
+  factor productivity (TFP) growth."
+- "As for the second approach ... it leads Acemoglu (2024) to a much smaller extra growth estimate of
+  0.07 pp per year over the next decade ... we estimate that the AI revolution should increase aggregate
+  productivity growth by between 0.07pp and 1.24pp, with a median estimate of 0.68pp."
+- "This estimate in turn may be seen as a lower bound."
+- On the divergence: they retain some Acemoglu values (labor share 0.57) but use HIGHER AI-exposure and
+  cost-saving inputs: "The share of tasks exposed to AI is [0.185; 0.68]" and profitable-to-use "[0.23; 0.8]."
+
+LIMITS: Same Tier-D critique as S14 — a forecast from a stylized model, sensitive to input assumptions;
+gap with Acemoglu (0.07 vs 0.68, ~10x) is driven by contested exposure/cost-saving inputs, NOT new data.
+Confirms the macro question is UNSETTLED within one framework. Neither is first-hand outcome evidence.

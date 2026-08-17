@@ -1,0 +1,9 @@
+Title: China 7-Day Reverse Repo Rate
+Source: Trading Economics
+URL: https://tradingeconomics.com/china/reverse-repo-rate
+
+Key verbatim extraction (via fetch):
+- Current rate: "1.40 percent in July" (unchanged).
+- "Reaching a record low of 1.40 percent in May of 2025."
+- Historical range: "averaged 2.45 percent from 2012 until 2026, reaching an all time high of 4.40 percent in July of 2013."
+- Context (from companion search synthesis): One-year LPR held at 3.0%, five-year LPR at 3.5%, both at record lows for 11 consecutive months; bank net interest margins already compressed to a record-low 1.42%, limiting room for further cuts without damaging bank balance sheets; PPI has been in negative territory, keeping real interest rates elevated even as nominal rates approach historic floors — a symptom structurally similar to Japan's pre-liquidity-trap conditions.

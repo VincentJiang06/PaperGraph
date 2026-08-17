@@ -1,0 +1,32 @@
+{
+  "topic": "T4",
+  "arm": "tree",
+  "recovered": {
+    "lines_of_inquiry": {
+      "status": "full",
+      "detail": "Root N-0001 fans into 6 explicit sub-viewpoints: drag side (N-0002 demographic/aging drag), offset①automation (N-0003), offset②TFP/human capital (N-0004), offset③labor participation & reallocation = delayed retirement + women + hukou migrant citizenization (N-0005), China-Japan comparability = development stage/capital return/debt/policy space (N-0006), and a dedicated red-team steelman (N-0007). 13 claim nodes hang under these, INCLUDING contrarian/dead lines explicitly opened: N-0009 (headcount overstates drag), N-0018 (automation offset overrated), N-0019 (TFP catch-up not automatic, middle-income-trap), N-0020 (labor buffer is a drop in the bucket). Every line carries a full statement string via nd tree/nd show. Nothing is a stub."
+    },
+    "leanings": {
+      "status": "full",
+      "detail": "Every viewpoint carries a synthesized lean + confidence, visible in nd brief and nd show. Overall thesis (N-0001, mixed/medium) fully recoverable verbatim: China's pop decline+aging does NOT inevitably cause Japan-style lost decades, but potential growth steps structurally down; decisive difference is development stage (Japan 1991 ~85% US per-capita after catch-up exhausted vs China <30% with convergence room); offsets partly cushion but are mostly 'potential' contingent on a policy pivot toward consumption/market reform; controlled-Japanification is most likely, real downside tail (no pivot -> debt-deflation stasis). Child leans explicit: N-0002 supports/high, N-0003/4/5/6/7 all mixed/medium. Root synthesis also lists 5 open_questions and confidence=medium."
+    },
+    "key_figures": {
+      "status": "full",
+      "detail": "Rich quantitative spine, each figure tied to a DOC. Demographics: working-age peak 2013, 2024->2050 984M->745M (-22%, -239M), TFR ~1.1-1.18, pop 1426M->1313M by 2050->< 800M by 2100 (DOC-0010). Robots: 2024 installs ~54% world (~295k units), operational stock ~2M (#1), density ~166/10k vs Korea 1220/Singapore 818/Germany 449/Japan 446 (DOC-0005). Growth/TFP: ~9% avg since 1990 -> ~5%, ICOR rising since 1990s, investment-driven (DOC-0009/0012). Stage: Japan 1991 ~85% US per-capita (DOC-0008); China <30% US (DOC-0002); aging at ~$13,200 vs Japan ~$40,000 (DOC-0013). Debt: 312% GDP 2024 from 245%, augmented 124%, local gov >60% (DOC-0011). Retirement: 2025 start, men 60->63, women 50/55->55/58, done 2040 (DOC-0006). Hukou: 40M+ settled 2021-23, target 70% urbanization (DOC-0007). Deflation from 2023 (DOC-0004)."
+    },
+    "adversarial_lines": {
+      "status": "full",
+      "detail": "Explicit red-team subtree N-0007 ('steelman the pessimist to strongest') with 3 concluded claims: N-0015 balance-sheet recession (Richard Koo, DOC-0003) + real-estate overhang, demand suppressed by deleveraging, needs forceful fiscal; N-0016 debt-deflation/Japanification (2023 first deflation in two years, negative GDP deflator, DOC-0004); N-0017 conditionality rebuttal (offsets are 'potential', hinge on a policy pivot China historically resists). Verdict captured verbatim in N-0007 synthesis: red team proves 'stagnation risk is serious' but NOT 'stagnation inevitable'; all three are conditional/interruptible risks. Plus four embedded counter-claims (N-0009/0018/0019/0020) attacking each offset. Fully recoverable, including how far each attack landed."
+    },
+    "evidence_provenance": {
+      "status": "full",
+      "detail": "13 docs in docs/index.jsonl, each with title, URL, kind, content_hash, zh summary, and per-node bindings (relation supports/context + note) — e.g. DOC-0005 IFR robot density -> N-0010/N-0018, DOC-0008 Nippon.com Japan 85% -> N-0013, DOC-0011 OMFIF 312% debt -> N-0014/N-0015. `nd docs for-node` resolves bindings live. Root synthesis (SYN-0020) additionally embeds evidence units with doc_id + verbatim English quote + ref_id (E-01..E-04). Full text cached under docs/store/DOC-*.txt plus notes/DOC-*_*.txt, so claims are re-verifiable offline and via the real URLs. Provenance is which-source-backs-which-claim complete."
+    },
+    "next_action": {
+      "status": "full",
+      "detail": "State is unambiguous: all 20 nodes concluded/synthesized, 0/15 open claims, root carries a finished calibrated judgment (depth used 2/3, 13 docs). The analytical tree is COMPLETE; the exact next action is to compile/write up the dossier from the synthesized tree — no dangling threads to chase. If deepening were desired, the root synthesis names 5 concrete open_questions (policy pivot timing; property deleveraging -> self-reinforcing debt-deflation; TFP catch-up realization under decoupling; automation's net contribution to aggregate growth vs job displacement; true manageability of high debt under sovereign-currency+capital-controls). A fresh agent knows precisely where to resume with zero re-research."
+    }
+  },
+  "overall_recoverability": 5,
+  "narrative": "A fresh agent could continue seamlessly, not restart. The persisted tree preserves the full aggressive fan-out: 6 offset/drag/comparability/red-team lines plus contrarian counter-claims, each with statement, lean, and confidence, converging on a verbatim calibrated root thesis (not-inevitable but structural step-down; downside tail real). Every load-bearing figure is present and bound to one of 13 provenance-tracked, URL-and-hash-verifiable docs, with quotes embedded in the root synthesis. The red-team verdict (risk serious, not inevitable) is explicit. Because all nodes are concluded and 0 claims are open, resumption is trivial: compile the dossier, or deepen via the 5 named open questions. Effectively lossless persistence."
+}

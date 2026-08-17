@@ -1,0 +1,4 @@
+Acemoglu, Autor, Hazell & Restrepo — "Artificial Intelligence and Jobs: Evidence from Online Vacancies" — Journal of Labor Economics 40(S1):S293-S340 (2022); NBER WP 28257.
+KEY RESULTS (verbatim): AI-exposed establishments are reducing hiring in non-AI positions. ... AI is currently substituting for humans in a subset of tasks but it is not yet having detectable aggregate labor market consequences.
+CONTEXT: Establishment-level analysis of the near-universe of US online vacancies from 2010 onward; AI exposure measured from task content.
+DESIGN: observational establishment-level panel (descriptive + exposure). LIMITS: data end ~2018-2019, pre-generative-AI; vacancies proxy for hiring, not employment stock; aggregate null may reflect early diffusion.

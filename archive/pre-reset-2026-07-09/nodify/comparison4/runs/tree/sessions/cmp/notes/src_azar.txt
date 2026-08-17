@@ -1,0 +1,7 @@
+Azar, J., Gine, M. & Sanz-Espin, J. (2025, SSRN 5842084, Dec 2025). AI Is Already Eroding Wages: Quasi-Experimental Evidence From Occupational Exposure.
+Data/design: large-scale dataset of realized worker-firm matches, 138 million U.S. workers; quasi-experimental, occupational exposure to automation as identification; event around arrival of ChatGPT.
+Verbatim (SSRN summary): "the arrival of ChatGPT significantly reduced the wages of firms whose occupational structure was more exposed to automation relative to less exposed firms."
+"The average wage of exposed firms fell 4.5% relative to unexposed firms."
+"starting wages of new positions for junior and mid-level workers in exposed firms fell by 6.3% and 5.9% respectively relative to unexposed firms, while senior wages remained stable or even increased."
+"Firms in exposed sectors reduced the share of junior employees and increased the share of mid-level employees."
+Also: exposed firms reduced the level of education required for new junior/mid-level positions.

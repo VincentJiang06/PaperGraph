@@ -1,0 +1,11 @@
+Title: The evolution of China's growth model: challenges and long-term growth prospects
+Source: European Central Bank, Economic Bulletin
+URL: https://www.ecb.europa.eu/press/economic-bulletin/articles/2024/html/ecb.ebart202405_01~a6318ef569.en.html
+
+Key verbatim extraction (via fetch):
+- "China's working age population started to decline in 2011. According to UN estimates, by 2050 it will have declined by nearly a quarter."
+- Demographic drag alone projected to reduce annual GDP growth by "over 0.2 percentage points by 2035."
+- TFP: "While aggregate annual TFP growth was 2.8% in the ten years leading up to the Great Recession, it slowed to 0.7% over the period 2009-18."
+- Adverse productivity scenario (compounded by FDI outflows / GVC fragmentation) could lower growth by a further 0.6 percentage points within a decade.
+- Capital returns: "diminishing rates of return imply that it is becoming more difficult to generate growth from one additional unit of investment." Loss-making firms doubled to 28% since 2018; rising inventory-to-sales ratios indicate overcapacity.
+- Baseline projection: annual GDP growth rate declines "from 5.3% in 2025 to 3.7% in 2035" — a 1.6 percentage-point reduction driven jointly by aging and weakening productivity.

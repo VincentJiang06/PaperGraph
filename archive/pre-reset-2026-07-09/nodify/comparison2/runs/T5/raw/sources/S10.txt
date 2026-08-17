@@ -1,0 +1,22 @@
+Source: Lordan, Grace and David Neumark. "People Versus Machines: The Impact of Minimum Wages on Automatable Jobs." NBER Working Paper No. 23667 (published in Labour Economics, 2018).
+URL: https://www.nber.org/papers/w23667
+Retrieved via WebFetch on 2026-07-09.
+
+Extracted content:
+
+**Research Focus:**
+The study examines how minimum wage increases affect employment in jobs susceptible to automation, particularly for low-skilled workers.
+
+**Key Finding:**
+"increasing the minimum wage decreases significantly the share of automatable employment held by low-skilled workers"
+
+**Additional Impact:**
+The research shows that wage increases "increases the likelihood that low-skilled workers in automatable jobs become nonemployed or employed in worse jobs."
+
+**Vulnerable Groups:**
+The authors identify particularly concerning effects for "older, low-skilled workers in manufacturing," noting these demographic groups face substantive adverse employment changes due to automation triggered by minimum wage increases.
+
+**Publication Details:**
+Working Paper 23667, August 2017 (revised January 2018); published in Labour Economics, 2018; Authors: Grace Lordan and David Neumark.
+
+(Additional context from search results: based on CPS data 1980-2015, a $1 minimum wage increase is associated with roughly a 0.43 percentage point decline in the share of automatable jobs held by low-skilled workers overall, and a 0.94 percentage point decline for workers 25 and younger.)

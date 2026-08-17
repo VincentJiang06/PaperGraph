@@ -1,0 +1,12 @@
+{
+  "kind": "paper",
+  "title": "Storm (2024), Tilting at Windmills: Bernanke and Blanchard's Obsession with the Wage-Price Spiral",
+  "url": "https://www.ineteconomics.org/research/research-papers/tilting-at-windmills-bernanke-and-blanchards-obsession-with-the-wage-price-spiral",
+  "text_file": "notes/scratch/doc_storm_critique.txt",
+  "summary": "对Bernanke-Blanchard模型的学术批评:认为其通过在模型中嵌入实际工资刚性,夸大了紧俏劳动力市场与成本冲击的通胀后果,'为政策制定者提供了超出更现实模型分析所能证成程度的紧缩正当性'。",
+  "bindings": [
+    {"node_id": "N-0004", "relation": "supports", "note": "权威学术批评直接指出Bernanke-Blanchard模型的分解结果存在建模假设导致的系统性偏差,印证归因模型间存在实质分歧"},
+    {"node_id": "N-0016", "relation": "supports", "note": "若归因模型高估了紧缩的必要性,则意味着已实施的紧缩政策力度可能超出供给侧主导的通胀实际所需"},
+    {"node_id": "N-0017", "relation": "supports", "note": "美联储紧缩叙事所依赖的'工资-价格螺旋'风险,被学术界指出可能被模型设定夸大,构成官方立场与部分学术证据间的张力"}
+  ]
+}

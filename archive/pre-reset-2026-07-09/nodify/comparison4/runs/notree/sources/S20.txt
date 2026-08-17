@@ -1,0 +1,34 @@
+S20 — Zanna Iscenko & Fabien Curto Millet (Economic Innovation Group), "Looking for the Ladder: Is AI
+Impacting Entry-Level Jobs?" (Jan 2026)
+URL: https://eig.org/wp-content/uploads/2026/01/TAWP-Iscenko-Millet.pdf
+Facet/Line: L4 (youth/entry-level), L6 (ADVERSARIAL) — DIRECT CRITIQUE of S6 (Brynjolfsson "Canaries")
+Tier: C (re-analysis of aggregate job-postings [Lightcast] + employment data; timing/confound argument)
+
+DESIGN: Not a new causal estimate — a REBUTTAL. Re-examines the timing of the entry-level (22–25)
+employment decline that S6 attributes to AI; tests it against (a) the AI-adoption timeline and
+(b) the 2022 monetary-tightening / interest-rate-sensitivity confound.
+EFFECT + DIRECTION: DISPUTES the AI-attribution of S6. Argues the youth decline is mostly the lagged
+consequence of a hiring freeze that PREDATES ChatGPT, plus a mechanical "aging illusion."
+
+VERBATIM QUOTES:
+- "The central weakness of the hypothesis that AI is the main driver of the recent entry-level downturn is
+  its implausible timeline."
+- "The downturn in labor demand for AI-exposed occupations — using the same definition of exposure used by
+  the 'Canaries' paper — began long before ChatGPT's launch ... vacancies for the highest AI exposure
+  quintile of occupations peaked in March–April 2022 and declined sharply throughout the remainder of the
+  year. This hiring slowdown predates any plausible generative AI effect by over six months."
+- "'AI exposure' and 'interest rate sensitivity' are deeply correlated variables ... occupations in the top
+  quintile of AI exposure are overwhelmingly concentrated in sectors like 'Information', 'Finance and
+  Insurance', and 'Professional and Technical Services'." (The Fed began its most aggressive hiking cycle
+  in forty years in March 2022 — "precisely when job postings in these sectors began to fall.")
+- Aging-illusion: a full hiring freeze with ZERO layoffs makes the 22–25 cohort "shrunk by a shocking 25
+  percent while it remained level for all other age groups" — "aging can create the statistical illusion of
+  a targeted decline in the youngest cohort."
+- "There is no evidence that job postings for junior roles within occupations most exposed to AI have
+  declined more than postings for senior positions."
+
+LIMITS: EIG is a policy think-tank (not peer-reviewed); an interpretive/timing rebuttal, not a fresh causal
+estimate. Concedes real distress: "LinkedIn July 2025 data, entry-level hiring rates have declined 23
+percent compared to pre-pandemic levels, a steeper drop than the 18 percent decline for overall hiring,"
+and explicitly does NOT rule out FUTURE AI displacement. RESOLVES GAP 1: a credible confound (monetary
+policy + cohort mechanics) rivals AI as the driver of the S6 pattern.

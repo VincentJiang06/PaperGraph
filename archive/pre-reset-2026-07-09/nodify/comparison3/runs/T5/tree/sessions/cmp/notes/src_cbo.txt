@@ -1,0 +1,9 @@
+Congressional Budget Office (July 2019), "The Effects on Employment and Family Income of Increasing the Federal Minimum Wage" (Raise the Wage Act, $15 by 2025 option). As reported by Kinder Institute / CNBC quoting CBO.
+
+Key CBO findings on the $15 option (verbatim as quoted):
+"resulting job losses could range between 'about zero and 3.7 million'"
+"1.3 million Americans could potentially be out of work"
+"Raising the federal minimum wage to $15 an hour by 2025 would increase the pay of at least 17 million people"
+"1.3 million Americans would be lifted out of poverty"
+
+Note: CBO median estimate = 1.3 million fewer employed in an average week in 2025 (a 0.8% reduction in employment); two-thirds likely range roughly 0 to 3.7 million. A $15 federal floor implies a high minimum-to-median (Kaitz) ratio in low-wage states, the region where CBO projects material disemployment — i.e., the upper (high-relative-wage) end of the non-linearity.

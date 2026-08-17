@@ -1,0 +1,14 @@
+{
+ "kind": "report",
+ "title": "Challenger, Gray & Christmas — 2025 Year-End Job Cut Report (2026-01-08)",
+ "url": "https://www.challengergray.com/blog/2025-year-end-challenger-report-highest-q4-layoffs-since-2008-lowest-ytd-hiring-since-2010/",
+ "text_file": "sessions/cmp/notes/doc09_challenger_layoffs.txt",
+ "summary": "AI归因裁员真实且上升:2025年54,836起,2023年以来累计71,825起;但AI非2025首要原因(远小于DOGE 293,753、关店、经济),雇主自报口径噪声大。加速派仅得弱支持。",
+ "bindings": [
+  {
+   "node_id": "N-0007",
+   "relation": "supports",
+   "note": "AI归因裁员真实且上升(但量级小)"
+  }
+ ]
+}

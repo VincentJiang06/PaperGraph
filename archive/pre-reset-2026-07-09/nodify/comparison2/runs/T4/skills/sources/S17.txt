@@ -1,0 +1,10 @@
+Title: Why China's Investment Efficiency is Low - Financial reforms are lagging behind
+Source: RIETI (Research Institute of Economy, Trade and Industry, Japan)
+URL: https://www.rieti.go.jp/en/china/04061801.html
+
+Key verbatim extraction (via fetch):
+- China 2001-2003: "the capital coefficient came to 5.1" — i.e., 5.1% of GDP in new investment was required to raise growth by one percentage point.
+- "China's ICOR has been on an upward trend since the 1990s, indicating a decline in investment efficiency."
+- "China's average ICOR for the years 1991 to 2003" was 4.1, "comparatively higher" than Japan/South Korea/Taiwan during their own high-growth periods.
+- Comparison figures: Japan (1960s) ICOR = 3.2 (with 10.2% growth, 32.6% investment/GDP); South Korea (1980s) ICOR = 3.2; Taiwan (1980s) ICOR = 2.7.
+- Root cause: the banking system "fails to transform savings into effective investments" due to "excessive government intervention" and weak corporate governance in state-owned enterprises.

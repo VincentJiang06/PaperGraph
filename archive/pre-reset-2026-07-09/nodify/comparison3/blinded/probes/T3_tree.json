@@ -1,0 +1,32 @@
+{
+  "topic": "T3",
+  "arm": "tree",
+  "recovered": {
+    "lines_of_inquiry": {
+      "status": "full",
+      "detail": "All 10 nodes recover cleanly with statements, orientation, why_helps_parent, and promotion_notes (expected-evidence). Root N-0001 spans three main lines: task-level substitution vs augmentation (N-0002), job-level net change / aggregate vs cohort (N-0003), and the causal-identification viewpoint neutral-vs-lag (N-0004, sub-lines A near-neutral N-0008, B lag N-0009, confounders N-0010). Plus diffusion/timing (N-0006) and two explicit red-team lines (N-0005 capability-skeptic, N-0007 substitution-accelerationist). No dead/orphaned lines — every node reached 'concluded'; contrarian lines preserved and labeled orientation=adversarial."
+    },
+    "leanings": {
+      "status": "full",
+      "detail": "Every node carries a synthesis with lean + confidence: N-0002 supports/high, N-0003 supports/med, N-0005 mixed/med, N-0006 supports/high, N-0007 mixed/med, N-0008 supports/med, N-0009 supports/med, N-0010 supports/med, N-0004 open/med, root N-0001 mixed/med. Overall thesis (SYN-0010): net job effect 2020-25 likely near-neutral-to-slightly-negative, but this is a 'too early' product, not proven long-run neutrality; directional evidence (entry-level signal, adoption curve, reliability-horizon extrapolation) tilts toward 'real effect awaiting materialization' over 'intrinsically neutral'. Calibrated confidence: task-level high, aggregate job-level medium, neutral-vs-lag distinction low."
+    },
+    "key_figures": {
+      "status": "full",
+      "detail": "All quantitative anchors survive as exact quotes bound to doc_ids: 80% workforce >=10% tasks affected / 19% >=50% / 47-56% with tools (Eloundou DOC-0001); augmentation 57% vs automation 43% (Anthropic DOC-0002); 22-25yo high-exposure -16% relative employment decline (Stanford DOC-0003); Acemoglu <=0.66% TFP over 10yr (DOC-0005); +14% productivity / +34% novice (BLR DOC-0006); METR ~50min 50%-horizon, SWE-bench 70%->23% long-horizon, tau-bench pass@1 61% vs pass@8 25% (DOC-0008); Challenger 54,836 AI-attributed 2025 layoffs / 71,825 cumulative (DOC-0009); Census BTOS adoption 3.7%->5.4%->~10%, 17-20% loosened (DOC-0010)."
+    },
+    "adversarial_lines": {
+      "status": "full",
+      "detail": "Two dedicated red-team nodes with verdicts and evidence. N-0005 (capability-skeptic): partially holds — agents unreliable long-horizon, ~10% firm adoption, so large end-to-end substitution overestimated in 2020-25; but the strong 'never arrives' claim is not supported (reliability horizon extrapolating). N-0007 (accelerationist): only locally hits — AI-attributed layoffs real and rising but tiny vs total churn and not the primary driver, so aggregate 'mild' is not a pure measurement artifact; strong form (large net loss already here) fails. Hypothesis-B lag line (N-0009) also carries orientation=adversarial. Each red-team result is captured, not just asserted."
+    },
+    "evidence_provenance": {
+      "status": "full",
+      "detail": "10 docs each with title, real URL, kind, sha256 content_hash, local text_file (docs/store/DOC-000X.txt — all 10 files present on disk), summary, and per-node bindings (relation supports/context + note). Every synthesis quote carries doc_id + ref_id. Claim-to-source mapping is explicit and bidirectional (docs for-node resolves both ways). Fully verifiable: URLs for external check plus locally cached full text and hashes. No uncited or invented claims observed."
+    },
+    "next_action": {
+      "status": "full",
+      "detail": "State reads as terminal, not mid-flight: budgets show open claims 0/15, depth 2/3, all 10 nodes concluded and root synthesized (brief marks every node ✓syn). So the unambiguous next action is compile/write-up rather than more searching. If extension were wanted, each synthesis enumerates concrete open_questions (e.g. does the 22-25yo cohort signal propagate upward over time; does adoption go non-linear once agents cross a full-workday reliability threshold; whether 2026+ extended window reveals Yale's not-yet-visible lag; which quasi-experimental design isolates the AI margin from COVID/rate-hikes/tech over-hiring). A fresh agent knows exactly where to resume."
+    }
+  },
+  "overall_recoverability": 5,
+  "narrative": "A fresh agent could continue with essentially zero context loss. The tree fully reconstructs all 10 lines (incl. both red-team lines and the neutral-vs-lag fork), every per-node lean+confidence, the overall calibrated thesis, all key figures as source-bound quotes, and complete, verifiable provenance (URLs + local cached text + hashes). Notably the run is not really 'interrupted' — it reached synthesized closure (0 open claims), so the state signals compilation as the next step while still listing concrete open_questions for optional extension. This is the recoverable end: the CLI (brief/tree/show/log/docs) alone is sufficient to resume; no restart needed."
+}

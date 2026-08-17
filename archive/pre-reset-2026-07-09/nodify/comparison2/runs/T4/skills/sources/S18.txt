@@ -1,0 +1,7 @@
+Title: Japan GDP per capita PPP
+Source: Trading Economics
+URL: https://tradingeconomics.com/japan/gdp-per-capita-ppp
+
+Key verbatim extraction (via fetch):
+- Japan's GDP per capita PPP: "a record low of 35272.42 USD in 1990" (i.e., the earliest point in this series).
+- "The Gross Domestic Product per capita in Japan was last recorded at 46106.92 US dollars in 2024" — roughly 31% growth over 34 years, illustrating how little catch-up growth Japan had left once it entered stagnation, vs. China's much lower current base (S16: $27,105 in 2024) implying substantially more convergence runway.

@@ -1,0 +1,6 @@
+SOURCE: Lukasz Rachel & Lawrence H. Summers (2019), Brookings Papers on Economic Activity — "On Falling Neutral Real Rates, Fiscal Policy, and the Risk of Secular Stagnation"
+URL: https://www.brookings.edu/articles/on-falling-neutral-real-rates-fiscal-policy-and-the-risk-of-secular-stagnation/
+VERBATIM QUOTES:
+"We show, using standard econometric procedures and looking at direct market indicators of prospective real rates, that neutral real interest rates have declined by at least 300 basis points over the last generation."
+"Using estimates drawn from the literature, as well as two general equilibrium models emphasizing respectively lifecycle heterogeneity and idiosyncratic risks, we suggest that the “private sector neutral real rate” may have declined by as much as 700 basis points since the 1970s."
+"We highlight the levels of government debt, the extent of pay-as-you-go old age pensions and the insurance value of government health care programs have all ceteris paribus operated to raise neutral real rates."

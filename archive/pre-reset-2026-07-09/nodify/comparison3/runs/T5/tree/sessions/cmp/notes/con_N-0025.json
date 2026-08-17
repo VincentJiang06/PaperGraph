@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0025",
+ "lean": "mixed",
+ "summary": "加州快餐$20(AB1228,2024)是当前最前沿的高相对水平实验,证据真实分歧:Berkeley报告加薪8-9%、价格升约1.5%、'无显著就业损失'且无削工时证据;反方(QCEW趋势调整)估计快餐就业降约3.2-3.6%(约1.8万岗位)。这恰是竞争理论与准实验张力的最新前线,尚未收敛。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Berkeley:无就业损失",
+    "doc_id": "DOC-0012",
+    "quote": "no negative effects on fast-food employment",
+    "url": "https://irle.berkeley.edu/publications/brief/effects-of-the-20-california-fast-food-minimum-wage/",
+    "locator": "brief",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "title": "反方:就业降3.6%",
+    "doc_id": "DOC-0013",
+    "quote": "This approach, namely adjusting for the performance of other industries, suggests that AB 1228 reduced fast-food employment by 3.6 percent.",
+    "url": "https://www.cato.org/research-briefs-economic-policy/did-californias-fast-food-minimum-wage-reduce-employment",
+    "locator": "report",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "QCEW口径、比较组选择与季节调整差异各解释多少分歧?更长面板会否收敛?"
+ ]
+}

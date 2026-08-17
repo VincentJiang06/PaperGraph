@@ -1,0 +1,14 @@
+{
+ "kind": "paper",
+ "title": "Brynjolfsson, Li, Raymond — Generative AI at Work (NBER 31161; QJE 2025)",
+ "url": "https://www.nber.org/papers/w31161",
+ "text_file": "sessions/cmp/notes/doc06_genai_at_work.txt",
+ "summary": "5179名客服的现场因果实验:接入生成式AI每小时解决问题数+14%,新手/低技能+34%,对资深者影响甚微。增强/互补渠道可抵消替代。",
+ "bindings": [
+  {
+   "node_id": "N-0008",
+   "relation": "supports",
+   "note": "增强/生产率互补=抵消替代的机制证据"
+  }
+ ]
+}

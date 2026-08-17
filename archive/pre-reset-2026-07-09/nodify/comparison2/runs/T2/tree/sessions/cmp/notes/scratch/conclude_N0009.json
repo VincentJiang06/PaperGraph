@@ -1,0 +1,15 @@
+{
+  "node_id": "N-0009",
+  "lean": "mixed",
+  "summary": "需求侧被高估论点部分成立:Bernanke-Blanchard模型显示劳动力市场紧张对通胀激增阶段(2021Q3-2023Q2)的直接贡献'微小',与'需求过热主导'的直觉不符。但Domash-Summers基于空缺率/离职率/工资增速的需求侧指标显示劳动力市场确实处于历史性紧张状态,且M2超常规扩张与其后18个月通胀见顶存在时滞相关,不支持'需求侧无关紧要'的强版本。证据总体上是双向的。",
+  "confidence": "medium",
+  "based_on": {
+    "children": [],
+    "evidence": [
+      {"ref_id": "E-01", "title": "Bernanke & Blanchard (2023)", "doc_id": "DOC-0003", "url": null, "locator": null, "quote": "the contribution to inflation of tight labor-market conditions was negative during the first two quarters of 2021 and positive but minuscule during 2021Q3-2023Q2", "tool": "web_search", "note": null},
+      {"ref_id": "E-02", "title": "Domash & Summers (2022)", "doc_id": "DOC-0006", "url": null, "locator": null, "quote": "Since the start of the pandemic, demand-side labor market measures like the vacancy rate and the quits rate surged to record highs, deviating significantly from their historical relationship with supply-side measures like the unemployment rate.", "tool": "web_search", "note": null},
+      {"ref_id": "E-03", "title": "SF Fed超额储蓄系列", "doc_id": "DOC-0009", "url": null, "locator": null, "quote": "Households rapidly accumulated unprecedented levels of excess savings that amounted to about $2.1 trillion during the pandemic.", "tool": "web_search", "note": null}
+    ]
+  },
+  "open_questions": ["若将'劳动力市场紧张'重新归类为需求侧而非供给侧,B-B模型的供给侧2/3-3/4份额估计将显著下修,归因结果对分类假设高度敏感"]
+}

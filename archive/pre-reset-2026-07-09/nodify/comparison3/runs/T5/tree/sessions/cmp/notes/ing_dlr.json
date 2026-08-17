@@ -1,0 +1,19 @@
+{
+ "kind": "paper",
+ "title": "Dube, Lester, Reich (2016), Minimum Wage Shocks, Employment Flows, and Labor Market Frictions, JLE 34(3)",
+ "url": "https://www.journals.uchicago.edu/doi/10.1086/685449",
+ "text_file": "notes/src_dlr.txt",
+ "summary": "州界断点:最低工资对employment flows有明显负效应但对stocks没有;affected workers的separations与accessions下降(尤其低tenure);分离弹性约0.23;与endogenous separations搜寻模型一致——turnover下降是monopsony/摩擦的直接指纹。",
+ "bindings": [
+  {
+   "node_id": "N-0011",
+   "relation": "supports",
+   "note": "离职/流量下降的直接指纹"
+  },
+  {
+   "node_id": "N-0003",
+   "relation": "supports",
+   "note": "monopsony机制的经验支撑"
+  }
+ ]
+}

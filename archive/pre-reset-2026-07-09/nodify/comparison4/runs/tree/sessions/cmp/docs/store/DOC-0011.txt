@@ -1,0 +1,9 @@
+Otis, Clarke, Delecourt, Holtz & Koning — "The Uneven Impact of Generative AI on Entrepreneurial Performance: Evidence from a Field Experiment in Kenya" — SSRN 4671369 / HBS & UC Berkeley Haas working paper (Feb 27, 2024).
+
+DESIGN: five-month randomized controlled trial with 640 Kenyan entrepreneurs (fast-food, poultry, cyber-shops, retail, etc.); a GPT-4-powered AI business "mentor" delivered advice over WhatsApp; treatment = random access to the AI mentor.
+
+KEY RESULT (verbatim, Berkeley Haas newsroom reporting the paper): "the above-median performers saw profits or revenue climb by 15%, whereas the low-performers' revenues sagged by 8%." On average: "the researchers found no evidence, on average, of a positive effect on business performance from those with access to the AI mentor."
+
+MAGNITUDE (paper abstract): the effect for entrepreneurs low-performing at baseline is nearly 0.25 standard deviations lower than for initial high performers. Mechanism: the divergence comes not from the questions asked or advice given, but from which advice each entrepreneur chose to implement — low performers sought help on tasks hard for AI (or humans).
+
+TIER: RCT (high). ADVERSARIAL to "AI compresses within-group inequality / helps low-skill most" (Brynjolfsson, Noy-Zhang): here gen AI WIDENS the gap. LIMITS: business revenue/profit outcomes over 5 months; developing-country microenterprise context; self-selection into which advice to act on.

@@ -1,0 +1,80 @@
+{"schema":"event.v1","event_id":"EV-000001","at":"2026-07-09T07:04:16Z","actor":"main","command":"init","mutating":true,"touched":["cmp"],"summary":"init: 量化宽松(QE,2008-2021)在多大程度上是发达经济体(以美国为主)财富不平等扩大的『原因』,而非人口老龄化、技术偏向性进步、全球化等结构性力量在反事实情形下本来也会造成的结果?请区分资产价格渠道、储蓄者/借款者再分配渠道与宏观(就业"}
+{"schema":"event.v1","event_id":"EV-000002","at":"2026-07-09T07:04:22Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (350 chars)"}
+{"schema":"event.v1","event_id":"EV-000003","at":"2026-07-09T07:04:27Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (0 nodes)"}
+{"schema":"event.v1","event_id":"EV-000004","at":"2026-07-09T07:04:40Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (0 nodes)"}
+{"schema":"event.v1","event_id":"EV-000005","at":"2026-07-09T07:04:41Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"FAILED: unknown node: N-0001"}
+{"schema":"event.v1","event_id":"EV-000006","at":"2026-07-09T07:04:47Z","actor":"main","command":"add","mutating":true,"touched":["N-0001"],"summary":"add 1 under root: N-0001"}
+{"schema":"event.v1","event_id":"EV-000007","at":"2026-07-09T07:06:01Z","actor":"main","command":"add","mutating":true,"touched":["N-0002"],"summary":"add 1 under N-0001: N-0002"}
+{"schema":"event.v1","event_id":"EV-000008","at":"2026-07-09T07:06:01Z","actor":"main","command":"add","mutating":true,"touched":["N-0003"],"summary":"add 1 under N-0001: N-0003"}
+{"schema":"event.v1","event_id":"EV-000009","at":"2026-07-09T07:06:01Z","actor":"main","command":"add","mutating":true,"touched":["N-0004"],"summary":"add 1 under N-0001: N-0004"}
+{"schema":"event.v1","event_id":"EV-000010","at":"2026-07-09T07:06:01Z","actor":"main","command":"add","mutating":true,"touched":["N-0005"],"summary":"add 1 under N-0001: N-0005"}
+{"schema":"event.v1","event_id":"EV-000011","at":"2026-07-09T07:06:51Z","actor":"main","command":"add","mutating":true,"touched":["N-0006","N-0007"],"summary":"add 2 under N-0002: N-0006, N-0007"}
+{"schema":"event.v1","event_id":"EV-000012","at":"2026-07-09T07:06:51Z","actor":"main","command":"add","mutating":true,"touched":["N-0008","N-0009"],"summary":"add 2 under N-0003: N-0008, N-0009"}
+{"schema":"event.v1","event_id":"EV-000013","at":"2026-07-09T07:06:51Z","actor":"main","command":"add","mutating":true,"touched":["N-0010","N-0011"],"summary":"add 2 under N-0004: N-0010, N-0011"}
+{"schema":"event.v1","event_id":"EV-000014","at":"2026-07-09T07:06:51Z","actor":"main","command":"add","mutating":true,"touched":["N-0012","N-0013"],"summary":"add 2 under N-0005: N-0012, N-0013"}
+{"schema":"event.v1","event_id":"EV-000015","at":"2026-07-09T07:07:06Z","actor":"main","command":"promote","mutating":true,"touched":["N-0006"],"summary":"promote N-0006 -> claim"}
+{"schema":"event.v1","event_id":"EV-000016","at":"2026-07-09T07:07:07Z","actor":"main","command":"promote","mutating":true,"touched":["N-0007"],"summary":"promote N-0007 -> claim"}
+{"schema":"event.v1","event_id":"EV-000017","at":"2026-07-09T07:07:07Z","actor":"main","command":"promote","mutating":true,"touched":["N-0008"],"summary":"promote N-0008 -> claim"}
+{"schema":"event.v1","event_id":"EV-000018","at":"2026-07-09T07:07:07Z","actor":"main","command":"promote","mutating":true,"touched":["N-0009"],"summary":"promote N-0009 -> claim"}
+{"schema":"event.v1","event_id":"EV-000019","at":"2026-07-09T07:07:07Z","actor":"main","command":"promote","mutating":true,"touched":["N-0010"],"summary":"promote N-0010 -> claim"}
+{"schema":"event.v1","event_id":"EV-000020","at":"2026-07-09T07:07:07Z","actor":"main","command":"promote","mutating":true,"touched":["N-0011"],"summary":"promote N-0011 -> claim"}
+{"schema":"event.v1","event_id":"EV-000021","at":"2026-07-09T07:07:07Z","actor":"main","command":"promote","mutating":true,"touched":["N-0012"],"summary":"promote N-0012 -> claim"}
+{"schema":"event.v1","event_id":"EV-000022","at":"2026-07-09T07:07:07Z","actor":"main","command":"promote","mutating":true,"touched":["N-0013"],"summary":"promote N-0013 -> claim"}
+{"schema":"event.v1","event_id":"EV-000023","at":"2026-07-09T07:07:13Z","actor":"main","command":"recall","mutating":false,"touched":[],"summary":"recall N-0006: 0 hits"}
+{"schema":"event.v1","event_id":"EV-000024","at":"2026-07-09T07:07:18Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0006"],"summary":"N-0006 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000025","at":"2026-07-09T07:07:18Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0007"],"summary":"N-0007 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000026","at":"2026-07-09T07:07:19Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0008"],"summary":"N-0008 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000027","at":"2026-07-09T07:07:19Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0009"],"summary":"N-0009 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000028","at":"2026-07-09T07:07:19Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0010"],"summary":"N-0010 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000029","at":"2026-07-09T07:07:19Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0011"],"summary":"N-0011 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000030","at":"2026-07-09T07:07:19Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0012"],"summary":"N-0012 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000031","at":"2026-07-09T07:07:19Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0013"],"summary":"N-0013 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000032","at":"2026-07-09T07:08:22Z","actor":"main","command":"docs ingest","mutating":false,"touched":[],"summary":"FAILED: docs.entry.v1 @ $.summary: 'BIS household balance-sheet simulation for advanced economies (incl. US): rising equity prices are the key driver of the wealth-inequality-increasing valuation effect from "}
+{"schema":"event.v1","event_id":"EV-000033","at":"2026-07-09T07:08:31Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0001"],"summary":"ingest DOC-0001: Wealth inequality and monetary policy (Domanski, Scatigna, Zabai, BIS Quarterly "}
+{"schema":"event.v1","event_id":"EV-000034","at":"2026-07-09T07:09:49Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0002"],"summary":"ingest DOC-0002: Federal Reserve Monetary Policy and Wealth Inequality (Medlin & Epstein, PERI Wo"}
+{"schema":"event.v1","event_id":"EV-000035","at":"2026-07-09T07:10:08Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0001","N-0006"],"summary":"conclude N-0006 [supports]"}
+{"schema":"event.v1","event_id":"EV-000036","at":"2026-07-09T07:10:13Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0006"}
+{"schema":"event.v1","event_id":"EV-000037","at":"2026-07-09T07:12:23Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0003"],"summary":"ingest DOC-0003: The Saving Glut of the Rich and the Rise in Household Debt (Mian, Straub & Sufi,"}
+{"schema":"event.v1","event_id":"EV-000038","at":"2026-07-09T07:12:23Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0004"],"summary":"ingest DOC-0004: Structural drivers of the neutral real rate (r-star): Rachel & Summers (2019, NB"}
+{"schema":"event.v1","event_id":"EV-000039","at":"2026-07-09T07:12:45Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0002","N-0007"],"summary":"conclude N-0007 [supports]"}
+{"schema":"event.v1","event_id":"EV-000040","at":"2026-07-09T07:13:06Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0003","N-0002"],"summary":"conclude N-0002 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000041","at":"2026-07-09T07:15:21Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0005"],"summary":"ingest DOC-0005: The distributional impact of monetary policy easing in the UK between 2008 and 2"}
+{"schema":"event.v1","event_id":"EV-000042","at":"2026-07-09T07:15:21Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0006"],"summary":"ingest DOC-0006: Monetary Policy and the Redistribution Channel (Auclert, AER 2018 / NBER WP 2345"}
+{"schema":"event.v1","event_id":"EV-000043","at":"2026-07-09T07:15:40Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0004","N-0008"],"summary":"conclude N-0008 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000044","at":"2026-07-09T07:18:25Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0007"],"summary":"ingest DOC-0007: Have We Underestimated the Likelihood and Severity of Zero Lower Bound Events? ("}
+{"schema":"event.v1","event_id":"EV-000045","at":"2026-07-09T07:18:25Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0008"],"summary":"ingest DOC-0008: The Unexpected Compression: Competition at Work in the Low Wage Labor Market (Au"}
+{"schema":"event.v1","event_id":"EV-000046","at":"2026-07-09T07:19:00Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0009"],"summary":"ingest DOC-0009: Report Shows African Americans Lost Half Their Wealth Due to Housing Crisis and "}
+{"schema":"event.v1","event_id":"EV-000047","at":"2026-07-09T07:19:24Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0005","N-0009"],"summary":"conclude N-0009 [supports]"}
+{"schema":"event.v1","event_id":"EV-000048","at":"2026-07-09T07:19:42Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0006","N-0003"],"summary":"conclude N-0003 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000049","at":"2026-07-09T07:20:06Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0007","N-0010"],"summary":"conclude N-0010 [supports]"}
+{"schema":"event.v1","event_id":"EV-000050","at":"2026-07-09T07:21:43Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0010"],"summary":"ingest DOC-0010: Monetary policy and inequality (ECB Economic Bulletin, Issue 2/2021)"}
+{"schema":"event.v1","event_id":"EV-000051","at":"2026-07-09T07:21:43Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0011"],"summary":"ingest DOC-0011: Wealth Inequality and the Racial Wealth Gap (Aladangady & Forde, FEDS Notes, Oct"}
+{"schema":"event.v1","event_id":"EV-000052","at":"2026-07-09T07:22:06Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0008","N-0011"],"summary":"conclude N-0011 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000053","at":"2026-07-09T07:22:26Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0009","N-0004"],"summary":"conclude N-0004 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000054","at":"2026-07-09T07:23:42Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0012"],"summary":"ingest DOC-0012: The Effects of Quantitative Easing on Interest Rates: Channels and Implications "}
+{"schema":"event.v1","event_id":"EV-000055","at":"2026-07-09T07:24:05Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0010","N-0012"],"summary":"conclude N-0012 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000056","at":"2026-07-09T07:24:32Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0011","N-0013"],"summary":"conclude N-0013 [supports]"}
+{"schema":"event.v1","event_id":"EV-000057","at":"2026-07-09T07:24:50Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0012","N-0005"],"summary":"conclude N-0005 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000058","at":"2026-07-09T07:24:57Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000059","at":"2026-07-09T07:25:19Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0013","N-0001"],"summary":"conclude N-0001 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000060","at":"2026-07-09T07:25:23Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000061","at":"2026-07-09T07:25:23Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (13 nodes)"}
+{"schema":"event.v1","event_id":"EV-000062","at":"2026-07-09T07:26:09Z","actor":"main","command":"article outline","mutating":true,"touched":["OL-01"],"summary":"outline: 量化宽松是财富不平等扩大的原因,还是结构性趋势的放大器? (4 sections)"}
+{"schema":"event.v1","event_id":"EV-000063","at":"2026-07-09T07:29:16Z","actor":"main","command":"article section","mutating":true,"touched":["S-01"],"summary":"section S-01: 285 words, 2 cites"}
+{"schema":"event.v1","event_id":"EV-000064","at":"2026-07-09T07:29:16Z","actor":"main","command":"article section","mutating":true,"touched":["S-02"],"summary":"section S-02: 460 words, 5 cites"}
+{"schema":"event.v1","event_id":"EV-000065","at":"2026-07-09T07:29:16Z","actor":"main","command":"article section","mutating":true,"touched":["S-03"],"summary":"section S-03: 567 words, 6 cites"}
+{"schema":"event.v1","event_id":"EV-000066","at":"2026-07-09T07:29:16Z","actor":"main","command":"article section","mutating":true,"touched":["S-04"],"summary":"section S-04: 560 words, 4 cites"}
+{"schema":"event.v1","event_id":"EV-000067","at":"2026-07-09T07:29:26Z","actor":"main","command":"article assemble","mutating":true,"touched":[],"summary":"assemble -> article/final.md"}
+{"schema":"event.v1","event_id":"EV-000068","at":"2026-07-09T07:29:40Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000069","at":"2026-07-09T07:36:21Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (2780 chars)"}
+{"schema":"event.v1","event_id":"EV-000070","at":"2026-07-09T07:36:30Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (13 nodes)"}
+{"schema":"event.v1","event_id":"EV-000071","at":"2026-07-09T07:36:31Z","actor":"main","command":"log","mutating":false,"touched":[],"summary":"log tail=20"}
+{"schema":"event.v1","event_id":"EV-000072","at":"2026-07-09T07:36:38Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0006"}
+{"schema":"event.v1","event_id":"EV-000073","at":"2026-07-09T07:36:38Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0007"}
+{"schema":"event.v1","event_id":"EV-000074","at":"2026-07-09T07:36:38Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0008"}
+{"schema":"event.v1","event_id":"EV-000075","at":"2026-07-09T07:36:38Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0009"}
+{"schema":"event.v1","event_id":"EV-000076","at":"2026-07-09T07:36:39Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0010"}
+{"schema":"event.v1","event_id":"EV-000077","at":"2026-07-09T07:36:39Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0011"}
+{"schema":"event.v1","event_id":"EV-000078","at":"2026-07-09T07:36:39Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0012"}
+{"schema":"event.v1","event_id":"EV-000079","at":"2026-07-09T07:36:39Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0013"}
+{"schema":"event.v1","event_id":"EV-000080","at":"2026-07-09T07:36:48Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0006: 2"}

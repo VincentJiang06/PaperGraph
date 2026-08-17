@@ -1,0 +1,9 @@
+Title: China, a low-productivity superpower
+Source: Lowy Institute (The Interpreter)
+URL: https://www.lowyinstitute.org/the-interpreter/china-low-productivity-superpower
+
+Key verbatim extraction (via fetch):
+- IMF estimate: "China's total factor productivity (TFP) growth since the GFC has only averaged 2¼% a year, which is only about half of its average in the decade before the GFC."
+- Convergence: China's labour productivity has moved "from 15% of the world frontier to only 30% over the past two decades." Industrial productivity reached ~35% of frontier levels; services lagged at 26%.
+- Xi-era constraints: "growing emphasis on the role of the state in the economy...will hold back productivity growth," alongside pressure to achieve "excessively high short-term growth targets, even if it means adding to China's already very high debt levels."
+- Outlook: IMF projects China's growth could slow "from the present 6%-plus rate to 4% by 2030" as the economy approaches productivity frontiers where gains become harder.

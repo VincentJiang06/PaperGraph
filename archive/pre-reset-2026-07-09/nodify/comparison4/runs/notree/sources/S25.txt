@@ -1,0 +1,29 @@
+S25 — Lee, Sarkar, Tankelevitch et al. (Microsoft Research / Carnegie Mellon) —
+"The Impact of Generative AI on Critical Thinking: Self-Reported Reductions in Cognitive
+Effort and Confidence Effects From a Survey of Knowledge Workers"
+Proc. CHI 2025. URL: https://www.microsoft.com/en-us/research/publication/the-impact-of-
+generative-ai-on-critical-thinking-self-reported-reductions-in-cognitive-effort-and-
+confidence-effects-from-a-survey-of-knowledge-workers/
+ACM: https://dl.acm.org/doi/full/10.1145/3706598.3713778
+Tier D — self-report survey (mechanism/quality; deskilling proxy). Lines: L1, quality/L7, L6.
+
+DESIGN/SAMPLE: Survey of 319 knowledge workers across many occupations; 936 first-hand
+real-world examples of using GenAI at work; self-reported cognitive effort across Bloom's
+taxonomy categories.
+
+VERBATIM QUOTES:
+- "We survey 319 knowledge workers ... Participants shared 936 first-hand examples of using
+   GenAI in work tasks."
+- "higher confidence in GenAI is associated with less critical thinking, while higher
+   self-confidence is associated with more critical thinking."
+- "GenAI shifts the nature of critical thinking toward information verification, response
+   integration, and task stewardship."
+- Reported "much less effort"/"less effort" for cognitive activities: "72% in Knowledge,
+   79% in Comprehension, 69% in Application, 72% in Analysis, 76% in Synthesis, and 55% in
+   Evaluation."
+
+EFFECT + DIRECTION: Workers report LESS cognitive effort with GenAI; trust in AI → LESS
+critical scrutiny of outputs (offloading/overreliance). Not employment/wage; the QUALITY/
+skill-atrophy externality channel (pairs with S3 jagged frontier, S15 slowdown, S19
+homogenization). Closest thing to a deskilling study — but self-report + cross-sectional,
+NOT a longitudinal measurement of actual skill atrophy. Confirms overreliance mechanism.

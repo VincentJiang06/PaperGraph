@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0013",
+ "lean": "mixed",
+ "summary": "monopsony不是纯事后合理化:DLR预测并验证了'分离下降'这一可证伪指纹,且Azar证明买方势力结构上普遍;但低薪快餐/零售雇主众多、离职频繁,买方势力更可能来自搜寻摩擦而非集中度,故monopsony是部分而非普适的解释。它能消化温和上调的相当部分冲击,但不足以独力解释所有近零。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "DLR:可证伪的分离下降",
+    "doc_id": "DOC-0002",
+    "quote": "Separations and accessions fall among affected workers, especially those with low tenure.",
+    "url": "https://www.journals.uchicago.edu/doi/10.1086/685449",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "title": "Azar:结构性买方势力",
+    "doc_id": "DOC-0003",
+    "quote": "Based on the DOJ-FTC horizontal merger guidelines, the average market is highly concentrated.",
+    "url": "https://www.nber.org/papers/w24147",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "搜寻摩擦型vs集中度型monopsony在低薪部门各占多大权重?"
+ ]
+}

@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0003",
+ "lean": "supports",
+ "summary": "岗位级净增减:至2025年总量与行业结构层面无可稳健归因于AI的净减少(Yale);但ADP微观显示22-25岁高暴露(自动化型)职业相对就业下降约16%,构成总量掩盖下的早期人群信号。二者并存。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Yale Budget Lab (Gimbel et al.)",
+    "doc_id": "DOC-0004",
+    "quote": "measures of exposure, automation, and augmentation show no sign of being related to changes in employment or unemployment to date",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "总量层无AI可归因扰动"
+   },
+   {
+    "title": "Canaries in the Coal Mine (Stanford)",
+    "doc_id": "DOC-0003",
+    "quote": "early-career workers (ages 22-25) in the most AI-exposed occupations have experienced a 16 percent relative decline in employment",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "人群/职业层已现真实下降"
+   }
+  ]
+ },
+ "open_questions": [
+  "入门级信号会随时间扩散到资深与更多职业,还是稳定/回撤?"
+ ]
+}

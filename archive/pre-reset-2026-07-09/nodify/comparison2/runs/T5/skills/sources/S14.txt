@@ -1,0 +1,13 @@
+Title: Effects of the $20 California Fast-Food Minimum Wage (policy brief); related working paper "A $20 Minimum Wage: Effects on Wages, Employment and Prices" and "Sectoral Wage-Setting and Prices in California"
+Authors: Michael Reich, Denis Sosinskiy (Center on Wage and Employment Dynamics / IRLE, UC Berkeley)
+Published: IRLE working papers / policy brief, 2024-2025.
+URL: https://irle.berkeley.edu/publications/brief/effects-of-the-20-california-fast-food-minimum-wage/ ; https://irle.berkeley.edu/wp-content/uploads/2025/09/20_Minimum_Wage_in_CA_September-7-2025.pdf ; https://irle.berkeley.edu/wp-content/uploads/2025/06/sosinskiy_reich_2025.pdf
+
+Study description: analyzes California's $20/hour fast-food minimum wage (effective April 2024) using novel restaurant-level wage and price data, including over 11,000 self-reported salaries from Glassdoor, compared against a national fast-food control.
+
+Verbatim / closely-quoted key findings (as extracted):
+"no negative effects on fast-food employment."
+The policy "increased the average weekly wage for covered fast food workers by about 11%" (updated estimate: 8 to 9 percent for workers directly covered), "but did not reduce employment."
+Price increases were "about 1.5 percent -- or about 6 cents on a four-dollar hamburger."
+
+Note: this directly contrasts with Clemens, Edwards & Meer (S13), which estimates a 2.7-3.2% relative fast-food employment decline (~18,000 jobs) over the same California AB 1228 episode -- a live, unresolved "dueling studies" dispute structurally parallel to the 2017 Seattle dispute between Jardim et al. (S7) and Reich/Allegretto/Godoey (S8).

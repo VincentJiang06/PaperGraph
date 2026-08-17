@@ -1,0 +1,249 @@
+{
+  "schema_version": "1.0.0",
+  "generated_by": "skill-guidance",
+  "target": {
+    "path": "/Users/vince/playground/Paper Graph/skills/papergraph",
+    "kind": "skill_md",
+    "name": "papergraph",
+    "maturity": "stub"
+  },
+  "intent": {
+    "summary": "Turn a research topic plus local born-digital or scanned sources into an evidence-backed Markdown paper using native coding-agent subagents, Tencent general-text OCR, deterministic author gates, and a held-out adversarial evaluation.",
+    "in_scope": [
+      "initialize and supervise one PaperGraph run from topic through candidate paper and held-out verdict",
+      "ingest local PNG, JPG, JPEG, BMP, and PDF research sources through Tencent GeneralBasicOCR with opt-in GeneralAccurateOCR only for bounded repair",
+      "dispatch bounded native subagents for cartography, position advocacy, adversarial objection, claim grounding, and held-out judging",
+      "produce traceable source artifacts, paper.md, positions.md, claims.tsv, gate_report.md, and a complete D1-D5 eval bundle"
+    ],
+    "out_of_scope": [
+      "generic OCR-only extraction with no paper workflow",
+      "arbitrary remote ImageUrl ingestion or user-selectable OCR endpoints",
+      "autonomous model API calls or provider SDK wrappers for Proof and writing agents",
+      "claim graphs, queues, databases, WebUI, or restoration of archived paperproof and nd frameworks",
+      "copy editing an already finished paper when no evidence workflow or quality gates are requested"
+    ],
+    "primary_user": "a researcher or coding-agent orchestrator who wants a complete auditable paper workflow from a topic and local source bundle",
+    "triggers_observed": [
+      "turn these papers into an evidence-backed research paper",
+      "run PaperGraph on this topic",
+      "use OCR on these scanned papers and finish the paper workflow",
+      "map the debate, ground the claims, and take the paper through the gates"
+    ]
+  },
+  "altitude": "full",
+  "altitude_rationale": "Full altitude because the skill performs network OCR calls using credentials, writes research artifacts, coordinates a wide multi-agent surface, and makes release decisions. Assumed local-file-only OCR and end-to-end-paper triggers because those are the narrowest safe readings of the user's request and the current PaperGraph design.",
+  "scorecard": [
+    {
+      "pillar": "design",
+      "status": "partial",
+      "score": 1,
+      "evidence": "The stub names the topic-to-paper outcome and OCR, gates, and eval, but has no use/anti-use trigger, runbook, failure path, or explicit ownership rules.",
+      "gaps": [
+        "no testable positive, negative, and adjacent trigger contract",
+        "no executable preflight-to-report protocol or externally enforced safety controls"
+      ]
+    },
+    {
+      "pillar": "research",
+      "status": "absent",
+      "score": 0,
+      "evidence": "The stub does not cite the PaperGraph design, Tencent OCR contract, normalized evidence contract, or a claim-to-source policy.",
+      "gaps": [
+        "no source roster for OCR behavior and paper evidence handling",
+        "no rule separating provider observations from PaperGraph inference"
+      ]
+    },
+    {
+      "pillar": "testing",
+      "status": "absent",
+      "score": 0,
+      "evidence": "No evals directory, fixtures, contract harness, trajectory checks, or end-to-end run exists in the target.",
+      "gaps": [
+        "no positive, negative, boundary, malformed-provider, or full-workflow cases",
+        "no reusable harness that exercises the shipped scripts and documented entry points"
+      ]
+    },
+    {
+      "pillar": "tdd",
+      "status": "absent",
+      "score": 0,
+      "evidence": "The from-scratch stub has no assertion-level red artifact and no red-green-refactor history.",
+      "gaps": [
+        "no importable wrong-sentinel implementation and genuine FAIL red log",
+        "no mutation evidence for signing, fail-closed eval, or safety boundaries"
+      ]
+    },
+    {
+      "pillar": "metrics",
+      "status": "absent",
+      "score": 0,
+      "evidence": "The target defines no task success, activation, OCR-call, traceability, regression, cost, or stability metrics.",
+      "gaps": [
+        "no measurable release thresholds",
+        "no trigger holdout or cost-per-success accounting"
+      ]
+    },
+    {
+      "pillar": "low_context_kb",
+      "status": "absent",
+      "score": 0,
+      "evidence": "SKILL.md is short only because it is empty of behavior; no progressive-disclosure architecture or on-demand modules exist.",
+      "gaps": [
+        "no thin orchestrator with one-level rules, references, scripts, and assets",
+        "no load-when pointers for OCR, parallel orchestration, gates, and eval"
+      ]
+    },
+    {
+      "pillar": "lifecycle",
+      "status": "absent",
+      "score": 0,
+      "evidence": "The target has no version, changelog, release gate, rollback artifact, or deprecation rule.",
+      "gaps": [
+        "no versioned release and rollback contract",
+        "no rule for provider-contract or gate-interface changes"
+      ]
+    }
+  ],
+  "overall_readiness": {
+    "ratio": 0.071,
+    "points": "1/14",
+    "verdict": "draft",
+    "summary": "A valid from-scratch stub with the right broad outcome, but every industrial execution, evidence, test, metric, context, and lifecycle surface still has to be built."
+  },
+  "comparables": [
+    {
+      "repo_id": "repo.anthropics_skills",
+      "skill_path": "skills/skill-creator/SKILL.md",
+      "what_to_borrow": "Use a verb-first trigger, keep SKILL.md as the portable orchestrator, place deterministic behavior in scripts and detailed contracts in one-level references, and evaluate realistic with-skill behavior rather than prose shape."
+    },
+    {
+      "repo_id": "repo.addyosmani_agent-skills",
+      "skill_path": "skills/test-driven-development/SKILL.md",
+      "what_to_borrow": "Make red-green-refactor and command-output evidence part of the runbook so a claimed working workflow always has a reproducible failing-before and passing-after gate."
+    }
+  ],
+  "recommended_design": {
+    "trigger": "Trigger when the user asks to create, rebuild, or supervise a full evidence-backed research paper from a topic or local source bundle, especially scanned PDFs/images that need OCR, or explicitly says PaperGraph. Positive phrases include 'run PaperGraph', 'turn these sources into a paper', and 'map, ground, gate, and evaluate this paper'. Do not trigger for generic OCR extraction, isolated fact-checking, ordinary copy editing, or code implementation unrelated to a paper workflow.",
+    "protocol": "Preflight: confirm a topic plus project root, classify local source files, verify native subagent availability, and verify OCR credentials without printing them. Ingest: preserve born-digital text directly and run the fixed Tencent GeneralBasicOCR client only for scanned local files, writing immutable raw and normalized source artifacts; use GeneralAccurateOCR only for explicitly bounded repair. Scope and map: create the thesis/scope, then dispatch one cartographer. Parallel author wave: dispatch one advocate per position plus one adversary and merge only through the orchestrator. Grounding wave: assign disjoint claim IDs and source artifacts, then merge claims.tsv. Draft: the orchestrator alone writes paper.md. Verify: run both deterministic author gates until green. Held-out wave: independently derive the literature key and dispatch one eval advocate per position, an eval adversary, a claim auditor, and at least three referees in parallel. Fail closed: validate all D1-D5 inputs before SHIP. Report artifact paths, command evidence, OCR request IDs, calls made, and unresolved gaps.",
+    "resources": [
+      "rules/workflow.md: author-side scope, parallel waves, ownership, gates, and stop conditions",
+      "rules/ocr-ingestion.md: when OCR is needed, fixed provider policy, retry and paid-call boundaries, and source artifact handling",
+      "rules/held-out-eval.md: independent judging, completeness, and fail-closed SHIP policy",
+      "references/ocr-api.md: official Tencent request, signing, response, limit, and error contract with source URLs",
+      "references/artifact-contracts.md: PaperGraph run layout and normalized OCR source shape",
+      "assets/worker-packets.md: bounded task templates for cartographer, advocates, adversary, grounders, and eval judges"
+    ],
+    "evidence_base": "Source roster: current PaperGraph DESIGN.md, WORKFLOW.md, gates/divergence.md, gates/rigor.md, eval/EVAL.md, and eval/protocol.md define the paper workflow; Tencent official GeneralBasicOCR, GeneralAccurateOCR, TextDetection, common-parameter, TC3-signing, and error-code pages define provider facts; manualwork V2 cloud OCR research and OCR normalization contract define the local evidence policy. Every provider fact in the skill must cite one of those sources. Raw OCR is observation only; headings, claims, paper structure, and conclusions are orchestrator inferences and must not be attributed to the provider.",
+    "controls": [
+      "Ship a stdlib-only scripts/ocr_ingest.py with a hardcoded Tencent OCR host, fixed actions and API version, local-file-only ImageBase64 input, conservative 10000000-byte encoded limit, bounded retry classification, atomic artifacts, and diagnostics that never expose credentials, authorization, request body, or recognized text by default.",
+      "Require OCR_LIVE_CONFIRM=ONE_BASIC_CALL for the live probe; allow only GeneralBasicOCR, one image, max_attempts=1, and a caller-selected output directory outside the skill.",
+      "Ship scripts/validate_eval_bundle.py that rejects any missing D1-D5 input, incomplete per-position steelman map, fewer than three referees, unresolved honesty flags, failed objection robustness, or non-passing referee band.",
+      "Ship schemas/ocr-source.schema.json and deterministic package/run validators; all shared author files have one orchestrator writer and workers receive disjoint IDs and paths.",
+      "Never copy credentials into the skill, never invoke a model provider API from project code, never ingest arbitrary ImageUrl values, and never use archived PaperGraph frameworks as current authority."
+    ],
+    "tests": [
+      "TC3 signing golden vector and one-byte body mutation",
+      "encoded-size boundaries, empty input, unsupported MIME, and missing credentials with zero network calls",
+      "HTTP 200 provider error, rate limit retry, pre-send failure, and ambiguous post-submit timeout classification",
+      "malformed response, confidence boundaries, polygon geometry, ItemPolygon fallback, Unicode text, deterministic order, replay-stable IDs, and cross-run ID isolation",
+      "offline replay CLI writes raw, normalized JSON, manifest, and bounded summary without secrets",
+      "live probe refuses Accurate OCR and runs exactly one authorized Basic call",
+      "eval bundle missing each D1-D5 component fails closed and a complete conforming fixture passes",
+      "realistic trigger positives plus adjacent negatives for OCR-only, fact-check, copy-edit, and software-development requests",
+      "one end-to-end smoke run from OCR source artifact through run skeleton, gate invocation, and held-out completeness validation"
+    ],
+    "metrics": [
+      "offline contract harness pass rate must be 100 percent and every adversarial checklist edge must map to a passing case",
+      "mutation score must catch a signing-body mutation and a removed fail-closed eval check",
+      "trigger precision and recall must each be at least 0.90 on a balanced set with at least 40 percent holdout adjacent cases",
+      "OCR live acceptance records exactly one paid Basic request, one provider request ID, latency, encoded bytes, line count, and zero secret leakage",
+      "paper candidate success requires both author gates green; SHIP success additionally requires complete D1-D5 inputs and zero kill criteria",
+      "source traceability rate must be 1.0 for OCR source artifacts and empirical claims in the smoke run"
+    ],
+    "lifecycle": "Start at version 0.1.0 with a skill-local CHANGELOG. Release requires the offline harness, mutation evidence, package validation, one opt-in Basic OCR live probe, complete end-to-end smoke evidence, final guidance re-audit, and a clean independent attacker battery. Roll back by restoring the prior skill-directory snapshot and re-running its harness. Provider endpoint/action/version, normalized artifact schema, gate formulas, or SHIP criteria are breaking changes requiring a version bump, changelog entry, fixture refresh, and migration note; never silently weaken a gate.",
+    "adversarial_checklist": [
+      "exact TC3 request body signed then transmitted → transmitted bytes equal signed bytes and signature matches the golden vector",
+      "one-byte mutation after signing → signature verification differs and the client never sends mismatched bytes",
+      "9999999 10000000 and 10000001 byte Base64 payloads → first two are accepted and the oversize payload fails before network access",
+      "empty file unsupported MIME or missing credential → explicit local error with zero network calls and no secret text",
+      "HTTP 200 envelope containing Response.Error → error code and request id are preserved and success is not reported",
+      "retryable provider limit followed by success → bounded retry succeeds without switching to Accurate OCR",
+      "post-submit read timeout → outcome_unknown is recorded and no automatic paid retry occurs",
+      "missing malformed or non-finite provider fields → normalization fails closed with a field-specific error",
+      "self-intersecting counter-clockwise zero-area or out-of-bounds polygon → geometry is rejected rather than silently repaired",
+      "empty Polygon plus positive ItemPolygon at zero angle → one valid clockwise rectangle is normalized",
+      "missing Polygon at nonzero angle → fallback is rejected because coordinate spaces are ambiguous",
+      "shuffled duplicate CJK and emoji detections replayed in one provider run → Unicode is preserved and order plus IDs are stable",
+      "same detections under a different provider_run_id → element IDs are disjoint across extraction runs",
+      "offline replay through documented CLI → raw response normalized source manifest and plain text are written atomically without credentials",
+      "live probe requested with Accurate action or without ONE_BASIC_CALL confirmation → no provider call is made",
+      "eval bundle missing any D1 D2 D3 D4b or D5 input → final verdict is incomplete or revise and never SHIP",
+      "eval bundle with fewer than three independent referees or an unresolved honesty flag → final verdict is REVISE",
+      "complete valid D1-D5 fixture with all thresholds met → deterministic validator returns SHIP",
+      "generic OCR-only or ordinary copy-edit request → PaperGraph does not activate and the task routes to a narrower tool",
+      "topic plus scanned sources requesting a finished auditable paper → PaperGraph activates and follows OCR then parallel author and held-out waves"
+    ]
+  },
+  "prioritized_actions": [
+    {
+      "id": "A1",
+      "pillar": "design",
+      "action": "Replace the stub with a portable verb-first trigger and a thin preflight-to-report runbook covering OCR ingestion, native parallel subagents, author gates, held-out eval, ownership, and failure paths.",
+      "priority": "P0",
+      "rationale": "The current stub cannot be invoked or executed reliably and design is required at full altitude."
+    },
+    {
+      "id": "A2",
+      "pillar": "design",
+      "action": "Implement externalized OCR and eval controls: fixed-endpoint stdlib OCR client, local-file and paid-call gates, normalized schema, atomic output, and fail-closed D1-D5 validator.",
+      "priority": "P0",
+      "rationale": "Credentials, network calls, and release verdicts cannot depend on prompt adherence."
+    },
+    {
+      "id": "A3",
+      "pillar": "testing",
+      "action": "Create an executable Python harness with fixtures and passing cases for every adversarial checklist entry plus an end-to-end offline smoke run.",
+      "priority": "P0",
+      "rationale": "Full altitude requires layered, reusable evidence rather than prose inspection."
+    },
+    {
+      "id": "A4",
+      "pillar": "tdd",
+      "action": "Write the harness against importable wrong-sentinel scripts, capture assertion-level FAIL lines before implementation, then preserve mutation evidence for signing and fail-closed eval behavior.",
+      "priority": "P0",
+      "rationale": "Tests-first and mutation evidence are required to show the controls are not tautological."
+    },
+    {
+      "id": "A5",
+      "pillar": "metrics",
+      "action": "Record offline success, checklist coverage, mutation, trigger holdout, OCR one-call, source traceability, and final SHIP completeness metrics with fixed thresholds.",
+      "priority": "P0",
+      "rationale": "The skill must prove end-to-end value and cost/control boundaries."
+    },
+    {
+      "id": "A6",
+      "pillar": "low_context_kb",
+      "action": "Keep SKILL.md below 500 lines and move OCR, workflow, eval, contracts, and worker packets into one-level on-demand rules, references, assets, scripts, and schemas with explicit load conditions.",
+      "priority": "P0",
+      "rationale": "Low-context architecture is required and the stub is currently thin only because it is empty."
+    },
+    {
+      "id": "A7",
+      "pillar": "research",
+      "action": "Ship an OCR API reference with official Tencent URLs and a PaperGraph artifact reference that separates provider facts, source observations, and orchestrator inference.",
+      "priority": "P1",
+      "rationale": "The workflow depends on current external API facts and academic source traceability."
+    },
+    {
+      "id": "A8",
+      "pillar": "lifecycle",
+      "action": "Add version 0.1.0, CHANGELOG, release checklist, rollback procedure, breaking-change rules, and provider/gate migration notes.",
+      "priority": "P1",
+      "rationale": "A reusable networked skill needs an auditable evolution and rollback path."
+    }
+  ],
+  "handoff": {
+    "next_skill": "skill-engineer",
+    "blocking_unknowns": []
+  }
+}

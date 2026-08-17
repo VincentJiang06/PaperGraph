@@ -1,0 +1,19 @@
+SOURCE: S7
+Title: Introducing the Anthropic Economic Index
+Publisher: Anthropic
+URL: https://www.anthropic.com/news/the-anthropic-economic-index
+Fetched: 2026-07-09 (via WebFetch, content extracted and quoted verbatim below)
+
+=== EXTRACTED CONTENT / VERBATIM QUOTES ===
+
+Highest Usage Occupations:
+"37.2% of queries sent to Claude were in this category, covering tasks like software modification, code debugging, and network troubleshooting" (Computer & Mathematical roles). The second-largest was Arts/Media at "10.3% of queries" focused on writing and editing.
+
+Augmentation vs. Automation Split:
+"Overall, we saw a slight lean towards augmentation, with 57% of tasks being augmented and 43% of tasks being automated."
+
+Employment Implications:
+The analysis explicitly avoids direct employment predictions: "As we predicted, there wasn't evidence in this dataset of jobs being entirely automated: instead, AI was diffused across the many tasks in the economy." They note that "roughly 36% of jobs had some use of AI for at least 25% of their tasks" while "only approximately 4% of jobs used AI for at least 75% of tasks."
+
+=== ADDITIONAL CONTEXT FROM SEARCH (later Anthropic Economic Index reports, WebSearch) ===
+In a later report (pooling data across reports through ~2026), the share of jobs where Claude is used for at least a quarter of tasks rose from 36% (Jan 2025 baseline) to 49%. On Claude.ai specifically, augmentation (52% of conversations) has overtaken automation (45%) as the most common interaction pattern; but when businesses embed Claude into applications via the API, 77% of API transcripts show automation patterns versus just 12% for augmentation — i.e., automation is far more common in production/API deployments than in direct chat use.

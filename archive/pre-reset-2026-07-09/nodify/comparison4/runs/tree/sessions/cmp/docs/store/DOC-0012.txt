@@ -1,0 +1,9 @@
+Hui, Reshef & Zhou — "The Short-Term Effects of Generative Artificial Intelligence on Employment: Evidence from an Online Labor Market" — SSRN 4527336 / CESifo WP 10601 (2023); Organization Science (2024). Platform: Upwork.
+
+KEY RESULTS (verbatim, WashU Olin news reporting the paper): "the number of monthly jobs for writing-related freelancers on Upwork declined by 2%, while monthly earnings declined by 5.2%." Image-related freelancers: "Workers in those fields saw even steeper declines—a 3.7% drop in monthly jobs and a 9.4% loss of income."
+
+SKILL (verbatim): "more highly skilled workers...actually saw a greater drop in new jobs and income." (No evidence that high past performance protected freelancers; suggestive evidence top freelancers were disproportionately hit.)
+
+DESIGN: quasi-experiment / difference-in-differences using the natural timing of tool releases — ChatGPT (Nov 2022) for text, DALL-E (Apr 2022) and Midjourney (Jul 2022) for images — comparing exposed vs less-exposed freelancer occupations before/after.
+
+TIER: quasi-experimental (medium-high). Direct market-level SUBSTITUTION signal (demand-side), contrasting with task-level augmentation RCTs. LIMITS: one platform; short-term post-release window; freelance gig market (not standard employment); occupation-exposure classification.

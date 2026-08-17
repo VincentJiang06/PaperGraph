@@ -1,0 +1,11 @@
+{
+  "kind": "dataset",
+  "title": "San Francisco Fed: Supply- and Demand-Driven PCE Inflation (data series, Shapiro)",
+  "url": "https://www.frbsf.org/research-and-insights/data-and-indicators/supply-and-demand-driven-pce-inflation/",
+  "text_file": "notes/scratch/doc_sf_fed_pce_series.txt",
+  "summary": "SF Fed持续更新的供给/需求驱动PCE通胀分解数据:2023年全年核心PCE通胀回落2.0个百分点,其中0.6pp(30%)来自供给改善,1.3pp(70%)来自需求降温。",
+  "bindings": [
+    {"node_id": "N-0014", "relation": "supports", "note": "2023年通胀回落主要由需求侧降温驱动(70%),为软着陆的disinflation提供成分证据"},
+    {"node_id": "N-0013", "relation": "supports", "note": "2023年通胀回落更多靠需求侧而非供给侧自然改善,支持'供给侧解释被高估'的持续性论点"}
+  ]
+}

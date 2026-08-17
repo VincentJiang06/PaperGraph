@@ -1,0 +1,13 @@
+Title: Will China's economy follow the same path as Japan's?
+Source: Bruegel
+URL: https://www.bruegel.org/policy-brief/will-chinas-economy-follow-same-path-japans
+
+Key verbatim extraction (via fetch):
+- Central question: "It remains unclear – though globally significant – whether China will be able to deviate from the path followed by Japan in the 1980s and 1990s."
+- Similarities: both nations show "high savings and relatively low investment" alongside persistently low private consumption; China's savings rate continues to exceed its investment rate, creating structural trade surpluses similar to Japan's early 2000s position.
+- Both "doubled down on industrial policy as a response to the structural deceleration," expanding R&D and targeting strategic sectors.
+- Both economies suffered "deflationary pressure, especially in producer prices," driven by manufacturing overcapacity.
+- Difference — investment income: Japan became "the largest net external creditor" with substantial overseas investment returns sustaining its current account surplus; China's surplus derives primarily from goods trade with "minimal net income from overseas investments," making it more vulnerable to protectionism.
+- Difference — geopolitics: China possesses "military and geopolitical contender" status that Japan lacked.
+- Difference — technology: China has achieved "breakthroughs in critical technologies," suggesting closer proximity to global frontiers than Japan occupied — though the authors question whether this translates into actual productivity improvements.
+- Difference — capital controls: unlike Japan, China maintains "capital controls" as tools for exchange-rate management and capital preservation; Japan abandoned these long ago.

@@ -1,0 +1,14 @@
+{
+ "kind": "paper",
+ "title": "Azar, Marinescu, Steinbaum (2022), Labor Market Concentration, JHR 57(S)",
+ "url": "https://www.nber.org/papers/w24147",
+ "text_file": "notes/src_azar.txt",
+ "summary": "CareerBuilder数据覆盖8000+地理-职业市场:按DOJ-FTC并购准则平均市场高度集中;集中度从25到75分位对应挂牌工资下降17%,表明买方势力普遍存在——为温和上调不降就业提供结构前提。",
+ "bindings": [
+  {
+   "node_id": "N-0012",
+   "relation": "supports",
+   "note": "买方势力/集中度的结构证据"
+  }
+ ]
+}

@@ -1,0 +1,4 @@
+Koch, M., Manuylov, I. & Smolka, M. (2021). Robots and Firms. The Economic Journal 131(638): 2553-2584. Spanish manufacturing firm panel, 1990-2016.
+Positive selection: ex ante better performing firms (output, labour productivity) more likely to adopt robots.
+Verbatim (abstract): robot adoption generates "substantial output gains in the vicinity of 20-25% within four years", "reduces the labour cost share by 5-7% points", and "leads to net job creation at a rate of 10%".
+Firms that adopted robots between 1990 and 1998 increased jobs by more than 50% between 1998 and 2016, while non-adopters reduced jobs by more than 20% over the same period. (Firm-level net positive, but partly via competitive displacement of non-adopters.)

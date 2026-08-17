@@ -1,0 +1,26 @@
+Source: Bruegel — "Will China's economy follow the same path as Japan's?" (policy brief)
+URL: https://www.bruegel.org/policy-brief/will-chinas-economy-follow-same-path-japans
+Fetched via WebFetch (extracted key content and verbatim quotes below).
+
+## GDP and Income Levels
+The report notes that "China now is a poorer country than Japan was then, with still more convergence opportunities ahead." This suggests China has greater potential for catch-up growth, unlike Japan which was already developed when its bubble burst.
+
+## Capital Returns and Investment
+The document identifies a critical similarity: "over-investment that preceded Japan's lost decade and led to a low rate of return on capital." China faces comparable dynamics, with both nations pursuing manufacturing expansion despite diminishing returns.
+
+## Debt Accumulation
+A striking parallel emerges: "Japan has accumulated public debt very rapidly since the bursting of the bubble, reaching levels above 230 percent of GDP today. China is following the same path of accumulation of fiscal deficits." Both nations struggle with debt management post-bubble.
+
+## Savings-Investment Imbalances
+The authors emphasize that "China has barely reduced its imbalances, characterised by high excess savings and low private consumption," distinguishing it from Japan's eventual consumption-driven transition.
+
+## Policy Response Similarities
+Both nations adopted hesitant monetary policies: "the monetary policy of the People's Bank of China...was also too tight, at least when compared to the rest of the world," mirroring Japan's initial response.
+
+## Key Uncertainty
+The authors conclude: "It remains unclear – though globally significant – whether China will be able to deviate from the path followed by Japan in the 1980s and 1990s."
+
+(Second targeted fetch, searching for GDP-per-capita percentage figures:)
+No verbatim sentence with specific GDP-per-capita percentage of the US (for China vs. Japan at bubble-burst time) was found on this page. The closest relevant passages:
+"The main difference, though, is that China now is a poorer country than Japan was then, with still more convergence opportunities ahead."
+"China has barely reduced its imbalances, characterised by high excess savings and low private consumption."

@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0015",
+ "lean": "supports",
+ "summary": "工时是被低估的调整边际:西雅图UW证据显示$13档低薪岗位工时降6-7%、月均报酬降约$74,即便时薪升约3%。'近零就业(人数)'因此可能掩盖真实的工时与总收入损失——就业冲击部分从headcount转移到intensive margin。",
+ "confidence": "high",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Jardim:月报酬下降",
+    "doc_id": "DOC-0005",
+    "quote": "the Ordinance lowered the amount paid to workers in low-wage jobs by an average of $74 per month per job in 2016",
+    "url": "https://www.nber.org/papers/w23532",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "title": "Jardim:工时下降",
+    "doc_id": "DOC-0005",
+    "quote": "the second wage increase to $13 reduced hours worked in low-wage jobs by 6-7 percent",
+    "url": "https://www.nber.org/papers/w23532",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "工时下降在其他城市(非西雅图高成本环境)是否同样出现?"
+ ]
+}

@@ -1,0 +1,9 @@
+SOURCE: Challenger, Gray & Christmas — 2025 Year-End Job Cut Report. Published Jan 8, 2026. (AI first broken out as a distinct cause May 2023.)
+URL: https://www.challengergray.com/blog/2025-year-end-challenger-report-highest-q4-layoffs-since-2008-lowest-ytd-hiring-since-2010/
+
+VERBATIM:
+"So far this year, AI has been responsible for 54,836 announced layoff plans."
+"Since 2023, when this reason was first tracked, AI has been cited in 71,825 job cut announcements."
+Caveat: AI was NOT a top stated reason in 2025; leading reasons were DOGE Actions (293,753), Store/Department Closing, Market/Economic Conditions, Restructuring.
+
+DISTILLED: AI-attributed layoffs are real and rising (54,836 in 2025) but SMALL relative to total US churn (millions of separations/yr) and dwarfed by other causes. Self-reported employer attribution is noisy (AI as cover story / restructuring label). Supports accelerationist branch only weakly; tempers "job losses already large" claim.

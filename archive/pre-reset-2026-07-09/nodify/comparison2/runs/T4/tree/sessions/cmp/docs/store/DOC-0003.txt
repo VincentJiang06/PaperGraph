@@ -1,0 +1,7 @@
+Source: web search synthesis on China TFP growth trend (multiple academic aggregation, incl. Frontiers journal, CUHK IGEF paper, China Daily reporting on official TFP data)
+URLs: https://www.igef.cuhk.edu.hk/paper/structural-challenges-to-chinas-economic-growth-and-possible-remedies/ ; https://global.chinadaily.com.cn/a/202408/05/WS66b02694a3104e74fddb86a6.html
+
+Key points:
+- Between 1978 and 2022, China's TFP grew at 2.73% annually, contributing 29.49% to economic growth over that period (long-run reform-era average).
+- More recent official/semi-official reporting cites TFP growth around 2%-2.3% a year in recent years.
+- Multiple analysts note China's TFP growth rate has been on a declining trend over the last decade even as the government (Xi Jinping) has made raising TFP - as the "hallmark" of "new productive forces" - a stated core policy priority, precisely because organic TFP growth has been slowing.

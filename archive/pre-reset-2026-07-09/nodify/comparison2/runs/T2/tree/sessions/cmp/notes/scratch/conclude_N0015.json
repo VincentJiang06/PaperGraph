@@ -1,0 +1,15 @@
+{
+  "node_id": "N-0015",
+  "lean": "mixed",
+  "summary": "脆弱性论点部分成立、部分被证伪。被证伪的部分:Summers基于牺牲率(约2pp失业对应1pp通胀回落)预测抑制通胀需大幅提高失业率,但2022-2023年通胀大幅回落而失业率保持低位,Summers本人承认'表现好于多数标准模型预测',经典菲利普斯曲线/牺牲率悲观论未兑现。仍然成立的部分:超额储蓄这一需求缓冲垫已于2024年前后基本耗尽,失业率持续、渐进地从3.7%爬升至4.3%并逼近Sahm规则再触发阈值,说明滞后效应仍在演化中、风险并未完全清零,只是没有以'牺牲率'预测的剧烈形式出现。",
+  "confidence": "medium",
+  "based_on": {
+    "children": [],
+    "evidence": [
+      {"ref_id": "E-01", "title": "Summers牺牲率预测的事后证伪", "doc_id": "DOC-0013", "url": null, "locator": null, "quote": "given how hot the economy is -- the inflation performance at this point is better than I think many standard models would have predicted", "tool": "web_search", "note": null},
+      {"ref_id": "E-02", "title": "超额储蓄耗尽", "doc_id": "DOC-0009", "url": null, "locator": null, "quote": "As of March 2024, the San Francisco Fed's estimates showed that overall excess savings in the U.S. economy had been fully depleted", "tool": "web_search", "note": null},
+      {"ref_id": "E-03", "title": "失业率持续爬升逼近Sahm阈值", "doc_id": "DOC-0010", "url": null, "locator": null, "quote": "if unemployment reached 4.6% in December 2025 the Sahm Rule would trigger again", "tool": "web_search", "note": null}
+    ]
+  },
+  "open_questions": ["失业率的渐进上升究竟是良性的劳动力供给扩张(移民)所致,还是需求走弱的早期信号,目前尚无定论"]
+}

@@ -1,0 +1,20 @@
+SOURCE: S4
+Title: GPTs are GPTs: An Early Look at the Labor Market Impact Potential of Large Language Models
+Authors: Tyna Eloundou, Sam Manning, Pamela Mishkin, Daniel Rock
+Publisher: OpenAI / arXiv (2303.10130); also published in Science (2024)
+URL: https://arxiv.org/abs/2303.10130 (also https://openai.com/index/gpts-are-gpts/)
+Fetched: 2026-07-09 (via WebFetch, content extracted and quoted verbatim below)
+
+=== EXTRACTED CONTENT / VERBATIM QUOTES ===
+
+Worker Exposure to LLMs:
+"around 80% of the U.S. workforce could have at least 10% of their work tasks affected" and "approximately 19% of workers may see at least 50% of their tasks impacted."
+
+Task Completion Speed:
+"about 15% of all worker tasks in the US could be completed significantly faster at the same level of quality" with LLM access alone; "between 47 and 56% of all tasks" when incorporating LLM-powered software and tools.
+
+Definition of Exposure:
+The research assesses occupations by examining "their alignment with LLM capabilities" using a new rubric that integrates "both human expertise and GPT-4 classifications." A task is exposed if access to an LLM (or LLM-powered software) can reduce the time required to complete it by at least 50% while maintaining quality.
+
+Additional Context:
+"higher-income jobs potentially facing greater exposure" and LLMs "exhibit traits of general-purpose technologies," suggesting broad economic implications across wage levels and industries.

@@ -1,0 +1,13 @@
+{
+  "Response": {
+    "TextDetections": [
+      {"DetectedText": "安全注意事项", "Confidence": 100, "Polygon": [{"X": 100, "Y": 80}, {"X": 700, "Y": 80}, {"X": 700, "Y": 140}, {"X": 100, "Y": 140}], "ItemPolygon": {"X": 100, "Y": 80, "Width": 600, "Height": 60}, "Words": [], "WordCoordPoint": []},
+      {"DetectedText": "先关闭主电源。", "Confidence": 96, "Polygon": [{"X": 120, "Y": 300}, {"X": 900, "Y": 300}, {"X": 900, "Y": 360}, {"X": 120, "Y": 360}], "ItemPolygon": {"X": 120, "Y": 300, "Width": 780, "Height": 60}, "Words": [], "WordCoordPoint": []},
+      {"DetectedText": "额定电压 24.5 V", "Confidence": 92, "Polygon": [{"X": 1100, "Y": 300}, {"X": 1800, "Y": 300}, {"X": 1800, "Y": 360}, {"X": 1100, "Y": 360}], "ItemPolygon": {"X": 1100, "Y": 300, "Width": 700, "Height": 60}, "Words": [], "WordCoordPoint": []}
+    ],
+    "Language": "zh",
+    "Angle": 0.0,
+    "PdfPageSize": 0,
+    "RequestId": "fixture-basic-success-001"
+  }
+}

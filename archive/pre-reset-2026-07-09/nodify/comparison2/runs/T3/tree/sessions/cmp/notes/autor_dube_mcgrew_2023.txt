@@ -1,0 +1,12 @@
+Autor, David H.; Dube, Arindrajit; McGrew, Annie. "The Unexpected Compression: Competition at Work in the Low Wage Labor Market." NBER Working Paper 31010, 2023.
+URL: https://www.nber.org/papers/w31010 (abstract cross-checked via https://poid.lse.ac.uk/PUBLICATIONS/abstract.asp?index=10263)
+
+VERBATIM EXCERPTS:
+"Rapid relative wage growth at the bottom of the distribution reduced the college wage premium and counteracted around one-third of the four-decade increase in aggregate 90/10 log wage inequality."
+"post-pandemic labor market tightness became strongly predictive of real wage growth among low-wage workers"
+"[the pandemic-era tight labor market] reduced employer market power by increasing the elasticity of labor supply to firms in the low-wage labor market"
+Wage compression was accompanied by rapid nominal wage growth and rising job-to-job separations, especially among young non-college workers; wage gains concentrated among job switchers.
+
+Caveat: the paper's own causal attribution is to labor-market TIGHTNESS and reduced employer monopsony power (a "high-pressure economy" mechanism), not explicitly to monetary policy/QE as the driver. The tightness itself in 2021-2023 was jointly produced by pandemic-era fiscal stimulus, pandemic-driven labor supply disruptions, AND continued Fed monetary accommodation (near-zero rates + QE through early 2022) -- so QE is one contributing input to the macro conditions studied, not a variable this paper itself isolates.
+
+Relevance: provides the clearest, most recent, and most quantified evidence for the "macro/employment channel is equalizing" (N-0010) side of the tree: a historically tight labor market reversed about one-third of four decades of rising wage inequality, concentrated among the lowest-wage, non-college workers -- the group most plausibly hurt by the asset-price channel's silence on them (they own few financial assets) but most helped by tight labor markets. This is also directly usable for the adversarial N-0011 magnitude question: even a one-third reversal of wage inequality trends is a relatively modest offset against the multi-decade, still-larger rise in WEALTH (not income) concentration documented in the asset-price-channel evidence (DOC-0001/0002), since wealth concentration responds mostly to asset prices/capital income rather than labor income.

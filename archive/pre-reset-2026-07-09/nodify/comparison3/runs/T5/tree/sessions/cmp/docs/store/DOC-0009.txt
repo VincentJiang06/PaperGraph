@@ -1,0 +1,8 @@
+Neumark, Shirley (2022), "Myth or Measurement: What Does the New Minimum Wage Research Say about Minimum Wages and Job Loss in the United States?" Industrial Relations 61(4):384-417 (NBER WP 28388).
+
+Key findings (verbatim from abstract):
+"there is a clear preponderance of negative estimates in the literature"
+"this evidence is stronger for teens and young adults as well as the less-educated"
+"the evidence from studies of directly-affected workers points even more strongly to negative employment effects"
+
+Note (from paper body): of the assembled core estimates, 79.2% are negative; 53.8% negative and significant at 10%; 46.2% negative and significant at 5%. The evidence from studies of low-wage industries (vs. directly-affected workers) is less one-sided. This is the strongest documentation that the literature's center of mass is negative, not zero.

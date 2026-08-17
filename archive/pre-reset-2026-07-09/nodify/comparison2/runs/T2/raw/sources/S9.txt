@@ -1,0 +1,15 @@
+Source S9
+Title: JOLTS Day Graphs: March 2022 Edition
+Publisher: Washington Center for Equitable Growth
+URL: https://equitablegrowth.org/jolts-day-graphs-march-2022-edition-2/
+Fetched: 2026-07-09 (via WebFetch)
+
+Extracted verbatim quotes:
+
+"the number of job openings reaching a series high of 11.5 million"
+
+"The quits rate increased slightly to 3.0 percent as 4.5 million workers quit their jobs in March"
+
+"The ratio of unemployed-worker-per-job-opening declined from 0.55 unemployed workers per job opening in February to 0.52 in March."
+
+Vacancy yield (hires per job opening) fell to 0.58, indicating employers had difficulty filling the abundant openings — evidence of a historically tight labor market coinciding with a record-low ratio of unemployed workers per opening.

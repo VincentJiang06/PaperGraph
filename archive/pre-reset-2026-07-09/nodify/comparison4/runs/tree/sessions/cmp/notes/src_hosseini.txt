@@ -1,0 +1,5 @@
+Hosseini, S. M. & Lichtinger, G. (2025, SSRN 5425555, Aug 2025). Generative AI as Seniority-Biased Technological Change: Evidence from U.S. Resume and Job Posting Data.
+Data: U.S. resume and job posting data covering nearly 62 million workers in 285,000 firms (2015-2025); within-firm employment dynamics by seniority. AI adoption flagged via postings for dedicated "AI integrator" roles.
+Verbatim (abstract): "Difference-in-differences and triple-difference estimates show that, beginning in 2023Q1, junior employment in adopting firms declined sharply relative to non-adopters, while senior employment continued to rise."
+"The junior decline is driven primarily by slower hiring rather than increased separations. Heterogeneity by education reveals a U-shaped pattern: mid-tier graduates see the largest declines, while elite and low-tier graduates are less affected."
+Secondary reporting quantifies the junior decline at roughly 7-12% in adopting firms after early 2023.

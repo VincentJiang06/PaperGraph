@@ -1,0 +1,15 @@
+Title: The Productivity J-Curve: How Intangibles Complement General Purpose Technologies
+Author(s): Erik Brynjolfsson, Daniel Rock, Chad Syverson
+Source: NBER Working Paper No. 25148
+URL: https://www.nber.org/papers/w25148
+Accessed via: WebFetch, 2026-07-09
+
+Verbatim key quotes:
+
+"General purpose technologies (GPTs) such as AI enable and require significant complementary investments, including co-invention of new processes, products, business models and human capital."
+
+"This leads to an underestimation of productivity growth in the early years of a new GPT, and how later, when the benefits of intangible investments are harvested, productivity growth will be overestimated."
+
+"Our model generates a Productivity J-Curve that can explain the productivity slowdowns often accompanying the advent of GPTs, as well as the increase in productivity later."
+
+Notes: This is the theoretical foundation for the "lag hypothesis": mismeasurement/implementation-lag logic implies that the true labor-market/productivity effects of general-purpose technologies like AI are systematically underestimated early in the diffusion cycle, and appear only after firms complete costly complementary reorganization.

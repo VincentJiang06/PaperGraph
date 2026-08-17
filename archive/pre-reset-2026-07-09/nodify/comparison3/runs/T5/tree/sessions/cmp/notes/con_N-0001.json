@@ -1,0 +1,52 @@
+{
+ "node_id": "N-0001",
+ "lean": "mixed",
+ "summary": "校准判断:对2015-2024美国州级/城市级、幅度温和(相对中位数比值处历史区间内)的上调,最低工资对就业(headcount)的效应小到近零——Cengiz bunching是最强整合证据;但'近零'≠'零成本',更≠'普遍无害'。张力的调和有四层:①monopsony/搜寻摩擦(DLR分离下降、Azar买方势力)使温和上调可在不减员下逼近竞争工资;②成本主要经价格转嫁(RMS full pass-through、快餐~1.5%)传给消费者;③非工资边际吸收余下冲击——工时(西雅图-6/7%)、自动化/招聘门槛(Lordan-Neumark);④分布:损失集中在青年/低技能与边际企业(Luca退出+14%)。竞争理论并非错,而是其'减员'预测被这些边际重新导向,并主要在高相对工资区显形。非线性成立:效应随Kaitz比值非线性放大,$15联邦(CBO中位-130万)与$20快餐(反方-3.6%)标示风险区上端,但拐点经验精度低。综合置信度:对'温和上调近零'为中-高;对'高比值转负'为中;对拐点具体位置为低。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [
+   "N-0002",
+   "N-0003",
+   "N-0004",
+   "N-0005",
+   "N-0006",
+   "N-0007"
+  ],
+  "evidence": [
+   {
+    "title": "近零的最强整合证据",
+    "doc_id": "DOC-0001",
+    "quote": "the overall number of low-wage jobs remained essentially unchanged over five years following the increase",
+    "url": "https://www.nber.org/papers/w25434",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "title": "monopsony/摩擦机制",
+    "doc_id": "DOC-0002",
+    "quote": "Separations and accessions fall among affected workers, especially those with low tenure.",
+    "url": "https://www.journals.uchicago.edu/doi/10.1086/685449",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "title": "高相对水平的负向前沿",
+    "doc_id": "DOC-0013",
+    "quote": "reduced fast-food employment by 3.6 percent",
+    "url": "https://www.cato.org/research-briefs-economic-policy/did-californias-fast-food-minimum-wage-reduce-employment",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": "report"
+   }
+  ]
+ },
+ "open_questions": [
+  "最低/中位(Kaitz)比值的负效应拐点在美国数据中的具体区间仍未被干净识别。",
+  "各调整margin(价格/工时/自动化/门槛/退出)对给定冲击的相对权重缺乏统一因果分解。",
+  "加州快餐$20(AB1228)的就业效应尚未收敛(Berkeley无损 vs 反方-3.2/3.6%)。",
+  "被挤出的最低技能工人与退出企业岗位的净再吸收率,决定近零的真实福利含义。",
+  "衰退期(Clemens-Wither)与扩张期上调的负效应可外推性存疑。"
+ ]
+}

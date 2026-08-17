@@ -1,0 +1,25 @@
+S22 — The Society of Authors (UK), "SoA AI Survey 2024" (fieldwork Jan 2024; reported April 2024)
+URL: https://europeanwriterscouncil.eu/soa-survey-uk-ai-2024/  (also thebookseller.com coverage)
+Facet/Line: L4-adjacent (SPECIFIC POPULATIONS: creative professions — translators, illustrators, writers),
+L2/L3 (self-reported work & income loss)
+Tier: D (member survey; self-report, non-random response — self-selection & salience bias)
+
+DESIGN/SAMPLE: Survey of the Society of Authors' 12,500 members and other authors throughout January 2024;
+787 responses on experiences of and concerns about generative AI.
+EFFECT + DIRECTION: NEGATIVE (self-reported) — a large minority of translators/illustrators report already
+losing work and income to GenAI; a distinct SPECIFIC-GROUP signal for creative occupations.
+
+VERBATIM QUOTES:
+- "A quarter of illustrators (26%) and over a third of translators (36%) have already lost work due to
+  generative AI."
+- "Over a third of illustrators (37%) and over 4 in 10 translators (43%) say the income from their work has
+  decreased in value because of generative AI."
+- "Around 1 in 10 translators (8%) and a smaller proportion of illustrators (5%) said they have used
+  generative AI in their work because their publisher or commissioning organisation asked them to."
+- Forward-looking: "over three quarters of translators (77%) and illustrators (78%)" expect GenAI to
+  negatively impact future income.
+
+LIMITS: LOWEST tier — self-report, ~6% response rate, advocacy-org survey (respondents likely those already
+harmed/concerned → upward bias). NOT a causal or payroll estimate. But it's convergent, occupation-specific
+color that MATCHES the harder Tier-B translation finding in S23 and the freelancer demand drops in S10.
+Treat as testimony, not measurement.

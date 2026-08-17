@@ -1,0 +1,29 @@
+S23 — Dandan Qiao, Huaxia Rui & Qian Xiong, "AI and Freelancers: Has the Inflection Point Arrived?"
+(Proceedings of the 58th Hawaii International Conference on System Sciences, HICSS 2025)
+URL: https://gwern.net/doc/economics/automation/2024-qiao.pdf
+Facet/Line: L2 (demand), L3 (earnings), L7 (polarize/uneven), + SPECIFIC OCCUPATIONS (translators vs web devs)
+Tier: B (Difference-in-Differences on worker-level online-labor-market transaction data around ChatGPT launch)
+
+DESIGN/SAMPLE: Two-way fixed-effects DiD around ChatGPT's launch, window 6 months before / 10 months after
+(May 1 2022 – Oct 31 2023). Treatment occupations: translation & localization OLM (~7,582 workers) and web
+development OLM (~15,000 workers); CONTROL = construction-design OLM (little exposed). Worker-level focal-job
+counts & earnings.
+EFFECT + DIRECTION: OPPOSITE signs by occupation — translation DISPLACED (work & earnings DOWN); web
+development shows PRODUCTIVITY effect (work & earnings UP). Introduces an occupation-specific "inflection point."
+
+VERBATIM QUOTES:
+- Abstract: "we discovered two distinct scenarios following ChatGPT's launch: 1) displacement effects in
+  translation & localization OLM, reducing freelancers' work volume and earnings; 2) productivity effects in
+  web development OLM, increasing freelancers' work volume and earnings."
+- Translation: coefficient "for log(Fjobearn) is negative and statistically significant ... suggesting a
+  decrease in worker's earnings from focal jobs by 29.7% (=1−e^-0.353). These results indicate that ChatGPT
+  ... [exerts] displacement effects on workers in this sector."
+- Mechanism: "an inflection point exists for each occupation. Before this point, human workers benefit from
+  AI enhancements; beyond this point, human workers would be replaced."
+- Cites Demirci et al. (2023): "a 21% decline in job postings for writing and coding jobs" post-ChatGPT.
+
+LIMITS: Online-labor-market only (gig, not employment); short 10-month post-window; large translation-earnings
+drop (-29.7%) is FOCAL-job earnings on one platform, not total income. But it is the KEY nuance vs a blanket
+"AI helps/hurts freelancers": SAME technology → occupation-specific DISPLACEMENT (translation) AND
+COMPLEMENT/DEMAND-GROWTH (web dev). Distinct from S10 (Hui/Upwork): different platforms, adds the web-dev
+job-CREATION-of-demand case (partial answer to GAP 4). Strengthens L7 (uneven) and specific-groups.

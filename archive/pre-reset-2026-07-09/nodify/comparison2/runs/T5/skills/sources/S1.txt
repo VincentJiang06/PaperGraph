@@ -1,0 +1,13 @@
+Title: The Effect of Minimum Wages on Low-Wage Jobs: Evidence from the United States Using a Bunching Estimator
+Authors: Doruk Cengiz, Arindrajit Dube, Attila Lindner, Ben Zipperer
+Published: The Quarterly Journal of Economics, 2019, Vol. 134(3), pp. 1405-1454. Also NBER Working Paper No. 25434.
+URL: https://www.nber.org/papers/w25434 ; https://academic.oup.com/qje/article-abstract/134/3/1405/5484905 ; https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3315238
+
+Method note: infers the employment effect of a minimum wage increase by comparing the number of excess jobs paying at or slightly above the new minimum wage to the missing jobs paying below it; uses 138 prominent state-level minimum wage changes between 1979 and 2016 in the United States with a difference-in-differences bunching estimator.
+
+Verbatim key findings (as extracted from NBER page / paper text):
+"the overall number of low-wage jobs remained essentially unchanged over five years following the increase"
+"We also find no evidence of disemployment when we consider higher levels of minimum wages."
+
+Context on scope limit (from secondary reporting comparing to Godoey & Reich 2021, cross-checked via search):
+"previous research on recent state-level minimum wage policies did not extend beyond the $10 level, with the highest studied state-level ratio of the minimum wage to the median wage being 59 percent."

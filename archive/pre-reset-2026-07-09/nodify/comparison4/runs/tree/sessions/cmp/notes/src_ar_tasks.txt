@@ -1,0 +1,4 @@
+Acemoglu, D. & Restrepo, P. (2022). Tasks, Automation, and the Rise in U.S. Wage Inequality. Econometrica 90(5): 1973-2016. (NBER w28920, 2021.)
+Design: task-based framework linking wage changes of a demographic group to the task displacement it experiences; shift-share style decomposition; US 1980-2016.
+Verbatim (abstract): "Between 50% and 70% of changes in the U.S. wage structure over the last four decades are accounted for by relative wage declines of worker groups specialized in routine tasks in industries experiencing rapid automation."
+Mechanism: automation technologies expand the set of tasks performed by capital, displacing worker groups from tasks for which they have comparative advantage, lowering their relative wages.

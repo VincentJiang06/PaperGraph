@@ -1,0 +1,15 @@
+{
+  "node_id": "N-0016",
+  "lean": "mixed",
+  "summary": "归因结果对政策立场的含义是双重的。一方面,若供给侧(尤其早期能源/供应链)贡献了2020Q4-2022Q2约2/3-3/4的通胀激增,则学术批评(Storm 2024; CEPR)认为紧缩的边际有效性有限('加息无法解开供应链'),Bernanke-Blanchard式模型可能因嵌入工资-价格螺旋风险而为超出实际所需的紧缩提供了正当性。另一方面,美联储实际的降息路径是渐进、数据依赖的(2023年7月峰值5.25-5.50%维持14个月,2024年9-12月才累计降息100bp,2025年又暂停9个月),并未在'供给侧贡献大'的判断下提前或激进转向,说明美联储在实践中采取了'不预设成因、只跟踪结果'的稳健策略,而非机械依赖归因分解来校准政策。",
+  "confidence": "medium",
+  "based_on": {
+    "children": [],
+    "evidence": [
+      {"ref_id": "E-01", "title": "CEPR:紧缩对供给冲击的局限", "doc_id": "DOC-0015", "url": null, "locator": null, "quote": "rate hikes cannot resolve disrupted supply chains or restore grain exports from a war zone", "tool": "web_search", "note": null},
+      {"ref_id": "E-02", "title": "Storm (2024) 对紧缩正当性的批评", "doc_id": "DOC-0014", "url": null, "locator": null, "quote": "sets monetary policymakers up to deliver significantly more monetary tightening than can be justified on the basis of more realistic model analyses", "tool": "web_search", "note": null},
+      {"ref_id": "E-03", "title": "实际降息路径:渐进而非激进", "doc_id": "DOC-0012", "url": null, "locator": null, "quote": "the Fed reduced rates three times between September and December 2024 (including an initial 50-basis-point cut), a cumulative 1 percentage point of cuts, bringing the target range to 4.25%-4.50%", "tool": "web_search", "note": null}
+    ]
+  },
+  "open_questions": ["若未来数据修正显示供给侧贡献被系统性低估或高估,美联储当前渐进宽松的节奏是否需要重新评估"]
+}

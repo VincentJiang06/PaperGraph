@@ -1,0 +1,8 @@
+Source: Dube, Arindrajit and Attila Lindner. "Minimum Wages in the 21st Century." NBER Working Paper No. 32878 (2024/2025); also ROCKWOOL Foundation Berlin Discussion Paper Series.
+URL: https://ideas.repec.org/p/nbr/nberwo/32878.html
+Retrieved via WebFetch on 2026-07-09.
+
+Extracted content:
+
+## Full Abstract
+"This chapter surveys the literature on the impact of minimum wages on low-wage labor markets. We describe and critically review the empirical methods in the new minimum wage literature, particularly those leveraging quasi-experimental variation. We provide a quantitative overview of the most recent evidence on the employment and wage effects of the policy. We also explore emerging research on its impact on other margins, including amenities, other inputs (such as capital and high-skilled workers), firm entry and exit, as well as output prices, demand, profits, and productivity. This approach allows us to present a comprehensive picture of how minimum wage policies affect firms, workers, and labor markets. We also review the evidence on the policy's impact on wage inequality and income distribution. Finally, we discuss how these effects can vary depending on the economic context and the level of a country's development."

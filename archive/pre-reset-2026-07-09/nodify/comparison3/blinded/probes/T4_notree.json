@@ -1,0 +1,32 @@
+{
+  "topic": "T4",
+  "arm": "notree",
+  "recovered": {
+    "lines_of_inquiry": {
+      "status": "full",
+      "detail": "All 7 planned 'blitz divergence' lines are named and preserved: L1 demographic parallel (speed/scale), L2 development stage / 'old before rich' convergence room, L3 automation/robots substitution, L4 TFP potential/slowdown, L5 labor-participation levers (delayed retirement, female LFP, hukou), L6 balance-sheet/debt/policy space (Koo), L7 red-team bear case. Each carries a labeled adversarial sub-line (L1.1–L6.1). A root calibration anchor line (L11/root) is also recorded. Contrarian and dead lines survive explicitly in a 'Graveyard' section. Nothing appears truncated."
+    },
+    "leanings": {
+      "status": "full",
+      "detail": "Per-line verdicts are stated (e.g. L1 'parallel holds, if anything worse on raw labor'; L3 'robots offset factory labor not services/eldercare'; L4 'TFP is the swing variable and weakening'; L5 'levers real but modest/slow'; L6 'fiscal space narrower than Koo implies'). Two bold hypotheses H1/H2 and an explicit overall thesis are recorded: 'Not inevitable, but base case is a significant slowdown (Japan-lite), with tail risk of Japan-style stagnation driven by balance sheet + policy.' The calibration anchor confirms slowdown-not-collapse as the base case, tipped by policy/property response, not demographics per se."
+    },
+    "key_figures": {
+      "status": "full",
+      "detail": "Dense quantitative spine survives, each source-tagged: China 2020 age-structure ≈ Japan 1990; 65+ 10%→30% in ~20yr vs Japan 25yr, ~4x scale; TFR 1.0 vs Japan 1.2; IMF −0.5pp GDP in 2030s; GDP/cap $12.7k vs $45k; post-milestone analog growth ~3% by 2028; robot mfg density 470/10k (3rd) vs all-employed 166 (22nd); TFP 4.1%→2.6% (or 3.1%→1.1%), ~1.7%/yr to 2050; retirement age raised Jan 2025 to 63/55-58, +3% GDP by 2050, NSSF depleted ~2035; augmented govt debt ~124% GDP, LGFV ¥44tn, stabilizes ~150-155%; construction 26% of GDP; consensus trend growth ~3%/2030, ~2%/2040. Sources/ files reproduce these verbatim."
+    },
+    "adversarial_lines": {
+      "status": "full",
+      "detail": "Red-teaming is thorough and explicit. Primary bear line L7 (AEI S05) is fully articulated: credit +100% GDP, property 30% of economy, developer defaults (Evergrande/Sunac), GDP deflator down 5 quarters, reform rollback, protectionism closing the export escape — 'strongest case China ≥ Japan-bad', with its counter (convergence + fiscal awareness + mfg edge). Every main line also carries an adversarial sub-line. The Graveyard records four killed/demoted lines with reasons: 'robots fully offset' KILLED, 'Lin: innovation solves it' DEMOTED (state media), 'pure geopolitics' folded into L7, 'demographics deterministic' KILLED as framing."
+    },
+    "evidence_provenance": {
+      "status": "full",
+      "detail": "Every claim in log.md carries an S## tag and all 15 cited sources (S01–S15) exist as files in sources/, each with source name, one or more URLs, and verbatim quotes plus line-relevance mapping. Spot-checked S04 (Koo/Yicai), S05 (AEI), S09 (per-working-age), S11 (Lowy), S12 (IMF/Atlantic Council debt), S14 (RIETI/dev-stage), S15 (CFR pension) — all verifiable to named outlets/URLs. Honest provenance hygiene: sources flag which figures are WebFetch-verbatim vs 'search-summarized' (e.g. S09 caveats the 31.9% number was from a binary PDF). Highly verifiable; raw page text was discarded but the source files redundantly preserve the load-bearing quotes."
+    },
+    "next_action": {
+      "status": "partial",
+      "detail": "No explicit next-step / TODO block is written; the log ends at the Graveyard. However the investigation has visibly converged — hypotheses, per-line verdicts, a calibration anchor and a stated overall thesis are all present — so the implied next action (compose the final calibrated judgment) is strongly inferable. Loose ends a resumer would flag: verbatim-verify the 'search-summarized' figures (S09 31.9%, S14 growth-analog, TFP alt-method), and resolve the live tension between Koo's fiscal-borrower-of-last-resort optimism (S04) and the narrower augmented-debt space (S12). No open line is left mid-air, but the exact scope of remaining work is not stated."
+    }
+  },
+  "overall_recoverability": 5,
+  "narrative": "A fresh agent could continue immediately, not restart. log.md is a compact but complete reasoning state: 7 named lines with adversarial twins, a Graveyard of killed lines, bold hypotheses, per-line verdicts, a source-tagged quantitative spine, and an explicit calibrated thesis (not inevitable; base case Japan-lite slowdown; tail risk set by balance-sheet/policy). All 15 citations resolve to source files with URLs and verbatim quotes, and provenance caveats are disclosed. The only soft spot is the absence of an explicit next-action block — but the run has clearly converged, so the remaining task (write the final judgment, verbatim-check a few search-summarized figures) is obvious. Near-lossless persistence."
+}

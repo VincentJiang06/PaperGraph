@@ -1,0 +1,18 @@
+SOURCE S5  [ADVERSARIAL / skeptic-of-disruption]
+Title: Large Language Models, Small Labor Market Effects
+Authors: Anders Humlum, Emilie Vestergaard
+Venue: NBER WP w33777 (2025); Becker Friedman Institute WP 2025-56
+URL fetched: https://bfi.uchicago.edu/working-papers/large-language-models-small-labor-market-effects/
+Fetched: 2026-07-09
+
+VERBATIM POINTS:
+- Design: "difference-in-differences" methodology, linking "large-scale, representative adoption surveys to administrative labor records in Denmark."
+- Headline null: "estimate precise null effects on earnings and recorded hours at both the worker and workplace levels, ruling out effects larger than 2% two years after."
+- Robustness: null results "hold for intensive users, early adopters, workplaces with substantial investments, workers reporting large gains, flexible-pay occupations, and early-career jobs."
+- Mechanism: "Adoption is linked to occupational switching and task restructuring, but without net changes in hours or earnings."
+- Framing: findings "challenge narratives of imminent disruption from Generative AI."
+
+SAMPLE (from search/paper): ~25,000 workers, ~7,000 workplaces, 11 exposed occupations (Denmark, 2023-2024). Productivity gains reported as ~3% average time savings.
+DESIGN: Quasi-experimental difference-in-differences on administrative payroll + adoption surveys.
+DIRECTION: NULL — no detectable effect on earnings or hours despite rapid chatbot adoption.
+KEY LIMITS: Early period (chatbot tools 2023-24, pre-agentic); Denmark (strong labor institutions, may not generalize); measures wages/hours not tasks/quality; can't rule out longer-run or later-vintage effects. This is the key counterweight to RCT/exposure hype.

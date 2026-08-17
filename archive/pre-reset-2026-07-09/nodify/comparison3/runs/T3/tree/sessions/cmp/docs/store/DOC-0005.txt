@@ -1,0 +1,9 @@
+SOURCE: Acemoglu (2024). "The Simple Macroeconomics of AI." NBER Working Paper 32487 (May 2024); Economic Policy (Jan 2025). Task-based model using Hulten's theorem.
+URL: https://www.nber.org/papers/w32487
+
+VERBATIM:
+"no more than a 0.66% increase in total factor productivity (TFP) over 10 years"
+"predicted TFP gains over the next 10 years are even more modest and are predicted to be less than 0.53%"
+"these macroeconomic effects appear nontrivial but modest"
+
+DISTILLED: Bottom-up macro estimate implies AI's near-term aggregate productivity effect is small (<1% TFP / 10yr). If productivity gains are modest, the aggregate labor-demand shock is also modest — consistent with a genuinely near-neutral net employment effect, not merely a hidden/lagged one. (Contested by optimists forecasting far larger gains.)

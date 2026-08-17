@@ -1,0 +1,5 @@
+{"parent_id":"N-0007","children":[
+{"statement":"红队①资产负债表衰退:Koo判断中国有资产负债表问题(或小于日本)叠加巨大建筑/房地产问题,两者合起来相当棘手;需求端因去杠杆长期受抑、货币政策失效,须靠强力财政。若财政不够猛,日本式停滞风险真实。","why_helps_parent":"最强的悲观机制:BSR。","orientation":"adversarial"},
+{"statement":"红队②债务—通缩/Japanification:2023年起中国滑入两年来首次通缩(内需疲弱+房市下滑),通缩风险预计持续;GDP平减指数转负。高债务下通缩抬高实际债务负担、可能自我强化——最像日本的渠道。","why_helps_parent":"债务通缩螺旋的现实证据。","orientation":"adversarial"},
+{"statement":"红队③条件性反驳:抵消项(自动化/TFP/劳参/改革)多为『潜力』,兑现依赖政策转向消费与结构改革;而中国政策历来偏供给/投资。若不转向,『不必然停滞』结论落空——乐观论是有条件的,非无条件。","why_helps_parent":"揭示乐观结论的政策前提。","orientation":"adversarial"}
+]}

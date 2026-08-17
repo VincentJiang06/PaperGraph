@@ -1,0 +1,4 @@
+Noy & Zhang — "Experimental evidence on the productivity effects of generative artificial intelligence" — Science 381(6654):187-192 (July 2023).
+KEY RESULT (verbatim, Science published abstract): ChatGPT substantially raised productivity: The average time taken decreased by 40% and output quality rose by 18%.
+CONTEXT: Preregistered online experiment; occupation-specific, incentivized mid-level professional writing tasks assigned to 453 college-educated professionals, half randomly exposed to ChatGPT. Inequality between workers decreased; ChatGPT compressed the productivity distribution by benefiting low-ability workers more.
+DESIGN: preregistered randomized controlled experiment (highest methodological tier). LIMITS: short online writing tasks, not real jobs; treats effort substitution, not skill complementarity.

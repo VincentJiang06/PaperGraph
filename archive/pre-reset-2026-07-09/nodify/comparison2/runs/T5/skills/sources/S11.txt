@@ -1,0 +1,7 @@
+Title: Dropouts Need Not Apply? The Minimum Wage and Skill Upgrading
+Authors: Jeffrey Clemens, Lisa B. Kahn, Jonathan Meer
+Published: Journal of Labor Economics, 2021, Vol. 39, No. S1. Also NBER Working Paper No. 27090.
+URL: https://www.nber.org/papers/w27090 ; https://www.journals.uchicago.edu/doi/abs/10.1086/711490
+
+Verbatim abstract:
+"We explore whether minimum wage increases result in substitution from lower-skilled to slightly higher-skilled labor. Using 2011-2016 American Community Survey data (ACS), we show that workers employed in low-wage occupations are older and more likely to have a high school diploma following recent statutory minimum wage increases. To better understand the role of firms, we examine the Burning Glass vacancy data. We find increases in a high school diploma requirement following minimum wage hikes, consistent with our ACS evidence on stocks of employed workers. We see substantial adjustments to requirements both within and across firms."

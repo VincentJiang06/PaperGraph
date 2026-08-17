@@ -1,0 +1,16 @@
+Title: Unpacking the Causes of Pandemic-Era Inflation in the US (NBER Digest, summarizing Bernanke & Blanchard 2023)
+Publisher: National Bureau of Economic Research
+URL: https://www.nber.org/digest/20239/unpacking-causes-pandemic-era-inflation-us
+
+Key verbatim extracted content:
+
+Energy and food prices (early stage): "Energy prices, food prices, and price spikes due to shortages were the dominant drivers of inflation in its early stages."
+
+Labor market impact (later stage): "As product market shocks have faded, the tight labor market and the resulting persistence in nominal wage increases have become the main factors behind wage and price inflation."
+
+Specific metrics cited:
+- CPI inflation rose from 1.7% (February 2021) to over 5% (June 2021) and peaked at approximately 9% (June 2022)
+- The job vacancy-to-unemployed ratio doubled between mid-2021 and early 2022
+- Auto production fell from 11.7 million vehicles (July 2020) to under 9 million (fall 2021)
+
+Conclusion stated: Supply disruptions and commodity shocks initially dominated inflation, but tight labor markets subsequently became the primary driver of persistent wage and price increases.

@@ -1,0 +1,11 @@
+Title: Are Minimum Wage Effects Greater in Low-Wage Areas?
+Authors: Anna Godoey, Michael Reich
+Published: IRLE / CWED, UC Berkeley working paper (2021); related published version in Industrial Relations.
+URL: https://irle.berkeley.edu/wp-content/uploads/2020/09/Are-Minimum-Wage-Effects-Greater-in-Low-Wage-Areas-1.pdf
+
+Study description: examines 51 minimum wage events in about 750 counties across 45 states between 2004 and 2016, exploiting within-state county-level variation in local median wages so that the same statutory minimum wage produces a much higher "bite" (minimum-to-median wage ratio) in low-wage counties than in high-wage counties; uses event-study and difference-in-differences methods with ACS, QWI, and QCEW data.
+
+Verbatim / closely-quoted key findings (as extracted):
+In the counties with the highest relative bite, "relative minimum wage ratios reach as high as .82" (82 percent of the local median wage).
+Even at this high bite, the study found positive wage effects (especially in high-impact counties) but "did not detect adverse effects on employment, weekly hours or annual weeks worked," including no negative employment effects among women, Black, and/or Hispanic workers.
+Context: "previous research on recent state-level minimum wage policies did not extend beyond the $10 level, with the highest studied state-level ratio of the minimum wage to the median wage being 59 percent" -- i.e., this county-level design pushes the tested bite range well beyond the ~59% ceiling of prior state-level studies such as Cengiz et al. (S1).

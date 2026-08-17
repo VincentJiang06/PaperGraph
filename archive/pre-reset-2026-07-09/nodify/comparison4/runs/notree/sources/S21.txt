@@ -1,0 +1,32 @@
+S21 — Eduard Storm, Myrielle Gonschor & Marc Justin Schmidt, "AI in Demand: How Expertise Shapes its
+(Early) Impact on Workers" (Ruhr Economic Papers No. 1185 / IHS Working Paper, 2025)
+URL: https://irihs.ihs.ac.at/id/eprint/7345/1/ihs-working-paper-2025-storm-gonschor-schmidt-ai-in-demand.pdf
+Facet/Line: L3 (wages — DIRECT worker-level earnings), L5 (cross-national: Germany), L7 (polarize)
+Tier: B (quasi-experiment; German online job vacancies [OJV] linked to worker-level ADMINISTRATIVE records,
+2017–2023; shift-share / leave-one-out-mean IV instrument)
+
+DESIGN/SAMPLE: Merges a vacancy-based measure of REALIZED local AI-skill demand with administrative
+worker-level data (sample of German working population), 2017–2023. Identification: change in a worker's
+exposure to LOCAL AI skill demand, instrumented with national demand (LOOM instrument excluding own
+occupation). Workers split into helpers / professionals / specialists / experts and into earnings deciles.
+EFFECT + DIRECTION: NO meaningful AVERAGE displacement/productivity effect — but strong SKILL heterogeneity:
+experts GAIN, non-experts/low-skill LOSE. A polarizing distributional signal.
+
+VERBATIM QUOTES:
+- "We find no meaningful displacement or productivity effects on average, but notable skill heterogeneity:
+  expert workers with deep domain knowledge gain while non-experts often lose ... Overall, our results imply
+  distributional concerns but also job-augmenting potential of early AI technologies."
+- "A doubling in the share of AI vacancies implies a moderate earnings increase among expert workers by
+  0.65% ... an AI-induced gain of 403 EUR per year. In contrast, non-experts face earnings declines of up
+  to -0.3%."
+- "For the lowest decile, a doubling in the share of AI vacancies reduces annual working days by eight and
+  earnings by 3.9%, whereas workers in higher deciles gain up to five working days and 2.5% higher earnings."
+- "These findings cast doubt on optimistic views of AI as a potential leveler for reducing inequality
+  (Autor 2024)."
+- Reinstatement: AI exposure "is associated with an expansion of analytic and interactive activities, but a
+  contraction in manual ones ... earnings premia of up to 0.8%."
+
+LIMITS: Vacancy-based AI demand ≈ realized demand but still an exposure proxy; effects are small and
+"suggestive" at the decile level; German institutional context. STILL a rare Tier-B WORKER-LEVEL earnings
+study (addresses GAP 2 direct-wage + GAP 5 non-Denmark admin data). Aligns aggregate-null (S5/S13) with a
+POLARIZING within-distribution signal (S10/S16/L7) and directly contradicts the S17/PwC "AI as leveler" gloss.

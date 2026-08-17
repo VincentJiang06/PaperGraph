@@ -1,0 +1,8 @@
+SOURCE: Josh Bivens (2015), Hutchins Center on Fiscal & Monetary Policy Working Paper #12 / EPI — "Gauging the Impact of the Fed on Inequality during the Great Recession"
+URL: https://www.epi.org/publication/gauging-the-impact-of-the-fed-on-inequality-during-the-great-recession/
+VERBATIM QUOTES:
+"In short, compared to a counterfactual of no change in fiscal policy in response to a recession, monetary stimulus reduces inequality significantly."
+"While stock price increases stemming from LSAPs accrue disproportionately to the top 1 percent, home price appreciation disproportionately benefits the bottom 90 percent."
+"Importantly, the reduction in interest rates provides a potentially progressive boost to wealth and income, as debt is a much larger ratio of either income or gross assets for the bottom 90 percent of households."
+"then home prices are boosted by 7 percent due to LSAPs."
+"10-year bond prices 9-14 percent Equity prices 5 percent Home prices 7 percent"

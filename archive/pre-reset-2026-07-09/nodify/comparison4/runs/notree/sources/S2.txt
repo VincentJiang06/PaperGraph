@@ -1,0 +1,16 @@
+SOURCE S2
+Title: Experimental evidence on the productivity effects of generative artificial intelligence
+Authors: Shakked Noy, Whitney Zhang
+Venue: Science, 13 Jul 2023, Vol 381 Issue 6654, pp.187-192 (doi 10.1126/science.adh2586)
+URL fetched: https://pubmed.ncbi.nlm.nih.gov/37440646/
+Fetched: 2026-07-09
+
+VERBATIM POINTS:
+- Sample & design: "453 college-educated professionals" in "a preregistered online experiment" with random assignment to writing tasks, half exposed to ChatGPT.
+- Effect: "ChatGPT substantially raised productivity: The average time taken decreased by 40% and output quality rose by 18%."
+- Inequality: "Inequality between workers decreased" (ChatGPT compressed the productivity distribution by benefiting lower-ability workers more).
+- Downstream adoption: workers given the tool were "2 times as likely to report using it in their real job 2 weeks after the experiment and 1.6 times as likely 2 months after."
+
+DESIGN: Randomized controlled experiment (RCT), incentivized occupation-specific mid-level professional writing tasks (managers, HR, grant writers, marketers, consultants, data analysts).
+DIRECTION: Positive on speed & quality; equalizing (compresses dispersion).
+KEY LIMITS: Short, artificial standalone writing tasks in a survey environment (not real jobs/workflows); one-shot; quality graded by other professionals; measures task-level potential, not job-level or wage outcomes.

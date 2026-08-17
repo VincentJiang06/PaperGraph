@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0008",
+ "lean": "supports",
+ "summary": "假设A(近中性)机制真实:自底向上宏观测算AI十年TFP增幅≤0.66%(温和),任务级证据显示AI多为增强(客服+14%、新手+34%),互补/生产率/再创造可抵消替代——'温和数据=真中性'有据;但机制成立≠已证净中性。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Acemoglu — Simple Macroeconomics of AI",
+    "doc_id": "DOC-0005",
+    "quote": "no more than a 0.66% increase in total factor productivity (TFP) over 10 years",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "宏观生产率冲击温和→劳动需求冲击温和"
+   },
+   {
+    "title": "Generative AI at Work (Brynjolfsson/Li/Raymond)",
+    "doc_id": "DOC-0006",
+    "quote": "increases productivity, as measured by issues resolved per hour, by 14% on average, including a 34% improvement for novice and low-skilled workers",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "增强/互补的因果证据"
+   }
+  ]
+ },
+ "open_questions": [
+  "互补带来的产出扩张是否足以通过新任务把净就业拉回正(reinstatement)?"
+ ]
+}

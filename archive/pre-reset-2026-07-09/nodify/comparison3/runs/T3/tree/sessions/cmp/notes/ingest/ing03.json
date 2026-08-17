@@ -1,0 +1,24 @@
+{
+ "kind": "paper",
+ "title": "Brynjolfsson, Chandar, Chen — Canaries in the Coal Mine (Stanford, 2025)",
+ "url": "https://digitaleconomy.stanford.edu/publications/canaries-in-the-coal-mine/",
+ "text_file": "sessions/cmp/notes/doc03_stanford_canaries.txt",
+ "summary": "ADP微观数据:生成式AI普及后,22-25岁高暴露职业就业相对下降16%(初稿13%);老/增强型工人稳或增;降幅集中于自动化型职业。总量不可见的人群信号。",
+ "bindings": [
+  {
+   "node_id": "N-0003",
+   "relation": "supports",
+   "note": "入门级人群层出现真实下降信号"
+  },
+  {
+   "node_id": "N-0009",
+   "relation": "supports",
+   "note": "人群信号先于总量=滞后/被掩盖证据"
+  },
+  {
+   "node_id": "N-0007",
+   "relation": "context",
+   "note": "替代确在特定人群显现"
+  }
+ ]
+}

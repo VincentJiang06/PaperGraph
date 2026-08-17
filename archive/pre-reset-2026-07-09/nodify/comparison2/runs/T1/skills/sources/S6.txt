@@ -1,0 +1,16 @@
+Title: 2025 Year-End Challenger Report: Highest Q4 Layoffs Since 2008; Lowest YTD Hiring Since 2010
+Publisher: Challenger, Gray & Christmas, Inc.
+URL: https://www.challengergray.com/blog/2025-year-end-challenger-report-highest-q4-layoffs-since-2008-lowest-ytd-hiring-since-2010/
+Accessed via: WebFetch, 2026-07-09
+
+Verbatim key quotes:
+
+"In 2025, employers announced 1,206,374 job cuts, an increase of 58% from the 761,358 announced in 2024."
+
+"Artificial Intelligence (AI) was cited for 142 job cuts in December. So far this year, AI has been responsible for 54,836 announced layoff plans."
+
+"Last year, U.S. employers announced 507,647 planned hires, down 34% from the 769,953 announced in 2024. It is the lowest year-to-date total since 2010, when 402,608 new hires were planned that year."
+
+"Technology has been pivoting to both developing and implementing artificial intelligence much more quickly than any other industry. This coupled with over-hiring over the last decade created a wave of job loss in the industry."
+
+Notes: AI-cited layoffs (~54,836) are a small fraction (~4.5%) of total 2025 announced job cuts (1,206,374), and Challenger's own commentary attributes much of tech-sector job loss to a combination of AI adoption AND prior over-hiring correction — i.e., AI is one of several confounded causes, not cleanly separable in this data.

@@ -1,0 +1,15 @@
+Title: International Monetary Fund: Key learnings from the latest report for HR leaders
+(Covers IMF Staff Discussion Note "Bridging Skill Gaps for the Future: New Jobs Creation in the AI Age," 2026)
+Publication: UNLEASH
+URL: https://www.unleash.ai/artificial-intelligence/international-monetary-fund-key-learnings-from-the-latest-report-for-hr-leaders/
+Accessed via: WebFetch, 2026-07-09
+
+Verbatim key quotes:
+
+"In regions with higher demand for AI-related skills, employment levels are 3.6% lower in occupations that are highly exposed to AI but offer limited scope for human-AI complementarity."
+
+"Although AI-specific skills were found to offer higher wages, the report noted that they do not guarantee job growth, meaning the benefits of AI adoption are 'highly uneven'."
+
+"Workers in entry-level, middle-skilled roles face the greatest challenges, especially in occupations highly exposed to AI where there is limited complementarity with human work."
+
+Notes: This IMF design compares regions/labor markets with differing intensity of AI-skill demand (a cross-sectional/quasi-causal design distinct from Stanford's ADP panel), and finds a real but moderate (3.6%) relative employment effect after five years, concentrated in low-complementarity, high-exposure occupations — consistent with a genuine but not massive net effect, alongside a persistent wage premium for AI skills.

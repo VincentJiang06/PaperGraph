@@ -1,0 +1,16 @@
+Source: MIT News — "Study: As a population gets older, automation accelerates" (2021-09-15), reporting on Daron Acemoglu & Pascual Restrepo, "Demographics and Automation," Review of Economic Studies, 89(1), 2022.
+URL: https://news.mit.edu/2021/aging-workers-automation-0915
+Fetched via WebFetch (extracted key content and verbatim quotes below).
+
+## Magnitude of Aging's Impact
+Acemoglu and Restrepo found that "aging alone accounts for 35 percent of the variation" in robot adoption across countries. Within the U.S., a 10-percentage-point increase in local population aging led to a 6.45-percentage-point increase in robot integrators in those areas.
+
+## The Mechanism — Labor Shortage
+The researchers identify labor scarcity as the driving force. Acemoglu states: "Our findings suggest that quite a bit of investment in robotics is not driven by the fact that this is the next 'amazing frontier,' but because some countries have shortages of labor, especially middle-aged labor."
+
+## Offsetting Economic Decline
+The article suggests automation may mitigate some negative effects. Acemoglu notes that countries like Germany, South Korea, and Japan — "the leaders in robot investment and the most rapidly aging countries" — have avoided the severe labor market decline seen in the U.S. This implies that adopting robots to fill worker shortages differs from using automation purely for cost-cutting, though the article does not explicitly quantify whether automation fully offsets aging's economic impacts.
+
+The research fundamentally reframes automation as a reactive response to demographic challenges rather than purely technology-driven adoption.
+
+(From an earlier search summary of the same underlying research): Demographic change is associated with greater adoption of robots and other automation technologies across countries and with more robotics-related activities across U.S. commuting zones, and there is more automation innovation in countries undergoing faster aging. The relative shortage of middle-aged production workers in countries that are aging rapidly — such as Germany, France, Italy, Japan, and South Korea — encourages the development and adoption of robotics technology.

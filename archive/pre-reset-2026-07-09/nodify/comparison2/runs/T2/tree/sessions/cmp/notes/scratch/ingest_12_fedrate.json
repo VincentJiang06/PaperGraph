@@ -1,0 +1,11 @@
+{
+  "kind": "web",
+  "title": "Federal Reserve rate-path reporting 2023-2025 (FOMC statements, CNBC/CBS coverage)",
+  "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20251210a.htm",
+  "text_file": "notes/scratch/doc_fed_rate_path.txt",
+  "summary": "联邦基金利率2023年7月至2024年9月维持5.25%-5.50%峰值;2024年9-12月累计降息100个基点至4.25%-4.50%;2025年暂停9个月后连续三次降息至3.50%-3.75%(截至2025年12月);核心PCE同期从2.9%降至2.5%,仍高于2%目标。",
+  "bindings": [
+    {"node_id": "N-0016", "relation": "supports", "note": "实际降息路径显示美联储在通胀回落确认后逐步、渐进地转向宽松,而非因供给侧贡献大而快速转向"},
+    {"node_id": "N-0014", "relation": "context", "note": "降息周期与核心PCE持续高于2%目标同时发生,说明软着陆'已实现'但通胀尚未完全达标"}
+  ]
+}

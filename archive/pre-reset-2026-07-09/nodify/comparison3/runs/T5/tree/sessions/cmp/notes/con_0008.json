@@ -1,0 +1,14 @@
+{
+  "node_id": "N-0008",
+  "lean": "supports",
+  "summary": "Cengiz等(2019)用bunching估计138次州级上调:最低工资以下的'缺失岗位'被以上的'过剩岗位'抵消,五年内低薪岗位总数基本不变,隐含就业弹性近零且精度较高;缺乏就业损失并非源于labor-labor替代。这是'近零'主张最强的整合性准实验支撑。",
+  "confidence": "high",
+  "based_on": {
+    "children": [],
+    "evidence": [
+      {"title": "Cengiz-Dube-Lindner-Zipperer 2019 QJE abstract", "doc_id": "DOC-0001", "quote": "We find that the overall number of low-wage jobs remained essentially unchanged over five years following the increase.", "url": "https://www.nber.org/papers/w25434", "locator": "abstract", "tool": "web_fetch", "note": "138次州级上调,bunching估计"},
+      {"title": "Cengiz et al 2019: 机制排除labor-labor替代", "doc_id": "DOC-0001", "quote": "the lack of job loss is not explained by labor-labor substitution at the bottom of the wage distribution", "url": "https://www.nber.org/papers/w25434", "locator": "abstract", "tool": "web_fetch", "note": null}
+    ]
+  },
+  "open_questions": ["bunching对tradable部门外溢与长期动态是否充分捕捉?"]
+}

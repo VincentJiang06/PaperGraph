@@ -1,0 +1,32 @@
+S26 — Federal Reserve Board (FEDS Notes) — "AI Adoption and Firms' Job-Posting Behavior"
+March 27, 2026. URL: https://www.federalreserve.gov/econres/notes/feds-notes/
+ai-adoption-and-firms-job-posting-behavior-20260327.html
+Tier C — firm/industry-level observational (job postings vs AI adoption). Lines: L2, L6.
+(Supporting: US Census BTOS 2026 firm survey, Tier D.)
+
+DESIGN/SAMPLE: Links firm- and industry-level AI adoption/investment measures to subsequent
+job-posting (Lightcast/vacancy) behavior; regression models across firms and industries.
+
+VERBATIM QUOTES (Fed note):
+- "there is no evidence of a reduction in job postings for industries or firms which have
+   higher levels of AI adoption."
+- coefficients on industry AI adoption "are generally positive, indicating that there is no
+   evidence thus far that industries with higher levels of AI adoption are posting fewer jobs."
+- "There is no evidence across the range of models that firm-level AI investment is having a
+   negative impact on subsequent job-posting behavior."
+- "we find no evidence of negative impacts thus far on firms' job-posting behavior"
+- CAVEAT (authors): results examine "the total level of job postings in firms and industries,
+   rather than on specific occupations which may be particularly susceptible to automation via
+   AI" — i.e. aggregate stability can mask specific-occupation pressure.
+
+SUPPORTING (US Census, firm survey / BTOS, Tier D):
+- Census summary: "in most cases, adoption of new technologies like robotics and Artificial
+   Intelligence had no impact on worker numbers or skill level."
+- BTOS Nov 2025–Jan 2026: ~18% of firms use AI (32% employment-weighted); most users rely on
+   AI to AUGMENT tasks; AI-related employment DECREASES are rare (~2% of firms). [secondhand]
+
+EFFECT + DIRECTION: NULL at the firm/industry level — AI-adopting firms are NOT posting
+fewer jobs (coefficients if anything positive). Strengthens L6 (aggregate/average skeptic
+line) at a NEW level of aggregation (the firm), complementing admin-worker nulls S5/S13/S21.
+LIMIT: total postings, not occupation-specific; adoption endogenous (fast-growing firms adopt);
+short horizon; Census augment/2% figures are self-report survey (Tier D).

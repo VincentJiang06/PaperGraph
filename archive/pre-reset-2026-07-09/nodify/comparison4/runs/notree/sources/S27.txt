@@ -1,0 +1,23 @@
+S27 — Schwarcz, Manning, Prescott, Barry, Cleveland, Rich et al. — "AI-Powered Lawyering:
+AI Reasoning Models, Retrieval Augmented Generation, and the Future of Legal Practice"
+2026 (SAGE / Journal). URL: https://journals.sagepub.com/doi/10.1177/2755323X261427048
+Tier A — RCT (legal profession; FRONTIER-MODEL update to S24). Lines: L1, L4, L7.
+
+DESIGN/SAMPLE: RCT assigning law students to legal tasks with (a) RAG-powered Vincent AI,
+(b) reasoning model o1-preview, or (c) no AI. "the first randomized controlled trial
+assessing these technologies."
+
+VERBATIM QUOTES:
+- Both tools "significantly enhance legal work quality," "a marked contrast with previous
+   research examining older large language models like GPT-4."
+- The tools "significantly boost productivity in five out of six tested legal tasks, with
+   statistically significant gains of anywhere from 50% to 130%."
+- "Vincent AI improves clarity and professionalism while avoiding hallucinations, while
+   o1-preview enhances analytical depth."
+
+EFFECT + DIRECTION: Unlike GPT-4 (S24: quality gains "slight and inconsistent"), reasoning
+models + RAG SIGNIFICANTLY raise legal-work QUALITY as well as speed (+50–130% productivity).
+Direction of travel: the task-level QUALITY effect grows as models improve → the S15/S24
+"quality gains are small/uneven" caveat is model-vintage-dependent, not permanent. AUGMENT,
+strengthening. LIMIT: law students, task-level (not employment/wages); one vendor tool
+(Vincent); still short toy tasks; says nothing about the labor-MARKET translation.

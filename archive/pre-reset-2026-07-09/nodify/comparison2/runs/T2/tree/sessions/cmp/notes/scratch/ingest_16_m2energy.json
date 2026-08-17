@@ -1,0 +1,11 @@
+{
+  "kind": "web",
+  "title": "St. Louis Fed / BLS / JEC: M2 growth and energy price contribution background data",
+  "url": "https://www.stlouisfed.org/on-the-economy/2023/may/the-rise-and-fall-of-m2",
+  "text_file": "notes/scratch/doc_m2_energy.txt",
+  "summary": "M2在2020年增19%、2021年增16%(2000-2019年均约6%);headline PCE通胀于2022年6月见顶,滞后M2增速峰值约18个月;2021年12月CPI同比7.0%中约21%(约1.5pp)来自能源价格,汽油价格全年上涨49.6%。",
+  "bindings": [
+    {"node_id": "N-0008", "relation": "supports", "note": "M2超常规扩张与随后18个月的通胀见顶存在时滞相关性,为货币政策需求侧渠道提供背景证据,但相关性不等于精确的定量贡献"},
+    {"node_id": "N-0012", "relation": "supports", "note": "2021年能源价格(尤其汽油)贡献了当年CPI同比涨幅中约21%(约1.5个百分点)"}
+  ]
+}

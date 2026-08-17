@@ -1,0 +1,25 @@
+SOURCE: Ben Bernanke, "Monetary policy and inequality," Brookings (Ben Bernanke's Blog), 2015-06-01
+URL: https://www.brookings.edu/blog/ben-bernanke/2015/06/01/monetary-policy-and-inequality/
+[Fetched via WebFetch extraction tool; raw HTML not directly retrievable through the sandboxed fetch, so this is the extraction pass's captured verbatim quotations from the live page.]
+
+## On Structural Forces as Primary Drivers
+
+Bernanke argues that long-term inequality stems mainly from economic fundamentals, not monetary policy: "The degree of inequality we see today is primarily the result of deep structural changes in our economy that have taken place over many years, including globalization, technological progress, demographic trends, and institutional change in the labor market and elsewhere."
+
+He concludes that "By comparison to the influence of these long-term factors, the effects of monetary policy on inequality are almost certainly modest and transient."
+
+## On Asset Prices, Savers, Borrowers, and Employment
+
+Asset prices and wealth distribution: Bernanke acknowledges critics correctly observe that "monetary easing works in part by raising asset prices, like stock prices," and that "the rich own more assets than the poor and middle class."
+
+Employment as counterweight: He emphasizes job creation matters most: "easier monetary policies promote job creation as well as increases in asset prices. A stronger labor market—more jobs at better wages—obviously benefits the middle class." Research cited shows employment effects are "by far the largest impact of monetary policy changes on inequality."
+
+Middle-class asset holdings: He notes "more than sixty percent of families own their home" and benefit from rising asset prices during monetary easing.
+
+Debtor benefits: "Debtors tend to benefit (and creditors lose) from higher inflation" and low rates, with "debtors...generally poorer than creditors."
+
+## Caveats and Counterarguments Acknowledged
+
+Bernanke admits uncertainty about distributional effects: "the distributional effects of monetary policy are complex and uncertain." He also notes an apparent contradiction: critics simultaneously claim Fed policy "helps the wealthy" while also claiming it "hurts savers"—groups that overlap significantly.
+
+Context: The post addresses the critique that the Fed's monetary policies (including QE) exacerbated inequality, in the context of a June 1, 2015 symposium at the Brookings Institution's Hutchins Center on Fiscal and Monetary Policy. Since the financial crisis, the Federal Reserve had aggressively used monetary policy, including unconventional policies like quantitative easing, to promote job growth and keep inflation near the Fed's 2 percent target. Unemployment, which peaked at 10 percent in 2009, was at 5.4 percent and falling at the time of the post.

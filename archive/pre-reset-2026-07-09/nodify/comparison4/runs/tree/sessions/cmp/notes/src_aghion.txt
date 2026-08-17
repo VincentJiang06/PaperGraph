@@ -1,0 +1,4 @@
+Aghion, P., Antonin, C., Bunel, S. & Jaravel, X. (2020/2021). What Are the Labor and Product Market Effects of Automation? New Evidence from France. CEPR DP 14443 / OFCE. French manufacturing micro data 1994-2015; event studies + shift-share IV (foreign suppliers of industrial equipment).
+Verbatim (abstract): "At all levels of analysis - plant, firm, and industry - the estimated impact of automation on employment is positive, even for unskilled industrial workers."
+"The estimated elasticity of employment to automation is 0.28, compared with elasticities of 0.78 for profits, -0.05 for prices, and 0.37 for sales."
+"Consistent with the importance of business-stealing across countries, the industry-level employment response to automation is positive and significant only in industries that face international competition." 

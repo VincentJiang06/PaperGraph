@@ -1,0 +1,7 @@
+Peng, Kalliamvakou, Cihon & Demirer — "The Impact of AI on Developer Productivity: Evidence from GitHub Copilot" — arXiv:2302.06590 (Feb 2023, Microsoft / GitHub).
+
+ABSTRACT (verbatim): "Generative AI tools hold promise to increase human productivity. This paper presents results from a controlled experiment with GitHub Copilot, an AI pair programmer. Recruited software developers were asked to implement an HTTP server in JavaScript as quickly as possible. The treatment group, with access to the AI pair programmer, completed the task 55.8% faster than the control group. Observed heterogenous effects show promise for AI pair programmers to help people transition into software development careers."
+
+DESIGN: Randomized controlled trial; 95 professional/contract software developers randomly assigned to Copilot (treatment) vs no-Copilot (control); single well-defined coding task (JavaScript HTTP server). The 55.8% faster figure has a 95% confidence interval of 21%–89%. No effect detected on whether the task was completed (both groups completed it). Heterogeneity: benefits larger for less experienced, higher-workload, and older developers.
+
+TIER: RCT (high internal validity). LIMITS: single artificial task in a lab-like setting; small N (95); measures speed on one task, not sustained job-level output or quality; early Copilot version.

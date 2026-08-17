@@ -1,0 +1,19 @@
+{
+ "kind": "paper",
+ "title": "Eloundou et al. — GPTs are GPTs: Labor Market Impact Potential of LLMs (arXiv 2303.10130)",
+ "url": "https://arxiv.org/abs/2303.10130",
+ "text_file": "sessions/cmp/notes/doc01_eloundou_gpts.txt",
+ "summary": "任务级暴露广:约80%劳动力≥10%任务受LLM影响,约19%≥50%;含LLM工具则47-56%任务受影响。测的是潜在暴露,非已实现自动化。",
+ "bindings": [
+  {
+   "node_id": "N-0002",
+   "relation": "supports",
+   "note": "任务级暴露面广、跨薪资层"
+  },
+  {
+   "node_id": "N-0006",
+   "relation": "context",
+   "note": "暴露=潜在,非已实现替代"
+  }
+ ]
+}

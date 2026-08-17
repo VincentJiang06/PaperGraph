@@ -1,0 +1,14 @@
+{
+  "schema": "session.v1",
+  "session_id": "cmp",
+  "question": "2021-2023 年美国的高通胀,其成因应如何在『需求侧』(财政转移支付 + 宽松货币政策)与『供给侧』(供应链中断、劳动力市场紧张、能源与大宗商品冲击)之间做定量或半定量的归因分解?各自大致贡献几何?这一归因对判断『软着陆』(通胀回落而不引发衰退)能否持续、以及美联储政策立场,意味着什么?给出有校准的判断。",
+  "boundary_note": "美国2021-2023年通胀成因归因分解(需求侧vs供给侧),对软着陆持续性与美联储政策立场的含义;聚焦美国CPI/PCE通胀、不涉及其他国家通胀比较",
+  "language": "zh",
+  "budgets": {
+    "max_depth": 4,
+    "max_children": 5,
+    "max_open_claims": 12
+  },
+  "schema_set_hash": "sha256:4dac83cac00627ca5aafa74a2d3b9bf1ebb54f397cf91ac8c575c51a9eb2b2b0",
+  "created_at": "2026-07-09T07:04:07Z"
+}

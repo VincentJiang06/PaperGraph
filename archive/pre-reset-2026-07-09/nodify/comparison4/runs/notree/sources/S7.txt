@@ -1,0 +1,18 @@
+SOURCE S7  [CROSS-NATIONAL / exposure facet]
+Title: Generative AI and Jobs: A Refined Global Index of Occupational Exposure
+Authors: Pawel Gmyrek, Hernan Winkler, et al. (ILO / World Bank)
+Venue: ILO Working Paper No. 140, May 2025
+URL fetched: https://www.ilo.org/publications/generative-ai-and-jobs-refined-global-index-occupational-exposure
+Fetched: 2026-07-09
+
+VERBATIM POINTS:
+- Global scope: "Globally, one in four workers are in an occupation with some GenAI exposure."
+- Highest category: "3.3% of global employment falls into the highest exposure category."
+- Gender gap: "Significant differences between female (4.7%) and male employment (2.4%)" in highest exposure; gap wider in rich nations: "9.6% female vs 3.5% male in Gradient 4 in HICs."
+- Income divide: "11% of total employment in LICs vs 34% in HICs" (low-income vs high-income countries).
+- Framing: "transformation of jobs is the most likely impact of GenAI" (most occupations retain tasks needing humans).
+
+DESIGN: Exposure-index study. 6-digit occupation level, ~30,000 tasks, human + AI (GPT-4) scoring, mapped to global employment via ILO harmonized microdata.
+SAMPLE: Global employment (~180+ countries harmonized).
+DIRECTION: Exposure POTENTIAL, skewed to high-income countries and to women/clerical work; frames GenAI as transformation not wholesale automation.
+KEY LIMITS: Exposure ≠ job loss (potential only); rich-country/urban/clerical bias in what's "exposed"; digital-divide (infrastructure, connectivity) means exposure may not translate to actual adoption/impact in LICs; no realized outcomes.

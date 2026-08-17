@@ -1,0 +1,21 @@
+SOURCE S13  [AGGREGATE NULL — reconciles S5 vs S6; ADVERSARIAL spine of L6]
+Title: Evaluating the Impact of AI on the Labor Market (CPS update series) / "What We Do and Don't Know"
+Authors/Org: The Budget Lab at Yale (Martha Gimbel, exec. dir., et al.)
+Venue: Yale Budget Lab research briefs, 2025-2026 (rolling CPS updates)
+URLs fetched: https://budgetlab.yale.edu/research/evaluating-impact-ai-labor-market-current-state-affairs ; https://fortune.com/2026/02/02/ai-labor-market-yale-budget-lab-ai-washing/ (direct report quotes)
+Fetched: 2026-07-09
+
+VERBATIM POINTS (report, via Fortune coverage + Budget Lab):
+- "The picture of AI's impact on the labor market that emerges from our data is one that largely reflects stability, not major disruption at an economy-wide level."
+- "While anxiety over the effects of AI on today's labor market is widespread, our data suggests it remains largely speculative."
+- Gimbel: "No matter which way you look at the data, at this exact moment, it just doesn't seem like there's major macroeconomic effects here."
+- Method/finding (Budget Lab summary): occupational dissimilarity, industry dissimilarity, and exposure/usage metrics "remain flat or within historical ranges or prior trends"; "measures of AI exposure, automation, and augmentation show no sign of being related to changes in employment or unemployment to date." "no discernible disruption since ChatGPT's release 33 months ago."
+- Nuance: "While the occupational mix is changing faster than it has in the past, it is not a large difference and predates the widespread introduction of AI."
+- Caveat: "technological change does not happen in a vacuum" — a recession could accelerate impacts; explicitly "not predictive of the future."
+
+DESIGN: Observational tracking — occupational-mix dissimilarity index vs historical benchmarks + employment/unemployment by AI exposure/automation/augmentation quintile, monthly CPS, since Nov-2022.
+SAMPLE: US workforce (CPS).
+TIER: C (macro/occupational observational).
+DIRECTION: NULL at the aggregate/economy-wide level — aligns with S5 (Denmark). Directly relevant to reconciling S5 (null) vs S6 (youth decline): the aggregate can be flat while a small subgroup (entry-level, S6) moves.
+KEY LIMITS: Aggregate dissimilarity can MASK targeted subgroup effects (young/entry-level, specific occupations); CPS occupational codes coarse; early (33 months); descriptive, not causal; explicitly non-predictive.
+CROSS-REF: Strengthens L6. Reconciler for F3: "no macro effect" (S5,S13) and "concentrated youth effect" (S6) can BOTH be true.

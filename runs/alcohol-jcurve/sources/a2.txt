@@ -1,0 +1,4 @@
+Source: GBD 2016 Alcohol Collaborators (Griswold MG, et al.), "Alcohol use and burden for 195 countries and territories, 1990–2016: a systematic analysis for the Global Burden of Disease Study 2016," 2018, The Lancet 392(10152):1015–1035.
+URL: https://pubmed.ncbi.nlm.nih.gov/30146330/
+
+The level of alcohol consumption that minimised harm across health outcomes was zero (95% UI 0·0–0·8) standard drinks per week. Interpretation: Alcohol use is a leading risk factor for global disease burden and causes substantial health loss. We found that the risk of all-cause mortality, and of cancers specifically, rises with increasing levels of consumption, and the level of consumption that minimises health loss is zero. These results suggest that alcohol control policies might need to be revised worldwide, refocusing on efforts to lower overall population-level consumption.

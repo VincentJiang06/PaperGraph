@@ -1,0 +1,7 @@
+Luca, Luca (2019), "Survival of the Fittest: The Impact of the Minimum Wage on Firm Exit," NBER WP 25806 / HBS WP 17-088. Yelp data on ~35,000 SF Bay Area restaurants; 21 minimum wage increases 2008-2016.
+
+Key findings (verbatim as reported by HBS/Cato):
+"a one-dollar increase in the minimum wage leads to a 14% increase in the likelihood of exit for a 3.5-star restaurant (which is the median rating on Yelp) but has no discernible impact for a 5-star restaurant"
+"The highest rated, five-star restaurants, for instance, are no more likely to close with a higher minimum wage."
+
+Note: Minimum wage increases raise exit probability specifically for marginal, lower-rated (median-quality) restaurants, while top-rated ones are unaffected. Shows a distributional/selection margin: the average near-zero can mask real exit among marginal establishments.

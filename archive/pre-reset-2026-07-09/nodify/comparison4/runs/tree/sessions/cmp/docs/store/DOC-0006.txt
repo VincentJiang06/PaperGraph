@@ -1,0 +1,4 @@
+Brynjolfsson, Chandar & Chen — "Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence" — Stanford Digital Economy Lab / SIEPR Working Paper (version dated November 13, 2025).
+KEY RESULT (verbatim): early-career workers (ages 22-25) in the most AI-exposed occupations have experienced a 16 percent relative decline in employment.
+CONTEXT: Uses high-frequency, individual-level payroll data from ADP (largest US payroll provider) since generative AI's widespread adoption in late 2022. Declines persist after controlling for firm-level shocks and are concentrated in roles where AI automates rather than augments tasks (e.g., software development, customer support).
+DESIGN: quasi-experimental difference-in-differences on administrative payroll microdata. LIMITS: US only; recent/short window; AI-exposure measure and confounding macro shocks; effect is RELATIVE (within-firm age gradient), not necessarily absolute job loss.

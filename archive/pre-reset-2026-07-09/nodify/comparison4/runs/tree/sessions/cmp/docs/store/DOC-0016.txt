@@ -1,0 +1,9 @@
+Teutloff, Einsiedler, Kässi, Braesemann, Mishkin & del Rio-Chanona — "Winners and losers of generative AI: Early Evidence of Shifts in Freelancer Demand" — Journal of Economic Behavior & Organization, vol. 235 (published Jan 29, 2025). Oxford Internet Institute et al.
+
+DESIGN: analyzed over 3 million job postings on a leading global online freelancing platform; used BERTopic to partition postings into 116 fine-grained skill clusters, and GPT-4o to classify each as substitutable, complementary, or unaffected by LLMs; difference-vs-counterfactual-trend around ChatGPT's launch.
+
+KEY RESULTS (verbatim, EurekAlert / Oxford reporting the paper): "Jobs involving skills that can be partly substituted, such as writing and translating, have seen demand drop by 20 to 50 per cent." "The demand for chatbot and natural language processing jobs has almost tripled since the launch of ChatGPT." "For complementary skills like coding there was a reduction in demand for novice workers as companies sought out professionals with greater experience."
+
+PAPER FIGURES (abstract): demand for substitutable skills (writing, translation) fell 20-50% relative to counterfactual, sharpest for short-term (1-3 week) jobs; demand for machine-learning programming grew ~24%; AI-powered chatbot development nearly tripled; demand for novice workers declined in general.
+
+TIER: quasi-experimental / large-scale text-classified panel (medium-high). ADVERSARIAL nuance to a pure "AI kills platform jobs" reading: gen AI RESHAPES/REALLOCATES demand — AI-complementary categories (ML, chatbots) grew even as substitutable ones fell; so the platform effect is a demand SHIFT (winners and losers), not uniform destruction. But it corroborates the writing/translation decline (consistent with Hui, Demirci). LIMITS: job-posting demand proxy; one platform; classification via LLM; short post-launch window.

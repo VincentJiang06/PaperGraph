@@ -1,0 +1,24 @@
+Source: Jardim, Ekaterina; Long, Mark C.; Plotnick, Robert D.; van Inwegen, Emma; Vigdor, Jacob; Wething, Hilary. "Minimum Wage Increases and Individual Employment Trajectories." NBER Working Paper No. 25182 (published as "Minimum-Wage Increases and Low-Wage Employment: Evidence from Seattle," American Economic Journal: Applied Economics, 2022, AEA).
+URL: https://www.nber.org/papers/w25182
+Retrieved via WebFetch on 2026-07-09.
+
+Extracted content:
+
+## Abstract
+The study examined Seattle's minimum wage ordinance using administrative employment data from Washington state. Researchers tracked individuals in low-wage jobs before wage increases and compared outcomes using matched counterfactuals.
+
+## Key Findings
+
+**Wage and Earnings Effects:**
+The researchers "attribute significant hourly wage increases and hours reductions to the policy." Overall, the wage increase "raised earnings by an average of $8-$12 per week."
+
+**Distributional Impacts:**
+Crucially, "The entirety of these gains accrued to workers with above-median experience at baseline; less-experienced workers saw no significant change to weekly pay."
+
+**Employment Stability:**
+The ordinance was "associate[d] with an 8% reduction in job turnover rates as well as a significant reduction in the rate of new entries into the workforce."
+
+**Labor Market Adjustment:**
+Approximately one-quarter of earnings gains came from "experienced workers making up for lost hours in Seattle with work outside the city limits."
+
+The study indicates heterogeneous effects, with experienced workers benefiting while less-experienced workers faced hours cuts that offset wage gains.

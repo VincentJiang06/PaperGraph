@@ -1,0 +1,32 @@
+{
+  "topic": "T5",
+  "arm": "tree",
+  "recovered": {
+    "lines_of_inquiry": {
+      "status": "full",
+      "detail": "27-node tree, all statements preserved verbatim. Root N-0001 fans out into 6 explicit lines: N-0002 empirical core (weighted magnitude/CI of employment effect), N-0003 mechanism A monopsony/search frictions, N-0004 mechanism B cost pass-through + non-wage margins (hours/benefits/hiring bar/automation), N-0005 Kaitz-ratio non-linearity/threshold, N-0006 red-team (competitive theory holds; near-zero is measurement artifact), N-0007 heterogeneity/distribution (who bears adjustment). Each line carries 3-4 claim children AND an embedded contrarian viewpoint (N-0010 power/identification doubt, N-0013 monopsony-as-post-hoc, N-0017 non-wage-margin evidence weak, N-0020 threshold not cleanly observed, N-0024 rebuttal of red-team). Dead/contrarian branches are explicitly retained, not pruned. nd tree + nd brief reproduce the full map."
+    },
+    "leanings": {
+      "status": "full",
+      "detail": "Every node has an explicit lean (supports/mixed/refutes) + confidence (high/medium/low) + synthesized summary. Overall thesis (root SYN-0027, mixed/medium): for 2015-2024 US state/city MODERATE hikes, headcount effect is near-zero (Cengiz bunching = strongest integrative evidence); tension reconciled in 4 layers — monopsony/frictions, price pass-through, non-wage margins (hours/automation), distributional concentration. Competitive theory not wrong, its 'job-cut' prediction is redirected into other margins and surfaces mainly at high relative wages. Non-linearity affirmed with graded confidence stated verbatim: near-zero for moderate hikes = medium-high; turns negative at high Kaitz = medium; exact inflection point = low."
+    },
+    "key_figures": {
+      "status": "full",
+      "detail": "All quantitative anchors survive with source attribution: Cengiz et al. 138 state hikes, low-wage-job elasticity ~0; Seattle (Jardim/UW) hours -6/7%, monthly pay -$74; DLR separation elasticity ~0.23; Azar concentration 25→75 pctile => posted wages -17%; RMS 10% MW => +0.36% grocery prices (full pass-through); CA fast-food $20 (Berkeley) wages +8-9%, prices +1.5% (~6c on a $4 burger), no job loss; contrarian AB1228 (Cato/NBER 34033) fast-food employment -3.2 to -3.6% (~18,000 jobs); CBO $15 federal median -1.3M (-0.8%, range 0 to -3.7M), 17M raised; Neumark-Shirley 79.2% of estimates negative; Clemens-Wither emp-pop -0.7pp; Luca-Luca median (3.5-star) restaurant exit +14% per $1."
+    },
+    "adversarial_lines": {
+      "status": "full",
+      "detail": "A dedicated red-team branch N-0006 (mixed/high) with three concluded claims — N-0021 Neumark-Shirley (literature centered negative), N-0022 Meer-West (MW cuts job growth/flows not the level; level regressions miss it), N-0023 Clemens-Wither (Great Recession, high bindingness => clear negative) — plus explicit rebuttal N-0024 (funnel-plot correction leaves near-zero robust; bunching needs no growth counterfactual; fuller-data Seattle estimates closer to zero). Additional contrarian viewpoints threaded through every branch (N-0010, N-0013, N-0017, N-0020). Verdict recorded: red-team NARROWED and CONDITIONED the near-zero claim (moderate magnitude, non-recession, right margin) but did not overturn it."
+    },
+    "evidence_provenance": {
+      "status": "full",
+      "detail": "14 documents in docs/index.jsonl, each with doc_id, full citation (author-year-journal), URL, sha256 content_hash, cached text_file, summary, and per-node bindings tagged by relation (supports/refutes/context). Node syntheses cite doc_id + VERBATIM quote + url + locator + ref_id (e.g. DOC-0001 'the overall number of low-wage jobs remained essentially unchanged over five years following the increase', nber.org/w25434). Contrarian doc DOC-0013 is bound as 'refutes' to N-0025, so opposing evidence is traceable too. Fully verifiable against NBER/journal URLs; claim->source mapping is unambiguous."
+    },
+    "next_action": {
+      "status": "full",
+      "detail": "State is coherent and terminal-ready: all 27 nodes concluded/synthesized, root synthesized, last check '0 hard, 0 soft', budgets shown (depth 2/3, 0/15 open claims, 14 docs). A fresh agent knows exactly where it stands and the precise residual work — the 5 root-level open_questions are persisted: (1) empirical precision of the Kaitz inflection point, (2) unified causal decomposition of margin weights (price/hours/automation/bar/exit), (3) CA fast-food $20 effect not yet converged (Berkeley null vs contrarian -3.2/-3.6%), (4) net re-absorption rate of displaced lowest-skill workers, (5) extrapolability of recession-era (Clemens-Wither) negatives to expansions. Next step is compile/dossier or targeted follow-up on those open questions; nothing needs reconstruction."
+    }
+  },
+  "overall_recoverability": 5,
+  "narrative": "A fresh agent could continue seamlessly, not restart. The tree session persists the entire reasoning state: 6 inquiry lines plus retained contrarian branches, every node's lean+confidence+synthesized summary, all quantitative anchors, a full red-team branch with its adjudicated verdict, and 14 hash-verified sources with verbatim quotes mapped claim-by-claim (supports/refutes/context). The overall calibrated thesis and its confidence gradations are explicit, and five named open questions define exactly what remains. nd brief/tree/show reconstruct everything without touching the dossier. This is a near-lossless persisted state."
+}

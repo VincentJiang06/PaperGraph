@@ -1,0 +1,19 @@
+Source S3
+Title: What Caused the US Pandemic-Era Inflation?
+Authors: Ben Bernanke, Olivier Blanchard
+URL: https://www.nber.org/papers/w31417 (NBER Working Paper No. 31417); also American Economic Journal: Macroeconomics, vol 17, issue 3 (2025), pp. 1-35; PIIE working paper version at https://www.piie.com/publications/working-papers/2023/what-caused-us-pandemic-era-inflation
+Fetched: 2026-07-09 (via WebFetch/WebSearch)
+
+Extracted verbatim/paraphrased quotes:
+
+"Contrary to early concerns that inflation would be spurred by overheated labor markets, most of the inflation surge that began in 2021 was the result of shocks to prices given wages. These shocks included sharp increases in commodity prices, reflecting strong aggregate demand, and sectoral price spikes, resulting from changes in the level and sectoral composition of demand together with constraints on sectoral supply."
+
+Methodology: "The authors specified and estimated a simple dynamic model of prices, wages, and short-run and long-run inflation expectations that allowed them to analyze the direct and indirect effects of product-market and labor-market shocks on prices and nominal wages and to quantify the sources of U.S. pandemic-era inflation and wage growth."
+
+"Energy prices, food prices, and price spikes due to shortages were the dominant drivers of inflation in its early stages" (limited effect via wage expectations).
+
+"the tight labor market and the resulting persistence in nominal wage increases have become the main factors behind wage and price inflation" (later stage).
+
+"the effects of overheated labor markets on nominal wage growth and inflation are more persistent than the effects of product-market shocks."
+
+This wage-driven component "is unlikely to recede without macroeconomic policy intervention."

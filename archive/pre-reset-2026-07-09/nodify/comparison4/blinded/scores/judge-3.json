@@ -1,0 +1,22 @@
+{
+  "T1": {
+    "A": {
+      "coverage": 5,
+      "depth": 4,
+      "adversarial_completeness": 5,
+      "grounding": 5,
+      "convergence": 5,
+      "calibration": 5,
+      "rationale": "Biggest strength: exceptionally calibrated and integrated — an explicit Tier A-D evidence-quality ladder, a single scoped thesis (negligible = MEAN/AGGREGATE not VARIANCE) reconciled via the diffusion-share bridge, sharp self-disconfirming sources (METR expert-slowdown, EIG youth-decline rebuttal), plus a distinct output-quality/homogenization/overreliance externality line and an explicit KILLED/DEMOTED/WATCH/RETIRED dead-ends taxonomy. Weakness: fewer studies per line and thinner robot/cross-national cataloguing than B, with a few figures gestured without full detail (radiology ~44%; a Brynjolfsson '15%' quote vs the canonical 14%)."
+    },
+    "B": {
+      "coverage": 4,
+      "depth": 5,
+      "adversarial_completeness": 4,
+      "grounding": 5,
+      "convergence": 4,
+      "calibration": 4,
+      "rationale": "Biggest strength: a meticulous per-study catalogue (25 studies with sample sizes, identification strategies, and verbatim quotes matched precisely to canonical figures), including a standout cross-national robot cluster (US-negative / Spain-, France-, Japan-positive / Germany-null) that develops the 'sign flips by aggregation level and institution' insight A lacks, plus wage-inequality (Acemoglu-Restrepo 2022, 50-70%) and firm-level wage-erosion (Azar) evidence A misses. Weakness: omits distinct angles A pursues (output-quality/deskilling externality, a clean equalize-vs-polarize line, the METR expert-slowdown disconfirmer) and has no explicit dead-ends/retired-hypotheses section, so the dense root conclusion reads more as a stratified catalogue than a single crisp calibrated thesis."
+    }
+  }
+}

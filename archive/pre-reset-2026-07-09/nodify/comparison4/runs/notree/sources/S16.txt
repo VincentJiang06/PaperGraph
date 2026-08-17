@@ -1,0 +1,20 @@
+SOURCE S16  [FIELD RCT — ADVERSARIAL to "AI equalizes"; developing-country]
+Title: The Uneven Impact of Generative AI on Entrepreneurial Performance: Evidence from a Field Experiment in Kenya
+Authors: Nicholas Otis, Rowan Clarke, Solène Delecourt, David Holtz, Rembrand Koning
+Venue: HBS Working Paper (Dec 2023, revised Oct 2025); SSRN 4671369
+URLs fetched: https://www.hbs.edu/faculty/Pages/item.aspx?num=65159 ; https://newsroom.haas.berkeley.edu/research/gen-ai-experiment-shows-mixed-results-in-helping-small-businesses-grow/
+Fetched: 2026-07-09
+
+VERBATIM POINTS:
+- Design: "640 Kenyan entrepreneurs," randomized to a control group receiving "a standard business guide" or a treatment group receiving "a GPT-4-powered AI business mentor via WhatsApp."
+- Distributional result: "High performers benefited by just over 20% from AI advice, whereas low performers did roughly 10% worse with AI assistance." (Reported elsewhere as high +15% vs low -8% revenue.)
+- Null on average: researchers "were unable to reject the null hypothesis of no average treatment effect on firm revenues and profits."
+- Magnitude of gap: "the effect for entrepreneurs who were low-performing at baseline is nearly 0.25 standard deviations lower than for initial high performers."
+- Takeaway: AI's benefit "is highly dependent on the existing capabilities and performance level of the entrepreneur using it."
+
+DESIGN: Randomized field experiment (RCT).
+SAMPLE: 640 micro/small-business entrepreneurs, Kenya (developing-economy real firms).
+TIER: A (field RCT).
+DIRECTION: POLARIZING / uneven — helps ALREADY-high performers, HARMS low performers; ~zero average.
+KEY LIMITS: Developing-country microenterprises; short horizon; effect runs through ability to evaluate/act on advice (low performers followed bad advice); advice-domain (not task-execution like writing/coding).
+CROSS-REF: MAJOR counter to F1's "equalizing" (S1/S2/S3 found low-skill gains MOST). Together with S10 (top freelancers hit worst) this shows the DISTRIBUTIONAL sign of AI is UNSETTLED and context-dependent: equalizing for bounded execution tasks (support/writing/coding-for-novices), polarizing for judgment/advice tasks. Also serves L5 (developing-economy first-hand evidence).

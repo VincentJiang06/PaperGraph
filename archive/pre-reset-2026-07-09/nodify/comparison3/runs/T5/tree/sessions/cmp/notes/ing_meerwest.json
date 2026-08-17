@@ -1,0 +1,19 @@
+{
+ "kind": "paper",
+ "title": "Meer, West (2016), Effects of the Minimum Wage on Employment Dynamics, JHR 51(2)",
+ "url": "https://www.nber.org/papers/w19262",
+ "text_file": "notes/src_meerwest.txt",
+ "summary": "三套行政面板:最低工资经数年降低job growth而非即时水平;含州特定趋势的常用设定捕捉不到;效应对青年与低薪密集行业最明显——水平回归会系统性漏掉动态负效应。",
+ "bindings": [
+  {
+   "node_id": "N-0022",
+   "relation": "supports",
+   "note": "动态/增长边际"
+  },
+  {
+   "node_id": "N-0010",
+   "relation": "context",
+   "note": "水平估计可能低估"
+  }
+ ]
+}

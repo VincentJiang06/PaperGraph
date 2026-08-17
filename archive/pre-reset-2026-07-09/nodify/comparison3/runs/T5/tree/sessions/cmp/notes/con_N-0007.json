@@ -1,0 +1,27 @@
+{
+ "node_id": "N-0007",
+ "lean": "mixed",
+ "summary": "异质性与分配:平均近零掩盖分布。加州快餐$20(高相对水平)证据分歧(Berkeley无损vs反方-3.6%);负担集中在青年/低技能(Neumark-Shirley更强负)与边际企业(Luca:中位餐厅退出+14%)。校准:即便平均近零,谁受损很重要——最边际的工人与企业承担了主要(仍不大的)调整,这正是竞争理论压力的真实落点。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [
+   "N-0025",
+   "N-0026",
+   "N-0027"
+  ],
+  "evidence": [
+   {
+    "title": "高相对水平案例分歧",
+    "doc_id": "DOC-0013",
+    "quote": "reduced fast-food employment by 3.6 percent",
+    "url": "https://www.cato.org/research-briefs-economic-policy/did-californias-fast-food-minimum-wage-reduce-employment",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": "report"
+   }
+  ]
+ },
+ "open_questions": [
+  "被挤出的最低技能工人与退出企业岗位的再吸收率是净福利的关键未知。"
+ ]
+}

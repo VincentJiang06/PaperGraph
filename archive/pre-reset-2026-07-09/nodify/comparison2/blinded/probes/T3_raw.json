@@ -1,0 +1,32 @@
+{
+  "topic": "T3",
+  "mode": "raw",
+  "recovered": {
+    "lines_of_inquiry": {
+      "status": "partial",
+      "detail": "No explicit list of the agent's sub-questions survives, but the lines are reconstructable from the 12-source selection plus the framing glosses appended to the 5 WebFetch sources (S1,S5,S7,S8,S9). Inferable lines: (1) did QE causally raise wealth inequality through the equity/asset-price channel (S2 BoE, S3 BIS, S5 Montecino-Epstein, S1 Bernanke); (2) the counterfactual 'compared to what' — vs no stimulus vs equivalent fiscal stimulus, and whether the employment channel offsets the asset channel (S4 Bivens, S1, S5, S6 IMF); (3) reverse causality — is inequality itself a STRUCTURAL driver of the low-rate regime QE operated within, via the saving glut of the rich / secular stagnation (S7 Mian-Straub-Sufi, S11 Rachel-Summers); (4) non-monetary structural drivers of inequality: portfolio composition (S8 Kuhn-Schularick-Steins), skill-biased technical change/technology (S12 Card-DiNardo), long-run wealth concentration (S10 Saez-Zucman); (5) redistribution-channel theory of monetary policy (S9 Auclert). The causal-vs-structural axis of the question is clearly legible; the exact framing the agent used is not stated verbatim."
+    },
+    "leanings": {
+      "status": "partial",
+      "detail": "Each source's own conclusion is recoverable (Bernanke: MP effects on inequality 'modest and transient', structural forces primary; Montecino-Epstein: QE 'modestly dis-equalizing'; Bivens: the criticism is 'misplaced', asset-price effects largely offsetting; BIS: equity prices a 'key driver', so QE 'may have added to inequality'; IMF Furceri: easing REDUCES inequality). A directional lean of THIS investigation is detectable only through the interpretive glosses, which consistently push 'structural, not purely monetary', QE as a contributing-but-not-dominant cause, and 'reverse causality matters'. But there is NO synthesized agent thesis, no weighting across sources, and no explicit answer to the question's 'to what extent / how much' — the consolidated verdict was not persisted."
+    },
+    "key_figures": {
+      "status": "full",
+      "detail": "Quantitative findings are rich and source-attributed: Montecino-Epstein — up to 13% of the income-inequality increase could be a causal effect of QE (conditional on QE raising employment 1.2% and stock returns 10%); ~1/3 of households hold neither housing nor financial wealth. Bivens — LSAPs boosted home prices ~7%, stock prices ~5%, bond prices 9-14%. BoE (S2) — top 5% hold 40% of financial assets outside pensions; QE raised equity prices at least as much as gilts. BIS (S3) — equity prices key driver, low rates/bond prices negligible, house-price recovery only partly offsets. Saez-Zucman (S10) — top 0.1% wealth share rose from 7% (1978) to 22% (2012). Rachel-Summers (S11) — neutral real rates fell >=300bps over a generation. Bernanke (S1) — unemployment 10% (2009) -> 5.4%; 60%+ of families own homes. Kuhn et al (S8) — ~half of US households hold less real wealth than the 1970 median."
+    },
+    "adversarial_lines": {
+      "status": "full",
+      "detail": "The corpus is explicitly built around the debate, so rival explanations are fully recoverable: (a) structural forces dominate — globalization, technology/SBTC, demographics, labor-market institutions (S1 Bernanke, S12 Card-DiNardo, S6 IMF motivation); (b) employment/labor-market channel is equalizing and outweighs the asset channel (S1, S4, S5); (c) the counterfactual objection — vs no stimulus, QE REDUCED inequality (S4 Bivens, S6 IMF/Coibion); (d) housing channel offsets the equity channel for the leveraged middle class (S8, S4, S3); (e) reverse causality — inequality causes low rates rather than QE causing inequality (S7 saving glut, S11 secular stagnation). Both the pro-causal and the structural/skeptical sides are represented."
+    },
+    "evidence_provenance": {
+      "status": "full",
+      "detail": "Source-level provenance is strong and verifiable: every file is self-labeled with author, title, venue/year and (for the fetched five) URL, and the annotated sources tie their verbatim quotes to that source. Cross-checkable citations (NBER WP numbers, CEPR DP12218, BIS Quarterly Review, AER 2019). Two caveats: (i) there is no reasoning log, so no explicit claim->source mapping exists beyond what each file's own headings imply; (ii) S1,S5,S7,S8,S9 are second-hand WebFetch extraction passes ('raw HTML not directly retrievable... captured verbatim quotations'), so they are one step removed from the primary page, though URLs are given for verification."
+    },
+    "next_action": {
+      "status": "lost",
+      "detail": "Nothing about the investigation's continuation state survives: no todo, no draft synthesis, no coverage/gap list, no note of which lines were considered settled vs open, no identified missing evidence, and no stated next step. A resumer can see the ingredients and the debate map but cannot tell where the synthesis had stopped or what the agent intended to do next. Continuing means re-deriving the synthesis from scratch (i.e., re-running the task), not resuming a saved reasoning state."
+    }
+  },
+  "overall_recoverability": 3,
+  "narrative": "A fresh agent could continue productively but not truly resume. The raw mode persisted a strong, well-labeled evidence corpus, and because 5 of 12 sources carry framing glosses, the causal-vs-structural axis, the counterfactual and reverse-causality lines, the key figures, the rival explanations, and the provenance are all highly recoverable — better than a bare link dump. What is lost is the reasoning state proper: the agent's synthesized thesis, its weighting/verdict on 'to what extent', and any next-step or gap list. So the landscape and argument structure survive, but the investigation's own conclusions and progress do not; the resumer must re-derive the synthesis rather than pick it up."
+}

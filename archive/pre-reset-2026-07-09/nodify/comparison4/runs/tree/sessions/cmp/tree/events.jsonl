@@ -1,0 +1,150 @@
+{"schema":"event.v1","event_id":"EV-000001","at":"2026-07-09T12:24:25Z","actor":"main","command":"init","mutating":true,"touched":["cmp"],"summary":"init: 系统性证据地图:2020–2025 年 AI/自动化对劳动力市场的一手实证研究。尽可能全面地编目每一项重要研究——研究设计(RCT/准实验/观测)、样本、效应量与方向、关键局限;识别研究之间的分歧与一致;按方法学质量分层;给出分领域(任务级"}
+{"schema":"event.v1","event_id":"EV-000002","at":"2026-07-09T12:24:45Z","actor":"main","command":"add","mutating":true,"touched":["N-0001"],"summary":"add 1 under root: N-0001"}
+{"schema":"event.v1","event_id":"EV-000003","at":"2026-07-09T12:25:15Z","actor":"main","command":"add","mutating":true,"touched":["N-0002","N-0003","N-0004","N-0005","N-0006","N-0007"],"summary":"add 6 under N-0001: N-0002, N-0003, N-0004, N-0005, N-0006, N-0007"}
+{"schema":"event.v1","event_id":"EV-000004","at":"2026-07-09T12:27:33Z","actor":"main","command":"add","mutating":true,"touched":["N-0008"],"summary":"add 1 under N-0002: N-0008"}
+{"schema":"event.v1","event_id":"EV-000005","at":"2026-07-09T12:27:33Z","actor":"main","command":"add","mutating":true,"touched":["N-0009"],"summary":"add 1 under N-0002: N-0009"}
+{"schema":"event.v1","event_id":"EV-000006","at":"2026-07-09T12:27:33Z","actor":"main","command":"add","mutating":true,"touched":["N-0010"],"summary":"add 1 under N-0002: N-0010"}
+{"schema":"event.v1","event_id":"EV-000007","at":"2026-07-09T12:31:38Z","actor":"main","command":"add","mutating":true,"touched":["N-0011"],"summary":"add 1 under N-0003: N-0011"}
+{"schema":"event.v1","event_id":"EV-000008","at":"2026-07-09T12:31:38Z","actor":"main","command":"add","mutating":true,"touched":["N-0012"],"summary":"add 1 under N-0003: N-0012"}
+{"schema":"event.v1","event_id":"EV-000009","at":"2026-07-09T12:31:38Z","actor":"main","command":"add","mutating":true,"touched":["N-0013"],"summary":"add 1 under N-0004: N-0013"}
+{"schema":"event.v1","event_id":"EV-000010","at":"2026-07-09T12:31:38Z","actor":"main","command":"add","mutating":true,"touched":["N-0014"],"summary":"add 1 under N-0005: N-0014"}
+{"schema":"event.v1","event_id":"EV-000011","at":"2026-07-09T12:31:38Z","actor":"main","command":"add","mutating":true,"touched":["N-0015"],"summary":"add 1 under N-0006: N-0015"}
+{"schema":"event.v1","event_id":"EV-000012","at":"2026-07-09T12:31:38Z","actor":"main","command":"add","mutating":true,"touched":["N-0016"],"summary":"add 1 under N-0007: N-0016"}
+{"schema":"event.v1","event_id":"EV-000013","at":"2026-07-09T12:33:55Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0001"],"summary":"ingest DOC-0001: Brynjolfsson, Li & Raymond — Generative AI at Work (NBER w31161 / QJE 2025)"}
+{"schema":"event.v1","event_id":"EV-000014","at":"2026-07-09T12:33:56Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0002"],"summary":"ingest DOC-0002: Noy & Zhang — Productivity effects of generative AI (Science 2023)"}
+{"schema":"event.v1","event_id":"EV-000015","at":"2026-07-09T12:33:56Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0003"],"summary":"ingest DOC-0003: Dell'Acqua et al. — Navigating the Jagged Technological Frontier (HBS WP 24-013)"}
+{"schema":"event.v1","event_id":"EV-000016","at":"2026-07-09T12:33:56Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0004"],"summary":"ingest DOC-0004: Acemoglu & Restrepo — Robots and Jobs: Evidence from US Labor Markets (JPE 2020)"}
+{"schema":"event.v1","event_id":"EV-000017","at":"2026-07-09T12:33:56Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0005"],"summary":"ingest DOC-0005: Acemoglu, Autor, Hazell & Restrepo — AI and Jobs: Evidence from Online Vacancies"}
+{"schema":"event.v1","event_id":"EV-000018","at":"2026-07-09T12:33:56Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0006"],"summary":"ingest DOC-0006: Brynjolfsson, Chandar & Chen — Canaries in the Coal Mine? (Stanford, Nov 2025)"}
+{"schema":"event.v1","event_id":"EV-000019","at":"2026-07-09T12:33:56Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0007"],"summary":"ingest DOC-0007: Gmyrek, Berg & Bescond (ILO) — Generative AI and Jobs: A Global Analysis (ILO WP"}
+{"schema":"event.v1","event_id":"EV-000020","at":"2026-07-09T12:33:56Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0008"],"summary":"ingest DOC-0008: Humlum & Vestergaard — Still Waters, Rapid Currents / Small Labor Market Effects"}
+{"schema":"event.v1","event_id":"EV-000021","at":"2026-07-09T12:34:05Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0008: 1"}
+{"schema":"event.v1","event_id":"EV-000022","at":"2026-07-09T12:34:05Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0009: 1"}
+{"schema":"event.v1","event_id":"EV-000023","at":"2026-07-09T12:34:06Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0010: 1"}
+{"schema":"event.v1","event_id":"EV-000024","at":"2026-07-09T12:34:06Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0011: 1"}
+{"schema":"event.v1","event_id":"EV-000025","at":"2026-07-09T12:34:06Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0012: 1"}
+{"schema":"event.v1","event_id":"EV-000026","at":"2026-07-09T12:34:06Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0013: 1"}
+{"schema":"event.v1","event_id":"EV-000027","at":"2026-07-09T12:34:06Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0014: 2"}
+{"schema":"event.v1","event_id":"EV-000028","at":"2026-07-09T12:34:06Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0015: 1"}
+{"schema":"event.v1","event_id":"EV-000029","at":"2026-07-09T12:34:06Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0016: 1"}
+{"schema":"event.v1","event_id":"EV-000030","at":"2026-07-09T12:35:52Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0001","N-0008"],"summary":"conclude N-0008 [supports]"}
+{"schema":"event.v1","event_id":"EV-000031","at":"2026-07-09T12:35:52Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0002","N-0009"],"summary":"conclude N-0009 [supports]"}
+{"schema":"event.v1","event_id":"EV-000032","at":"2026-07-09T12:35:52Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0003","N-0010"],"summary":"conclude N-0010 [supports]"}
+{"schema":"event.v1","event_id":"EV-000033","at":"2026-07-09T12:35:53Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0004","N-0011"],"summary":"conclude N-0011 [supports]"}
+{"schema":"event.v1","event_id":"EV-000034","at":"2026-07-09T12:35:53Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0005","N-0012"],"summary":"conclude N-0012 [supports]"}
+{"schema":"event.v1","event_id":"EV-000035","at":"2026-07-09T12:35:53Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0006","N-0013"],"summary":"conclude N-0013 [supports]"}
+{"schema":"event.v1","event_id":"EV-000036","at":"2026-07-09T12:35:53Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0007","N-0014"],"summary":"conclude N-0014 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000037","at":"2026-07-09T12:35:53Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0008","N-0015"],"summary":"conclude N-0015 [supports]"}
+{"schema":"event.v1","event_id":"EV-000038","at":"2026-07-09T12:35:53Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0009","N-0016"],"summary":"conclude N-0016 [supports]"}
+{"schema":"event.v1","event_id":"EV-000039","at":"2026-07-09T12:36:03Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 4 soft"}
+{"schema":"event.v1","event_id":"EV-000040","at":"2026-07-09T12:36:46Z","actor":"main","command":"add","mutating":true,"touched":["N-0017"],"summary":"add 1 under N-0004: N-0017"}
+{"schema":"event.v1","event_id":"EV-000041","at":"2026-07-09T12:36:46Z","actor":"main","command":"add","mutating":true,"touched":["N-0018"],"summary":"add 1 under N-0005: N-0018"}
+{"schema":"event.v1","event_id":"EV-000042","at":"2026-07-09T12:36:46Z","actor":"main","command":"add","mutating":true,"touched":["N-0019"],"summary":"add 1 under N-0006: N-0019"}
+{"schema":"event.v1","event_id":"EV-000043","at":"2026-07-09T12:37:18Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0008","N-0017"],"summary":"bind DOC-0008 -> N-0017 (supports)"}
+{"schema":"event.v1","event_id":"EV-000044","at":"2026-07-09T12:37:18Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0008","N-0018"],"summary":"bind DOC-0008 -> N-0018 (supports)"}
+{"schema":"event.v1","event_id":"EV-000045","at":"2026-07-09T12:37:18Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0008","N-0019"],"summary":"bind DOC-0008 -> N-0019 (supports)"}
+{"schema":"event.v1","event_id":"EV-000046","at":"2026-07-09T12:37:18Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0010","N-0017"],"summary":"conclude N-0017 [supports]"}
+{"schema":"event.v1","event_id":"EV-000047","at":"2026-07-09T12:37:19Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0011","N-0018"],"summary":"conclude N-0018 [supports]"}
+{"schema":"event.v1","event_id":"EV-000048","at":"2026-07-09T12:37:19Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0012","N-0019"],"summary":"conclude N-0019 [supports]"}
+{"schema":"event.v1","event_id":"EV-000049","at":"2026-07-09T12:37:40Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0013","N-0002"],"summary":"conclude N-0002 [supports]"}
+{"schema":"event.v1","event_id":"EV-000050","at":"2026-07-09T12:37:40Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 1 soft"}
+{"schema":"event.v1","event_id":"EV-000051","at":"2026-07-09T12:37:40Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (19 nodes)"}
+{"schema":"event.v1","event_id":"EV-000052","at":"2026-07-09T12:38:34Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (3316 chars)"}
+{"schema":"event.v1","event_id":"EV-000053","at":"2026-07-09T12:38:34Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (3316 chars)"}
+{"schema":"event.v1","event_id":"EV-000054","at":"2026-07-09T12:39:28Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (3316 chars)"}
+{"schema":"event.v1","event_id":"EV-000055","at":"2026-07-09T12:39:54Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (19 nodes)"}
+{"schema":"event.v1","event_id":"EV-000056","at":"2026-07-09T12:46:44Z","actor":"main","command":"reframe","mutating":true,"touched":["N-0003"],"summary":"reframe N-0003"}
+{"schema":"event.v1","event_id":"EV-000057","at":"2026-07-09T12:46:44Z","actor":"main","command":"add","mutating":true,"touched":["N-0020"],"summary":"add 1 under N-0002: N-0020"}
+{"schema":"event.v1","event_id":"EV-000058","at":"2026-07-09T12:46:44Z","actor":"main","command":"add","mutating":true,"touched":["N-0021"],"summary":"add 1 under N-0002: N-0021"}
+{"schema":"event.v1","event_id":"EV-000059","at":"2026-07-09T12:46:44Z","actor":"main","command":"add","mutating":true,"touched":["N-0022"],"summary":"add 1 under N-0002: N-0022"}
+{"schema":"event.v1","event_id":"EV-000060","at":"2026-07-09T12:46:44Z","actor":"main","command":"add","mutating":true,"touched":["N-0023"],"summary":"add 1 under N-0003: N-0023"}
+{"schema":"event.v1","event_id":"EV-000061","at":"2026-07-09T12:46:44Z","actor":"main","command":"add","mutating":true,"touched":["N-0024"],"summary":"add 1 under N-0006: N-0024"}
+{"schema":"event.v1","event_id":"EV-000062","at":"2026-07-09T12:46:44Z","actor":"main","command":"add","mutating":true,"touched":["N-0025"],"summary":"add 1 under N-0007: N-0025"}
+{"schema":"event.v1","event_id":"EV-000063","at":"2026-07-09T12:47:08Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (25 nodes)"}
+{"schema":"event.v1","event_id":"EV-000064","at":"2026-07-09T12:47:24Z","actor":"main","command":"add","mutating":true,"touched":["N-0026"],"summary":"add 1 under N-0023: N-0026"}
+{"schema":"event.v1","event_id":"EV-000065","at":"2026-07-09T12:47:24Z","actor":"main","command":"add","mutating":true,"touched":["N-0027"],"summary":"add 1 under N-0023: N-0027"}
+{"schema":"event.v1","event_id":"EV-000066","at":"2026-07-09T12:47:24Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (27 nodes)"}
+{"schema":"event.v1","event_id":"EV-000067","at":"2026-07-09T12:49:17Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0009"],"summary":"ingest DOC-0009: Peng, Kalliamvakou, Cihon & Demirer — The Impact of AI on Developer Productivity"}
+{"schema":"event.v1","event_id":"EV-000068","at":"2026-07-09T12:49:17Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0010"],"summary":"ingest DOC-0010: Cui, Demirer, Jaffe, Musolff, Peng & Salz — Effects of Generative AI on High-Ski"}
+{"schema":"event.v1","event_id":"EV-000069","at":"2026-07-09T12:49:18Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0011"],"summary":"ingest DOC-0011: Otis, Clarke, Delecourt, Holtz & Koning — The Uneven Impact of Generative AI on "}
+{"schema":"event.v1","event_id":"EV-000070","at":"2026-07-09T12:49:18Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0012"],"summary":"ingest DOC-0012: Hui, Reshef & Zhou — Short-Term Effects of Generative AI on Employment: Evidence"}
+{"schema":"event.v1","event_id":"EV-000071","at":"2026-07-09T12:49:18Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0013"],"summary":"ingest DOC-0013: Demirci, Hannane & Zhu — Who Is AI Replacing? The Impact of Generative AI on Onl"}
+{"schema":"event.v1","event_id":"EV-000072","at":"2026-07-09T12:49:18Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0014"],"summary":"ingest DOC-0014: Dauth, Findeisen, Suedekum & Woessner — The Adjustment of Labor Markets to Robot"}
+{"schema":"event.v1","event_id":"EV-000073","at":"2026-07-09T12:49:18Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0015"],"summary":"ingest DOC-0015: The Budget Lab at Yale — Evaluating the Impact of AI on the Labor Market: Curren"}
+{"schema":"event.v1","event_id":"EV-000074","at":"2026-07-09T12:50:42Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0014","N-0020"],"summary":"conclude N-0020 [supports]"}
+{"schema":"event.v1","event_id":"EV-000075","at":"2026-07-09T12:50:42Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0015","N-0021"],"summary":"conclude N-0021 [supports]"}
+{"schema":"event.v1","event_id":"EV-000076","at":"2026-07-09T12:50:42Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0016","N-0022"],"summary":"conclude N-0022 [supports]"}
+{"schema":"event.v1","event_id":"EV-000077","at":"2026-07-09T12:50:42Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0017","N-0024"],"summary":"conclude N-0024 [supports]"}
+{"schema":"event.v1","event_id":"EV-000078","at":"2026-07-09T12:50:42Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0018","N-0025"],"summary":"conclude N-0025 [supports]"}
+{"schema":"event.v1","event_id":"EV-000079","at":"2026-07-09T12:50:42Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0019","N-0026"],"summary":"conclude N-0026 [supports]"}
+{"schema":"event.v1","event_id":"EV-000080","at":"2026-07-09T12:50:43Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0020","N-0027"],"summary":"conclude N-0027 [supports]"}
+{"schema":"event.v1","event_id":"EV-000081","at":"2026-07-09T12:50:55Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0002"}
+{"schema":"event.v1","event_id":"EV-000082","at":"2026-07-09T12:51:04Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0002"}
+{"schema":"event.v1","event_id":"EV-000083","at":"2026-07-09T12:52:00Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0021","N-0002"],"summary":"conclude N-0002 [supports]"}
+{"schema":"event.v1","event_id":"EV-000084","at":"2026-07-09T12:52:00Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0022","N-0023"],"summary":"conclude N-0023 [supports]"}
+{"schema":"event.v1","event_id":"EV-000085","at":"2026-07-09T12:52:00Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0023","N-0003"],"summary":"conclude N-0003 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000086","at":"2026-07-09T12:52:00Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0024","N-0006"],"summary":"conclude N-0006 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000087","at":"2026-07-09T12:52:07Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 3 soft"}
+{"schema":"event.v1","event_id":"EV-000088","at":"2026-07-09T12:54:20Z","actor":"main","command":"add","mutating":true,"touched":["N-0028"],"summary":"add 1 under N-0023: N-0028"}
+{"schema":"event.v1","event_id":"EV-000089","at":"2026-07-09T12:54:20Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0016"],"summary":"ingest DOC-0016: Teutloff, Einsiedler, Kässi, Braesemann, Mishkin & del Rio-Chanona — Winners and"}
+{"schema":"event.v1","event_id":"EV-000090","at":"2026-07-09T12:54:35Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0025","N-0028"],"summary":"conclude N-0028 [supports]"}
+{"schema":"event.v1","event_id":"EV-000091","at":"2026-07-09T12:54:55Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0023"}
+{"schema":"event.v1","event_id":"EV-000092","at":"2026-07-09T12:54:55Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0026","N-0023"],"summary":"conclude N-0023 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000093","at":"2026-07-09T12:54:55Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 2 soft"}
+{"schema":"event.v1","event_id":"EV-000094","at":"2026-07-09T12:55:12Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (4270 chars)"}
+{"schema":"event.v1","event_id":"EV-000095","at":"2026-07-09T12:55:49Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (4270 chars)"}
+{"schema":"event.v1","event_id":"EV-000096","at":"2026-07-09T12:56:30Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (4270 chars)"}
+{"schema":"event.v1","event_id":"EV-000097","at":"2026-07-09T12:58:23Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 2 soft"}
+{"schema":"event.v1","event_id":"EV-000098","at":"2026-07-09T12:58:23Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0004"}
+{"schema":"event.v1","event_id":"EV-000099","at":"2026-07-09T12:58:23Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0005"}
+{"schema":"event.v1","event_id":"EV-000100","at":"2026-07-09T13:06:27Z","actor":"main","command":"add","mutating":true,"touched":["N-0029"],"summary":"add 1 under N-0004: N-0029"}
+{"schema":"event.v1","event_id":"EV-000101","at":"2026-07-09T13:06:27Z","actor":"main","command":"add","mutating":true,"touched":["N-0030"],"summary":"add 1 under N-0004: N-0030"}
+{"schema":"event.v1","event_id":"EV-000102","at":"2026-07-09T13:06:27Z","actor":"main","command":"add","mutating":true,"touched":["N-0031"],"summary":"add 1 under N-0005: N-0031"}
+{"schema":"event.v1","event_id":"EV-000103","at":"2026-07-09T13:06:27Z","actor":"main","command":"add","mutating":true,"touched":["N-0032"],"summary":"add 1 under N-0003: N-0032"}
+{"schema":"event.v1","event_id":"EV-000104","at":"2026-07-09T13:06:27Z","actor":"main","command":"add","mutating":true,"touched":["N-0033"],"summary":"add 1 under N-0003: N-0033"}
+{"schema":"event.v1","event_id":"EV-000105","at":"2026-07-09T13:06:27Z","actor":"main","command":"add","mutating":true,"touched":["N-0034"],"summary":"add 1 under N-0006: N-0034"}
+{"schema":"event.v1","event_id":"EV-000106","at":"2026-07-09T13:06:27Z","actor":"main","command":"add","mutating":true,"touched":["N-0035"],"summary":"add 1 under N-0006: N-0035"}
+{"schema":"event.v1","event_id":"EV-000107","at":"2026-07-09T13:08:09Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0017"],"summary":"ingest DOC-0017: Acemoglu & Restrepo — Tasks, Automation, and the Rise in US Wage Inequality (Eco"}
+{"schema":"event.v1","event_id":"EV-000108","at":"2026-07-09T13:08:09Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0018"],"summary":"ingest DOC-0018: Azar, Giné & Sanz-Espín — AI Is Already Eroding Wages: Quasi-Experimental Eviden"}
+{"schema":"event.v1","event_id":"EV-000109","at":"2026-07-09T13:08:09Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0019"],"summary":"ingest DOC-0019: Hosseini & Lichtinger — Generative AI as Seniority-Biased Technological Change ("}
+{"schema":"event.v1","event_id":"EV-000110","at":"2026-07-09T13:08:09Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0020"],"summary":"ingest DOC-0020: Koch, Manuylov & Smolka — Robots and Firms (Economic Journal 2021, Spain)"}
+{"schema":"event.v1","event_id":"EV-000111","at":"2026-07-09T13:08:09Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0021"],"summary":"ingest DOC-0021: Hampole, Papanikolaou, Schmidt & Seegmiller — Artificial Intelligence and the La"}
+{"schema":"event.v1","event_id":"EV-000112","at":"2026-07-09T13:08:09Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0022"],"summary":"ingest DOC-0022: Adachi, Kawaguchi & Saito — Robots and Employment: Evidence from Japan 1978-2017"}
+{"schema":"event.v1","event_id":"EV-000113","at":"2026-07-09T13:08:09Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0023"],"summary":"ingest DOC-0023: Aghion, Antonin, Bunel & Jaravel — Labor and Product Market Effects of Automatio"}
+{"schema":"event.v1","event_id":"EV-000114","at":"2026-07-09T13:08:58Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0018","N-0005"],"summary":"bind DOC-0018 -> N-0005 (supports)"}
+{"schema":"event.v1","event_id":"EV-000115","at":"2026-07-09T13:08:58Z","actor":"main","command":"docs bind","mutating":true,"touched":["DOC-0021","N-0004"],"summary":"bind DOC-0021 -> N-0004 (context)"}
+{"schema":"event.v1","event_id":"EV-000116","at":"2026-07-09T13:11:33Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0027","N-0029"],"summary":"conclude N-0029 [supports]"}
+{"schema":"event.v1","event_id":"EV-000117","at":"2026-07-09T13:11:33Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0028","N-0030"],"summary":"conclude N-0030 [supports]"}
+{"schema":"event.v1","event_id":"EV-000118","at":"2026-07-09T13:11:34Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0029","N-0031"],"summary":"conclude N-0031 [supports]"}
+{"schema":"event.v1","event_id":"EV-000119","at":"2026-07-09T13:11:34Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0030","N-0032"],"summary":"conclude N-0032 [supports]"}
+{"schema":"event.v1","event_id":"EV-000120","at":"2026-07-09T13:11:34Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0031","N-0033"],"summary":"conclude N-0033 [supports]"}
+{"schema":"event.v1","event_id":"EV-000121","at":"2026-07-09T13:11:34Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0032","N-0034"],"summary":"conclude N-0034 [supports]"}
+{"schema":"event.v1","event_id":"EV-000122","at":"2026-07-09T13:11:34Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0033","N-0035"],"summary":"conclude N-0035 [supports]"}
+{"schema":"event.v1","event_id":"EV-000123","at":"2026-07-09T13:13:23Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0034","N-0004"],"summary":"conclude N-0004 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000124","at":"2026-07-09T13:13:23Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0035","N-0005"],"summary":"conclude N-0005 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000125","at":"2026-07-09T13:13:23Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0036","N-0003"],"summary":"conclude N-0003 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000126","at":"2026-07-09T13:13:23Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 2 soft"}
+{"schema":"event.v1","event_id":"EV-000127","at":"2026-07-09T13:13:34Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (5538 chars)"}
+{"schema":"event.v1","event_id":"EV-000128","at":"2026-07-09T13:14:10Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (5538 chars)"}
+{"schema":"event.v1","event_id":"EV-000129","at":"2026-07-09T13:14:55Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (5538 chars)"}
+{"schema":"event.v1","event_id":"EV-000130","at":"2026-07-09T13:15:13Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 2 soft"}
+{"schema":"event.v1","event_id":"EV-000131","at":"2026-07-09T13:15:13Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0007"}
+{"schema":"event.v1","event_id":"EV-000132","at":"2026-07-09T13:15:13Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0001"}
+{"schema":"event.v1","event_id":"EV-000133","at":"2026-07-09T13:17:15Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0025"}
+{"schema":"event.v1","event_id":"EV-000134","at":"2026-07-09T13:19:59Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0008"}
+{"schema":"event.v1","event_id":"EV-000135","at":"2026-07-09T13:19:59Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0011"}
+{"schema":"event.v1","event_id":"EV-000136","at":"2026-07-09T13:19:59Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0016"}
+{"schema":"event.v1","event_id":"EV-000137","at":"2026-07-09T13:20:18Z","actor":"main","command":"add","mutating":true,"touched":["N-0036"],"summary":"add 1 under N-0002: N-0036"}
+{"schema":"event.v1","event_id":"EV-000138","at":"2026-07-09T13:20:18Z","actor":"main","command":"add","mutating":true,"touched":["N-0037"],"summary":"add 1 under N-0007: N-0037"}
+{"schema":"event.v1","event_id":"EV-000139","at":"2026-07-09T13:20:55Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0024"],"summary":"ingest DOC-0024: Dell'Acqua et al. — The Cybernetic Teammate: A Field Experiment on Generative AI"}
+{"schema":"event.v1","event_id":"EV-000140","at":"2026-07-09T13:20:55Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0025"],"summary":"ingest DOC-0025: Bick, Blandin & Deming — The Rapid Adoption of Generative AI (NBER w32966, 2024/"}
+{"schema":"event.v1","event_id":"EV-000141","at":"2026-07-09T13:21:38Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0037","N-0036"],"summary":"conclude N-0036 [supports]"}
+{"schema":"event.v1","event_id":"EV-000142","at":"2026-07-09T13:21:38Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0038","N-0037"],"summary":"conclude N-0037 [supports]"}
+{"schema":"event.v1","event_id":"EV-000143","at":"2026-07-09T13:22:49Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0039","N-0007"],"summary":"conclude N-0007 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000144","at":"2026-07-09T13:24:21Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0040","N-0001"],"summary":"conclude N-0001 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000145","at":"2026-07-09T13:24:34Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 2 soft"}
+{"schema":"event.v1","event_id":"EV-000146","at":"2026-07-09T13:24:34Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0001"}
+{"schema":"event.v1","event_id":"EV-000147","at":"2026-07-09T13:24:34Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0002"}
+{"schema":"event.v1","event_id":"EV-000148","at":"2026-07-09T13:24:34Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0007"}
+{"schema":"event.v1","event_id":"EV-000149","at":"2026-07-09T13:24:51Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (6815 chars)"}
+{"schema":"event.v1","event_id":"EV-000150","at":"2026-07-09T13:25:26Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (6815 chars)"}

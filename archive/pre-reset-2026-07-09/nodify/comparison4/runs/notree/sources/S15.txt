@@ -1,0 +1,20 @@
+SOURCE S15  [TASK-LEVEL RCT — ADVERSARIAL to coding-speed RCT S9]
+Title: Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity
+Authors/Org: METR (Model Evaluation & Threat Research); Becker, Rush, et al.
+Venue: METR blog + arXiv 2507.09089 (Jul 2025)
+URLs fetched: https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/ ; https://arxiv.org/pdf/2507.09089
+Fetched: 2026-07-09
+
+VERBATIM POINTS:
+- Headline: "When developers are allowed to use AI tools, they take 19% longer to complete issues" — i.e. AI made them SLOWER.
+- Perception gap: "developers expected AI to speed them up by 24%" and "still believed AI had sped them up by 20%" despite the actual slowdown (a ~39-percentage-point perception-vs-reality gap).
+- Sample: "16 experienced developers from large open-source repositories (averaging 22k+ stars and 1M+ lines of code)"; "246 total" issues, tasks "average two hours each"; devs had multi-year repo experience and "dozens to hundreds of hours" prior LLM use.
+- Tools: "primarily Cursor Pro with Claude 3.5/3.7 Sonnet—frontier models at the time."
+- Caveat: "We do not claim that our developers or repositories represent a majority or plurality of software development work" — applies to devs on "their own repositories."
+
+DESIGN: Randomized controlled trial (within-developer, tasks randomized to AI-allowed vs AI-disallowed).
+SAMPLE: 16 expert OSS maintainers, 246 real tasks on their OWN large mature codebases.
+TIER: A (RCT).
+DIRECTION: NEGATIVE task-level — directly CONTRADICTS S9 (Copilot RCT, +55.8% faster) and complicates F1.
+KEY LIMITS: Tiny N (16); niche population (expert maintainers of complex familiar repos — the opposite of S9's recruited devs on a greenfield JS task); early-2025 tooling (improving fast); authors disclaim generality.
+CROSS-REF: This is the concrete real-workflow counter the Phase-1 red-team anticipated (L1 red-team). Reconciles with S3 jagged frontier: AI helps NOVICES/simple/greenfield tasks (S1,S2,S9), can HURT EXPERTS on complex, context-heavy work (S15). Skill/task interaction, not a uniform speedup.

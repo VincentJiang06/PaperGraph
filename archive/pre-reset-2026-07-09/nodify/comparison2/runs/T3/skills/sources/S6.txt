@@ -1,0 +1,1271 @@
+         Journal of Economic Perspectives—Volume 34, Number 4—Fall 2020—Pages 3–26
+
+
+
+
+The Rise of Income and Wealth
+Inequality in America: Evidence from
+Distributional Macroeconomic Accounts
+Emmanuel Saez and Gabriel Zucman
+
+
+
+
+F
+         or the measurement of income and wealth inequality, there is no equivalent to
+         Gross Domestic Product statistics—that is, no government-run standardized,
+         documented, continually updated, and broadly recognized methodology
+similar to the national accounts which are the basis for GDP. Starting in the mid-
+2010s, we have worked along with our colleagues from the World Inequality Lab
+to address this shortcoming by developing “distributional national accounts”—
+statistics that provide consistent estimates of inequality capturing 100 percent of the
+amount of national income and household wealth recorded in the official national
+accounts.
+      This effort is motivated by the large and growing gap between the income
+recorded in the datasets traditionally used to study inequality—household surveys,
+income tax returns—and the amount of national income recorded in the national
+accounts. The fraction of national income that is reported in individual income tax
+data has declined from 70 percent in the late 1970s to about 60 percent in 2018.
+The gap is larger in survey data, such as the Current Population Survey, which do
+not capture top incomes well. This gap makes it hard to address questions such
+as: What fraction of national income is earned by the bottom 50 percent, the
+middle 40 percent, and the top 10 percent of the distribution? Who has benefited
+from economic growth since the 1980s? How does the growth experience of the
+
+
+
+
+■ Emmanuel Saez and Gabriel Zucman are Professors of Economics, both at the University
+of California, Berkeley, California. Their email addresses are saez@econ.berkeley.edu and
+zucman@berkeley.edu.
+For supplementary materials such as appendices, datasets, and author disclosure statements, see the
+article page at https://doi.org/10.1257/jep.34.4.3.
+4   Journal of Economic Perspectives
+
+
+
+
+different groups of the population in the United States compare to that seen in
+other countries?
+      Distributing the totality of income and wealth allows us to compute income
+growth rates for the different social groups consistent with the official macroeco-
+nomic growth rates, thus bridging the gap between macroeconomic analysis and the
+study of inequality. This procedure reduces arbitrariness compared to approaches
+that focus on narrower notions of economic resources. In addition, because the
+macroeconomic aggregates are defined and estimated following harmonized, inter-
+nationally agreed upon concepts and methods, distributional national accounts
+should maximize the comparability of inequality over time and across countries.
+      Piketty, Saez, and Zucman (2018) present a prototype of distributional
+national accounts for the United States. These series are supplemented by a set of
+publicly available micro-files representative of the US population. In these micro-
+files, each variable corresponds (and adds up) to a national account aggregate,
+such as compensation of employees, corporate profits, or income taxes paid; and
+each observation is a synthetic individual created by combining tax, survey, and
+other publicly available data sources. These microfiles allow anyone to reproduce
+all our findings on US inequality—including those described in this article—and
+to compute other statistics of interest. In the same way as the national accounts
+are constantly updated, revised, and refined, we regularly update our series and
+micro-files whenever new data become available and when improved estimation
+techniques are designed. These revisions are documented in methodological notes
+that explain the changes made and their effect on previously reported statistics.
+Following regularly updated guidelines (Alvaredo et al. 2020), similar methods
+are applied to construct prototype distributional national accounts in a growing
+number of countries, including France, India, China, and Brazil. The series are
+made available on the World Inequality Database at http://WID.world, along with
+all computer code and technical appendices. Because the code and raw data are
+generally publicly available, alternative methodologies can be tested.
+      In time, we hope that our prototype distributional national accounts will be
+taken over by governments and published as part of the official toolkit of govern-
+ment statistics. Inequality statistics are too important to be left to academics, and
+producing them in a timely fashion requires resources that only government and
+international agencies possess. A similar evolution happened for the national
+accounts themselves, which were developed in the first half of the twentieth century
+by scholars in the United States (such as Simon Kuznets), the United Kingdom
+(such as James Meade and Richard Stone), France (such as Louis Dugé de Bernon-
+ville), and other countries, before being taken over by government agencies.
+      It may take decades before we get there. Economic statistics, like aggregate
+output or concentration of income, are not physical facts like mass or temperature.
+Instead, they are creations that reflect social, historical, and political contexts. How
+the data sources are assembled, what conceptual framework is used to combine
+them, what indicators are given prominence: all of these choices reflect objectives
+that must be made explicit and broadly discussed. Before robust distributional
+                                                Emmanuel Saez and Gabriel Zucman       5
+
+
+
+
+national accounts are published by government agencies, there are still many meth-
+odological choices to be debated and agreed on by the academic and statistical
+community. As part of that process, our prototype can be used to characterize the
+rise of inequality in the United States, to confront our methods and findings with
+those of other studies, and to pinpoint the areas where more research is needed.
+
+
+The Rise of Wealth Inequality
+
+     A first step toward the creation of US distributional national accounts was taken
+in Saez and Zucman (2016), who produced estimates of US wealth inequality allo-
+cating 100 percent of the household wealth recorded in the Financial Accounts, the
+official US macroeconomic balance sheet. Household wealth includes all the non-
+financial assets (such as real estate) and financial assets (such as equities, bonds, and
+pension wealth, whether held in individual retirement accounts or through pension
+funds) of US households, net of debts. In 2019, the Federal Reserve released its own
+official Distributional Financial Accounts painting a similar picture of a large rise in
+wealth concentration.
+
+Measuring Wealth When There Is No Administrative Data on Wealth
+     Because there is no administrative data on wealth in the United States, Saez
+and Zucman (2016) use an indirect method, known as the income capitalization
+technique, to estimate wealth inequality. The idea is to link the Financial Accounts
+aggregates to the income flows that these assets generate: thus, interest-bearing
+assets are linked to interest payments, corporate equities are linked to dividends and
+capital gains, business assets are linked to business profits, and so on. Concretely, if
+the ratio between the stock of interest-bearing assets in the Financial Accounts and
+the total flow of interest income reported in tax returns is 50, then someone with
+$1,000 in interest is assigned $50,000 in bonds, saving accounts, and other interest-
+generating assets. Wealth, in other words, is estimated by capitalizing income; in
+the preceding example, interest is capitalized using a capitalization factor of 50, or
+equivalently, an interest rate of 2 percent. Because not all assets generate taxable
+income (pensions, most importantly, do not), tax data need to be supplemented
+with other data sources to capture all forms of wealth.
+     The basic capitalization method is simple and transparent, and it delivers
+results consistent with other evidence about US wealth. In 2016, according to the
+basic capitalization method, US billionaires owned $3.1 trillion in wealth, a number
+close to the $3.0 trillion implied by the Forbes annual list of the 400 wealthiest
+Americans. Tax units with less than $1 billion and more than $50 million in net
+wealth owned $9.2 trillion, a number not dissimilar to the $10.2 trillion found in the
+Survey of Consumer Finances.
+     In its simplest form, the capitalization method relies on the assumption that
+within an asset class, the link between income reported in tax returns and wealth is
+the same across individuals; in other words, that people have the same realized rate
+6   Journal of Economic Perspectives
+
+
+
+
+of return to wealth. Of course, not everybody actually has the same realized rate of
+return. The rates of return may even be positively correlated with wealth. In Saez
+and Zucman (2016), we showed that the assumption of constant realized returns
+within an asset class appeared reasonable, based on data from estate tax returns
+matched to the income tax return of the decedent the year before death, the Survey
+of Consumer Finances, and tax returns from foundations. In particular, we showed
+that the capitalization technique works well for US foundations despite the fact that
+the wealthiest foundations—with sophisticated investments in private equity and
+hedge funds—have higher total rates of returns than less wealthy foundations. The
+reason for this apparent paradox is that the high total returns of top foundations
+stem from high unrealized capital gains, not from high realized income (interest,
+dividends, realized capital gains) relative to wealth. What matters for the capitaliza-
+tion method is that within an asset class, the flow of realized income be proportional
+to wealth, which generally seems to be the case.
+     However, we also found in matched estate-income tax data, an interest rate
+premium that seemed to appear among the rich starting around the time of the
+Great Recession of 2008–2009 and noted (Saez and Zucman 2016, p. 550) that
+this pattern should be watched. Subsequent research suggests that the interest rate
+premium of the rich has become a fixture of the post-Great Recession era. In the
+Survey of Consumer Finances, the top 1 percent richest households have a higher-
+than-average interest rate in the 2010, 2013, and 2016 waves of the survey by a factor
+of 1.3 (Bricker, Volz, and Hansen 2018; Saez and Zucman 2019a). In matched
+estates-income tax data, estates above $10 million have continued to exhibit a slightly
+higher interest rate than average Americans after 2012, the last year in Saez and
+Zucman (2016) (Smith, Zidar, and Zwick 2020). Thus, assuming that all Americans
+have the same interest rate exaggerates the interest-bearing assets of the wealthy in
+the post Great Recession period.
+     For equity wealth, the capitalization method infers assets based on dividends
+and realized capital gains, and thus it cannot capture the wealth of someone who
+receives no dividend and barely realizes any capital gains. A striking example is
+given by Warren Buffett, the main shareholder of Berkshire Hathaway, a company
+that does not pay dividends. In 2016, Buffett disclosed he had an adjusted gross
+income of $11.5 million in 2015, a negligible realized return relative to the
+value of his stake in Berkshire Hathaway, which amounted to about $60 billion
+(as reported in Cohen 2016). Six of the top 10 wealthiest Americans—Jeff Bezos
+(Amazon), Mark Zuckerberg (Facebook), Warren Buffett (Berkshire Hathaway),
+Sergey Brin (Alphabet), Larry Page (Alphabet), and Elon Musk (Tesla), collec-
+tively worth more than $600 billion in September 2020, which is 0.6 percent of
+all US wealth—are the main shareholders of corporations that do not pay divi-
+dends. Indeed, by triangulating the available sources on the reported incomes of
+the ultra-wealthy, Saez and Zucman (2019a) estimate that the top 400 wealthiest
+Americans as a whole earn less taxable equity income (dividends and realized
+capital gains) relative to their equity wealth than the rest of the population by a
+factor of about 2. Assuming that all Americans have the same realized return on
+                                      The Rise of Income and Wealth Inequality in America              7
+
+
+
+
+equities thus underestimates the equity assets of billionaires—a problem that has
+become more acute in the 2010s with the growth of giant tech companies that
+typically do not distribute dividends.
+      Capturing these trends calls for implementing a more sophisticated version of
+the capitalization method. The September 2020 update of the Saez and Zucman
+(2016) estimates of wealth inequality, published on the World Inequality Database
+and also presented in this paper, incorporate the interest rate premium of the rich
+seen in matched estates-income tax data. They also upgrade the equity wealth of
+billionaires so that the total net worth of billionaire keeps matching Forbes. These
+changes do not significantly affect the level of top wealth shares nor their trend but
+bring asset composition in line with the existing evidence. For example, in these
+updated series, interest-bearing assets account for 23 percent of the wealth of the
+top 1 percent in 2018, consistent with the asset composition seen in the official
+Federal Reserve data on wealth inequality.1
+
+Distributional Financial Accounts: A Landmark
+      In 2019, the Federal Reserve released its own Distributional Financial Accounts.
+It was the first time that the Federal Reserve published statistics on wealth covering
+the entire population—from the bottom 50 percent up to the top 1 percent—
+consistent with its own official macroeconomic balance sheets.2 Like in Saez and
+Zucman (2016), the Distributional Financial Accounts start from the Financial
+Accounts aggregate and allocate these totals across the population.
+      Methodologically, the two approaches have some differences. The Federal
+Reserve relies on the Survey of Consumer Finances supplemented with the Forbes
+400 to allocate the Financial Account aggregates; it does not use income tax data.
+The Survey of Consumer Finances is a high-quality wealth survey that oversamples
+the rich. However, the survey is only conducted triennially, starting in 1989. Thus,
+the Distributional Financial Accounts start in 1989 and the data is interpolated
+between each wave of the Survey of Consumer Finances. Like all household surveys,
+the Survey of Consumer Finances relies on self-reported information and suffers
+from small sample sizes at the top. In the latest wave of the survey, about 6,200 fami-
+lies were sampled.
+
+
+1
+  Smith, Zidar, and Zwick (2020) also modify the benchmark Saez and Zucman (2016) capitalization
+method. However, they assume the wealthiest Americans earn an interest rate higher than what is seen
+in the datasets where both income and wealth can be observed. This leads them to underestimate the
+interest-bearing assets of the wealthy. Smith, Zidar, and Zwick (2020) also infer equity wealth based
+on dividend income, despite the fact that the wealthiest Americans often own equities that do not pay
+dividends. As a result, they capture only 57 percent of the billionaire wealth estimated by Forbes. Once
+the correct interest rate is used and equity wealth is fixed to match the estimates of billionaire wealth
+from Forbes, the Smith, Zidar, and Zwick (2020) estimates are very close to the Saez and Zucman (2016)
+updated series; for discussion, see Saez and Zucman (2020).
+2
+  When we produced our wealth inequality estimates, we had a fruitful exchange with the researchers
+at the Federal Reserve who produce and analyze the Survey of Consumer Finances. These exchanges,
+sometimes vigorous (Bricker et al. 2016; Bricker, Henriques, and Hansen 2018), helped nurture the
+creation of the Federal Reserve Distributional Financial Accounts, a key and widely accessible tool.
+8    Journal of Economic Perspectives
+
+
+
+
+      The Federal Reserve includes consumer durables and unfunded pensions in
+its definition of wealth, in contrast to Saez and Zucman (2016). Although including
+durables and unfunded pensions can be appropriate for some purposes, it raises
+some issues. Durables are not assets in the UN System of National Accounts (Semega
+et al. 2019); other countries do not include these items in their estimates of aggre-
+gate household wealth (Piketty and Zucman 2014). Unfunded pensions—99 percent
+of which involves promises to government employees (in 2018)—are not backed
+by actual wealth. Including unfunded pensions in wealth would logically call for
+also including promises of future Social Security benefits and promises of other
+future government benefits (such as Medicare, future spending on education, and
+other promises net of future taxes), which neither the Federal Reserve, nor Saez
+and Zucman (2016), nor other countries do. For international comparability and
+conceptual consistency, durables and unfunded pensions are best left out of wealth.
+      One important but subtle issue in thinking about inequality is whether to
+measure the distribution of economic resources across households, as the Federal
+Reserve does, or across adult individuals or tax units, as in Saez and Zucman (2016).
+There are more tax units (180 million in 2016) than households (126 million),
+because roommates form separate tax units but one household, as do parents living
+with an adult child, and unmarried partners. We believe that data users should be
+allowed to choose the unit of observation that fits the question they are asking.
+      For instance, if one is interested in tax reforms, like the introduction of a
+wealth tax, then the tax unit is the proper unit of observation. In the micro-files of
+Piketty, Saez, and Zucman (2018), one can look at the distribution of wealth across
+tax units or across adult individuals with the assumption that wealth is equally split
+among married spouses. This “equal-split adult” approach assumes that there is a
+full sharing of resources between married spouses—albeit not between unmarried
+partners, in contrast to the household-based approach. One merit of using equal-
+split adults is that it improves the comparability of inequality statistics over time and
+across countries, because the definition of adult (in our case an individual aged 20
+or more) is fixed, while definitions of households and tax units can vary. However,
+equal-split adult statistics understate inequality because not all wealth is equally
+shared among married spouses. In France, Frémeaux and Leturcq (2020) find that
+a growing fraction of wealth is individualized, as opposed to jointly owned between
+spouses. An important area for future research involves collecting more data on the
+division of wealth between spouses. It would also be helpful if the Federal Reserve
+allowed users to look at the distribution of wealth across individuals and tax units.
+      In the meantime, we can convert the Federal Reserve Distributional Financial
+Accounts from households to tax units ourselves and compare the resulting distribu-
+tions to Saez and Zucman (2016).3 Once the same unit of observation and the same
+
+
+3
+ For all intents and purposes high-end families are the same as high-end tax units. In Saez and Zucman
+(2016), “the top 1 percent” includes 1.8 million tax units in 2016, while in the Federal Reserve data, “the
+top 1 percent” includes 1.26 million households and around 1.26 million tax units—that is, it captures
+only the top 0.7 percent wealthiest tax units. Standard Pareto-interpolation techniques imply that the
+                                                                Emmanuel Saez and Gabriel Zucman                    9
+
+
+
+
+definition of wealth are used, the Federal Reserve Distributional National Accounts
+are very close to the Saez and Zucman (2016) estimates. As shown in Figure 1, in both
+cases, the top 10 percent wealthiest tax units owned 77–78 percent of wealth in 2018,
+an increase of 10 points since 1989. In both cases, the top 1 percent wealthiest tax
+units owned 38 percent of wealth in 2018, also an increase of 10 points since 1989.
+      Overall, whether one looks at the absolute level of wealth at the top, the shares
+of wealth owned by the top groups, the portfolio allocation of the wealthy—and how
+all of this has evolved since 1989—the Distributional Financial Accounts and the
+Saez and Zucman (2016) estimates paint the same picture. By construction, total
+wealth is the same in these two datasets, equal to the Financial Accounts aggregate.
+In 2018, the 1 percent richest tax units had about 38 times the average wealth of
+$482,000 that year—that is, about $18 million on average. In terms of portfolio
+composition, interest-bearing assets account for close to a quarter of the net wealth
+of the top 1 percent in both datasets and pension assets for 10 percent.
+      In the Distributional Financial Accounts, the Federal Reserve chooses not to
+report wealth statistics for the top 0.1 percent or smaller groups. But we can apply
+the Federal Reserve methodology and compute the top 0.1 percent wealth share in
+that way. As shown in Panel C of Figure 1, the Federal Reserve data again appear
+consistent with the Saez and Zucman (2016) estimates, although the increase in
+the top 0.1 percent wealth share is slightly more pronounced in capitalized income
+statistics. Given the limitations of the capitalization method, the Saez and Zucman
+(2016) series might overestimate the rise of the top 0.1 percent wealth share. But it
+is at least equally likely that the Survey of Consumer Finances underestimates the
+rise of this top share because the Survey of Consumer Finances does not capture the
+full extent of the rise of income inequality at the top end of the scale.4
+      The Forbes 400 ranking, which roughly corresponds to the wealthiest
+0.00025 percent of households, can be used to focus on much narrower slices of
+the wealth distribution. These data confirm the surge of wealth concentration seen
+in tax data: the top 0.00025 percent wealth share according to Forbes has increased
+even faster than the top 0.1 percent wealth share according to the tax data. To be
+sure, Forbes is far from an ideal data source. It may miss people who own wealth in
+
+                                                                       α−1
+                                                                     ​ ____
+share of the top 0.7 percent within the top 1 percent is ​​​(___ 1 )
+                                                                        α ​
+                                                             ​  0.7 ​ ​​​  ,​​where a is the Pareto coefficient, equal
+to about 1.3 in the Distributional Financial Accounts. Therefore, one needs to multiply the share of
+wealth owned by the richest 1 percent households by 1.08 to capture the share of wealth owned by the
+richest 1 percent tax units. Excluding consumer durables and unfunded pensions, the top 1 percent
+wealthiest households have 35.4 percent of total wealth in the Federal Reserve Distributional Financial
+Accounts in 2018, hence the top 1 percent wealthiest tax units have 38 percent of total wealth, a number
+identical to the Saez and Zucman (2016) estimate.
+4
+  Respondents to the Survey of Consumer Finances are asked about their income as reported on their
+tax return. But as pointed in Saez and Zucman (2016), the top 0.1 percent capital income share rose
+less in the SCF than in the real world tax data from 1989 to 2016. Bricker et al. (2016, p. 290) argue that
+this gap may owe to income misclassification: SCF respondents may, for example, call wages what in fact
+is business income. But the share of total income earned by the top 0.1 percent also rose less in the SCF
+than in the entire population, suggesting that the SCF does not capture the full extent of the rise in the
+top 0.1 percent wealth share.
+10        Journal of Economic Perspectives
+
+
+
+Figure 1
+Top Wealth Shares in the United States: Comparing Estimates
+
+                    Top 10% wealth share                                              Top 1% wealth share
+90%
+                                                                   50%
+85%                                       Distributional
+                                            financial              45%
+                                            accounts                                               Distributional
+80%                                                                                                  financial
+                                                                   40%
+                                                                                                     accounts
+75%                                                                35%
+70%                                                                30%
+            Saez-Zucman (2016)
+65%             2020 update                                        25%        Saez-Zucman (2016)
+                                                                                  2020 update
+60%                                                                20%
+     10   20   30   40   50   60   70   80   90   00   10   20       10   20   30   40   50   60   70   80   90   00   10   20
+ 19   19   19   19   19   19   19   19   19   20   20   20         19    19   19   19   19   19   19   19   19   20   20   20
+
+                    Top 0.1% wealth share                                          Top 0.00001% wealth share
+
+25%                                                               1.2%
+                      Saez-Zucman (2016)
+20%                       2020 update                             1.0%
+
+15%                                                               0.8%
+                                                                  0.6%
+10%
+                                                 Survey of        0.4%
+                                                 consumer
+  5%                                         finances, adjusted   0.2%
+  0%                                                              0.0%
+     10   20   30   40   50   60   70   80   90   00   10   20       80   85       90    95   00       05    10   15       20
+ 19    19   19   19   19   19   19   19   19   20   20   20        19    19     19      19    20   20       20    20   20
+
+
+Source: Federal Reserve, Saez and Zucman (2016), September 2020 update, and Forbes.
+Note: All the series use the same definition of household wealth (the market value of all non-financial and
+financial assets net of all debts, excluding consumer durables and unfunded pensions), have the same
+total wealth (the official Financial Accounts total, e.g., $76.5 trillion in mid-2016), the same totals asset
+class by asset class, and use the same unit of observation (tax units). To move from households to tax
+units in the SCF and the Distributional Financial Accounts, we assume that each tax unit within the top
+1 percent corresponds to one household, and make no correction for the next 9 percent. To make the
+SCF comparable to the other two sources, we add the Forbes 400 to the public-use SCF files and adjust
+reported wealth to match the Financial Accounts totals asset class by asset class.
+
+
+
+diversified portfolios of stocks and bonds (for which no public information exists)
+and overstate the value of private businesses. To alleviate some of these concerns,
+we can focus on the very top of the ranking, the top 0.00001 percent wealthiest
+Americans, a group that includes 17 tax units today and 10 in 1982, the first year
+that the Forbes 400 was published. It is not unreasonable to assume that in a given
+year the 10 or 20 wealthiest people in the country are correctly identified by Forbes
+and their holdings are broadly accurately estimated. This group is a mix of major
+shareholders of big, publicly listed companies (in 2020, Amazon, Facebook, Google,
+Walmart, Microsoft, Berkshire Hathaway; in 1982, Getty Oil, Standard Oil, Hewlett
+                              The Rise of Income and Wealth Inequality in America   11
+
+
+
+
+Packard, and others) for which valuations are observable and giant private busi-
+nesses (Koch Industries and Bloomberg LP today; Mars and Hunt Oil Company
+in 1982) that attract public scrutiny. As shown by Panel D of Figure 1, the share of
+wealth owned by this elite group has risen from 0.13 percent of total US wealth in
+1982 to 1.2 percent in 2020, an almost tenfold increase.
+     By any metric, the period from 1980 to 2020 has been an era of extraordi-
+nary wealth accumulation among the rich in the United States. Not only has wealth
+become more concentrated, wealth itself has been growing faster than income
+and output. In 1980, the ratio of aggregate household wealth to national income
+was 300 percent. In 2020, this ratio approaches 570 percent, the highest level ever
+recorded in the history of the United States. In other words, during the 1980–2020
+period, wealth as a whole has been growing almost twice as fast as income. The
+result is that relative to what is produced and earned in a given year, the wealth
+of the rich has skyrocketed. In 1980, on average, members of the top 1 percent
+owned in wealth the equivalent of 60 years of average US income. In 2020, whether
+one looks at the Saez and Zucman (2016) or Distributional Financial Accounts esti-
+mates, they own 200 years of average US income in wealth, as shown in Figure 2.
+     Although it is notable that the main sources used to estimate US wealth
+inequality deliver consistent results, it would be a mistake to exaggerate our ability
+to measure top-end wealth. Changes in tax avoidance, the growth of wealth held in
+foundations, and the globalization of wealth management pose formidable chal-
+lenges (for discussion, see Zucman 2015). It is a failure of public statistics that the
+only information on billionaire wealth comes from magazines. We could and should
+do better to measure wealth inequality than rely on a survey of 6,200 families or
+indirectly infer asset ownership based on income flows.
+     One merit of a well-administered wealth tax is that it would provide better
+information on the distribution of wealth, one of the most hotly debated issues in
+democratic societies. Even without a wealth tax, governments could collect infor-
+mation on assets and debts from third parties (banks, pension funds, brokers, and
+others), as they already do for income. These data could be used to improve tax
+enforcement—as currently done in Denmark—and allow for the construction of
+more accurate Distributional Financial Accounts.
+     Like all important economic statistics, the Financial Accounts themselves
+have limitations and remain, decades after their creation, a work in progress. One
+challenge involves the valuation of private business assets, which tends to be conser-
+vative in these accounts. Another relates to offshore wealth: foreign bank accounts,
+portfolios of equities and bonds held through foreign financial institutions, and
+holdings of foreign mutual funds (including hedge funds) that are not intermedi-
+ated through a US broker, are not captured in the Financial Accounts (Zucman
+2013). The forms of wealth that are broadly shared tend to be accurately measured,
+while the more complex investments, involving legal and financial intermediaries in
+foreign countries with a great deal of secrecy, are less well captured. The estimates
+of wealth concentration we have today, which by construction are anchored to the
+Financial Accounts totals, should be seen as lower bounds.
+12    Journal of Economic Perspectives
+
+
+
+Figure 2
+Average Wealth of 1 Percent Wealthiest Adults
+(Divided by Average US Income Per Adult)
+
+                                 200
+
+                                 180
+
+                                 160
+
+
+
+
+       Years of average income
+                                 140
+
+                                 120
+
+                                 100                                                 Distributional
+                                                                                  financial accounts
+                                  80
+
+                                  60
+                                                  Saez-Zucman (2016)
+                                                      2020 update
+                                  40
+
+                                  20
+
+                                   0
+                                   70   75   80        85     90       95   00   05       10      15   20
+                                  19    19   19      19      19        19   20   20     20      20     20
+
+
+Source: Saez and Zucman (2016), September 2020 update available on WID.world, and Federal Reserve
+Distributional Financial Accounts.
+Note: This figure shows the average wealth of the top 1 percent wealthiest adults (with wealth equally
+split among married spouses), expressed as a ratio to average US national income per adult. For the
+Distributional Financial Accounts, we assume that the average wealth of the top 1 percent households is
+the same as the average wealth of the top 1 percent equal-split adults.
+
+
+
+
+The Rise of Income Inequality: Beyond Tax Data
+
+Bridging the Gap between the Study of Inequality and Macroeconomics
+     There has been a surge of research in recent years to which we have contrib-
+uted our share, measuring income inequality using administrative tax data rather
+than self-reported household survey data. This work has made us aware of the large
+and growing gap between national income and taxable income. On the labor side,
+untaxed labor income includes tax-exempt employment benefits (contributions
+made by employers to pension plans and to private health insurance), employer
+payroll taxes, the labor income of non-filers, and unreported labor income due to
+tax evasion. The fraction of labor income which is taxable has declined from 80
+to 85 percent in the post-World War II decades to just under 70 percent in 2018,
+due to the rise of employment fringe benefits—in particular the rise of employer
+contributions for health insurance, particularly expensive in the United States. Most
+studies of wage inequality ignore fringe benefits even though they are a large and
+growing fraction of labor costs. As for capital, only one-third of total capital income
+                                                       Emmanuel Saez and Gabriel Zucman              13
+
+
+
+Figure 3
+Share of Income Earned by the Top 1 Percent
+
+        25%
+
+
+
+        20%
+                                             Pre-tax national income
+
+
+        15%
+
+
+
+        10%
+
+                                Fiscal income
+         5%
+
+
+
+         0%
+           10     20      30     40     50      60     70     80     90      00     10     20
+         19      19     19     19     19      19     19     19      19     20     20     20
+
+Note: This figure compares the share of fiscal income earned by the top 1 percent tax units (from Piketty
+and Saez 2003, updated series including capital gains in income to compute shares but not to define
+ranks, to smooth the lumpiness of realized capital gains) to the share of pre-tax national income earned
+by the top 1 percent equal-split adults (from Piketty, Saez, and Zucman 2018, updated September 2020,
+available on WID.world).
+
+
+
+is reported on tax returns. Untaxed capital income includes undistributed corpo-
+rate profits, the imputed rents of homeowners, capital income paid to pension
+accounts, and dividends and interest retained in trusts, estates, and fiduciaries.
+     Piketty, Saez, and Zucman (2018) estimate the distribution of 100 percent of
+national income by combining national accounts, tax, and survey data. As Figure 3
+shows, in both fiscal income and national income statistics, the share of income
+earned by the top 1 percent was high before the 1930s and fell from the 1930s to
+the 1970s before rising again from the late 1970s on. This U-shaped evolution of
+income concentration is a bit less spectacular when one looks at national income
+rather than fiscal income, mainly because only the fraction of corporate profits paid
+out as dividends are included in fiscal income statistics, while all corporate profits
+are included in national income. Accounting for the totality of corporate profits
+generally increases the top 1 percent income share, but the effect is stronger in the
+post-World War II years, a time before the rise of pension plans somewhat broad-
+ened equity ownership.
+     One virtue of distributional national accounts is that they are not affected by
+legal changes in business organization. In the United States, a growing number
+of businesses have been organized as “pass-through” entities since the late 1980s.
+The income of pass-through entities—partnerships, S-corporations, sole proprietor-
+ships—is not subject to the corporate income tax; instead, all the income of these
+14     Journal of Economic Perspectives
+
+
+
+
+businesses is passed to their individual owners and subject to the individual income
+tax only. When more businesses operate as pass-throughs, more income mechani-
+cally shows up on individual income tax returns, especially at the top-end of the
+income distribution. In our distributional national accounts, all corporations are de
+facto treated as pass-through entities, no matter their legal status. In the same way
+as partnership income is allocated to partners, all corporate income is allocated to
+shareholders. In the same way as partners pay the individual income tax on their
+share of partnerships’ income, shareholders pay the corporate tax on their share of
+corporations’ income. This seems a logical way to allocate the corporate tax.
+     Because there is no administrative data in the United States on the ownership
+of non-pass-through corporations, we must make assumptions to allocate the portion
+of corporate profit that is not paid out as dividends. In our distributional national
+accounts, we allocate 50 percent of undistributed profits proportionally to dividends
+and 50 percent proportionally to realized capital gains. This method is far from ideal.
+In the real world, some people with little dividends and realized capital gains are major
+shareholders of corporations with large undistributed profits. For a deeper under-
+standing of income inequality, the government should collect information about the
+ownership of corporations. This information exists in private financial institutions,
+such as the Depository Trust Company, the central securities depository of the United
+States, which de facto acts as the ultimate bookkeeper for the ownership of securities.5
+
+From Macroeconomic Growth to People’s Growth
+     An advantage of distributing the totality of national income is that it allows for
+apples-to-apples comparisons of inequality across countries because national income
+is defined and computed in the same way internationally. (National income is equal to
+GDP minus capital depreciation plus net income received from abroad.) Our bench-
+mark statistics use the equal-split adult as the unit of observation. Our benchmark
+definition of income, pre-tax national income, includes all pension income (from
+Social Security and private pensions) and subtracts all corresponding pension contri-
+butions, making estimates comparable across countries with different age structures.
+     For example, compare France and the United States. In the United States,
+national income reached $17.5 trillion in 2018, close to $72,500 on average among
+the 242 million adults who lived in the United States. The bottom 50 percent
+earned 12.5 percent of national income, which means that members of the bottom
+50 percent earned one-quarter of the average income in the economy or about
+
+
+5
+  In a paper titled “Capitalists in the 21st century” Smith et al. (2019) find that “the typical top earner
+derives most of her income from human capital.” They obtain this finding by noting that pass-through
+business income is a key source of income at the top of the fiscal income distribution and estimating that
+75 percent of this income is labor income rather than capital income. However, fiscal income misses two-
+thirds of total capital income, in particular the profits of corporations that do not pay dividends (such as
+Amazon, Facebook, and Google). Moreover, the estimate that only 25 percent of pass-through business
+income is capital income is not consistent with the large capital stock of these businesses. Saez and
+Zucman (2020) discuss these points and estimate that capital income is slightly more than half of income
+for the top 1 percent and about two-thirds for the top 0.1 percent of the national income distribution.
+                              The Rise of Income and Wealth Inequality in America   15
+
+
+
+
+$18,500 on average. In France, using purchasing power parity exchange rates to
+convert euros into US dollars, national income per adult was $53,000—substan-
+tially less than in the United States. But the bottom 50 percent earned 22.5 percent
+of national income or about $23,400 on average. Even though average income is
+37 percent higher in the United States than in France, the market delivers higher
+incomes to the bottom 50 percent in France than it does in the United States. The
+French welfare state is not responsible for this feat, as we are talking here about
+pre-tax national income (before government taxes and transfers other than Social
+Security). Moreover, the income comparison does not include the better health
+outcomes and more extensive leisure time in France.
+      Distributing the totality of national income also allows for rigorous comparisons
+of income over time. Figure 4 shows the growth rate of income for each percentile
+of the income distribution from 1946 to 1980 and 1980 to 2018. From 1946 to 1980,
+average per adult national income rose 2 percent a year, one of the highest growth
+rates recorded over a generation in a country at the world’s technological frontier.
+Moreover, this growth was widely shared, with only the income of the top 1 percent
+growing a bit less than average. One easily understands why many economists chose
+during this period to treat the US distribution of income as a constant.
+      From 1980 to 2018, average annual growth in per adult national income falls
+to 1.4 percent a year. For almost 90 percent of the population, growth has been
+below—often much below—that figure. For the bottom 50 percent as a whole,
+growth in pre-tax income has been only 0.2 percent on average per year. This quasi-
+stagnation is not due to population aging, since pre-tax income includes Social
+Security and other retirement benefits. Excluding the elderly (aged 65 or more),
+the average bottom 50 percent pre-tax income has slightly declined since 1980.
+During the last four decades, macroeconomic growth has not been representative
+of the growth experience of the vast majority of the population.
+      We need a different measure of economic growth to capture the lived reality of
+growth in an era of rising inequality. Saez and Zucman (2019b) propose “people’s
+growth,” which is the arithmetic average of the growth rate of each percentile of the
+income distribution. People’s growth captures how income grows on average across
+people, as opposed to how the average income grows. From 1946 to 1980, people’s
+growth and national income growth coincided in the United States (2.0 percent a
+year). From 1980 to 2018, people’s growth has been only 0.65 percent a year, much
+less than macro growth (1.4 percent).
+      With a full picture of the distribution of national income over time, we can
+ask how income would have grown across the income distribution if growth had
+been equitably distributed. If macro growth had been equitably shared from 1980
+to 2018, the average pre-tax income of the bottom half of the income distribution
+would have been 57 percent higher in 2018 than it was in actual fact. For the middle-
+class—from the 50th to the 90th percentile of the distribution—average incomes
+would have been 16 percent higher in 2018. However, for the upper middle class
+(from the 90th to 99th income percentile), average incomes would have been
+8 percent lower, and for the rich (the top 1 percent), 36 percent lower.
+16    Journal of Economic Perspectives
+
+
+
+Figure 4
+Average Annual Income Growth Rates
+
+
+
+
+         5%
+                                                                                      Top 0.001%
+         4%
+                                                                                           P99.99
+
+         3%
+                                                                                           P99.9
+                                Average growth 1946–1980: 2.0%                             P99
+         2%
+
+
+         1%          Average growth 1980–2018: 1.4%
+
+
+         0%
+            5   10   15   20   25   30   35   40   45   50   55   60   65   70   75   80   85   90   95   0
+                                                                                                          10
+                                               Income percentile
+        –1%
+
+
+
+
+Source: Saez and Zucman (2019b).
+Note: This figure depicts the annual real pre-tax income growth per adult for each percentile in the
+1946–1980 period (in blue) and 1980–2018 period (in red). From 1946 to 1980, growth was evenly
+distributed with all income groups growing at the average 2 percent annual rate (except the top
+1 percent which grew slower). From 1980 to 2018, growth has been unevenly distributed with low growth
+for bottom income groups, mediocre growth for the middle class, and explosive growth at the top.
+
+
+
+
+      To be sure, this counterfactual analysis has its limitations. Perhaps with less
+inequality, average growth might have been lower (there would perhaps have been
+less innovation if million-dollar earners had not been able to earn the sums they did)
+or higher (there might have been more innovation if credit-constrained households
+had been able to earn more than they did). But the counterfactual does illustrate
+vividly the shift in income distribution.
+
+Pitfalls of Personal Income Distributions
+     In March 2020, the US Bureau of Economic Analysis released a prototype
+distribution of personal income––one of the aggregate measures of income used in
+the US national accounts. These data provide an important step toward the creation
+of official distributional national accounts. But there are strong reasons to prefer
+national income over personal income.
+     First, personal income is specific to the US national accounts. It is not computed
+in other countries and in fact does not exist in the UN System of National Accounts.
+This makes it impossible to compare inequality internationally.
+                                                       Emmanuel Saez and Gabriel Zucman             17
+
+
+
+
+      Second, personal income is a mixture of pre-tax and post-tax income, and for
+that reason not a satisfactory definition of income conceptually. Personal income does
+not subtract payroll taxes or individual income taxes, but it includes all individualized
+government transfers, such as Social Security benefits, welfare assistance, Medicare,
+and Medicaid. Therefore, personal income double counts some forms of income.
+      Third, personal income does not include corporate profits; it only includes the
+portion of corporate profits distributed as dividends. As a result, personal income
+is affected by businesses’ choices of organizational form. If a person operates as a
+pass-through entity, all of that person’s income gets counted in personal income. If
+the same person operates as a corporation, her income can be zero. Warren Buffet
+has billions in pre-tax national income; his personal income is smaller by a factor of
+1,000. Unsurprisingly, the inequality of personal income is lower than the inequality
+of national income. If more individuals incorporate to take advantage of the low
+federal corporate tax rate enacted in 2018, personal income and its concentration
+will fall, even though nothing else will change than the tax form used by the busi-
+ness owner. The distribution of personal income is likely to become a poorer and
+poorer indicator of income inequality.
+      The Bureau of Economic Analysis (BEA) justifies the choice of personal income
+by stating that this aggregate “is closest to the measure of economic resources avail-
+able to households to purchase goods” and that “[s]tarting with personal income
+will allow further analysis of disposable personal income (after taxes) and a better
+comparison to consumption” (Fixler, Gindelsky, and Johnson 2020, p. 3). The
+implicit view is that consumption is what matters. Consistent with this view, the BEA
+uses the household as the unit of observation, not the adult individual as in Piketty,
+Saez, and Zucman (2018).6 Our own view is that income and consumption both
+deserve to be studied, but separately, because they are distinct concepts.
+      National income is a more meaningful concept to study income inequality than
+personal income because it includes all the forms of income that accrue to individ-
+uals no matter the specific ways in which this income is earned, consumed, or saved.
+The notion of personal income was popular among BEA statisticians in the 1950s;
+the first distributions of personal income were computed at that time. In the 1950s,
+when large corporations were controlled by multiple stakeholders, what happened
+in the realm of corporations could feel disconnected from what happened in the
+realm of households. Today, shareholders exercise much more control over their
+firms; the frontier between corporations and households is fuzzy. The fiction that
+what happens in the corporate world has nothing to do with income inequality is
+no longer tenable. Looking forward, it is essential for the BEA to distribute national
+income.
+
+
+
+
+6
+  The BEA also uses household equivalence scales, in which household income is divided by the square
+root of household size, as an adjustment for differences in household size, which makes it impossible to
+draw direct connections from distributions to macroeconomic growth.
+18    Journal of Economic Perspectives
+
+
+
+
+How Government Taxes and Spending Affect Inequality
+
+      In the United States, federal, state, and local governments collect about
+28 percent of national income in taxes and spend more than 28 percent of national
+income. In Denmark and France, taxes and government spending reach 50 percent
+of national income. Our distributional national accounts can be used to ask ques-
+tions like: Do high-income people pay more or less in taxes relative to their income
+than the average individual? How do cash transfers compare to taxes for low-income
+groups? Are middle-class incomes higher after taxes and transfers than before taxes
+and transfers?
+      According to a widespread view, a government transfer is simply a tax with a
+minus sign, and all that matters is people’s budget sets, net of all taxes and trans-
+fers. We emphasize, however, that taxes and transfers are distinct objects that must be
+studied as such. For example, taxes reduce cash income but most government trans-
+fers do not increase cash income. The bulk of government transfers are in-kind—such
+as Medicaid health insurance for the poor and Medicare for the elderly—or take the
+form of collective consumption, such as spending on education, police, and defense.
+Even when transfers are monetary, it’s important to recognize that taxes are often
+paid cash on the nail, while transfers are generally received with a lag. For a poor,
+credit-constrained worker, paying $100 in payroll taxes each and every month and
+receiving a one-time check of $1,200 the following year (such as an Earned Income
+Tax Credit payment) is not equivalent to zero tax and no transfer. With an extra $100
+a month, people are less likely to default on a monthly rent or interest payment; they
+are more likely to be able to afford an emergency expense, such as a visit to the doctor,
+and to afford basic daily consumption needs, such as food for their families.
+
+The Collapse of Tax Progressivity
+     There is a long tradition of research on the distribution of US taxes, pioneered
+by Colm and Tarasov (1940), Musgrave et al. (1951), and Pechman and Okner
+(1974). This tradition has been refined by government agencies. Our distributional
+national accounts make four main departures relative to the analysis carried out by
+US agencies—most prominently the Congressional Budget Office—and think-tanks.
+     First, we include taxes at all levels of government, instead of federal taxes only.
+State and local taxes are sizable: about 10 percent of national income, one-third of
+total tax revenue. In addition, state and local governments often make substantial
+use of sales and excise taxes that are regressive. And so, ignoring these taxes gives a
+misleading picture of the progressivity of the tax system.7
+     Second, we consider taxes as a share of pre-tax national income, the broadest and
+most consistent definition of income. This is particularly important because a sizable
+fraction of the true pre-tax income of the wealthy—their share of corporate profits
+that is not paid out as dividends or realized as capital gains in a given year—is not
+
+7
+  The Institute on Taxation and Economic Policy (2018) is the only institution that provides comprehen-
+sive distributional state and local tax analysis state by state.
+                                    The Rise of Income and Wealth Inequality in America              19
+
+
+
+
+subject to individual income taxation. Because we include all taxes and all national
+income in our analysis, the average tax rate in our statistics is equal to the officially
+recorded macroeconomic tax rate, 28 percent of US national income in 2018.
+      Third, we do not shift taxes from one factor of production to another. In our
+statistics, consumption taxes are assigned to consumers, labor taxes are assigned to
+the corresponding workers (even when employers nominally pay them), and capital
+taxes are assigned to the corresponding owners of capital. In particular, the corpo-
+rate tax is assigned to shareholders, just like the income tax paid on the profit of
+pass-through businesses is assigned to the owners of pass-through businesses. This
+framework allows us to allocate all taxes while keeping national income constant in
+a conceptually consistent manner (as discussed in Saez and Zucman 2019c). It also
+makes it possible to measure the economically relevant tax wedge on each factor of
+production, such as the gap between what it costs to employ a worker and what the
+worker receives. For the most part, the methodology currently followed by govern-
+ment agencies to study the distribution of taxes is similar to the methodology we
+use. It allocates all labor taxes to workers, all consumption taxes to consumers, most
+capital taxes to capital owners, and keeps national income constant. However, it
+shifts part of the corporate tax to people other than shareholders. The corporate
+tax is partly allocated to workers because it is assumed to depress domestic capital
+and reduce wages. This procedure is inconsistent with maintaining a constant level
+of national income and leads to biased trends in tax progressivity.8
+      Finally, our analysis treats refundable tax credits as government transfers—not
+as negative taxes. In the national accounts, payments made by the government to
+people are transfers, no matter which administration is in charge of sending these
+transfers. That the Earned Income Tax Credit (EITC) payments are administered by
+the Internal Revenue Service (rather than, say, the Social Security Administration)
+has no economic implication. In the macroeconomic statistics of tax revenues (for
+instance, the government revenue statistics published by the OECD), the refund-
+able portion of the EITC is never subtracted from taxes. The same is true for the
+refundable portion of the Child Tax Credit. Proponents of the EITC felt that the
+program would be more acceptable politically if presented as a tax reduction rather
+than a transfer, and a large portion of the US public has become used to thinking
+about the EITC as a negative tax. The Congressional Budget Office and some think-
+tanks that produce distributional tax statistics choose to subtract refundable tax
+credits from taxes paid. But what may be perceived as good politics does not neces-
+sarily correspond to what is most conceptually consistent. Economically, the EITC is
+no different from other cash transfers to low-income families.
+
+8
+ For example, the Congressional Budget Office (2012) allocates 25 percent of the corporate tax to
+workers and 75 percent to capital owners, including owners of interest-bearing assets. If a C-corporation
+elects to be treated as an S-corporation (a pass-through business), then in the CBO treatment pre-tax
+income inequality increases (income that was previously assigned to workers is now allocated to share-
+holders, who are higher up in the income distribution), the labor share of national income falls, and
+the tax system becomes more progressive (taxes that used to be paid by workers are now paid by share-
+holders), despite the fact that nothing real has changed in the economy or in the tax system.
+20    Journal of Economic Perspectives
+
+
+
+Figure 5
+Average Tax Rates By Income Groups
+(percent of pre-tax income)
+
+
+
+
+      Average tax rates (percent of pre-tax income)
+                                                      70%                                                                                     1950
+
+                                                      60%
+                                                                                                                                              1960
+                                                      50%                                                                                     1970
+                                                                                                                                              1980
+                                                      40%
+                                                                                                                                              1990
+                                                                                                                                              2000
+                                                      30%
+                                                                                                                                              2010
+                                                      20%                                                                                     2018
+                                                                                                               Upper
+                                                      10%       Working class                                  middle-            The rich
+                                                                                          Middle-class         class
+                                                      0%
+                                                        –1
+                                                            0   20   30   40    50   60     70   80      90   95   99     .9      –T .99
+                                                             0–    0–   0–      0–   0–    0–   0–   0–       0–   5–    99   99    op 4
+                                                       P0   P1    P2   P3   P4   P5       P6   P7   P8    P9   P9       9–         To 00
+                                                                                                                    P9       9–      p 40
+                                                                                                                         9.               0
+                                                                                                                         P9    99
+                                                                                                                              9.
+                                                                                                                             P9
+
+
+Source: Saez and Zucman (2019b).
+Note: The figure depicts the US average tax rate by income groups from 1950 to 2018. All federal, state,
+and local taxes are included. Taxes are expressed as a fraction of pre-tax income. P0-10 denotes the
+bottom 10 percent of the income distribution, P10-20 the next 10 percent, etc.
+
+
+
+
+     The choices we make in our distributional national accounts are of course not
+the only possible ones, but we stress that they are the opposite of arbitrary. Instead,
+they follow consistent, internationally defined economic concepts. Using concepts
+that are the product of international deliberation—at least as a starting point—
+can help control the effect of national political and ideological idiosyncracies and
+contribute to more coherent and comparable statistics.
+     When taking a comprehensive perspective on taxation, a dramatic decline in
+the progressivity of the US tax system appears. Figure 5 depicts the US average tax
+rate by income groups for various years from 1950 to 2018. All federal, state, and
+local taxes are included and taxes are expressed as a fraction of pre-tax income.
+P0-10 denotes the bottom 10 percent of the income distribution, P10-20 the next
+10 percent, and so on. We split the top 10 percent into smaller groups all the way
+to the top 400 wealthiest Americans popularized by Forbes. Taking all taxes together,
+the US tax system used to be slightly progressive or roughly proportional for the
+bottom 99 percent of the income distribution but highly progressive within the
+top 1 percent. In 1950, for example, the upper middle class (the top 10 percent
+excluding the top 1 percent) paid average tax rates of around 25 percent, while the
+top 0.01 percent paid almost 70 percent of its income in taxes.
+                                               Emmanuel Saez and Gabriel Zucman       21
+
+
+
+
+      The tax system was highly progressive in the 1950s because corporate profits,
+the main source of income for the rich, were subject to a high effective corporate tax
+rate of 50 percent. Very high top marginal individual income tax rates (91 percent
+until 1963 at the federal level) made it impossible for business owners to bypass the
+corporate tax by using pass-throughs, such as partnerships. Moreover, high incomes
+were hit both by the progressive individual income tax on their realized capital
+income and by a progressive estate tax at the time of death. The combination of
+the income tax, the corporate tax, and the estate tax made the tax system extremely
+progressive and hard to avoid (Saez and Zucman 2019a). Low-income households
+paid lower taxes than today because the payroll tax was lower in the past.
+      In 2018, the US tax system looks like a giant flat tax that becomes regressive
+at the very top end. The working class and the middle class pay substantial taxes
+because payroll taxes are large and state and local sales and excise taxes are regres-
+sive. The very top pays low effective tax rates because of the demise of the federal
+corporate tax, which in 2018 collected only 1.5 percent of national income, down
+from 5–7 percent in the 1950s. The effective individual income tax rate falls at the
+top end because the very rich earn income through corporations and can avoid
+reporting individual income. The regressivity of the tax system at the extreme top
+end in 2018 is striking—a direct consequence of the 2018 cut in the corporate tax.
+But the figure shows a decades-long shift, with a slow erosion of the corporate tax,
+the estate tax, and gradually lower progressivity of the individual income tax at the
+top.
+      If the low corporate tax of 21 percent set in 2018 continues, there is a real
+risk that the wealthy will incorporate, earn income through their corporations,
+and bypass the progressive individual income tax by retaining earnings within their
+corporations. If held until death, the capital gains generated by such retained earn-
+ings will never be taxed.
+
+Have Government Transfers Offset the Rise of Inequality?
+     Taxes are only half of the government equation. On the spending side, Social
+Security (retirement and disability) and unemployment insurance replace lost labor
+earnings due to retirement, disability, or unemployment. These programs grew fast
+after World War II to about 6 percent of national income in the late 1970s and have
+been stable afterwards. We include these transfers in our measure of pre-tax income.
+The remaining forms of government spending are part of post-tax income (but not
+pre-tax) and can be classified in three categories, from the easiest to allocate to indi-
+viduals to the hardest: cash transfers, in-kind transfers, and collective consumption.
+Cash (or quasi-cash) individualized transfers include welfare assistance and refund-
+able tax credits for low-income families with children, food stamps for the poor,
+and Supplemental Security Income for the low-income elderly and the disabled.
+These transfers come closest to pure redistribution as individuals can freely (except
+in the case of food stamps) choose how to spend them, just like earned income.
+Cash transfers are small, 2–3 percent of national income with no clear trend after
+the mid-1970s. More specifically, refundable tax credits have grown but welfare
+22    Journal of Economic Perspectives
+
+
+
+
+assistance has fallen in the same proportion. Cash transfers go overwhelmingly to
+the bottom 50 percent.
+      Next, in-kind individualized transfers, such as public health insurance
+(Medicaid and Medicare), housing assistance, and higher education tuition subsi-
+dies, have grown from almost zero in 1960 to about 8 percent of national income
+in 2018. This growth is overwhelmingly driven by Medicare and Medicaid, which
+account for over 90 percent of all in-kind transfers in 2018. In our distributional
+national accounts, we allocate these transfers as a lump sum per beneficiary; that is,
+we divide the sums paid on Medicare by the number of Medicare beneficiaries and
+assign each beneficiary the average Medicare transfer. A large fraction of in-kind
+transfers go to the bottom 50 percent.
+      The last category of government spending is collective consumption expendi-
+ture. This category includes government spending on education, defense, public
+order (police, prisons, courts), and other public goods. Collective consumption is
+large (about 18 percent of national income) and has been fairly stable since 1960.
+Spending on defense has shrunk while other forms of collective consumption have
+increased; spending on prisons has increased particularly fast, due to a massive
+increase in incarceration rates in the 1980s and 1990s. Government spending on
+education has been stable at 5 percent of national income since 1970. In our distri-
+butional national accounts, we allocate all collective consumption neutrally, so that
+collective consumption does not affect income inequality. Obviously, if we were to
+allocate collective consumption on a per capita basis, that would make inequality
+look lower.9
+      How does incorporating taxes and transfers affect the distribution of income?
+In the big picture, the tax system is approximately a flat tax—taxes are proportional
+to income—while the transfer system is closer to a flat amount per person. This
+combination reduces inequality: post-tax inequality is less than pre-tax inequality.
+      With our distributional national accounts, we can also examine whether
+changes in government intervention in the economy have lifted incomes at the
+bottom. The short answer is “yes, but not a lot.” The average pre-tax income for the
+bottom 50 percent, as we have seen, has almost stagnated since 1980 in real terms:
+it was $17,500 per adult in 1980 and is $18,500 in 2018. After deducting taxes and
+adding all forms of government spending, average post-tax income has increased
+by 25 percent since 1980. This is better than quasi-stagnation but still less than the
+70 percent increase in average income per adult from 1980 to 2018. The rise of
+government transfers to the bottom has offset roughly one-third of the growth gap
+between the bottom half and the average American.
+      Moreover, most of the growth in bottom 50 percent post-tax incomes is driven
+by the surge in Medicaid and Medicare. To see this, it is useful to consider a
+narrower definition of post-tax income—disposable cash income. Disposable cash
+
+9
+  The main reason why Auten and Splinter (2019) find low top income shares on a post-tax basis is
+because they allocate half of government consumption per capita. See Saez and Zucman (2020) for a
+complete discussion of Auten and Splinter (2019).
+                               The Rise of Income and Wealth Inequality in America     23
+
+
+
+
+income is pre-tax income minus all taxes plus all cash or quasi-cash transfers; it
+excludes in-kind transfers and collective consumption expenditures. This notion
+of disposable income is close to the one used to measure the poverty rate (Semega
+et al. 2019), with the important difference that we deduct all taxes and add refund-
+able tax credits and food stamps. Economy-wide, cash disposable income per adult
+has increased about as much as national income from 1980 to 2018, by close to
+70 percent (thanks in part to being bolstered by growing federal deficits). Figure 6
+shows that for the bottom 50 percent, disposable cash income has grown very
+modestly over the last four decades: it was $16,000 in 1980 and $18,600 in 2016––a
+16 percent increase over 36 years.
+      Until 2008, the bottom 50 percent paid more in taxes than it received in
+cash transfers: pre-tax income was higher than cash disposable income. The cash
+disposable income of the bottom 50 percent of adults was lifted up by the large
+government deficits run during the Great Recession. Since 2012, cash disposable
+income is almost identical to pre-tax income. Thus, the gains in post-tax income for
+the bottom 50 percent over this time take the form of in-kind transfers (primarily
+Medicaid) and collective public expenditures (education, defense, police, and
+prisons being the main items).
+
+The Limits of Post-Tax Income
+      The modest gains in post-tax income for the working class must be analyzed
+with care because allocating in-kind transfers and collective consumption to indi-
+viduals based on their cost for the government is highly problematic. All OECD
+countries have decided that everybody should have access to quality education. All
+OECD countries except the United States have a national program for financing
+health care. The cost of universal provision of education and health looks like a large
+transfer relative to income for low-income families. But it is conceptually incorrect
+to treat this full transfer as income for its recipients. After all, if low-income fami-
+lies received an equivalent amount in cash, most of them would not spend it all on
+health or education. Perhaps the best conceptual alternative would be to assign the
+perceived cash value of individualized in-kind transfers to recipients, while treating
+the rest as a collective public good.
+      These conceptual problems are particularly thorny for health transfers in the
+United States. Medicaid transfers are large because the cost of health care is extraor-
+dinarily high in the United States. The money is not flowing into the bank accounts
+of beneficiaries; instead, it is flowing to the bank accounts of health care providers,
+many of which are near the top of the income distribution. What sense does it make
+to rejoice in the rise of working-class post-tax incomes if this rise reflects the rise in
+the rents earned by the medical and pharmaceutical sectors?
+      A similar issue arises with government mandates, like the rule in the Affordable
+Care Act in 2010 that employers with 50 or more employees are legally required
+to provide health insurance to their full-time workers (or pay a penalty of $3,000
+per employee). The cost of this mandatory private health insurance is large and
+growing; it is a heavy burden on low-paid workers. In conceptual terms, part of
+24    Journal of Economic Perspectives
+
+
+
+Figure 6
+The Evolution of Bottom 50 Percent Incomes
+
+
+
+                                     25,000              Post-tax income
+                                                                                                Pre-tax income
+
+
+
+
+       Average real income ($2018)
+                                     20,000
+
+
+                                     15,000
+                                                    Disposable cash
+                                                    income
+                                     10,000
+
+
+                                      5,000
+
+
+                                         0
+                                          62   66   70   74   78   82   86   90   94   98   02   06   10   14    18
+                                        19    19   19   19   19   19   19   19   19   19   20   20   20   20     20
+
+
+Source: Piketty, Saez, and Zucman (2018), updated September 2020.
+Note: The figure depicts the evolution of the real incomes per adult (in 2018 dollars) for the bottom
+half of the income distribution for three income concepts: (1) pre-tax income before deducting taxes or
+adding government transfers (concept sums up to national income), (2) post-tax income that deducts all
+taxes and adds all transfers (cash and in-kind) and collective public expenditures minus the government
+deficit (also sums up to national income), (3) disposable cash income which is pre-tax income minus all
+taxes plus cash (or quasi-cash) transfers, i.e., (3) does not include in-kind transfers (primarily Medicaid
+and Medicare) and collective public expenditures that are included in (2).
+
+
+
+
+this cost should be considered as a tax on workers that the government imposes
+to achieve wider health insurance coverage (Saez and Zucman 2019b). Like other
+taxes, this cost should be subtracted from income for the computation of post-tax
+income.
+     In short, there is no perfect measure of post-tax income. To measure the
+inequality of income after taxes and transfers, disposable cash income is perhaps
+the most meaningful concept. Disposable cash income captures income available
+for saving and consumption, excluding the collective consumption of services like
+education and health mandated by the government. But disposable cash income
+does not add up to national income. Post-tax national income captures all of national
+income by deducting all taxes and adding back all forms of government spending
+and the government deficit. But computing post-tax national income requires
+assigning collective consumption expenditures as well as the current government
+deficit to individuals. There is no obvious, universally “correct” way to do such an
+imputation, and there will never be.
+     Does this mean that we cannot know what is happening to inequality? Of course
+not. There are no raw facts in the social sciences. Rather, there are attempts at
+                                                    Emmanuel Saez and Gabriel Zucman            25
+
+
+
+
+describing reality through more or less elaborate statistical frameworks. The results
+of these attempts can only be properly understood once we know how the measure-
+ment tools work, what aspects of reality they aim to capture, what led to their
+creation, the objectives of their creators, the knowledge they embody, the account-
+ability of the institutions that publish them, and the theories that underpin them.
+      Once we understand how distributional national accounts are constructed, a
+reasoned use of these statistics becomes possible—just like a reasoned use of GDP
+statistics becomes possible once we understand their strengths and limitations.
+      Pre-tax national income, which captures income earned from market activities,
+can be used to decompose macroeconomic growth and to compare inequality over
+time and across countries. Cash disposable income can be used to study the income
+available for saving and private consumption; by subtracting the saving component,
+it can be used to study consumption inequality. Post-tax national income can be used
+to estimate the total direct distributive effects of government intervention in the
+economy. All of these notions have merits and demerits and must be studied jointly.
+Ultimately, the best data would be published by government agencies, accountable
+to elected representatives, discussed by the press and parties with a stake in their
+improvement, and based on a regularly updated, internationally-agreed conceptual
+framework. This is the recipe that has made the national accounts successful; this is
+the way forward for all those interested in improving the measurement of inequality.
+
+
+■ We thank JEP editors Gordon Hanson and Enrico Moretti, and Timothy Taylor for detailed
+comments. Funding from the Center for Equitable Growth at UC Berkeley, the Sandler
+foundation, and the Stone foundation is gratefully acknowledged.
+
+
+
+
+References
+
+Alvaredo, Facundo, Anthony B. Atkinson, Thomas Blanchet, Lucas Chancel, Thomas Piketty, Emmanuel
+     Saez, Gabriel Zucman, et al. 2020. “Distributional National Accounts Guidelines: Methods and
+     Concepts Used in World Inequality Database.” WID Working Paper 2016/2, revised September
+     2020.
+Auten, Gerald, and David Splinter. 2019. “Income Inequality in the United States: Using Tax Data to
+     Measure Long-term Trends.” http://davidsplinter.com/AutenSplinter-Tax_Data_and_Inequality.
+     pdf.
+Bricker, Jesse, Alice Henriques, Jacob Krimmel, and John Sabelhaus. 2016. “Measuring Income and
+     Wealth at the Top Using Administrative and Survey Data.” Brookings Papers on Economic Activity
+     261–331.
+Bricker, Jesse, Alice Henriques Volz, and Peter Hansen. 2018. “How Much Has Wealth Concentration
+     Grown in the United States? A Re-Examination of Data from 2001–2013.” FEDS Working Paper
+     2018–024.
+26    Journal of Economic Perspectives
+
+
+
+Cohen, Patricia. 2016. “Buffett Calls Trump’s Bluff and Releases His Tax Data.” New York Times, October
+      10. https://www.nytimes.com/2016/10/11/business/buffett-calls-trumps-bluff-and-releases-his-
+      tax-return.html.
+Colm, Gerhard, and Helen Tarasov. 1940. “Who Pays the Taxes.” Temporary National Economic Committee.
+Congressional Budget Office. 2012. The Distribution of Household Income and Federal Taxes, 2008 and 2009.
+      Washington, D.C.: Congressional Budget Office.
+Fixler, Dennis J., Marina Gindelsky, and David Johnson. 2020. “Measuring Inequality in the National
+      Accounts.” BEA Working Paper 2020-3.
+Frémeaux, Nicolas, and Marion Leturcq. 2020. “Inequalities and the Individualization of Wealth.” Journal
+      of Public Economics 184: 104–45.
+Institute on Taxation and Economic Policy. 2018. Who Pays: A Distributional Analysis of the Tax Systems in
+      All 50 States. 6th ed. Washington DC: ITEP.
+Musgrave, Richard A., John J. Carroll, Lorne D. Cook, and Lenore Frane. 1951. “Distribution of Tax
+      Payments by Income Groups: A Case Study for 1948.” National Tax Journal 4 (1): 1–53.
+Pechman, Joseph A., and Benjamin A. Okner. 1974. Who Bears the Tax Burden? Washington D.C: Brook-
+      ings Institution.
+Piketty, Thomas, and Emmanuel Saez. 2003. “Income Inequality in the United States, 1913–1998.”
+      Quarterly Journal of Economics 118 (1): 1–41.
+Piketty, Thomas, and Gabriel Zucman. 2014. “Capital is Back: Wealth-Income Ratios in Rich Countries
+      1700–2010.” Quarterly Journal of Economics 129 (3): 1255–1310.
+Piketty, Thomas, Emmanuel Saez, and Gabriel Zucman. 2018. “Distributional National Accounts:
+      Methods and Estimates for the United States.” Quarterly Journal of Economics 133 (2): 553–609.
+Saez, Emmanuel and Gabriel Zucman. 2016. “Wealth Inequality in the United States since 1913: Evidence
+      from Capitalized Income Tax Data.” Quarterly Journal of Economics 131 (2): 519–78.
+Saez, Emmanuel, and Gabriel Zucman. 2019. “Progressive Wealth Taxation.” Brookings Papers on Economic
+      Activity.
+Saez, Emmanuel, and Gabriel Zucman. 2019b. The Triumph of Injustice: How the Rich Dodge Taxes and How
+      to Make them Pay. New York: W. W. Norton.
+Saez, Emmanuel and Gabriel Zucman. 2019c. “Clarifying Distributional Tax Incidence: Who Pays Current
+      Taxes vs. Tax Reform Analysis.” Unpublished.
+Saez, Emmanuel and Gabriel Zucman. 2020. “Trends in US Income and Wealth Inequality: Revising After
+      the Revisionists.” Unpublished.
+Semega, Jessica, Melissa Kollar, John Creamer, and Abinash Mohanty. 2019. Income and Poverty in the
+      United States: 2018. https://www.census.gov/library/publications/2019/demo/p60-266.html.
+      (accessed August 1, 2020).
+Smith, Matthew, Owen Zidar, and Eric Zwick. 2020. “Top Wealth in America: New Estimates and Implica-
+      tions for Taxing the Rich.” Working Paper.
+Smith, Matthew, Danny Yagan, Owen Zidar, and Eric Zwick. 2019. “Capitalists in the 21st Century.”
+      Quarterly Journal of Economics 134 (4): 1675–1745.
+Zucman, Gabriel. 2013. “The Missing Wealth of Nations: Are Europe and the U.S. net Debtors or net
+      Creditors?” Quarterly Journal of Economics 128 (3): 1321–64.
+Zucman, Gabriel. 2015. The Hidden Wealth of Nations: The Scourge of Tax Havens. Chicago: University of
+      Chicago Press.
+
+---
+Source: Saez, Emmanuel, Gabriel Zucman (2020), "The Rise of Income and Wealth Inequality in America: Evidence from Distributional Macroeconomic Accounts", Journal of Economic Perspectives, 34(4), 3-26.
+URL: https://gabriel-zucman.eu/files/SaezZucman2020JEP.pdf

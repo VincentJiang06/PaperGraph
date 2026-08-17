@@ -1,0 +1,14 @@
+{
+ "kind": "paper",
+ "title": "Renkin, Montialoux, Siegenthaler (2022), Pass-Through of Minimum Wages into US Retail Prices, REStat 104(5)",
+ "url": "https://direct.mit.edu/rest/article/104/5/890",
+ "text_file": "notes/src_rms.txt",
+ "summary": "超市扫描数据(2001-2012州级上调):最低工资上调10%使食品杂货价格上升约0.36%,与成本完全转嫁一致;消费者(含贫困家庭)承担成本——冲击经价格而非headcount消化。",
+ "bindings": [
+  {
+   "node_id": "N-0014",
+   "relation": "supports",
+   "note": "价格转嫁的直接量化"
+  }
+ ]
+}

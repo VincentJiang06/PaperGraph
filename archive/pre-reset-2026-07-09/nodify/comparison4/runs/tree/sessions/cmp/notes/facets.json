@@ -1,0 +1,11 @@
+{
+  "parent_id": "N-0001",
+  "children": [
+    {"statement": "任务级证据:在具体工作任务上,AI(尤其生成式)一手实验/准实验主要显示增效(augmentation,提升生产率/质量)还是替代(substitution)?效应量与适用条件如何。", "why_helps_parent": "任务级是最接近因果的一手证据层,决定后续岗位/工资推断的微观基础", "orientation": "neutral"},
+    {"statement": "岗位级证据:AI/自动化采用后,企业或地区层面的就业净增减(岗位数、招聘、离职)方向与幅度。", "why_helps_parent": "把任务级效应聚合到岗位级净效应,直接回答'净增还是净减'", "orientation": "neutral"},
+    {"statement": "工资证据:AI 暴露度或采用对工资水平与工资分布(技能溢价、极化)的一手实证效应。", "why_helps_parent": "工资是替代/增效在要素价格上的显现,补齐数量之外的价格维度", "orientation": "neutral"},
+    {"statement": "特定人群证据:AI 对青年、入门级、低经验劳动者的差异化影响——他们是否首当其冲。", "why_helps_parent": "分布效应比平均效应更具政策意义,且是近期争论焦点", "orientation": "neutral"},
+    {"statement": "跨国差异证据:AI 劳动力市场效应在不同国家/制度/发展水平上的异质性。", "why_helps_parent": "外部效度:美国证据能否外推,决定加权综合的边界", "orientation": "neutral"},
+    {"statement": "对抗线(红队):迄今 AI 对总量劳动力市场的可测量因果影响很小/被夸大——宏观就业与工资未见显著冲击,报道的'冲击'多为选择性样本、短期噪声或叙事驱动。", "why_helps_parent": "对根假设的最强 steelman 反方,防止确认偏误,校准整体置信度", "orientation": "adversarial"}
+  ]
+}

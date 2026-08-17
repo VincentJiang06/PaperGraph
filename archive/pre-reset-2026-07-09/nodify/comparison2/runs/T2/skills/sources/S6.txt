@@ -1,0 +1,16 @@
+Title: Stimulus Spending a Factor, But Far From Whole Story on Inflation
+Publisher: FactCheck.org
+URL: https://www.factcheck.org/2022/06/stimulus-spending-a-factor-but-far-from-whole-story-on-inflation/
+Date: June 2022
+
+Key verbatim extracted content (economist estimates of ARP's inflation contribution, out of ~8.5% headline CPI):
+
+Jason Furman (Harvard, former Obama economic adviser): "his estimate is 1 to 4 percentage points and when 'pressed for one number,' he uses the midpoint of 2.5."
+
+George Selgin (Cato Institute): "a 'good guess might be 2 to 3' percentage points."
+
+San Francisco Federal Reserve: a separate SF Fed estimate suggested the fiscal-support impact could be around 3 percentage points by Q4 2021 (distinct from the SF Fed's own published 0.3pp/year estimate in the Oct 2021 Economic Letter — see S7; the article notes considerable estimate dispersion across sources).
+
+Mark Zandi (Moody's Analytics): "the ARP contributed only 0.1 percentage points to year-over-year inflation in May" 2022 — i.e. the fiscal impulse had largely faded out by then.
+
+Editorial framing: "The $1.9 trillion American Rescue Plan helped fuel about half or less of the increase, analysts say, with other causes of inflation including COVID-19's impact on labor markets and supply chains." The piece stresses considerable uncertainty and disagreement among economists on the precise magnitude.

@@ -1,0 +1,18 @@
+SOURCE: S2
+Title: Do Job Postings Show Early Labor-Market Effects of AI?
+Publisher: Liberty Street Economics, Federal Reserve Bank of New York
+URL: https://libertystreeteconomics.newyorkfed.org/2026/05/do-job-postings-show-early-labor-market-effects-of-ai/
+Fetched: 2026-07-09 (via WebFetch, content extracted and quoted verbatim below)
+
+=== EXTRACTED CONTENT / VERBATIM QUOTES ===
+
+Key Finding on Timing:
+The authors report that "the divergence between high- and low-exposure occupations began before 2022 and does not show a clear additional break" after ChatGPT's release. This contradicts the hypothesis that AI caused recent hiring declines.
+
+Authors' Conclusion:
+The researchers conclude that "while AI may be contributing to recent labor market developments, it is not the main driver of the slowdown in hiring." They note that overall hiring has slowed since 2022, but "the evidence from job postings provides little indication of a distinct AI-driven decline in labor demand."
+
+The authors emphasize that the slowdown appears macroeconomic rather than AI-specific, observing that "job postings show a relative decline in vacancies in occupations with greater exposure to AI," yet this pattern "began before the release of ChatGPT."
+
+=== ADDITIONAL CONTEXT FROM SEARCH (WebSearch) ===
+The decline in job postings for AI-exposed roles began before ChatGPT's December 2022 release and shows no clear acceleration after it, according to Federal Reserve Bank of New York economists analyzing hiring data through January 2026. Job postings for the most AI-exposed occupations peaked in Spring 2022 and declined sharply throughout the rest of the year, with the decline already six months old by the time ChatGPT launched in November. The Federal Funds rate shows extremely strong correlation with job postings data — the Fed began raising interest rates in March 2022, during the most aggressive monetary tightening cycle in four decades, exactly when job postings for AI-exposed occupations began their decline. No clear divergence in labor demand between junior and senior positions was observed in AI-exposed occupations, with declines tracking the broader softening in hiring across all occupation types.

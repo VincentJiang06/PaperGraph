@@ -1,0 +1,28 @@
+{
+ "node_id": "N-0006",
+ "lean": "mixed",
+ "summary": "红队检验:竞争理论并未被证据击溃。Neumark-Shirley显示文献重心偏负(约79%负估计),Meer-West指出水平设定漏掉动态,Clemens-Wither在高bindingness+衰退下测得明显负效应。但这些最强负结果集中在特定设定;不依赖增长反事实的bunching/边界断点仍近零。结论:近零主张被收窄、被加上条件(温和幅度、非衰退、看对margin),但未被推翻——'近零'与'偏负'的分歧很大程度是幅度/群体/设定之别。",
+ "confidence": "high",
+ "based_on": {
+  "children": [
+   "N-0021",
+   "N-0022",
+   "N-0023",
+   "N-0024"
+  ],
+  "evidence": [
+   {
+    "title": "近零对设计稳健",
+    "doc_id": "DOC-0001",
+    "quote": "We also find no evidence of disemployment when we consider higher levels of minimum wages.",
+    "url": "https://www.nber.org/papers/w25434",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "给红队证据体系统性加权后,合意的中心估计会落在哪个弹性区间?"
+ ]
+}

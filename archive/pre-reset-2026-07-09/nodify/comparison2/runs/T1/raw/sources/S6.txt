@@ -1,0 +1,23 @@
+SOURCE: S6
+Title: 40% of global employment is exposed to AI – IMF report (summary of IMF Staff Discussion Note "Gen-AI: Artificial Intelligence and the Future of Work", SDN 2024/001)
+Publisher: Codingscape (summary/analysis blog citing IMF SDN 2024/001)
+URL: https://codingscape.com/blog/40-percent-of-global-employment-is-exposed-to-ai-imf-report
+Original IMF report URL (fetch blocked by IMF server, 403): https://www.imf.org/-/media/files/publications/sdn/2024/english/sdnea2024001.pdf
+Fetched: 2026-07-09 (via WebFetch, content extracted and quoted verbatim below)
+
+=== EXTRACTED CONTENT / VERBATIM QUOTES ===
+
+Global Employment Exposure:
+"40% of global employment is exposed to AI"
+
+Advanced vs. Emerging Economies:
+"60% of jobs in advanced economies are at risk due to AI" compared to "40%" in emerging markets and "26% in low-income countries"
+
+Benefits vs. Displacement:
+The report indicates that "AI could either harm or enhance half of these jobs" in advanced economies, suggesting potential for productivity gains through integration rather than pure job loss.
+
+Additional Context:
+Advanced economies have "greater potential to leverage AI benefits compared to emerging and developing countries," while emerging markets remain "less equipped to harness AI's advantages."
+
+=== ADDITIONAL CONTEXT FROM SEARCH (WebSearch, IMF materials) ===
+"Roughly half the exposed jobs may benefit from AI integration, enhancing productivity. For the other half, AI applications may execute key tasks currently performed by humans, which could lower labor demand, leading to lower wages and reduced hiring." Since the release of ChatGPT, early-career workers (ages 22-25) in the most AI-exposed occupations have experienced a 13 percent relative decline in employment (IMF citing related research). In most scenarios, AI will likely worsen overall inequality.

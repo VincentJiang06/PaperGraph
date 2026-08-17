@@ -1,0 +1,26 @@
+S24 — Choi, Monahan & Schwarcz — "Lawyering in the Age of Artificial Intelligence"
+Minnesota Law Review, Vol. 109 (2024/2025). SSRN 4626276.
+URL: https://openscholarship.wustl.edu/law_scholarship/964/
+       https://minnesotalawreview.org/wp-content/uploads/2024/11/3-ChoiMonahanSchwarcz.pdf
+Tier A — randomized controlled trial (legal profession). Lines: L1, L4, L7.
+
+DESIGN/SAMPLE: RCT, law-school students randomly assigned to complete realistic legal
+tasks (drafting a complaint, a client memo, etc.) with or without GPT-4; time tracked,
+output blind-graded.
+
+VERBATIM QUOTES:
+- "We conducted the first randomized controlled trial to study the effect of AI
+   assistance on human legal analysis. We randomly assigned law school students to
+   complete realistic legal tasks either with or without the assistance of GPT-4"
+- "AI assistance only slightly and inconsistently improved the quality of participants'
+   legal analysis but induced large and consistent increases in speed."
+- "AI assistance improved the quality of output unevenly—where it was useful at all, the
+   lowest-skilled participants saw the largest improvements."
+- "Because AI tools have an equalizing effect on performance, they may also promote
+   equality in a famously unequal profession."
+
+EFFECT + DIRECTION: Large, consistent SPEED gains; only slight/inconsistent QUALITY gains;
+quality gains concentrated in lowest-skilled → EQUALIZING at the individual-output level
+(mirrors S1/S2/S3). AUGMENT. First-hand evidence in the LEGAL occupation (previously absent).
+LIMIT: law students not practicing lawyers; toy tasks; task-level not labor-market outcome;
+GPT-4 (pre-reasoning-model) — see S27 for the frontier update.

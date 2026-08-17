@@ -1,0 +1,4 @@
+Adachi, D., Kawaguchi, D. & Saito, Y. (2024). Robots and Employment: Evidence from Japan, 1978-2017. Journal of Labor Economics 42(2): 591-634. (RIETI DP 20-E-051.)
+Design: uses unit price of robots; factor demand theory + task-based approach; Japan, almost all robots domestically produced.
+Verbatim (CEPR/VoxEU column): "a 1% decrease in robot price increased employment by 0.44%"; "an increase of one robot unit per 1,000 workers increases employment by 2.2%".
+On wages: "the hourly-wage effect might be even more positive, and we confirmed this fact in our data." (Robots RAISED both employment and wages in Japan.)

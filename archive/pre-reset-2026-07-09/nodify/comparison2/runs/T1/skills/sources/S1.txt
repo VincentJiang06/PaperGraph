@@ -1,0 +1,20 @@
+Title: Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence
+Author(s): Erik Brynjolfsson, Bharat Chandar, Ruyu Chen (Stanford Digital Economy Lab)
+URL: https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recent-employment-effects-of-artificial-intelligence/
+Accessed via: WebFetch, 2026-07-09
+
+Verbatim key quotes:
+
+"early-career workers (ages 22-25) in the most AI-exposed occupations have experienced a 16 percent relative decline in employment"
+
+"employment for workers in less exposed fields and more experienced workers in the same occupations has remained stable or continued to grow"
+
+"employment declines are concentrated in occupations where AI is more likely to automate, rather than augment, human labor"
+
+Robustness checks noted: the authors tested by "excluding technology-related firms and excluding occupations amenable to remote work."
+
+Adjustment channel: changes occur "primarily through employment rather than compensation."
+
+Caveat: findings are described as "consistent with the hypothesis" (of AI-driven displacement) rather than presented as definitive proof of causation.
+
+Notes: Uses ADP (largest US payroll processor) microdata, panel/difference-in-differences style design controlling for firm-level shocks, occupation, and age cohort.

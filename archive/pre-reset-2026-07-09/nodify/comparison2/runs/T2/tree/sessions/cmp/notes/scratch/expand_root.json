@@ -1,0 +1,30 @@
+{
+  "parent_id": "N-0001",
+  "children": [
+    {
+      "statement": "需求侧(财政转移支付+宽松货币政策)对2021-2023美国通胀的定量贡献有多大",
+      "why_helps_parent": "直接回答问题第一部分要求的需求侧归因份额,是分解的两大支柱之一",
+      "orientation": "neutral"
+    },
+    {
+      "statement": "供给侧(供应链中断、劳动力市场紧张、能源与大宗商品冲击)对2021-2023美国通胀的定量贡献有多大",
+      "why_helps_parent": "直接回答问题第一部分要求的供给侧归因份额,是分解的另一大支柱",
+      "orientation": "neutral"
+    },
+    {
+      "statement": "需求侧/供给侧二分法本身在方法论上是否成立,不同权威模型(SF Fed、Bernanke-Blanchard等)的归因结果是否一致",
+      "why_helps_parent": "若二分法本身模糊或模型间结果分歧巨大,则父观点里'定量归因分解'的可行性与置信度需要被削弱或限定条件",
+      "orientation": "adversarial"
+    },
+    {
+      "statement": "这一归因结果对判断'软着陆'(通胀回落而不引发衰退)能否持续意味着什么",
+      "why_helps_parent": "直接回答问题第二部分:归因结果如何影响对软着陆持续性的判断",
+      "orientation": "neutral"
+    },
+    {
+      "statement": "这一归因结果对美联储政策立场(降息路径、终点利率、政策沟通)意味着什么",
+      "why_helps_parent": "直接回答问题第三部分:归因结果如何影响对美联储政策立场的判断",
+      "orientation": "neutral"
+    }
+  ]
+}

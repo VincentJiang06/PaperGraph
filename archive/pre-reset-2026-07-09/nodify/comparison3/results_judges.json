@@ -1,0 +1,115 @@
+{
+  "n_judges": 3,
+  "per_topic": {
+    "T1": {
+      "tree": {
+        "coverage": 4.67,
+        "depth": 5.0,
+        "adversarial_completeness": 5.0,
+        "grounding": 5.0,
+        "convergence": 5.0,
+        "calibration": 4.0
+      },
+      "notree": {
+        "coverage": 5.0,
+        "depth": 4.67,
+        "adversarial_completeness": 5.0,
+        "grounding": 4.0,
+        "convergence": 5.0,
+        "calibration": 5.0
+      }
+    },
+    "T2": {
+      "tree": {
+        "coverage": 4.67,
+        "depth": 5.0,
+        "adversarial_completeness": 5.0,
+        "grounding": 5.0,
+        "convergence": 4.33,
+        "calibration": 4.0
+      },
+      "notree": {
+        "coverage": 5.0,
+        "depth": 4.67,
+        "adversarial_completeness": 5.0,
+        "grounding": 4.33,
+        "convergence": 5.0,
+        "calibration": 5.0
+      }
+    },
+    "T3": {
+      "tree": {
+        "coverage": 4.0,
+        "depth": 4.0,
+        "adversarial_completeness": 4.0,
+        "grounding": 3.67,
+        "convergence": 4.0,
+        "calibration": 4.0
+      },
+      "notree": {
+        "coverage": 5.0,
+        "depth": 4.67,
+        "adversarial_completeness": 5.0,
+        "grounding": 4.0,
+        "convergence": 5.0,
+        "calibration": 5.0
+      }
+    },
+    "T4": {
+      "tree": {
+        "coverage": 4.0,
+        "depth": 4.0,
+        "adversarial_completeness": 4.0,
+        "grounding": 4.0,
+        "convergence": 4.0,
+        "calibration": 4.0
+      },
+      "notree": {
+        "coverage": 5.0,
+        "depth": 5.0,
+        "adversarial_completeness": 5.0,
+        "grounding": 4.0,
+        "convergence": 5.0,
+        "calibration": 5.0
+      }
+    },
+    "T5": {
+      "tree": {
+        "coverage": 5.0,
+        "depth": 5.0,
+        "adversarial_completeness": 5.0,
+        "grounding": 4.33,
+        "convergence": 5.0,
+        "calibration": 4.0
+      },
+      "notree": {
+        "coverage": 4.0,
+        "depth": 5.0,
+        "adversarial_completeness": 5.0,
+        "grounding": 5.0,
+        "convergence": 5.0,
+        "calibration": 5.0
+      }
+    }
+  },
+  "by_arm_mean": {
+    "tree": {
+      "coverage": 4.47,
+      "depth": 4.6,
+      "adversarial_completeness": 4.6,
+      "grounding": 4.4,
+      "convergence": 4.47,
+      "calibration": 4.0,
+      "composite": 4.42
+    },
+    "notree": {
+      "coverage": 4.8,
+      "depth": 4.8,
+      "adversarial_completeness": 5.0,
+      "grounding": 4.27,
+      "convergence": 5.0,
+      "calibration": 5.0,
+      "composite": 4.81
+    }
+  }
+}

@@ -1,0 +1,11 @@
+Source: The Robot Report, "In just seven years, the global robot density in factories has doubled, IFR finds" (reporting IFR World Robotics 2024)
+URL: https://www.therobotreport.com/in-just-seven-years-global-robot-density-factories-has-doubled-ifr-finds/
+
+Key extracted figures:
+"China reached a high robot density of 470 robots per 10,000 employees, compared with 402 units in 2022."
+China achieved third place worldwide in 2023, surpassing both Germany and Japan for the first time in this metric.
+Comparative density figures (2023): China 470 units; Germany 429 units; Japan 419 units; South Korea 1,012 units.
+"China's massive investment in automation technology has achieved this high robot density despite a huge manufacturing workforce of around 37 million people."
+China increased robot density by 68 units per 10,000 employees in a single year (2022->2023), but still significantly lags South Korea's density level.
+
+Separately, per IFR/Businesswire coverage of World Robotics 2024/2025: 54% of all robots installed worldwide in 2024 were deployed in China (295,000 units); China has the largest operational stock of industrial robots in the world, around 2 million units, approximately 4.5 times more than Japan (second place).

@@ -1,0 +1,15 @@
+Source S12
+Title: Economists now predict the U.S. is heading for a "soft landing." Here's what that means.
+Publisher: CBS News
+URL: https://www.cbsnews.com/news/2024-jobs-economy-soft-landing-inflation-gdp/
+Fetched: 2026-07-09 (via WebFetch); article dated December 14, 2023
+
+Extracted content:
+
+Inflation at time of writing: 3.1%. "The Fed, for its part, is forecasting that inflation as measured by the PCE index will sink to 2.4% next year."
+
+Unemployment: 3.7% at time of writing. "Right now, the Fed is forecasting that the jobless rate will inch up to 4.1% for 2024 and 2025."
+
+Powell quote: "I think there's always a probability that there will be a recession in the next year, and it's a meaningful probability no matter what the economy is doing."
+
+Economists were increasingly predicting a soft landing but cautioned that a recession remained possible, particularly in the second half of 2024 according to some forecasters.

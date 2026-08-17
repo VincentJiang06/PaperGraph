@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0011",
+ "lean": "supports",
+ "summary": "DLR(2016)用相邻州界断点给出最强的monopsony/摩擦指纹:最低工资显著压低employment flows(分离与雇佣双降,尤其低tenure工人)却不压低stocks,非就业持续时间不变,与内生分离的搜寻模型一致。离职下降降低了雇主的招聘/空缺成本,正是'涨薪却不减员'的微观机理。",
+ "confidence": "high",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "DLR:流量降而存量不降",
+    "doc_id": "DOC-0002",
+    "quote": "We find that minimum wages have a sizable negative effect on employment flows but not on stocks. Separations and accessions fall among affected workers, especially those with low tenure.",
+    "url": "https://www.journals.uchicago.edu/doi/10.1086/685449",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "title": "DLR:搜寻模型解释",
+    "doc_id": "DOC-0002",
+    "quote": "This evidence is consistent with search models with endogenous separations.",
+    "url": "https://www.journals.uchicago.edu/doi/10.1086/685449",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "turnover下降带来的成本节省能覆盖多大比例的加薪?"
+ ]
+}

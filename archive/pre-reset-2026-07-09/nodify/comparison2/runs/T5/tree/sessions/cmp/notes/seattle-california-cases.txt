@@ -1,0 +1,84 @@
+SOURCE A: Ekaterina Jardim, Mark C. Long, Robert D. Plotnick, Emma van Inwegen, Jacob
+Vigdor, Hilary Wething (2017/2022), "Minimum Wage Increases, Wages, and Low-Wage
+Employment: Evidence from Seattle", NBER Working Paper No. 23532 (published American
+Economic Journal: Applied Economics / AEA 2022).
+URL: https://www.nber.org/papers/w23532
+
+Seattle raised its minimum wage from $9.47 to as much as $11 in 2015, and to as much as $13
+in 2016 (large employers). Key findings extracted via secondary summary of the paper's
+results (WebFetch synthesis of NBER page, cross-checked against multiple secondary sources):
+- For the second increase to $13/hour: "Hours worked in low-wage jobs declined by 6-7
+  percent" while "hourly wages rose by 3 percent."
+- Total payroll for such low-wage jobs decreased, "resulting in workers earning an average
+  of $74 per month per job" less in 2016 than they otherwise would have.
+- The first increase to $11 "showed more modest effects."
+- Using a narrower, industry-based definition (the restaurant sector specifically, closer to
+  the classic Card-Krueger design), the study found "an effect of zero," consistent with
+  many earlier studies -- i.e., the negative result only appears when using the broader
+  "jobs paying below a specified real hourly wage rate" definition (which is sensitive to
+  wage growth pushing jobs out of the "low-wage" bin), not the narrower single-industry
+  definition.
+- Longitudinal analysis of individual Seattle workers matched to counterparts in outlying
+  regions found "no change in the probability of continued employment but significant
+  reductions in hours, particularly for less experienced workers." Job turnover and hiring
+  of new workers into low-wage jobs declined.
+This finding (hours effect concentrated in a broadly-defined, high-turnover low-wage
+population, not in continued employment or in the narrowly defined restaurant sector) has
+been contested on methodological grounds by Berkeley IRLE researchers (Allegretto, Godoey,
+Reich) using a synthetic-control comparison group restricted to the restaurant sector, who
+report no significant employment effect; this is a well-known, unresolved methodological
+dispute over the correct low-wage sample/definition and control group for city-level policy
+evaluation.
+
+SOURCE B: The Shift Project (Daniel Schneider, Kristen Harknett et al.), "Early Effects of
+California's $20 Fast Food Minimum Wage: Large Wage Increases with No Effects on Hours,
+Scheduling, or Benefits", Harvard Kennedy School / UCSF, October 2024.
+URL: https://shift.hks.harvard.edu/wp-content/uploads/2024/10/ca_fastfood_MW_Final.pdf
+
+[KEY POINTS, verbatim from brief]
+"California fast food workers experienced substantial wage increases. Immediately after the
+new minimum wage went into effect, hourly wages for California fast food workers increased
+by at least $2.50, and the share of California fast food workers earning less than $20/hour
+declined by about 60 percentage points."
+"We find no evidence that wage increases had unintended consequences on staffing,
+scheduling, or wage theft. In response to the sizeable wage increase for California fast
+food workers, we do not find evidence that employers turned to understaffing or reduced
+scheduled work hours to offset the increased labor costs. Rather, weekly work hours stayed
+about the same for California fast food workers, and levels of understaffing appeared to
+ease. We also find that unstable scheduling practices and wage theft were unaffected by the
+wage increase."
+"We find no evidence that wage increases were accompanied by a reduction in fringe benefits.
+... We find no evidence of reductions in any of 7 types of fringe benefits in response to
+the California fast food wage increase."
+Methodology: event-study models using Shift Project survey data from 3,420 California fast
+food workers plus comparison samples of retail workers in California and fast-food/retail
+workers in other Western states at the same 136 large firms, comparing hourly fast food
+workers at covered California firms before/after April 1, 2024 to workers at the exact same
+firms in neighboring western states.
+The brief notes this is "the largest instantaneous increase ever implemented by a state
+government" ($4/hour, from $16 to $20), and situates it against the unresolved Seattle
+dispute: "The Seattle evidence then is unsettled and, further, the minimum wage increase in
+California is distinct in that it is industry-specific, statewide, and even larger."
+
+SOURCE C: Jeffrey Clemens, Olivia Edwards, Jonathan Meer (2025), "Did California's Fast Food
+Minimum Wage Reduce Employment?", NBER Working Paper No. 34033, July 2025.
+URL: https://www.nber.org/system/files/working_papers/w34033/w34033.pdf
+
+[ABSTRACT, verbatim]
+"We analyze the effect of California's $20 fast food minimum wage, which was enacted in
+September 2023 and went into effect in April 2024, on employment in the fast food sector. In
+unadjusted data from the Quarterly Census of Employment and Wages, we find that employment
+in California's fast food sector declined by 2.7 percent relative to employment in the fast
+food sector elsewhere in the United States from September 2023 through September 2024.
+Adjusting for pre-AB 1228 trends increases this differential decline to 3.2 percent, while
+netting out the equivalent employment changes in non-minimum-wage-intensive industries
+further increases the decline. Our median estimate translates into a loss of 18,000 jobs in
+California's fast food sector relative to the counterfactual."
+
+NOTE ON DIVERGENCE: Sources B and C study the *same* policy episode (California AB 1228,
+$20/hour fast food minimum effective April 2024) using different data (worker-survey panel
+at 136 named firms vs. QCEW administrative payroll counts) and different outcome definitions
+(hours/scheduling/benefits vs. headcount employment), and reach opposite headline
+conclusions on the employment margin specifically -- directly reproducing, in a single 2024
+episode, the same Card-Krueger-vs-competitive-theory methodological fault line documented
+for Seattle in Source A.

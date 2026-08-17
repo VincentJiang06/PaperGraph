@@ -1,0 +1,13 @@
+Bick, Blandin & Deming — The Rapid Adoption of Generative AI. NBER Working Paper 32966 (2024/2025); Management Science (2025). https://www.nber.org/papers/w32966
+
+VERBATIM KEY FINDINGS (from abstract / NBER digest):
+
+"nearly 40 percent of the U.S. population age 18-64 uses generative AI"
+
+"23 percent of employed respondents had used generative AI for work at least once" in the previous week, and "9 percent used it every work day".
+
+"Between 1 and 5 percent of all work hours are currently assisted by generative AI, and respondents report time savings equivalent to 1.4 percent of total work hours."
+
+"Relative to each technology's first mass-market product launch, work adoption of generative AI has been as fast as the personal computer (PC), and overall adoption has been faster than either PCs or the internet."
+
+Survey design: a series of nationally representative U.S. surveys of generative AI use at work and at home, fielded August and November 2024, collectively more than 10,000 respondents.

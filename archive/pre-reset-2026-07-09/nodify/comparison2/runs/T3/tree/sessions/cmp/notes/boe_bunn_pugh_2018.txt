@@ -1,0 +1,24 @@
+Bunn, Philip; Pugh, Alice; Yeates, Chris. "The distributional impact of monetary policy easing in the UK between 2008 and 2014." Bank of England Staff Working Paper No. 720, March 2018.
+Summarized via companion Bank Underground blog post (2018-03-27): https://bankunderground.co.uk/2018/03/27/how-does-monetary-policy-affect-the-distribution-of-income-and-wealth/
+Primary paper: https://www.bankofengland.co.uk/working-paper/2018/the-distributional-impact-of-monetary-policy-easing-in-the-uk-between-2008-and-2014
+
+VERBATIM QUOTES (from Bank Underground summary of the staff working paper):
+
+On overall effect on inequality (Gini):
+"We estimate that looser monetary policy only had a small impact on the income and wealth Gini coefficients between 2008 and 2014."
+"monetary policy had very little impact on relative measures of inequality."
+
+On age-group divergence (income vs wealth channels point in OPPOSITE directions across age groups):
+"younger households are estimated to have benefited most from higher income in cash terms"
+"older households gained more from higher wealth."
+"households where the head was under the age of 40 saw a reduction in their real incomes between 2006-08 and 2012-14, while those aged over 65 saw a rise." [note: this reflects broader income trends, not solely attributable to MP, per the paper's own framing]
+
+On wealth-decile distribution (counter to naive "MP loot the poor to enrich the rich" story):
+"households in the bottom half of the wealth distribution are estimated to have experienced a slightly larger percentage increase in real wealth than those at the top."
+
+On savers vs borrowers direction (confirms redistribution but the paper frames it as small/multi-directional in net effect):
+"The cut in Bank Rate reduced household interest payments and receipts, redistributing from savers to borrowers."
+
+Methodology note: study uses ONS Wealth and Assets Survey panel microdata for the UK, covering both the Bank Rate cuts and QE gilt purchases 2008-2014, and decomposes effects into income channel and wealth/asset-price channel by household age/income/wealth decile.
+
+Relevance: This is the single most granular microdata-based distributional study of the exact 2008-2014 QE+low-rate period, and directly refutes a simple monotonic "QE redistributes from poor savers to rich asset holders" narrative on THREE counts: (a) aggregate Gini effect is small; (b) income effects favor the young while wealth effects favor the old (retirees), so which is "worse off" depends on which channel and age cohort one focuses on; (c) in percentage terms, bottom-half wealth holders gained slightly MORE than top wealth holders (though top holders gained far more in cash terms) -- i.e. direction is genuinely ambiguous/contested rather than uniformly regressive, consistent with our tree's N-0008 framing.

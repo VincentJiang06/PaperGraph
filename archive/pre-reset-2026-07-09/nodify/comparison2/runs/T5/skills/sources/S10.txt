@@ -1,0 +1,10 @@
+Title: People versus Machines: The Impact of Minimum Wages on Automatable Jobs
+Authors: Grace Lordan, David Neumark
+Published: Labour Economics, March 2018, Vol. 52, pp. 40-53. Also NBER Working Paper No. 23667.
+URL: https://www.nber.org/papers/w23667 ; https://www.sciencedirect.com/science/article/abs/pii/S0927537118300228
+
+Study description: uses CPS data from 1980-2015 to examine the effect of minimum wage increases on employment in "automatable" jobs -- jobs in which employers may find it easier to substitute machines for people -- focusing on low-skilled workers.
+
+Verbatim / closely-quoted key findings (as extracted):
+"increasing the minimum wage decreases significantly the share of automatable employment held by low-skilled workers, and increases the likelihood that low-skilled workers in automatable jobs become nonemployed or employed in worse jobs."
+"substantive adverse effects for older, low-skilled workers in manufacturing" in automatable jobs (e.g., assembly line workers); some evidence that the same changes improve job opportunities for higher-skilled workers.

@@ -1,0 +1,19 @@
+SOURCE: Atif R. Mian, Ludwig Straub, Amir Sufi, "The Saving Glut of the Rich," NBER Working Paper No. 26941, April 2020
+URL: https://www.nber.org/papers/w26941
+[Fetched via WebFetch extraction tool; this is the extraction pass's captured verbatim quotations from the live NBER abstract page.]
+
+## Definition and Mechanism
+
+The paper identifies a central economic phenomenon: "Since the 1980s, saving by the top 1% has surged, creating a saving glut of the rich" comparable to the global saving glut. This concentration of savings among wealthy households fundamentally reshapes financial flows through the economy.
+
+The mechanism operates through financial intermediation. The authors explain that "this glut financed much of the rise in middle-class borrowing before 2008 and the expansion of federal debt thereafter." Essentially, excess savings from the wealthy provided capital that channeled into household debt and government borrowing.
+
+## Inequality's Causal Effect on Monetary Conditions
+
+The paper demonstrates reverse causality from inequality to financial conditions. Rising wealth concentration created excess demand for safe assets, which mechanically drove down interest rates and increased the supply of credit available for borrowing. This made debt more accessible and affordable for middle-class households, fueling borrowing cycles.
+
+The framework illustrates "how rising inequality reshapes financial intermediation and debt dynamics."
+
+## Companion paper context (Indebted Demand, NBER WP 26940)
+
+Mian, Straub and Sufi's companion paper "Indebted Demand" (https://www.nber.org/system/files/working_papers/w26940/w26940.pdf) develops a theory in which large debt burdens by households and governments lower aggregate demand and thus natural interest rates — i.e., rising inequality (via the saving glut of the rich) is itself a structural driver of the low-real-rate regime that QE operated within, rather than purely an effect of QE.

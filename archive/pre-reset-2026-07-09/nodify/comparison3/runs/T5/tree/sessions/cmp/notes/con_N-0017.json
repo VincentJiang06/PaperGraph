@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0017",
+ "lean": "mixed",
+ "summary": "非工资边际证据确实不一致:加州快餐$20未见削工时/加剧排班,支持'margins未必都动'的质疑;但西雅图工时明显下降、价格转嫁在RMS/CA20中都稳健。综合:价格转嫁是最稳健的margin,工时高度依情境(西雅图强、加州快餐弱),福利/培训边际证据薄弱。'成本被转移'总体成立,但具体到哪条margin因地因业而异。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "CA20:未见工时/排班调整",
+    "doc_id": "DOC-0012",
+    "quote": "reports no evidence of employers cutting hours or increasing just-in-time scheduling in response",
+    "url": "https://irle.berkeley.edu/publications/brief/effects-of-the-20-california-fast-food-minimum-wage/",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": "brief"
+   },
+   {
+    "title": "CA20反方:若不减margin则可能减员",
+    "doc_id": "DOC-0013",
+    "quote": "reduced fast-food employment by 3.6 percent",
+    "url": "https://www.cato.org/research-briefs-economic-policy/did-californias-fast-food-minimum-wage-reduce-employment",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": "report"
+   }
+  ]
+ },
+ "open_questions": [
+  "福利/非工资补偿(排班稳定性、培训)缺乏高质量因果证据。"
+ ]
+}

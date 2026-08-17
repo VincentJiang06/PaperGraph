@@ -1,0 +1,17 @@
+{
+  "node_id": "N-0004",
+  "lean": "mixed",
+  "summary": "需求/供给二分法在'早期阶段供给主导'上多个模型方向一致,但具体量级差异大(财政贡献估计0.3pp至1-4pp,相差十倍),且劳动力市场紧张的归类本身存在模型间实质冲突(SF Fed/B-B认为贡献小,Domash-Summers认为是过热核心证据),说明定量归因分解有意义但精度有限、高度模型依赖。",
+  "confidence": "medium",
+  "based_on": {
+    "children": [],
+    "evidence": [
+      {"ref_id": "E-01", "title": "FRBSF Economic Letter 2022-15 (Shapiro)", "doc_id": "DOC-0001", "url": null, "locator": null, "quote": "Supply factors explain about half of the run-up in current inflation levels, while demand factors are responsible for about one-third.", "tool": "web_search", "note": null},
+      {"ref_id": "E-02", "title": "Bernanke & Blanchard (2023)", "doc_id": "DOC-0003", "url": null, "locator": null, "quote": "Supply-side shocks have been responsible for around two-thirds to three-fourths of the surge in the inflation rate during 2020Q4 and 2022Q2.", "tool": "web_search", "note": null},
+      {"ref_id": "E-03", "title": "Domash & Summers (2022)", "doc_id": "DOC-0006", "url": null, "locator": null, "quote": "Vacancy and quit rates currently experienced in the United States correspond to a degree of labor market tightness previously associated with sub-2 percent unemployment rates.", "tool": "web_search", "note": null},
+      {"ref_id": "E-04", "title": "Furman估计与SF Fed对比", "doc_id": "DOC-0005", "url": null, "locator": null, "quote": "Jason Furman estimated that Biden's American Rescue Plan added between 1 percentage point and 4 percentage points to the inflation rate in 2021.", "tool": "web_search", "note": null},
+      {"ref_id": "E-05", "title": "Storm (2024) 对B-B模型的批评", "doc_id": "DOC-0014", "url": null, "locator": null, "quote": "sets monetary policymakers up to deliver significantly more monetary tightening than can be justified on the basis of more realistic model analyses", "tool": "web_search", "note": null}
+    ]
+  },
+  "open_questions": ["劳动力市场紧张究竟应计入需求侧还是供给侧,目前无共识度量标准"]
+}

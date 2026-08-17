@@ -1,0 +1,10 @@
+SOURCE: Gimbel, Kinder, Kendall, Lee (2025). "Evaluating the Impact of AI on the Labor Market: Current State of Affairs." The Budget Lab at Yale. Oct 1, 2025. CPS-based occupational/industry dissimilarity analysis, ~33 months since ChatGPT.
+URL: https://budgetlab.yale.edu/research/evaluating-impact-ai-labor-market-current-state-affairs
+
+VERBATIM:
+"measures of exposure, automation, and augmentation show no sign of being related to changes in employment or unemployment to date"
+"33 months is a short window relative to prior technological transitions"
+Re recent college graduates: a "nascent signal" exists, though "sample sizes are small" and the trend "may also predate ChatGPT"
+"this analysis is not predictive of the future"
+
+DISTILLED: At the AGGREGATE level (occupational/industry mix), no AI-attributable disruption detectable through mid/late-2025. Authors explicitly flag the short window and small entry-level signals — i.e. the data cannot yet adjudicate neutral vs lagged.

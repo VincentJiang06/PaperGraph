@@ -1,0 +1,22 @@
+Title: 'It's not going away': The Stanford economist who called the AI entry-level jobs crisis early has the receipts
+Publication: Fortune, 2026-06-27
+URL: https://fortune.com/2026/06/27/what-is-ai-impact-entry-level-jobs-stanford-adp-canaries-brynjolfsson-richardson/
+Accessed via: WebFetch, 2026-07-09
+
+Verbatim key quotes:
+
+"For workers ages 22 to 25, employment in highly AI-exposed occupations is now shrinking at 3.8% per year"
+
+"The least-exposed jobs in that same age group are growing at 2% annually."
+
+Brynjolfsson: "Whatever it is, it's not going away."
+
+Brynjolfsson: "The effect hasn't mean-reverted. It's grown by roughly half a percentage point per month, consistently, month after month."
+
+On robustness against alternative explanations: Critics attributed findings to "interest rates," "tech-sector overhiring," and "remote work distortions." Apollo Global Management's Torsten Slok questioned whether an "AI jobs crisis" actually exists, while Google economists blamed interest rate effects rather than AI.
+
+Brynjolfsson's rebuttal: "If you take out the entire tech industry, or take out all tech-related occupations, or you slice it different ways, you still get this effect."
+
+On the "Canaries" framing: "The Canaries Dashboard takes its name from that logic: canaries in coal mines didn't stop the danger. They just told you the clock was running."
+
+Context: the "Canaries Dashboard" extends the original August 2025 paper's data (through Aug 2025) to April 2026, covering ~4.6 million workers across 730+ occupations.

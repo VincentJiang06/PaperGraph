@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0014",
+ "lean": "supports",
+ "summary": "成本主要经价格转嫁而非裁员:RMS用超市扫描数据发现最低工资涨10%使食品杂货价格升约0.36%,与成本'完全转嫁'一致,消费者(含贫困家庭)承担成本;加州快餐$20案例价格仅升约1.5%(四美元汉堡约6美分)。价格是headcount近零的核心泄压阀,但也削弱了政策的再分配收益。",
+ "confidence": "high",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "RMS:杂货价格转嫁",
+    "doc_id": "DOC-0004",
+    "quote": "a 10% minimum wage hike translates into a 0.36% increase in the prices of grocery products. This magnitude is consistent with a full pass-through of cost increases into consumer prices.",
+    "url": "https://direct.mit.edu/rest/article/104/5/890",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "title": "CA20:快餐价格转嫁",
+    "doc_id": "DOC-0012",
+    "quote": "price increases of about 1.5 percent— or about 6 cents on a four-dollar hamburger",
+    "url": "https://irle.berkeley.edu/publications/brief/effects-of-the-20-california-fast-food-minimum-wage/",
+    "locator": "brief",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "转嫁份额随需求价格弹性/竞争程度如何变化?"
+ ]
+}

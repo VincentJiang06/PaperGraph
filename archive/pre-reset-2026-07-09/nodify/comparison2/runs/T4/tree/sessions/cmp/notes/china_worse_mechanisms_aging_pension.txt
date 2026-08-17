@@ -1,0 +1,11 @@
+Source: web search synthesis — CEPR VoxEU column "Ageing like China: China's pension reform debate enters a new phase"; PLOS One "Change in population structure, policy adjustment, and China's public pension sustainability"; RAND research brief on China's aging population
+URLs: https://cepr.org/voxeu/columns/ageing-china-chinas-pension-reform-debate-enters-new-phase ; https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0331739 ; https://www.rand.org/pubs/research_briefs/RBA3372-1.html
+
+Key points -- speed of aging (faster than Japan):
+- China's old-age dependency ratio is projected to DOUBLE by 2041; this doubling is projected to take about 17 years in China, compared with about 19 years it took in Japan historically -- i.e., China's aging transition is compressed into a SHORTER window than Japan's, despite China having a lower starting income level ("未富先老" / "getting old before getting rich").
+- China's working-age population peaked in 2015 and has been declining since. Annual births fell steeply from roughly 18 million in 2016 to 9.5 million in 2024 (essentially halving in under a decade) -- a much sharper fertility collapse than Japan experienced at a comparable stage.
+
+Key points -- pension system strain:
+- China's pension system is projected to move into deficit around 2028; the accumulated deficit could reach as much as RMB 147.41 trillion (147,411.037 billion yuan) by 2050 without further population-policy/pension-reform adjustment.
+- Number of pension contributors is projected to fall from about 260.9 million (2020) to about 199.9 million (2050), while the number of pension beneficiaries is projected to RISE from about 115.5 million (2020) to about 245.2 million (2050) -- i.e. the contributor-to-beneficiary ratio deteriorates sharply, roughly reversing from more than 2:1 to below 1:1 over three decades.
+- For comparison, Japan's average pension replacement rate is about 59% of an average male worker's earnings at retirement -- itself already below the OECD average of about 69% -- suggesting Japan's system, despite being a much richer country when its aging crisis hit, already provides relatively modest income replacement; China's system, starting from a lower income base and facing steeper demographic deterioration, faces materially more strain per unit of national wealth.

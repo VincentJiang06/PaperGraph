@@ -1,0 +1,9 @@
+Title: Who Set Your Wage? (AEA Presidential Address)
+Author: David Card, UC Berkeley
+Published: American Economic Review, 2022, Vol. 112(4), pp. 1075-1090. Also NBER Working Paper No. 29683.
+URL: https://davidcard.berkeley.edu/papers/Card-presidential-address.pdf ; https://www.aeaweb.org/articles?id=10.1257%2Faer.112.4.1075 ; https://www.nber.org/papers/w29683
+
+Verbatim / closely-quoted key content:
+"Building on advances in search theory and in models of differentiated products, researchers have used a number of different strategies to identify the elasticity of firm-specific labor supply. A growing consensus is that firms have some wage-setting power, though many questions remain about the sources of that power."
+
+Context: this presidential address surveys the recent revival of monopsony/oligopsony models of wage-setting in labor markets, arguing that employers generally have some (limited but non-zero) wage-setting power rather than facing a perfectly competitive labor market.

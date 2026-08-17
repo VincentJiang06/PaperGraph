@@ -1,0 +1,14 @@
+{
+ "kind": "report",
+ "title": "Anthropic Economic Index — Insights from Claude 3.7 Sonnet (2025-03-27)",
+ "url": "https://www.anthropic.com/news/anthropic-economic-index-insights-from-claude-sonnet-3-7",
+ "text_file": "sessions/cmp/notes/doc02_anthropic_economic_index.txt",
+ "summary": "真实使用侧:增强~57%>自动化~43%(后续11月52% vs 45%);用途集中于编程/写作;API流量则自动化为主。",
+ "bindings": [
+  {
+   "node_id": "N-0002",
+   "relation": "supports",
+   "note": "已实现使用以增强为主,非整岗自动化"
+  }
+ ]
+}

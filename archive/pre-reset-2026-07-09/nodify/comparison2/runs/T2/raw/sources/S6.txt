@@ -1,0 +1,11 @@
+Source S6
+Title: How Much Would the American Rescue Plan Overshoot the Output Gap?
+Publisher: Committee for a Responsible Federal Budget (CRFB)
+URL: https://www.crfb.org/blogs/how-much-would-american-rescue-plan-overshoot-output-gap
+Fetched: 2026-07-09 (via WebSearch summary)
+
+Extracted content:
+
+"At the time, the estimated output gap for the remainder of 2021 was just $380 billion. In other words, the ARPA stimulus was two to three times larger than what was needed to close the output gap."
+
+The American Rescue Plan Act (ARPA) added $1.9 trillion in stimulus spending, heavily front-loaded, on top of existing spending levels — compared against a CBO-estimated output gap of roughly $380 billion, implying the package was roughly 2-3x the size needed merely to close the pre-existing shortfall in aggregate demand.

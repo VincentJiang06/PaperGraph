@@ -1,0 +1,11 @@
+Title: China and Japan Debt Compared
+Source: Continuum Economics
+URL: https://continuumeconomics.com/a/97350a89/china-and-japan-debt-compared
+
+Key verbatim extraction (via fetch):
+- Household debt: "China household debt/GDP rise is now similar to the levels seen in Japan in 1990" — but consumption is a smaller share of China's GDP, making the burden proportionally greater.
+- Corporate debt: "China corporate debt/GDP ratio is higher than Japan in 1990," complicated further by LGFV (Local Government Financing Vehicle) debt of roughly 50% of GDP.
+- Government debt: China's official government debt is 61% of GDP (2024); including LGFV and general government funds, IMF's central estimate reaches ~90% of GDP — "a worse starting point than for the Japanese government in 1990." IMF augmented measure (all LGFV + GGF) = 124% of GDP.
+- Total non-financial debt/GDP at 312% in 2024, "higher than the U.S. or EZ."
+- Property: Chinese house prices projected to fall "around 30-35% peak to trough multi-year" — steeper than Japan's experience.
+- Reference point: Japan's national debt ~250% of GDP in 2024 (up from ~180% in 2004); Japan's total private+public debt >400% of GDP.

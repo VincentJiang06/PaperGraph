@@ -1,0 +1,1 @@
+{"Response":{"TextDetections":[{"DetectedText":"型号：AX-240", "Confidence":98, "Polygon":[], "ItemPolygon":{"X":90,"Y":100,"Width":400,"Height":50}, "Words":[], "WordCoordPoint":[]}],"Language":"zh","Angle":0.0,"PdfPageSize":0,"RequestId":"fixture-fallback-001"}}

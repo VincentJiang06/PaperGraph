@@ -1,0 +1,14 @@
+Source: Federal Reserve Bank of New York, "The Labor Market for Recent College Graduates" (ongoing tracker, 2025 data); Newsweek "2025 College Graduate Unemployment" coverage; Cleveland Fed commentary (referenced via aggregation).
+URL: https://www.newyorkfed.org/research/college-labor-market
+
+Key statistics (as extracted via search aggregation, cross-referenced across NY Fed data releases and press coverage):
+- Q4 2025: recent college graduate unemployment rate 5.7%, vs. 4.2% for the overall labor force.
+- Q2 2025: recent graduate unemployment 5.3%, vs. 4% overall.
+- June 2025: recent college graduates (ages 22-27) unemployment 4.8%, vs. 4.0% overall.
+- Underemployment (working in jobs that don't normally require a bachelor's degree) reached 42.5% in Q4 2025.
+
+This is described as "a reversal of historical patterns" — historically, recent college graduates have had LOWER unemployment than the overall labor force (due to relative youth, health, mobility, and degree signaling advantages); as of 2025 this has flipped, with recent-grad unemployment now running roughly 1.0-1.5 percentage points ABOVE the overall rate.
+
+On causation — mixed/contested: SHRM (citing NY Fed research) attributes part of the deterioration to AI displacing entry-level white-collar roles where graduates traditionally start. Economist Harry Holzer (quoted in Newsweek) cites AI "potentially trimming the amount of entry-level jobs" as one factor among several. But the same coverage emphasizes competing/complementary explanations that are NOT AI-specific: skills-based hiring shifting toward candidates with existing experience, broad 2025 labor-market softness affecting many demographics, tariff/interest-rate/geopolitical uncertainty delaying hiring broadly, and a federal hiring freeze. The overall framing in the press coverage is that this looks like "widespread employment difficulties" rather than a narrative cleanly isolated to AI-sector disruption.
+
+Relevance: independent corroboration (beyond the Stanford ADP-based "Canaries" study) that entry-level/young-worker labor market outcomes have measurably deteriorated in 2025, using official BLS/CPS-based Fed data rather than proprietary payroll data — but the causal attribution to AI specifically (vs. general 2025 macro softness) is contested among economists, which tempers a purely-AI reading of N-0011 and reinforces N-0010's caution about confounds even at the disaggregated level.

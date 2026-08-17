@@ -1,0 +1,10 @@
+Title: Automation Can Be a Response to an Aging Workforce
+Source: NBER Digest (summarizing Acemoglu & Restrepo, "Demographics and Automation")
+URL: https://www.nber.org/digest/jul18/automation-can-be-response-aging-workforce
+
+Key verbatim extraction (via fetch):
+- "An aging workforce leads to automation, particularly through robotics, as employers react to a scarcity of middle-aged workers."
+- "Population aging can explain almost 40 percent of the country-to-country variation in the adoption of industrial robots."
+- "A 10 percentage point increase in the ratio of the number of middle-aged to older workers is associated with 0.9 more robots per thousand workers."
+- On net effect: "the implications of population aging for a nation's productivity are ambiguous, and depend on how technology responds to demographic change" — i.e., NOT a guaranteed full offset, only a directional response.
+- Geographic evidence: Japan had 14.2 industrial robots per thousand workers and Germany 17.0, vs 9.1 in the U.S. in 2014, reflecting older demographic profiles — yet Japan's growth remained weak through this period (see S9).

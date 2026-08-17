@@ -1,0 +1,19 @@
+SOURCE S14  [MACRO UPPER-BOUND anchor — context, not first-hand empirical]
+Title: The Simple Macroeconomics of AI
+Author: Daron Acemoglu
+Venue: NBER WP 32487 (May 2024); Economic Policy, Jan 2025
+URLs fetched: https://www.nber.org/papers/w32487 (abstract) ; economics.mit.edu PDF (binary)
+Fetched: 2026-07-09
+
+VERBATIM POINTS (abstract):
+- "no more than a 0.66% increase in total factor productivity (TFP) over 10 years"
+- Why possibly overstated: "early evidence is from easy-to-learn tasks, whereas some of the future effects will come from hard-to-learn tasks."
+- Revised/with-caveats: "predicted TFP gains over the next 10 years are even more modest and are predicted to be less than 0.53%."
+- Method: task-based model + Hulten's theorem — GDP/productivity gains ≈ (fraction of tasks impacted) × (average task-level cost saving).
+
+DESIGN: Structural calibration/modeling (NOT first-hand empirical) — plugs task-exposure shares (from Eloundou "GPTs are GPTs," S8) and task-level cost-saving estimates into a macro identity.
+SAMPLE: US economy, 10-year horizon.
+TIER: D / modeling (keep strictly as CONTEXT and an upper-bound anchor, not evidence of realized outcomes).
+DIRECTION: MODEST macro — bounds the hype; consistent with the small realized effects in S5/S11/S13.
+KEY LIMITS: Model-dependent; assumes limited creation of valuable NEW tasks and no deep automation of hard tasks; nets in some negative uses; CONTESTED — Aghion & Bunel (2024) and industry forecasts argue for materially larger gains. Not first-hand empirical, so weight it as scaffolding.
+CROSS-REF: Ceiling for L2/L3/L6. If Acemoglu is right, absence of big wage/employment effects (S5,S13) is expected, not surprising.

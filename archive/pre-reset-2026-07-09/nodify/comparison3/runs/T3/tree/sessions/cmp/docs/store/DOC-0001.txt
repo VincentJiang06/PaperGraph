@@ -1,0 +1,9 @@
+SOURCE: Eloundou, Manning, Mishkin, Rock (2023). "GPTs are GPTs: An Early Look at the Labor Market Impact Potential of Large Language Models." arXiv:2303.10130 (later Science 2024).
+URL: https://arxiv.org/abs/2303.10130
+
+VERBATIM (abstract):
+"around 80% of the U.S. workforce could have at least 10% of their work tasks affected by the introduction of LLMs"
+"approximately 19% of workers may see at least 50% of their tasks impacted"
+When LLM-powered software/tooling is included: "this share increases to between 47 and 56% of all tasks"
+
+DISTILLED: Task-level EXPOSURE is broad and cuts across wage levels; this measures potential task affectability, NOT realized automation or job loss. Higher-income jobs face more exposure.

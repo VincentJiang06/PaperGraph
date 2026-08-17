@@ -1,0 +1,14 @@
+{
+ "kind": "paper",
+ "title": "Brynjolfsson, Rock, Syverson — The Productivity J-Curve (NBER 25148; AEJ:Macro 2021)",
+ "url": "https://www.nber.org/papers/w25148",
+ "text_file": "sessions/cmp/notes/doc07_productivity_jcurve.txt",
+ "summary": "通用技术(如AI)需大量无形/组织性互补投资,早期被系统性低估、后期收获。生产率J曲线解释GPT早期的表面停滞——为'效应真实但滞后'提供结构性机制。",
+ "bindings": [
+  {
+   "node_id": "N-0009",
+   "relation": "supports",
+   "note": "GPT扩散/无形投资滞后=效应延迟显现的机制"
+  }
+ ]
+}

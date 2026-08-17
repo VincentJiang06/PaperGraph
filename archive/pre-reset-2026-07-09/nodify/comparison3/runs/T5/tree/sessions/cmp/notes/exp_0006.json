@@ -1,0 +1,9 @@
+{
+  "parent_id": "N-0006",
+  "children": [
+    {"statement": "Neumark-Shirley(2022)对美国最低工资-就业文献的普查:多数(尤其对青年/低技能/直接受影响群体)估计为负,负估计占比明显高于正。", "why_helps_parent": "红队最强弹药:文献整体重心并非零,而是偏负", "orientation": "adversarial"},
+    {"statement": "动态/流量视角:Meer-West(2016)认为最低工资降低的是就业增长率(job growth/flows)而非即时水平;水平型回归会系统性漏掉这一效应。", "why_helps_parent": "指出近零'水平'结果可能因方法遗漏动态而低估负效应", "orientation": "adversarial"},
+    {"statement": "Clemens-Wither(2019):大衰退期间受联邦上调影响的低技能工人,就业与收入增长受损、向上流动变慢。", "why_helps_parent": "提供一个高质量、指向明显负效应的准实验反例", "orientation": "adversarial"},
+    {"statement": "对红队的反驳:发表偏倚校正(漏斗图)后近零仍稳健;bunching不依赖增长counterfactual;Seattle分歧中数据更全的估计更接近零——红队证据多来自特定设定。", "why_helps_parent": "对红队facet自身的反方,防止一边倒并检验红队证据的稳健性", "orientation": "neutral"}
+  ]
+}

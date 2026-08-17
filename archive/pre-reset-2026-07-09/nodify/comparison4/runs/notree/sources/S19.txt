@@ -1,0 +1,25 @@
+S19 — Anil R. Doshi & Oliver P. Hauser, "Generative AI enhances individual creativity but reduces the
+collective diversity of novel content" (Science Advances, vol.10, 2024; DOI 10.1126/sciadv.adn5290)
+URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC11244532/
+Facet/Line: L1 (task-level quality), L7 (distributional), + QUALITY/homogenization (deskilling proxy)
+Tier: A (randomized online experiment)
+
+DESIGN/SAMPLE: 293 writers randomly assigned to 3 conditions — Human-only, Human + 1 GenAI idea,
+Human + 5 GenAI ideas — each writes a short story; 600 separate evaluators rate the 293 stories.
+Writer baseline creativity measured (DAT — Divergent Association Task).
+EFFECT + DIRECTION: Individual quality UP (esp. for less-creative writers) but collective diversity DOWN
+(AI-assisted stories more similar to each other). A creativity/homogenization TRADE-OFF.
+
+VERBATIM QUOTES:
+- "Writers in the Human with five GenAI ideas condition show an increase in novelty of 8.1% over writers
+  without generative AI access" and "Having access to up to five AI ideas increases usefulness by 9.0%."
+- "Among low-DAT writers, having access to one generative AI idea improves a story's novelty by 6.3% and
+  having access to five generative AI ideas yields improvements of 10.7%" (highly creative writers: minimal gains).
+- "Having access to generative AI ideas makes a story more similar to the average of other stories within
+  the same condition" — similarity rose 0.871 / 0.718 cosine points for 1 / 5 ideas.
+- Framing (abstract): "an increase in individual creativity at the risk of losing collective novelty."
+
+LIMITS: Task-level, one-shot creative-writing lab task (external validity to real labor unclear). Measures
+OUTPUT quality/diversity, not jobs/wages. But it operationalizes the "homogenization/monoculture" and
+equalizing-vs-polarizing debate: EQUALIZES individual quality (novices gain most, echoes S1/S2) yet
+POLARIZES/erodes at the COLLECTIVE level (diversity loss). Key quality-side evidence for GAP 6.

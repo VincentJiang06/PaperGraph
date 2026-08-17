@@ -1,0 +1,19 @@
+{
+ "kind": "dataset",
+ "title": "US Census BTOS — Firm AI Adoption (story 2026-05; Fed FEDS Note 2026)",
+ "url": "https://www.census.gov/library/stories/2026/05/ai-use-businesses.html",
+ "text_file": "sessions/cmp/notes/doc10_census_btos_adoption.txt",
+ "summary": "企业采用低且浅:生产用AI从2023/9的3.7%到2024/2的5.4%,到2025/9约10%;定义放宽后17-20%;65%企业用途≤3项;大企业远高于小企业。已实现采用<<潜在暴露。",
+ "bindings": [
+  {
+   "node_id": "N-0006",
+   "relation": "supports",
+   "note": "采用低且浅→2020-25难有净效应显现空间"
+  },
+  {
+   "node_id": "N-0005",
+   "relation": "context",
+   "note": "部署迟、规模小"
+  }
+ ]
+}

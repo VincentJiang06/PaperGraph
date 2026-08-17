@@ -1,0 +1,8 @@
+{
+  "parent_id": "N-0002",
+  "children": [
+    {"statement": "Cengiz-Dube-Lindner-Zipperer(2019, QJE)用bunching估计138次州级上调:最低工资以上的岗位增加恰好抵消以下岗位减少,'missing jobs'的就业弹性接近0且置信区间较窄。", "why_helps_parent": "当前最强的整合性准实验证据,直接量化'近零'并给出精度", "orientation": "neutral"},
+    {"statement": "西雅图$15同一实验的分歧:UW团队(Jardim et al)发现低薪工时大幅下降,Berkeley团队(Reich et al)发现餐饮就业无显著变化——方法差异决定结论。", "why_helps_parent": "揭示'近零'结论对数据/设定的敏感性,是实证地基上的关键张力", "orientation": "neutral"},
+    {"statement": "统计功效/识别质疑:合成控制与事件研究在样本有限、上调温和时,可能无法排除中等负效应;'零效应'部分是'测不出'而非'确为零'。", "why_helps_parent": "对实证地基的自我证伪:近零可能是精度不足的假象", "orientation": "adversarial"}
+  ]
+}

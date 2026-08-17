@@ -1,0 +1,96 @@
+{"schema":"event.v1","event_id":"EV-000001","at":"2026-07-09T10:12:58Z","actor":"main","command":"init","mutating":true,"touched":["cmp"],"summary":"init: 最低工资上调是否降低就业?以2015-2024年美国州级/城市级自然实验为主要证据,调和Card-Krueger式准实验(就业效应很小甚至近零)与竞争性劳动力市场理论(预测就业下降)之间的张力;monopsony、成本转嫁、雇主对非工资条件"}
+{"schema":"event.v1","event_id":"EV-000002","at":"2026-07-09T10:13:03Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (432 chars)"}
+{"schema":"event.v1","event_id":"EV-000003","at":"2026-07-09T10:13:09Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (0 nodes)"}
+{"schema":"event.v1","event_id":"EV-000004","at":"2026-07-09T10:13:09Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"FAILED: unknown node: N-0001"}
+{"schema":"event.v1","event_id":"EV-000005","at":"2026-07-09T10:13:40Z","actor":"main","command":"add","mutating":true,"touched":["N-0001"],"summary":"add 1 under root: N-0001"}
+{"schema":"event.v1","event_id":"EV-000006","at":"2026-07-09T10:14:17Z","actor":"main","command":"add","mutating":true,"touched":["N-0002","N-0003","N-0004","N-0005","N-0006","N-0007"],"summary":"add 6 under N-0001: N-0002, N-0003, N-0004, N-0005, N-0006, N-0007"}
+{"schema":"event.v1","event_id":"EV-000007","at":"2026-07-09T10:14:17Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000008","at":"2026-07-09T10:16:30Z","actor":"main","command":"add","mutating":true,"touched":["N-0008","N-0009","N-0010"],"summary":"add 3 under N-0002: N-0008, N-0009, N-0010"}
+{"schema":"event.v1","event_id":"EV-000009","at":"2026-07-09T10:16:30Z","actor":"main","command":"add","mutating":true,"touched":["N-0011","N-0012","N-0013"],"summary":"add 3 under N-0003: N-0011, N-0012, N-0013"}
+{"schema":"event.v1","event_id":"EV-000010","at":"2026-07-09T10:16:30Z","actor":"main","command":"add","mutating":true,"touched":["N-0014","N-0015","N-0016","N-0017"],"summary":"add 4 under N-0004: N-0014, N-0015, N-0016, N-0017"}
+{"schema":"event.v1","event_id":"EV-000011","at":"2026-07-09T10:17:13Z","actor":"main","command":"add","mutating":true,"touched":["N-0018","N-0019","N-0020"],"summary":"add 3 under N-0005: N-0018, N-0019, N-0020"}
+{"schema":"event.v1","event_id":"EV-000012","at":"2026-07-09T10:17:13Z","actor":"main","command":"add","mutating":true,"touched":["N-0021","N-0022","N-0023","N-0024"],"summary":"add 4 under N-0006: N-0021, N-0022, N-0023, N-0024"}
+{"schema":"event.v1","event_id":"EV-000013","at":"2026-07-09T10:17:13Z","actor":"main","command":"add","mutating":true,"touched":["N-0025","N-0026","N-0027"],"summary":"add 3 under N-0007: N-0025, N-0026, N-0027"}
+{"schema":"event.v1","event_id":"EV-000014","at":"2026-07-09T10:17:13Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (5078 chars)"}
+{"schema":"event.v1","event_id":"EV-000015","at":"2026-07-09T10:17:13Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000016","at":"2026-07-09T10:23:20Z","actor":"main","command":"promote","mutating":true,"touched":["N-0008"],"summary":"promote N-0008 -> claim"}
+{"schema":"event.v1","event_id":"EV-000017","at":"2026-07-09T10:23:20Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0001"],"summary":"ingest DOC-0001: Cengiz, Dube, Lindner, Zipperer (2019), The Effect of Minimum Wages on Low-Wage "}
+{"schema":"event.v1","event_id":"EV-000018","at":"2026-07-09T10:23:40Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0001","N-0008"],"summary":"conclude N-0008 [supports]"}
+{"schema":"event.v1","event_id":"EV-000019","at":"2026-07-09T10:23:40Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (5148 chars)"}
+{"schema":"event.v1","event_id":"EV-000020","at":"2026-07-09T10:23:40Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0008"}
+{"schema":"event.v1","event_id":"EV-000021","at":"2026-07-09T10:26:52Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0002"],"summary":"ingest DOC-0002: Dube, Lester, Reich (2016), Minimum Wage Shocks, Employment Flows, and Labor Mar"}
+{"schema":"event.v1","event_id":"EV-000022","at":"2026-07-09T10:26:52Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0003"],"summary":"ingest DOC-0003: Azar, Marinescu, Steinbaum (2022), Labor Market Concentration, JHR 57(S)"}
+{"schema":"event.v1","event_id":"EV-000023","at":"2026-07-09T10:26:53Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0004"],"summary":"ingest DOC-0004: Renkin, Montialoux, Siegenthaler (2022), Pass-Through of Minimum Wages into US R"}
+{"schema":"event.v1","event_id":"EV-000024","at":"2026-07-09T10:26:53Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0005"],"summary":"ingest DOC-0005: Jardim et al. (2017/2022), Minimum Wage Increases and Low-Wage Employment: Evide"}
+{"schema":"event.v1","event_id":"EV-000025","at":"2026-07-09T10:26:53Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0006"],"summary":"ingest DOC-0006: Reich, Allegretto, Godoy (UC Berkeley IRLE, 2017), Seattle food-service minimum "}
+{"schema":"event.v1","event_id":"EV-000026","at":"2026-07-09T10:26:53Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0007"],"summary":"ingest DOC-0007: Lordan, Neumark (2018), People versus Machines: Minimum Wages and Automatable Jo"}
+{"schema":"event.v1","event_id":"EV-000027","at":"2026-07-09T10:26:53Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0008"],"summary":"ingest DOC-0008: Congressional Budget Office (July 2019), Effects of Increasing the Federal Minim"}
+{"schema":"event.v1","event_id":"EV-000028","at":"2026-07-09T10:26:53Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0009"],"summary":"ingest DOC-0009: Neumark, Shirley (2022), Myth or Measurement, Industrial Relations 61(4)"}
+{"schema":"event.v1","event_id":"EV-000029","at":"2026-07-09T10:26:53Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0010"],"summary":"ingest DOC-0010: Meer, West (2016), Effects of the Minimum Wage on Employment Dynamics, JHR 51(2)"}
+{"schema":"event.v1","event_id":"EV-000030","at":"2026-07-09T10:26:53Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0011"],"summary":"ingest DOC-0011: Clemens, Wither (2019), Minimum Wage and the Great Recession, JPubE 170"}
+{"schema":"event.v1","event_id":"EV-000031","at":"2026-07-09T10:26:53Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0012"],"summary":"ingest DOC-0012: UC Berkeley IRLE (2024/2025), Effects of the $20 California Fast-Food Minimum Wa"}
+{"schema":"event.v1","event_id":"EV-000032","at":"2026-07-09T10:26:53Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0013"],"summary":"ingest DOC-0013: Contrarian analysis of AB 1228 ($20 fast food), via Cato / NBER 34033"}
+{"schema":"event.v1","event_id":"EV-000033","at":"2026-07-09T10:26:53Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0014"],"summary":"ingest DOC-0014: Luca, Luca (2019), Survival of the Fittest: Minimum Wage and Firm Exit, NBER 258"}
+{"schema":"event.v1","event_id":"EV-000034","at":"2026-07-09T10:27:47Z","actor":"main","command":"promote","mutating":true,"touched":["N-0009"],"summary":"promote N-0009 -> claim"}
+{"schema":"event.v1","event_id":"EV-000035","at":"2026-07-09T10:27:47Z","actor":"main","command":"promote","mutating":true,"touched":["N-0011"],"summary":"promote N-0011 -> claim"}
+{"schema":"event.v1","event_id":"EV-000036","at":"2026-07-09T10:27:47Z","actor":"main","command":"promote","mutating":true,"touched":["N-0012"],"summary":"promote N-0012 -> claim"}
+{"schema":"event.v1","event_id":"EV-000037","at":"2026-07-09T10:27:48Z","actor":"main","command":"promote","mutating":true,"touched":["N-0014"],"summary":"promote N-0014 -> claim"}
+{"schema":"event.v1","event_id":"EV-000038","at":"2026-07-09T10:27:48Z","actor":"main","command":"promote","mutating":true,"touched":["N-0015"],"summary":"promote N-0015 -> claim"}
+{"schema":"event.v1","event_id":"EV-000039","at":"2026-07-09T10:27:48Z","actor":"main","command":"promote","mutating":true,"touched":["N-0016"],"summary":"promote N-0016 -> claim"}
+{"schema":"event.v1","event_id":"EV-000040","at":"2026-07-09T10:27:48Z","actor":"main","command":"promote","mutating":true,"touched":["N-0018"],"summary":"promote N-0018 -> claim"}
+{"schema":"event.v1","event_id":"EV-000041","at":"2026-07-09T10:27:48Z","actor":"main","command":"promote","mutating":true,"touched":["N-0019"],"summary":"promote N-0019 -> claim"}
+{"schema":"event.v1","event_id":"EV-000042","at":"2026-07-09T10:27:48Z","actor":"main","command":"promote","mutating":true,"touched":["N-0021"],"summary":"promote N-0021 -> claim"}
+{"schema":"event.v1","event_id":"EV-000043","at":"2026-07-09T10:27:48Z","actor":"main","command":"promote","mutating":true,"touched":["N-0022"],"summary":"promote N-0022 -> claim"}
+{"schema":"event.v1","event_id":"EV-000044","at":"2026-07-09T10:27:48Z","actor":"main","command":"promote","mutating":true,"touched":["N-0023"],"summary":"promote N-0023 -> claim"}
+{"schema":"event.v1","event_id":"EV-000045","at":"2026-07-09T10:27:48Z","actor":"main","command":"promote","mutating":true,"touched":["N-0025"],"summary":"promote N-0025 -> claim"}
+{"schema":"event.v1","event_id":"EV-000046","at":"2026-07-09T10:27:48Z","actor":"main","command":"promote","mutating":true,"touched":["N-0026"],"summary":"promote N-0026 -> claim"}
+{"schema":"event.v1","event_id":"EV-000047","at":"2026-07-09T10:27:48Z","actor":"main","command":"promote","mutating":true,"touched":["N-0027"],"summary":"promote N-0027 -> claim"}
+{"schema":"event.v1","event_id":"EV-000048","at":"2026-07-09T10:27:48Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (5123 chars)"}
+{"schema":"event.v1","event_id":"EV-000049","at":"2026-07-09T10:29:21Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0002","N-0009"],"summary":"conclude N-0009 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000050","at":"2026-07-09T10:29:21Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0003","N-0011"],"summary":"conclude N-0011 [supports]"}
+{"schema":"event.v1","event_id":"EV-000051","at":"2026-07-09T10:29:21Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0004","N-0012"],"summary":"conclude N-0012 [supports]"}
+{"schema":"event.v1","event_id":"EV-000052","at":"2026-07-09T10:29:21Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0005","N-0014"],"summary":"conclude N-0014 [supports]"}
+{"schema":"event.v1","event_id":"EV-000053","at":"2026-07-09T10:29:21Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0006","N-0015"],"summary":"conclude N-0015 [supports]"}
+{"schema":"event.v1","event_id":"EV-000054","at":"2026-07-09T10:29:21Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0007","N-0016"],"summary":"conclude N-0016 [supports]"}
+{"schema":"event.v1","event_id":"EV-000055","at":"2026-07-09T10:29:21Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0008","N-0018"],"summary":"conclude N-0018 [supports]"}
+{"schema":"event.v1","event_id":"EV-000056","at":"2026-07-09T10:29:21Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0009","N-0019"],"summary":"conclude N-0019 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000057","at":"2026-07-09T10:29:21Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0010","N-0021"],"summary":"conclude N-0021 [supports]"}
+{"schema":"event.v1","event_id":"EV-000058","at":"2026-07-09T10:29:21Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0011","N-0022"],"summary":"conclude N-0022 [supports]"}
+{"schema":"event.v1","event_id":"EV-000059","at":"2026-07-09T10:29:21Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0012","N-0023"],"summary":"conclude N-0023 [supports]"}
+{"schema":"event.v1","event_id":"EV-000060","at":"2026-07-09T10:29:21Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0013","N-0025"],"summary":"conclude N-0025 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000061","at":"2026-07-09T10:29:21Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0014","N-0026"],"summary":"conclude N-0026 [supports]"}
+{"schema":"event.v1","event_id":"EV-000062","at":"2026-07-09T10:29:21Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0015","N-0027"],"summary":"conclude N-0027 [supports]"}
+{"schema":"event.v1","event_id":"EV-000063","at":"2026-07-09T10:29:30Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000064","at":"2026-07-09T10:33:06Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0016","N-0010"],"summary":"conclude N-0010 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000065","at":"2026-07-09T10:33:06Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0017","N-0013"],"summary":"conclude N-0013 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000066","at":"2026-07-09T10:33:06Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0018","N-0017"],"summary":"conclude N-0017 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000067","at":"2026-07-09T10:33:06Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0019","N-0020"],"summary":"conclude N-0020 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000068","at":"2026-07-09T10:33:06Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0020","N-0024"],"summary":"conclude N-0024 [supports]"}
+{"schema":"event.v1","event_id":"EV-000069","at":"2026-07-09T10:33:06Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0021","N-0002"],"summary":"conclude N-0002 [supports]"}
+{"schema":"event.v1","event_id":"EV-000070","at":"2026-07-09T10:33:06Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0022","N-0003"],"summary":"conclude N-0003 [supports]"}
+{"schema":"event.v1","event_id":"EV-000071","at":"2026-07-09T10:33:07Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0023","N-0004"],"summary":"conclude N-0004 [supports]"}
+{"schema":"event.v1","event_id":"EV-000072","at":"2026-07-09T10:33:07Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0024","N-0005"],"summary":"conclude N-0005 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000073","at":"2026-07-09T10:33:07Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0025","N-0006"],"summary":"conclude N-0006 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000074","at":"2026-07-09T10:33:07Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0026","N-0007"],"summary":"conclude N-0007 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000075","at":"2026-07-09T10:33:07Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0027","N-0001"],"summary":"conclude N-0001 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000076","at":"2026-07-09T10:33:16Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000077","at":"2026-07-09T10:33:16Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (27 nodes)"}
+{"schema":"event.v1","event_id":"EV-000078","at":"2026-07-09T10:33:16Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (4292 chars)"}
+{"schema":"event.v1","event_id":"EV-000079","at":"2026-07-09T10:43:50Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (4292 chars)"}
+{"schema":"event.v1","event_id":"EV-000080","at":"2026-07-09T10:43:55Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (27 nodes)"}
+{"schema":"event.v1","event_id":"EV-000081","at":"2026-07-09T10:43:56Z","actor":"main","command":"log","mutating":false,"touched":[],"summary":"log tail=20"}
+{"schema":"event.v1","event_id":"EV-000082","at":"2026-07-09T10:44:03Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0001"}
+{"schema":"event.v1","event_id":"EV-000083","at":"2026-07-09T10:44:03Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0008"}
+{"schema":"event.v1","event_id":"EV-000084","at":"2026-07-09T10:44:14Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0001: 0"}
+{"schema":"event.v1","event_id":"EV-000085","at":"2026-07-09T10:44:14Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0006: 0"}
+{"schema":"event.v1","event_id":"EV-000086","at":"2026-07-09T10:44:28Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0006"}
+{"schema":"event.v1","event_id":"EV-000087","at":"2026-07-09T10:44:57Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0010"}
+{"schema":"event.v1","event_id":"EV-000088","at":"2026-07-09T10:44:57Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0013"}
+{"schema":"event.v1","event_id":"EV-000089","at":"2026-07-09T10:44:57Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0017"}
+{"schema":"event.v1","event_id":"EV-000090","at":"2026-07-09T10:44:57Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0020"}
+{"schema":"event.v1","event_id":"EV-000091","at":"2026-07-09T10:44:57Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0024"}
+{"schema":"event.v1","event_id":"EV-000092","at":"2026-07-09T10:45:03Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0010"}
+{"schema":"event.v1","event_id":"EV-000093","at":"2026-07-09T10:45:03Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0013"}
+{"schema":"event.v1","event_id":"EV-000094","at":"2026-07-09T10:45:03Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0017"}
+{"schema":"event.v1","event_id":"EV-000095","at":"2026-07-09T10:45:03Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0020"}
+{"schema":"event.v1","event_id":"EV-000096","at":"2026-07-09T10:45:03Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0024"}

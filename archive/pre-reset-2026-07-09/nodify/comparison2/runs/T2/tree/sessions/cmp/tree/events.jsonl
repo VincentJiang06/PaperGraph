@@ -1,0 +1,88 @@
+{"schema":"event.v1","event_id":"EV-000001","at":"2026-07-09T07:04:07Z","actor":"main","command":"init","mutating":true,"touched":["cmp"],"summary":"init: 2021-2023 年美国的高通胀,其成因应如何在『需求侧』(财政转移支付 + 宽松货币政策)与『供给侧』(供应链中断、劳动力市场紧张、能源与大宗商品冲击)之间做定量或半定量的归因分解?各自大致贡献几何?这一归因对判断『软着陆』(通胀回落而"}
+{"schema":"event.v1","event_id":"EV-000002","at":"2026-07-09T07:04:10Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (329 chars)"}
+{"schema":"event.v1","event_id":"EV-000003","at":"2026-07-09T07:04:11Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (0 nodes)"}
+{"schema":"event.v1","event_id":"EV-000004","at":"2026-07-09T07:04:21Z","actor":"main","command":"add","mutating":true,"touched":["N-0001"],"summary":"add 1 under root: N-0001"}
+{"schema":"event.v1","event_id":"EV-000005","at":"2026-07-09T07:06:05Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000006","at":"2026-07-09T07:06:19Z","actor":"main","command":"add","mutating":true,"touched":["N-0002","N-0003","N-0004","N-0005","N-0006"],"summary":"add 5 under N-0001: N-0002, N-0003, N-0004, N-0005, N-0006"}
+{"schema":"event.v1","event_id":"EV-000007","at":"2026-07-09T07:06:38Z","actor":"main","command":"add","mutating":true,"touched":["N-0007","N-0008","N-0009"],"summary":"add 3 under N-0002: N-0007, N-0008, N-0009"}
+{"schema":"event.v1","event_id":"EV-000008","at":"2026-07-09T07:06:38Z","actor":"main","command":"add","mutating":true,"touched":["N-0010","N-0011","N-0012","N-0013"],"summary":"add 4 under N-0003: N-0010, N-0011, N-0012, N-0013"}
+{"schema":"event.v1","event_id":"EV-000009","at":"2026-07-09T07:06:55Z","actor":"main","command":"add","mutating":true,"touched":["N-0014","N-0015"],"summary":"add 2 under N-0005: N-0014, N-0015"}
+{"schema":"event.v1","event_id":"EV-000010","at":"2026-07-09T07:06:55Z","actor":"main","command":"add","mutating":true,"touched":["N-0016","N-0017"],"summary":"add 2 under N-0006: N-0016, N-0017"}
+{"schema":"event.v1","event_id":"EV-000011","at":"2026-07-09T07:07:02Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (17 nodes)"}
+{"schema":"event.v1","event_id":"EV-000012","at":"2026-07-09T07:07:02Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000013","at":"2026-07-09T07:07:15Z","actor":"main","command":"promote","mutating":true,"touched":["N-0004"],"summary":"promote N-0004 -> claim"}
+{"schema":"event.v1","event_id":"EV-000014","at":"2026-07-09T07:07:15Z","actor":"main","command":"promote","mutating":true,"touched":["N-0007"],"summary":"promote N-0007 -> claim"}
+{"schema":"event.v1","event_id":"EV-000015","at":"2026-07-09T07:07:15Z","actor":"main","command":"promote","mutating":true,"touched":["N-0008"],"summary":"promote N-0008 -> claim"}
+{"schema":"event.v1","event_id":"EV-000016","at":"2026-07-09T07:07:15Z","actor":"main","command":"promote","mutating":true,"touched":["N-0009"],"summary":"promote N-0009 -> claim"}
+{"schema":"event.v1","event_id":"EV-000017","at":"2026-07-09T07:07:15Z","actor":"main","command":"promote","mutating":true,"touched":["N-0010"],"summary":"promote N-0010 -> claim"}
+{"schema":"event.v1","event_id":"EV-000018","at":"2026-07-09T07:07:27Z","actor":"main","command":"promote","mutating":true,"touched":["N-0011"],"summary":"promote N-0011 -> claim"}
+{"schema":"event.v1","event_id":"EV-000019","at":"2026-07-09T07:07:27Z","actor":"main","command":"promote","mutating":true,"touched":["N-0012"],"summary":"promote N-0012 -> claim"}
+{"schema":"event.v1","event_id":"EV-000020","at":"2026-07-09T07:07:27Z","actor":"main","command":"promote","mutating":true,"touched":["N-0013"],"summary":"promote N-0013 -> claim"}
+{"schema":"event.v1","event_id":"EV-000021","at":"2026-07-09T07:07:27Z","actor":"main","command":"promote","mutating":true,"touched":["N-0014"],"summary":"promote N-0014 -> claim"}
+{"schema":"event.v1","event_id":"EV-000022","at":"2026-07-09T07:07:27Z","actor":"main","command":"promote","mutating":true,"touched":["N-0015"],"summary":"promote N-0015 -> claim"}
+{"schema":"event.v1","event_id":"EV-000023","at":"2026-07-09T07:07:27Z","actor":"main","command":"promote","mutating":true,"touched":["N-0016"],"summary":"promote N-0016 -> claim"}
+{"schema":"event.v1","event_id":"EV-000024","at":"2026-07-09T07:07:27Z","actor":"main","command":"promote","mutating":true,"touched":["N-0017"],"summary":"promote N-0017 -> claim"}
+{"schema":"event.v1","event_id":"EV-000025","at":"2026-07-09T07:07:31Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000026","at":"2026-07-09T07:07:32Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (2795 chars)"}
+{"schema":"event.v1","event_id":"EV-000027","at":"2026-07-09T07:07:57Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0004"],"summary":"N-0004 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000028","at":"2026-07-09T07:07:57Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0008"],"summary":"N-0008 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000029","at":"2026-07-09T07:07:57Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0011"],"summary":"N-0011 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000030","at":"2026-07-09T07:07:57Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0012"],"summary":"N-0012 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000031","at":"2026-07-09T07:16:08Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0001"],"summary":"ingest DOC-0001: FRBSF Economic Letter 2022-15: How Much Do Supply and Demand Drive Inflation? (S"}
+{"schema":"event.v1","event_id":"EV-000032","at":"2026-07-09T07:16:09Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0002"],"summary":"ingest DOC-0002: San Francisco Fed: Supply- and Demand-Driven PCE Inflation (data series, Shapiro"}
+{"schema":"event.v1","event_id":"EV-000033","at":"2026-07-09T07:16:09Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0003"],"summary":"ingest DOC-0003: Bernanke & Blanchard (2023), What Caused the US Pandemic-Era Inflation? (NBER w3"}
+{"schema":"event.v1","event_id":"EV-000034","at":"2026-07-09T07:16:09Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0004"],"summary":"ingest DOC-0004: FRBSF Economic Letter 2021-27: Is the American Rescue Plan Taking Us Back to the"}
+{"schema":"event.v1","event_id":"EV-000035","at":"2026-07-09T07:16:13Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0005"],"summary":"ingest DOC-0005: PolitiFact/ABC News reporting on Jason Furman's ARP inflation-impact estimate"}
+{"schema":"event.v1","event_id":"EV-000036","at":"2026-07-09T07:16:13Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0006"],"summary":"ingest DOC-0006: Domash & Summers (2022), How Tight Are U.S. Labor Markets? (NBER w29739)"}
+{"schema":"event.v1","event_id":"EV-000037","at":"2026-07-09T07:16:13Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0007"],"summary":"ingest DOC-0007: FRBSF Economic Letter 2023-16: Global Supply Chain Pressures and U.S. Inflation"}
+{"schema":"event.v1","event_id":"EV-000038","at":"2026-07-09T07:16:13Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0008"],"summary":"ingest DOC-0008: FRBSF Economic Letter 2023-19: Will a Cooler Labor Market Slow Supercore Inflati"}
+{"schema":"event.v1","event_id":"EV-000039","at":"2026-07-09T07:16:17Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0009"],"summary":"ingest DOC-0009: San Francisco Fed: The Rise and Fall of Pandemic Excess Savings (2023-2024 serie"}
+{"schema":"event.v1","event_id":"EV-000040","at":"2026-07-09T07:16:17Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0010"],"summary":"ingest DOC-0010: CRS IN12410 / Fortune reporting: The Sahm Rule Trigger and 2024-2025 labor marke"}
+{"schema":"event.v1","event_id":"EV-000041","at":"2026-07-09T07:16:17Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0011"],"summary":"ingest DOC-0011: Federal Reserve: Selected Powell speeches on inflation causes (2022-2023)"}
+{"schema":"event.v1","event_id":"EV-000042","at":"2026-07-09T07:16:17Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0012"],"summary":"ingest DOC-0012: Federal Reserve rate-path reporting 2023-2025 (FOMC statements, CNBC/CBS coverag"}
+{"schema":"event.v1","event_id":"EV-000043","at":"2026-07-09T07:16:25Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0013"],"summary":"ingest DOC-0013: Slate/The American Prospect reporting on Summers's sacrifice-ratio prediction an"}
+{"schema":"event.v1","event_id":"EV-000044","at":"2026-07-09T07:16:25Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0014"],"summary":"ingest DOC-0014: Storm (2024), Tilting at Windmills: Bernanke and Blanchard's Obsession with the "}
+{"schema":"event.v1","event_id":"EV-000045","at":"2026-07-09T07:16:25Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0015"],"summary":"ingest DOC-0015: CEPR VoxEU: Navigating the 2022 inflation surge - lessons for monetary policy fr"}
+{"schema":"event.v1","event_id":"EV-000046","at":"2026-07-09T07:16:25Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0016"],"summary":"ingest DOC-0016: St. Louis Fed / BLS / JEC: M2 growth and energy price contribution background da"}
+{"schema":"event.v1","event_id":"EV-000047","at":"2026-07-09T07:16:30Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000048","at":"2026-07-09T07:16:37Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0007"],"summary":"N-0007 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000049","at":"2026-07-09T07:16:37Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0009"],"summary":"N-0009 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000050","at":"2026-07-09T07:16:37Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0010"],"summary":"N-0010 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000051","at":"2026-07-09T07:16:37Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0013"],"summary":"N-0013 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000052","at":"2026-07-09T07:16:37Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0014"],"summary":"N-0014 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000053","at":"2026-07-09T07:16:37Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0015"],"summary":"N-0015 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000054","at":"2026-07-09T07:16:37Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0016"],"summary":"N-0016 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000055","at":"2026-07-09T07:16:37Z","actor":"main","command":"set-status","mutating":true,"touched":["N-0017"],"summary":"N-0017 -> investigating"}
+{"schema":"event.v1","event_id":"EV-000056","at":"2026-07-09T07:18:54Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0001","N-0004"],"summary":"conclude N-0004 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000057","at":"2026-07-09T07:18:54Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0002","N-0007"],"summary":"conclude N-0007 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000058","at":"2026-07-09T07:18:55Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0003","N-0008"],"summary":"conclude N-0008 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000059","at":"2026-07-09T07:18:55Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0004","N-0009"],"summary":"conclude N-0009 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000060","at":"2026-07-09T07:19:05Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0005","N-0010"],"summary":"conclude N-0010 [supports]"}
+{"schema":"event.v1","event_id":"EV-000061","at":"2026-07-09T07:19:05Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0006","N-0011"],"summary":"conclude N-0011 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000062","at":"2026-07-09T07:19:05Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0007","N-0012"],"summary":"conclude N-0012 [supports]"}
+{"schema":"event.v1","event_id":"EV-000063","at":"2026-07-09T07:19:05Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0008","N-0013"],"summary":"conclude N-0013 [supports]"}
+{"schema":"event.v1","event_id":"EV-000064","at":"2026-07-09T07:19:13Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0009","N-0014"],"summary":"conclude N-0014 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000065","at":"2026-07-09T07:19:14Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0010","N-0015"],"summary":"conclude N-0015 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000066","at":"2026-07-09T07:19:14Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0011","N-0016"],"summary":"conclude N-0016 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000067","at":"2026-07-09T07:19:14Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0012","N-0017"],"summary":"conclude N-0017 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000068","at":"2026-07-09T07:19:19Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000069","at":"2026-07-09T07:19:19Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (4575 chars)"}
+{"schema":"event.v1","event_id":"EV-000070","at":"2026-07-09T07:20:06Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0013","N-0002"],"summary":"conclude N-0002 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000071","at":"2026-07-09T07:20:06Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0014","N-0003"],"summary":"conclude N-0003 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000072","at":"2026-07-09T07:20:06Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0015","N-0005"],"summary":"conclude N-0005 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000073","at":"2026-07-09T07:20:07Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0016","N-0006"],"summary":"conclude N-0006 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000074","at":"2026-07-09T07:20:33Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0017","N-0001"],"summary":"conclude N-0001 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000075","at":"2026-07-09T07:20:42Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000076","at":"2026-07-09T07:20:43Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (17 nodes)"}
+{"schema":"event.v1","event_id":"EV-000077","at":"2026-07-09T07:21:18Z","actor":"main","command":"article outline","mutating":true,"touched":["OL-01"],"summary":"outline: 2021-2023年美国高通胀的需求侧/供给侧归因分解:半定量判断及其对软着陆与美联储立场的含义 (4 sections)"}
+{"schema":"event.v1","event_id":"EV-000078","at":"2026-07-09T07:22:58Z","actor":"main","command":"article section","mutating":true,"touched":["S-01"],"summary":"section S-01: 563 words, 6 cites"}
+{"schema":"event.v1","event_id":"EV-000079","at":"2026-07-09T07:22:58Z","actor":"main","command":"article section","mutating":true,"touched":["S-02"],"summary":"section S-02: 395 words, 5 cites"}
+{"schema":"event.v1","event_id":"EV-000080","at":"2026-07-09T07:22:58Z","actor":"main","command":"article section","mutating":true,"touched":["S-03"],"summary":"section S-03: 468 words, 4 cites"}
+{"schema":"event.v1","event_id":"EV-000081","at":"2026-07-09T07:22:58Z","actor":"main","command":"article section","mutating":true,"touched":["S-04"],"summary":"section S-04: 420 words, 4 cites"}
+{"schema":"event.v1","event_id":"EV-000082","at":"2026-07-09T07:23:04Z","actor":"main","command":"article assemble","mutating":true,"touched":[],"summary":"assemble -> article/final.md"}
+{"schema":"event.v1","event_id":"EV-000083","at":"2026-07-09T07:23:16Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000084","at":"2026-07-09T07:24:07Z","actor":"main","command":"article section","mutating":true,"touched":["S-01"],"summary":"section S-01: 517 words, 6 cites"}
+{"schema":"event.v1","event_id":"EV-000085","at":"2026-07-09T07:24:07Z","actor":"main","command":"article section","mutating":true,"touched":["S-03"],"summary":"section S-03: 357 words, 4 cites"}
+{"schema":"event.v1","event_id":"EV-000086","at":"2026-07-09T07:24:11Z","actor":"main","command":"article assemble","mutating":true,"touched":[],"summary":"assemble -> article/final.md"}
+{"schema":"event.v1","event_id":"EV-000087","at":"2026-07-09T07:24:20Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000088","at":"2026-07-09T07:24:27Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}

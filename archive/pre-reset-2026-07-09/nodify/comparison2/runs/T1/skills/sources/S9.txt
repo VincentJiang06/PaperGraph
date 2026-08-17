@@ -1,0 +1,18 @@
+Title: MIT report: 95% of generative AI pilots at companies are failing
+Publication: Fortune (covering MIT NANDA "The GenAI Divide: State of AI in Business 2025" report)
+URL: https://fortune.com/2025/08/18/mit-report-95-percent-generative-ai-pilots-at-companies-failing-cfo/
+Accessed via: WebFetch, 2026-07-09
+
+Verbatim key quotes:
+
+"The 95% failure rate for enterprise AI solutions represents the clearest manifestation of the GenAI Divide"
+
+"about 5% of AI pilot programs achieve rapid revenue acceleration; the vast majority stall"
+
+"Rather than mass layoffs, companies are increasingly not backfilling positions as they become vacant."
+
+Disruption noted as concentrated "in customer support and administrative roles, particularly positions previously outsourced."
+
+Methodology (from underlying MIT NANDA report, as summarized): based on 52 executive interviews, 153 leader surveys, and analysis of 300 public AI deployments.
+
+Notes: This source is important for the "adoption friction" mechanism: even where firms adopt genAI/agents, most pilots fail to reach production value, and the observed labor-market adjustment channel is disproportionately "quiet attrition" (not backfilling vacancies) rather than visible mass layoffs — which would make AI's net employment effect systematically under-visible in headline layoff statistics.

@@ -1,0 +1,22 @@
+SOURCE S11  [ADOPTION/DIFFUSION facet; anchors "exposure≠impact"]
+Title: The Rapid Adoption of Generative AI
+Authors: Alexander Bick, Adam Blandin, David Deming
+Venue: NBER WP 32966 (2024); St. Louis Fed WP 2024-027; SSRN 4964384
+URLs fetched: https://cepr.org/voxeu/columns/rapid-adoption-generative-ai ; https://www.nber.org/papers/w32966 (search summary)
+Fetched: 2026-07-09
+
+VERBATIM POINTS (VoxEU/CEPR column vintage):
+- "32% of the US population aged 18-64 used generative AI at least once in the week prior to the survey"
+- "About 24% of employed respondents had used generative AI at work in the previous week, with 11% using it every workday that week."
+- "Between 1% and 8% of all work hours in the US are currently assisted by generative AI."
+- Productivity ceiling: "If generative AI increased productivity by 25% ... it could plausibly grow labour productivity by between 0.2% and 2.1% at current levels of usage."
+- Speed: "Two years after the introduction of ChatGPT, 39% of individuals reported using generative AI ... compared to 20% for PCs three years after the first mass computer was released."
+
+NOTE ON VINTAGES (report both): An earlier/other summary of the same paper cites "nearly 40%" of pop 18-64 using genAI, "23%" using at work weekly, "9%" every workday, "1 to 5 percent" of work hours assisted, time savings "1.4% of total work hours," and a boost of "0.125 to 0.875 percentage points." Figures differ by survey wave/framing; direction is identical.
+
+DESIGN: Nationally representative repeated survey (Real-Time Population Survey, modeled on CPS), self-report.
+SAMPLE: US adults 18-64, late 2024.
+TIER: C/D — descriptive adoption; the productivity numbers are ARITHMETIC extrapolations from experimental gains (S1-S3,S9), NOT measured causally.
+DIRECTION: Adoption is historically FAST and broad, yet the realized share of hours and productivity contribution is SMALL so far.
+KEY LIMITS: Self-reported use & time savings; productivity is back-of-envelope (assumes RCT gains generalize); says nothing about employment/wages directly.
+CROSS-REF: Key bridge for L6 — shows why big task-RCT gains have not yet moved macro aggregates: only ~1-8% of hours touched. Adoption (this) ≠ exposure (S7/S8) ≠ impact (S5/S6/S13).

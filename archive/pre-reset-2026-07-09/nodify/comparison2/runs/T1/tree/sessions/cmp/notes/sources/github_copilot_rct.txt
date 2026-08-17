@@ -1,0 +1,12 @@
+Source: "The Impact of AI on Developer Productivity: Evidence from GitHub Copilot" (Peng, Kalliamvakou, Cihon, Demirer, 2023), arXiv:2302.06590; plus GitHub/Accenture/Microsoft/MIT pooled enterprise field-experiment follow-ups (2024-2025).
+URL: https://arxiv.org/pdf/2302.06590 ; https://github.blog/news-insights/research/research-quantifying-github-copilots-impact-on-developer-productivity-and-happiness/
+
+Key findings (as extracted via search aggregation of the paper and GitHub's own research blog):
+
+"A randomized controlled experiment recruited 95 professional developers and split them into two groups, with one group using GitHub Copilot to write an HTTP server in JavaScript and the other without it. The developers using GitHub Copilot took on average 1 hour and 11 minutes to complete the task, while those without it took on average 2 hours and 41 minutes." — a 55.8% reduction in programming time for the treatment group (95% CI: 21-89%).
+
+Enterprise-scale follow-up: "A pooled analysis of three field experiments with 4,867 developers found a 26% increase in throughput (measured as an increase in the number of pull requests) for developers using Copilot."
+
+Accenture RCT: "an 8.69% increase in pull requests per developer, an 11% increase in pull request merge rates, and an 84% increase in successful builds."
+
+Relevance: task-level, well-identified (RCT / field-experiment) evidence that generative AI coding assistants substantially speed up narrowly-scoped, well-defined programming tasks. This is evidence FOR strong task-level substitution/augmentation on constrained tasks — but note the scope: single, bounded task (write an HTTP server) not full-stack software engineering work in a live, complex codebase. See contrasting METR (2025) finding for external-validity caveat on non-constrained real-world tasks.

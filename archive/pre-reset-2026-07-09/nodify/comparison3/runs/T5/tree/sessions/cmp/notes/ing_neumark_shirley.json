@@ -1,0 +1,19 @@
+{
+ "kind": "paper",
+ "title": "Neumark, Shirley (2022), Myth or Measurement, Industrial Relations 61(4)",
+ "url": "https://www.nber.org/papers/w28388",
+ "text_file": "notes/src_neumark_shirley.txt",
+ "summary": "普查美国最低工资-就业文献:负估计占明显多数(核心估计79.2%为负);对青年/低技能与直接受影响群体证据更强负;低薪行业研究不那么一边倒——文献重心偏负而非零。",
+ "bindings": [
+  {
+   "node_id": "N-0021",
+   "relation": "supports",
+   "note": "文献重心偏负的最强记录"
+  },
+  {
+   "node_id": "N-0026",
+   "relation": "supports",
+   "note": "青年/低技能更负"
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+  "node_id": "N-0011",
+  "lean": "mixed",
+  "summary": "劳动力市场紧张对通胀的定量贡献是分歧最大的分量:Bernanke-Blanchard的价格-工资模型认为其在通胀激增期(2021Q3-2023Q2)贡献'微小'但持续存在,后期(2022年后)随其他冲击消退成为主导;Domash-Summers基于空缺率/离职率等需求侧指标则认为劳动力市场处于历史性过热;'超核心'服务通胀对失业缺口的敏感度很弱(斜率-0.09不显著),说明劳动力市场紧张向通胀的传导本身也具有粘性和不确定性。综合看:早期贡献有限、后期(尤其2022年末至2023年)成为通胀持续性的关键但难以精确量化的驱动力。",
+  "confidence": "medium",
+  "based_on": {
+    "children": [],
+    "evidence": [
+      {"ref_id": "E-01", "title": "Bernanke & Blanchard (2023) 后期主因", "doc_id": "DOC-0003", "url": null, "locator": null, "quote": "As product market shocks have faded, the tight labor market and the resulting persistence in nominal wage increases have become the main factors behind wage and price inflation.", "tool": "web_search", "note": null},
+      {"ref_id": "E-02", "title": "Domash & Summers 工资增速", "doc_id": "DOC-0006", "url": null, "locator": null, "quote": "In February 2022, year-over-year wage inflation reached 6.5 percent according to the Federal Reserve Bank of Atlanta, the highest on record.", "tool": "web_search", "note": null},
+      {"ref_id": "E-03", "title": "FRBSF EL2023-19 超核心通胀粘性", "doc_id": "DOC-0008", "url": null, "locator": null, "quote": "supercore inflation has a much weaker relationship to the unemployment gap compared to rent inflation, with an estimated slope of -0.09 that is not statistically significant", "tool": "web_search", "note": null}
+    ]
+  },
+  "open_questions": ["劳动力市场紧张对通胀的传导系数(斜率)本身在2021-2023年是否发生了结构性变化,仍是学术界争论的焦点"]
+}

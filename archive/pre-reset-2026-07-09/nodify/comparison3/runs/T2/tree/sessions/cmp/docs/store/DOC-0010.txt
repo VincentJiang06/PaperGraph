@@ -1,0 +1,8 @@
+SOURCE: Bank of England — Pugh, Bunn & Yeates (2018), Staff Working Paper No. 720 "The distributional impact of monetary policy easing in the UK between 2008 and 2014", summarized on Bank Underground (2018-03-27)
+URL: https://bankunderground.co.uk/2018/03/27/how-does-monetary-policy-affect-the-distribution-of-income-and-wealth/
+VERBATIM QUOTES:
+"We estimate that looser monetary policy only had a small impact on the income and wealth Gini coefficients between 2008 and 2014."
+"Because the percentage changes in income and wealth were similar across all distributions there was no large impact on inequality."
+"Taking wealth as an example, households in the bottom half of the wealth distribution are estimated to have experienced a slightly larger percentage increase in real wealth than those at the top."
+"Since younger households are more likely to include people in work and to have outstanding debts, they have tended to benefit by more than older households from looser monetary policy through higher employment income and lower interest payments."
+"In contrast to the effect on incomes, older households have benefited most from higher wealth as a result of looser monetary policy, since they are more likely than younger households to hold equities and be homeowners."

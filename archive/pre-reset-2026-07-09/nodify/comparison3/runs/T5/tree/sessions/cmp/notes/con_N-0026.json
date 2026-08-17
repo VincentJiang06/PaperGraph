@@ -1,0 +1,23 @@
+{
+ "node_id": "N-0026",
+ "lean": "supports",
+ "summary": "分配后果:证据一致显示负效应集中在最边际群体——Neumark-Shirley称对青年/低技能证据更强负。平均近零并不意味着人人无损,青年、无经验、低技能者承担了大部分(仍不大的)disemployment与工时/门槛调整。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Neumark-Shirley:青年/低教育更强负",
+    "doc_id": "DOC-0009",
+    "quote": "this evidence is stronger for teens and young adults as well as the less-educated",
+    "url": "https://www.nber.org/papers/w28388",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "门槛提高导致的labor-labor替代把损失转给了谁(最低技能被挤出)?"
+ ]
+}

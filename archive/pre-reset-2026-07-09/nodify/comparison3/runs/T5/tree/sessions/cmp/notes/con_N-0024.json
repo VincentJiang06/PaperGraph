@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0024",
+ "lean": "supports",
+ "summary": "对红队的有效反驳:红队最有力的负效应多来自特定设定(大衰退、高bindingness、含州趋势的水平回归);而不依赖增长counterfactual的bunching与边界断点设计仍落在近零,西雅图中数据更全的餐饮估计也更接近零。近零对温和上调是稳健的,红队缩小了但未推翻它。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Cengiz:设计不依赖增长反事实",
+    "doc_id": "DOC-0001",
+    "quote": "We also find no evidence of disemployment when we consider higher levels of minimum wages.",
+    "url": "https://www.nber.org/papers/w25434",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "title": "Berkeley:数据更全的估计近零",
+    "doc_id": "DOC-0006",
+    "quote": "found no evidence of job loss in Seattle's restaurant industry, even as hourly pay reached $13.",
+    "url": "https://irle.berkeley.edu/publications/",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "若给红队证据更高权重,'近零'区间的上界会移动多少?"
+ ]
+}

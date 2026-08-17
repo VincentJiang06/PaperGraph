@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0002",
+ "lean": "supports",
+ "summary": "任务级替代确已广泛发生但主要是增强:暴露面覆盖约80%劳动力的部分任务(≥50%任务受影响者仅约19%,含工具则47-56%),而真实使用侧以增强(~57%)压过自动化、集中于编程/写作;端到端整任务替代仍窄。",
+ "confidence": "high",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "GPTs are GPTs (Eloundou et al.)",
+    "doc_id": "DOC-0001",
+    "quote": "around 80% of the U.S. workforce could have at least 10% of their work tasks affected by the introduction of LLMs",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "暴露=潜在影响,跨薪资层"
+   },
+   {
+    "title": "Anthropic Economic Index (Claude 3.7)",
+    "doc_id": "DOC-0002",
+    "quote": "augmentation still comprising 57% of usage",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "已实现使用以增强为主,非整岗自动化"
+   }
+  ]
+ },
+ "open_questions": [
+  "暴露潜力→已实现替代的转化率随能力/采用如何变化?"
+ ]
+}

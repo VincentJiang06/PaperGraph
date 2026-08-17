@@ -1,0 +1,14 @@
+Title: Recession indicator: Sahm Rule flashes red, but creator says 'this time really could be different'
+Publisher: Fortune
+URL: https://fortune.com/2024/08/02/recession-indicator-claudia-sahm-rule-trigger-unemployment-rate-jobs-report/
+Date: August 2, 2024
+
+Key verbatim extracted content:
+
+Trigger event: "A weak July jobs report triggered the Sahm Rule, which signals the likely start of a recession when the current three-month moving average in the unemployment rate exceeds the lowest three-month moving average over the past year by 0.5 percentage point or more. The U.S. economy added just 114,000 jobs in July, and the unemployment rate rose from 4.1% in June to 4.3% in July." July unemployment described as "its highest level in nearly three years."
+
+Sahm Rule reading: "surged to 0.53% in July, up from 0.43% in June, crossing the 0.50% threshold."
+
+Claudia Sahm's own comment: "I am not concerned that, at this moment, we are in a recession" / "no one should be in panic mode today" — but also: "recession odds, given what we're seeing in the labor market, are increasing."
+
+Key caveat from Sahm: "this time really could be different" — due to labor force shifts from immigration and prior worker exits that could distort the traditional Sahm Rule signal.

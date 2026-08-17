@@ -1,0 +1,14 @@
+{
+ "kind": "paper",
+ "title": "Luca, Luca (2019), Survival of the Fittest: Minimum Wage and Firm Exit, NBER 25806",
+ "url": "https://www.nber.org/papers/w25806",
+ "text_file": "notes/src_luca.txt",
+ "summary": "湾区35000家餐厅Yelp数据:最低工资每涨$1使中位(3.5星)餐厅退出概率上升14%,而5星餐厅不受影响——平均近零掩盖了边际/低评级企业的退出与选择效应。",
+ "bindings": [
+  {
+   "node_id": "N-0027",
+   "relation": "supports",
+   "note": "边际企业退出的分布证据"
+  }
+ ]
+}

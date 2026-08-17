@@ -1,0 +1,10 @@
+{
+  "kind": "report",
+  "title": "FRBSF Economic Letter 2021-27: Is the American Rescue Plan Taking Us Back to the '60s?",
+  "url": "https://www.frbsf.org/research-and-insights/publications/economic-letter/2021/10/is-american-rescue-plan-taking-us-back-to-1960s/",
+  "text_file": "notes/scratch/doc_sf_fed_arp.txt",
+  "summary": "SF Fed估计美国救援计划(ARP)通过提高职位空缺/失业比,使核心通胀在2022年前每年高出约0.3个百分点,影响为暂时性。",
+  "bindings": [
+    {"node_id": "N-0007", "relation": "supports", "note": "ARP财政刺激对核心通胀的贡献估计约每年0.3个百分点(温和estimate)"}
+  ]
+}

@@ -1,0 +1,8 @@
+Source: web search synthesis — TheGlobalEconomy.com / Statista aggregation of World Bank data; VoxDev article on female labour force participation in China
+URLs: https://www.theglobaleconomy.com/China/Female_labor_force_participation/ ; https://www.statista.com/statistics/252721/female-labor-force-participation-rate-in-china/ ; https://voxdev.org/topic/labour-markets/boosting-womens-labour-force-participation-china-current-state-and-challenges
+
+Key points:
+- China's female labor force participation rate in 2024 was 59.56%, DOWN from 59.95% in 2023 — i.e. currently declining, not rising.
+- The female labour force participation ratio fell from about 80% in 1990 to 67% in 2019 (long secular decline through the reform era, not an increase).
+- China's transition from a planned economy to a market economic powerhouse appears to have eroded earlier gender-equality achievements, reflected in falling female labor force participation, widening gender wage gaps, and underrepresentation of women in business leadership.
+- Implication: female LFPR in China is currently ABOVE the global average in level, but the trend direction is downward, not upward — so treating "improving female LFPR" as a labor-supply offset requires reversing an existing multi-decade declining trend, not merely continuing one.

@@ -1,0 +1,23 @@
+{
+ "node_id": "N-0022",
+ "lean": "supports",
+ "summary": "动态遗漏是近零的一个真实威胁:Meer-West论证最低工资经数年压低job growth而非即时水平,含州特定趋势的常用设定会漏掉它;效应对青年与低薪密集行业最明显。若成立,横截面'水平'近零会系统性低估负效应。这是对近零结论最认真的方法论反方之一。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Meer-West:压低job growth",
+    "doc_id": "DOC-0010",
+    "quote": "the minimum wage reduces job growth over a period of several years. These effects are most pronounced for younger workers and in industries with a higher proportion of low-wage workers.",
+    "url": "https://www.nber.org/papers/w19262",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "Meer-West结论对'是否控制州趋势'高度敏感,哪种设定更可信仍有争议。"
+ ]
+}

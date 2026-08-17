@@ -1,0 +1,14 @@
+{
+ "kind": "paper",
+ "title": "Lordan, Neumark (2018), People versus Machines: Minimum Wages and Automatable Jobs, Labour Economics 52",
+ "url": "https://www.nber.org/papers/w23667",
+ "text_file": "notes/src_lordan.txt",
+ "summary": "CPS 1980-2015:最低工资上调显著降低低技能工人在可自动化岗位的份额,提高其变为非就业或更差岗位的概率;对制造业年长低技能工人影响尤大——自动化/门槛是非headcount边际。",
+ "bindings": [
+  {
+   "node_id": "N-0016",
+   "relation": "supports",
+   "note": "自动化替代边际"
+  }
+ ]
+}

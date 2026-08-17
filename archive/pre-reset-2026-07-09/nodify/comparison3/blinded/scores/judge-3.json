@@ -1,0 +1,102 @@
+{
+  "T1": {
+    "A": {
+      "coverage": 5,
+      "depth": 5,
+      "adversarial_completeness": 5,
+      "grounding": 5,
+      "convergence": 5,
+      "calibration": 4,
+      "rationale": "Strength: a systematic five-channel semi-quantitative decomposition (fiscal, monetary, supply-chain, labor, energy) with each channel red-teamed and grounded in clean primary Fed/NBER/EIA verbatim quotes, incl. the second-round-effects nuance. Weakness: no explicit dead-ends/process-transparency section and one contrarian (greedflation) point leans on a Wikipedia citation."
+    },
+    "B": {
+      "coverage": 5,
+      "depth": 4,
+      "adversarial_completeness": 5,
+      "grounding": 4,
+      "convergence": 5,
+      "calibration": 5,
+      "rationale": "Strength: broader distinct angles (an explicit 2022-24 disinflation-attribution line, FTPL steelman, Fed-contribution debate) with exemplary red-teaming that engages contradicting sources and honest dead-ends incl. a retrieval-drift note. Weakness: several load-bearing quotes are self-admittedly unverified (403/truncated), and a couple of channel lines are thinner."
+    }
+  },
+  "T2": {
+    "A": {
+      "coverage": 5,
+      "depth": 4,
+      "adversarial_completeness": 5,
+      "grounding": 5,
+      "convergence": 5,
+      "calibration": 5,
+      "rationale": "Strength: the 'the measure decides the sign' organizing insight cleanly integrates all channels, plus honest dead-ends, endogenous-r* reasoning, and a counterfactual-cuts-both-ways synthesis. Weakness: a few mechanisms are less deeply quantified and two sources come via a Hutchins summary rather than the primary paper."
+    },
+    "B": {
+      "coverage": 5,
+      "depth": 5,
+      "adversarial_completeness": 5,
+      "grounding": 5,
+      "convergence": 4,
+      "calibration": 4,
+      "rationale": "Strength: strong mechanism depth (HANK micro-foundation, asset-type heterogeneity, generational axis, r* -300/-700bp) with primary sourcing and a red-team-of-the-red-team on BoE. Weakness: heavily repetitive nested restatement makes the integration more sprawling, and there is no explicit dead-ends section."
+    }
+  },
+  "T3": {
+    "A": {
+      "coverage": 4,
+      "depth": 4,
+      "adversarial_completeness": 4,
+      "grounding": 4,
+      "convergence": 4,
+      "calibration": 4,
+      "rationale": "Strength: compact and correctly frames the neutral-vs-lag question as observationally underdetermined, with two opposite-direction red-teams. Weakness: fewest distinct angles (no clean causal design), key agent-reliability numbers rest on a secondary prediction-tracker, and unresolved cross-reference placeholder artifacts leak into the text."
+    },
+    "B": {
+      "coverage": 5,
+      "depth": 4,
+      "adversarial_completeness": 5,
+      "grounding": 4,
+      "convergence": 5,
+      "calibration": 5,
+      "rationale": "Strength: broadest angle set including the cleanest causal design (freelance quasi-experiment) and forecast-divergence red-team, converging on an explicit, deliberately-weak posterior (~55-60/40-45) with an honest dead-ends section. Weakness: several load-bearing figures are paraphrased/secondary ('via Fortune/Brookings') rather than verbatim-primary."
+    }
+  },
+  "T4": {
+    "A": {
+      "coverage": 5,
+      "depth": 5,
+      "adversarial_completeness": 5,
+      "grounding": 4,
+      "convergence": 5,
+      "calibration": 5,
+      "rationale": "Strength: the non-obvious reframe (per-working-age Japan actually kept pace with the US) plus correctly locating the balance-sheet/debt channel (not demographics) as the real transmission mechanism, integrated into explicit scenario probabilities. Weakness: openly flags that several load-bearing numbers are search-summarized rather than verbatim-extracted from primary PDFs."
+    },
+    "B": {
+      "coverage": 4,
+      "depth": 4,
+      "adversarial_completeness": 4,
+      "grounding": 4,
+      "convergence": 4,
+      "calibration": 4,
+      "rationale": "Strength: comprehensive and systematically red-teams each offset (automation ceiling, TFP, participation) with specific magnitudes and the decisive development-stage argument. Weakness: conventional framing that misses the premise-reframe, a load-bearing China-vs-Japan income comparison rests on a Substack, and it offers no dead-ends or explicit scenario calibration."
+    }
+  },
+  "T5": {
+    "A": {
+      "coverage": 5,
+      "depth": 5,
+      "adversarial_completeness": 5,
+      "grounding": 5,
+      "convergence": 5,
+      "calibration": 4,
+      "rationale": "Strength: the broadest set of independent quasi-experiments and margins (separations-as-monopsony-fingerprint, grocery pass-through, Seattle hours, firm-exit selection, recession case), all verbatim-sourced and two-sidedly reconciled into a dose-response conclusion. Weakness: no explicit dead-ends/process-transparency section, and a couple of counter-estimates rest on a think-tank brief or a publisher landing-page URL."
+    },
+    "B": {
+      "coverage": 4,
+      "depth": 5,
+      "adversarial_completeness": 5,
+      "grounding": 5,
+      "convergence": 5,
+      "calibration": 5,
+      "rationale": "Strength: a sharp reconciliation (sign != magnitude, employer-concentration sign-flip, pass-through tension) anchored on the best recent meta-analysis, with a dead-ends section documenting primary-source self-corrections. Weakness: slightly fewer independent empirical footholds, leaning on Dube-Lindner as a synthesizing conduit for several key numbers."
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "topic": "T5",
+  "arm": "notree",
+  "recovered": {
+    "lines_of_inquiry": {
+      "status": "full",
+      "detail": "log.md enumerates all 7 lines explicitly (L1 quasi-experiments/bunching-Seattle-panels; L2 monopsony; L3 cost pass-through; L4 non-wage margins hours/benefits/hiring-bar/automation; L5 nonlinearity/Kaitz-bite threshold; L6 meta-analysis+publication bias Dube-vs-Neumark; L7 calibrated dose-response), each with an [adv] red-team sub-line (L1.1..L6.1). A separate 'Dead ends / retired' section preserves the contrarian/killed threads (the '-0.06 CI' misread correction, the misidentified IZA dp14124 source, the 'profits absorb cost' line folded into pass-through, EITC/poverty lines dropped as out-of-scope, and the sandboxed-curl/CBO-403 tooling workaround). Nothing appears truncated."
+    },
+    "leanings": {
+      "status": "full",
+      "detail": "Every line carries an explicit verdict tag with confidence: L1 near-zero SUPPORTED/high; L2 monopsony SUPPORTED-partial/med-high; L3 pass-through SUPPORTED/high; L4 margins SUPPORTED/med-high; L5 nonlinearity SUPPORTED-direction/med (threshold fragile); L6 negative-preponderance genuine-tension/med. Overall thesis is stated and reconciled: at observed US bites the sign is modestly negative but magnitude small (OWE > -0.4 = 'small negative/positive'); Neumark-Shirley (sign) and Dube-Lindner (magnitude) are BOTH right, dissolving the tension. Card-Krueger near-zero reconciled with competitive theory via monopsony + full price pass-through + bounded non-wage margins; effect turns clearly negative only for large/high-level hikes."
+    },
+    "key_figures": {
+      "status": "full",
+      "detail": "Dense and specific, and all corroborated by the 9 source files: Cengiz agg elasticity 0.024 (s.e. .025), own-wage 0.41 ruling out <-0.45, rules out below Meer-West -0.074; Dube-Lindner median OWE -0.13 (72 studies, 87% earnings retained), mean -0.25, 71% small-neg/positive, teens -0.17/-0.25; Seattle hours -6-7%, wages +3% (3.4%), -$74/mo/job; Azar concentrated OWE +1.8 vs non-concentrated -0.50; Clemens-Strain >=$2.50 hike OWE -1.01 vs +0.46; Neumark-Shirley 79.3% negative / 55.4% neg-sig@10%; Clemens-Kahn-Meer health-insurance offsets 9% of wage gains; Ashenfelter-Jurajda 0.2 price elasticity, 0.7 wage-to-MW elasticity; CBO 1.3M median (range ~0 to 3.7M), 17M raised."
+    },
+    "adversarial_lines": {
+      "status": "full",
+      "detail": "Fully preserved with both the challenge and its outcome. Seattle (L1.1) = the real leading US negative, but on the HOURS/hiring margin and contested (EPI critique; incumbents ~break even). L2.1 monopsony alone can't explain full pass-through + non-falling profits. L3.1 pass-through is necessary-not-sufficient (competitive model also predicts it; predicts job loss unless output demand inelastic). L4.1 automation null in fast food (Ashenfelter-Jurajda) BUT Lordan-Neumark shows real automation-substitution losses for older/low-skilled/manufacturing — captured as genuine contradiction (composition shifts hide within-group losses). L6 is a full red-team of the 'zero' hypothesis (Neumark-Shirley preponderance negative) with explicit reconciliation. Adversarial verdicts and confidence are recorded."
+    },
+    "evidence_provenance": {
+      "status": "full",
+      "detail": "Exceptional. A sources/ directory holds 9 numbered source files (Cengiz-Dube-Lindner-Zipperer 2019, Dube-Lindner 2024, Neumark-Shirley 2022, Jardim/Seattle 2017, Clemens-Kahn-Meer 2018, Ashenfelter-Jurajda 2021, Azar et al 2024, Lordan-Neumark 2018, CBO 2019), each with full citation, working URL (NBER/IZA/journal/agency), and VERBATIM quotes from pdftotext/WebFetch backing every headline figure in the log. Provenance chain is auditable claim-by-claim and independently verifiable. The log even documents its own corrections and the CBO-403 workaround (used a quoting Rice Kinder restatement page). Only minor caveat: raw page text was intentionally discarded, but the retained quotes suffice."
+    },
+    "next_action": {
+      "status": "partial",
+      "detail": "No explicit next-action / TODO pointer. But the state is unambiguously at convergence: L7 is tagged '(converge)', all 7 lines are resolved with verdicts, dead ends are retired, and the calibrated national CBO projection is in hand. The implied next step — synthesize the calibrated judgment write-up — is obvious from the terminal state, so a fresh agent would know to move to synthesis rather than continue investigating. Docked from full only because the resume instruction is inferred from 'converge', not stated (e.g., no note on remaining gaps like cleanly locating the US turning point, which the log flags as the open research frontier)."
+    }
+  },
+  "overall_recoverability": 5,
+  "narrative": "A fresh agent could continue seamlessly, not restart. log.md is a fully structured state: all 7 lines (plus adversarial sub-lines and retired dead ends) carry explicit verdicts, confidence, and hard numbers, and the reconciling thesis is spelled out. The paired sources/ directory gives 9 fully-cited files with verbatim quotes and URLs backing every key figure — provenance is auditable and verifiable. The run is essentially complete and converged; the only soft spot is the absence of an explicit next-action line, but the terminal 'converge' state makes the synthesis step obvious. Near-total recovery."
+}

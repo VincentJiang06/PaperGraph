@@ -1,0 +1,13 @@
+Title: Seattle's Minimum Wage Experience 2015-16
+Authors: Michael Reich, Sylvia Allegretto, Anna Godøy
+Published: Institute for Research on Labor and Employment (IRLE), UC Berkeley, 2017 report.
+URL: https://irle.berkeley.edu/wp-content/uploads/2017/06/Seattles-Minimum-Wage-Experiences-2015-16.pdf ; https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3043388
+
+Study description: analyzes county- and city-level data for 2009-2016 on all employees using the synthetic control method (with border discontinuity design and dynamic panel data models as alternative checks), examining Seattle's minimum wage increases from the statewide $9.47 to $10-$11 in 2015 and $10.50-$13 in 2016, focused on the food services / restaurant industry.
+
+Verbatim / closely-quoted key findings (as extracted):
+"synthetic control models suggest that restaurant industry employment at all wage levels did not significantly change following Seattle's minimum-wage increases."
+The study "found significantly positive earnings increases and no significant employment losses" in Seattle food services; results from multiple methodological approaches "all suggesting employment effects are small."
+Reported conclusion: Seattle's minimum-wage law "actually led to higher pay for restaurant workers without affecting the overall number of jobs in the industry."
+
+Note: this directly contrasts with Jardim et al. (S7), which used individual-level administrative payroll records and found a significant reduction in hours; the divergence is a genuine methodological dispute over aggregation level and data source, not a fabricated disagreement.

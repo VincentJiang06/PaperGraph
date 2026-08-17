@@ -1,0 +1,14 @@
+{
+  "node_id": "N-0010",
+  "lean": "supports",
+  "summary": "供应链中断对通胀有清晰、可量化的显著贡献:GSCPI冲击平均解释2021年4月-2023年3月约60%的趋势外通胀上升,峰值(2022年中)贡献约2.5个百分点,是供给侧三个分量中证据最扎实、量化程度最高的一项。其贡献随供应链正常化在2023年降至约1.4个百分点,与耐用品/汽车价格回落的时间线吻合。",
+  "confidence": "high",
+  "based_on": {
+    "children": [],
+    "evidence": [
+      {"ref_id": "E-01", "title": "FRBSF EL2023-16 供应链压力与通胀", "doc_id": "DOC-0007", "url": null, "locator": null, "quote": "GSCPI shocks contributed on average about 60% of the above-trend run-up of headline inflation", "tool": "web_search", "note": null},
+      {"ref_id": "E-02", "title": "FRBSF EL2023-16 峰值到2023回落", "doc_id": "DOC-0007", "url": null, "locator": null, "quote": "Since mid-2022, the contributions of GSCPI shocks have declined from 2.5 to 1.4 percentage points, and headline inflation has also slowed.", "tool": "web_search", "note": null}
+    ]
+  },
+  "open_questions": []
+}

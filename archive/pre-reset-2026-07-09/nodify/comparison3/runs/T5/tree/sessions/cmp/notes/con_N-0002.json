@@ -1,0 +1,27 @@
+{
+ "node_id": "N-0002",
+ "lean": "supports",
+ "summary": "实证地基:2015-2024为止最强的整合性准实验(Cengiz bunching覆盖138次上调)给出低薪岗位总数五年内基本不变、就业弹性近零且精度较高;西雅图分歧主要是测量对象(工时vs人数)之别而非政策效果;识别/功效担忧真实但被互补设计的证据体压制。校准判断:对温和州级上调,近零(小负)是当前最有依据的经验结论,但它是'headcount近零',非'零成本'。",
+ "confidence": "high",
+ "based_on": {
+  "children": [
+   "N-0008",
+   "N-0009",
+   "N-0010"
+  ],
+  "evidence": [
+   {
+    "title": "Cengiz核心结果",
+    "doc_id": "DOC-0001",
+    "quote": "the overall number of low-wage jobs remained essentially unchanged over five years following the increase",
+    "url": "https://www.nber.org/papers/w25434",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "bunching对tradable部门外溢与5年以上长期动态的覆盖仍有限。"
+ ]
+}

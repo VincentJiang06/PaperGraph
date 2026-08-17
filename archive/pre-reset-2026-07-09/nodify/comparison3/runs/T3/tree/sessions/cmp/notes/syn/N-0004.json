@@ -1,0 +1,28 @@
+{
+ "node_id": "N-0004",
+ "lean": "open",
+ "confidence": "medium",
+ "summary": "因果识别裁决:假设A(近中性,N-0008/DOC-0005/0006)与假设B(滞后,N-0009/DOC-0007/0003)各具真实机制,且在2020-25温和总量数据上观测等价;叠加强混杂(N-0010:窗口短、混杂主导),现有识别手段无法干净区分二者。诚实结论=数据欠定(underdetermined),不能据总量温和径直断言中性。",
+ "based_on": {
+  "children": [
+   "N-0008",
+   "N-0009",
+   "N-0010"
+  ],
+  "evidence": [
+   {
+    "title": "Yale Budget Lab",
+    "doc_id": "DOC-0004",
+    "quote": "33 months is a short window relative to prior technological transitions",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "识别所需窗口尚未积累"
+   }
+  ]
+ },
+ "open_questions": [
+  "需要何种识别策略(暴露×采用双差、职业层高频微观面板、准实验)才能把AI边际从疫情/加息/科技回吐中分离?",
+  "区分中性vs滞后的判决性观测量是什么——是入门级信号随时间上移,还是采用跨阈后的非线性加速?"
+ ]
+}

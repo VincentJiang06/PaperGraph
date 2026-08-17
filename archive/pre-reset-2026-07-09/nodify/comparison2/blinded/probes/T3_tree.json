@@ -1,0 +1,32 @@
+{
+  "topic": "T3",
+  "mode": "tree",
+  "recovered": {
+    "lines_of_inquiry": {
+      "status": "full",
+      "detail": "The tree explicitly encodes every line of inquiry. Root N-0001 = 'To what degree is QE a causal driver of US wealth-inequality vs. the counterfactual baseline of structural trends (aging, skill-biased tech, globalization)?' It decomposes into 4 sub-viewpoints, each the question's named channels: N-0002 asset-price channel, N-0003 saver/borrower redistribution channel, N-0004 macro employment/wage channel, N-0005 the causal-identification problem. Each viewpoint splits into a neutral evidence claim + an adversarial claim (N-0006/07, N-0008/09, N-0010/11, N-0012/13). Full statements, parent links, and 'why_helps_parent' notes are all persisted and readable via nd tree / nd show."
+    },
+    "leanings": {
+      "status": "full",
+      "detail": "Every node carries a recorded lean plus a synthesized summary. Overall thesis (N-0001, mixed/medium): QE is a 'significant but not primary' cause — an amplifier/catalyst of structural forces, not an independent main driver; asset-price channel is clearly regressive and sizable, saver/borrower channel is directionally ambiguous (possibly protective for low-wealth under the counterfactual), employment channel is genuinely equalizing but acts on income not wealth. Per-node leans: N-0002 mixed, N-0003 mixed, N-0004 mixed, N-0005 mixed; claim leans: N-0006 supports, N-0007 supports, N-0008 mixed, N-0009 supports, N-0010 supports, N-0011 mixed(low conf), N-0012 mixed, N-0013 supports. Confidence levels stored per synthesis."
+    },
+    "key_figures": {
+      "status": "full",
+      "detail": "Quantitative findings survive verbatim with source quotes: 100bp expansionary policy raises Gini by ~0.005 (Realtime data) to ~0.015 (DFA data); monetary policy's historical Gini contribution ~0.012-0.013 (1976-2012, PERI WP576/Medlin-Epstein LP-IV). US wealth Gini total rise ~0.03 (2007-2019), so MP explains ~1/3-2/5. Fed model (Chung et al. 2011): QE/LSAP lowered unemployment ~1.5pp by 2012 vs no-purchase counterfactual and likely prevented deflation. Tight labor market offset ~1/3 of the four-decade 90/10 log-wage inequality rise (Autor-Dube-McGrew NBER w31010). African Americans lost ~half their wealth in the recession (NLIHC). Eurozone (ECB 2021): combined stock+house effects leave net-wealth Gini 'broadly unchanged'; bottom-income growth 6x other quantiles."
+    },
+    "adversarial_lines": {
+      "status": "full",
+      "detail": "Counter-arguments are first-class nodes tagged orientation:adversarial, each concluded with evidence: N-0007 — the asset-price rise is largely the product of structurally falling r* (aging, saving glut, and inequality itself lowering rates via Mian-Straub-Sufi 'saving glut of the rich'); Bernanke(2015) himself argues MP effects are 'modest and transient'. N-0009 — under a no-QE counterfactual a deeper recession would have hit low-wealth/high-leverage borrowers harder via unemployment/foreclosure, so QE may be equality-protecting, not extractive. N-0011 — employment channel may be too small/short-lived to offset persistent top-wealth lift (but reframed: it acts on income not wealth). N-0013 — endogeneity: QE is a systematic response to structurally-lowered r*, not an exogenous shock (plus simultaneity-bias critique of Wolff 2021), limiting any identification strategy."
+    },
+    "evidence_provenance": {
+      "status": "full",
+      "detail": "Provenance is complete and verifiable. Each synthesis evidence unit has doc_id, title, source URL, a verbatim quote, tool (web_fetch), and an interpretive note; nd docs for-node maps claims to docs. The 12-doc store (docs/index.jsonl + docs/store/DOC-*.txt) records for each: title, URL, kind, sha256 content_hash, stored full text, a summary, and node bindings with relation (supports/context) and rationale. One can trace which source backs which claim and re-verify against the stored text or original URL. Key sources: BIS 2016 (DOC-0001), PERI/Medlin-Epstein 2023 (DOC-0002), Mian-Straub-Sufi (DOC-0003), r* structural drivers (DOC-0004), BoE Bunn/Pugh 2018 (DOC-0005), Auclert 2018 (DOC-0006), Chung et al 2011 (DOC-0007), Autor-Dube-McGrew (DOC-0008), NLIHC (DOC-0009), ECB 2021 (DOC-0010), Fed FEDS Aladangady-Forde 2021 (DOC-0011), Krishnamurthy-Vissing-Jorgensen (DOC-0012). Minor gap: DOC-0011 evidence unit stores a null quote (note only)."
+    },
+    "next_action": {
+      "status": "full",
+      "detail": "The state is at a clean terminal point and fully resumable. The log shows all 13 nodes concluded, root synthesized, check passing 0 hard/0 soft, article outlined (4 sections) and assembled to final.md. A fresh agent can see the investigation is essentially complete and, if it wants to deepen, each node persists explicit open_questions naming the exact residual gaps: no single study jointly decomposes QE's marginal effect from the r* structural trend; no US-specific counterpart to the UK BoE micro study; no joint quantification of QE-averted unemployment/foreclosure into bottom-wealth distribution; no US same-framework comparison of asset-price vs employment channel on one inequality index; no triangulation applying all three identification methods to one US sample; need for a simultaneous-equation/SVAR model to bound the endogeneity residual. These constitute a ready-made next-step research agenda."
+    }
+  },
+  "overall_recoverability": 5,
+  "narrative": "A fresh agent could continue seamlessly without restarting. The nodify session persists the entire reasoning state: five explicit lines of inquiry mirroring the question's channels, per-node leans and confidence, a calibrated overall thesis, verbatim key figures, four first-class adversarial nodes, and fully traceable evidence (doc_id + quote + URL + sha256-hashed stored text + node bindings). The investigation already reached a terminal state (all nodes concluded, article assembled, checks clean), and each node's open_questions supply a precise agenda for deepening. The only trivial loss is one null evidence quote (DOC-0011). Nothing essential must be reconstructed."
+}

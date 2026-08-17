@@ -1,0 +1,8 @@
+Contrarian analysis of California AB 1228 ($20 fast-food minimum wage), as summarized by the Cato Institute research brief (based on NBER WP 34033 / related QCEW analyses).
+
+Key findings (verbatim):
+"Our median estimate suggests that California lost about 18,000 jobs that could have been retained if AB 1228 had not been passed."
+"This approach, namely adjusting for the performance of other industries, suggests that AB 1228 reduced fast-food employment by 3.6 percent."
+"After accounting for this trend, our findings suggest a greater employment decline of 3.2 percent due to AB 1228."
+
+Note: Using QCEW fast-food series adjusted for other-industry/comparison trends, these analyses estimate a 3.2-3.6% employment decline (~18,000 jobs) from AB 1228 — directly contradicting the Berkeley null. The $20 floor is a high relative wage for fast food, so a negative estimate here is consistent with non-linearity at high Kaitz ratios. Evidence on AB 1228 employment is genuinely contested.

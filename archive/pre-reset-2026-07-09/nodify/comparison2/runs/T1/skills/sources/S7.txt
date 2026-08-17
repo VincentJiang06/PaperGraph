@@ -1,0 +1,16 @@
+Title: United States Unemployment Rate (UNRATE series page)
+Publisher: Trading Economics (data sourced from U.S. Bureau of Labor Statistics)
+URL: https://tradingeconomics.com/united-states/unemployment-rate
+Accessed via: WebFetch, 2026-07-09
+
+Verbatim key quotes:
+
+"The US unemployment rate dropped to 4.2% in June 2026, down from 4.3% in May and below expectations."
+
+Historical reference points shown: April 2020 = 14.8% (pandemic peak); May 2026 = 4.3%; June 2026 = 4.2%.
+
+Additional detail: Number of unemployed persons = 7.09 million; total employment = 162.26 million; labor force participation rate = 61.5% ("lowest since March 2021"); U-6 (broader underemployment) rate = 7.9%.
+
+Note in fetched summary: "The decline occurred despite workforce contraction, as many people left the labor force rather than finding new employment."
+
+Notes: The headline unemployment rate (4.2%) looks mild/stable by historical standards, but the falling labor-force participation rate (lowest since March 2021) alongside it suggests part of the "mild" headline number may reflect people exiting the labor force rather than being counted unemployed — a measurement caveat relevant to the causal-identification question.

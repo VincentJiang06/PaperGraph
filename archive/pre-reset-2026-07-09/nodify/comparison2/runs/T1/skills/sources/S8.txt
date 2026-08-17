@@ -1,0 +1,20 @@
+Title: Large Firms With at Least 20 Employees Biggest AI Users
+Publisher: U.S. Census Bureau (Business Trends and Outlook Survey, BTOS)
+URL: https://www.census.gov/library/stories/2026/05/ai-use-businesses.html
+Accessed via: WebFetch, 2026-07-09
+
+Verbatim key quotes:
+
+"overall AI usage hovered between 17% and 20%" (December 2025 to May 2026 period)
+
+"between 20% and 23% of businesses expected to be using it in the next six months" (forward-looking adoption plans)
+
+"37% of firms with at least 250 employees reported using AI"
+
+"32% of firms with 100 to 249 employees said they used AI"
+
+"Less than 20% of firms with four or fewer employees reported using AI"
+
+"AI use increased among firms with at least 20 employees but didn't change significantly among firms with fewer than 20 employees" (Dec 2025 to May 2026)
+
+Notes: As of a broadened question definition (Nov 2025, covering AI use "in any... business function"), only roughly one-fifth of all US businesses report using AI at all, concentrated in larger firms and in Information/Finance sectors. This indicates the diffusion of AI/agentic tools across the broader economy is still shallow as of mid-2026 — relevant to whether the labor-market effect has had time to fully materialize.

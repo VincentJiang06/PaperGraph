@@ -1,0 +1,6 @@
+Reich, Allegretto, Godoy (UC Berkeley IRLE), Seattle minimum wage studies of the food-service sector (2017), and the "New Wave of Local Minimum Wage Policies" evidence.
+
+Key finding (verbatim, as reported):
+UC Berkeley study (Reich et al) "found no evidence of job loss in Seattle's restaurant industry, even as hourly pay reached $13."
+
+Note: The Berkeley team, using standard establishment/QCEW food-service data and synthetic-control comparisons, found no significant negative employment effect in restaurants — directly contrasting the University of Washington team's finding of reduced hours in sub-$19 jobs. The divergence is driven by data (WA hours-level admin data incl. multi-site employers vs. food-service headcount) and specification choices, not by the underlying policy.

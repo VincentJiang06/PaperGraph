@@ -1,0 +1,14 @@
+Source: METR, "Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity" (2025-07-10). arXiv:2507.09089.
+URL: https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/
+
+Verbatim quotes:
+
+"When developers are allowed to use AI tools, they take 19% longer to complete issues—a significant slowdown that goes against developer beliefs and expert forecasts."
+
+"developers expected AI to speed them up by 24%, and even after experiencing the slowdown, they still believed AI had sped them up by 20%."
+
+Methodology: RCT with 16 experienced developers recruited from large, mature open-source repositories (averaging 22k+ stars, 1M+ lines of code) that they had contributed to for multiple years. 246 real issues (bug fixes, features, refactors) were randomly assigned to allow or disallow AI tool use (primarily Cursor Pro with Claude 3.5/3.7 Sonnet). Screen recordings and self-reported implementation times were collected. Compensation: $150/hour.
+
+Caveat noted by the authors themselves: "These results are out of date" — the study explicitly flags that later 2025/2026 AI models may show different results, and METR launched a follow-up experiment with newer models, though they later noted survey/participant-feedback concerns about the reliability of that follow-up's signal.
+
+Relevance: This is the key adversarial counter-evidence to the "task-level substitution is already large and well-established" narrative (N-0007). It shows that in high-context, real-world, unconstrained repositories — as opposed to short bounded pilot tasks (e.g. the Copilot HTTP-server RCT) — AI coding tools can impose a net productivity COST even for experienced practitioners, and that developers systematically over-estimate the benefit. This directly supports N-0008's concern about external validity: task-level "substitution" evidence skews toward constrained, favorable pilot settings and may not generalize to complex real-world task bundles that make up actual jobs.

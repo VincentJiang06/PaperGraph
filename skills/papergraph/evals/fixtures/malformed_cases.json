@@ -1,0 +1,6 @@
+[
+  {"name":"missing_response","field":"Response","envelope":{}},
+  {"name":"missing_detections","field":"TextDetections","envelope":{"Response":{"Angle":0,"RequestId":"bad-1"}}},
+  {"name":"non_numeric_confidence","field":"Confidence","envelope":{"Response":{"Angle":0,"RequestId":"bad-2","TextDetections":[{"DetectedText":"x","Confidence":"NaN","Polygon":[{"X":1,"Y":1},{"X":2,"Y":1},{"X":2,"Y":2},{"X":1,"Y":2}]}]}}},
+  {"name":"missing_coordinate","field":"Polygon[0].X","envelope":{"Response":{"Angle":0,"RequestId":"bad-3","TextDetections":[{"DetectedText":"x","Confidence":90,"Polygon":[{"Y":1},{"X":2,"Y":1},{"X":2,"Y":2},{"X":1,"Y":2}]}]}}}
+]

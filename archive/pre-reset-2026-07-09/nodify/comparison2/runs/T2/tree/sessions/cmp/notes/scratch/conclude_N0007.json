@@ -1,0 +1,14 @@
+{
+  "node_id": "N-0007",
+  "lean": "mixed",
+  "summary": "财政转移支付对通胀的定量贡献估计跨度很大:SF Fed基于V/U比传导渠道估计约每年0.3个百分点(温和);Furman等基于总量需求角度估计1-4个百分点,占2022年3月8.5%通胀的1/4至1/2。中位判断:财政转移支付是需求侧中方向明确但量级存在数倍不确定性的分量,合理区间大致0.5-2个百分点量级。",
+  "confidence": "low",
+  "based_on": {
+    "children": [],
+    "evidence": [
+      {"ref_id": "E-01", "title": "SF Fed EL2021-27", "doc_id": "DOC-0004", "url": null, "locator": null, "quote": "the ARP is projected to cause a transitory increase in the vacancy-to-unemployment ratio, which translates into a core inflation rate that is about 0.3 percentage point higher per year through 2022.", "tool": "web_search", "note": null},
+      {"ref_id": "E-02", "title": "Furman估计(PolitiFact报道)", "doc_id": "DOC-0005", "url": null, "locator": null, "quote": "Jason Furman estimated that Biden's American Rescue Plan added between 1 percentage point and 4 percentage points to the inflation rate in 2021.", "tool": "web_search", "note": null}
+    ]
+  },
+  "open_questions": ["缺乏一个被广泛接受的、隔离出'仅财政转移支付'(排除货币政策协同效应)的因果识别策略"]
+}

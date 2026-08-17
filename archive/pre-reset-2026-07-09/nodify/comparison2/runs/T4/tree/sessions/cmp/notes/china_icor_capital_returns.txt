@@ -1,0 +1,8 @@
+Source: web search synthesis - AMRO ASIA (ASEAN+3 Macroeconomic Research Office) working paper "Macroeconomic Implications of Population Aging in China" (Sept 2024) and related coverage; RIETI "Why China's Investment Efficiency is Low"
+URLs: https://amro-asia.org/wp-content/uploads/2024/08/AMRO-WP_Macroeconomic-Implications-of-Population-Aging-in-China_Sept-2024.pdf ; https://www.rieti.go.jp/en/china/04061801.html
+
+Key points (from search-result synthesis, PDF itself not machine-readable via fetch):
+- "Population aging is expected to diminish the return on capital, thereby dampening enterprises' incentive to invest." Aging reduces labor supply and lowers the marginal return to capital, weakening investment responses.
+- China's ICOR (incremental capital-output ratio) has been on an upward trend since the 1990s, indicating a decline in investment efficiency; the ratio (capital needed per unit of output growth) has roughly doubled over the last two decades -- i.e., China now needs roughly twice as much investment to generate the same increment of GDP growth as two decades ago.
+- Demographic projections (UN medium-variant scenario) are estimated to reduce China's annual GDP growth and per-capita GDP growth by 1.09 and 0.86 percentage points respectively, from 2021 to 2070, relative to a no-aging baseline.
+- In China, with the overall population declining and urbanization decelerating, these demographic shifts may dampen demand for investment in the traditional key growth drivers -- housing and infrastructure -- which is a separate, demand-side channel from the labor-supply-side TFP drag.

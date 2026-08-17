@@ -1,0 +1,81 @@
+{
+  "topic": "nuclear-safety",
+  "thesis": "Per unit of electricity generated, nuclear power causes far fewer deaths and far lower lifecycle greenhouse-gas emissions than fossil fuels — comparable to wind and solar — so the objection to nuclear rests on catastrophic tail-risk, waste longevity, cost, and proliferation, not on its ordinary safety or climate record.",
+  "positions": [
+    {
+      "id": "K1",
+      "name": "Comparative-safety consensus (deaths per TWh)",
+      "gist": "Per unit of electricity, nuclear's death rate is orders of magnitude below coal/oil/gas and on par with wind and solar, driven mainly by fossil-fuel air pollution.",
+      "key_terms": ["deaths per TWh", "Markandya", "Wilkinson", "Sovacool", "air pollution", "safest sources of energy"],
+      "source_url": "https://ourworldindata.org/safest-sources-of-energy"
+    },
+    {
+      "id": "K2",
+      "name": "Low lifecycle GHG / climate record",
+      "gist": "Nuclear's lifecycle greenhouse-gas emissions (~12 gCO2eq/kWh) are comparable to wind and solar and roughly two orders of magnitude below coal, making it a low-carbon source.",
+      "key_terms": ["lifecycle emissions", "gCO2eq/kWh", "IPCC AR5", "Annex III", "low-carbon", "harmonized"],
+      "source_url": "https://en.wikipedia.org/wiki/Life-cycle_greenhouse_gas_emissions_of_energy_sources"
+    },
+    {
+      "id": "K3",
+      "name": "Prevented-mortality / decarbonization value",
+      "gist": "By displacing fossil fuels, historical nuclear generation has prevented on the order of a million air-pollution deaths and tens of gigatonnes of CO2, and can materially aid climate mitigation as firm baseload.",
+      "key_terms": ["Kharecha", "Hansen", "prevented mortality", "baseload", "low-carbon", "GtCO2-eq"],
+      "source_url": "https://www.giss.nasa.gov/pubs/abs/kh05000e.html"
+    },
+    {
+      "id": "K4",
+      "name": "Catastrophic tail-risk / normal accidents",
+      "gist": "The real objection is low-probability, high-consequence catastrophe: nuclear plants are interactively complex and tightly coupled, so severe system accidents (Chernobyl, Fukushima) are inevitable and average death rates understate the tail.",
+      "key_terms": ["Perrow", "normal accidents", "tight coupling", "interactive complexity", "tail risk", "Fukushima"],
+      "source_url": "https://en.wikipedia.org/wiki/Normal_Accidents"
+    },
+    {
+      "id": "K5",
+      "name": "Waste longevity & proliferation",
+      "gist": "Spent fuel and separated plutonium stay hazardous for 100,000+ years and reprocessing spreads weapons-usable material, so long-term stewardship and proliferation—not day-to-day safety—are the core problems.",
+      "key_terms": ["plutonium", "reprocessing", "geological repository", "proliferation", "spent fuel", "safeguards"],
+      "source_url": "https://www.ucs.org/resources/nuclear-reprocessing-dangerous-dirty-and-expensive"
+    },
+    {
+      "id": "K6",
+      "name": "Nuclear economics / cost (LCOE)",
+      "gist": "New-build nuclear is expensive and slow—LCOE far above wind and solar, with chronic capital cost overruns (e.g. Vogtle)—so cost, not safety, is the decisive strike against it.",
+      "key_terms": ["LCOE", "Lazard", "Vogtle", "cost overrun", "capital cost", "levelized cost"],
+      "source_url": "https://thebreakthrough.org/issues/energy/lcoe-lazard-misleading-nuclear"
+    },
+    {
+      "id": "K7",
+      "name": "100%-renewables feasibility (nuclear unnecessary)",
+      "gist": "A fully renewable wind-water-solar system can reliably and cheaply power society without nuclear, so nuclear's risks and costs are simply unnecessary to bear.",
+      "key_terms": ["Jacobson", "WWS", "100% renewables", "wind water solar", "Clack", "reliability"],
+      "source_url": "https://www.resilience.org/stories/2017-06-27/100-renewables-a-few-remarks-about-the-jacobsonclack-controversy/"
+    },
+    {
+      "id": "K8",
+      "name": "Firm-power / system-cost value of nuclear",
+      "gist": "Deep decarbonization is much cheaper and less risky when firm low-carbon resources like nuclear complement variable wind and solar; a renewables-only grid faces steeply rising system costs.",
+      "key_terms": ["firm low-carbon", "Sepulveda", "Jenkins", "deep decarbonization", "variable renewables", "system cost"],
+      "source_url": "https://news.mit.edu/2018/adding-power-choices-reduces-cost-risk-carbon-free-electricity-0906"
+    }
+  ],
+  "benchmark_claims": [
+    {"claim": "Death rate per unit of electricity generated, by source (accidents plus air pollution)", "value": "Coal ~24.6, oil ~18.4, gas ~2.8 deaths/TWh; nuclear ~0.03, wind ~0.04, solar ~0.02 deaths/TWh", "source_url": "https://ourworldindata.org/safest-sources-of-energy"},
+    {"claim": "Median lifecycle greenhouse-gas emissions by source (IPCC AR5, 2014)", "value": "Nuclear median 12 gCO2eq/kWh; wind onshore 11; solar PV 48; coal 820; natural gas 490", "source_url": "https://en.wikipedia.org/wiki/Life-cycle_greenhouse_gas_emissions_of_energy_sources"},
+    {"claim": "Deaths and CO2 emissions prevented by historical nuclear power (Kharecha & Hansen 2013)", "value": "~1.84 million air-pollution deaths and ~64 GtCO2-eq prevented (1971-2009)", "source_url": "https://www.giss.nasa.gov/pubs/abs/kh05000e.html"},
+    {"claim": "Death tolls of the two worst nuclear accidents (the tail-risk realized)", "value": "Chernobyl: <100 confirmed, best estimate ~300-500 incl. projected cancers; Fukushima: 1 radiation death plus ~2,313 evacuation-related deaths", "source_url": "https://ourworldindata.org/what-was-the-death-toll-from-chernobyl-and-fukushima"},
+    {"claim": "Effect of firm low-carbon resources on deep-decarbonization electricity cost (Sepulveda et al. 2018)", "value": "Including firm low-carbon resources cuts the cost of a zero-carbon grid by 10%-62% across ~1,000 modeled cases", "source_url": "https://news.mit.edu/2018/adding-power-choices-reduces-cost-risk-carbon-free-electricity-0906"},
+    {"claim": "Levelized cost of new-build nuclear vs utility-scale solar (Lazard, per Breakthrough)", "value": "New nuclear ~$180/MWh (Vogtle) vs utility solar ~$24-96/MWh; gas CC ~$70; onshore wind ~$50", "source_url": "https://thebreakthrough.org/issues/energy/lcoe-lazard-misleading-nuclear"}
+  ],
+  "sources_fetched": [
+    "https://ourworldindata.org/safest-sources-of-energy",
+    "https://www.giss.nasa.gov/pubs/abs/kh05000e.html",
+    "https://en.wikipedia.org/wiki/Life-cycle_greenhouse_gas_emissions_of_energy_sources",
+    "https://en.wikipedia.org/wiki/Normal_Accidents",
+    "https://news.mit.edu/2018/adding-power-choices-reduces-cost-risk-carbon-free-electricity-0906",
+    "https://ourworldindata.org/what-was-the-death-toll-from-chernobyl-and-fukushima",
+    "https://www.ucs.org/resources/nuclear-reprocessing-dangerous-dirty-and-expensive",
+    "https://thebreakthrough.org/issues/energy/lcoe-lazard-misleading-nuclear",
+    "https://www.resilience.org/stories/2017-06-27/100-renewables-a-few-remarks-about-the-jacobsonclack-controversy/"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "T1": {
+    "A": {
+      "coverage": 5,
+      "depth": 5,
+      "adversarial_completeness": 5,
+      "grounding": 5,
+      "convergence": 5,
+      "calibration": 5,
+      "rationale": "Strongest for its explicit Tier A-D quality ladder, best-in-class adversarial red-teaming (METR expert-slowdown plus believed-vs-actual gap, EIG youth rebuttal, Acemoglu-vs-Aghion 10x macro-TFP disagreement) formalized in a killed/demoted/watch dead-ends taxonomy, and the tightest reconciliation (diffusion bridge + mean-vs-variance scoping). Its one relative weakness is thin coverage of the cross-national robot/automation empirical record (Acemoglu-Restrepo used only as a benchmark), which the question's 'AI/automation' scope invites."
+    },
+    "B": {
+      "coverage": 4,
+      "depth": 5,
+      "adversarial_completeness": 4,
+      "grounding": 5,
+      "convergence": 4,
+      "calibration": 4,
+      "rationale": "Exceptionally study-dense with airtight per-study grounding and the richest cross-national automation record (US/Spain/Germany/Japan/France robot studies showing net-employment sign-flips by aggregation level and institution) plus strong wage evidence (Azar, Econometrica task-displacement 50-70%) that A omits. Weaker on distinct contrarian angles (no deskilling/homogenization or standalone equalize-vs-polarize line, no METR-type task-level disconfirmation) and lacks an explicit dead-ends/retired-hypotheses section, leaving calibration and convergence a notch below A."
+    }
+  }
+}

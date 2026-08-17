@@ -1,0 +1,4063 @@
+ŁUKASZ RACHEL
+Bank of England
+
+L AWRENCE H. SUMMERS
+Harvard University
+
+On Secular Stagnation
+in the Industrialized World
+ABSTRACT    We argue that the economy of the industrialized world, taken
+as a whole, is currently—and for the foreseeable future will remain—highly
+prone to secular stagnation. But for extraordinary fiscal policies, real interest
+rates would have fallen much more and be far below their current slightly
+negative level, current and prospective inflation would be further short of the
+2 percent target levels, and past and future economic recoveries would be even
+more sluggish. We start by arguing that, contrary to current practice, neutral
+real interest rates are best estimated for the bloc of all industrial economies,
+given capital mobility between them and the relatively limited fluctuations
+in their aggregated current account. We show, using standard econometric
+procedures and looking at direct market indicators of prospective real rates,
+that neutral real interest rates have declined by at least 300 basis points over
+the last generation. We argue that these secular movements are in larger part
+a reflection of changes in saving and investment propensities rather than
+the safety and liquidity properties of Treasury instruments. We highlight the
+observation that, ceteris paribus, levels of government debt, the extent of
+pay-as-you-go old-age pensions, and the insurance value of government health
+
+Conflict of Interest Disclosure: Łukasz Rachel is a senior economist at the Bank of England.
+An earlier version of this paper was one of the chapters in his thesis for the degree of doctor
+of philosophy at the London School of Economics and Political Science. Lawrence Summers
+is the Charles W. Eliot Professor and president emeritus at Harvard University. Beyond
+these affiliations, the authors did not receive financial support from any firm or person for
+this paper or from any firm or person with a financial or political interest in this paper. They
+are currently not officers, directors, or board members of any organization with an interest
+in this paper. No outside party had the right to review this paper before circulation. The
+views expressed in this paper are those of the authors, and do not necessarily reflect those
+of the Bank of England, the London School of Economics and Political Science, or Harvard
+University.
+
+1
+
+2
+
+Brookings Papers on Economic Activity, Spring 2019
+
+care programs have all operated to raise neutral real rates. Using estimates
+drawn from the literature—as well as two general equilibrium models emphasizing, respectively, life-cycle heterogeneity and individual uncertainty—
+we suggest that the “private sector neutral real rate” may have declined by as
+much as 700 basis points since the 1970s. The extent of the substantial shifts
+in private saving and investment propensities over time has been obscured
+by the impact of this decline in real rates. Our diagnosis necessitates radical
+revisions in the conventional wisdom about monetary policy frameworks,
+the role of fiscal policy in macroeconomic stabilization, and the appropriate
+level of budget deficits, as well as social insurance and regulatory policies. To
+that end, much more of creative economic research is required on the causes,
+consequences, and policy implications of the pervasive private sector excess
+saving problem.
+
+L
+
+ong after the 2008 financial crisis, real interest rates in the economies
+of the industrialized world remain very low by recent historical standards, central banks’ balance sheets are inflated, government debt and
+deficit levels are high, and yet nominal GDP growth remains too low for
+the achievement of 2 percent inflation targets. This has led to a revival of
+interest in the secular stagnation hypothesis, according to which a chronic
+tendency of private investment to be insufficient to absorb private saving
+leads, in the absence of extraordinary policies, to extremely low interest
+rates, inflation that is lower than desirable, and sluggish economic growth.
+Much of the discussion has focused on movements in what has come to
+be called “R-star” (R*)—Knut Wicksell’s (1898) neutral or natural interest
+rate, at which investment fully absorbs saving at full employment. Estimating the level and change in the neutral real interest rate has become
+a cottage industry, and the neutral real interest rates have come to play a
+prominent role in policy discussions.
+Policymakers have taken notice of significant movements in the apparent neutral real rate. Federal Reserve chairman Jerome Powell’s recent
+remark that the nominal federal funds rate—at the time, set at between
+2 and 2.25 percent—was “just below the broad range of estimates of the
+level that would be neutral for the economy” puts the level of the real
+neutral rate in the United States at about 0.5 percent (Powell 2018). In
+Japan, which has been faced with very low neutral rates for a long time, the
+central bank has engaged in aggressive monetary easing, including directly
+targeting long-term interest rates (Kuroda 2016). Similarly, European
+policymakers have highlighted the equilibrium rate of interest as the key
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+3
+
+policy variable (Constâncio 2016; Draghi 2016), while the recent paper
+from the European Central Bank (ECB 2018, 5) concluded that “most of
+our estimates of R* for the euro area have been negative regardless of the
+type of model used.”
+Our main contribution in this paper is to recognize that the neutral real
+interest rate is not a deep structural feature of an economy but instead
+reflects both how it is embedded in the global economy and how fiscal
+policy is set. The neutral interest rate for an individual open economy will
+depend on its current account position, which in turn depends on its
+real exchange rate, which is itself a function of current and prospective
+real interest rates. It is therefore hard to interpret estimates of the neutral
+interest rate for a single open economy. We therefore estimate the neutral
+real rate for the industrial economies taken in the aggregate. We show that
+our aggregate can to a good approximation be thought of as a closed
+economy. Our estimates suggest that the advanced economies’ neutral real
+rate has declined by over 300 basis points since 1980 and is now in the
+neighborhood of zero.
+We emphasize that this significant decline would have been substantially
+greater except for the buildup of government deficits and debt over the
+last generation and the increasing generosity of social insurance programs,
+particularly increases in old-age pensions. Although the uncertainties
+inherent in any calculation are enormous, we estimate that, with constant
+fiscal and social insurance policies, neutral real interest rates would have
+declined by about 700 basis points and would now be very substantially
+negative. Equivalently, our estimate is that, with constant real interest rates,
+the gap between private saving and private investment rates in the industrialized world has widened by over 10 percent of GDP.
+Our findings raise the possibility that the industrialized world as a whole
+will increasingly in the years ahead face the challenges that Japan has
+faced over the last decade. The emergence of a large gap between private
+saving and private investment at normal interest rates is the essence of
+secular stagnation. We believe that it has profound implications for macroeconomics, pointing to the need for a “new Keynesian economics” that bears
+a substantial resemblance to the old Keynesian economics of the 1950s and
+1960s. It suggests the need for substantial revisions in the conventional
+wisdom regarding monetary policy based on inflation targeting, the role of
+fiscal policy in macroeconomic stabilization, and the appropriate level of
+budget deficits and possibly social insurance and regulatory policies.
+We make two methodological choices in this paper. First, we show that
+the current account balance of the advanced economies, taken as a whole,
+
+4
+
+Brookings Papers on Economic Activity, Spring 2019
+
+has been small and stable over the past four decades; and, given this,
+we argue that it is preferable to view the advanced economies as a fully
+integrated bloc—a departure from the literature that tends to focus on individual countries when estimating neutral real rates. Second, we show that
+the dominant force driving the downward trend in real rates is common to
+a wide range of asset classes with differing characteristics. This explains
+the focus in the paper on forces driving the balance of desired saving
+and investment, as opposed to those that relate to the liquidity or safety
+attributes of any particular asset class.
+To set the scene, we present the results from the econometric exercise
+estimating R* for the industrialized world as a whole, which are that the
+advanced economies’ neutral rate—which we call AE R* for brevity—
+has declined by about 300 basis points over the past half century. This
+large decline in the relative price of consumption today versus consumption tomorrow has meant that the observed saving and investment ratios
+remained broadly stable. In other words, the large decline in R* had been
+a symptom of the excess saving problem, and has masked the underlying shifts in desired saving and investment propensities. To illustrate
+the magnitude of this problem, we calculate a counterfactual gap between
+saving and investment propensities under the hypothetical scenario of a
+constant interest rate. Our calculations suggest that, if interest rates had
+not declined, the excess saving gap in the advanced economies taken
+together would be very large—likely, north of 10 percent of GDP. In the
+remainder of the paper, we study the various factors that underlie this
+phenomenon.
+Our main contribution is the analysis of public policies and their
+impact on R*. We show that all the available evidence points to a sizable
+positive influence: that the secular trends in public policies in the industrialized world have helped to reduce the excess saving problem.
+Policies may affect the interest rate through a range of channels. We
+review these mechanisms, focusing on the role of government borrowing,
+which is the main focus of both theoretical and empirical literatures in
+macroeconomics. We then survey the existing empirical estimates of the
+impact of government debt on interest rates. Simple calculations using
+observed estimates of the impact of deficits on interest rates suggest that
+the increase from 18 percent to 68 percent in the public debt-to-GDP
+ratio of the advanced economies should, ceteris paribus, have raised real
+rates by between 1.5 and 2 percentage points over the last four decades.
+A similar calculation based on the existing empirical literature on the
+link between Social Security and private saving suggests that the increase
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+5
+
+of about 3 percentage points in Social Security spending to GDP may
+have increased interest rates by a further 50–100 basis points.1 Increasing
+old-age health expenditures likely have had a further positive impact. This
+analysis leads to the conclusion that the fall in real long-term interest rate
+observed in the data masks an even more dramatic decline in the equilibrium “private sector” real rate.
+To build further understanding of the mechanisms involved and to
+cross-check the magnitudes of these effects, we study these phenomena
+in a dynamic general equilibrium framework. We construct two tractable
+models, each one designed to capture different channels through which
+policies play out in equilibrium.
+Building on the work of Mark Gertler (1999), the first model captures
+life-cycle behavior, with workers saving for retirement and retirees decumulating their wealth. Ricardian equivalence—the proposition that government borrowing decisions are neutral in equilibrium—does not hold in
+our model, making the effects of a range of government policies on real
+rates nontrivial. Specifically, after a change in government finances, there
+is some Ricardian offset, but unlike in the representative agent model,
+this offset is incomplete. We simulate the model with the profiles of government debt, government spending, Social Security, and old-age health
+care expenditures that match the experience of developed economies over
+the past 40 years. These simulations suggest that shifts in these policies
+have pushed equilibrium real rates up by about 3 percentage points between
+the early 1970s and today.2
+Our second model focuses on individual risks and precautionary
+behavior, channels that are absent from the life-cycle model. When people
+cannot fully insure against future uncertainty surrounding their individual
+income, they value holding financial assets such as government debt for
+the purposes of self-insurance. This demand for assets is, in part, satisfied
+by governments issuing debt; and the more debt that is issued, the lower
+is its price and the higher is the interest rate. Our numerical explorations
+suggest that the increase in the supply of government bonds has pushed
+interest rates up by about 40–70 basis points through this channel.3 Overall,
+then, we find that public policies may have pushed interest rates up by
+about 3.5–4.0 percentage points.4
+1. For descriptions of the calculations that yield these numbers, see the end of section IV.
+2. This number is derived from 3.6 – 0.4 = 3.2, rounded to 3, in the incomplete markets
+model shown in table 7 below.
+3. This range reflects the second and third columns of table 7 below.
+4. This refers to the italicized 3.6 in the middle column of table 7 below.
+
+6
+
+Brookings Papers on Economic Activity, Spring 2019
+
+In the final section of the paper, we validate our models by using them
+to quantify the impact of some of the private sector forces that the existing
+literature suggested have been important in driving the decline in the neutral
+real interest rates. Specifically, we show that the estimates of the impact
+of the decline in expected future growth, the demographic shifts, and the
+rise in income inequality on neutral real rates are well within the ranges
+of estimates found by other researchers. This lends credibility to the core
+contribution of our paper, namely, the quantification of the boost that the
+public sector gave to neutral real rates in the advanced economies.
+The remainder of this paper is structured as follows. Section I discusses
+two methodological issues underlying our analysis. Section II contains
+the results of the estimation of the long-term equilibrium real interest
+rate for the advanced economies. Section III starts with a discussion of the
+channels through which government policy influences the equilibrium rate;
+it then summarizes the results from the existing empirical literature that
+estimates the size of these effects; and finally, it uses these elasticities
+to calculate several back-of-the-envelope measures of how policies have
+affected AE R*. In section IV, we set up the two general equilibrium
+models and use them to study the impact of government policies. Section V
+validates the models by using them to assess the impact of secular demographic changes, the slowdown in technology, and the rise in inequality.
+Section VI concludes.
+
+I. Understanding Neutral Real Interest Rates
+We begin with a discussion of two methodological choices that permeate
+the analysis in this paper and where our approach differs from that of some
+other studies. The first is our treatment of the advanced economies as a bloc
+rather than focusing on individual countries. The second is our view that
+the decline in neutral real interest rates can be understood through the
+balance between desired saving and investment. This view leads us to focus
+on the macroeconomic forces affecting a broad range of returns, rather than
+on factors driving spreads or premia on particular financial instruments,
+and to deemphasize the importance of “safe asset shortage” theories for
+understanding the broad low frequency movements in interest rates.
+
+I.A. The Advanced Economies as a Bloc
+Our analysis assumes that the advanced economies bloc is fully integrated. In practice, we use aggregated data for all the developed countries
+(that is, the members of the Organization for Economic Cooperation and
+
+7
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+Figure 1. The Aggregated Current Account of the Advanced Economies Bloc,
+and of Selected Individual Economies, 1980–2022a
+Percent of GDP
+Germany
+
+8
+Advanced economies
+
+6
+4
+
+Japan
+
+2
+0
+–2
+–4
+
+United States
+
+United Kingdom
+
+–6
+1982
+
+1986
+
+1990
+
+1994
+
+1998
+
+2002
+
+2006
+
+2010
+
+2014
+
+2018
+
+Source: International Monetary Fund data.
+a. The heavy solid line shows the current account for the advanced economies as defined by the
+International Monetary Fund.
+
+Development, the OECD, whenever data are available), “as if” the bloc
+were a single economic entity. We treat this bloc as a large, closed economy
+with perfect internal capital mobility.
+The perfect internal capital mobility assumption is justified by very large
+gross and substantial net capital flows between developed economies, strong
+commonality in trends in long-term real rates observed in the data, and high
+correlations in the performance of stock markets (Claessens and Kose 2017).
+The assumption that the industrial economies as a whole can be treated
+as a closed economy is justified by the observation that their aggregate
+current account balance has fluctuated by less than 1.5 percent of GDP over
+the last 40 years (figure 1). Note also that the recent trend has been upward,
+suggesting that international capital flows have if anything operated to
+raise interest rates over time.
+More importantly, our approach avoids the erroneous assumption
+implicit in much of the country-level analysis that the economies under
+consideration are closed. Current account balances for individual economies are large and variable; they are endogenous outcomes of the saving
+and investment propensities within each economy relative to the global
+average. For example, a country that runs a chronic trade surplus will be
+
+8
+
+Brookings Papers on Economic Activity, Spring 2019
+
+found to have a neutral real rate at a level where domestic demand is short
+of potential output, and the reverse will be true for a country running a
+chronic trade deficit. External balances should therefore be taken into
+account in such country-level analyses. We instead posit that the developed
+economies, taken together, experience structural excess saving, reflected
+in the trend decline in real interest rates without a discernible trend in their
+current account. At this level of aggregation, the country-level differences
+wash out, and econometric and theoretical analyses based on a closedeconomy assumption are more credible.
+
+I.B. Excess of Desired Saving over Investment,
+and the Role of the Safety and Liquidity Premium
+We carry out our analysis on the basis of the premise that, for analyzing
+long-term trend movements in neutral real rates, it is appropriate to focus
+on factors relating to saving and investment propensities rather than issues
+of liquidity or risk. Consequently, our analysis abstracts from aggregate
+uncertainty and differing levels of liquidity of various assets.
+Several facts support our approach. First, the decline in rates on highly
+liquid securities tracks declines in yields on relatively illiquid governmentindexed bonds and real swaps (figure 2), suggesting that the liquidity
+characteristics of government bonds play only a secondary role. Second,
+even in the United States, there has been little trend movement in spreads
+between Treasury securities and corporate securities in given rating classes,
+and though the pickup in equity risk premia has been somewhat more pronounced, it is nonetheless small relative to the decline in real interest rates
+over the decades (the left panel of figure 3). In any case, it is not clear
+whether one should interpret any changes in spreads as driven by changes
+in risk preferences or rather a result of changes in how risky the underlying
+assets are perceived to be. For instance, the recent global financial crisis
+has likely led to a reassessment of what it means that an asset is rated AAA,
+whereas the dot-com bubble appears to have had a lasting impact on the
+pricing of equities.
+To get a sense of the relative importance of the trend decline in real
+returns versus changes in the dispersion between them, we summarize
+the patterns in the U.S. data using principal components analysis (PCA),
+which is a statistical procedure that summarizes the information in the
+correlated data series with a smaller set of mutually uncorrelated variables.
+The components are ordered in such a way that the first explains the highest
+share of variance in the data. The PCA thus offers a way of quantitatively
+distinguishing between the excess saving story, which drives the common
+
+9
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+Figure 2. Real Interest Rates Estimated from Inflation-Linked Bonds
+and Forward Swaps, 1980–2022a
+Real 5-year/5-year-forward
+swap rates
+
+Real rates from TIPS
+Percent
+
+Percent
+6
+
+King and Low’s
+world real rate
+
+5
+
+6
+5
+
+4
+
+4
+
+3
+
+3
+
+2
+
+2
+
+1
+
+1
+
+0
+
+0
+
+–1
+
+–1
+1986
+
+1994
+
+2002
+
+2010
+
+Japan
+
+United States
+
+Europe
+2008
+
+2012
+
+2016
+
+Sources: DataStream; Federal Reserve Bank of Saint Louis; Bloomberg; King and Low (2014).
+a. TIPS = Treasury Inflation-Protected Securities. The world real rate is calculated using the
+methodology of King and Low (2014): it is the average of interest rates on inflation-protected
+government debt securities across the Group of Seven, excluding Italy. Data are from DataStream and
+from an unbalanced panel. In particular, the figure relies on the U.K. inflation-indexed gilts in the early
+part of the sample. The U.S. TIPS yield is the yield on a constant maturity, 10-year Treasury
+Inflation-Indexed Security, retrieved from the FRED database of the Federal Reserve Bank of Saint Louis
+(code DFII10). Swaps data are from Bloomberg.
+
+trend across all real rates, and the safety and liquidity story, which drives
+the dispersion between them.
+When we perform this PCA on the set of U.S. real yields that span
+government debt, corporate bond and equity markets, we obtain results
+that are telling: the first principal component, which picks up the downward trend visible in all returns, explains 94 percent of the total variance
+in the underlying series (the right panel of figure 3). The second principal
+component, which appears to be related to the increase in the “convenience
+yield,” explains only 5 percent. The very large share of total variance in the
+data accounted for by the common downward trend supports our focus
+in this paper.
+This focus is also consistent with the finance literature that investigates
+the decline in neutral real interest rates in the presence of term and liquidity
+premia (Christensen and Rudebusch 2019; D’Amico, Kim, and Wei 2018).
+The “safe asset” literature finds a somewhat larger role for the convenience
+yield; but even there, the magnitudes are generally rather small relative
+
+10
+
+Brookings Papers on Economic Activity, Spring 2019
+
+Figure 3. Real Returns in the United States: Data and Principal Components,
+1980–2022a
+Real returns on U.S. assets
+Percent
+Real Baa corporate bond yield
+10
+
+S&P 500 real earnings yield
+
+8
+
+Real Aaa corporate
+bond yield
+
+6
+
+0
+
+10
+
+First PC: 94% of
+variance explained
+
+8
+6
+Second PC: 5% of
+variance explained
+
+4
+2
+
+4
+2
+
+Principal components (PCs)
+Mean-zero PCs
+
+0
+
+Real 10-year
+Treasury yield
+
+–2
+–4
+
+1990
+
+2000
+
+2010
+
+1990
+
+2000
+
+2010
+
+Sources: FRED database of the Federal Reserve Bank of Saint Louis; Robert Shiller; authors’
+calculations.
+a. The 10-year Treasury real yield post-2004 is the yield on 10-Year Treasury, Inflation-Indexed
+Security (code: DFII10). Before 2004, it is the nominal yield (GS10) minus inflation expectations
+measure from the Michigan survey (code: MICH). The real corporate yields are nominal yields (codes:
+Aaa, Baa), minus inflation expectations from Treasury Inflation-Protected Securities (post-2004) or
+from the Michigan survey (pre-2004). The real earnings yield is the inverse of the cyclically adjusted,
+total return price real earnings ratio from Robert Shiller (http://www.econ.yale.edu/~shiller/data.htm).
+
+to the large trend decline in real rates. For example, using very different
+approaches, Marco Del Negro and others (2018) and Rachel and Thomas
+Smith (2017) concluded that the rise in the spread between risky and riskfree rates accounted for about 70 basis points of the decline in risk-free
+rates. This is less than a quarter of the overall decline in real neutral rates
+since 1980.
+In summary, much of the available evidence points to a common
+underlying decline in real interest rates across different financial assets.
+This suggests that saving and investment propensities and how they have
+changed over time are the dominant underlying drivers of such a trend.
+
+II. Estimating the Advanced Economies’ Equilibrium
+Real Interest Rate
+In this section, we estimate the natural rate of interest for the advanced
+economies, adopting what is perhaps the most celebrated applied empirical model designed for this purpose, which was originally developed by
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+11
+
+Thomas Laubach and John Williams (2003) (hereafter, the Laubach-Williams
+model) and has recently been reapplied internationally by Kathryn Holston,
+Laubach, and Williams (2017b). Conceptually, this approach draws on two
+strands of the literature. By following Wicksell’s (1898) definition of the
+natural rate as the rate consistent with stable inflation and output remaining at an equilibrium (“potential”) level, it is well aligned with modern
+monetary theory, as presented by Carl Walsh (1998), Michael Woodford
+(2003), and Galí (2008). This literature is primarily concerned with fluctuations at the business-cycle frequency, where shocks move the economy
+around a stable steady state. In addition to these business-cycle shocks, the
+framework employed here is flexible enough to capture secular forces that
+affect the steady state.
+
+II.A. A Sketch of the Model and the Estimation Procedure
+Our approach to estimating the Laubach-Williams model is deliberately
+off the shelf: we use exactly the same procedures as the recent papers in that
+literature. Out contribution is solely to perform this exercise on the bloc of
+advanced economies as a whole. As such, we do not take a stance on the
+performance of the model, although we discuss some of the issues below.
+The philosophy of the Laubach-Williams method is that the natural
+rate of interest is an endogenous object determined in general equilibrium, and as such it will depend on a host of socioeconomic forces, such
+as trends in preferences, technology, demography, and policies and policy
+frameworks. It is impossible to know and measure all the relevant factors.
+At the same time, a robust prediction of most workhorse macroeconomic
+models is that the natural rate should vary together with the economy’s
+expected future trend growth rate.5 To reflect the dependence on growth
+and on a range of possibly unknown other factors, the Laubach-Williams
+model assumes that the natural rate, denoted r *t , depends on the estimated
+trend growth rate of potential output gt and a time-varying unobserved
+component zt that captures the effects of other unspecified influences:
+(1)
+
+r *t = gt + zt .
+
+The model further assumes that both the growth rate gt and the unobserved
+component zt are random walk processes:
+(2)
+
+gt = gt−1 +  g,t
+
+ g ∼ N ( 0, σ 2g ) and
+
+5. We discuss the rationale for this link in some detail in section IV.
+
+12
+
+(3)
+
+Brookings Papers on Economic Activity, Spring 2019
+
+zt = zt −1 +  z,t
+
+ z ∼ N ( 0, σ 2z ).
+
+The model specification also admits shocks to the level of potential output.
+Denoting by y *t the natural logarithm of potential output at time t,
+(4)
+
+y*t = y*t−1 + gt−1 +  y*,t
+
+ y* ∼ N ( 0, σ 2y* ) .
+
+In short, the Laubach-Williams model views the natural rate as the sum
+of two independent random walks. To achieve identification, Laubach and
+Williams add two further equations to the model. First, they specify a
+simple reduced-form equation relating output gap to its own lags, a moving
+average of the lagged real funds rate gap, and a serially uncorrelated error:
+(5)
+
+yt = y*t + a1 ( yt−1 − y*t−1 ) + a2 ( yt− 2 − y*t−2 ) +
+
+ar 2
+∑ (rt− j − r *t−j ) +  y,t
+2 j =1
+
+ y ∼ N ( 0, σ 2y ) .
+The key in this estimated investment-saving relation is the ar coefficient,
+which we expect to be negative. Second, Laubach and Williams add the
+reduced-form Phillips curve to the model, linking current inflation, pt,
+to lagged inflation and the output gap:
+(6)
+
+π t = bπ π t−1 + (1 − bπ ) π t + 2,4 + by ( yt−1 − y*t−1 ) +  π,t
+ π ∼ N ( 0, σ 2π ) ,
+
+where the standard theory would suggest that coefficient by is positive.
+The system presented above can be written in a state-space form, and
+the Kalman Filter can be used to estimate the unobservable states. To estimate the model, we use data for the advanced economies as a bloc. The
+data comprise the log of quarterly real GDP, core inflation, and long-term
+interest rates over the period 1971:Q1–2017:Q4 for the aggregated sample
+of OECD countries. The interest rate series is the average of long-term
+nominal interest rates across an unbalanced panel of 36 OECD economies.6
+To calculate real rates, we subtract from nominal rates a simple measure of
+expected inflation, constructed as the moving average of past core inflation
+6. The results are robust to using weighted average or median of the interest rates across
+countries. Given the strong co-movement, these interest rate series are close to each other.
+
+13
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+Table 1. State-Space Model Parameter Estimates
+Parameter point estimates (t statistics in parentheses)
+a1
+1.71
+(21.65)
+
+a2
+
+ar
+
+bπ
+
+by
+
+sy
+
+sg
+
+sz
+
+–0.79
+(10.28)
+
+–0.04
+(2.3)
+
+0.90
+(17.78)
+
+0.09
+(2.06)
+
+0.25
+(5.30)
+
+1.03
+(29.63)
+
+0.31
+(9.38)
+
+Average standard errors around the estimates
+y*
+
+r*
+
+g
+
+1.19
+
+3.12
+
+0.16
+
+Source: Authors’ calculations.
+
+rates, in line with the work of Holston, Laubach, and Williams (2017b).
+See online appendix A for further details on the data and the estimation
+procedure.7
+
+II.B. Results
+Table 1 shows the coefficients of the estimated model. The point estimates are all significantly different from zero and have expected signs.
+In particular, a positive interest rate gap reduces the output gap, while a
+positive output gap raises inflation. Table 1 also shows the standard errors
+around the estimated trends, which are large, especially those around the
+estimates of the equilibrium real rate. These wide standard error bands are
+not specific to our results—indeed, they are a norm in the literature. For
+instance, Holston, Laubach, and Williams (2017b) report similarly large
+errors for individual economies. These errors are, to an extent, an artifact
+of the long sample, as they reflect the cumulative uncertainty of the underlying drivers of equilibrium rates. Nonetheless, these large error bands
+should act as a reminder of the high uncertainty surrounding the econometric estimates of equilibrium interest rates.
+Figure 4 contains the key results. According to our estimates, AE R*
+declined steadily from the 1980s onward, and fell sharply during the 2008
+global financial crisis.8 It then stabilized at low levels (0.5 percent). The
+estimated growth rate of potential output was broadly stable up until the
+crisis, and declined during the crisis by about 1 percentage point. Thus,
+7. The online appendixes for this and all other papers in this volume may be found at the
+Brookings Papers web page, www.brookings.edu/bpea, under “Past BPEA Editions.”
+8. Estimates for the first decade should be taken with a grain of salt, because the model
+is less accurate during the first few years of the sample when the initial conditions play a
+larger role.
+
+14
+
+Brookings Papers on Economic Activity, Spring 2019
+
+Figure 4. Changes in AE R* and Trend Growth, 1971–2016
+Percent
+4.0
+3.5
+Trend growth
+
+3.0
+2.5
+2.0
+1.5
+1.0
+
+Natural rate of interest
+
+0.5
+0
+–0.5
+1972
+
+1978
+
+1984
+
+1990
+
+1996
+
+2002
+
+2008
+
+2014
+
+Source: Authors’ calculations.
+
+the model suggests that the bulk of the decline in real interest rates is due to
+factors other than trend GDP growth. This is consistent with the literature
+that finds only a loose connection between actual GDP growth and interest
+rates in the historical data (Hamilton and others 2016).
+These results corroborate other existing findings in the literature.
+In particular, Holston, Laubach, and Williams (2017b) estimated declines
+in real rates for the United States, Canada, the euro area, and the United
+Kingdom of about 2.3 percentage points between 1990 and 2017; for
+comparison, the decline over this period for the advanced economies as
+a whole that we estimate here is about 2 percentage points.
+Overall, despite high uncertainty surrounding the point estimates of
+these trends, we interpret the results of this exercise as broadly in line with
+the country-level findings in the literature. Indeed, given the high level of
+aggregation, we find it encouraging that the estimated unobservables
+do well at picking up the main events, such as the global financial crisis,
+during which our estimate of AE R* declines very sharply.
+Perhaps more significantly, our estimates of the decline in the neutral
+real rate track the evolution of 10-year real yields depicted in figure 2.
+This both provides further corroboration of our estimates and suggests a
+market judgment that real rates are likely to remain low for the foreseeable future.
+
+15
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+Figure 5. Private Saving and Private Investment in Advanced Economies:
+The Level and Gap, 1980–2014/16a
+Private saving and private investment
+Share in annual GDP of OECD
+
+Excess saving gap
+Share in annual GDP of OECD
+0 .16
+
+Range under plausible sensitivities
+
+0 .12
+
+Central counterfactual
+estimate
+
+Private saving
+0.2
+
+0 .08
+
+Private investment
+
+0 .04
+
+0.1
+
+0 .00
+1986
+
+1994
+
+2002
+
+2010
+
+Private
+saving/investment gap
+1988
+
+1996
+
+2004
+
+2012
+
+Sources: International Monetary Fund; Organization for Economic Cooperation and Development;
+authors’ calculations.
+a. The left panel of this figure shows purchasing power parity–weighted gross private saving and gross
+private fixed-capital formation across the following countries: Australia, Austria, Belgium, Canada, the
+Czech Republic, Denmark, Estonia, Finland, France, Germany, Greece, Iceland, Ireland, Israel, Italy,
+Japan, South Korea, Latvia, Lithuania, Luxembourg, the Netherlands, New Zealand, Norway, Portugal,
+Slovakia, Slovenia, Spain, Sweden, Switzerland, the United Kingdom, and the United States. The figure
+on the right shows the result of a simple counterfactual exercise where we calculate the private
+saving/investment gap under a scenario of no decline in the long-term interest rate since the 1980s. The
+swath contains the counterfactual for values of responsiveness of saving/investment ratios to interest
+rates between 2 and 4, and the central counterfactual estimate assumes the sensitivity of 3.
+
+II.C. The Fall in AE R* and the Excess Saving Problem
+The decline in the neutral real rate of this magnitude is a symptom of
+deep, fundamental changes that have taken place in the developed economies over the last half century. A useful way to think about these trends is
+through the lens of desired saving and investment, with the desire to save
+running ahead of the desire to invest. However, illustrating the fundamental
+change in this space is not straightforward, because the large fall in the
+intertemporal price—the interest rate—meant that the observed saving and
+investment ratios remained broadly stable throughout this period. The left
+panel of figure 5 shows the realized purchasing power parity–weighted
+private saving and investment ratios in the OECD, in proportion to the
+aggregate GDP of the OECD. The saving ratio is almost completely stable,
+and though there is some movement in the ratio of private investment to
+GDP, there certainly is no strong trend.
+
+16
+
+Brookings Papers on Economic Activity, Spring 2019
+
+To assess the magnitude of the forces that operated under the surface in
+terms of excess saving over investment, one needs to perform a counterfactual analysis. Here we present a simple but telling attempt. Specifically,
+we calculate the counterfactual difference between private sector saving
+and investment—the counterfactual private sector saving/investment gap—
+under an assumption of no decrease in the interest rate since the 1980s.
+To construct such a counterfactual, we need an estimate of the strength
+of the link between desired saving and investment and the interest rate.
+We rely on the estimates reported in empirical literature,9 which suggests
+that the elasticity of desired saving is in the region of 0.3 to 0.7 and the
+elasticity of desired investment is about –0.5 to –0.7. With average savingand investment-to-GDP ratios at about 20 percent, elasticities of this
+magnitude suggest that a decline of 1 percentage point in the real interest
+rate is associated with a widening of the saving/investment gap of between
+2 and 4 percentage points, with the central view of the sensitivity of about 3.10
+Given the uncertainties, we report the counterfactual gap under this range
+of sensitivities.
+The main message from these simple calculations is striking: absent the
+cushioning decline of the interest rate, the excess saving gap would have
+been very large: the right panel of figure 5 indicates that it would have been
+between 9 and 14 percentage points.
+Motivated by the size of these movements, we now turn to the discussion and analysis of the forces behind them. Our contribution is the
+focus on the role that public policies have played over this period.
+
+III. Government Policy and the Equilibrium Interest Rate
+Over the past several decades, government policy in the developed world
+has shifted significantly in at least four respects (figure 6). First, government debt has risen, from about 20 percent of GDP to about 70 percent
+(government consumption—excluding health care—remained relatively
+stable). Second, old-age payments administered through the Social Security
+and health care systems have gone up, respectively, from about 4 percent
+9. See Rachel and Smith (2015) for a review.
+10. The central estimate given in the right panel of figure 5 errs on the side of caution,
+assuming the sensitivities at the lower end of these ranges. When interest rates are 5 percent,
+a decline of 1 percentage point in the interest rate constitutes a 20 percent decline. Given an
+elasticity of 0.3 of saving and –0.5 of investment, this is associated with a change in desired
+saving of 6 percent and investment of 10 percent, which add up to about 3 percent of GDP
+when these ratios are about 20 percent of GDP.
+
+17
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+Figure 6. The Advanced Economies’ Government Policy Ratios (in Proportion to GDP),
+1971–2017a
+Share of annual GDP
+
+Share of annual GDP
+0.7
+
+0.07
+
+0.05
+
+Social Security
+(left axis)
+Government net debt
+(right axis)
+
+0.03
+
+0.01
+
+Old-age health
+spending (left axis)
+Government consumption excluding
+old-age health spending (right axis)
+
+0.5
+
+0.3
+
+0.1
+
+1973 1977 1981 1985 1989 1993 1997 2001 2005 2009 2013 2017
+Source: OECD data.
+a. This figure shows OECD aggregates in proportion to total GDP. The government net debt line
+measures general government net financial liabilities, from the OECD Economic Outlook Database. It
+includes the net government debt held by the public, and also other net liabilities of the government. For
+example, in the United States in 2017, net financial liabilities as reported by the OECD were 80 percent
+of GDP, while net debt held by the public was 75 percent of GDP. Government consumption figures
+represent general government final consumption expenditures, adjusted by subtracting old-age health
+spending (note that this series excludes the Social Security transfers by default). Old-age health
+spending is calculated as the aggregate health spending on those age 65 and above. The overall health
+spending figures are from OECD / World Health Organization statistics on sources of funding for
+health care. They include health care financed directly by the government and from compulsory
+schemes. The old-age share is then calculated under the assumption that 60 percent of total health
+spending is directed at the older demographic groups, which is consistent with the evidence available for
+a handful of OECD countries.
+
+to about 7 percent, and from about 2 percent to about 5 percent of GDP,
+accounting for the lion’s share of the increase in total social spending
+(figure 7). Third, significant changes have taken place in tax policies.
+The effective corporate tax rates in the high-income economies have
+fallen, from about 32 percent at the turn of the century to 24 percent more
+recently.11 Wealth taxes, which were operational in 12 OECD countries in
+1990, remain in place only in 4 countries today (OECD 2018). And, as
+documented by Thomas Piketty and Emmanuel Saez (2007), the overall
+progressivity of the tax system has decreased in some jurisdictions—
+notably, in the United States and the United Kingdom.
+11. For the details, see OECD (2019).
+
+18
+
+Brookings Papers on Economic Activity, Spring 2019
+
+Figure 7. Public Social Spending in the OECD Countries, 1980–2018a
+Percentage of GDP
+
+20
+
+15
+
+10
+
+5
+
+1980 1985 1990 1995 2000 2005 2010 2015 2016 2017 2018 Change,
+1980–
+present
+
+Old age
+Health
+Unemployment
+Total
+
+Survivors
+Family
+Housing
+
+Incapacity related
+Active labor market programs
+Other social policy areas
+
+Source: OECD Social Expenditure Database (SOCX).
+a. The data for 2016–18 are preliminary and the breakdown by function is not yet available.
+
+These shifts are likely to have had a profound impact on the economy
+in general, and on the equilibrium rate of interest in particular. Specifically,
+all these shifts—perhaps with the exception of tax changes—are likely to
+have pushed interest rates higher over the past 30 years. In this and the next
+section, we turn to the analysis of the impact of these policy shifts on the
+natural rate, with the ultimate goal to inform the counterfactual “pure” R*
+that would prevail without government intervention.
+We focus on government debt, Social Security, and health care spending, leaving the formal analysis of the impact of tax changes for future
+research. We find that shifts in government policy have likely pushed
+equilibrium rates of interest up by a significant amount over the period
+in question. As a rough rule of thumb for the magnitudes involved,
+our analysis suggests that the tripling of the government debt over the
+past half century has raised rates by 1.5 percentage points, while the
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+19
+
+expansion of social spending of about 5 percent of GDP has added a
+further 2.5 percentage points.12 Although the precise magnitudes of these
+multi­pliers are subject to substantial model and statistical uncertainty,
+the qualitative conclusion is clear: If public policy had not responded,
+the advanced world’s equilibrium rate would likely be deeply negative.13
+
+III.A. A Brief Review of the Theoretical Arguments
+We begin by reviewing the effects of government policy on the equilibrium interest rate, focusing on government borrowing, given that this has
+been the main subject of the large body of literature in macroeconomics on
+which we can draw.14
+In the canonical neoclassical model with complete markets and infinitely
+lived agents, Ricardian Equivalence holds, and neither the deficit nor the
+debt is relevant, because the representative household can fully offset the
+changes to the government’s borrowing policy through its saving decisions.
+Thus, independent shocks to government borrowing alone have no effect
+on the equilibrium interest rate. The neoclassical model instead emphasizes
+the link between the stock of capital and the interest rate: in equilibrium
+r = f ′(k) – d.15 Thus, government policies affect the interest rate only to the
+extent that they have an impact on the stock of private capital.
+However, in the micro-founded modern macroeconomic models that
+depart from the representative agent and complete markets assumptions,
+Ricardian Equivalence does not hold, and government transfer policies
+affect the equilibrium allocations through several distinct channels.
+12. This rounds the numbers in table 7 below. The 1.5 refers to the sum of the second
+column, second and third rows (1.2, but rounded to 1.5 here). The 2.5 rounds the sum of the
+fifth and sixth rows of the second column (1.2 + 1.1).
+13. A corollary of this link between government debt and interest rates is that a higher
+value of public debt, compared with market expectations, is likely to raise the natural interest
+rate. For an analysis of this argument, see Kocherlakota (2015).
+14. In our work, we do not explicitly model the impact of quantitative easing (QE) policies.
+One kind of QE encompasses policies that swap risky assets for safe assets and includes
+the Federal Reserve’s initial round of QE (QE1) in the United States or the Long-Term
+Refinancing Operation (LTRO) in the euro zone. Such a policy may raise the short-run rate
+(Caballero and Farhi 2018), whereas we focus on the long-run rate. Another kind is a policy
+whereby the central bank issues reserves to buy risk-free debt. Such a policy is primarily a
+maturity transformation of government debt, rather than a change in the total availability of
+investable assets.
+15. On the balanced growth path, the level of effective capital stock adjusts such that
+the interest rate simultaneously satisfies the balanced growth version of the representative
+1
+• g + θ , where IES is the intertemporal elasticity of
+household’s Euler Equation: r =
+IES
+substitution and q is the rate of time preference.
+
+20
+
+Brookings Papers on Economic Activity, Spring 2019
+
+First, the intertemporal transfers—that is, redistribution across time—
+matters if peoples’ planning horizons are finite. This could be because
+of finite lives coupled with a less-than-perfect bequest motive, as in the
+seminal models of Peter Diamond (1965) and Olivier Blanchard (1985),
+or perhaps due to the time-dependent preferences and myopic behavior
+pioneered by David Laibson (1997). The reason is intuitive: with finite
+planning horizon, agents currently alive expect to shoulder only a part of
+the financing burden that comes with today’s transfer; the rest is to be
+serviced by future generations. Such transfers thus affect agents’ wealth
+and their consumption and saving plans.
+Second, transfers across agents can affect aggregate consumption and
+saving (and hence the interest rate) if agents have different marginal propensities to consume (MPCs). Differences in MPCs could arise because
+of several distinct features of the economic environment. They could be a
+result of uninsurable risks and binding borrowing constraints, as in the
+works of Rao Aiyagari (1993), Aiyagari and Ellen McGrattan (1998), and
+the model of Hyunseung Oh and Ricardo Reis (2012). They could emerge
+because some agents have little to no liquid wealth, preventing them from
+adjusting their consumption, as in the paper by Greg Kaplan, Giovanni
+Violante, and Justin Weidner (2014). Another reason may be the life cycle:
+the propensity to consume may differ between workers and retirees, as
+shown by Gertler (1999); or it may vary with age, as shown by Etienne
+Gagnon, Benjamin Johannsen, and David Lopez-Salido (2016) and by
+Gauti Eggertsson, Neil Mehrotra, and Jacob Robbins (2019). Heterogeneous MPCs and distortionary taxes deliver this result in the saversspenders model of N. Gregory Mankiw (2000).16 In all these models,
+government transfers from a low-MPC agent to a high-MPC agent will
+boost the aggregate desire to consume and lower desired saving, thereby
+raising the interest rate.
+The third way in which government policy affects interest rates is what
+may be called a precautionary saving channel. One facet of this channel is
+that government policies can directly reduce the risks faced by the agents.
+The mechanism is close to the one analyzed by Eric Engen and Jonathan
+Gruber (2001). Under imperfect insurance, agents who face idiosyncratic
+risks—for example, those related to health or unemployment—attempt to
+16. In the savers-spenders model of Mankiw (2000), if taxes are levied lump-sum,
+a deficit-financed transfer that permanently increases the level of debt does not affect the
+stock of capital or the interest rate in the long run. The reason is that the interest rate is pinned
+down by the savers, who are infinitely lived and Ricardian.
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+21
+
+self-insure through saving. This precautionary saving motive acts to push
+the interest rate below the rate that would prevail in a complete market
+economy (where all risks are insurable and thus do not affect the agents’
+behavior). Government policies such as social insurance will affect the
+importance of precautionary saving: a stronger social safety net or higher
+unemployment and disability benefits curtail the associated risks, curbing the desire to save. Conversely, the lack of social insurance means that
+agents need to rely on their own resources when experiencing hardship,
+making personal saving a priority. However, as illustrated in figure 7, the
+overall size of the social safety net across the OECD has changed little
+over the period in question. We do not attempt to model it here, but leave it
+as an important direction to be explored in future research.
+The other facet of the precautionary saving channel—and the one we
+focus on in this paper—works through the provision of assets that agents
+use to insure themselves against shocks. This mechanism is at the heart
+of the work of Aiyagari and McGrattan (1998), and it has recently been
+discussed in the context of secular stagnation by Ricardo Caballero,
+Emmanuel Farhi, and Pierre-Olivier Gourinchas (2016) and by Caballero
+and Farhi (2018). The intuition we have in mind is simple: a rise in government debt raises the overall supply of assets in the economy, which, all else
+being equal, pushes interest rates up. Indeed, there is evidence in the data
+that government debt constitutes a nontrivial proportion of the total investable financial assets in the developed world, so that this channel can have
+a quantitative bite. The estimates of the share of government bonds in total
+financial assets range from one-third in the United States to two-thirds in
+Japan (Kay 2015).
+In summary, macroeconomic theory developed over the past couple of
+decades has enriched the basic model of Frank Ramsey and Robert Barro
+(see Barro 1974), with several channels that make government policy a
+relevant determinant of the long-term interest rate. We now turn to the
+empirical evidence that has been accumulated in parallel to these theoretical
+advances.
+
+III.B. Empirical Evidence on the Link between
+Government Debt and Long-Term Interest Rates
+The main challenge when estimating the effect of government borrowing on interest rates is the large number of potentially confounding factors,
+which may make simple regressions of interest rates on debt spurious
+and uninformative. For example, deficits will tend to expand when the
+economy weakens, which is also the time when interest rates tend to fall.
+
+22
+
+Brookings Papers on Economic Activity, Spring 2019
+
+This means that the simple regression coefficients are likely to be biased
+downward.
+We shall not attempt a full-blown empirical assessment in this paper,
+and instead present a summary of the empirical estimates in the literature.
+For an interested reader, online appendix B illustrates several challenges in
+estimating the causal relationship between equilibrium interest rates and
+government debt through a simple empirical exercise for the United States,
+Canada, the euro area, and the United Kingdom. These challenges include
+the presence of international capital flows and of endogenous responsiveness of policy to an excess of private saving over private investment, both
+of which are likely to attenuate the individual-country estimates of the
+impact of deficits on interest rates. Instead, we present the estimates from
+a broad body of literature that attempted to deal with these and other
+confounding factors in finding the link between government finances
+and real rates.
+Several key studies in the empirical literature have focused on the
+United States. In a chapter in the Handbook of Macroeconomics at the
+turn of the century, Douglas Elmendorf and Mankiw (1999) reviewed
+the theoretical and empirical literature on the Ricardian Equivalence
+proposition, and they concluded that, though the studies that attempted to
+estimate the impact of government finances on interest rates cannot reject
+the null hypothesis of zero impact, they suffer from lack of statistical
+power.17 More recent work appears to be more conclusive. In their literature
+review, William Gale and Peter Orszag (2003) conclude that the effect of
+government deficit on real rates is positive and economically significant:
+an increase of 1 percentage point in the deficit-to-GDP ratio tends to raise
+interest rates by about 50–100 basis points. And the two most authoritative contributions on the topic suggest estimates that are significant, albeit
+somewhat smaller. Laubach (2009) studies how forward rates on government securities react to news in the fiscal forecasts of the Congressional
+Budget Office. The identifying assumption in his work is that long-term
+rates and forecasts are not contaminated by current events and shocks
+at the business cycle frequency. According to his estimates, a rise in the
+17. They write of the literature that tends to find close to zero effect of government deficit
+on rates: “Our view is that this literature . . . is ultimately not very informative. . . . Plosser
+(1987) and Evans (1987) generally cannot reject the hypothesis that government spending,
+budget deficits, and monetary policy each have no effect on interest rates. Plosser (1987)
+also reports that expected inflation has no significant effect on nominal interest rates. These
+findings suggest that this framework has little power to measure the true effects of policy”
+(Elmendorf and Mankiw 1999, 1658).
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+23
+
+government deficit of 1 percentage point of GDP raises interest rates by
+about 20–30 basis points; an equal increase in the debt-GDP ratio results
+in a rise of about 3–4 basis points. He asserts that these flow- and stockmultipliers are broadly consistent, because of the autocorrelation of the
+deficits observed in the data.18 Another important contribution to this
+literature is that by Engen and Glenn Hubbard (2004), who consider a
+host of specifications linking interest rates or changes in interest rates
+to government debt or to the deficit, both contemporaneously and in a
+forward-looking setting. Their results suggest that a rise of 1 percentage
+point in government debt to GDP pushes interest rates up by about 3 basis
+points, broadly in line with Laubach’s findings.19
+Further evidence is available for the advanced economies beyond
+the United States. In an international setting, Anne-Marie Brook (2003)
+documents that the range of estimates of the effect of an increase of
+1 percentage point increase in the government debt-to-GDP ratio on interest
+rates is 1–6 basis points, with the corresponding range for an increase of
+1 percentage point in deficits in the region of 20–40 basis points. In an
+important study of the euro area, Riccardo Faini (2006) finds that a rise of
+1 percentage point in deficits at the euro area level raises long-term rates
+by about 40 basis points, close to—and if anything, higher than—the
+U.S. multi­pliers. Considering an even wider panel of 19 OECD economies
+spanning the years 1971–2004, Noriaki Kinoshita (2006) finds that the
+effect of a rise of 1 percentage point in the government debt-to-GDP ratio
+is to raise interest rates by 4–5 basis points.
+A complementary way to assess the size of these effects is to consider
+simulations from large-scale models used for quantitative analyses in
+policy institutions. Because these models are carefully estimated using
+real-world data, they should be able to provide a steer as to the size of
+the effects. A well-known example is the FRB/US model, which is used
+and maintained by researchers at the Federal Reserve Board (Laforte and
+Roberts 2014). In a recent speech, Stanley Fischer (2016) uses this model
+to estimate the impact of a persistent increase in the deficit on real rates,
+and finds that an increase of 1 percentage point in the deficit raises the
+equilibrium rate by between 40 and 50 basis points, depending on whether
+
+18. Specifically, he estimates the autocorrelation of 0.83, implying that the 1 percentage
+point rise in the deficit should have 1/1 – 0.83 = 6 times the effect of a 1 percentage point
+rise in debt—broadly in line with what he finds.
+19. The results vary across different specifications, highlighting that the precise econometric details matter for the conclusions of this line of empirical research.
+
+24
+
+Brookings Papers on Economic Activity, Spring 2019
+
+Table 2. The Impact of Government Borrowing on the Interest Rate:
+A Summary of the Literature
+
+Study
+
+Country or region
+
+Gale and Orszag (2002)
+Laubach (2009)
+Engen and Hubbard (2004)
+FRB/US model
+Faini (2006)
+Brook (2003)
+Kinoshita (2006)
+  Average
+
+United States
+United States
+United States
+United States
+Euro area
+Advanced economies
+19 OECD economies
+
+Impact of
+1 percentage
+point increase in
+deficit-GDP ratio
+(basis points)
+
+Impact of
+1 percentage
+point increase in
+debt-GDP ratio
+(basis points)
+
+50–100
+20–30
+18
+40–50
+40
+20–40
+—
+38
+
+—
+3–4
+3
+—
+—
+1–6
+4–5
+3.5
+
+Sources: The studies listed in the first column; information on the FRB/US model can be found at
+https://www.federalreserve.gov/econres/us-models-about.htm.
+
+the deficit increased because of a tax cut (smaller effect) or a rise in government spending (larger effect). These figures are thus slightly larger than
+the empirical estimates cited above.
+In summary, the estimates in the literature paint a fairly consistent
+picture: a rise of 1 percentage point in the deficit tends to raise interest rates
+by about 40 basis points; while a rise of 1 percentage point in the debt-GDP
+ratio results in an increase of about 3.5 basis points (table 2). We suspect
+this figure is an underestimate of the impact of an exogenous increase
+in budget deficits on real rates because fiscal expectations are measured
+with error, because any one country can import capital and so attenuate
+rate increases when budget deficits increase, and because there will be a
+tendency—as fiscal policy is used to stabilize the economy—for periods of
+low neutral real rates to coincide with periods of expansionary fiscal policy.
+
+III.C. The Historical Impact of Government Borrowing on R*
+The elasticities identified in the empirical research combined with the
+historical path of government borrowing give simple back-of-the-envelope
+estimates of the historical influence of fiscal policy on real interest rates.
+Over the past 40 years, the increase in government debt in the OECD has
+likely pushed interest rates higher, perhaps by as much as 2 percentage
+points. The measure of R* that excludes the impact of public debt has
+hovered around zero since the early 2000s, and remains negative at the
+moment (figure 8).
+
+25
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+Figure 8. The Advanced Economies’ R*, Adjusted for the Impact of Government Debt,
+1971–2017a
+Percent
+4
+3
+2
+1
+
+AE R* estimate from HLW model
+Counterfactual AE R*
+(excluding impact of public debt)
+
+0
+–1
+1973
+
+1977
+
+1981
+
+1985
+
+1989
+
+1993
+
+1997
+
+2001
+
+2005
+
+2009
+
+2013
+
+Source: Authors’ calculations.
+a. HLW = the model of Holston, Laubach, and Williams (2017a). This figure shows the estimated
+equilibrium real interest rate in the advanced economies, and an adjusted measure that subtracts the
+impact of government borrowing using the average elasticities reported in table 2.
+
+III.D. The Link between Social Security and R*
+Social Security constitutes both an intertemporal and a between-group
+transfer. To be able to calculate by how much changes in Social Security
+have had an impact on the neutral real rate, we need the estimates of the
+impact of Social Security on individual saving, and also the differences in
+the MPCs of the groups funding and receiving the Social Security transfer.
+A large body of literature has analyzed the first of these.20 Several
+researchers relied on aggregate time series within a country. An example
+is the study by Martin Feldstein (1974), who finds a significant offset in
+the region of 30–50 percent of private saving to Social Security changes
+in the United States. However, other studies in this literature argued that
+the effects may be smaller and are highly uncertain. The second approach,
+based on micro data in the cross section of individuals, estimates a private
+sector offset of between 0 and 50 percent (Feldstein and Pellechio 1979).
+The cross-country studies find little to no effect (Barro and MacDonald
+1979). More recent papers focus on pension system reforms to sharpen
+
+20. See CBO (1998) for a review.
+
+26
+
+Brookings Papers on Economic Activity, Spring 2019
+
+identification, and find significant responses to private saving (Attanasio
+and Brugiavini 2003; Attanasio and Rohwedder 2003). Overall, the literature is consistent with private saving reacting to the changes in Social
+Security, with elasticities between –0.3 and –0.4 representing the central
+tendency among a wide range of available estimates.
+The impact of the between-group transfer depends on the differences
+in MPCs across the two groups: taxpayers and retirees. The traditional
+life-cycle logic suggests that retirees have a higher MPC relative to
+working-age individuals, although the evidence on the quantification of
+these differences is scarce. Christopher Carroll and others (2017) suggest
+that the difference could be in the region of 0.3.
+Under these assumptions, the increase in Social Security of about 3 percentage points of GDP that we observed (figure 6) would have led to a
+decrease in desired saving of about 1 percentage point through the intertemporal channel and another 1 percentage point through the across-groups
+redistribution.21 Based on the multipliers used in the calculations underlying figure 5, the overall decrease of 2 percentage points in desired private
+saving may have led to a rise in R* of between 50 and 100 basis points. And
+the rise in old-age health care spending would have added further upward
+pressure on real rates.
+To sum up, simple calculations suggest a very substantial upward impact
+of public policies on R* over the past half century. To develop further intuition and to consider other mechanisms through which public policy may
+have affected the interest rate, we now turn to a complementary approach:
+a general equilibrium modeling framework.
+
+IV. Government Policy and R*: A Model-Based Approach
+In subsection III.A, we outlined various channels through which government debt may affect the equilibrium real interest rate; our goal in this
+section is to illustrate their quantitative importance within a general equilibrium framework. We want our approach to be simple and transparent,
+providing a credible complement and a cross-check to the empirical analysis given above. To achieve these goals, we build two general equilibrium
+models: one capturing the finiteness of life and life-cycle heterogeneity,
+and another that focuses on precautionary behavior.
+
+21. Both figures are obtained by multiplying the change in Social Security of 3 percentage
+points by 0.3.
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+27
+
+IV.A. Two General Equilibrium Models
+The first model, which builds closely on Gertler (1999), highlights lifecycle heterogeneity. In this economy, ex-ante identical individuals are at
+different points in their lives; some are working, and some have already
+retired. This drives the differences in their consumption and saving
+behavior. The framework is similar to that of Blanchard (1985) and
+Menahem Yaari (1965)—individuals face thr constant probability of death,
+and so their horizons are finite—but, in addition to their model, workers
+retire and finance consumption with saving until death.
+The second model is a Bewley–Huggett–Aiyagari economy with incomplete markets and uninsurable income risk at the level of an individual
+household. A similar model was considered by Aiyagari and McGrattan
+(1998), who also studied the role of government debt in equilibrium allocation in the presence of idiosyncratic risk. The main differences between
+ours and their approach are that (1) we calibrate the risk component of the
+income process to deliver a realistic dose of uncertainty, which implies that
+distributions of income and assets in the model broadly match distributions
+observed in developed economies such as the United States;22 and (2) we
+cast the model in continuous time, taking full advantage of the recent
+analytical and computational discoveries in macroeconomics.
+Here, we sketch the main workings of the two models and develop the
+intuition; a more detailed description of the models is available in online
+appendix C for the life-cycle model and online appendix D for the incomplete market model.
+
+IV.B. A Model of Finite Lives and Life-Cycle Heterogeneity
+With respect to demographics and preferences, there are two stages
+of life: work and retirement, with exogenous transition probabilities.
+That is, each worker faces a given probability of retirement 1 – w, and,
+once a retiree, a given probability of death 1 – γ. Population grows at a
+gross rate 1 + n.
+There is no aggregate risk; the only sources of uncertainty facing an
+individual are the risk of retirement while a worker (associated with a
+loss of labor income) and the risk of death while a retiree. Left unchecked,
+these sources of risk would affect agents’ behavior. This would make aggregation problematic, and, more important, it would be unrealistic: the timing
+22. We match the degree of income inequality in the data, but fall short of matching the
+extreme degree of wealth inequality observed in the real world. We discuss the standard and
+well-known reasons why this is so below.
+
+28
+
+Brookings Papers on Economic Activity, Spring 2019
+
+of retirement is, for the most part, known. To deal with this unrealistic
+feature, we assume that there are perfect annuity markets for the retirees
+(neutralizing the influence of the risk of death on their behavior), and that
+workers’ preferences have a certainty equivalence property (such that
+the risk of retirement does not affect workers’ behavior in equilibrium).23
+These two assumptions are both realistic and convenient, in that they allow
+for the derivation of the aggregate consumption function, as we illustrate
+momentarily.
+Specifically, we assume that agents have recursive Epstein–Zin preferences, which are defined as follows:
+(7)
+
+V tz = [(Ct ) + β z t {Vt +1 z } ] ,
+ρ 1ρ
+
+ρ
+
+where Ct denotes consumption, V tz and β z stand for the agent’s z ∈ {w, r}
+1
+value function and the discount factor respectively, and σ =
+is the
+1− ρ
+intertemporal elasticity of substitution.
+Retirees and workers differ in two crucial respects. First, they have
+different discount factors. Because of the positive probability of death
+facing any retiree, his or her discount factor is the time preference parameter β multiplied by the probability of surviving into the next period:
+(8)
+
+βw = β
+
+and
+(9)
+
+βr = β • γ .
+
+Second, the expectation of the value function next period differs
+between a worker and a retiree. In particular, a worker takes into account
+the possibility of retiring, so that his or her expectation of the value
+function in the next period is a probability-weighted sum of the values
+in the two states:
+(10)
+
+Et {Vt +1 w} = ωV tw+1 + (1 − ω ) V tr+1 ,
+
+23. In particular, workers are assumed to have recursive Epstein and Zin (1991) preferences that generate certainty equivalent decision rules in the presence of income risk.
+
+29
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+while the expectation of the value function of a retiree is simply given by
+Et {Vt +1 r } = V tr+1 .
+
+(11)
+
+We now outline the problems of the two types of agents.
+RETIREES Retirees consume out of saving and Social Security payments.
+Each period, some retirees die. We make the assumption—which is standard
+in the literature—that those who survive receive the proportional share
+of the proceeds. This means that the effective return faced by individual
+retirees is Rt /γ, higher than the ongoing interest rate Rt.24
+Because the probability of death is independent of age and the
+government does not discriminate across retirees in its Social Security
+transfer policy, each retiree (irrespective of age) solves an identical
+problem, which is:
+(12)
+
+V tr = max
+(Ctr ) + βγ  t {V tr+1 }  ,
+C
+ρ
+
+ρ
+
+1ρ
+
+r
+t
+
+subject to the flow budget constraint
+Atr+1 = ( Rt γ ) Atr − Ctr + Etr ,
+
+(13)
+
+where A rt stands for a retiree’s assets, C rt are his or her consumption expenditures, and E rt is the Social Security and health care cost transfer.25
+WORKERS Individuals are born workers and have no assets at the start of
+life. They consume out of asset wealth and their labor income net of taxes.
+Because of the demographic structure (in particular, the assumption that
+the probability of retirement is independent of age26), a worker’s problem
+is effectively the same no matter the age. Each worker solves:
+(14)
+
+V tw = max
+{(Ctw ) + β [ωV tw+1 + (1 − ω )V tr+1 ] }
+C
+ρ
+
+ρ
+
+1ρ
+
+w
+t
+
+subject to
+24. For retirees as a group, wealth accumulates at the interest rate Rt, as the higher
+individual return cancels out with some retirees dying.
+25. Our modeling of health care provision is very simple—we treat old-age health care
+cost as a lump-sum transfer, subsumed in the variable E.
+26. Of course this is an unrealistic assumption. But as explained above, the effect of
+this assumption on workers’ behavior is neutralized through the structure of preferences that
+exhibit a certainty equivalence property. The role of this assumption is thus only to simplify
+the model and achieve aggregation, with little cost to the economics.
+
+30
+
+Brookings Papers on Economic Activity, Spring 2019
+
+Atw+1 = Rt Atw + Wt − Tt − Ctw ,
+
+(15)
+
+where Tt are lump-sum taxes levied by the government.27
+FIRMS The supply side of the model is extremely simple. Market are
+competitive. Production is carried out by firms employing capital and
+labor. The aggregate production function is
+Yt = K tα ( X t N t ) ,
+1−α
+
+(16)
+
+where Nt is the number of workers in the economy. There is exogenous
+technological progress and population growth—that is, Xt+1 = (1 + x)Xt
+and Nt+1 = (1 + n)Nt. Perfect competition in factor markets means that
+the wage and the rental rate are equated to the marginal products of the
+Y
+Y
+factors: Wt = α t and Rt = (1 − α ) t + (1 − δ ). Capital evolves according
+Nt
+Kt
+to the standard law of motion: Kt+1 = Yt – Ct – Gt + (1 – d) Kt.
+GOVERNMENT The government consumes Gt each period, and pays
+retirees a total of Et in Social Security and health care benefits. To finance
+its expenditures, the government levies a lump sum tax Tt on the workers.
+It can also issue one-period government bonds Bt+1. The government flow
+budget constraint is
+Bt +1 + Tt = Rt Bt + Gt + Et .
+
+(17)
+
+Iterating forward gives the intertemporal budget constraint of the
+government:
+(18)
+
+Rt Bt = ∑ v = 0
+∞
+
+Tt + v
+G
+E
+∞
+∞
+− ∑ v=0 v t+v − ∑ v=0 v t+v .
+v
+∏ z =1 Rt + z
+∏ z =1 Rt + z
+∏ z =1 Rt + z
+
+27. There are two key channels through which life-cycle considerations affect workers’
+behavior. First, a worker takes into account the fact that, with probability 1 – w, he or she
+becomes a retiree. This means that, relative to the representative agent case, he or she discounts
+the future stream of wages by more; effectively, this is the saving-for-retirement effect.
+Mechanically, a larger discount rate reduces the value of human wealth in the consumption
+function, thus leading to lower consumption and higher saving. Second, a worker discounts
+the future stream of wealth more because he or she anticipates that inevitably there will come
+a time when he or she becomes a retiree, facing the sad truth that life is finite. With finite life,
+wealth can be smoothed out across fewer periods, so its marginal utility value is lower. This
+effect shows up as a higher effective discount rate applied to future wealth.
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+31
+
+That is, the difference between the present discounted value of government
+revenue and spending must be exactly equal to the current value of the
+outstanding debt.
+Government policy is exogenous. In particular, it is characterized by
+–
+–
+the four ratios, g–t, b t, –e t, h t of, respectively, government consumption, debt,
+Social Security, and health care spending to GDP:
+(19)
+
+Gt = gtYt
+
+(20)
+
+Bt = btYt
+
+(21)
+
+Et = ( et + ht )Yt .
+
+Given the paths of Gt, Et, and Bt, taxes adjust to satisfy the intertemporal
+budget constraint.
+EQUILIBRIUM In this economy, markets are competitive and agents take
+prices as given. Formally, a competitive equilibrium is a sequence of
+quantities and prices such that (1) households maximize utility subject to
+their budget constraints; (2) firms maximize profits subject to their technology constraints; (3) the government chooses a path for taxes, compatible
+with intertemporal solvency, to finance debt, spending, and transfers; and
+(4) all markets clear.
+Online appendix C contains the details of the derivation of the equilibrium conditions of the model. The individual policy functions within
+the two groups—workers and retirees—aggregate up nicely. Aggregating the two consumption levels, we derive the aggregate consumption
+function:
+(22)
+
+Ct = Ctw + Ctr = π t {(1 − λ t ) Rt At + H t + Stw +  t ( λ t Rt At + Str )} .
+
+In this consumption function, pt denotes each worker’s MPC out of
+wealth, and ptt is the MPC of each retiree. These MPCs multiply the
+total wealth of each group of consumers—with a slight abuse of notation, At now denotes aggregate financial wealth, Ht is aggregate human
+wealth (the net present value of future wages), and St stands for the
+aggregate value of Social Security and health care payments. Compared
+with a standard model, the only additional state variable is the share of
+wealth held by retirees, lt, which fully captures the heterogeneity in the
+economy.
+
+32
+
+Brookings Papers on Economic Activity, Spring 2019
+
+Table 3. Calibration of the Model
+Parameter
+
+Description
+
+Calibration
+
+Preferences and technology
+β
+Discount factor
+s
+Intertemporal elasticity of substitution
+α
+Capital share
+d
+Depreciation rate
+Rate of technological change
+x
+
+0.98
+0.5
+0.33
+0.1
+1.51%
+
+Demographics
+n
+1
+1− ω
+1
+1− γ
+Government ratios
+–
+b
+–
+g
+–e
+–
+h
+
+Gross population growth rate
+
+1.35%
+
+Average length of working life (years)
+
+47.6
+
+Average length of retirement (years)
+
+10.5
+
+Government debt to GDP
+Government consumption to GDP
+Social Security spending to GDP
+Old-age health care spending to GDP
+
+0.18
+0.14
+0.04
+0.02
+
+Source: Authors’ calculations.
+
+The total supply of assets is the sum of capital stock Kt and government
+debt Bt, so that the equilibrium requires
+(23)
+
+At = Atw + Atr = K t + Bt ,
+
+that is, households asset demand equals the asset supply.
+CALIBRATION AND THE INITIAL STEADY STATE OF THE LIFE-CYCLE MODEL Despite
+the richness of the economics, the model is parsimonious and relatively
+straightforward to calibrate. We set the preferences and technology parameters at the standard values in the macroeconomic literature (table 3). The
+growth rate of technological change, the demographics parameters, and
+the government policy ratios are all calibrated to match the data in the
+advanced economies in 1970.
+Because there are population growth and technological progress in this
+economy, the steady state equilibrium takes the form of a balanced growth
+path, where all variables grow at a constant gross rate equal to (1 + n)
+(1 + x). We can characterize the equilibrium by expressing all variables as
+Zt
+ratios in units of effective labor (defining, for any variable Z t , zt ≡
+).
+Xt Nt
+
+33
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+Table 4. The 1970s Steady Statea
+Variable
+
+Description
+
+Value
+
+y
+R
+
+pw
+pr
+l
+y
+
+Ratio of retirees to workers
+Real gross interest rate
+Ratio of retirees’ to workers’ MPCs
+Workers’ MPC
+Retirees’ MPC
+Share of retirees’ wealth in total wealth
+Output
+
+0.19
+1.045
+2.01
+0.06
+0.13
+0.17
+1.50
+
+Ratios (in proportion to output)
+Consumption
+c
+Consumption of retirees
+cr
+Consumption of workers
+cw
+Assets
+a
+Assets of retirees
+ar
+Assets of workers
+aw
+Human capital
+h
+Investment
+i
+Capital
+k
+t
+Taxes
+Social Security wealth of the retirees
+s
+sw
+Social Security wealth of the workers
+
+0.57
+0.11
+0.45
+2.42
+0.40
+2.03
+4.23
+0.27
+2.25
+0.21
+0.50
+0.91
+
+Source: Authors’ calculations.
+a. MPC = marginal propensity to consume.
+
+Table 4 shows the key variables along the initial (early-1970s) balanced
+growth path. The interest rate is 4.5 percent.28 As we pointed out above,
+the key feature of this economy is the heterogeneity in MPCs between
+workers and retirees. Indeed, the endogenous MPC of retirees is over twice
+that of the workers. The additional state variable l—the ratio of retirees’
+wealth in total wealth—takes a plausible value of 17 percent. Ratios of
+aggregate consumption, investment, capital, and assets to output also match
+the stylized facts from the data well.
+THE SIMULATION EXERCISE We now explore how the model economy
+reacts to changes in government policy. We study four policy levers:
+government debt, government spending, old-age Social Security, and health
+care transfers.
+We carry out the following experiment. Starting the economy in
+the initial 1970s steady state, we feed the model with the policy profiles
+depicted in figure 6. Once announced, the profile of these shifts is fully
+
+28. With a growth rate of 2.9 percent a year, the economy is dynamically efficient.
+
+34
+
+Brookings Papers on Economic Activity, Spring 2019
+
+Figure 9. The Simulated Impact of Government Policies on the Equilibrium Real
+Interest Rate in the Life-Cycle Model, 1971–2071a
+Percent
+
+4
+2
+
+Government debt (life cycle)
+Government spending
+Social Security
+Old-age health care
+Interactions
+
+0
+–2
+1981
+
+1991
+
+2001
+
+2011
+
+2021
+
+2031
+
+2041
+
+2051
+
+2061
+
+Source: Authors’ calculations.
+a. This figure shows how the equilibrium real interest rate adjusts to the exogenously given paths of
+government debt, spending, and old-age Social Security transfers depicted in figure 6. The 2017 values
+given in figure 6 are assumed to be the new steady state values.
+
+anticipated by the agents. Beyond the current date, we assume that future
+policy ratios remain constant at their 2017 values.29 We then compute the
+transition path toward this new steady state.
+Our focus is on the response of the interest rate to these policy shifts.
+Figure 9 contains the main result of this section: the total response of the
+interest rate to the policy changes discussed above. This response is quantitatively large; according to the model, government policies have pushed
+up on the equilibrium interest rate by about 3.2 percentage points over the
+past 50 years. Moreover, the model suggests that further upward pressure is
+to be expected as the economy settles at the new steady state. All the policies except government spending—which did not change much—play an
+important role. The final set of bars in figure 9, labeled “interactions,” is the
+additional effect on the interest rate from the (nonlinear) synergies between
+the three different policies.30
+
+29. This is a conservative assumption, as one may reasonably expect the upward drift in
+both debt and Social Security spending to continue, at least for some time.
+30. More precisely, the interaction effect exists because the final steady state is a nonlinear system of equations. These nonlinearities make the overall effect of several exogenous
+changes different, in general, from the sum of the parts.
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+35
+
+IV.C. A Model of Precautionary Saving
+We now turn to the model of precautionary behavior, which is a
+continuous-time version of the Aiyagari and McGrattan (1998) economy.
+The population consists of a large number of infinitely lived individuals
+of measure 1. Every individual is ex-ante identical, but people face shocks
+to their income that they cannot fully insure against: markets are incomplete.
+As a result of this idiosyncratic risk, individuals experience different income
+histories and thus accumulate different levels of wealth. All the risk is at
+the individual level; for simplicity, we abstract from aggregate uncertainty.
+Our goal here is to quantitatively assess the influence government debt
+has on precautionary behavior. In other words, how different is the prevailing interest rate when the government debt-to-GDP ratio is 18 percent
+versus when it is 68 percent?31
+A BRIEF OUTLINE OF THE MODEL An individual chooses consumption and
+asset holdings to maximize his or her expected utility, subject to the flow
+budget constraint, the consumption nonnegativity constraint, the borrowing
+constraint, and a realization of the idiosyncratic income shock:
+(24)
+
+∞
+
+max
+ 0 ∫0 e − ρt
+{c }
+t t >0
+
+ct1−σ
+dt
+1− σ
+
+subject to
+at = (1 − τ ) wt et + (1 − τ ) rt at − ct
+ct ≥ 0
+at ≥ a
+et ∈ { z1 , . . . , zn } ,
+31. Our model is highly stylized and abstracts from important features present in more
+advanced and larger models in the literature. We view our model here as an early attempt to
+quantify the precautionary saving channel of government debt. Richer features may usefully be
+incorporated in future attempts to answer this question. For analysis of saving rates across the
+distribution, see Straub (2017) and Fagereng and others (2019). For evidence on the differential
+rates of return, see Fagereng and others (2016). For models with multiple assets or a more
+careful analysis of the constraint—both of which contribute to a better match to the empirical
+distribution around the borrowing constraint, see Kaplan, Violante, and Weidner (2014);
+Kaplan, Moll, and Violante (2018); and Achdou and others (2017). For the state-of-the-art
+calibration of the income process, see Guvenen and others (2015). We conjecture that a richer
+model with some of the above features would likely predict larger effects of government policy.
+
+36
+
+Brookings Papers on Economic Activity, Spring 2019
+
+where ct is individual consumption, at are individual asset holdings
+.
+(and at denotes the time derivative, that is, saving), rt is the real (net)
+interest rate, wt is the wage, and et is the idiosyncratic shock to a household’s productivity. The household cannot insure against this idiosyncratic
+uncertainty. The government levies a proportional tax rate t on both labor
+and capital income.32
+The supply side is identical to that in the previous model: the production
+function is Cobb–Douglas, and there is perfect competition in all markets.
+The government issues bonds and collects taxes to finance its consumption
+and transfers. The government budget constraint is
+(25)
+
+B t = Gt + rt Bt − τ ( wt + rAt ) ,
+
+which says that the change in government debt is equal to the government funding gap: government consumption Gt plus interest payments rtBt
+minus the tax revenue.
+Online appendix D presents the definition and solution of the equilibrium of this economy.
+PARAMETERIZATION We choose the values of the parameters in the precautionary saving model to match the typical values in the literature and
+to be broadly consistent with the life-cycle model given above (table 3).
+We set the capital share at 0.33, the rate of time preference at 0.04, the
+depreciation rate at 10 percent, and the intertemporal elasticity of substitution at 0.50.
+We next calibrate the income process. Intuitively, the size and persistence of income shocks will determine the strength of the precautionary
+saving motive, the degree of inequality, and the proportion of households close to or at the borrowing constraint. These outcomes will in
+turn determine the potency of government financing policy. In the real
+world, individual income varies over time for a host of reasons. We do
+not model these causes here. Instead, we make sure that the income process in our model reflects these uncertainties. Specifically, we follow
+Ana Castañeda, Javier Díaz-Giménez, and José-Víctor Ríos-Rull (2003)
+and Christopher Winter (2016), and we thus calibrate the income process
+
+32. The assumption of a proportional tax rate is natural in a model with income and
+wealth heterogeneity. With lump-sum taxation, the poorest households would find themselves
+unable to pay the tax bill. Note that even though the tax is proportional it does not distort the
+labor supply decisions because the labor supply is inelastic.
+
+37
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+to match aggregate income inequality in the OECD. There are four productivity and income states:
+(26)
+
+e ∈ {0.20, 0.55, 0.80, 5.43} .
+
+The corresponding matrix of Poisson intensities is
+ 0.07
+
+ 0.03
+P=
+ 0.001
+
+0.1
+
+
+
+(27)
+
+0.04
+
+0.02
+
+0.13
+
+0.01
+
+0.08
+
+0.09 
+
+0.02
+
+0.06
+
+0.001 
+
+0.001 
+,
+0.011 
+
+0.17  
+
+where the values on the main diagonal marked with superscript — indicate
+the intensity of leaving the current state.
+Given this income process, the distributional outcomes in the equilibrium of our model are broadly in line with those observed in the data:
+the income Gini coefficient is 0.32, close to the OECD average, and the
+income process is highly persistent.33
+RESULTS We now compare the two stationary equilibria of the model,
+one with the government debt-GDP ratio set at 18 percent, and another
+at 68 percent, to see what the impact of such a higher pool of assets is on
+the interest rate. Because a larger amount of assets allows households to
+better insure against individual uncertainty, we expect the interest rate to
+be higher when government debt is high. The simulation results confirm
+this intuition: the increase in the public debt-GDP ratio observed in the
+data implies a real interest rate that is 66 basis points higher in equilibrium
+(table 5). Though not insignificant, such an increase is smaller than the
+other channels we identified above.
+
+IV.D. Summary and Discussion
+To summarize this section, our analysis underscores the importance
+of secular public policy shifts in accounting for changes in the equilibrium interest rate. The natural corollary of our findings is that government
+
+33. Castañeda, Díaz-Giménez, and Ríos-Rull (2003) compare the across-the-incomedistribution mobility statistics implied by their model with those observed in the data and
+conclude that the simple model does reasonably well in capturing the persistence moments.
+
+38
+
+Brookings Papers on Economic Activity, Spring 2019
+
+Table 5. Equilibria in the Precautionary Saving Model
+Aspect of model
+Government debt to GDP
+Government consumption to GDP
+Average tax rate
+Real interest rate
+Private capital to GDP
+Income Gini coefficient
+Fraction of individuals at the constraint
+
+Low-debt equilibrium
+
+High-debt equilibrium
+
+0.18
+0.14
+0.35
+4.50
+2.56
+0.32
+0.09
+
+0.68
+0.14
+0.36
+5.16
+2.40
+0.32
+0.09
+
+Source: Authors’ calculations.
+
+intra- and intertemporal transfer policy is, in principle, an effective tool that
+can affect equilibrium interest rates in the economy. Similar policy implications have been discussed previously by Narayana Kocherlakota (2015)
+and Caballero and Farhi (2018).
+One objection to our analysis might be that economic agents—
+consumers, investors, firms, and the like—may in fact be more Ricardian
+than we currently assume. Our response to this is threefold. First, in section II we presented a broad range of empirical evidence that is inconsistent
+with the Ricardian Equivalence proposition. Second, in our framework,
+Ricardian Equivalence does not hold despite fully rational expectations and
+no information asymmetries; indeed, it would be irrational to be Ricardian
+in the economy we describe. Third, and relatedly, the assumptions that
+lead to rejection of Ricardian Equivalence are rather natural—first, people
+retire; second, people die; third, some people are credit constrained; and
+fourth, some people face risks they find hard to insure. All these considerations make us comfortable with our assumptions that the Ricardian offset
+is imperfect.
+At this point, it is also useful to highlight that wide uncertainty bands
+surround our point estimates, including those coming out of the models
+discussed above. Like all theory models, these tools are built upon a set
+of uncertain assumptions, and as such are only rough approximations
+of reality—this is especially true for models as minimalistic and transparent as ours. Even abstracting from model misspecification, there is a
+wide range of plausible parameter values with which to calibrate these
+models. A different combination of parameters will produce quantitatively
+different results. We come back to the robustness of our analysis in online
+appendix E. Having said that, the combination of a range of empirical
+studies together with directional guidance from the theory suggest that
+there are strong reasons to conclude that the government policies we have
+
+39
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+Table 6. Demographic Transition in the Advanced Economies, 1970–2030
+Year
+
+Growth of
+20+ population
+
+Retirement age
+
+Years working
+
+Years in retirement
+
+1970
+1975
+1980
+1985
+1990
+1995
+2000
+2005
+2010
+2015
+
+1.4
+1.3
+1.2
+1.1
+0.9
+0.8
+0.7
+0.8
+0.7
+0.4
+
+67.6
+66.6
+66.1
+65.1
+64.7
+63.8
+63.6
+64.1
+64.8
+65.5
+
+47.6
+46.6
+46.1
+45.1
+44.7
+43.8
+43.6
+44.1
+44.8
+45.5
+
+10.5
+12.3
+13.4
+15.0
+16.1
+17.5
+18.6
+18.9
+18.8
+18.7
+
+Projection:
+2020
+2025
+2030
+
+0.2
+0.2
+0.2
+
+66.1
+66.8
+67.5
+
+46.1
+46.8
+47.5
+
+18.6
+18.4
+18.3
+
+Sources: United Nations data; OECD data.
+
+scrutinized here have put significant upward pressure on the safe neutral
+real rate over the past several decades.
+
+V. Validating the Models by Assessing the Underlying
+Weakness in R*
+Our simulation analysis concluded that the major shifts in governments’
+policies over the past 50 years facilitated a significant transfer of resources
+from low-MPC to high-MPC individuals and allowed households to
+better self-insure against idiosyncratic shocks. All else being equal, added
+together these shifts would have pushed interest rates in the advanced
+world up by about 3.6 percentage points. But of course all else was not
+equal. In this section, we validate our models by showing that, when used
+to assess the impact of some of the private sector forces that have been
+highlighted by the literature, these models produce the quantitative effects
+that are plausible and in line with the existing findings. Specifically, our
+framework can readily be used to quantify the impact of the demographic
+transition, the decline in expected trend productivity growth, and the rise in
+income inequality on the long-term interest rate.
+Table 6 documents the major demographic transition that has been
+under way in the advanced economies for the past 50 years. Population
+growth in the developed economies has fallen rapidly in past decades, from
+
+40
+
+Brookings Papers on Economic Activity, Spring 2019
+
+about 1.4 percent a year in the 1970s to less than 0.4 percent today. This
+trend is expected to continue; in fact, the latest UN projections suggest
+that population in the advanced economies will start shrinking in about
+2050. As population growth has decelerated, life expectancy has gone up
+significantly, and retirement ages have not kept up. As a result, the average
+length of retirement is nearly twice what it was in the 1970s. This positive
+development carries significant implications for life-cycle budgeting and
+thus for the balance of desired saving and investment.
+The slowdown in the pace of expected long-run growth has similar
+implications. Our modeling framework inherits the property shared by
+essentially all dynamic macroeconomic models, namely, that the long-run
+equilibrium interest rate is linked to expected future consumption growth.
+This relationship—the Euler Equation, or the dynamic investment–saving
+curve—is the result of the intertemporal optimization of households, which
+choose how much to consume today versus tomorrow (hence determining the growth rate of their consumption) based on the interest rate. In
+general equilibrium, the expectations of future consumption growth in the
+long run coincide with the expectations of total factor productivity (TFP)
+growth. Hence the theory suggests that real rates and expected productivity
+growth ought to be linked.34
+This prediction of the theory is, however, more tenuous in practice. In an
+early contribution to this topic, Carroll and Summers (1991) established
+that, across countries, consumption growth and income growth are tightly
+linked and follow each other, and that households with more steeply
+rising income profiles tend to save more, not less. These findings—which
+are inconsistent with the standard permanent-income hypothesis and the
+life-cycle model—have been rationalized in the literature with buffer-stock
+models of saving (whereby households face uncertain income process,
+similarly to our second model) and introducing consumption habits in
+household preferences.35 Although our models attenuate the link between
+34. In a representative agent, infinite-horizon economy, the Euler Equation takes a particularly straightforward form, whereby the long-run consumption growth rate and the interest rate
+are linked linearly, with the coefficient equal to the intertemporal elasticity of substitution.
+Within our framework, that link is still there, although it is attenuated by finite horizons and
+borrowing constraints: intuitively, the interest rate is relatively “less important” in driving
+consumption growth, as other factors (such as the possibility of death or credit constraints)
+come into play. This implies that a given change in the expectations of future consumption
+growth—say, driven by news about TFP—will require a larger response of the interest rate
+to restore equilibrium.
+35. See Deaton (1991); Carroll (1997); and Carroll, Overland, and Weil (2000)—and the
+literature that followed.
+
+41
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+Figure 10. The Gini Coefficient of Disposable Household Income across the OECD,
+1985 and 2014a
+Gini coefficient
+
+0.45
+
+2014
+1985
+
+0.40
+0.35
+0.30
+0.25
+
+U
+
+ni Mex
+te ic
+d
+St o
+at
+e
+T
+U
+ur s
+ni
+ke
+te
+d Is y
+K ra
+in el
+gd
+G om
+re
+N Aus ece
+ew tr
+Ze alia
+al
+an
+Ja d
+pa
+n
+Ita
+Ca ly
+na
+Fr da
+G anc
+er e
+m
+H an
+N un y
+et ga
+Lu her ry
+xe lan
+m ds
+bo
+S urg
+Cz B wed
+ec el en
+h gi
+Re um
+pu
+Fi blic
+n
+D lan
+en d
+m
+N ark
+or
+w
+ay
+
+0.20
+
+Source: OECD Database on Household Income Distribution and Poverty.
+a. This figure shows the Gini coefficient of disposable income, adjusted for household size.
+
+interest rates and consumption choices in line with these findings, nonetheless we urge a significant degree of caution when interpreting the results on
+the link between TFP and R*. Our preferred interpretation is that the low
+interest rates today are chiefly a symptom of a demand-side problem.
+We return to this issue in the final section of the paper, where we discuss
+policy implications.
+These caveats notwithstanding, numerous studies—for instance, that by
+Gustavo Adler and others (2017)—reach the conclusion that trend growth
+rates of both productivity and of TFP have declined significantly in the
+advanced economies—first in the early 1980s, when TFP growth halved
+from about 2 to 1 percent a year; and then again in the mid-2000s. Also, the
+macroeconomic models we use do suggest that such deterioration should
+have dragged on neutral real interest rates.
+The third trend we quantify is the rise in income inequality, which
+has increased in the United States and many other advanced economies
+(figure 10). Our second model is well suited to give us an estimate of this
+shift on the real rate of interest. To trace out the effects of rising inequality
+
+42
+
+Brookings Papers on Economic Activity, Spring 2019
+
+in this model, we recalibrate the income process in such a way as to match
+the increase in income Gini coefficient in the OECD since the 1970s.
+Our calculations implicitly assume that ex-post inequality is driven by
+larger variance of individual income shocks, which constitutes a source
+of additional uncertainty for individual workers. An alternative view is
+that the increase in inequality is a consequence of shifts being more
+tightly linked to heterogeneity across households that is known ex-ante.
+The distinction is important because only the former kind of shift would
+lead to an increase in precautionary behavior. Because it is predictable, the
+latter shift is not associated with heightened risk. There is a long-standing
+debate about the merits of the two formulations in the literature.36 The
+recent work by Fatih Guvenen and others (2015) has established the large
+departures of log-normality in the individual income changes; in particular, earnings changes display strong negative skewness and extremely
+high kurtosis. Important for our interpretation is their finding that large
+shocks at the top of the income distribution tend to be very persistent.
+We view these results as supportive of the gist of our exercise, which
+interprets the increased disparity between the poor and the rich as going
+hand in hand with an increase in ex-ante uncertainty. Given the lack of
+a clear consensus in the literature, it is possible that we overestimate
+the impact of inequality on real rates in this exercise. In any case, there
+likely are other powerful ways in which higher inequality has acted to
+depress rates, which we miss from our framework (and which we discuss
+momentarily).
+To validate our models and to explore the implications of these trends for
+the equilibrium real interest rate, we perform this exercise: In the life-cycle
+model, we calibrate the changes in demographic transition probabilities,
+w and λ, to match the trends depicted in the final two columns of table 6.
+We then feed in the series for population and TFP growth rates to match
+the evidence in the first column of table 6 and as given by Adler and others
+(2017). We use the United Nations’ demographic projections to inform the
+path of demographics out to 2050, and we assume that the terminal 2050
+values are the steady state. We do not have a strong prior as to the path for
+future TFP growth, and we are well aware of the wide range of existing
+and plausible views. Aiming for a scenario that reflects the mode of these
+expectations, we assume that the TFP growth rate picks up from around
+
+36. Classic references include Lillard and Weiss (1979), MaCurdy (1982), and Guvenen
+(2009).
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+43
+
+zero in the latest available data to 0.7 percent in the long run.37 This pickup
+in TFP growth is broadly in line with the Congressional Budget Office’s
+assumption for the pickup of TFP growth in the United States (CBO 2019).
+In the precautionary saving model, we recalibrate the income process,38
+and we compare the steady states of the economy under the two calibrations.39
+To reiterate, within each of the two models, we feed in the (modelspecific) set of shocks all at the same time, thereby providing—within
+each model—an internally consistent laboratory to study this wide range
+of heterogeneous trends. What we miss are the potential interactions across
+the two models. We assume that the comparable calibration across the
+two frameworks makes the results comparable, and that simply adding
+the estimates of the impact on R* over the transition across the models
+results in a consistent picture. But ultimately, only the framework for
+analysis of all the forces that we consider—and perhaps further ones—in a
+single unifying setting would provide a definitive answer to these doubts.
+This avenue of inquiry is left for future research.
+Table 7 and figure 11 summarize the key results of this exercise. First, in
+section II we estimated that the neutral real rate declined by over 3 percentage points between 1970 and 2017. In sections III and IV, we argued that
+public policies have pushed rates up. Our models suggest that, together, the
+policies we have considered have pushed rates up by nearly 4 percentage
+points to date. This suggests that the private sector R* may have declined
+by about 7 percentage points. The private sector forces we consider add
+up to a drag of 5.5 percentage points, leaving over 1 percentage point of
+the decline in private sector R* unaccounted for. These results are in line
+with previous papers that have attempted the quantification of the different
+forces at play (Eggertsson, Mehrotra, and Robbins 2019; Carvalho, Ferrero,
+and Nechio 2016; Gagnon, Johannsen, and Lopez-Salido 2016). This
+makes us confident that the large quantitative effect of government policies
+37. There is very large uncertainty around any long-term forecast of the TFP growth
+rate. In particular, research has shown that current-decade growth of productivity holds little
+information as to the growth in the following decade. Perhaps naturally, the commentators
+are split on the prospects for innovation and productivity. See, for example, Brynjolfsson
+and McAfee (2014) and Gordon (2016) for two perspectives from the opposite ends of
+a spectrum.
+38. In particular, we change the income received in the highest income state. This is
+motivated by the fact that the increase in income inequality has been concentrated at the very
+top of the distribution, as documented by Piketty (2014) and others.
+39. We obtain the dynamic path by assuming that the effect builds steadily, including
+over the next decade. Our treatment of the dynamics is thus crude. We leave the analysis of
+the dynamic adjustment path for future work.
+
+44
+
+Brookings Papers on Economic Activity, Spring 2019
+
+Table 7. Decomposition of the Decline in the Neutral Real Interest Rate
+in the Advanced Economiesa
+Aspect of decomposition
+
+1970–2008
+
+1970–2017
+
+Estimated decline in AE R* (section II)
+
+–2.7
+
+–3.2
+
+Public policies
+Government debt (life cycle)
+Government debt (incomplete markets)
+Government spending
+Social Security
+Old-age health care
+Total impact of public policies
+
+0.6
+0.3
+–0.1
+1.0
+0.9
+2.8
+
+0.8
+0.4
+0.0
+1.2
+1.1
+3.6
+
+Implied decline in private sector R*
+
+–5.4
+
+–6.9
+
+Selected private sector forces
+TFP growth
+Population growth
+Longer retirement
+Length of working life
+Inequality
+Interactions
+Total private sector forces
+
+–1.5
+–0.5
+–1.0
+–0.1
+–0.6
+–0.8
+–4.4
+
+–1.8
+–0.6
+–1.1
+–0.1
+–0.7
+–1.1
+–5.5
+
+1970–2070
+
+1.2
+0.7
+–0.2
+1.5
+1.3
+4.5
+
+–1.5
+–1.3
+–1.2
+0.0
+–0.9
+–1.6
+–6.5
+
+Source: Authors’ calculations.
+a. TFP = total factor productivity. All values are in percentage points.
+
+Figure 11. Changes in the Equilibrium Real Interest Rate as a Result of Policy,
+Demographic, and Technological Shifts, 1971–2022
+Percentage points
+4
+3
+2
+1
+0
+–1
+–2
+–3
+–4
+–5
+–6
+1981
+
+1991
+
+Government debt (life cycle)
+Government spending
+Old-age health care
+Population growth
+Length of working life
+Interactions
+Estimated decline in AE R*
+Source: Authors’ calculations.
+
+2001
+
+2011
+
+Long-run
+
+Government debt (incomplete markets)
+Social Security
+Long-term growth expectations
+Longer retirement
+Inequality
+Total response of R* in the GE models
+Private sector R*
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+45
+
+that we estimated are credible and not just a result of model-specific assumptions or calibration.
+Unsurprisingly, the forces that we consider in this exercise cannot account
+for the full extent of the decline in equilibrium rates, with over 1 percentage
+point left unexplained in our preferred calibration. Our models miss some
+of the secular forces that likely pushed neutral rates lower over the past
+40 years. One omission is the increasing concentration and the associated
+increase in market power of firms in the United States and other advanced
+countries (Farhi and Gourio 2018). Another force is driven by the finding
+that propensities to save are higher for those with high permanent income
+(Carroll 2000; Dynan, Skinner, and Zeldes 2004). In light of these findings,
+our simulations likely understate the full impact of the increase in permanent income inequality. Using a model that captures this mechanism, Ludwig
+Straub (2017) estimates that the rise in inequality may have pushed down
+on the real equilibrium interest rate in the U.S. by about 1 percentage point
+through this channel. The decline in the price of capital goods may have
+contributed to lower investment propensities, further decreasing the neutral
+real rate (Sajedi and Thwaites 2016). Finally, changes in the tax code—
+particularly the decline in overall tax progressivity in some jurisdictions—
+may have been a public sector force that depressed interest rates. We leave
+more detailed investigation of these forces for future research.
+
+VI. Conclusion
+We draw three main conclusions from the analysis in this paper. First,
+the neutral real rate for the industrial world has trended downward for the
+last generation, and this is best understood in terms of changes in private
+sector saving and investment propensities. In the face of neutral real rate
+estimates, past trends in indexed bond yields, and measures of real swap
+yields, this conclusion seems inescapable. It is also noteworthy that current
+real rates appear to be quite well predicted by prefinancial crisis trends. We
+believe that these trends are best analyzed in terms of changes in saving
+and investment propensities or equivalently in terms of trends in desired
+wealth holdings by consumers and desired capital accumulation by producers. Although factors involving liquidity, scarcity, and risk no doubt
+bear on levels of real interest rates, we find it highly implausible that
+they are the main factor accounting for the trend movements. The movements are too large and too pervasive across assets and the fluctuations in
+spreads are too small and lacking in the trend for these factors to account
+for the observed trends in the data.
+
+46
+
+Brookings Papers on Economic Activity, Spring 2019
+
+Second, the neutral real rate would have declined substantially more over
+the last generation but for increases in government debt and expansions in
+social insurance programs. Both straightforward extrapolations of existing
+rules of thumb regarding debt and deficit effects on interest rates and
+calculations using workhorse general equilibrium models suggest that
+fiscal policies have operated to raise real interest rates by several hundred
+basis points over the last generation. Though this conclusion is dependent
+on our rejection of Ricardian Equivalence, we see nothing that leads us to
+believe that increased government debt automatically calls for increased
+saving or that pay-as-you-go Social Security programs alter bequests for
+most families. The specific magnitudes are very uncertain, but open economy
+aspects and the possibility suggested by our analysis—that budget deficits
+emerge in response to excesses of private saving over private investment—
+lead us to think that we are more likely to understate than overstate the
+extent of fiscal support for real interest rates in recent years.
+Third, the implication of our analysis that but for major increases in
+deficits, debt, and social insurance neutral real rates in the industrial world
+would be significantly negative by as much as several hundred basis points
+suggests substantial grounds for concern over secular stagnation. From the
+perspective of our analysis, the private economy is prone to being caught in
+an underemployment equilibrium if real interest rates cannot fall far below
+zero. Where full employment has been achieved in recent years, it has
+either been through large budget deficits, as in the United States or Japan,
+or through large trade surpluses, as in Germany. It is worth considering
+that in the United States during the period before the financial crisis, negative real short-term interest rates, a huge housing bubble, erosion of credit
+standards, and expansionary fiscal policy were only sufficient to achieve
+moderate growth. Adequate growth in Europe was only maintained through
+what in retrospect appears to have been clearly unsustainable lending to the
+countries on the so-called periphery.
+What does our analysis say about stabilization policy? Most obviously,
+it says that traditional levels of interest rates combined with balanced
+budgets or even stable debt-GDP ratios are a prescription for recession. If
+policymakers wish to avoid output being demand constrained, they must
+do some combination of accepting high and rising deficits and government
+debt levels, living with real interest rates very close to zero or negative, and
+finding structural policies that promote investment or reduce saving.
+Blanchard (2019) makes the argument that traditional views about fiscal
+policy likely reflect excessive concern about debt when real interest rates
+are very low and are likely to remain low for a long time to come. The
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+47
+
+sustainability of a given level of deficit or debt is greater when interest rates
+are low than when they are high. Nonetheless, it has to be acknowledged
+that the U.S. economy appears to be slowing to below potential growth
+despite projected primary deficits that will lead even on very favorable
+interest rate assumptions to steadily growing debt-to-GDP ratios that will
+ultimately set historical records. There is no guarantee that deficits sufficient
+to maintain positive neutral real rates will be associated with sustainable
+debt trajectories. Indeed, the Japanese experience suggests that this may
+not be the case.
+Another possibility is the use of monetary policies that induce significantly negative real rates. This might be achieved through setting negative
+nominal rates, raising or adjusting inflation targets (for example, through
+targeting the average rate of inflation and thus “making up” for the past
+errors), or using unconventional monetary policies such as quantitative
+easing to achieve the equivalent of reductions in real rates. These approaches
+raise three issues. First, given that historically rates have been reduced by
+500 basis points or more to mitigate recessions in industrial countries, there
+is the question of whether enough room can be generated to stabilize the
+economy when the next downturn hits. Second, there are questions about
+whether, starting at very low rates, further rate reductions are actually
+stimulative. Eggertsson and others (2019) suggest that negative nominal
+rates actually may interfere with financial intermediation. Third, there is a
+range of concerns about the possible toxic effects of low rates—including
+suggestions that they make bubbles and overleveraging more likely as they
+encourage risk taking, and that they may lead to a misallocation of capital
+by reducing loan payment levels and required rates of return, reinforcing
+monopoly power, benefiting the old at the expense of the young, and making
+the funding of insurance and pension obligations more difficult.
+A final possibility is structural measures that reduce saving or promote
+investment. Clearly, regulatory policies that encourage investment without
+sacrificing vital social objectives are desirable. The extent to which these
+are available is very much open to question. Investment incentives will
+also operate to raise demand. Policies that reduce the need for retirement
+saving, such as strengthening Social Security, or that improve social insurance, will increase aggregate demand even if operated on a balanced budget
+basis. So will policies that redistribute income from those with lower to
+those with higher propensities to consume.
+It is tempting to suggest that any measure that increases productivity growth will operate to raise neutral real rates as consumers seek to
+spend more out of higher expected future incomes and firms increase their
+
+48
+
+Brookings Papers on Economic Activity, Spring 2019
+
+investment demand. Effects of this kind are indeed suggested by our formal
+model. We are not sure of their validity in practice. As Carroll and Summers
+(1991) point out, growth accelerations internationally have typically been
+associated with declining rather than increasing real rates, and there is not
+much evidence that consumers are that forward looking, especially if the
+reforms are associated with transitional costs and heightened short-term
+uncertainties. Moreover, in policy discussions, central bankers usually cite
+stronger productivity as an antidote to inflation and therefore as a reason
+not to raise rates. Short-term productivity gains that reduce costs and
+inflation may act to elevate realized interest rates above the neutral rate,
+further worsening the demand imbalance.
+All this suggests that if secular stagnation is avoided in the years ahead,
+it will not be because it is somehow impossible in a free market economy,
+but instead because of policy choices. Our conclusions thus underscore the
+urgent priority for governments to find new, sustainable ways of promoting
+investment to absorb the large supply of private saving and to devise novel
+long-term strategies to rekindle private demand.
+
+ACKNOWLEDGMENTS   We are grateful to the editors, Janice Eberly
+and James Stock, and to our discussants, Arvind Krishnamurthy and Gauti
+Eggertsson, for their detailed comments that much improved the paper. We
+also thank Ricardo Reis, Daniele Siena, Anna Stansbury, and participants in the
+NuCamp conference in Oxford for insightful comments on the earlier versions.
+Łukasz Rachel thanks the Department of Economics at Harvard University,
+where much of this project was completed during his visit as a Fulbright Fellow,
+and the U.S.-U.K. Fulbright Commission for financial support.
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+49
+
+References
+Achdou, Yves, Jiequn Han, Jean-Michel Lasry, Pierre-Louis Lions, and Benjamin
+Moll. 2017. “Income and Wealth Distribution in Macroeconomics: A ContinuousTime Approach.” NBER Working Paper 23732. Cambridge, Mass.: National
+Bureau of Economic Research. https://www.nber.org/papers/w23732.
+Adler, Gustavo, Romain Duval, Davide Furceri, Sinem Kiliç Çelik, Ksenia
+Koloskova, and Marcos Poplawski-Ribeiro. 2017. “Gone with the Headwinds:
+Global Productivity.” IMF Staff Discussion DN/17/04. Washington: International
+Monetary Fund. https://www.imf.org/en/Publications/Staff-Discussion-Notes/
+Issues/2017/04/03/Gone-with-the-Headwinds-Global-Productivity-44758.
+Aiyagari, S. Rao. 1993. “Uninsured Idiosyncratic Risk and Aggregate Saving.”
+Quarterly Journal of Economics 109, no. 3: 659–84.
+Aiyagari, S. Rao, and Ellen R. McGrattan. 1998. “The Optimum Quantity of Debt.”
+Journal of Monetary Economics 42, no. 3: 447–69.
+Attanasio, Orazio P., and Agar Brugiavini. 2003. “Social Security and Households’
+Saving.” Quarterly Journal of Economics 118, no. 3: 1075–1119.
+Attanasio, Orazio P., and Susann Rohwedder. 2003. “Pension Wealth and Household
+Saving: Evidence from Pension Reforms in the United Kingdom.” American
+Economic Review 93, no. 5: 1499–1521.
+Barro, Robert J. 1974. “Are Government Bonds Net Wealth?” Journal of Political
+Economy 82, no. 6: 1095–1117.
+Barro, Robert J., and Glenn M. MacDonald. 1979. “Social Security and Consumer
+Spending in an International Cross Section.” Journal of Public Economics 11,
+no. 3: 275–89.
+Blanchard, Olivier. 1985. “Debt, Deficits, and Finite Horizons.” Journal of Political
+Economy 93, no. 2: 223–47.
+———. 2019. “Public Debt and Low Interest Rates.” American Economic Review
+109, no. 4: 1197–1229.
+Brook, Anne-Marie. 2003. “Recent and Prospective Trends in Real Long-Term
+Interest Rates.” Working Paper 367. Paris: Organization for Economic Cooperation and Development, https://doi.org/10.1787/514820262776.
+Brynjolfsson, Erik, and Andrew McAfee. 2014. The Second Machine Age: Work,
+Progress, and Prosperity in a Time of Brilliant Technologies. New York: W. W.
+Norton.
+Caballero, Ricardo J., and Emmanuel Farhi. 2018. “The Safety Trap.” Review of
+Economic Studies 85, no. 1: 223–74.
+Caballero, Ricardo J., Emmanuel Farhi, and Pierre-Olivier Gourinchas. 2016.
+“Safe Asset Scarcity and Aggregate Demand.” American Economic Review 106,
+no. 5: 513–18.
+Carroll, Christopher D. 1997. “Buffer-Stock Saving and the Life Cycle/Permanent
+Income Hypothesis.” Quarterly Journal of Economics 112 , no. 1: 1–55.
+———. 2000. “Why Do the Rich Save So Much?” In Does Atlas Shrug? The Economic Consequences of Taxing the Rich, edited by Joel B. Slemrod. Cambridge,
+Mass.: Harvard University Press.
+
+50
+
+Brookings Papers on Economic Activity, Spring 2019
+
+Carroll, Christopher D., Jody Overland, and David N. Weil. 2000. “Saving and
+Growth with Habit Formation.” American Economic Review 90, no. 3: 341–55.
+Carroll, Christopher, Jiri Slacalek, Kiichi Tokuoka, and Matthew N. White.
+2017. “The Distribution of Wealth and the Marginal Propensity to Consume.”
+Quantitative Economics 8 , no. 3: 977–1020.
+Carroll, Christopher D., and Lawrence H. Summers. 1991. “Consumption Growth
+Parallels Income Growth: Some New Evidence.” In National Saving and
+Economic Performance, edited by B. Douglas Bernheim and John B. Shoven.
+Chicago: University of Chicago Press.
+Carvalho, Carlos, Andrea Ferrero, and Fernanda Nechio. 2016. “Demographics
+and Real Interest Rates: Inspecting the Mechanism.” European Economic
+Review 88: 208–26.
+Castañeda, Ana, Javier Díaz-Giménez, and José-Víctor Ríos-Rull. 2003. “Accounting
+for the U.S. Earnings and Wealth Inequality.” Journal of Political Economy 111,
+no. 4: 818–57.
+CBO (Congressional Budget Office). 1998. Social Security and Private Saving:
+A Review of the Empirical Evidence. Washington: CBO. https://www.cbo.gov/
+sites/default/files/105th-congress-1997-1998/reports/ssprisav.pdf.
+———. 2019. The Budget and Economic Outlook: 2019 to 2029–January
+2019. Washington: CBO. https://www.cbo.gov/system/files/2019-03/54918Outlook-3.pdf.
+Christensen, Jens H. E., and Glenn D. Rudebusch. 2019. “A New Normal for
+Interest Rates? Evidence from Inflation-Indexed Debt.” Review of Economics
+and Statistics, forthcoming.
+Claessens, Stijn, and M. Ayhan Kose. 2017. “Asset Prices and Macroeconomic
+Outcomes: A Survey.” Working Paper 8259. Washington: World Bank. http://
+documents.worldbank.org/curated/en/599841511879164538/Asset-prices-andmacroeconomic-outcomes-a-survey.
+Constâncio, Vítor. 2016. “The Challenge of Low Real Interest Rates for Monetary
+Policy.” Lecture given at Macroeconomics Symposium at Utrecht School of
+Economics, Utrecht, June 15. https://www.ecb.europa.eu/press/key/date/2016/
+html/sp160615.en.html.
+D’Amico, Stefania, Don H. Kim, and Min Wei. 2018. “Tips from TIPS: The
+Informational Content of Treasury Inflation-Protected Security Prices.” Journal
+of Financial and Quantitative Analysis 53, no. 1: 395–436.
+Deaton, Angus. 1991. “Saving and Liquidity Constraints.” Econometrica 59, no. 5:
+1221–48.
+Del Negro, Marco, Domenico Giannone, Marc P. Giannoni, and Andrea Tambalotti.
+2018. “Global Trends in Interest Rates.” Staff Report 866. New York: Federal
+Reserve Bank of New York. https://www.newyorkfed.org/medialibrary/media/
+research/staff_reports/sr866.pdf.
+Diamond, Peter A. 1965. “National Debt in a Neoclassical Growth Model.” American
+Economic Review 55, no. 5, pt. 1: 1126–50.
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+51
+
+Draghi, Mario. 2016. “The International Dimension of Monetary Policy.” Speech
+given at ECB Forum on Central Banking, Sintra, June 28. https://www.ecb.
+europa.eu/press/key/date/2016/html/sp160628.en.html.
+Dynan, Karen E., Jonathan Skinner, and Stephen P. Zeldes. 2004. “Do the Rich
+Save More?” Journal of Political Economy 112, no. 2: 397–444.
+ECB (European Central Bank). 2018. “The Natural Rate of Interest: Estimates,
+Drivers, and Challenges to Monetary Policy.” Edited by Claus Brand, Marcin
+Bielecki, and Adrian Penalver. Occasional Paper 217. Frankfurt: European
+Central Bank. https://www.ecb.europa.eu/pub/pdf/scpops/ecb.op217.en.pdf.
+Eggertsson, Gauti B., Ragnar E. Juelsrud, Lawrence H. Summers, and Ella Getz
+Wold. 2019. “Negative Nominal Interest Rates and the Bank Lending Channel.”
+NBER Working Paper 25416. Cambridge, Mass.: National Bureau of Economic
+Research. https://www.nber.org/papers/w25416.
+Eggertsson, Gauti B., Neil R. Mehrotra, and Jacob A. Robbins 2019. “A Model of
+Secular Stagnation: Theory and Quantitative Evaluation.” American Economic
+Journal: Macroeconomics 11, no. 1: 1–48.
+Elmendorf, Douglas W., and N. Gregory Mankiw. 1999. “Government Debt.”
+In Handbook of Macroeconomics, edited by John B. Taylor and Michael
+Woodford. Amsterdam: North-Holland.
+Engen, Eric M., and Jonathan Gruber. 2001. “Unemployment Insurance and Precautionary Saving.” Journal of Monetary Economics 47, no. 3: 545–79.
+Engen, Eric M., and R. Glenn Hubbard. 2004. “Federal Government Debts and
+Interest Rates.” In NBER Macroeconomics Annual, edited by Mark Gertler and
+Kenneth Rogoff. Cambridge, Mass.: MIT Press.
+Epstein, Larry G., and Stanely E. Zin. 1991. “Substitution, Risk Aversion, and the
+Temporal Behavior of Consumption and Asset Returns: An Empirical Analysis.”
+Journal of Political Economy 99, no. 2: 263–86.
+Evans, Paul. 1987. “Interest Rates and Expected Future Budget Deficits in the
+United States.” Journal of Political Economy 95: 34–58.
+Fagereng, Andreas, Luigi Guiso, Davide Malacrino, and Luigi Pistaferri. 2016.
+“Heterogeneity and Persistence in Returns to Wealth.” NBER Working Paper
+22822. Cambridge, Mass.: National Bureau of Economic Research. https://
+www.nber.org/papers/w22822.
+Fagereng, Andreas, Martin Holm, Benjamin Moll, and Gisle Natvik. 2019.
+“Saving Behavior across the Wealth Distribution.” Working paper. http://www.
+princeton.edu/∼moll/SBWD.pdf.
+Faini, Riccardo. 2006. “Fiscal Policy and Interest Rates in Europe.” Economic
+Policy 21, no. 47: 444–89.
+Farhi, Emmanuel, and François Gourio. 2018. “Accounting for Macro-Finance
+Trends: Market Power, Intangibles, and Risk Premia.” Brookings Papers on
+Economic Activity, Fall, 147–223.
+Feldstein, Martin. 1974. “Social Security, Induced Retirement, and Aggregate
+Capital Accumulation.” Journal of Political Economy 82, no. 5: 905–26.
+
+52
+
+Brookings Papers on Economic Activity, Spring 2019
+
+Feldstein, Martin, and Anthony Pellechio. 1979. ‘Social Security and Household
+Wealth Accumulation: New Microeconometric Evidence.” Review of Economics
+and Statistics 61, no. 3: 361–68.
+Fischer, Stanley. 2016. “Why Are Interest Rates So Low? Causes and Implications.” Speech given at Economic Club of New York, New York, October 17.
+https://www.federalreserve.gov/newsevents/speech/fischer20161017a.htm.
+Gagnon, Etienne, Benjamin K. Johannsen, and David Lopez-Salido. 2016.
+“Understanding the New Normal: The Role of Demographics.” Working Paper
+2016-080. Washington: Federal Reserve Board of Governors. http://dx.doi.org/
+10.17016/FEDS.2016.080.
+Gale, William G., and Peter R. Orszag. 2003. “The Economic Effects of Long-Term
+Fiscal Discipline.” Working Paper 8. Washington: Urban-Brookings Tax Policy
+Center. https://www.urban.org/sites/default/files/publication/58901/310669-TheEconomic-Effects-of-Long-Term-Fiscal-Discipline.pdf.
+Galí, Jordi. 2008. Monetary Policy, Inflation, and the Business Cycle: An Introduction to the New Keynesian Framework and Its Applications. Princeton, N.J.:
+Princeton University Press.
+Gertler, Mark. 1999. “Government Debt and Social Security in a Life-Cycle
+Economy.” Carnegie-Rochester Conference Series on Public Policy 50: 61–110.
+Gordon, Robert J. 2016. “Perspectives on the Rise and Fall of American Growth.”
+American Economic Review 106, no. 5: 72–76.
+Guvenen, Fatih. 2009. “An Empirical Investigation of Labor Income Processes.”
+Review of Economic Dynamics 12, no. 1: 58–79.
+Guvenen, Fatih, Fatih Karahan, Serdar Ozkan, and Jae Song. 2015. “What Do
+Data on Millions of U.S. Workers Reveal About Life-Cycle Earnings Risk?”
+NBER Working Paper 20913. Cambridge, Mass.: National Bureau of Economic
+Research. https://www.nber.org/papers/w20913.
+Hamilton, James D., Ethan S. Harris, Jan Hatzius, and Kenneth D. West. 2016.
+“The Equilibrium Real Funds Rate: Past, Present, and Future.” IMF Economic
+Review 64, no. 4: 660–707.
+Holston, Kathryn, Thomas Laubach, and John C. Williams. 2017a. “Documentation of R Code and Data for Measuring the Natural Rate of Interest: International Trends are Determinants.” https://usermanual.wiki/Pdf/HLWCodeGuide.
+843689289.pdf.
+———. 2017b. “Measuring the Natural Rate of Interest: International Trends and
+Determinants.” Journal of International Economics 108, no. S1: S59–S75.
+Kaplan, Greg, Benjamin Moll, and Giovanni L. Violante. 2018. “Monetary Policy
+According to HANK.” American Economic Review 108, no. 3: 697–743.
+Kaplan, Greg, Giovanni L. Violante,, and Justin Weidner. 2014. “The Wealthy
+Hand-to-Mouth.” Brookings Papers on Economic Activity, Spring, 77–138.
+Kay, John. 2015. Other People’s Money: Masters of the Universe or Servants of the
+People? London: Profile Books.
+King, M., and D. Low. 2014. “Measuring the ‘World’ Real Interest Rate.” NBER
+Working Paper 19887. Cambridge, Mass.: National Bureau of Economic
+Research. http://www.nber.org/papers/w19887.pdf.
+
+ŁUKASZ RACHEL and LAWRENCE H. SUMMERS
+
+53
+
+Kinoshita, Noriaki. 2006. “Government Debt and Long-Term Interest Rates.” IMF
+Working Paper WP/06/63. Washington: International Monetary Fund. https://
+www.imf.org/en/Publications/WP/Issues/2016/12/31/Government-Debt-andLong-Term-Interest-Rates-18866.
+Kocherlakota, Narayana. 2015. “Public Debt and the Long-Run Neutral Real
+Interest Rate.” Speech given at Bank of Korea Conference, Seoul, August 19.
+https://www.minneapolisfed.org/news-and-events/presidents-speeches/publicdebt-and-the-long-run-neutral-real-interest-rate.
+Kuroda, Haruhiko. 2016. “The Battle against Deflation: The Evolution of Monetary Policy and Japan’s Experience.” Speech given at Columbia University,
+New York, April 13. https://www.boj.or.jp/en/announcements/press/koen_2016/
+data/ko160414a1.pdf.
+Laforte, Jean-Philippe, and John Roberts. 2014. “November 2014 Update of the
+FRB/US Model.” FEDS Notes. https://doi.org/10.17016/2380-7172.0036.
+Laibson, David. 1997. “Golden Eggs and Hyperbolic Discounting.” Quarterly
+Journal of Economics 112, no. 2: 443–77.
+Laubach, Thomas. 2009. “New Evidence on the Interest Rate Effects of Budget
+Deficits and Debt.” Journal of the European Economic Association 7, no. 4:
+858–85.
+Laubach, Thomas, and John C. Williams. 2003. “Measuring the Natural Rate of
+Interest.” Review of Economics and Statistics 85, no. 4: 1063–70.
+Lillard, Lee A., and Yoram Weiss. 1979. “Components of Variation in Panel
+Earnings Data: American Scientists 1960–70.” Econometrica 47, no. 2: 437–54.
+MaCurdy, Thomas E. 1982. “The Use of Time Series Processes to Model the Error
+Structure of Earnings in a Longitudinal Data Analysis.” Journal of Econometrics
+18, no. 1: 83–114.
+Mankiw, N. Gregory. 2000. “The Savers-Spenders Theory of Fiscal Policy.”
+American Economic Review 90, no. 2: 120–25.
+OECD (Organization for Economic Cooperation and Development). 2018. OECD
+Tax Policy Studies: The Role and Design of Net Wealth Taxes. OECD Tax
+Policy Study 26. Paris: OECD Publishing. https://www.oecd.org/ctp/the-roleand-design-of-net-wealth-taxes-in-the-oecd-9789264290303-en.htm.
+———. 2019. “OECD Tax Database.” http://www.oecd.org/tax/tax-policy/taxdatabase/.
+Oh, Hyunseung, and Ricardo Reis. 2012. “Targeted Transfers and the Fiscal
+Response to the Great Recession.” Journal of Monetary Economics 59: S50–S64.
+Piketty, Thomas. 2014. Capital in the Twenty-First Century. Cambridge, Mass.:
+Belknap Press.
+Piketty, Thomas, and Emmanuel Saez. 2007. “How Progressive Is the U.S. Federal
+Tax System? A Historical and International Perspective.” Journal of Economic
+Perspectives 21, no. 1: 3–24.
+Plosser, Charles I. 1987. “Fiscal Policy and the Term Structure.” Journal of
+Monetary Economics 20: 343–67.
+
+54
+
+Brookings Papers on Economic Activity, Spring 2019
+
+Powell, Jerome H. 2018. “The Federal Reserve’s Framework for Monitoring
+Financial Stability.” Speech given at Economic Club of New York, New York,
+November 28. https://www.federalreserve.gov/newsevents/speech/powell
+20181128a.htm.
+Rachel, Łukasz, and Thomas D. Smith. 2015. “Secular Drivers of the Global Real
+Interest Rate.” Working Paper 571. London: Bank of England. https://www.
+bankofengland.co.uk/working-paper/2015/secular-drivers-of-the-global-realinterest-rate.
+———. 2017. “Are Low Real Interest Rates Here to Stay?” International Journal
+of Central Banking 13, no. 3: 1–42.
+Sajedi, Rana, and Gregory Thwaites. 2016. “Why Are Real Interest Rates So Low?
+The Role of the Relative Price of Investment Goods.” IMF Economic Review
+64, no. 4: 635–59.
+Straub, Ludwig. 2017. “Consumption, Saving, and the Distribution of Permanent
+Income.” Working paper, Harvard University. https://scholar.harvard.edu/
+straub/publications/consumption-savings-and-distribution-permanent-income.
+Walsh, Carl E. 1998. Monetary Theory and Policy. Cambridge, Mass.: MIT Press.
+Wicksell, Knut. 1898. Interest and Prices. New York: Sentry Press.
+Winter, Christopher. 2016. “The Impact of Government Debt on the Long-Run
+Natural Real Interest Rate: A Quantitative Evaluation.” Journal of Applied Economics Letters 24, no. 20: 1429–34.
+Woodford, Michael. 2003. Interest and Prices: Foundations of a Theory of
+Monetary Policy. Princeton, N.J.: Princeton University Press.
+Yaari, Menahem E. 1965. “Uncertain Lifetime, Life Insurance, and the Theory of
+the Consumer.” Review of Economic Studies 32, no. 2: 137–50.
+
+Comments and Discussion
+COMMENT BY
+
+GAUTI B. EGGERTSSON   Let me start with an overview of how this
+paper fits in the modern literature on the liquidity trap—that is, the literature on the zero lower bound (ZLB). I find it useful to separate this into
+three generations of models. The first-generation models considered the
+ZLB as being due to some temporary exogenous forces, such as preference shocks. Papers in this vein include two published in this journal: one
+by Paul Krugman (1998), and my paper with Michael Woodford (2003).
+The second-generation models instead study the nature of the underlying
+shocks. Examples include papers by Eggertsson and Krugman (2012) and
+by Veronica Guerrieri and Guido Lorenzoni (2018). A common culprit for
+a ZLB episode in the second-generation models is a disturbance in the
+financial sector, such as a household debt deleveraging shock or shocks to
+bank balance sheets. A key lesson that emerged from this literature was that
+most of the proposed shocks predicted a temporary reduction in the natural
+rate of interest that then recovers—for example, once households put their
+debt on a more sustainable level or banks clean up their balance sheets. At
+that point, the ZLB is no longer a constraint on policy and things return to
+normal. A common theme in the first- and second-generation models is that
+the central bank can have a big effect on outcomes by managing expectations
+about how it will conduct interest rate policy once the natural rate of interest has recovered. This has been usually termed “the forward guidance of
+central banks.” It is a very powerful force in these models to limit output
+contractions.
+The third-generation ZLB models emerged after a speech by one of the
+authors of this paper, Lawrence Summers, at the International Monetary
+Fund in 2013. The context of his speech was that in 2013, the world’s
+recovery from the financial crisis of 2008 was still anemic, even if, by
+55
+
+56
+
+Brookings Papers on Economic Activity, Spring 2019
+
+most accounts, households and bank balance sheets had been put on a more
+sustainable basis. Despite this normalization, markets projected the interest
+rate to remain low for a long time, and most people were disappointed by the
+slow recovery of output from the crisis. Summers (2013a, 2013b) suggested
+that perhaps the fall in the natural rate of interest was not just a temporary
+reaction to the financial crisis but instead a permanent drop—in contrast
+to the explicit or implicit prediction of the first- and second-generation
+ZLB models. If correct, this insight had broad and far-ranging implications
+for both modeling and economic policy. For one thing, forward guidance
+about interest rate policy once the natural rate normalizes is of limited help
+if there is no prospect of this normalization on the horizon. Overall, this
+perspective tends to shift the focus away from monetary policy as the major
+remedy for recessions and tilts the balance more toward fiscal activism,
+a prescription that has yet to make a serious mark on how actual policy is
+conducted today, but one that is well aligned with earlier Keynesian thinking.
+For the idea of a permanent reduction in the natural rate of interest,
+Summers used the term “the secular stagnation hypothesis,” an expression
+that originates in Alvyn Hansen’s 1938 presidential speech to the American Economic Association (Hansen 1939). At the time of that speech, the
+United States was experiencing the second phase of the Great Depression.
+Hansen suggested that the United States might permanently experience
+sluggish demand, due to a slowdown in population growth and a lack of
+investment opportunities. Hansen’s dire predictions, of course, turned out
+to be widely off the mark. The baby boom that followed World War II
+drastically changed the country’s population dynamics, and there was a
+boom in all sorts of innovations. In the postwar prosperity that followed,
+too much inflation and high interest rates were the worry of the day, not
+deflation and low interest rates, which are at center stage in the secular
+stagnation literature. Summers suggested that perhaps Hansen might just
+have uttered his dire predictions 75 years too early.
+Right after Summers’s speech, the literature quickly started to formalize
+these ideas in the modern modeling context.1 The current paper by Rachel
+1. To my knowledge, the paper by Eggertsson and Mehrotra (2014) was the first one
+to formalize the idea in the modern dynamic stochastic general equilibrium model, using
+a small-scale overlapping-generations model. Eggertsson, Mehrotra, and Robbins (2019),
+in addition, considered a quantitative, large-scale overlapping-generations model. In those
+models, there can be a permanent decline in the natural rate due to a slowdown in population
+growth, a rise in life expectancy, a rise in productivity, a rise in inequality, and a fall in the
+relative price of investment. Caballero and Farhi (2018), however, show that a reduction in
+safe assets supply can also trigger a persistent fall in the natural rate of interest. Eggertsson
+and others (2016), conversely, consider the open economy dimension of these ideas.
+
+COMMENTS and DISCUSSION
+
+57
+
+and Summers synthesizes this literature, and extends it in several directions,
+putting special emphasis on how government policies may have counteracted the fall in the natural rate of interest—for example, by increases in
+government debt and in pay-as-you-go Social Security. Both policies tend
+to raise rather than reduce the natural rate of interest. Here, I highlight a
+few key results of the paper, do some nitpicking, and conclude by highlighting some unresolved questions that have to do with optimal policy
+responses to secular stagnation.
+KEY RESULTS One major result in Rachel and Summers’s paper is
+an empirical estimate of the natural rate of interest in the industrialized
+economies, suggesting that it has declined by about 300 basis point since
+1980, leaving it today in the neighborhood of zero. The authors do a nice
+extension of a well-known method by Thomas Laubach and John Williams
+(2003) by considering the industrialized economies as a single bloc. Then
+they study how much government debt and Social Security have offset
+downward pressure on interest rates from private sector imbalances.
+Their results suggest that if government debt had not increased from about
+20 to 70 percent of GDP, then the real interest rate would have declined
+even further, by about 100 basis points, while the increase in Social Security spending led to an additional offset by about 50–100 basis points. The
+authors thus leave us with the dire prediction that if it had not been for
+these government policies, then the natural rate today would be at –2 to
+–3 percent. In this case, today the ZLB would presumably be a severely
+binding constraint across all advanced economies. This is a very interesting
+result that goes against the conventional wisdom. An incredible amount
+of ink has been spilled about the looming crisis due to “unfunded” Social
+Security entitlement; and, similarly, there is a great deal of alarm over a
+supposed fiscal crisis that is around the corner due to the rise in government
+debt over the past decades. Contrary to this view, Rachel and Summers’s
+paper suggests that had it not been for these developments, the industrialized world would currently be mired in a much deeper deflationary crisis
+than what we already see today in Japan and the euro zone. One takeaway
+from the empirical estimate that the authors choose not to highlight may
+seem to be that if low natural interest rates remain a problem in the future,
+then all the government has to do is to increase government debt and/or
+pay-as-you-go Social Security spending. As I again discuss at the end of
+this comment, the solution to secular stagnation may not be that simple.
+Although these results are purely empirical, or are imputed using existing studies, the authors go beyond this empirical work, taking the paper
+from being only interesting to being excellent. We are also presented with
+
+58
+
+Brookings Papers on Economic Activity, Spring 2019
+
+two interesting structural models—one with overlapping generations that
+is ideal for studying the effect of age dynamics, and the other with agents
+confronted with uninsurable risk, a model ideal for studying inequality.
+They use these models to account for the empirical finding just highlighted, and in the process they are able to decompose the key drivers of
+the decline in the natural interest rate. The main conclusion is that, using
+1970 as a benchmark (see Rachel and Summers’s table 7), the natural rate
+of interest has dropped by about 320 basis points since then, with the
+private sector accounting for a drop of 690 basis points and the public
+sector offsetting this by 360 basis points. The largest individual component
+contributing to the fall in the natural rate is a fall in total factor productivity
+and population and working age dynamics (retirement, life expectancy,
+length of working lift, and the like). Inequality also plays a nontrivial role,
+accounting for a drop of about 100 basis points. The role of government
+policy also is roughly in line with the empirical estimates.
+THE BIG PICTURE Overall, I interpret the findings, especially the results
+from the structural models, in a similar way as the findings in a recent paper
+I wrote jointly with Neil Mehrotra and Jacob Robbins (2019). Like Rachel
+and Summers, we also find that a model with an overlapping generation
+structure—although very different in the details of how the age pyramid is
+modeled—can account for a substantial drop in the real interest rate, from
+about 3 percent to modestly negative natural rates today in the context of a
+U.S. calibration.2 The way I interpreted our finding was that the fall in the
+real interest rate observed in the data can be accounted for by age dynamics
+and a productivity slowdown and other slow-moving forces. I use the word
+“can” advisedly because I think that our model—and the same applies to
+that of Rachel and Summers—leaves enough free parameters so that the
+results are quite sensitive to assumptions. One could also tell stories consistent with the fact that the fall observed in natural rates is only temporary
+and due to the global financial crisis and its aftermath, so that they will
+ultimately rise to a more “normal” level (even if this sort of story becomes
+increasingly implausible the longer time elapses from the financial crisis
+and the longer the market seem to predict a low real interest rate). An important next step in the literature is to identify more clearly what elements of the
+structural models would lead us to one conclusion relative to the other.
+This is not a criticism of Rachel and Summers’s paper, however. What
+I think these results show quite conclusively is that a permanent fall in the
+2. We have an 80-generation, medium-scale dynamic stochastic general equilibrium model
+in the tradition of Auerbach and Kotlikoff (1987).
+
+COMMENTS and DISCUSSION
+
+59
+
+natural rate is a very plausible scenario that we ought to take seriously,
+even if I think it is a bit too early to assign precise probability weights
+on the secular stagnation scenario relative to others. But the fact that the
+secular stagnation scenario is very much a plausible possibility should be
+considered a major result. A few years ago, very few people took seriously
+the idea that the ZLB would ever become an issue in the United States.
+They turned out to be very wrong. Today, similarly, I think far too few
+people have taken seriously the possibility that the ZLB will be a permanent
+feature of the landscape of stabilization policy in the coming years. Rachel
+and Summers’s paper suggests that studying this uncomfortable possibility
+should be a first-order priority for macroeconomics. In this respect, their
+paper should be a wakeup call.
+COMMENTS AND CONCERNS I would be remiss as a commenter if I did not
+do some nitpicking. One of the more interesting experiments the authors
+undertake is to consider the effect that the increase in inequality has had on
+the natural interest rate. Inequality rises due to the increase in the variance
+of the income process of infinitely lived agents that live in the model. The
+rise in income uncertainty, in turn, increases the precautionary savings of
+the agents, so they will increase their demand for savings to insure against
+future negative income shocks. This increase in savings puts downward
+pressure on the interest rate.
+It is not obvious to me that the rise in income inequality we see in the
+United States has much connection with a rise in idiosyncratic income shocks
+that people need to insure against. Loosely speaking, it seems instead that
+the “rich are getting richer and the poor are getting poorer” and that there
+actually is a decline in mobility “between rich and poor”—that is, if you are
+born rich, you die rich. Thus, it is not clear that the rise in income inequality
+is tied to idiosyncratic income risk, for reasons discussed in footnote 3
+below; or, in any event, this would need to be established empirically.3
+3. To be more concrete: Imagine that that there are two types in the model, low type
+(poor) and high type (rich), and that this generates income inequality. Imagine, now, that
+there is no transition between types—that is, the poor always stay poor and the rich always
+stay rich—but allow for some idiosyncratic risk for year type (both rich and poor get sick,
+and so on). Now if you increase the income of the high types at the expense of the low type
+without affecting idiosyncratic uncertainty within a group, it is not obvious to me that this
+has any effect on the interest rate (to see this, you can shut down the idiosyncratic income
+risk, in which case there is no effect of increasing inequality on interest rates, as both types
+perfectly smooth consumption and the interest rate is given by the inverse of the discount
+factor). In the model of Rachel and Summers’s paper—where agents are identical, except
+that they draw idiosyncratic income shocks—income inequality always must lead to an
+increase in uninsurable income risk, in contrast to the example discussed above.
+
+60
+
+Brookings Papers on Economic Activity, Spring 2019
+
+My impression is that this sort of criticism applies to most of the literature that uses these types of models, and Rachel and Summers discuss this
+point at some length in their paper. In any event, to the extent that one is
+considering an infinitely lived household that is constantly drawing new
+income shocks, my guess is that the motive for precautionary savings is
+exaggerated. It will be interesting to see future research that merges the
+life-cycle model the authors present and the model with idiosyncratic risk,
+where one might be able to get at these issues inside a structural model.
+Having said this, I do not think that the authors are necessarily exaggerating the effect of income inequality on the real interest rate. There is
+a body of literature that emphasizes that the “rich save more” for reasons
+independent of precautionary motives (see, for example, Dynan, Skinner,
+and Zeldes 2004). If this is correct, this might work toward an even stronger
+effect of inequality on the real interest rate than is documented here.
+UNRESOLVED QUESTIONS AND POLICY ISSUES I think that one of the goals
+of this paper is to make the case that a permanent fall in the natural rate of
+interest is very much a plausible possibility. I think Rachel and Summers’s
+paper succeeds on that score. A major question this finding then raises is
+what can be done about it.
+When the first-generation ZLB models were developed, there was a
+tendency among academics to minimize the challenge imposed by these
+models on monetary authorities, with papers being written with titles
+such as “Japanese Monetary Policy: A Case of Self-Induced Paralysis?”
+(Bernanke 2000) and “A Foolproof Way Out of Escaping from a Liquidity
+Trap” (Svensson 2001). The perception was that the problem posed by the
+ZLB was easily solved. After all, central banks could just print money.
+For example, Kenneth Rogoff commented in this journal on Krugman’s
+1998 paper—which arguably launched the first generation of ZLB models,
+I think reflecting a relatively broad professional consensus—that “no one
+should seriously believe that the BOJ would face any significant technical
+problems in inflating if it puts its mind to the matter, liquidity trap or no.
+For example, one can feel quite confident that if the BOJ were to issue a
+25 percent increase in the current supply and use it to buy back 4 percent
+of government nominal debt, inflationary expectations would rise.” Since
+then, of course, the Bank of Japan has not increased its money supply by
+only 25 percent. Relative to 1998, it has almost increased the monetary
+base 10 times over. And this without inflation budging!
+The reaction to the secular stagnation hypothesis by the economics
+profession has, in my experience, been somewhat similar and could be
+
+COMMENTS and DISCUSSION
+
+61
+
+summarized similarly to how people reacted to the first-generation ZLB
+models: “It didn’t happen, it will not happen, it cannot happen.” And as
+for secular stagnation, if permanently low interest rates were ever truly a
+problem, some argue, why would the government simply not increase its
+debt until the interest rate rises? Is that not an obvious free lunch?
+A comparative static that my colleagues and I recently presented puts
+an interesting perspective on this argument (Eggertsson, Mehrotra, and
+Robbins 2019). In this paper, we show that in a calibrated model of
+the U.S. economy, the ratio of debt to GDP would need to increase by
+over 215 percent of GDP for the interest rate to rise from –1.5 percent to
+1 percent. If that sort of increase in the debt is needed in the real world, the
+question becomes: Could other forces, outside the model, start to play a
+role that could change the conclusion?
+This is a question studied in a recent paper by Vaishali Garga
+(2019). Garga considers the plausible scenario—likely to be relevant in
+the real world—that even if the economy finds itself in secular stagnation of the type considered in Rachel and Summers’s paper, the public
+will (for good reasons) put some probability on the fact that the secular
+stagnation hypothesis will turn out to be incorrect and that the economy
+will instead transition at some future date into a “normal” state where
+interest rates are positive again. Her point is that if the debt is high
+enough, then this reversal to normality must trigger a fiscal crisis with
+associated tax increases and entitlement cuts. The mere expectation of
+this scenario, in turn, can then undo the positive effect that increasing
+the government’s debt has on the interest rate during secular stagnation.
+Higher debt during secular stagnation, in other words, can trigger people
+to save for the possibility of a fiscal crisis state and possible cuts in their
+Social Security. Theoretically, she shows that for a positive probability
+of a reversal of this kind, there will always be a tipping point for government debt, above which increasing debt will lead to a further decline
+in the natural rate of interest rather than an increase. Though this tipping
+point surely exists in theory, the question is how high it is empirically.
+Garga then shows evidence suggesting that in the case of Japan, this force
+might be quite strong—perhaps even strong enough so that the tipping
+point would be reached. All this is to say that simply increasing government debt may not be the silver bullet to solve the problem of secular
+stagnation.
+This paper by Rachel and Summers, and the others on which it builds,
+have in my view conclusively shown that secular stagnation is a plausible
+
+62
+
+Brookings Papers on Economic Activity, Spring 2019
+
+scenario. It thus seems all the more urgent to begin doing more research on
+how this problem can be solved.
+REFERENCES FOR THE EGGERTSSON COMMENT
+
+Auerbach, Alan J., and Laurence J. Kotlikoff. 1987. Dynamic Fiscal Policy.
+Cambridge: University Press Cambridge.
+Bernanke, Ben S. 2000. “Japanese Monetary Policy: A Case of Self-Induced
+Paralysis?” In Japan’s Financial Crisis and Its Parallels to the U.S. Experience,
+edited by Ryoichi Mikitani and Adam S. Posen. Washington: Petersen Institute
+for International Economics.
+Caballero, Ricardo J., and Emmanuel Farhi. 2018. “The Safety Trap.” Review of
+Economic Studies 85, no. 1: 223–74.
+Dynan, K., J. Skinner, and S. Zeldes. 2004. “Do the Rich Save More?” Journal of
+Political Economy 112, no. 2: 397–444.
+Eggertsson, Gauti B., and Paul Krugman. 2012. “Debt, Deleveraging, and the
+Liquidity Trap: A Fisher-Minsky-Koo Approach.” Quarterly Journal of
+Economics 127, no. 3: 1469–1513.
+Eggertsson, Gauti B., and Neil R. Mehrotra. 2014. “A Model of Secular Stagnation.”
+NBER Working Paper 20574. Cambridge, Mass.: National Bureau of Economic
+Research.
+Eggertsson, Gauti B., Neil R. Mehrotra, and Jacob A. Robbins. 2019. “A Model of
+Secular Stagnation: Theory and Quantitative Evaluation.” American Economic
+Journal: Macroeconomics 11, no. 1: 1–48.
+Eggertsson, Gauti B., Neil R. Mehrotra, Sanjay R. Singh, and Lawrence H.
+Summers. 2016. “A Contagious Malady? Open Economy Dimensions of
+Secular Stagnation.” IMF Economic Review 64, no. 4: 581–634.
+Eggertsson, Gauti B., and Michael Woodford. 2003. “The Zero Bound on Interest
+Rates and Optimal Monetary Policy.” Brookings Papers on Economic Activity
+34, no. 1: 139–234.
+Garga, Vaishali, 2019. “Fiscal Expansion in a Secular Stagnation: What If It Isn’t
+Secular?” Working paper. https://www.vaishaligarga.com/research.
+Guerrieri, Veronica, and Guido Lorenzoni. 2017. “Credit Crises, Precautionary
+Savings, and the Liquidity Trap.” Quarterly Journal of Economics 132, no. 3:
+1427–67.
+Hansen, Alvin. 1939. “Economic Progress and Declining Population Growth.”
+American Economic Review 29, no. 1: 1–15.
+Krugman, Paul R. 1998. “It’s Baaack: Japan’s Slump and the Return of the Liquidity
+Trap.” Brookings Papers on Economic Activity 29, no. 2: 137–205.
+Laubach, Thomas, and John C. Williams. 2003. “Measuring the Natural Rate of
+Interest.” Review of Economics and Statistics 85, no. 4: 1063–70.
+Summers, Lawrence H. 2013a. “Speech given at IMF Fourteenth Annual Research
+Conference in Honor of Stanley Fischer,” Washington, November 8. http://
+larrysummers.com/imf-fourteenth-annual-research-conference-in-honor-ofstanley-fischer/.
+
+COMMENTS and DISCUSSION
+
+63
+
+———. 2013b. “Why Stagnation Might Prove to Be the New Normal.” Financial
+Times, December 15. http://larrysummers.com/commentary/financial-timescolumns/why-stagnation-might-prove-to-be-the-new-normal/.
+Svensson, Lars E. O. 2001. “The Zero Bound in an Open Economy: A Foolproof
+Way of Escaping from a Liquidity Trap.” Monetary and Economic Studies 19,
+no. S1: 277–312.
+
+COMMENT BY
+
+ARVIND KRISHNAMURTHY  Over the past 30 years, real interest
+rates in the developed world have fallen by about 3 percent. The core of
+Rachel and Summers’s paper is in their figure 11, which decomposes the
+drop in the real rate to various economic mechanisms. The remarkable
+lesson from the paper’s analysis, which is evident in the figure, is that
+there are strong two-way forces at work in determining interest rates.
+For example, changes in demographics have by themselves led to a fall in
+interest rates of nearly 3 percent. However, the large rise in government
+debt has led to an offsetting rise in interest rates of about 1.5 percent. The
+paper goes through more economic mechanisms, and the broad lesson is
+that the net of these individually large economic mechanisms has led to a
+fall in observed real rates of about 3 percent.
+The paper comes to these conclusions through the lens of two calibrated
+models: life-cycle and precautionary savings. The first is a life-cycle
+model where demographics and savings for retirement determine interest
+rates. The second model is a Bewley model with idiosyncratic income
+risk and an insurance channel for determining interest rates. Rachel and
+Summers’s figure 11 is derived from running various experiments within
+these calibrated models.
+In this comment, I argue that a nontrivial portion of the fall in interest
+rates is due to a decline in the rate of return on safe assets, not all assets.
+This point is a theme of the recent literature on safe assets. See, in particular, the work of Ricardo Caballero and his coauthors (Caballero, Farhi,
+and Gourinchas 2008; Caballero and Krishnamurthy 2009). Rachel and
+Summers acknowledge this point in their paper, but argue that it is a secondorder effect. The models they write down are ones where their considered
+economic channels move the rates of return on all assets equally and not
+the rates of return particularly on safe assets. I argue the case that the fall in
+safe rates is not a second-order issue; and to make this point, I offer a set of
+“maximal” computations tracing the fall in safe rates. I acknowledge at the
+outset that my computations are subject to considerable uncertainty, but it
+
+64
+
+Brookings Papers on Economic Activity, Spring 2019
+
+Figure 1. S&P 500 Ratio of Price to Operating Earnings and Long-Term TIPS Real Rate,
+1999–2018a
+Long-term TIPS real rate
+
+S&P 500 ratio of price to operating earnings
+
+30
+
+4.0
+
+25
+
+S&P price-earnings ratio
+
+3.0
+
+20
+
+2.0
+
+15
+
+1.0
+
+10
+
+0
+
+5
+
+–1.0
+
+Long-term TIPS rate
+
+2002
+
+2005
+
+2008
+
+2011
+
+2014
+
+2017
+
+Sources: Federal Reserve; Bloomberg; author’s computations.
+a. S&P = Standard & Poor’s; TIPS = Treasury Inflation-Protected Securities.
+
+should be clear that for the issue at hand, the authors’ computations are also
+subject to considerable uncertainty.
+STOCK MARKET VALUATIONS My figure 1 plots movements in the long-term
+yield on Treasury Inflation-Protected Securities (TIPS) (the solid line)
+from 1999 to 2018 as well as the ratio of price to operating earnings
+for all companies in the Standard & Poor’s (S&P) 500 index (the dashed
+line). The U.S. Treasury first issued TIPS in 1999, which is the start of the
+sample, and the yield represented corresponds to the longest TIPS bond
+issued at that time (a 30-year security). In 2003, the Treasury moved to
+regularly issuing a 10-year TIPS, and that is the yield that is tracked from
+2003 onward.
+My figure 1 illustrates the sizable fall in real interest rates studied by
+Rachel and Summers’s paper. I ask whether this fall is equally reflected in
+the discount rate pricing equities. To answer this question, I use the Gordon
+growth formula:
+(1)
+
+Pt = ∑ s = t
+∞
+
+φEt (1 + g )
+,
+(1 + r + ERP )s − t
+s−t
+
+65
+
+COMMENTS and DISCUSSION
+
+where Pt is stock price, Et is earnings, φ is the payout ratio, g is earnings
+growth, r is the real rate on the safe asset (that is, the TIPS yields), and ERP
+is the equity risk premium, so that r + ERP is the discount rate applied to
+risky corporate earnings. Rewriting this expression, we have the priceto-earnings ratio:
+(2)
+
+Pt
+φ
+=
+.
+Et
+r + ERP − g
+
+We can use this formula to imply the movements in the ERP over
+the period represented in my figure 1. I compute that the average price/
+earnings ratio from 1999 to the 2007 precrisis sample is 21.0, and the
+average interest rate on TIPS is 3 percent. I use a value of g of 3.5 percent,
+corresponding to precrisis GDP growth, and matching estimates from
+Rachel and Summers’s paper. I also use a payout ratio of 20 percent, but
+this number does not matter for the main conclusions. Using these calibrations, I solve for the implied ERP, which equals 4.3 percent (to match the
+21.0 price/earnings ratio).
+Similarly, I compute the ERP for the 2009–18 postcrisis sample. In this
+sample, the price/earnings ratio averages 17.6, and the TIPS rate averages
+0.4 percent. I use a value of 2 percent for g, corresponding to postcrisis
+GDP growth rates. I keep the payout ratio the same, at 20 percent. The
+ERP required to match the price/earnings valuation is 6.1 percent. In other
+words, in the postcrisis sample, the ERP must have risen to rationalize
+observed price/earnings ratios. Consider a counterfactual. Hold the ERP
+constant at 4.3 percent, and decrease r and g. The Gordon formula implies
+that the price/earnings ratio then needs to be 29.6! That is, the fall in interest
+rates is quite large, and by itself should have led to a sizable increase in
+the price/earnings ratio. However, the price/earnings ratio over this entire
+period (ignoring the crisis) is relatively stable. I conclude that the ERP
+must have risen significantly.
+At first glance, this computation flies in the face of financial market
+commentary. Investors bemoan that stocks are expensive. My computation
+implies that the expected return on stocks has indeed fallen. That is, the
+safe rate fell by 2.6 percent (= 3 – 0.4), and the ERP increased by 1.7 percent
+(= 6.1 – 4.3), indicating that the expected return on stocks has fallen by
+0.9 percent. From an investor’s standpoint, returns have fallen significantly.
+In this sense, stocks are expensive. However, on a relative basis, safe bonds
+have become even more expensive than stocks. The discount rate on all
+
+66
+
+Brookings Papers on Economic Activity, Spring 2019
+
+Figure 2. Corporate Bond Spreads, 1919–2018a
+AAA corporate–Treasury spread
+
+2.0
+
+1.5
+
+1.0
+
+0.5
+
+1975
+1970
+2008
+1971
+1976 2001
+1932
+1972
+1982
+1974
+2000
+
+2015
+2016
+2002
+19811968
+1930
+1927
+1931
+1928
+2010
+1933 1998
+2013
+2014
+1929 1980
+2011
+1925
+1926
+19691983
+1924
+19771984 199919342009
+2012 2017
+1973
+1987 1935
+2018
+1921
+1922 20071986
+1978
+1923
+198919411992
+1993
+1920
+1919
+1979 1967
+1995
+1991
+1939
+1938
+1997
+1988
+2004
+2005
+1990
+1940
+2006
+1960
+1936
+1994
+1996
+2003 1961
+1937
+1985
+1966
+1954
+19491948
+1957
+1942
+1959
+19521951
+19651962
+1958
+1950
+1947
+1964
+1963 1956 1953
+1943
+1944
+1955
+
+0.2
+
+0.4
+
+0.6
+Debt-GDP ratio
+
+0.8
+
+1946
+1945
+
+1.0
+
+Sources: Krishnamurthy and Vissing-Jorgensen (2012), Federal Reserve, author’s calculations.
+a. This figure shows the 20-year AAA corporate–Treasury spread versus the publicly held Treasury
+debt-GDP ratio for 1919 to 2018.
+
+assets has fallen by 0.9 percent, while the discount rate on safe assets has
+fallen an additional 1.7 percent.
+My perspective helps to rationalize corporate financing behavior over
+the last 20 years. As safe rates have fallen, corporate investment has not
+risen. Flat corporate investment is inconsistent with a decrease in real rates
+to all assets. But in a world where the risky cost of capital has not fallen
+as much as the safe rate, we would not expect to see a substantial increase
+in corporate investment. Indeed, the form of investment that has risen the
+most over the last 20 years is residential investment. Due to securitization
+and the banking system, the discount rate to residential investment is a
+near safe rate. This perspective also helps rationalize the rise in corporate
+leverage and share buybacks over the last decade. Firms have engaged in
+a form of capital structure arbitrage: issue safe bonds at low rates, and buy
+risky stocks, offering higher rates of return.
+CORPORATE BOND SPREADS My figure 2 replicates and updates a figure
+from my (2012) paper with Annette Vissing-Jorgensen. We observe
+that there is a strong negative relation between the spread of long-term,
+
+COMMENTS and DISCUSSION
+
+67
+
+AAA-rated corporate bonds over long-term Treasury bonds and the
+outstanding amount of publicly held government debt, normalized by GDP.
+We interpret the relation (and provide other evidence in support of the
+interpretation) as reflecting a demand curve, akin to a money demand
+curve, for the higher safety and liquidity of Treasury bonds relative to corporate bonds. We also present evidence that the safety demand, though
+reflected most prominently in the movements of Treasury bond yields,
+extends to high-grade private assets, including illiquid corporate bond
+rates and money market rates such as bank deposit rates (which underly the
+determination of interest rate swap rates).
+In my figure 2, I have drawn a solid line through the points from 1919
+to 2007, roughly indicating the precrisis demand for safe assets. The
+points in the figure’s upper-right quadrant correspond to the points after
+2007. It appears from this graph that the demand curve for safe assets
+has shifted outward over the last decade. Indeed, the vertical distance
+between the two curves drawn on the figure is about 80 basis points,
+suggesting an increased safety premium of just under 1 percent (for a
+given quantity supplied).
+There are further observations that reinforce this point. First, consider
+the left panel of figure 3 in Rachel and Summers’s paper. Though all the
+yields pictured in the figure have fallen over the last 25 years, it is also
+evident that the spread between the various yields considered has widened
+over this same period, with Treasury yields falling more than other yields.
+The widening in the corporate-Treasury spread over the postcrisis period
+is particularly striking because stock market volatility has also declined
+significantly over the last decade. The decline is evident in both measured
+stock return data or in a volatility index such as the Chicago Board Options
+Exchange’s Volatility Index (VIX). From 1995 to 2006, the VIX averaged
+about 21 percent; and from 2013 to 2018, it averaged about 15 percent.
+Corporate bonds, as in the classic Robert Merton (1974) model, are a
+safe bond minus the value of a put option on the underlying firm’s assets.
+As volatility has decreased, we would expect that the value of this put
+should have fallen. The decreased put value implies a narrowing of the
+corporate bond to Treasury spread. Empirically, the opposite is true.
+Corporate bond rates have not fallen toward Treasury rates over this period
+(see figure 3 in Rachel and Summers’s paper). This fact also implies
+an increased preference for the safety of Treasury bonds. Furthermore,
+the corporate bond in my figure 2 is an AAA bond, which is very safe. An
+increase in demand for safe assets would also decrease AAA rates, albeit
+less so than in Treasury rates. This suggests that the estimates from my
+
+68
+
+Brookings Papers on Economic Activity, Spring 2019
+
+figure 2 are an underestimate of the increase in safe asset premia. If one
+could construct a hypothetical spread between equities and safe Treasury
+rates, and make a plot as in figure 2, presumably that plot would reflect the
+larger shift in the demand for all safe assets. In a sense, the price/earnings
+computation I offered earlier is two points on such a plot. Thus, these two
+pieces of evidence are internally consistent and reflect a sizable decrease
+in the return on safe assets.
+My figure 2 gives another way to estimate the impact of the expansion
+of government debt on interest rates. Rachel and Summers estimate from
+their model that the expansion of government debt from 1970 to the present
+contributed to an increase in rates of 1.5–2.0 percent. We can empirically
+check this estimate from my figure 2. Comparing the points in 1970 with
+the present points, along the same demand curve, indicates a rise of roughly
+1.5 percent in rates. From a very different perspective, I arrive at a similar
+estimate as Rachel and Summers of the impact of the increase in government debt supply on interest rates.
+DISCUSSION I conclude that the discount rate on all assets has fallen,
+consistent with Rachel and Summers’s analysis. My analysis also indicates
+that the discount rate on safe assets has fallen further than the rate on all
+assets. I have offered a set of maximal computations for the further safe
+rate decline, estimating this at between 1 and 2 percent.
+I do not interpret these computations as invalidating the analysis of
+Rachel and Summers. Their model is readily interpretable in terms of safe
+asset demand. A desire for insurance against income risk is likely best met
+by holding safe assets. Their Bewley model could be easily repurposed to
+address safe asset rates. Likewise, a demand for retirement savings that is
+accommodated via defined-benefit pension plans is likely best met by holding safe assets. The life-cycle model could also be repurposed to address
+safe asset rates.
+Thinking about safe asset demand brings other forces to the fore: savings
+glut and foreign reserve accumulation, collateral and financial intermediation
+issues such as a shortage of high-quality liquid assets, and risk preferences
+of investors.
+My analysis also does not invalidate the policy conclusions of Rachel
+and Summers. Low-equilibrium interest rates mean that the zero lower
+bound will frequently constrain monetary policy. This is because the
+central bank sets the rate on a safe asset (that is, reserves). Likewise,
+U.S. government debt is currently the par excellence of safe assets in
+the world. If low safe asset rates are driven by a high convenience yield
+
+COMMENTS and DISCUSSION
+
+69
+
+on safe assets, then it follows that the government has more fiscal space
+when these convenience yields are high. Indeed, this fiscal space conclusion is strengthened in the safe asset convenience yield perspective.
+A Friedman rule–style argument calls for more issuance of convenience
+assets (government debt) when the convenience yield is high (Friedman
+1969). However, there is another counterbalancing force: if the government issues too much debt, such debt may no longer be viewed by
+investors as safe, and the convenience yield may disappear. Finally, the
+safe asset perspective identifies further considerations that are relevant
+for policy. The private sector, in addition to the government, can create
+safe assets. Financial intermediaries in particular are safe asset creators,
+as argued by Caballero and Krishnamurthy (2009); Krishnamurthy and
+Vissing-Jorgensen (2015); and Tri Vi Dang and others (2017). But private
+safe assets are inherently fragile and can lead to runs and an increase in
+systemic risk. Thus, if interest rates are low because of high convenience
+yields on safe assets, policymakers should also be mindful of systemic
+risk from the private sector.
+REFERENCES FOR THE KRISHNAMURTHY COMMENT
+
+Caballero, Ricardo J., Emmanuel Farhi, and Pierre-Olivier Gourinchas. 2008. “An
+Equilibrium Model of ‘Global Imbalances’ and Low Interest Rates.” American
+Economic Review 98, no. 1: 358–93.
+Caballero, Ricardo J., and Arvind Krishnamurthy. 2009. “Global Imbalances and
+Financial Fragility.” American Economic Review 99, no. 2: 584–88.
+Dang, Tri Vi, Gary Gorton, Bengt Holmström, and Guillermo Ordoñez. 2017.
+“Banks as Secret Keepers.” American Economic Review 107, no. 4: 1005–29.
+Friedman, Milton. 1969. The Optimal Quantity of Money, and Other Essays.
+Chicago: Aldine.
+Krishnamurthy, Arvind, and Annette Vissing-Jorgensen. 2012. “The Aggregate
+Demand for Treasury Debt.” Journal of Political Economy 120, no. 2: 233–67.
+———. 2015. “The Impact of Treasury Supply on Financial Sector Lending and
+Stability.” Journal of Financial Economics 118, no. 3: 571–600.
+Merton, Robert C. 1974. “On the Pricing of Corporate Debt: The Risk Structure of
+Interest Rates.” Journal of Finance 29, no. 2: 449–70.
+
+GENERAL DISCUSSION  Valerie Ramey began noting the importance
+of the paper and asking if the authors had considered whether the rise
+of China and its relatively recent integration into global markets had
+
+70
+
+Brookings Papers on Economic Activity, Spring 2019
+
+an impact on the long-term real interest rate. She referred to a paper by
+Fernando Broner and others, which documents that the share of government
+debt held by foreigners has risen dramatically in industrialized countries.1
+For example, the share of U.S. government debt held by foreigners was
+about 5 percent in 1970 but now sits just below 50 percent.
+Martin Baily commended the paper. He stated that the authors’ reasons
+for studying the advanced economies as a bloc is valid, but that doing so
+may obscure important variation across countries—particularly, the unique
+situation of the United States. Baily is not convinced that the United States
+is in a secular stagnation situation like Japan and Europe, whereas Lawrence
+Summers has argued so in various news outlets and academic papers. He
+observed that the United States appears to be in excess demand by a certain
+definition, given that domestic demand appears to satisfy the economy at
+full employment while net imports are persistently negative. Furthermore,
+he expressed skepticism that such excess demand is entirely driven by
+deficit-financed fiscal stimulus at present.
+Baily also noted two observations in support of the idea that investment
+opportunities have declined, in contrast to some of the discussants’ claims.
+The first observation is that the required rate of return on corporate investing
+is much higher than the risk-free interest rate and does not appear to adjust
+downward properly when the risk-free interest rate falls. This would imply
+a lack of real corporate investment opportunities. The second is that many
+of the world’s economies—including those in Latin America and Africa,
+but also perhaps Japan and those in Europe—have regulatory regimes that
+create large barriers for would-be investment opportunities.
+Jason Furman also commended the paper. He expressed some concern
+that research on this topic has focused on testing various “hunches” about
+the causes of the interest rate decline rather than providing meaningful
+cost-benefit analyses of various policy options in the new interest rate environment. He suggested that a valuable paper would ask the question raised
+by Gauti Eggertsson in his comment: How much additional government
+debt is necessary to achieve sufficiently higher interest rates and improved
+cyclical performance? He suggested that the models developed by John
+Williams to study the effects of the zero lower bound (ZLB) on interest
+rates would enable one to perform this kind of cost-benefit analysis. Even if
+1. Fernando Broner, Daragh Clancy, Aitor Erce, and Alberto Martin, “Fiscal Multipliers
+and Foreign Holdings of Public Debt,” ESM Working Paper 30 (Luxembourg: European
+Stability Mechanism, 2018), https://papers.ssrn.com/sol3/Delivery.cfm/SSRN_ID3153111_
+code2401764.pdf?abstractid=3153111&mirid=1.
+
+COMMENTS and DISCUSSION
+
+71
+
+it is the case that substantial additional debt only raises the neutral interest
+rate by a small amount, it remains of interest to policymakers to quantify
+the trade-offs between countering the effects of the ZLB with various
+monetary policies or increasing debt to offset low interest rates.
+Susanto Basu discussed the interpretation of the decline in total factor
+productivity (TFP) growth, which was raised by both the authors and commenters. Although figure 4 in the paper and observations by commenters
+suggest that the decline in TFP growth has pushed the neutral interest rate
+down by about 2 percentage points, Basu interpreted the authors’ discussion
+to suggest that increases in TFP growth would result in lower real rates.
+The authors’ model incorporates channels that could cause real interest
+rates to rise or fall in response to higher TFP growth via agents’ expectations
+of future consumption growth and agents’ saving out of current income,
+respectively. He asked the authors to comment on why TFP’s positive
+relation with real interest rates appears to dominate in the model.
+Donald Kohn remarked that the paper helps enlighten why the neutral
+rate—R*—appeared to drop sharply during the financial crisis and has
+not recovered. He noted that the persistence of excess savings since the
+crisis can help explain this observation, but that a similar balance of (excess)
+savings and low investment appeared in the 1980s concurrent with a much
+higher value of R*. This suggests that the balance of savings is not the
+only explanatory factor and that perhaps demand for capital has declined
+significantly since that time.
+Kohn noted that the relation between productivity growth and R*
+becomes clearer after distinguishing between the long and short runs.
+In the long run, productivity gains should be expected to raise R*; in the
+short run, productivity gains shift the Phillips curve outward, enabling the
+central bank to promote higher employment via lower interest rates without
+fueling inflation.
+Robert Gordon noted that the paper attributes the steep decline in R*
+to declining population and productivity growth, but that consensus estimates of potential output growth from—say, those of the Congressional
+Budget Office and the Federal Reserve—do not reflect such steep declines
+in these factors. One could make the case that potential output has fallen
+substantially more than that of the consensus, however. For example, comparing realized output growth since 2009 with the implied output growth
+derived from a simple Okun’s law (with a coefficient of one-half on the
+unemployment gap) would yield an estimate of potential output of about
+1 percent, not the 1.9 percent that is currently estimated by the Congressional Budget Office. In addition, Gordon observed that potential growth
+
+72
+
+Brookings Papers on Economic Activity, Spring 2019
+
+in labor force participation declined from about 1½ percent each year
+between the 1960s and 1990s, when females were rapidly joining the labor
+force, to about ½ percent each year in the last decade. Such a decline
+would imply that potential GDP growth has fallen from about 3 percent
+to about 1 percent. This decline also appears to have been concentrated
+between 2007 and 2012 (as deduced from a formal procedure using a
+Kalman filter that removes cyclical variation in the unemployment gap).
+The timing thus tracks closely with the timing of a sharp decline in R* over
+the same period.
+Gordon also emphasized the role of productivity growth in determining
+R*. He observed that in any kind of Solow growth model with steady state
+ratios of capital to output, a decline in potential output growth produces a
+decline in steady state investment, implying a strong link between potential output growth and the natural interest rate. He emphasized further
+that causality is more likely to run from low-productivity growth to lower
+investment, rather than vice versa.
+William Brainard noted that the authors’ specification of the investment–
+saving curve assumes the response of output to the interest rate is the
+same throughout the sample period, whereas R* time varies, following a
+random walk. Given the assumption that output responds to the difference
+between the current interest rate and R*, any cyclical or trend variation
+in the response of output to the interest rate (ar) will affect the contemporaneous Kalman filter estimate of R*. There are good reasons to expect
+time variation in ar, just as there are for R*. Perhaps most relevant for this
+paper, housing investment, one of the most interest-sensitive components
+of demand during tightening, was likely to be insensitive to rate reductions
+during the Great Recession, when house prices were well below replacement cost. It would be hard to identify both time-varying shocks to ar and
+R*, but if ar > 0 is smaller during the Great Recession and larger during
+booms, he conjectured that estimated R* would be lower during the Great
+Recession and higher during booms than the authors’ estimates.
+Brainard also remarked that U.S. interest rates are affected by two factors not included in the theoretical models: the important roles that U.S.
+Treasuries have acquired as a source of collateral in international financial
+markets and as a safe haven. During the global financial crisis, which began
+in the United States, global investors fled to U.S. Treasuries for safety, a
+factor that helps explain low U.S. rates.
+Laurence Meyer observed that there are two common views of government deficits at present. The first is that persistent deficits are unsustainable
+and generate serious risks. The second view, represented by the conclusions
+
+COMMENTS and DISCUSSION
+
+73
+
+of Rachel and Summers’s paper, states that higher deficits raise R* and offset secular declines in other real variables, on net benefiting the economy.
+He noted that such conclusions appear to be similar to those of modern
+monetary theory, whose models are not well regarded by the authors or
+many in the profession. However, the conclusions do suggest that fiscal
+policy in advanced economies has performed spectacularly over the last
+few decades, in particular by reducing risks associated with the ZLB. Meyer
+said the paper was fascinating and provided a very important decomposition of the forces affecting R*.
+Giorgio Primiceri commented that a forthcoming paper by Kurt
+Lunsford and Kenneth West studies the relationship between TFP growth
+and the secular trend in the natural rate from 1880 onward. They find that
+the positive correlation emerges only after 1970.2
+Robert Hall said he was surprised by Rachel and Summers’s confidence
+in finding a dramatic departure from Ricardian neutrality—the notion
+that government borrowing decisions are neutral in equilibrium. Nonneutrality, which produces the relationship between government borrowing and the real interest rate, stems from the introduction of finitely lived
+agents into their paper’s central model. However, he observed that saving
+has become significantly more concentrated among the wealthy in the
+last few decades, and that the wealthy are much less likely to increase consumption in anticipation of death. That wealth is concentrated among those
+who pass on their wealth to future generations makes the introduction of
+Ricardian nonneutrality a puzzling finding.
+James Stock added that the decomposition of forces acting on the real
+rate is very nice, but ought to include the liquidity and safety premiums
+that Arvind Krishnamurthy described. He observed that there remains
+about 1.3 percentage points of unexplained decline in R* over the observed
+period, which liquidity and safety demand may reasonably explain without
+contradicting the main findings of the paper.
+Lawrence Summers thanked the participants. He stated that the paper’s
+main finding, that the neutral rate has been driven downward by strong
+secular forces more than its observed decline reveals, remains valid even
+after incorporating every criticism provided in the current discussion. In
+addition, the common position held by Arvind Krishnamurthy and others
+that the decline mostly reflects the attractive liquidity and safety properties
+of government debt also supports the paper’s main policy implications. In
+2. Kurt G. Lunsford and Kenneth D. West, “Some Evidence on Secular Drivers of U.S.
+Safe Real Interest Rates,” American Economic Journal: Macroeconomics, forthcoming.
+
+74
+
+Brookings Papers on Economic Activity, Spring 2019
+
+other words, if demand for government bonds is so high, the government
+ought to satisfy this demand and increase deficits.
+Summers said that Gauti Eggertsson’s comments on incorporating
+income uncertainty and the potential effects of rising income inequality
+are correct and should be incorporated into the analysis. Summers acknowledged three important missing components of the intertemporal framework
+in the paper: the high propensity to save among the rich, the tendency
+for monopoly power to reduce investment, and, most important, reduced
+investment opportunities in recent decades. Summers called this last force
+a “demassification” of the economy, which is the result of several secular
+and preference-driven trends. He described, for example, that a cell phone
+has more computing power than a supercomputer used to; that people
+prefer small apartments in cities to big houses in suburbs; that law firms
+need less office space per lawyer; and that nobody wants to build a shopping mall. He remarked that he is not strongly convinced that safety and
+liquidity preferences will explain the residual in the decomposition of the
+neutral rate.
+With regard to the discussion about equity risk premia, Summers noted
+that the question demands more attention in the paper, but that he does not
+perceive it to be as important as Krishnamurthy does, for four reasons.
+First, the fact that the risk premium appeared to be low in the late 1990s
+and early 2000s likely reflects price bubbles in those periods and not underlying risk preferences. Second, there is no clear reason why a decline of
+2 percentage points in the risk premium over that period, if it did occur,
+should explain a decline of 2 percentage points in the safe rate. Summers
+said he would benchmark any estimated change in the risk premium to
+relate to half that change in the safe rate. Third, the observation that
+yields on AAA-rated bonds increased after the global financial crisis does
+not reflect structural changes in safety preferences as much as it does
+a reassessment of the asset class following high default rates during the
+crisis. Fourth, he observed that the opinion that the safe rate has declined
+because the risk premium has risen comes with an important corollary:
+demand for stocks should be significantly higher than for bonds right now.
+This view remains far from the prevailing opinion of many who study
+this topic.
+Summers further replied to comments about the importance of safety and
+liquidity premia that the co-movement across a variety of asset classes—
+including assets that were once regarded to be severely illiquid, like
+inflation-protected Treasuries—suggests that the secular forces of focus in
+the paper are important. Though there may be some role for safety demand,
+
+COMMENTS and DISCUSSION
+
+75
+
+he said, he remains confident in the choice to focus on an intertemporal
+saving and consumption framework.
+He replied to Valerie Ramey’s comment by observing that the global
+current accounts surplus of the industrial countries is roughly zero and
+has even risen slightly in recent years, implying that any foreign savings
+demand would be captured in their analysis by treating the advanced
+economies as a bloc.
+Summers agreed with Martin Baily’s comment that policies in the rest of
+the world that increase investment opportunities would raise the advanced
+economy normal rate. On Baily’s claim that the United States is not likely
+experiencing secular stagnation, he replied that the comment is likely true
+under the assumption that the U.S. is a closed economy. He agreed that
+there appears to be some excess demand in the U.S., but noted that estimating the neutral rate under the assumption the U.S. is an open economy is not
+straightforward but relies on the level of the exchange rate. For example,
+if the U.S. were to choose to close its current account deficit, the dollar
+would depreciate against other advanced currencies, and Europe and Japan
+would face even more severe stagnation and lower interest rates. He emphasized that the analysis examines the industrial world, not only the United
+States, precisely for this reason.
+Summers agreed with Jason Furman that examining the relative costs of
+having excessive government debt versus excessively low interest rates is
+important. And Summers acknowledged Susanto Basu’s observation that
+the discussion of the relationship between TFP growth and interest rates in
+the paper contradicted that in his own statements. He noted that his paper
+with Christopher Carroll found, across countries, that as people expect to
+have rising incomes, they do not reduce their savings rates, in line with
+model predictions.3 It may be that people rely on saving habits and are slow
+to adjust their consumption in response to expected future income shocks.
+He acknowledged that comments from Donald Kohn and Robert Hall
+about the timing of sharp declines in R* are interesting, but that he does not
+take the sharp declines too seriously, for two reasons. The first is because of
+the kind of structural investment changes that occurred in the global financial crisis and its aftermath, as William Brainard observed; the second is
+that the estimates that reveal that sharp downturn in the United States are
+3. Christopher D. Carroll and Lawrence H. Summers, “Consumption Growth Parallels
+Income Growth: Some New Evidence,” in National Saving and Economic Performance,
+edited by B. Douglas Bernheim and John B. Shoven (Chicago: University of Chicago Press,
+1991), http://econ.jhu.edu/people/ccarroll/papers/CParallelsY.pdf.
+
+76
+
+Brookings Papers on Economic Activity, Spring 2019
+
+found using closed-economy models. These estimates are dubious, he
+noted, because the U.S. has a fluctuating current account.
+Summers thought Brainard’s proposal that the slope of the investmentsaving curve had shifted after the financial crisis was interesting, and that
+if he were right, it would help explain why various fiscal effects are now
+estimated to have slightly larger effects on neutral interest rates.
+Summers also replied to Laurence Meyer, who had noted that the paper’s
+conclusion may be construed as support for inflation-financed debt expansion, that he has made clear that he favors a balanced approach to fiscal
+expansion. He referenced his Foreign Affairs article with Jason Furman
+that outlines the reasons for this balanced approach and potential policy
+options.4 He emphasized that he finds the idea that printing money reduces
+the cost of running deficits, which is the central idea in modern monetary
+theory, to be nonsense.
+Summers noted that he does not find Lunsford and West’s evidence on
+the historical link between TFP growth and neutral interest rates to be
+especially surprising or important.
+He replied to Robert Hall that Ricardian neutrality may break down for
+many reasons beyond the consumption curvature across the life cycle—
+for example, simply because consumers are not sophisticated enough to
+properly reorganize consumption in response to changes in expected
+national debt. Furthermore, under many versions of the Ricardian Equivalence assumption, the basic conclusion that fiscal policy can afford to be
+expansionary at present would still hold, as the creation of government
+liabilities would create safe assets and interest rates would remain unchanged.
+
+4. Jason Furman and Lawrence H. Summers, “Who’s Afraid of Budget Deficits?”
+Foreign Affairs, March–April 2019, https://www.foreignaffairs.com/articles/2019-01-27/
+whos-afraid-budget-deficits.
+
+

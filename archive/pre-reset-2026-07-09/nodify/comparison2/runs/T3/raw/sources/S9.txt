@@ -1,0 +1,23 @@
+SOURCE: Adrien Auclert, "Monetary Policy and the Redistribution Channel," NBER Working Paper No. 23451, May 2017; published American Economic Review, 2019, 109(6): 2333-67.
+URL: https://www.nber.org/papers/w23451 (published version: https://www.aeaweb.org/articles?id=10.1257%2Faer.20160137)
+[Fetched via WebFetch extraction tool; this is the extraction pass's captured verbatim quotations from the live NBER abstract page.]
+
+## Key Findings
+
+The paper identifies three redistribution channels through which monetary policy affects aggregate consumption:
+
+1. Earnings Heterogeneity Channel: "unequal income gains" occur when monetary policy creates differential earnings impacts across the population.
+
+2. Fisher Channel: Related to "unexpected inflation," this mechanism affects those with different inflation exposures and nominal asset holdings.
+
+3. Interest Rate Exposure Channel: Operates through "real interest rate changes," impacting households with varying debt and asset positions.
+
+## Main Conclusion
+
+According to the abstract, "all three channels are likely to amplify the effects of monetary policy." The research employs "sufficient statistics from Italian and U.S. data" to assess quantitative importance.
+
+## Model Implications
+
+The author notes that "a standard incomplete markets model can deliver the empirical magnitudes" observed in the data, though this requires assuming assets have "plausibly high durations" and "a counterfactual degree of inflation indexation."
+
+This work demonstrates that redistribution effects constitute an important — and amplifying — transmission mechanism for monetary policy beyond traditional aggregate-demand channels, but the theory itself shows the net distributional sign is not fixed a priori: it depends on the empirical distribution of who holds long-duration nominal assets versus who is a net debtor, which is a separate structural (not purely monetary) fact about household balance sheets.

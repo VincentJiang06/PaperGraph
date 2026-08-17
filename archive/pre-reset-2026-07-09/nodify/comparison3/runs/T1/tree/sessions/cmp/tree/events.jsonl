@@ -1,0 +1,121 @@
+{"schema":"event.v1","event_id":"EV-000001","at":"2026-07-09T08:34:14Z","actor":"main","command":"init","mutating":true,"touched":["cmp"],"summary":"init: 2021–2023 年美国的高通胀,其成因应如何在『需求侧』(财政转移支付+宽松货币政策)与『供给侧』(供应链中断、劳动力市场紧张、能源与大宗商品冲击)之间做定量或半定量的归因分解?各自大致贡献几何?这一归因对判断『软着陆』(通胀回落而不引"}
+{"schema":"event.v1","event_id":"EV-000002","at":"2026-07-09T08:34:15Z","actor":"main","command":"add","mutating":true,"touched":["N-0001"],"summary":"add 1 under root: N-0001"}
+{"schema":"event.v1","event_id":"EV-000003","at":"2026-07-09T08:34:44Z","actor":"main","command":"add","mutating":true,"touched":["N-0002","N-0003","N-0004","N-0005","N-0006","N-0007"],"summary":"add 6 under N-0001: N-0002, N-0003, N-0004, N-0005, N-0006, N-0007"}
+{"schema":"event.v1","event_id":"EV-000004","at":"2026-07-09T08:44:34Z","actor":"main","command":"add","mutating":false,"touched":[],"summary":"FAILED: children of a viewpoint are viewpoints; promotion re-kinds a node in place (nd promote)"}
+{"schema":"event.v1","event_id":"EV-000005","at":"2026-07-09T08:44:35Z","actor":"main","command":"add","mutating":false,"touched":[],"summary":"FAILED: children of a viewpoint are viewpoints; promotion re-kinds a node in place (nd promote)"}
+{"schema":"event.v1","event_id":"EV-000006","at":"2026-07-09T08:44:35Z","actor":"main","command":"add","mutating":false,"touched":[],"summary":"FAILED: children of a viewpoint are viewpoints; promotion re-kinds a node in place (nd promote)"}
+{"schema":"event.v1","event_id":"EV-000007","at":"2026-07-09T08:44:35Z","actor":"main","command":"add","mutating":false,"touched":[],"summary":"FAILED: children of a viewpoint are viewpoints; promotion re-kinds a node in place (nd promote)"}
+{"schema":"event.v1","event_id":"EV-000008","at":"2026-07-09T08:44:35Z","actor":"main","command":"add","mutating":false,"touched":[],"summary":"FAILED: children of a viewpoint are viewpoints; promotion re-kinds a node in place (nd promote)"}
+{"schema":"event.v1","event_id":"EV-000009","at":"2026-07-09T08:44:35Z","actor":"main","command":"add","mutating":false,"touched":[],"summary":"FAILED: children of a viewpoint are viewpoints; promotion re-kinds a node in place (nd promote)"}
+{"schema":"event.v1","event_id":"EV-000010","at":"2026-07-09T08:44:35Z","actor":"main","command":"add","mutating":false,"touched":[],"summary":"FAILED: children of a viewpoint are viewpoints; promotion re-kinds a node in place (nd promote)"}
+{"schema":"event.v1","event_id":"EV-000011","at":"2026-07-09T08:44:35Z","actor":"main","command":"add","mutating":false,"touched":[],"summary":"FAILED: children of a viewpoint are viewpoints; promotion re-kinds a node in place (nd promote)"}
+{"schema":"event.v1","event_id":"EV-000012","at":"2026-07-09T08:44:35Z","actor":"main","command":"add","mutating":false,"touched":[],"summary":"FAILED: children of a viewpoint are viewpoints; promotion re-kinds a node in place (nd promote)"}
+{"schema":"event.v1","event_id":"EV-000013","at":"2026-07-09T08:44:35Z","actor":"main","command":"add","mutating":false,"touched":[],"summary":"FAILED: children of a viewpoint are viewpoints; promotion re-kinds a node in place (nd promote)"}
+{"schema":"event.v1","event_id":"EV-000014","at":"2026-07-09T08:44:35Z","actor":"main","command":"add","mutating":false,"touched":[],"summary":"FAILED: children of a viewpoint are viewpoints; promotion re-kinds a node in place (nd promote)"}
+{"schema":"event.v1","event_id":"EV-000015","at":"2026-07-09T08:44:35Z","actor":"main","command":"add","mutating":false,"touched":[],"summary":"FAILED: children of a viewpoint are viewpoints; promotion re-kinds a node in place (nd promote)"}
+{"schema":"event.v1","event_id":"EV-000016","at":"2026-07-09T08:44:35Z","actor":"main","command":"add","mutating":false,"touched":[],"summary":"FAILED: children of a viewpoint are viewpoints; promotion re-kinds a node in place (nd promote)"}
+{"schema":"event.v1","event_id":"EV-000017","at":"2026-07-09T08:44:35Z","actor":"main","command":"add","mutating":false,"touched":[],"summary":"FAILED: children of a viewpoint are viewpoints; promotion re-kinds a node in place (nd promote)"}
+{"schema":"event.v1","event_id":"EV-000018","at":"2026-07-09T08:44:35Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (1598 chars)"}
+{"schema":"event.v1","event_id":"EV-000019","at":"2026-07-09T08:45:19Z","actor":"main","command":"add","mutating":true,"touched":["N-0008"],"summary":"add 1 under N-0002: N-0008"}
+{"schema":"event.v1","event_id":"EV-000020","at":"2026-07-09T08:45:19Z","actor":"main","command":"promote","mutating":true,"touched":["N-0008"],"summary":"promote N-0008 -> claim"}
+{"schema":"event.v1","event_id":"EV-000021","at":"2026-07-09T08:45:19Z","actor":"main","command":"add","mutating":true,"touched":["N-0009"],"summary":"add 1 under N-0002: N-0009"}
+{"schema":"event.v1","event_id":"EV-000022","at":"2026-07-09T08:45:19Z","actor":"main","command":"promote","mutating":true,"touched":["N-0009"],"summary":"promote N-0009 -> claim"}
+{"schema":"event.v1","event_id":"EV-000023","at":"2026-07-09T08:45:19Z","actor":"main","command":"add","mutating":true,"touched":["N-0010"],"summary":"add 1 under N-0003: N-0010"}
+{"schema":"event.v1","event_id":"EV-000024","at":"2026-07-09T08:45:19Z","actor":"main","command":"promote","mutating":true,"touched":["N-0010"],"summary":"promote N-0010 -> claim"}
+{"schema":"event.v1","event_id":"EV-000025","at":"2026-07-09T08:45:19Z","actor":"main","command":"add","mutating":true,"touched":["N-0011"],"summary":"add 1 under N-0003: N-0011"}
+{"schema":"event.v1","event_id":"EV-000026","at":"2026-07-09T08:45:19Z","actor":"main","command":"promote","mutating":true,"touched":["N-0011"],"summary":"promote N-0011 -> claim"}
+{"schema":"event.v1","event_id":"EV-000027","at":"2026-07-09T08:45:19Z","actor":"main","command":"add","mutating":true,"touched":["N-0012"],"summary":"add 1 under N-0004: N-0012"}
+{"schema":"event.v1","event_id":"EV-000028","at":"2026-07-09T08:45:20Z","actor":"main","command":"promote","mutating":true,"touched":["N-0012"],"summary":"promote N-0012 -> claim"}
+{"schema":"event.v1","event_id":"EV-000029","at":"2026-07-09T08:45:20Z","actor":"main","command":"add","mutating":true,"touched":["N-0013"],"summary":"add 1 under N-0004: N-0013"}
+{"schema":"event.v1","event_id":"EV-000030","at":"2026-07-09T08:45:20Z","actor":"main","command":"promote","mutating":true,"touched":["N-0013"],"summary":"promote N-0013 -> claim"}
+{"schema":"event.v1","event_id":"EV-000031","at":"2026-07-09T08:45:20Z","actor":"main","command":"add","mutating":true,"touched":["N-0014"],"summary":"add 1 under N-0005: N-0014"}
+{"schema":"event.v1","event_id":"EV-000032","at":"2026-07-09T08:45:20Z","actor":"main","command":"promote","mutating":true,"touched":["N-0014"],"summary":"promote N-0014 -> claim"}
+{"schema":"event.v1","event_id":"EV-000033","at":"2026-07-09T08:45:20Z","actor":"main","command":"add","mutating":true,"touched":["N-0015"],"summary":"add 1 under N-0005: N-0015"}
+{"schema":"event.v1","event_id":"EV-000034","at":"2026-07-09T08:45:20Z","actor":"main","command":"promote","mutating":true,"touched":["N-0015"],"summary":"promote N-0015 -> claim"}
+{"schema":"event.v1","event_id":"EV-000035","at":"2026-07-09T08:45:20Z","actor":"main","command":"add","mutating":true,"touched":["N-0016"],"summary":"add 1 under N-0006: N-0016"}
+{"schema":"event.v1","event_id":"EV-000036","at":"2026-07-09T08:45:20Z","actor":"main","command":"promote","mutating":true,"touched":["N-0016"],"summary":"promote N-0016 -> claim"}
+{"schema":"event.v1","event_id":"EV-000037","at":"2026-07-09T08:45:20Z","actor":"main","command":"add","mutating":true,"touched":["N-0017"],"summary":"add 1 under N-0006: N-0017"}
+{"schema":"event.v1","event_id":"EV-000038","at":"2026-07-09T08:45:20Z","actor":"main","command":"promote","mutating":true,"touched":["N-0017"],"summary":"promote N-0017 -> claim"}
+{"schema":"event.v1","event_id":"EV-000039","at":"2026-07-09T08:45:20Z","actor":"main","command":"add","mutating":true,"touched":["N-0018"],"summary":"add 1 under N-0007: N-0018"}
+{"schema":"event.v1","event_id":"EV-000040","at":"2026-07-09T08:45:20Z","actor":"main","command":"promote","mutating":true,"touched":["N-0018"],"summary":"promote N-0018 -> claim"}
+{"schema":"event.v1","event_id":"EV-000041","at":"2026-07-09T08:45:20Z","actor":"main","command":"add","mutating":true,"touched":["N-0019"],"summary":"add 1 under N-0007: N-0019"}
+{"schema":"event.v1","event_id":"EV-000042","at":"2026-07-09T08:45:20Z","actor":"main","command":"promote","mutating":true,"touched":["N-0019"],"summary":"promote N-0019 -> claim"}
+{"schema":"event.v1","event_id":"EV-000043","at":"2026-07-09T08:45:21Z","actor":"main","command":"add","mutating":true,"touched":["N-0020"],"summary":"add 1 under N-0007: N-0020"}
+{"schema":"event.v1","event_id":"EV-000044","at":"2026-07-09T08:45:21Z","actor":"main","command":"promote","mutating":true,"touched":["N-0020"],"summary":"promote N-0020 -> claim"}
+{"schema":"event.v1","event_id":"EV-000045","at":"2026-07-09T08:45:21Z","actor":"main","command":"add","mutating":true,"touched":["N-0021"],"summary":"add 1 under N-0007: N-0021"}
+{"schema":"event.v1","event_id":"EV-000046","at":"2026-07-09T08:45:21Z","actor":"main","command":"promote","mutating":true,"touched":["N-0021"],"summary":"promote N-0021 -> claim"}
+{"schema":"event.v1","event_id":"EV-000047","at":"2026-07-09T08:45:21Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (3709 chars)"}
+{"schema":"event.v1","event_id":"EV-000048","at":"2026-07-09T08:47:44Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0001"],"summary":"ingest DOC-0001: How Much Do Supply and Demand Drive Inflation? (Shapiro, FRBSF Economic Letter 2"}
+{"schema":"event.v1","event_id":"EV-000049","at":"2026-07-09T08:47:44Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0002"],"summary":"ingest DOC-0002: What Caused the US Pandemic-Era Inflation? (Bernanke & Blanchard, NBER WP 31417,"}
+{"schema":"event.v1","event_id":"EV-000050","at":"2026-07-09T08:47:44Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0003"],"summary":"ingest DOC-0003: Fiscal policy and excess inflation during Covid-19: a cross-country view (de Soy"}
+{"schema":"event.v1","event_id":"EV-000051","at":"2026-07-09T08:47:44Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0004"],"summary":"ingest DOC-0004: Is the American Rescue Plan Taking Us Back to the '60s? (Barnichon, Oliveira, Sh"}
+{"schema":"event.v1","event_id":"EV-000052","at":"2026-07-09T08:47:45Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0005"],"summary":"ingest DOC-0005: What does the Beveridge curve tell us about the likelihood of a soft landing? (F"}
+{"schema":"event.v1","event_id":"EV-000053","at":"2026-07-09T08:47:45Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0006"],"summary":"ingest DOC-0006: Global Supply Chain Pressures and U.S. Inflation (Liu & Nguyen, FRBSF EL 2023-16"}
+{"schema":"event.v1","event_id":"EV-000054","at":"2026-07-09T08:47:45Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0007"],"summary":"ingest DOC-0007: Landing Softly Is Just the Beginning (Daly, FRBSF Economic Letter 2024-27)"}
+{"schema":"event.v1","event_id":"EV-000055","at":"2026-07-09T08:47:45Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0008"],"summary":"ingest DOC-0008: Energy commodity prices in 2022 showed effects of Russia's full-scale invasion o"}
+{"schema":"event.v1","event_id":"EV-000056","at":"2026-07-09T08:47:45Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0009"],"summary":"ingest DOC-0009: Second-Round Effects of Oil Prices on Inflation in the Advanced Foreign Economie"}
+{"schema":"event.v1","event_id":"EV-000057","at":"2026-07-09T08:47:45Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0010"],"summary":"ingest DOC-0010: Greedflation (Wikipedia, citing FRB Kansas City 2023 study)"}
+{"schema":"event.v1","event_id":"EV-000058","at":"2026-07-09T08:47:45Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0011"],"summary":"ingest DOC-0011: Responding to High Inflation, with Some Thoughts on a Soft Landing (Gov. Waller "}
+{"schema":"event.v1","event_id":"EV-000059","at":"2026-07-09T08:47:45Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0012"],"summary":"ingest DOC-0012: How Tight are U.S. Labor Markets? (Domash & Summers, NBER WP 29739, 2022)"}
+{"schema":"event.v1","event_id":"EV-000060","at":"2026-07-09T08:47:59Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0012: 2"}
+{"schema":"event.v1","event_id":"EV-000061","at":"2026-07-09T08:47:59Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0008: 2"}
+{"schema":"event.v1","event_id":"EV-000062","at":"2026-07-09T08:49:36Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0001","N-0008"],"summary":"conclude N-0008 [supports]"}
+{"schema":"event.v1","event_id":"EV-000063","at":"2026-07-09T08:49:36Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0002","N-0009"],"summary":"conclude N-0009 [refutes]"}
+{"schema":"event.v1","event_id":"EV-000064","at":"2026-07-09T08:49:36Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0003","N-0010"],"summary":"conclude N-0010 [supports]"}
+{"schema":"event.v1","event_id":"EV-000065","at":"2026-07-09T08:49:36Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0004","N-0011"],"summary":"conclude N-0011 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000066","at":"2026-07-09T08:49:36Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0005","N-0012"],"summary":"conclude N-0012 [supports]"}
+{"schema":"event.v1","event_id":"EV-000067","at":"2026-07-09T08:49:36Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0006","N-0013"],"summary":"conclude N-0013 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000068","at":"2026-07-09T08:49:36Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0007","N-0014"],"summary":"conclude N-0014 [supports]"}
+{"schema":"event.v1","event_id":"EV-000069","at":"2026-07-09T08:49:36Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0008","N-0015"],"summary":"conclude N-0015 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000070","at":"2026-07-09T08:49:37Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0009","N-0016"],"summary":"conclude N-0016 [supports]"}
+{"schema":"event.v1","event_id":"EV-000071","at":"2026-07-09T08:49:37Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0010","N-0017"],"summary":"conclude N-0017 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000072","at":"2026-07-09T08:49:37Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0011","N-0018"],"summary":"conclude N-0018 [supports]"}
+{"schema":"event.v1","event_id":"EV-000073","at":"2026-07-09T08:49:37Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0012","N-0019"],"summary":"conclude N-0019 [refutes]"}
+{"schema":"event.v1","event_id":"EV-000074","at":"2026-07-09T08:49:37Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0013","N-0020"],"summary":"conclude N-0020 [supports]"}
+{"schema":"event.v1","event_id":"EV-000075","at":"2026-07-09T08:49:37Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0014","N-0021"],"summary":"conclude N-0021 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000076","at":"2026-07-09T08:49:43Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000077","at":"2026-07-09T08:49:43Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (3611 chars)"}
+{"schema":"event.v1","event_id":"EV-000078","at":"2026-07-09T08:51:11Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0015","N-0002"],"summary":"conclude N-0002 [supports]"}
+{"schema":"event.v1","event_id":"EV-000079","at":"2026-07-09T08:51:12Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0016","N-0003"],"summary":"conclude N-0003 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000080","at":"2026-07-09T08:51:12Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0017","N-0004"],"summary":"conclude N-0004 [supports]"}
+{"schema":"event.v1","event_id":"EV-000081","at":"2026-07-09T08:51:12Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0018","N-0005"],"summary":"conclude N-0005 [supports]"}
+{"schema":"event.v1","event_id":"EV-000082","at":"2026-07-09T08:51:12Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0019","N-0006"],"summary":"conclude N-0006 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000083","at":"2026-07-09T08:51:12Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0020","N-0007"],"summary":"conclude N-0007 [supports]"}
+{"schema":"event.v1","event_id":"EV-000084","at":"2026-07-09T08:51:12Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0021","N-0001"],"summary":"conclude N-0001 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000085","at":"2026-07-09T08:51:22Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000086","at":"2026-07-09T08:51:22Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (21 nodes)"}
+{"schema":"event.v1","event_id":"EV-000087","at":"2026-07-09T08:51:22Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (2694 chars)"}
+{"schema":"event.v1","event_id":"EV-000088","at":"2026-07-09T08:51:37Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0007"}
+{"schema":"event.v1","event_id":"EV-000089","at":"2026-07-09T08:51:37Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0009"}
+{"schema":"event.v1","event_id":"EV-000090","at":"2026-07-09T08:51:37Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (21 nodes)"}
+{"schema":"event.v1","event_id":"EV-000091","at":"2026-07-09T08:52:04Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0001"}
+{"schema":"event.v1","event_id":"EV-000092","at":"2026-07-09T08:52:04Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (21 nodes)"}
+{"schema":"event.v1","event_id":"EV-000093","at":"2026-07-09T08:52:05Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0008"}
+{"schema":"event.v1","event_id":"EV-000094","at":"2026-07-09T08:52:05Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0009"}
+{"schema":"event.v1","event_id":"EV-000095","at":"2026-07-09T08:52:05Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0010"}
+{"schema":"event.v1","event_id":"EV-000096","at":"2026-07-09T08:52:05Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0011"}
+{"schema":"event.v1","event_id":"EV-000097","at":"2026-07-09T08:52:05Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0012"}
+{"schema":"event.v1","event_id":"EV-000098","at":"2026-07-09T08:52:05Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0013"}
+{"schema":"event.v1","event_id":"EV-000099","at":"2026-07-09T08:52:05Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0014"}
+{"schema":"event.v1","event_id":"EV-000100","at":"2026-07-09T08:52:05Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0015"}
+{"schema":"event.v1","event_id":"EV-000101","at":"2026-07-09T08:52:05Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0016"}
+{"schema":"event.v1","event_id":"EV-000102","at":"2026-07-09T08:52:05Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0017"}
+{"schema":"event.v1","event_id":"EV-000103","at":"2026-07-09T08:52:05Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0018"}
+{"schema":"event.v1","event_id":"EV-000104","at":"2026-07-09T08:52:05Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0019"}
+{"schema":"event.v1","event_id":"EV-000105","at":"2026-07-09T08:52:05Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0020"}
+{"schema":"event.v1","event_id":"EV-000106","at":"2026-07-09T08:52:05Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0021"}
+{"schema":"event.v1","event_id":"EV-000107","at":"2026-07-09T08:53:13Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000108","at":"2026-07-09T09:25:03Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (2694 chars)"}
+{"schema":"event.v1","event_id":"EV-000109","at":"2026-07-09T09:25:08Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (21 nodes)"}
+{"schema":"event.v1","event_id":"EV-000110","at":"2026-07-09T09:25:08Z","actor":"main","command":"log","mutating":false,"touched":[],"summary":"log tail=20"}
+{"schema":"event.v1","event_id":"EV-000111","at":"2026-07-09T09:25:14Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0001"}
+{"schema":"event.v1","event_id":"EV-000112","at":"2026-07-09T09:25:14Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0008"}
+{"schema":"event.v1","event_id":"EV-000113","at":"2026-07-09T09:25:14Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0012"}
+{"schema":"event.v1","event_id":"EV-000114","at":"2026-07-09T09:25:20Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0009"}
+{"schema":"event.v1","event_id":"EV-000115","at":"2026-07-09T09:25:20Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0015"}
+{"schema":"event.v1","event_id":"EV-000116","at":"2026-07-09T09:25:20Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0019"}
+{"schema":"event.v1","event_id":"EV-000117","at":"2026-07-09T09:25:20Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0021"}
+{"schema":"event.v1","event_id":"EV-000118","at":"2026-07-09T09:25:27Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0007: 0"}
+{"schema":"event.v1","event_id":"EV-000119","at":"2026-07-09T09:25:33Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0008: 2"}
+{"schema":"event.v1","event_id":"EV-000120","at":"2026-07-09T09:25:44Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0011"}
+{"schema":"event.v1","event_id":"EV-000121","at":"2026-07-09T09:25:44Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0018"}

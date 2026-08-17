@@ -1,0 +1,5 @@
+Hampole, M., Papanikolaou, D., Schmidt, L. & Seegmiller, B. (2025). Artificial Intelligence and the Labor Market. NBER Working Paper 33509.
+Design: NLP-based firm x occupation task-level exposure to AI/ML, 2010-2023; instrument based on historical university hiring networks.
+Verbatim (abstract): "Tasks with higher AI exposure subsequently experience reduced labor demand."
+"Two variables summarize the impact of AI on within-firm labor demand: the mean exposure of an occupation's tasks, which depresses demand, and the concentration of exposure in a few tasks, which offsets losses by enabling workers to reallocate effort."
+"Despite strong substitution at the task level, overall employment effects are modest, as reduced demand in exposed occupations is offset by productivity-driven increases in labor demand at AI-adopting firms."

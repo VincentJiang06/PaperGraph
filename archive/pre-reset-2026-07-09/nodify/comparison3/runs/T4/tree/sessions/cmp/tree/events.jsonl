@@ -1,0 +1,80 @@
+{"schema":"event.v1","event_id":"EV-000001","at":"2026-07-09T10:12:59Z","actor":"main","command":"init","mutating":true,"touched":["cmp"],"summary":"init: 中国的人口下降与快速老龄化,是否必然导致类似日本『失去的数十年』式的长期停滞?自动化/机器人替代、全要素生产率增长、劳动参与率提升(延迟退休、女性/农民工市民化)与制度改革,能在多大程度上抵消劳动力萎缩对潜在增长的拖累?对比中日在发展阶段、"}
+{"schema":"event.v1","event_id":"EV-000002","at":"2026-07-09T10:13:03Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (409 chars)"}
+{"schema":"event.v1","event_id":"EV-000003","at":"2026-07-09T10:13:03Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (0 nodes)"}
+{"schema":"event.v1","event_id":"EV-000004","at":"2026-07-09T10:14:04Z","actor":"main","command":"add","mutating":true,"touched":["N-0001"],"summary":"add 1 under root: N-0001"}
+{"schema":"event.v1","event_id":"EV-000005","at":"2026-07-09T10:14:37Z","actor":"main","command":"add","mutating":true,"touched":["N-0002","N-0003","N-0004","N-0005","N-0006","N-0007"],"summary":"add 6 under N-0001: N-0002, N-0003, N-0004, N-0005, N-0006, N-0007"}
+{"schema":"event.v1","event_id":"EV-000006","at":"2026-07-09T10:14:37Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (7 nodes)"}
+{"schema":"event.v1","event_id":"EV-000007","at":"2026-07-09T10:23:01Z","actor":"main","command":"add","mutating":true,"touched":["N-0008","N-0009"],"summary":"add 2 under N-0002: N-0008, N-0009"}
+{"schema":"event.v1","event_id":"EV-000008","at":"2026-07-09T10:23:01Z","actor":"main","command":"add","mutating":true,"touched":["N-0010"],"summary":"add 1 under N-0003: N-0010"}
+{"schema":"event.v1","event_id":"EV-000009","at":"2026-07-09T10:23:01Z","actor":"main","command":"add","mutating":true,"touched":["N-0011"],"summary":"add 1 under N-0004: N-0011"}
+{"schema":"event.v1","event_id":"EV-000010","at":"2026-07-09T10:23:01Z","actor":"main","command":"add","mutating":true,"touched":["N-0012"],"summary":"add 1 under N-0005: N-0012"}
+{"schema":"event.v1","event_id":"EV-000011","at":"2026-07-09T10:23:01Z","actor":"main","command":"add","mutating":true,"touched":["N-0013","N-0014"],"summary":"add 2 under N-0006: N-0013, N-0014"}
+{"schema":"event.v1","event_id":"EV-000012","at":"2026-07-09T10:23:01Z","actor":"main","command":"add","mutating":true,"touched":["N-0015","N-0016","N-0017"],"summary":"add 3 under N-0007: N-0015, N-0016, N-0017"}
+{"schema":"event.v1","event_id":"EV-000013","at":"2026-07-09T10:23:22Z","actor":"main","command":"promote","mutating":true,"touched":["N-0008"],"summary":"promote N-0008 -> claim"}
+{"schema":"event.v1","event_id":"EV-000014","at":"2026-07-09T10:23:22Z","actor":"main","command":"promote","mutating":true,"touched":["N-0009"],"summary":"promote N-0009 -> claim"}
+{"schema":"event.v1","event_id":"EV-000015","at":"2026-07-09T10:23:22Z","actor":"main","command":"promote","mutating":true,"touched":["N-0010"],"summary":"promote N-0010 -> claim"}
+{"schema":"event.v1","event_id":"EV-000016","at":"2026-07-09T10:23:22Z","actor":"main","command":"promote","mutating":true,"touched":["N-0011"],"summary":"promote N-0011 -> claim"}
+{"schema":"event.v1","event_id":"EV-000017","at":"2026-07-09T10:23:22Z","actor":"main","command":"promote","mutating":true,"touched":["N-0012"],"summary":"promote N-0012 -> claim"}
+{"schema":"event.v1","event_id":"EV-000018","at":"2026-07-09T10:23:22Z","actor":"main","command":"promote","mutating":true,"touched":["N-0013"],"summary":"promote N-0013 -> claim"}
+{"schema":"event.v1","event_id":"EV-000019","at":"2026-07-09T10:23:22Z","actor":"main","command":"promote","mutating":true,"touched":["N-0014"],"summary":"promote N-0014 -> claim"}
+{"schema":"event.v1","event_id":"EV-000020","at":"2026-07-09T10:23:22Z","actor":"main","command":"promote","mutating":true,"touched":["N-0015"],"summary":"promote N-0015 -> claim"}
+{"schema":"event.v1","event_id":"EV-000021","at":"2026-07-09T10:23:22Z","actor":"main","command":"promote","mutating":true,"touched":["N-0016"],"summary":"promote N-0016 -> claim"}
+{"schema":"event.v1","event_id":"EV-000022","at":"2026-07-09T10:23:23Z","actor":"main","command":"promote","mutating":true,"touched":["N-0017"],"summary":"promote N-0017 -> claim"}
+{"schema":"event.v1","event_id":"EV-000023","at":"2026-07-09T10:23:23Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (3833 chars)"}
+{"schema":"event.v1","event_id":"EV-000024","at":"2026-07-09T10:23:32Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 3 soft"}
+{"schema":"event.v1","event_id":"EV-000025","at":"2026-07-09T10:23:32Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0008"}
+{"schema":"event.v1","event_id":"EV-000026","at":"2026-07-09T10:24:03Z","actor":"main","command":"add","mutating":true,"touched":["N-0018"],"summary":"add 1 under N-0003: N-0018"}
+{"schema":"event.v1","event_id":"EV-000027","at":"2026-07-09T10:24:03Z","actor":"main","command":"add","mutating":true,"touched":["N-0019"],"summary":"add 1 under N-0004: N-0019"}
+{"schema":"event.v1","event_id":"EV-000028","at":"2026-07-09T10:24:03Z","actor":"main","command":"add","mutating":true,"touched":["N-0020"],"summary":"add 1 under N-0005: N-0020"}
+{"schema":"event.v1","event_id":"EV-000029","at":"2026-07-09T10:24:03Z","actor":"main","command":"promote","mutating":true,"touched":["N-0018"],"summary":"promote N-0018 -> claim"}
+{"schema":"event.v1","event_id":"EV-000030","at":"2026-07-09T10:24:03Z","actor":"main","command":"promote","mutating":true,"touched":["N-0019"],"summary":"promote N-0019 -> claim"}
+{"schema":"event.v1","event_id":"EV-000031","at":"2026-07-09T10:24:03Z","actor":"main","command":"promote","mutating":true,"touched":["N-0020"],"summary":"promote N-0020 -> claim"}
+{"schema":"event.v1","event_id":"EV-000032","at":"2026-07-09T10:24:03Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000033","at":"2026-07-09T10:24:03Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (4225 chars)"}
+{"schema":"event.v1","event_id":"EV-000034","at":"2026-07-09T10:25:16Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0001"],"summary":"ingest DOC-0001: MERICS: Is ageing China facing a Japanese-style 'lost decade'?"}
+{"schema":"event.v1","event_id":"EV-000035","at":"2026-07-09T10:25:16Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0002"],"summary":"ingest DOC-0002: PIIE: China vs. the US — Which GDP is bigger?"}
+{"schema":"event.v1","event_id":"EV-000036","at":"2026-07-09T10:25:16Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0003"],"summary":"ingest DOC-0003: Yicai: Richard Koo on China's balance sheet recession"}
+{"schema":"event.v1","event_id":"EV-000037","at":"2026-07-09T10:25:16Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0004"],"summary":"ingest DOC-0004: J.P. Morgan: Deflation in China — What's the impact?"}
+{"schema":"event.v1","event_id":"EV-000038","at":"2026-07-09T10:25:16Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0005"],"summary":"ingest DOC-0005: IFR World Robotics: robot density surges"}
+{"schema":"event.v1","event_id":"EV-000039","at":"2026-07-09T10:25:16Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0006"],"summary":"ingest DOC-0006: China Briefing: gradual retirement age delay (2025)"}
+{"schema":"event.v1","event_id":"EV-000040","at":"2026-07-09T10:25:16Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0007"],"summary":"ingest DOC-0007: gov.cn: reform makes it easier for migrants to gain city hukou"}
+{"schema":"event.v1","event_id":"EV-000041","at":"2026-07-09T10:25:17Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0008"],"summary":"ingest DOC-0008: Nippon.com: Lessons from the Japanese Miracle"}
+{"schema":"event.v1","event_id":"EV-000042","at":"2026-07-09T10:25:17Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0009"],"summary":"ingest DOC-0009: RIETI: Why China's Investment Efficiency is Low"}
+{"schema":"event.v1","event_id":"EV-000043","at":"2026-07-09T10:25:17Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0010"],"summary":"ingest DOC-0010: Pew: Key facts about China's declining population"}
+{"schema":"event.v1","event_id":"EV-000044","at":"2026-07-09T10:25:17Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0011"],"summary":"ingest DOC-0011: OMFIF: China has just raised its debt ceiling"}
+{"schema":"event.v1","event_id":"EV-000045","at":"2026-07-09T10:25:17Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0012"],"summary":"ingest DOC-0012: CSIS ChinaPower: Unpacking China's GDP"}
+{"schema":"event.v1","event_id":"EV-000046","at":"2026-07-09T10:25:17Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0013"],"summary":"ingest DOC-0013: The Graying Dragon: China's Aging Crisis"}
+{"schema":"event.v1","event_id":"EV-000047","at":"2026-07-09T10:25:26Z","actor":"main","command":"docs ingest","mutating":true,"touched":["DOC-0001"],"summary":"ingest DOC-0001: MERICS: Is ageing China facing a Japanese-style 'lost decade'?"}
+{"schema":"event.v1","event_id":"EV-000048","at":"2026-07-09T10:25:26Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0013: 4"}
+{"schema":"event.v1","event_id":"EV-000049","at":"2026-07-09T10:26:22Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0001","N-0008"],"summary":"conclude N-0008 [supports]"}
+{"schema":"event.v1","event_id":"EV-000050","at":"2026-07-09T10:28:34Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0002","N-0009"],"summary":"conclude N-0009 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000051","at":"2026-07-09T10:28:35Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0003","N-0010"],"summary":"conclude N-0010 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000052","at":"2026-07-09T10:28:35Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0004","N-0011"],"summary":"conclude N-0011 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000053","at":"2026-07-09T10:28:35Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0005","N-0012"],"summary":"conclude N-0012 [supports]"}
+{"schema":"event.v1","event_id":"EV-000054","at":"2026-07-09T10:28:35Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0006","N-0013"],"summary":"conclude N-0013 [supports]"}
+{"schema":"event.v1","event_id":"EV-000055","at":"2026-07-09T10:28:35Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0007","N-0014"],"summary":"conclude N-0014 [supports]"}
+{"schema":"event.v1","event_id":"EV-000056","at":"2026-07-09T10:28:35Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0008","N-0015"],"summary":"conclude N-0015 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000057","at":"2026-07-09T10:28:35Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0009","N-0016"],"summary":"conclude N-0016 [supports]"}
+{"schema":"event.v1","event_id":"EV-000058","at":"2026-07-09T10:28:35Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0010","N-0017"],"summary":"conclude N-0017 [supports]"}
+{"schema":"event.v1","event_id":"EV-000059","at":"2026-07-09T10:28:35Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0011","N-0018"],"summary":"conclude N-0018 [supports]"}
+{"schema":"event.v1","event_id":"EV-000060","at":"2026-07-09T10:28:35Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0012","N-0019"],"summary":"conclude N-0019 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000061","at":"2026-07-09T10:28:35Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0013","N-0020"],"summary":"conclude N-0020 [supports]"}
+{"schema":"event.v1","event_id":"EV-000062","at":"2026-07-09T10:28:35Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000063","at":"2026-07-09T10:28:35Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (3956 chars)"}
+{"schema":"event.v1","event_id":"EV-000064","at":"2026-07-09T10:30:06Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0014","N-0002"],"summary":"conclude N-0002 [supports]"}
+{"schema":"event.v1","event_id":"EV-000065","at":"2026-07-09T10:30:07Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0015","N-0003"],"summary":"conclude N-0003 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000066","at":"2026-07-09T10:30:07Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0016","N-0004"],"summary":"conclude N-0004 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000067","at":"2026-07-09T10:30:07Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0017","N-0005"],"summary":"conclude N-0005 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000068","at":"2026-07-09T10:30:07Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0018","N-0006"],"summary":"conclude N-0006 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000069","at":"2026-07-09T10:30:07Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0019","N-0007"],"summary":"conclude N-0007 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000070","at":"2026-07-09T10:30:07Z","actor":"main","command":"conclude","mutating":true,"touched":["SYN-0020","N-0001"],"summary":"conclude N-0001 [mixed]"}
+{"schema":"event.v1","event_id":"EV-000071","at":"2026-07-09T10:30:07Z","actor":"main","command":"check","mutating":false,"touched":[],"summary":"check: 0 hard, 0 soft"}
+{"schema":"event.v1","event_id":"EV-000072","at":"2026-07-09T10:30:07Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (2522 chars)"}
+{"schema":"event.v1","event_id":"EV-000073","at":"2026-07-09T10:30:20Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (20 nodes)"}
+{"schema":"event.v1","event_id":"EV-000074","at":"2026-07-09T10:30:20Z","actor":"main","command":"export","mutating":false,"touched":[],"summary":"export json"}
+{"schema":"event.v1","event_id":"EV-000075","at":"2026-07-09T10:43:43Z","actor":"main","command":"brief","mutating":false,"touched":[],"summary":"brief (2522 chars)"}
+{"schema":"event.v1","event_id":"EV-000076","at":"2026-07-09T10:43:48Z","actor":"main","command":"tree","mutating":false,"touched":[],"summary":"tree (20 nodes)"}
+{"schema":"event.v1","event_id":"EV-000077","at":"2026-07-09T10:43:48Z","actor":"main","command":"log","mutating":false,"touched":[],"summary":"log tail=20"}
+{"schema":"event.v1","event_id":"EV-000078","at":"2026-07-09T10:43:56Z","actor":"main","command":"show","mutating":false,"touched":[],"summary":"show N-0001"}
+{"schema":"event.v1","event_id":"EV-000079","at":"2026-07-09T10:43:56Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0001: 0"}
+{"schema":"event.v1","event_id":"EV-000080","at":"2026-07-09T10:44:21Z","actor":"main","command":"docs for-node","mutating":false,"touched":[],"summary":"docs for-node N-0013: 4"}

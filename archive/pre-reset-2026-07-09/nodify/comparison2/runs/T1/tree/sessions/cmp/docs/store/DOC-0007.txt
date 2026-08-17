@@ -1,0 +1,22 @@
+Source A: The Budget Lab at Yale, "Evaluating the Impact of AI on the Labor Market: Current State of Affairs" (Gimbel, Kinder, Kendall, Lee; Oct 2025) and "Tracking the Impact of AI on the Labor Market" (ongoing series).
+URL: https://budgetlab.yale.edu/research/evaluating-impact-ai-labor-market-current-state-affairs ; https://budgetlab.yale.edu/research/tracking-impact-ai-labor-market
+
+Source B: Brookings, "New data show no AI jobs apocalypse — for now" (summarizing/extending the Yale Budget Lab findings).
+URL: https://www.brookings.edu/articles/new-data-show-no-ai-jobs-apocalypse-for-now/
+
+Source C: Fortune, "If AI is roiling the job market, the data isn't showing it... raising questions of 'AI-washing'" (Feb 2026), quoting Yale Budget Lab director Martha Gimbel and Oxford Economics Challenger-layoff-tracker data.
+URL: https://fortune.com/2026/02/02/ai-labor-market-yale-budget-lab-ai-washing/
+
+Key verbatim findings:
+
+Yale Budget Lab: "The percent of workers in jobs with high, medium, and low AI 'exposure' has remained remarkably steady over time." The lab compared the speed of occupational-mix change since ChatGPT's Nov-2022 launch (33 months as of the report) to the speed of occupational-mix change following the introduction of computers and the internet, and found the pace "marginally faster" (about one percentage point higher than the early-2000s internet boom) but "pretty typical for technological transitions" — not evidence of an unusual disruption.
+
+Martha Gimbel (Yale Budget Lab executive director), quoted in Fortune: "No matter which way you look at the data, at this exact moment, it just doesn't seem like there's major macroeconomic effects here."
+
+"AI-washing": Fortune/Oxford Economics data cited: of layoffs in early 2025, only 55,000 job cuts were explicitly attributed to AI, representing just 4.5% of total job cuts tracked, versus 245,000 (>4x as many) attributed to "market and economic conditions." Oxford Economics: "We suspect some firms are trying to dress up layoffs as a good news story rather than bad news, such as past over-hiring." I.e., popular narratives may OVER-attribute current layoffs to AI relative to what firms themselves report.
+
+Explicit self-acknowledged methodological caveat (Brookings, characterizing the Yale researchers' own framing): their "methodology might miss the labor market equivalent of a small fire starting on the stove, but would clearly detect if the house was burning down." They separately note: "AI may be contributing to unemployment among early-career workers," a signal the topline occupational-mix metric does not itself resolve.
+
+On historical pace: prior general-purpose technologies (computers, internet) "took decades, not mere months, for their impacts to fully materialize" — cited by the Yale researchers themselves as the benchmark against which 33 months is a short window.
+
+Relevance: This is the primary, most-cited "mild data" source underlying the very premise of the research question (N-0009, and the root question's premise). Crucially, its own authors (a) explicitly flag that their aggregate methodology is built to catch large disruptions, not slow-burning early ones ("small fire" vs "burning house"), (b) explicitly flag the early-career-worker subgroup as a possible exception not resolved by their topline metric, and (c) explicitly benchmark against decades-long historical diffusion timelines. This source is simultaneously the strongest evidence for "the topline data really is mild" AND the strongest self-aware caveat that mild topline data does not settle the neutral-vs-lagged identification question.

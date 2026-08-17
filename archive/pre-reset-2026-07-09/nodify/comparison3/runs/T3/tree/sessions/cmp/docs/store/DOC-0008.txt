@@ -1,0 +1,10 @@
+SOURCE: Agent-reliability evidence bundle — METR Time Horizon; τ-bench (Sierra); Scale AI SWE-Bench Pro (Sep 19 2025); compiled via AI-2027 tracker.
+URL: https://ai2027-tracker.com/predictions/long-horizon-struggle/
+
+VERBATIM:
+"agents in Mid 2025 are 'impressive in theory but in practice unreliable.'"
+"50% success horizon for frontier models at ~50 minutes on human expert tasks" (METR, Jul 14 2025)
+"models scoring 70%+ on standard SWE-bench drop to ~23% on long-horizon tasks involving multi-file refactors and cross-repository changes" (Scale AI SWE-Bench Pro, Sep 19 2025)
+τ-bench: "GPT-4o achieves 61% pass@1 but 25% pass@8 on retail agent tasks" (consistency across attempts collapses)
+
+DISTILLED: Through 2025, autonomous agents remained unreliable on long-horizon, multi-step real tasks; success horizon ~tens of minutes, and consistency (pass^k) far below single-attempt. Supports skeptic view: broad task EXPOSURE far exceeds reliable end-to-end substitution — capability, not just diffusion, gates realized job displacement.

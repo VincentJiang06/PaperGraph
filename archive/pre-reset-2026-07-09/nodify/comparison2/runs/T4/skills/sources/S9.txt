@@ -1,0 +1,9 @@
+Title: Japan's Robot Dominance
+Source: Global X ETFs
+URL: https://www.globalxetfs.com/articles/japans-robot-dominance
+
+Key verbatim extraction (via fetch):
+- "Despite challenges from the collapse of Japan's bubble, the country's manufacturers boasted 90% of global robot sales in the 1990s."
+- "A sudden drop in [robot sales in] 1992 was followed by two years of stagnation" — the robotics sector itself suffered during the crisis rather than preventing the broader economic malaise.
+- "When it comes to demand for industrial robots, the center of gravity rapidly shifted towards China in the early 2000's."
+- No evidence in the piece that Japan's very high robot adoption during the 1990s-2000s prevented or substantially offset the lost-decades stagnation — Japan led the world in robotics throughout its stagnation, which is used here as counter-evidence that automation alone is not sufficient to avert secular stagnation.

@@ -1,0 +1,20 @@
+SOURCE S10  [JOB/DEMAND + WAGES facet; ADVERSARIAL to "AI equalizes"]
+Title: The Short-Term Effects of Generative Artificial Intelligence on Employment: Evidence from an Online Labor Market
+Authors: Xiang Hui, Oren Reshef, Luofeng Zhou
+Venue: SSRN 4527336 (2023); published Organization Science (2024); CESifo WP 10601
+URLs fetched: https://www.brookings.edu/articles/is-generative-ai-a-job-killer-evidence-from-the-freelance-market/ ; https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4527336
+Fetched: 2026-07-09
+
+VERBATIM POINTS:
+- Effect: "freelancers in occupations more exposed to generative AI have experienced a 2% decline in the number of contracts and a 5% drop in earnings"
+- Restated: "approximately 2% in the number of new monthly contracts" and "roughly 5% decrease in their total monthly earnings"
+- Method: difference-in-differences on "Upwork, one of the world's largest online freelancing platforms," using model launches as natural experiments: "image-based models, specifically DALL-E2 and Midjourney" (early 2022) and "ChatGPT in November 2022." Exposure by occupation: "copyeditors and proofreaders ... impacted by text-based AI ... graphic designers ... affected by image-based models."
+- ADVERSARIAL to equalizing story: "those with stronger past performance—as measured by client feedback, contract history, and other platform-based reputational metrics—experience larger declines in both the number of new contracts and total monthly earnings." (Top freelancers hit WORST.)
+- Broader: "in the short term generative AI reduces overall demand for knowledge workers of all types."
+
+DESIGN: Quasi-experiment (staggered DiD) on real platform transaction outcomes.
+SAMPLE: Upwork freelancers, writing/proofreading (text-exposed) & graphic design (image-exposed) vs less-exposed controls.
+TIER: B (DiD on real earnings/contract outcomes, natural experiment).
+DIRECTION: NEGATIVE — demand + earnings fall for exposed freelancers; top performers disproportionately hurt.
+KEY LIMITS: Freelance/gig ≠ traditional employment or long-term contracts (authors: "may not fully capture the dynamics of traditional employment"); SHORT-run (weeks/months post-launch); one platform; cannot capture new AI-enabled task demand or migration off-platform; substitution here (buyers pivot fast) may overstate speed elsewhere.
+CROSS-REF: Contradicts F1's "equalizing" (S1/S2/S3). Supports L2/L6 that some realized negative demand exists — the strongest first-hand NEGATIVE demand signal so far. Note it is RELATIVE (exposed vs less-exposed), short-horizon.

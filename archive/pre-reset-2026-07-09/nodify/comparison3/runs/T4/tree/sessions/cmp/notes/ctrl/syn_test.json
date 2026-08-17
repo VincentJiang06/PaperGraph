@@ -1,0 +1,7 @@
+{"node_id":"N-0008","lean":"supports","confidence":"high",
+"summary":"人口拖累真实且大量级:总人口2023年起绝对下降,生育率约1.18,UN预测2050年降至13.13亿;劳动年龄人口2013见顶、2024→2050约-2.39亿(-22%)。这是潜在增长的确定性向下压力。",
+"based_on":{"children":[],"evidence":[
+{"title":"Pew: China's declining population","doc_id":"DOC-0010","quote":"China is now projected to experience an absolute decline in its population beginning as early as 2023.","url":"https://www.pewresearch.org/short-reads/2022/12/05/key-facts-about-chinas-declining-population/","locator":null,"tool":"web_fetch","note":null},
+{"title":"Pew/UN population projection","doc_id":"DOC-0010","quote":"The UN forecasts that China's population will decline from 1.426 billion this year to 1.313 billion by 2050 and below 800 million by 2100.","url":null,"locator":null,"tool":"web_fetch","note":"总量下降轨迹"}
+]},
+"open_questions":["劳动年龄人口精确下降路径依生育与移民假设波动"]}

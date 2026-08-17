@@ -1,0 +1,27 @@
+SOURCE: Juan Antonio Montecino, Gerald Epstein, "Did Quantitative Easing Increase Income Inequality?"
+Institute for New Economic Thinking (INET) Working Paper / PERI UMass Working Paper Series No. 28
+URL: https://www.ineteconomics.org/research/research-papers/did-quantitative-easing-increase-income-inequality
+(Also at: https://www.cepweb.org/wp-content/uploads/2017/11/Montecino-paper.pdf ; https://peri.umass.edu/publication/item/670-did-quantitative-easing-increase-income-inequality)
+[Fetched via WebFetch extraction tool; this is the extraction pass's captured verbatim quotations from the live page.]
+
+## Methodology
+
+The researchers examined "three key impact channels of QE policy on income distribution: 1) the employment channel 2) the asset appreciation and return channel, and 3) the mortgage refinancing channel."
+
+Their analytical approach used "recentered influence function (RIF) regressions pioneered by Firpo et. al (2007) in conjunction with the well-known Oaxaca-Blinder decomposition technique."
+
+Data came from "the Federal Reserve's Tri-Annual Survey of Consumer Finances (SCF)" comparing the pre-QE and QE periods.
+
+## Key Findings on Causal Attribution
+
+The paper acknowledges a critical limitation: "We cannot know precisely how much of these changes are due to QE as opposed to other influences, but to assess potential causal effects we utilize a counter-factual exercise to assess the quantitative range of impacts of QE on the main channels."
+
+The authors concluded that "most likely, QE was modestly dis-equalizing, despite having some positive impacts on employment and mortgage refinancing."
+
+## Identified Mechanisms
+
+The results showed that "employment changes and mortgage refinancing were equalizing, [but] these impacts were nonetheless swamped by the large dis-equalizing effects of equity price appreciations."
+
+## Additional context (from search-result summaries of the same paper)
+
+"For the majority of countries studied, expansionary QE via asset prices leads to net wealth inequality increases when measured using wealth indicators sensitive to changes at the tails of the wealth distribution." "Based on U.S. household data, 13 percent of income inequality increase could be a causal effect of QE under certain assumptions, namely if QE increased employment by 1.2 percent and stock returns by 10 percent." "One-third of households in samples holds neither housing nor financial wealth and is thus not directly affected by QE measures through the asset prices channel."

@@ -1,0 +1,28 @@
+{
+ "node_id": "N-0004",
+ "lean": "supports",
+ "summary": "机制B—成本主要经非headcount边际消化:价格转嫁最稳健(杂货full pass-through,快餐~1.5%),工时是被低估的边际(西雅图工时-6/7%、月报酬-$74),自动化/门槛是长期出口(Lordan-Neumark)。这解释了为何headcount近零却非无代价:代价被转移到价格(消费者)、工时(在职者)与岗位构成(最边际者)。但各margin权重因地因业而异,福利边际证据薄弱。",
+ "confidence": "high",
+ "based_on": {
+  "children": [
+   "N-0014",
+   "N-0015",
+   "N-0016",
+   "N-0017"
+  ],
+  "evidence": [
+   {
+    "title": "转嫁量化",
+    "doc_id": "DOC-0012",
+    "quote": "price increases of about 1.5 percent— or about 6 cents on a four-dollar hamburger",
+    "url": "https://irle.berkeley.edu/publications/brief/effects-of-the-20-california-fast-food-minimum-wage/",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": "brief"
+   }
+  ]
+ },
+ "open_questions": [
+  "跨margin的相对权重缺乏统一的因果分解。"
+ ]
+}

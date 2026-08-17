@@ -1,0 +1,388 @@
+"""Tree operations: add / promote / set-status / conclude.
+
+No state-machine engine (anti-failure P4): a small LEGAL set for explicit
+transitions, two auto-transitions (first child ⇒ parent expanding; conclude ⇒
+synthesized/concluded), budgets checked at write time. All writes are appends;
+latest record per id wins.
+"""
+
+from __future__ import annotations
+
+from typing import Any
+
+from . import store
+from .clock import actor as clock_actor
+from .clock import now as clock_now
+from .errors import DomainError, UsageError
+from .ids import next_id
+from .paths import NODES, SYNTHESES, Paths
+from .schemas import validate
+
+# explicit transitions allowed through set_status (auto-transitions excluded)
+LEGAL = {
+    ("open", "expanding"), ("open", "retired"),
+    ("expanding", "retired"),
+    ("synthesized", "expanding"), ("synthesized", "closed"), ("synthesized", "retired"),
+    ("pending", "investigating"), ("pending", "retired"), ("pending", "stuck"),
+    ("investigating", "stuck"), ("investigating", "retired"),
+    ("stuck", "investigating"), ("stuck", "retired"),
+    ("concluded", "retired"),
+    ("closed", "retired"),
+}
+NOTE_REQUIRED_STATUSES = {"retired", "stuck"}
+CONCLUDABLE = {"open", "expanding", "synthesized",          # viewpoint
+               "pending", "investigating", "concluded", "stuck"}  # claim
+OPEN_CLAIM_STATUSES = {"pending", "investigating"}
+
+
+def nodes_by_id(paths: Paths) -> dict[str, dict[str, Any]]:
+    return store.latest_by_id(paths.resolve(NODES), "node_id")
+
+
+def syntheses(paths: Paths) -> list[dict[str, Any]]:
+    return store.read_all(paths.resolve(SYNTHESES))
+
+
+def latest_synthesis(paths: Paths, node_id: str) -> dict[str, Any] | None:
+    found = None
+    for syn in syntheses(paths):
+        if syn["node_id"] == node_id:
+            found = syn
+    return found
+
+
+def depth_of(nodes: dict[str, dict], node_id: str) -> int:
+    d = 0
+    cur = nodes[node_id]
+    while cur["parent_id"] is not None:
+        cur = nodes[cur["parent_id"]]
+        d += 1
+    return d
+
+
+def children_of(nodes: dict[str, dict], node_id: str) -> list[dict[str, Any]]:
+    return sorted((n for n in nodes.values() if n["parent_id"] == node_id),
+                  key=lambda n: n["node_id"])
+
+
+def path_of(nodes: dict[str, dict], node_id: str) -> list[str]:
+    chain = [node_id]
+    cur = nodes[node_id]
+    while cur["parent_id"] is not None:
+        chain.append(cur["parent_id"])
+        cur = nodes[cur["parent_id"]]
+    return list(reversed(chain))
+
+
+def _append_node(paths: Paths, record: dict[str, Any]) -> None:
+    errs = validate(record)
+    if errs:
+        raise DomainError(errs)
+    store.append(paths.resolve(NODES), record)
+
+
+def _open_claims(nodes: dict[str, dict]) -> int:
+    return sum(1 for n in nodes.values()
+               if n["kind"] == "claim" and n["status"] in OPEN_CLAIM_STATUSES)
+
+
+def add_children(paths: Paths, session: dict[str, Any], parent_id: str | None,
+                 children: list[dict[str, Any]], *, actor: str | None = None,
+                 ) -> list[dict[str, Any]]:
+    """Add child nodes (or the root when parent_id is None). Each child spec:
+    {statement, why_helps_parent?, orientation?, kind?, promotion_note?}."""
+    nodes = nodes_by_id(paths)
+    budgets = session["budgets"]
+    actor = clock_actor(actor)
+
+    if parent_id is None:
+        if any(n["parent_id"] is None for n in nodes.values()):
+            raise DomainError(["root already exists; pass --parent"])
+        if len(children) != 1:
+            raise UsageError(["the root add takes exactly one statement"])
+    else:
+        if parent_id not in nodes:
+            raise DomainError([f"unknown parent: {parent_id}"])
+        parent = nodes[parent_id]
+        if parent["status"] in ("retired", "closed"):
+            raise DomainError([f"parent {parent_id} is {parent['status']}"])
+        # Budgets are guardrails, not gates (loosened v0.2): depth / width /
+        # open-claims no longer BLOCK a write — `nd check` surfaces them as soft
+        # warnings. The model decides when the shape is right, not the CLI.
+
+    made = []
+    existing_ids = list(nodes)
+    for spec in children:
+        parent = nodes.get(parent_id) if parent_id else None
+        # Kind is free (loosened): default to viewpoint (or claim under a claim),
+        # but ANY kind is allowed under ANY parent — no forced promote ceremony and
+        # no "children of a viewpoint must be viewpoints". Diverge OR decompose.
+        kind = spec.get("kind") or ("claim" if parent and parent["kind"] == "claim"
+                                    else "viewpoint")
+        if parent is None and kind != "viewpoint":
+            raise DomainError(["the root must be a viewpoint"])
+        promotion_note = spec.get("promotion_note")
+        if kind == "claim" and not promotion_note:
+            promotion_note = f"claim under {parent_id}"
+        node_id = next_id("N", existing_ids)
+        existing_ids.append(node_id)
+        record = {
+            "schema": "node.v1",
+            "node_id": node_id,
+            "parent_id": parent_id,
+            "kind": kind,
+            "statement": spec["statement"],
+            "why_helps_parent": spec.get("why_helps_parent"),
+            "orientation": spec.get("orientation"),
+            "status": "open" if kind == "viewpoint" else "pending",
+            "status_note": None,
+            "promotion_note": promotion_note if kind == "claim" else None,
+            "stuck_reason": None,
+            "revises": None,
+            "created_at": clock_now(),
+            "created_by": actor,
+        }
+        _append_node(paths, record)
+        nodes[node_id] = record
+        made.append(record)
+
+    # auto-transition: a viewpoint that just got its first children starts expanding
+    if parent_id is not None:
+        parent = nodes[parent_id]
+        if parent["kind"] == "viewpoint" and parent["status"] == "open":
+            updated = {**parent, "status": "expanding", "created_at": clock_now(),
+                       "created_by": actor}
+            _append_node(paths, updated)
+    return made
+
+
+def promote(paths: Paths, session: dict[str, Any], node_id: str, note: str,
+            *, actor: str | None = None) -> dict[str, Any]:
+    nodes = nodes_by_id(paths)
+    if node_id not in nodes:
+        raise DomainError([f"unknown node: {node_id}"])
+    node = nodes[node_id]
+    if node["kind"] != "viewpoint":
+        raise DomainError([f"{node_id} is already a claim"])
+    if node["status"] not in ("open", "expanding", "synthesized"):
+        raise DomainError([f"cannot promote a {node['status']} viewpoint"])
+    if not note.strip():
+        raise UsageError(["promotion requires --note (attempted directions / "
+                          "counterfactual probe / expected evidence)"])
+    record = {**node, "kind": "claim", "status": "pending",
+              "promotion_note": note, "created_at": clock_now(),
+              "created_by": clock_actor(actor)}
+    _append_node(paths, record)
+    return record
+
+
+def set_status(paths: Paths, node_id: str, status: str, *,
+               note: str | None = None, reason: str | None = None,
+               actor: str | None = None) -> dict[str, Any]:
+    nodes = nodes_by_id(paths)
+    if node_id not in nodes:
+        raise DomainError([f"unknown node: {node_id}"])
+    node = nodes[node_id]
+    if (node["status"], status) not in LEGAL:
+        legal = sorted(to for frm, to in LEGAL if frm == node["status"])
+        raise DomainError([f"illegal transition {node['status']} -> {status} "
+                           f"for {node_id} (legal from {node['status']}: "
+                           f"{legal or ['none — use conclude/promote']})"])
+    if status in NOTE_REQUIRED_STATUSES and not (note and note.strip()):
+        raise UsageError([f"--note is required when setting {status} "
+                          "(the tree history must stay readable)"])
+    if status == "stuck" and reason not in ("evidence", "protocol"):
+        raise UsageError(["stuck requires --reason evidence|protocol"])
+    record = {**node, "status": status,
+              "status_note": note if note else node["status_note"],
+              "stuck_reason": reason if status == "stuck" else None,
+              "created_at": clock_now(), "created_by": clock_actor(actor)}
+    _append_node(paths, record)
+    return record
+
+
+def revise(paths: Paths, session: dict[str, Any], node_id: str,
+           new_statement: str, *, note: str | None = None,
+           actor: str | None = None) -> tuple[dict[str, Any], dict[str, Any], list[str]]:
+    """Restate a node's claim/question (R6, wiring node.v1.revises). Mints a
+    FRESH node (new id, same parent+kind, revises=<old>, fresh status) and
+    retires the old one with a pointer note. Children and doc bindings are
+    NOT auto-migrated (the framework never cascades — P4); the model decides
+    whether to re-parent / re-bind. Returns (new, retired, warnings)."""
+    nodes = nodes_by_id(paths)
+    if node_id not in nodes:
+        raise DomainError([f"unknown node: {node_id}"])
+    node = nodes[node_id]
+    if node["parent_id"] is None:
+        raise DomainError([
+            f"cannot revise the root {node_id}: revise mints a fresh node and "
+            "retires the old one, which would strand the tree under a retired root. "
+            "To change the framing question IN PLACE (keeping children + bindings), "
+            "use `nd reframe` instead."])
+    if node["status"] == "retired":
+        raise DomainError([f"{node_id} is already retired"])
+    if not new_statement.strip():
+        raise UsageError(["revise requires a non-empty --statement"])
+    fresh_status = "open" if node["kind"] == "viewpoint" else "pending"
+    actor = clock_actor(actor)
+    new_id = next_id("N", list(nodes))
+    new = {**node, "node_id": new_id, "status": fresh_status,
+           "statement": new_statement, "revises": node_id,
+           "status_note": None, "stuck_reason": None,
+           "created_at": clock_now(), "created_by": actor}
+    retired_note = (f"{note} " if note else "") + f"revised → {new_id}"
+    retired = {**node, "status": "retired", "status_note": retired_note,
+               "created_at": clock_now(), "created_by": actor}
+    _append_node(paths, new)
+    _append_node(paths, retired)
+
+    warnings: list[str] = []
+    kids = children_of(nodes, node_id)
+    if kids:
+        warnings.append(f"{node_id} had {len(kids)} child(ren) "
+                        f"({[k['node_id'] for k in kids]}) — NOT migrated to "
+                        f"{new_id}; re-parent if still relevant")
+    from . import docsdb
+    bound = sorted(e["doc_id"] for e in docsdb.entries_by_id(paths).values()
+                   if any(b["node_id"] == node_id for b in e["bindings"]))
+    if bound:
+        warnings.append(f"{node_id} carried doc bindings {bound} — NOT migrated; "
+                        f"nd docs bind them to {new_id} if still relevant")
+    return new, retired, warnings
+
+
+def reparent(paths: Paths, node_id: str, new_parent_id: str, *,
+             note: str | None = None, actor: str | None = None) -> dict[str, Any]:
+    """Move a node (and its whole subtree) under a new parent — the cheap-restructure
+    primitive (loosened v0.2). The node keeps its id, so children AND doc bindings
+    follow automatically (nothing references parent_id). Guards only against cycles."""
+    nodes = nodes_by_id(paths)
+    if node_id not in nodes:
+        raise DomainError([f"unknown node: {node_id}"])
+    node = nodes[node_id]
+    if node["parent_id"] is None:
+        raise DomainError([f"cannot reparent the root {node_id} (it is the framing)"])
+    if new_parent_id not in nodes:
+        raise DomainError([f"unknown new parent: {new_parent_id}"])
+    if new_parent_id == node_id:
+        raise DomainError([f"cannot reparent {node_id} under itself"])
+    newp = nodes[new_parent_id]
+    if newp["status"] in ("retired", "closed"):
+        raise DomainError([f"new parent {new_parent_id} is {newp['status']}"])
+    if node_id in path_of(nodes, new_parent_id):
+        raise DomainError([f"cannot reparent {node_id} under its own descendant "
+                           f"{new_parent_id} (would create a cycle)"])
+    actor = clock_actor(actor)
+    moved = {**node, "parent_id": new_parent_id,
+             "status_note": (f"reparented → {new_parent_id}" +
+                             (f": {note}" if note else "")),
+             "created_at": clock_now(), "created_by": actor}
+    _append_node(paths, moved)
+    # a viewpoint that just received its first child starts expanding (as in add)
+    if newp["kind"] == "viewpoint" and newp["status"] == "open":
+        _append_node(paths, {**newp, "status": "expanding",
+                             "created_at": clock_now(), "created_by": actor})
+    return moved
+
+
+def reframe(paths: Paths, node_id: str, new_statement: str, *,
+            note: str | None = None, actor: str | None = None) -> dict[str, Any]:
+    """Rewrite a node's statement IN PLACE (same id) — the cheap reframe primitive
+    (loosened v0.2). Unlike `revise` (mint-new + retire, for claim narrowing with a
+    lineage), reframe keeps the node_id so children + bindings are untouched, and it
+    works on the ROOT (change the framing question without stranding the tree)."""
+    nodes = nodes_by_id(paths)
+    if node_id not in nodes:
+        raise DomainError([f"unknown node: {node_id}"])
+    node = nodes[node_id]
+    if node["status"] == "retired":
+        raise DomainError([f"{node_id} is retired — reframe an active node"])
+    if not new_statement.strip():
+        raise UsageError(["reframe requires a non-empty --statement"])
+    record = {**node, "statement": new_statement,
+              "status_note": (f"reframed: {note}" if note else node["status_note"]),
+              "created_at": clock_now(), "created_by": clock_actor(actor)}
+    _append_node(paths, record)
+    return record
+
+
+def conclude(paths: Paths, session: dict[str, Any], payload: dict[str, Any], *,
+             actor: str | None = None) -> tuple[dict[str, Any], list[str]]:
+    """Write a synthesis record. Payload = the synthesis schema minus schema /
+    synthesis_id / created_at (code assigns those; evidence ref_ids too).
+    On a v2 session: evidence.doc_id must resolve to an archived entry, and a
+    quote given with a doc_id is verified verbatim against the archived text —
+    a miss degrades the quote to null with a warning (P7: hallucinated quotes
+    never land; honest paraphrase does). Returns (record, warnings)."""
+    from . import docsdb
+    from .session import set_name
+
+    warnings: list[str] = []
+    v2 = set_name(session) != "v1"
+    nodes = nodes_by_id(paths)
+    node_id = payload.get("node_id")
+    if node_id not in nodes:
+        raise DomainError([f"unknown node: {node_id!r}"])
+    node = nodes[node_id]
+    if node["status"] not in CONCLUDABLE:
+        raise DomainError([f"cannot conclude a {node['status']} node"])
+
+    based_on = payload.get("based_on") or {}
+    for child in based_on.get("children", []):
+        if child not in nodes:
+            raise DomainError([f"based_on.children references unknown node: {child}"])
+    entries = docsdb.entries_by_id(paths) if v2 else {}
+    evidence = []
+    for i, ref in enumerate(based_on.get("evidence", []), 1):
+        ref = dict(ref)
+        ref.setdefault("ref_id", f"E-{i:02d}")
+        for key in ("url", "locator", "quote", "tool", "note"):
+            ref.setdefault(key, None)
+        if not v2:
+            if ref.get("doc_id"):
+                raise DomainError(["evidence.doc_id needs schema set v2 — "
+                                   "run `nd upgrade` first"])
+            ref.pop("doc_id", None)
+        else:
+            ref.setdefault("doc_id", None)
+            if ref["doc_id"] is not None:
+                if ref["doc_id"] not in entries:
+                    raise DomainError([f"evidence references unknown doc: {ref['doc_id']}"])
+                if ref["quote"] and not docsdb.quote_ok(paths, entries[ref["doc_id"]],
+                                                        ref["quote"]):
+                    warnings.append(
+                        f"{ref['ref_id']}: quote is not a verbatim match in "
+                        f"{ref['doc_id']} — degraded to paraphrase (quote dropped)")
+                    if ref["note"] is None:
+                        ref["note"] = "paraphrase (quote failed verbatim check)"
+                    ref["quote"] = None
+        evidence.append(ref)
+
+    all_syn = syntheses(paths)
+    revises = payload.get("revises")
+    if revises is not None and revises not in {s["synthesis_id"] for s in all_syn}:
+        raise DomainError([f"revises references unknown synthesis: {revises}"])
+
+    record = {
+        "schema": "synthesis.v2" if v2 else "synthesis.v1",
+        "synthesis_id": next_id("SYN", [s["synthesis_id"] for s in all_syn]),
+        "node_id": node_id,
+        "lean": payload.get("lean"),
+        "summary": payload.get("summary"),
+        "confidence": payload.get("confidence"),
+        "based_on": {"children": based_on.get("children", []), "evidence": evidence},
+        "open_questions": payload.get("open_questions", []),
+        "revises": revises,
+        "created_at": clock_now(),
+    }
+    errs = validate(record)
+    if errs:
+        raise DomainError(errs)
+    store.append(paths.resolve(SYNTHESES), record)
+
+    new_status = "synthesized" if node["kind"] == "viewpoint" else "concluded"
+    if node["status"] != new_status:
+        updated = {**node, "status": new_status, "created_at": clock_now(),
+                   "created_by": clock_actor(actor)}
+        _append_node(paths, updated)
+    return record, warnings

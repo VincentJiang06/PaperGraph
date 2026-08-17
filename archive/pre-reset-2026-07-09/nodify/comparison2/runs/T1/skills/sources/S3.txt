@@ -1,0 +1,15 @@
+Title: GPTs are GPTs: An Early Look at the Labor Market Impact Potential of Large Language Models
+Author(s): Tyna Eloundou, Sam Manning, Pamela Mishkin, Daniel Rock
+Source: arXiv:2303.10130
+URL: https://arxiv.org/abs/2303.10130
+Accessed via: WebFetch, 2026-07-09
+
+Verbatim key quotes:
+
+"around 80% of the U.S. workforce could have at least 10% of their work tasks affected by the introduction of LLMs, while approximately 19% of workers may see at least 50% of their tasks impacted."
+
+"with access to an LLM, about 15% of all worker tasks in the US could be completed significantly faster at the same level of quality. When incorporating software and tooling built on top of LLMs, this share increases to between 47 and 56% of all tasks."
+
+Methodology note: exposure is measured at the O*NET task level via a rubric integrating human expert ratings and GPT-4 classifications of overlap between LLM capabilities and Detailed Work Activities.
+
+Notes: This is a task-level exposure/capability estimate, not an employment or job-count forecast — the paper explicitly measures potential task displacement/augmentation, not realized net job change.

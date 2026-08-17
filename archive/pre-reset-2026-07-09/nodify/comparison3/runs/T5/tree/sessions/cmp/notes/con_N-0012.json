@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0012",
+ "lean": "supports",
+ "summary": "Azar-Marinescu-Steinbaum给出买方势力的结构证据:按DOJ-FTC并购准则,美国平均地理-职业劳动力市场'高度集中',集中度由25分位升至75分位对应挂牌工资下降17%。这为monopsony调和机制提供了前提——若雇主本就压低工资,温和上调可在不减员下逼近竞争工资。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Azar:市场高度集中",
+    "doc_id": "DOC-0003",
+    "quote": "Based on the DOJ-FTC horizontal merger guidelines, the average market is highly concentrated.",
+    "url": "https://www.nber.org/papers/w24147",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "title": "Azar:集中度压低工资",
+    "doc_id": "DOC-0003",
+    "quote": "going from the 25th percentile to the 75th percentile in concentration is associated with a 17% decline in posted wages, suggesting that concentration increases labor market power",
+    "url": "https://www.nber.org/papers/w24147",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "集中度指标在低薪快餐/零售这类雇主众多行业是否仍成立?"
+ ]
+}

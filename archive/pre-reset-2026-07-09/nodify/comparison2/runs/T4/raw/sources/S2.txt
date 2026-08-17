@@ -1,0 +1,20 @@
+Source: European Central Bank — "The evolution of China's growth model: challenges and long-term growth prospects", Economic Bulletin, Issue 3/2024
+URL: https://www.ecb.europa.eu/press/economic-bulletin/articles/2024/html/ecb.ebart202405_01~a6318ef569.en.html
+Fetched via WebFetch (extracted key content and verbatim quotes below).
+
+## Growth Model Transition
+China's economy has fundamentally relied on an investment-led growth strategy. The investment share of GDP rose from 35% in the 1980s to 47% by 2010, significantly exceeding the typical 20% ratio in developed economies. However, this model faces mounting pressures as "diminishing rates of return imply that it is becoming more difficult to generate growth from one additional unit of investment."
+
+## Projected Growth Rates Through 2035
+According to the model-based analysis in Box 1, China's baseline projections show a notable deceleration:
+- 2025: 5.3% annual GDP growth
+- 2035: 3.7% annual GDP growth
+- Net decline: 1.6 percentage points over the decade
+
+This slowdown reflects two primary structural headwinds working simultaneously.
+
+## Demographic Pressures
+China's population dynamics present a critical challenge. "China's working age population started to decline in 2011," and UN estimates project a decline of nearly 25% by 2050. The analysis indicates that less optimistic demographic scenarios could reduce 2035 growth by an additional 0.2 percentage points, reaching 3.5%.
+
+## Productivity and TFP Decline
+Total factor productivity has deteriorated substantially. "Aggregate annual TFP growth was 2.8% in the ten years leading up to the Great Recession" but "slowed to 0.7% over the period 2009-18." Adverse TFP scenarios coupled with potential foreign direct investment outflows could reduce 2035 growth to 3.1% — a 0.6 percentage point reduction from baseline.

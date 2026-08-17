@@ -1,0 +1,7 @@
+Demirci, Hannane & Zhu — "Who Is AI Replacing? The Impact of Generative AI on Online Freelancing Platforms" — SSRN 4991774 / CESifo WP 11276 (2024); Management Science (2025). Data: a large dataset from a leading global online freelancing platform.
+
+KEY RESULTS (verbatim, ifo/CESifo abstract): a "21% decrease in the number of job posts for automation-prone jobs related to writing and coding" (compared to manual-intensive jobs) within eight months after the introduction of ChatGPT; and the introduction of image-generating AI led to a "17% decrease in the number of job posts related to image creation."
+
+ADDITIONAL: the reduction increases competition among freelancers, while the remaining automation-prone jobs are of greater complexity and offer higher pay; the demand decline correlates with higher public awareness of ChatGPT's substitutability for a job.
+
+DESIGN: difference-in-differences on platform job-posting panel, exploiting ChatGPT / image-AI release timing; automation-prone (writing, coding, image) vs manual-intensive control occupations. TIER: quasi-experimental (medium-high). SECOND independent platform data source converging with Hui-Reshef-Zhou on demand-side SUBSTITUTION. LIMITS: job-posting counts (demand proxy), one platform, ~8-month window, exposure classification.

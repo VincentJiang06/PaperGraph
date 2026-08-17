@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0010",
+ "lean": "supports",
+ "summary": "混杂:2020-25就业被疫情冲击/复苏、2022-23加息、科技业过度招聘回吐等强噪声主导;窗口仅~33个月、毕业生信号样本小且'可能早于ChatGPT'——即便有AI效应也难在总量中被因果分离。这是识别失败的核心腿。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Yale Budget Lab (short window)",
+    "doc_id": "DOC-0004",
+    "quote": "33 months is a short window relative to prior technological transitions",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "观测窗口太短"
+   },
+   {
+    "title": "Yale Budget Lab (confound)",
+    "doc_id": "DOC-0004",
+    "quote": "may also predate ChatGPT",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "入门级信号可能内生于AI之前的趋势"
+   }
+  ]
+ },
+ "open_questions": [
+  "何种准实验设计能把AI边际从疫情/加息/科技回吐中干净剥离?"
+ ]
+}

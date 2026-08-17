@@ -1,0 +1,14 @@
+{
+  "node_id": "N-0012",
+  "lean": "supports",
+  "summary": "能源与大宗商品冲击是2021年通胀早期阶段的主导驱动力之一:2021年12月7.0%的CPI同比涨幅中约21%(约1.5个百分点)来自能源价格,汽油价格全年上涨49.6%;Bernanke-Blanchard模型将能源、食品价格列为通胀早期阶段的'主导驱动因素'。其贡献具有强烈的时变性:俄乌战争(2022年2月)进一步推高能源/食品价格,但2022年后随价格回落,该分量对通胀的贡献从'主导'转为'拖累'(2022年能源价格涨幅骤降至7.3%,汽油价格转跌1.5%),是供给侧三分量中波动性最大的一项。",
+  "confidence": "high",
+  "based_on": {
+    "children": [],
+    "evidence": [
+      {"ref_id": "E-01", "title": "Bernanke & Blanchard (2023) 早期主导因素", "doc_id": "DOC-0003", "url": null, "locator": null, "quote": "energy prices, food prices, and price spikes due to shortages were the dominant drivers of inflation in its early stages", "tool": "web_search", "note": null},
+      {"ref_id": "E-02", "title": "能源价格对CPI的具体贡献", "doc_id": "DOC-0016", "url": null, "locator": null, "quote": "in December 2021, CPI inflation reached 7.0% year-on-year (a 40-year high), of which roughly 21% (about 1.5 percentage points) was attributable to rising energy prices; gasoline prices rose 49.6% over 2021", "tool": "web_search", "note": null}
+    ]
+  },
+  "open_questions": []
+}

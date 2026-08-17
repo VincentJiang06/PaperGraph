@@ -1,0 +1,7 @@
+Clemens, Wither (2019), "The minimum wage and the Great Recession: Evidence of effects on the employment and income trajectories of low-skilled workers," Journal of Public Economics 170:53-67 (NBER WP 20724).
+
+Key findings (verbatim as reported):
+"binding minimum wage increases had significant, negative effects on the employment and income growth of targeted workers"
+"minimum wage increases reduced the national employment-to-population ratio by 0.7 percentage point"
+
+Note: Uses federal 2007-2009 increases ($5.15 to $7.25, ~30% nationally) as a natural experiment during the Great Recession; compares "target" low-skilled workers in bound vs. unbound states. Finds large negative employment effects (implied elasticity near -1 for targeted workers) and slower income/experience accumulation. A high-quality quasi-experiment pointing to clearly negative effects — but in a recession and a high-bindingness context.

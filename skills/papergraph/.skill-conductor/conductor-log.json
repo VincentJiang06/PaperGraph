@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "generated_by": "skill-conductor",
+  "target": "/Users/vince/playground/Paper Graph/skills/papergraph",
+  "goal": "Build an end-to-end PaperGraph coding-agent skill that ingests scanned research sources through the provided Tencent OCR API and drives parallel argument and evidence work through deterministic gates and a held-out evaluation.",
+  "stages": [
+    {
+      "stage": "guidance",
+      "iteration": 1,
+      "artifact_path": ".skill-guidance/handoff-spec.json",
+      "gate_passed": true,
+      "gate_evidence": "G gate ok: papergraph | altitude full | verdict draft (1/14, ratio 0.071, capped by testing,tdd,metrics,low_context_kb)",
+      "action": "proceed"
+    }
+  ],
+  "loops_taken": 0,
+  "final_verdict": "stopped_unmet",
+  "quality": {
+    "re_audit_verdict": "draft",
+    "battery_verdict": "draft",
+    "effective_verdict": "draft",
+    "battery_bugs": []
+  },
+  "blocking_gaps": [
+    "pipeline in progress"
+  ]
+}

@@ -1,0 +1,16 @@
+Title: A new look at the economics of AI (covering Daron Acemoglu, "The Simple Macroeconomics of AI," NBER Working Paper w32487)
+Publisher: MIT Sloan, Ideas Made to Matter
+URL: https://mitsloan.mit.edu/ideas-made-to-matter/a-new-look-economics-ai
+Accessed via: WebFetch, 2026-07-09
+
+Verbatim key quotes:
+
+"the total increase in AI-driven productivity over the next 10 years will be roughly 0.7%" translating to "a maximum growth in GDP of about 1.8%; a more realistic finding under this scenario is about 1.1%."
+
+Basis for the modest estimate: "only about a quarter of those [AI-exposed] tasks — or 5% economy-wide — could be profitably performed" by AI, since "costs for implementation may exceed the benefits" in other cases.
+
+Acemoglu's characterization: "a nontrivial, but modest effect, and certainly much less than both the revolutionary changes some are predicting and the less hyperbolic but still substantial improvements forecast by Goldman Sachs and the McKinsey Global Institute."
+
+Productivity gains further limited as AI moves beyond "easy-to-learn tasks" to "hard tasks" requiring context-dependent problem-solving; organizational "adjustment costs" offset near-term economic benefits.
+
+Notes: Acemoglu's estimate is a structural/theoretical ceiling on AI's near-term macroeconomic footprint, independent of the labor-market panel studies. It supports a "genuinely modest, not just lagged" reading: even under generous assumptions about which tasks AI could technically perform, only a small share is currently profitable to actually automate — and adjustment costs delay realization further, echoing the J-curve mechanism (S11).

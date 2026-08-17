@@ -1,0 +1,14 @@
+{
+  "node_id": "N-0008",
+  "lean": "mixed",
+  "summary": "宽松货币政策(M2超常规扩张19%/16%)与随后约18个月的通胀见顶(2022年6月)存在时滞相关性,但这更多是背景关联而非精确因果分解;多数量化归因模型(SF Fed、B-B)并未单独剥离出'货币政策'这一分量,而是将其效果并入财政刺激后的总需求/劳动力市场紧张渠道。货币政策的贡献真实存在但缺乏独立的百分点估计,精度低于财政或供给侧分量。",
+  "confidence": "low",
+  "based_on": {
+    "children": [],
+    "evidence": [
+      {"ref_id": "E-01", "title": "St. Louis Fed M2数据", "doc_id": "DOC-0016", "url": null, "locator": null, "quote": "Headline PCE inflation peaked in June 2022, about 18 months after the peak of M2 growth, by which time M2 growth had already fallen back to historically unremarkable levels", "tool": "web_search", "note": null},
+      {"ref_id": "E-02", "title": "Bernanke & Blanchard (2023) 对财政政策渠道的说明", "doc_id": "DOC-0003", "url": null, "locator": null, "quote": "Fiscal policy contributed to the inflation, but primarily through its effects on consumer demand for commodities and goods in limited supply rather than through the labor market.", "tool": "web_search", "note": null}
+    ]
+  },
+  "open_questions": ["现有主流归因模型均未单独隔离出'纯货币政策'(区别于财政)对通胀的净贡献,是本课题最大的证据缺口之一"]
+}

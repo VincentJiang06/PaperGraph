@@ -1,0 +1,41 @@
+{
+ "node_id": "N-0006",
+ "lean": "supports",
+ "summary": "扩散/时序:具自主执行力的agents与企业规模采用直到2024-25才起步(生产用AI 2023/9仅3.7%→2025/9约10%;可靠时程仅~50分钟),而任务暴露潜力达47-56%——'暴露≠已实现',给'太早/滞后'解读强机制先验。",
+ "confidence": "high",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Census BTOS adoption",
+    "doc_id": "DOC-0010",
+    "quote": "the number of businesses using AI rose from 3.7% in September 2023 to 5.4% in February 2024",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "采用刚起步、绝对水平低"
+   },
+   {
+    "title": "GPTs are GPTs (exposure ceiling)",
+    "doc_id": "DOC-0001",
+    "quote": "this share increases to between 47 and 56% of all tasks",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "暴露潜力远高于已实现采用"
+   },
+   {
+    "title": "METR time horizon",
+    "doc_id": "DOC-0008",
+    "quote": "50% success horizon for frontier models at ~50 minutes on human expert tasks",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "自主执行力刚过低阈值"
+   }
+  ]
+ },
+ "open_questions": [
+  "采用曲线是否会因agent成熟出现非线性跃升,把滞后效应集中释放?"
+ ]
+}

@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0020",
+ "lean": "mixed",
+ "summary": "阈值在美国已充分观测的区间内确实未被干净识别:Cengiz称即便更高水平也无就业损失,支持'阈值多为外推'的质疑;但$15联邦(CBO)与$20快餐(反方估计)所处的相对工资更高,并出现或预测负效应。结论:非线性作为方向可信,但拐点位置的经验精度低,现有'安全'结论对相对比值的外推应保守。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Cengiz:观测区间内无阈值迹象",
+    "doc_id": "DOC-0001",
+    "quote": "We also find no evidence of disemployment when we consider higher levels of minimum wages.",
+    "url": "https://www.nber.org/papers/w25434",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "title": "CA20反方:更高相对水平的负估计",
+    "doc_id": "DOC-0013",
+    "quote": "reduced fast-food employment by 3.6 percent",
+    "url": "https://www.cato.org/research-briefs-economic-policy/did-californias-fast-food-minimum-wage-reduce-employment",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": "report"
+   }
+  ]
+ },
+ "open_questions": [
+  "把最低/中位比值作为连续自变量,美国数据能否定位拐点区间?"
+ ]
+}

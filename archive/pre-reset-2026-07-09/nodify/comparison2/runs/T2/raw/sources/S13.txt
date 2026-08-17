@@ -1,0 +1,15 @@
+Source S13
+Title: Implications of the Iran war for U.S. inflation
+Publisher: Federal Reserve Bank of Dallas
+URL: https://www.dallasfed.org/research/economics/2026/0417
+Fetched: 2026-07-09 (via WebFetch)
+
+Extracted verbatim quotes (scenario analysis of the 2026 Iran war oil shock's effect on US inflation):
+
+Cautiously optimistic scenario, one-quarter Strait of Hormuz closure: "the surge in oil prices is expected to raise US headline inflation by 0.6 percentage points" (Q4/Q4, 2026); "core inflation by 0.2 percentage points in 2026."
+
+Three-quarter closure scenario: headline inflation increases by 1.1 percentage points; core inflation rises by 0.3 percentage points.
+
+Broader disruption scenario (20% global oil supply shortfall, three-quarter closure): "Q4/Q4 headline inflation could increase as much as 1.8 percentage points and core inflation as much as 0.4 percentage points."
+
+Disclaimer: views "should not be attributed to the Federal Reserve Bank of Dallas or the Federal Reserve System."

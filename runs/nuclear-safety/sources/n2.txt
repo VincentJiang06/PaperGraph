@@ -1,0 +1,4 @@
+Source: Pushker A. Kharecha and James E. Hansen, "Prevented Mortality and Greenhouse Gas Emissions from Historical and Projected Nuclear Power," 2013, Environmental Science & Technology, 47(9), 4889–4895 (DOI 10.1021/es3051197).
+URL: https://www.giss.nasa.gov/pubs/abs/kh05000e.html
+
+Using historical production data, we calculate that global nuclear power has prevented an average of 1.84 million air pollution-related deaths and 64 gigatonnes of CO2-equivalent (GtCO2-eq) greenhouse gas (GHG) emissions that would have resulted from fossil fuel burning. On the basis of global projection data that take into account the effects of the Fukushima accident, we find that nuclear power could additionally prevent an average of 420,000 to 7.04 million deaths and 80 to 240 GtCO2-eq emissions due to fossil fuels by midcentury, depending on which fuel it replaces.

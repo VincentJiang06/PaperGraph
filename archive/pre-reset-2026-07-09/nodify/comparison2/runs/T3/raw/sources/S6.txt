@@ -1,0 +1,1115 @@
+The Effects of Monetary Policy Shocks
+on Inequality
+Davide Furceri, Prakash Loungani and Aleksandra Zdzienicka
+International Monetary Fund
+
+Monetary Policy, Macroprudential Regulation and Inequality
+Zurich, 3-4 October 2016
+The views expressed in this paper are those of the authors and do not necessarily represent those of the IMF or IMF policy.
+
+Extensive literature on inequality drivers
+But mostly focusing on structural drivers:
+• Technological progress (Bound and Johnson 1992; Acemoglu 2002);
+
+• Demographics (Karahan and Ozkan 2013);
+
+Motivation
+
+• Trade and Financial Openness (Feenstra and Hanson 2008)
+• Labor market structure (Card 2001; Jaumotte and Osorio-Buitron 2015)
+
+Recently, concerns about the impact of monetary policy:
+• Accommodative monetary policy stance (Acemoglu and Johnson 2012;
+Stiglitz 2015)
+
+Ambiguous effects
+In theory, expansionary monetary policy may:
+• Increase inequality
+• Boosting asset prices—top-income households hold larger shares
+• Increasing inflation—low-income households hold more liquid asset
+
+Motivation
+
+• Reduce inequality
+• Benefiting borrower and hurting savers
+•
+
+Economic activity affects more labor earnings at the bottom of distribution
+
+Empirical evidence
+• Coibion et al. (2012) for the US: expansionary monetary policy reduces
+inequality
+
+• O’Farrell et al. (2016): effect varies across 8 OECD countries
+• Saiki and Frost (2014) for Japan: expansionary monetary policy increases
+inequality
+
+Contribution
+1. Effect of monetary policy on inequality constructing unexpected, and
+orthogonal to innovations in economic activity, changes in policy rates.
+
+Contribution
+
+2. Examining the impact of monetary policy on inequality for a large
+sample of advanced and emerging market economies.
+3.
+
+Assessing whether the effects of monetary policy shocks:
+• vary over time,
+• depend on the type of monetary shocks (tightening vs. expansionary),
+• the state of the business cycle,
+• the share of labor income to total income
+
+• the size of redistribution policies.
+
+What we don’t do: assess the effects of unconventional monetary policy.
+
+Key findings
+
+Summary
+
+• Contractionary (expansionary) monetary actions increase (reduce)
+inequality.
+• The effect is larger for positive monetary policy shocks—
+especially during expansions,...
+•…and in countries with higher labor share of income and lower
+redistribution.
+
+• Changes in policy rates driven by an increase in growth are
+associated with lower inequality.
+
+Orthogonal Monetary Policy Shocks (MP)
+𝑖𝑛𝑓
+
+𝑔
+
+𝑖
+𝐹𝐸𝑖,𝑡
+= 𝛼 + 𝛽𝐹𝐸𝑖,𝑡 + 𝛾𝐹𝐸𝑖,𝑡 + 𝑀𝑃𝑖,𝑡
+
+Methodology
+
+• FEi is the difference between the actual policy rates and the rate expected
+
+in October of the same year (Consensus forecasts);
+• FEinf is the forecast error of inflation;
+• FEg is the forecast error of growth.
+Advantage of this approach (Auerbach and Gorodnichenko 2013):
+• eliminates the problem of “policy foresight” (Forni and Gambetti 2010;
+Leeper et al. 2012);
+
+• reduces the likelihood of capturing the potentially endogenous response of
+monetary policy to the state of the economy.
+
+Monetary Policy Shocks (MP)
+
+.2
+0
+-4
+
+-2
+
+0
+x
+
+2
+
+4
+
+.3
+
+Panel 2. Emerging market economies
+
+0
+
+.1
+
+kdensity res
+
+.2
+
+Methodology kdensity res
+
+.4
+
+.6
+
+Panel 1. Advanced Economies
+
+-4
+
+-2
+
+0
+x
+
+2
+
+4
+
+Monetary Policy Shocks (MP)
+Ours vs. R &R
+
+2
+
+Correlation=0.8
+
+1.5
+
+Methodology
+
+1
+0.5
+0
+-0.5
+-1
+-1.5
+-2
+
+Ours
+
+R&R
+
+Effect on output and unemployment
+Effect of a 100 bps exogenous increase in policy rates
+Panel 1. Output (percent)
+
+Panel 2. Unemployment
+(percentage points)
+
+0
+0.9
+-0.2
+
+0.8
+0.7
+
+Methodology
+
+-0.4
+
+0.6
+
+-0.6
+
+0.5
+-0.8
+
+0.4
+
+-1
+
+0.3
+0.2
+
+-1.2
+
+0.1
+
+-1.4
+
+0
+
+-1.6
+
+-0.1
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+-0.2
+
+Note: t=0 is the year of the shock. Solid blue lines denote the response to an unexpected increase (or
+decrease) in monetary policy rates of 100 basis points, and dashed lines denote 90 percent confidence
+bands. Estimates based on equation (1).
+
+Empirical framework
+• Local projection method to assess the response of inequality (Gini) to
+monetary policy shocks:
+
+Methodology
+
+𝑘
+𝑦𝑖,𝑡+𝑘 − 𝑦𝑖,𝑡 = 𝛼𝑖𝑘 + 𝜗𝑡𝑘 + 𝛽𝑘 𝑀𝑃𝑖,𝑡 + 𝜋 𝑘 𝑋𝑖,𝑡 + 𝜀𝑖,𝑡
+
+(1)
+
+• y is the log of market (net) inequality; X a set of control including
+lagged change in inequality and monetary policy shocks.
+• Sample: unbalanced panel of 32 advanced and emerging market
+economies from 1990 to 2013.
+
+Contractionary MP increases inequality
+Effect of a 100 bps exogenous increase in policy rates
+
+5
+4
+
+Results
+
+3
+2
+1
+0
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+Note: t=0 is the year of the shock. Solid lines denote the response to an unanticipated increase in monetary policy
+rates of 100 basis points, and dashed lines denote 90 percent confidence bands. Estimates based on equation (1).
+
+Robustness checks
+Effect of a 100 bps exogenous increase in policy rates
+
+Results
+
+Panel 3. Additional controls
+(fiscal shocks and recessions)
+
+Panel 2. Pre-2008
+
+Panel 1. Gross inequality
+
+5
+
+5
+
+5
+
+4
+
+4
+
+4
+
+3
+
+3
+
+3
+
+2
+
+2
+
+2
+
+1
+
+1
+
+1
+
+0
+
+0
+-1
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+0
+-1
+
+Note: t=0 is the year of the shock. Solid lines denote the response to an unanticipated increase in monetary policy
+rates of 100 basis points, and dashed lines denote 90 percent confidence bands. Estimates based on equation (1).
+
+Effect on top income shares
+Effect of a 100 bps exogenous increase in policy rates
+Panel 2. Top 5 percent
+
+Results
+
+Panel 1. Top 10 percent
+
+Panel 3. Top 1 percent
+
+1.4
+
+1.4
+
+1.4
+
+1.2
+
+1.2
+
+1.2
+
+1
+
+1
+
+1
+
+0.8
+
+0.8
+
+0.8
+
+0.6
+
+0.6
+
+0.6
+
+0.4
+
+0.4
+
+0.4
+
+0.2
+
+0.2
+
+0.2
+
+0
+
+0
+
+0
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+-0.2
+
+Note: t=0 is the year of the shock. Solid lines denote the response to an unanticipated increase in monetary policy
+rates of 100 basis points, and dashed lines denote 90 percent confidence bands. Estimates based on equation (1).
+
+Positive vs. negative shocks
+Effect of a 100 bps exogenous increase in policy rates
+
+Results
+
+Panel 1. Negative shocks
+
+Panel 2. Positive shocks
+
+10
+
+10
+
+8
+
+8
+
+6
+
+6
+
+4
+
+4
+
+2
+
+2
+
+0
+
+0
+
+-2
+
+-2
+
+-4
+
+-4
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+Note: t=0 is the year of the shock. Solid lines denote the response to an unanticipated increase in monetary policy
+rates of 100 basis points, and dashed lines denote 90 percent confidence bands. Estimates based on the following
+𝑘
+equation: 𝑦𝑖,𝑡+𝑘 − 𝑦𝑖,𝑡 = 𝛼𝑖𝑘 + 𝜗𝑡𝑘 + 𝛽+𝑘 𝐷𝑖,𝑡 𝑀𝑃𝑖,𝑡 + 𝛽−𝑘 1 − 𝐷𝑖,𝑡 𝑀𝑃𝑖,𝑡 + 𝜋 𝑘 𝑋𝑖,𝑡 + 𝜀𝑖,𝑡
+, where D=1 if the monetary policy shock is
+positive.
+
+Growth driven vs. unanticipated shocks
+Effect of a 100 bps exogenous increase in policy rates
+Panel 1. Growth-driven shocks
+
+Panel 2. Innovations in policy rates
+
+3
+
+3.5
+
+2
+
+3
+
+1
+
+2.5
+
+0
+
+2
+
+Results
+
+-1
+1.5
+
+-2
+
+1
+
+-3
+
+0.5
+
+-4
+-5
+
+0
+
+-6
+
+-0.5
+
+-7
+
+-1
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+Note: t=0 is the year of the shock. Solid blue lines denote the response to a growth-driven increase (innovation) of
+monetary policy rates of 100 basis points, and dashed lines denote 90 percent confidence bands. Solid yellow lines denote
+the unconditional (baseline) response. Growth-driven monetary policy shocks are identified as the forecast error in policy
+rates explained by news in growth and inflation—that is, the fitted value of equation (1). Innovations in policy rates are the
+forecast error in policy rates.
+
+Recession vs. expansions
+Effect of a 100 bps exogenous increase in policy rates
+Panel 1. Recessions
+
+Panel 2. Expansions
+
+7
+
+7
+
+6
+
+6
+
+5
+5
+
+Results
+
+4
+3
+
+4
+
+2
+
+3
+
+1
+
+2
+
+0
+1
+
+-1
+
+0
+
+-2
+-3
+
+-1
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+Note: t=0 is the year of the shock. Solid blue lines denote the response to an unexpected increase (or
+decrease) in monetary policy rates of 100 basis points, and dashed lines denote 90 percent confidence
+bands. Solid yellow lines denote the unconditional (baseline) response. Estimates based on equation:
+𝑦𝑖,𝑡+𝑘 − 𝑦𝑖,𝑡 = α𝑘𝑖 + ϑ𝑘𝑡 + β1𝑘 𝐺 𝑧𝑖𝑡 𝑀𝑃𝑖,𝑡 + β𝑘2 1 − 𝐺 𝑧𝑖𝑡 𝑀𝑃𝑖,𝑡 + ε𝑘𝑖,𝑡, where G(z) is the smooth transition
+function. z is a (standardized) variable for the state of the economy.
+
+Recession vs. expansions—positive shocks
+Effect of a 100 bps exogenous increase in policy rates
+
+Results
+
+Panel 1. Recessions
+
+Panel 2. Expansions
+
+11
+
+11
+
+9
+
+9
+
+7
+
+7
+
+5
+
+5
+
+3
+
+3
+
+1
+
+1
+
+-1
+
+-1
+
+-3
+
+-3
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+Note: t=0 is the year of the shock. Solid blue lines denote the response to an unexpected increase (or
+decrease) in monetary policy rates of 100 basis points, and dashed lines denote 90 percent confidence
+bands. Solid yellow lines denote the unconditional (baseline) response. Estimates based on equation:
+𝑦𝑖,𝑡+𝑘 − 𝑦𝑖,𝑡 = α𝑘𝑖 + ϑ𝑘𝑡 + β1𝑘 𝐺 𝑧𝑖𝑡 𝑀𝑃𝑖,𝑡 + β𝑘2 1 − 𝐺 𝑧𝑖𝑡 𝑀𝑃𝑖,𝑡 + ε𝑘𝑖,𝑡, where G(z) is the smooth transition
+function. z is a (standardized) variable for the state of the economy.
+
+Recession vs. expansions—negative shocks
+Effect of a 100 bps exogenous increase in policy rates
+
+Results
+
+Panel 1. Recessions
+
+Panel 2. Expansions
+
+9
+
+9
+
+7
+
+7
+
+5
+
+5
+
+3
+
+3
+
+1
+
+1
+
+-1
+
+-1
+
+-3
+
+-3
+
+-5
+
+-5
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+Note: t=0 is the year of the shock. Solid blue lines denote the response to an unexpected increase (or
+decrease) in monetary policy rates of 100 basis points, and dashed lines denote 90 percent confidence
+bands. Solid yellow lines denote the unconditional (baseline) response. Estimates based on equation:
+𝑦𝑖,𝑡+𝑘 − 𝑦𝑖,𝑡 = α𝑘𝑖 + ϑ𝑘𝑡 + β1𝑘 𝐺 𝑧𝑖𝑡 𝑀𝑃𝑖,𝑡 + β𝑘2 1 − 𝐺 𝑧𝑖𝑡 𝑀𝑃𝑖,𝑡 + ε𝑘𝑖,𝑡, where G(z) is the smooth transition
+function. z is a (standardized) variable for the state of the economy.
+
+Role of labor share
+Effect of a 100 bps exogenous increase in policy rates
+
+Results
+
+Panel 1. Very low labor share
+
+Panel 2. Very high labor share
+
+9
+
+9
+
+3
+
+3
+
+-3
+
+-3
+
+-9
+
+-9
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+Note: t=0 is the year of the shock. Solid blue lines denote the response to an unexpected increase (or
+decrease) in monetary policy rates of 100 basis points, and dashed lines denote 90 percent confidence
+bands. Solid yellow lines denote the unconditional (baseline) response. Estimates based on equation:
+𝑦𝑖,𝑡+𝑘 − 𝑦𝑖,𝑡 = α𝑘𝑖 + ϑ𝑘𝑡 + β1𝑘 𝐺 𝑧𝑖𝑡 𝑀𝑃𝑖,𝑡 + β𝑘2 1 − 𝐺 𝑧𝑖𝑡 𝑀𝑃𝑖,𝑡 + ε𝑘𝑖,𝑡, where G(z) is the smooth transition
+function of the labor share. z is a (standardized) variable for the labor share.
+
+4
+
+Role of redistribution
+Effect of a 100 bps exogenous increase in policy rates
+Panel 1. Very low redistribution
+
+Panel 2. Very high redistribution
+9
+
+8
+7
+
+Results
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+-1
+-3
+
+-2
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+Note: t=0 is the year of the shock. Solid blue lines denote the response to an unexpected increase (or
+decrease) in monetary policy rates of 100 basis points, and dashed lines denote 90 percent confidence
+bands. Solid yellow lines denote the unconditional (baseline) response. Estimates based on equation:
+𝑦𝑖,𝑡+𝑘 − 𝑦𝑖,𝑡 = α𝑘𝑖 + ϑ𝑘𝑡 + β1𝑘 𝐺 𝑧𝑖𝑡 𝑀𝑃𝑖,𝑡 + β𝑘2 1 − 𝐺 𝑧𝑖𝑡 𝑀𝑃𝑖,𝑡 + ε𝑘𝑖,𝑡, where G(z) is the smooth transition
+function of redistribution. z is a (standardized) variable for redistribution.
+
+Conclusions
+• Monetary policy easing reduces inequality, but the effects vary over
+
+Conclusions
+
+time, across the business cycles, and depend on the types of monetary
+shocks.
+
+• Effects also depend on the share of labor income and redistribution
+policies.
+
+• Recent accommodative monetary policy stance in many advanced
+economies may not only have helped boost demand but also
+contributed mitigating the increase in inequality driven by structural
+trends.
+
+Thank you!
+
+List of countries in the sample
+
+Methodology
+
+Advanced Economies
+Australia
+Canada
+Czech Republic
+France
+Germany
+Hong Kong SAR
+Italy
+Japan
+Korea
+Netherlands
+New Zealand
+Norway
+Singapore
+Slovak Republic
+Spain
+Sweden
+Switzerland
+Taiwan Province of
+China
+United Kingdom
+United States
+
+Emerging Market Countries
+Argentina
+Brazil
+Chile
+Hungary
+India
+Indonesia
+Malaysia
+Mexico
+Philippines
+Poland
+Thailand
+Turkey
+
+Contractionary MP increases inequality
+Effect of a 100 bps increase in policy rates
+
+2
+
+Results
+
+1.5
+
+1
+
+0.5
+
+0
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+Note: t=0 is the year of the shock. Solid lines denote the response to increase in monetary policy rates of 100 basis
+points, and dashed lines denote 90 percent confidence bands. Solid yellow line denotes the unconditional
+(baseline) response. Estimates based on equation (1).
+
+Role of initial inequality conditions
+Effect of 100 bps exogenous increase in policy rates
+
+Results
+
+Panel 1. Very high initial inequality
+
+Panel 2. Very low initial inequality
+
+5
+
+5
+
+4
+
+4
+
+3
+
+3
+
+2
+
+2
+
+1
+
+1
+
+0
+
+0
+
+-1
+
+-1
+
+-2
+
+-2
+
+-3
+
+-3
+
+-4
+
+-4
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+Note: t=0 is the year of the shock. Solid blue lines denote the response to an unexpected increase (or
+decrease) in monetary policy rates of 100 basis points, and dashed lines denote 90 percent confidence
+bands. Solid yellow lines denote the unconditional (baseline) response. Estimates based on equation:
+𝑦𝑖,𝑡+𝑘 − 𝑦𝑖,𝑡 = α𝑘𝑖 + ϑ𝑘𝑡 + β1𝑘 𝐺 𝑧𝑖𝑡 𝑀𝑃𝑖,𝑡 + β𝑘2 1 − 𝐺 𝑧𝑖𝑡 𝑀𝑃𝑖,𝑡 + ε𝑘𝑖,𝑡, where G(z) is the smooth transition
+function of the initial level of inequality.
+
+

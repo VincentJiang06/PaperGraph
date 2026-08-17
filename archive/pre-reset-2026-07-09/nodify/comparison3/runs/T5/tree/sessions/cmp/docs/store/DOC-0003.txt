@@ -1,0 +1,6 @@
+Azar, Marinescu, Steinbaum (2022/NBER 24147), "Labor Market Concentration," Journal of Human Resources 57(S).
+
+ABSTRACT (verbatim):
+"A product market is concentrated when a few firms dominate the market. Similarly, a labor market is concentrated when a few firms dominate hiring in the market. Using data from the leading employment website CareerBuilder.com, we calculate labor market concentration for over 8,000 geographic-occupational labor markets in the US. Based on the DOJ-FTC horizontal merger guidelines, the average market is highly concentrated. Using a panel IV regression, we show that going from the 25th percentile to the 75th percentile in concentration is associated with a 17% decline in posted wages, suggesting that concentration increases labor market power."
+
+Note: Provides structural evidence that US labor markets (incl. low-wage occupations) exhibit employer buyer power, a precondition under which modest minimum-wage increases need not reduce employment (monopsony logic).

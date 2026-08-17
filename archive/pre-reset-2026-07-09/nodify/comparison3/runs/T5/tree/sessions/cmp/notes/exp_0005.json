@@ -1,0 +1,8 @@
+{
+  "parent_id": "N-0005",
+  "children": [
+    {"statement": "高相对水平的负效应:CBO(2019/2021)对$15联邦最低工资(高Kaitz)测算净就业损失(中位约130万);高比值情境下就业风险显著上升。", "why_helps_parent": "提供非线性上端的量化锚:比值高到一定程度,预测/证据转为明显负", "orientation": "neutral"},
+    {"statement": "bindingness/Kaitz异质性:就业与工资效应随最低工资相对中位数比值上升而增强(Cengiz按bindingness分层;高'spike'份额地区效应更大)。", "why_helps_parent": "在现有观测数据内直接检验'效应随比值非线性放大'的核心命题", "orientation": "neutral"},
+    {"statement": "反方:美国现有城市/州$15的相对中位数比值多未破历史区间,负效应阈值尚未被清晰观测;'非线性阈值'更多是外推与理论而非已证事实。", "why_helps_parent": "对非线性命题的红队:阈值可能存在但证据外推度高、不确定性大", "orientation": "adversarial"}
+  ]
+}

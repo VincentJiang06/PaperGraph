@@ -1,0 +1,11 @@
+Title: China's Economic Crisis Is Tracking Japan's Downturn In The 1990s
+Source: Forbes (George Calhoun)
+URL: https://www.forbes.com/sites/georgecalhoun/2025/02/15/chinas-economic-crisis-is-tracking-japans-downturn-in-the-1990s/
+
+Key verbatim extraction (via fetch):
+- Stock markets: CSI 300 "is down 36% from its all-time peak four years ago this month," paralleled with Japan's Nikkei 225 crash after December 1989.
+- Property: "China's unsold inventory of housing would amount to RMB 93 trillion ($13 trillion)" vs only $1.3 trillion in expected annual sales — roughly 70% of China's current GDP.
+- Government debt accelerated faster in China than in Japan's equivalent period; "rapid growth of government debt" as stimulus programs expand.
+- Deflation: pattern "can wreck an economy, driving it into a downward spiral of diminishing demand, rising unemployment, lower business profits."
+- Youth unemployment "exploded," revised figures "still about three times the overall unemployment rate in China (5.1 percent)."
+- Key divergence: unlike Japan's yen strengthening during its crisis, China's currency "declined to a multi-decade low in January 2025" — a departure from the classical "Japanification" pattern.

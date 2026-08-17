@@ -1,0 +1,23 @@
+{
+ "node_id": "N-0027",
+ "lean": "supports",
+ "summary": "边际企业退出是平均近零掩盖的选择效应:Luca-Luca用湾区3.5万家餐厅Yelp数据发现,最低工资每涨$1使中位(3.5星)餐厅退出概率升14%,而5星餐厅不受影响。就业总量近零可与'低质量/低利润企业更易退出、被更强企业替代'并存——冲击落在企业分布的左尾。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Luca:中位餐厅退出概率升14%",
+    "doc_id": "DOC-0014",
+    "quote": "a one-dollar increase in the minimum wage leads to a 14% increase in the likelihood of exit for a 3.5-star restaurant (which is the median rating on Yelp) but has no discernible impact for a 5-star restaurant",
+    "url": "https://www.nber.org/papers/w25806",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "退出企业的岗位被存活企业吸收的比例有多高(净就业才是关键)?"
+ ]
+}

@@ -1,0 +1,19 @@
+Source: Azar, José; Huet-Vaughn, Emiliano; Marinescu, Ioana; Taska, Bledi; von Wachter, Till. "Minimum Wage Employment Effects and Labor Market Concentration." NBER Working Paper No. 26101 (published in Review of Economic Studies, 91(4): 1843-1883, 2024).
+URL: https://www.nber.org/papers/w26101
+Retrieved via WebFetch on 2026-07-09.
+
+Extracted content:
+
+## Abstract Summary
+The researchers investigate why minimum wage employment effects are typically near zero, proposing monopsony as an explanation. They examine a retail sector using U.S. labor market concentration data with fine spatial detail.
+
+## Key Findings on Employment Effects by Concentration
+
+Finding 1: "more concentrated labor markets – where wages are more likely to be below marginal productivity – experience significantly more positive employment effects from the minimum wage"
+
+Finding 2: Employment effects become progressively less negative as concentration increases: "minimum wage-induced employment changes become less negative as labor concentration increases, and are even estimated to be positive in the most highly concentrated markets"
+
+Finding 3: The opposite pattern appears in competitive markets: "increases in the minimum wage are found to significantly decrease employment of workers in low concentration markets"
+
+## Implication
+The authors conclude these results provide "direct empirical evidence supporting the monopsony model" and suggest aggregate minimum wage employment estimates may conceal important variation across different labor market concentration levels.

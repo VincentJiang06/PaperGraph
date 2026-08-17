@@ -1,0 +1,33 @@
+{
+  "topic": "T3",
+  "mode": "skills",
+  "recovered": {
+    "lines_of_inquiry": {
+      "status": "full",
+      "detail": "The log's 'Viewpoints & Claims (plan)' lays out all five lines explicitly, each decomposed into numbered sub-claims: V1 asset-price channel (QE raises equity/bond/housing prices C1.1; asset ownership concentrated at top C1.2); V2 saver/borrower redistribution channel (net saver/debtor positions C2.1; HANK/Auclert heterogeneity C2.2); V3 macro employment/wage channel (does QE cut unemployment esp. for low earners C3.1; counterfactual unemployment path C3.2); V4 structural-force counterfactual baseline (pre-2008 top-1% wealth trend C4.1; decomposition of the rise into capital gains vs saving vs labor income C4.2); V5 the causal-identification problem itself (methods C5.1; their limits C5.2; whether a calibrated net verdict exists C5.3). The three channels flagged in the original question (A/B/C) map cleanly onto V1/V2/V3."
+    },
+    "leanings": {
+      "status": "full",
+      "detail": "A dedicated 'Claim conclusions' section gives a lean per claim: asset-price channel SUPPORTED (real, dis-equalizing, robust UK+US); ADV1 counterfactual MIXED (structural saving-glut/r* forces were already lifting valuations, weakening a maximalist 'QE caused it' read but not refuting an added boost); saver/borrower channel MIXED and second-order (sign depends on balance-sheet duration; income-flow effect an order of magnitude smaller than valuation effect); employment channel SUPPORTED as equalizing but 'swamped' by the equity channel; structural pre-existing trend SUPPORTED strongly (40-yr trend predates QE); identification SUPPORTED as a genuine hard problem. Root thesis stated in full: QE's causal contribution is REAL, CHANNEL-SPECIFIC and MODEST vs structural forces — net 'modestly dis-equalizing' for wealth-stock measures (per S8), with a wide, humble confidence band, and not explaining more than a fraction of the four-decade top-wealth-share rise."
+    },
+    "key_figures": {
+      "status": "full",
+      "detail": "Numerous specific figures with source tags survive: top 5% of UK households hold 40% of financial assets (S1); QE ~+16% household net-wealth boost / ~£600bn valuation effect vs ~£70bn lost deposit interest vs ~£100bn lower debt-service (S1); BIS decomposition — bonds negligible, equities dis-equalizing, housing equalizing/partly offsetting, top-1% share rising since the 1980s off 1810-2010 data (S4); Engen-Laubach-Reifschneider counterfactual peak unemployment effect of -1.25pp from unconventional policy (S7); Montecino-Epstein — employment + mortgage-refi equalizing (+~2.8pp to median) but swamped by equity appreciation (~-6pp on the 95/10 ratio), net 'modestly regressive' (S8); Fed DFA 2020-21 — revaluations ~80% of the $18tn wealth gain, yet Top-1% share up only 2.2pp and Bottom-50 up 0.2pp in the rebound (S9); Saez-Zucman — top-1% wealth-to-income ratio 60→200 years over 1980-2020 (S6)."
+    },
+    "adversarial_lines": {
+      "status": "full",
+      "detail": "Four rival/counter explanations are stated in the plan AND resolved in the conclusions: ADV1 = valuations would have risen anyway via Mian-Straub-Sufi 'saving glut of the rich' pushing down r* since the 1980s (reverse causality — QE partly endogenous to the same inequality it is blamed for); ADV2 = the saver/borrower channel may actually help lower/middle net-debtors (mortgage holders), offsetting the asset channel; ADV3 = the employment channel helps bottom-income flows enough to offset — resolved by the explicit income-inequality vs wealth-inequality distinction (employment wins for income/wage flows, equity channel wins for wealth stocks); ADV4 = if the pre-2008 and 2008-2021 top-wealth-share slopes are indistinguishable, QE's marginal contribution is doubtful. ADV4 is the one line left OPEN — no formal structural-break-test study was found, flagged as a live uncertainty rather than a settled refutation."
+    },
+    "evidence_provenance": {
+      "status": "full",
+      "detail": "Provenance is excellent and verifiable. Nine sources are each identified by author, year, title and outlet (S1 Bank of England / Bell-Joyce-Liu-Young 2012; S2 Auclert 2019 AER; S3 Mian-Straub-Sufi NBER WP26941; S4 Domanski-Scatigna-Zabai BIS QR 2016; S5 Bivens 2015 Brookings/Hutchins WP12; S6 Saez-Zucman 2020 JEP; S7 Engen-Laubach-Reifschneider Fed FEDS 2015; S8 Montecino-Epstein 2017 INET/PERI; S9 Fed FEDS Notes Aug 2021), with verbatim quotations for the load-bearing claims. Every claim conclusion cites the specific S-numbers behind it. The raw source texts S1.txt-S9.txt all exist on disk (34KB-325KB each), so each quote/figure can be re-checked against the primary text — full traceability, not just assertion."
+    },
+    "next_action": {
+      "status": "full",
+      "detail": "The reasoning state is essentially at completion: every planned claim (C1.1-C5.3) and every adversarial line has a recorded verdict, and the root thesis is written, so the obvious next action is to compile the article from these conclusions. Exactly one loose end is explicitly flagged for optional follow-up — locate a formal structural-break-test comparing the pre-2008 vs 2008-2021 top-wealth-share slopes (ADV4/C4.1), currently an acknowledged data gap. A fresh agent could resume with zero re-derivation: write up the synthesis, and if desired chase that single missing break-test study. No search scaffolding for that item is left behind, which is the only reason to hesitate — but the task itself is unambiguous."
+    }
+  },
+  "overall_recoverability": 5,
+  "narrative": "A fresh agent could continue with essentially no loss. The log fully preserves the plan (V1-V5 + ADV1-ADV4), a per-claim verdict for each, the calibrated root thesis, and the specific figures the reasoning rests on — each tied to a named, dated source whose raw text is also on disk for verification. The investigation is effectively finished: the next action is to compile, with a single explicitly-flagged open question (a structural-break test for ADV4). Nothing needs to be re-searched or re-derived; provenance is traceable end-to-end. This is a near-complete, self-sufficient reasoning state — no restart required.",
+  "_note": "mode inferred from artifact path runs/T3/skills/"
+}

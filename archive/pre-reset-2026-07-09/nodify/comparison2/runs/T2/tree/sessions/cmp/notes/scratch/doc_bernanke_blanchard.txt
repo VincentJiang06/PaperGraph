@@ -1,0 +1,11 @@
+Bernanke, Ben & Blanchard, Olivier (2023), "What Caused the US Pandemic-Era Inflation?" NBER Working Paper w31417 / Brookings Papers on Economic Activity; summarized by NBER Digest ("Unpacking the Causes of Pandemic-Era Inflation in the US") and by academic follow-up analyses.
+
+Contrary to early concerns that inflation would be spurred by overheated labor markets, most of the inflation surge that began in 2021 was the result of shocks to prices given wages. These shocks included sharp increases in commodity prices, reflecting strong aggregate demand, and sectoral price spikes, resulting from changes in the level and sectoral composition of demand together with constraints on sectoral supply. Energy prices, food prices, and price spikes due to shortages were the dominant drivers of inflation in its early stages.
+
+Although tight labor markets have thus far not been the primary driver of inflation, the effects of overheated labor markets on nominal wage growth and inflation are more persistent than the effects of product-market shocks. As product market shocks have faded, the tight labor market and the resulting persistence in nominal wage increases have become the main factors behind wage and price inflation.
+
+The CPI rose from 1.7% in February 2021 to over 9% by June 2022. The job vacancy-to-unemployed ratio doubled between mid-2021 and early 2022.
+
+Quantitative decomposition (quarterly CPI, 2020Q1-2023Q1): the model decomposes inflation into (1) initial conditions, (2) supply-side shocks to energy/food prices and global supply chains, and (3) the job vacancy ratio (tight labor market). Supply-side shocks have been responsible for around two-thirds to three-fourths of the surge in the inflation rate during 2020Q4 and 2022Q2. The contribution of "initial conditions" to the U.S. inflation rate is found to be roughly constant over the period of analysis, at around 2 percentage points. The contribution to inflation of tight labor-market conditions was negative during the first two quarters of 2021 and positive but minuscule during 2021Q3-2023Q2.
+
+Fiscal policy contributed to the inflation, but primarily through its effects on consumer demand for commodities and goods in limited supply rather than through the labor market.

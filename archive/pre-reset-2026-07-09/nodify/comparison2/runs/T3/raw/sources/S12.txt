@@ -1,0 +1,2278 @@
+Skill-Biased Technological Change and
+Rising Wage Inequality: Some Problems
+and Puzzles
+David Card, University of California Berkeley and National
+Bureau of Economic Research
+
+John E. DiNardo, University of Michigan and National
+Bureau of Economic Research
+
+The recent rise in wage inequality is usually attributed to skill-biased
+technical change (SBTC), associated with new computer technologies.
+We review the evidence for this hypothesis, focusing on the implications of SBTC for overall wage inequality and for changes in wage
+differentials between groups. A key problem for the SBTC hypothesis
+is that wage inequality stabilized in the 1990s despite continuing advances in computer technology; SBTC also fails to explain the evolution of other dimensions of wage inequality, including the gender
+and racial wage gaps and the age gradient in the return to education.
+
+This article was originally prepared for the Society of Labor Economics (SOLE)
+annual meeting, May 2001. We thank Derek Neal for comments and suggestions.
+We are also grateful to Ken Chay and David Lee for many helpful discussions,
+to Charles Nelson of the U.S. Census Bureau and Anne Polivka of the Bureau
+of Labor Statistics for assistance in using the data, and to Elizabeth Cascio for
+outstanding research assistance. Finally, we thank David Autor, Daniel Hamermesh, Lawrence Katz, and participants at the SOLE meeting and at the Royal
+Statistical Society’s “Explanations for Rising Economic Inequality” conference in
+November 2001 for comments, suggestions, and criticisms. Card’s research was
+supported by a National Science Foundation grant and by a National Institute
+of Child Health and Development grant.
+[ Journal of Labor Economics, 2002, vol. 20, no. 4]
+䉷 2002 by The University of Chicago. All rights reserved.
+0734-306X/2002/2004-0002$10.00
+
+733
+
+734
+
+Card/DiNardo
+
+The effect of technology on the labor market has been a core concern of
+economists for as long as economics has been considered a distinct field
+of study. Indeed, some historians have gone so far as to argue that the
+debate on the machinery question that emerged in the wake of the Industrial Revolution was instrumental in the birth of the new science of
+economics during the mid-nineteenth century (Berg 1984). Although
+economists no longer use terms like “mental steam power” or “intellectual
+machinery” to frame the debate over new technology and the labor market
+(Smith 1835), current concerns about the effects of technology are remarkably similar to those of nearly 2 centuries ago.
+Foremost among these concerns, and the subject of a growing body of
+research by labor economists, is the relationship between technology and
+wage inequality. A series of studies over the past 15 years has documented
+the rise in wage inequality in the U.S. labor market and pointed to technological change—especially the development of microcomputers—as an
+explanation for the rise (e.g., Bound and Johnson 1992; Katz and Murphy
+1992; Levy and Murnane 1992; Juhn, Murphy, and Pierce 1993).1 One
+piece of evidence that points to computer technology is timing: wage
+inequality began to rise in the early 1980s, just a few years after the
+invention of microcomputers (Katz 1999). Another key observation is
+that highly skilled workers—especially those with more schooling—are
+more likely to use computers on the job (Krueger 1993), suggesting that
+computer technology is complementary with human capital. Based on
+these facts and other evidence, the recent inequality literature “reaches
+virtually unanimous agreement” that the relative demand for highly skilled
+workers increased in the 1980s, causing earnings inequality to increase
+(Johnson 1997, p. 41). This hypothesis—that a burst of new technology
+caused a rise in the demand for highly skilled workers, which in turn led
+to a rise in earnings inequality—has become known as the Skill-Biased
+Technical Change (SBTC) hypothesis.
+In this article, we review the evidence in favor of the SBTC hypothesis,
+paying particular attention to the implications of SBTC for economywide trends in wage inequality and for the evolution of relative wages
+among different groups. We begin by presenting a simple theoretical
+framework for analyzing SBTC. Following most of the literature, we
+assume that SBTC can be modeled as a shift in an economy-wide production function that uses (at least) two types of labor. We discuss the
+potential channels that link a rise in demand for skill to specific subgroups
+of workers, focusing on two alternative hypotheses: (1) relative demand
+1
+
+Despite this recent consensus, the early study of rising wage inequality by
+Bluestone and Harrison (1988) focused on changing industry composition and
+institutionally based explanations for rising wage inequality in the early 1980s,
+rather than technology.
+
+SOLE 2001 Invited Talk
+
+735
+
+has risen for groups that are more likely to use computers; (2) relative
+demand has risen for more highly paid workers. We then turn to an
+extended discussion of changes in the structure of wages in the U.S. labor
+market over the past 20–30 years. We highlight the shifts that are potentially consistent with simple versions of the SBTC hypothesis and the
+shifts that pose either a problem or a puzzle for the theory. By problems,
+we mean the changes in the wage structure that at least superficially appear
+to be inconsistent with SBTC. By puzzles, we mean the changes that are
+potentially consistent with SBTC but appear to be driven by other causes.
+Our main conclusion is that, contrary to the impression conveyed by
+most of the recent literature, the SBTC hypothesis falls short as a unicausal
+explanation for the evolution of the U.S. wage structure in the 1980s and
+1990s. Indeed, we find puzzles and problems for the theory in nearly
+every dimension of the wage structure. This is not to say that we believe
+technology was fixed over the past 30 years or that recent technological
+changes have had no effect on the structure of wages. There were many
+technological innovations in the 1970s, 1980s, and 1990s, and it seems
+likely that these changes had some effect on relative wages. Rather, we
+argue that the SBTC hypothesis by itself is not particularly helpful in
+organizing or understanding the shifts in the structure of wages that have
+occurred in the U.S. labor market. Based on our reading of the evidence,
+we believe it is time to reevaluate the case that SBTC offers a satisfactory
+explanation for the rise in U.S. wage inequality in the last quarter of the
+twentieth century.
+I. A Framework for Understanding SBTC
+There are many theoretical versions of SBTC. To help fix ideas, we
+focus on a simple formulation of SBTC, versions of which have helped
+guide the large empirical literature in labor economics (e.g., Bound and
+Johnson 1992; Berman, Bound, and Griliches 1994; Autor, Katz, and
+Krueger 1999). A limitation of this simplified framework is that it ignores
+differences in the pace of technological change across industries. This is
+usually justified by the observation that shifts in employment between
+industries explain relatively little of the rise in wage inequality (Bound
+and Johnson 1992). Thus, most analysts have concluded that SBTC can
+be modeled as a phenomenon that affects the relative productivity of
+different skill groups at about the same rate in all sectors.
+Assume that aggregate labor demand is generated by a constant elasticity of substitution production function of the form:
+Y p f(NH , NL ) p A[a(gH NH)(j⫺1)/j ⫹ (1 ⫺ a)(gLNL )(j⫺1)/j ]j/(j⫺1),
+
+(1)
+
+where Y represents the value of output, NH represents the labor input
+(employment or hours) of high-skilled workers, NL represents the input
+
+736
+
+Card/DiNardo
+
+of low-skilled labor, j ≥ 0 is the elasticity of substitution between the
+labor inputs, and A, a, gH, and gL are technological parameters that can
+vary over time.2 In some empirical applications NH is measured by the
+number of college graduates (or “college equivalent” workers), while NL
+is measured by the number of high school graduates (or “high school
+equivalent” workers), although in other contexts the precise skill groups
+are rather loosely specified. For given values of the technology parameters,
+the relative demand for high-skilled labor is determined by setting the
+ratio of the marginal product of the two groups equal to the ratio of their
+wages, wH /wL. Taking logarithms of the resulting expression and firstdifferencing over time leads to a simple expression that has been widely
+used to describe the evolution of relative wages:
+D log (wH /wL ) p D log [a/(1 ⫺ a)] ⫹ (j ⫺ 1)/j D log (gH /gL )
+⫺ 1/jD log (NH /NL ).
+
+(2)
+
+If the relative supply of the two skill groups is taken as exogenous, equation (2) completely determines the evolution of relative wages over time.3
+A first observation that follows directly from equation (2) is that
+changes in relative wages must reflect either changes in the relative supply
+of highly skilled labor or changes in technology. Other features of the
+labor market that potentially affect relative wages (such as rents, efficiency
+wage premiums, or institutional wage floors) are ignored.4 Moreover, in
+the absence of technological change, the relative wage of high-skilled
+workers varies directly with their relative supply. Despite some problems
+of identification, Autor, Katz, and Krueger (1999) argue that a consensus
+estimate for j is a value around 1.5, when the two skill groups are collegeequivalent and high school–equivalent workers.5 This estimate implies,
+for example, that a 10% increase in the relative proportion of college2
+This model can be easily extended to include capital or other inputs, provided
+that labor inputs are separable and enter the aggregate production function
+through a subproduction function like eq. (1).
+3
+If the relative supply of skilled labor depends on their relative wages, with
+an elasticity ␧ (i.e., log (NH/NL) p ␧ log (wH/wL) ⫹ log (PH/PL), where PH and PL
+are the populations of the two groups), then eq. (2) becomes
+
+D log (wH/wL) p j/(j ⫹ ␧)D log [a/(1 ⫺ a)]
+⫹ (j ⫺ 1)/(j ⫹ ␧)D log (gH/gL) ⫺ 1/(j ⫹ ␧)D log (PH/PL).
+In the case where the economy consists of many different industries, Bound and
+Johnson (1992) show that eq. (2) can be augmented with a relative demand term
+that represents a weighted average of the industry-specific demand shocks, with
+weights that reflect the relative industry distributions of the two skill groups.
+4
+Bound and Johnson (1992) present a convenient analytical framework for
+incorporating such features.
+5
+See Katz and Murphy 1992; Autor and Katz 1999.
+
+SOLE 2001 Invited Talk
+
+737
+
+educated workers lowers their relative wage by about 6.6%. Since the
+relative proportion of highly educated workers has been rising throughout
+the past several decades, the only way to explain a rise in the relative wage
+of skilled workers (and hence a rise in wage inequality) is through changes
+in the technology parameters a or g.
+A second observation is that only “skill-biased” changes in technology
+lead to changes in wage inequality. A shift in the parameter A or a proportional shift in gH and gL leaves the relative productivity of the two
+skill groups unchanged and only affects the general level of wages; SBTC
+involves either an increase in a or an increase in gH relative to gL. A rise
+in a raises the marginal productivity of skilled workers and at the same
+time lowers the marginal productivity of unskilled workers. This type of
+technological change has been referred to as “extensive” SBTC: Johnson
+(1997) gives as an example the introduction of robotics in manufacturing.
+The other case, which is sometimes referred to as “intensive” SBTC, arises
+when technological change enhances the marginal productivity of skilled
+workers without necessarily lowering the marginal product of unskilled
+workers.6 Although the two types of changes have similar implications
+for relative wages, they can have differing implications for the trend in
+overall labor productivity. We return to a discussion of this point below.
+II. Technology or Tautology?
+A central issue for the SBTC hypothesis is the problem of measurement.
+Working from equation (2), one can always define SBTC to be present
+whenever changes in relative wages are not inversely related to changes
+in relative supply. Indeed, the test for SBTC proposed by Katz and Murphy (1992) is a multifactor version of this point. Given a priori qualitative
+or quantitative evidence on how different skill groups are affected by
+changes in technology, however, the SBTC hypothesis can be tested using
+data on relative wages and relative labor supplies of different education
+or age groups.
+A. Aggregate Trends in Technology
+A first task in making the SBTC hypothesis testable is to quantify the
+pace of technological change. The most widely cited source of SBTC in
+the 1980s and 1990s is the personal computer (PC) and related technol6
+Note that it is necessary to assume j 1 1 in order for a rise in gH relative to
+gL to increase the relative wage of skilled workers. The distinction between the
+four parameters (A, a, gH, gL) is somewhat artificial because one can always rewrite the production function as
+
+Y p [cH NH(j⫺1)/j ⫹ cL NL(j⫺1)/j ] j/(j⫺1)
+by suitable definition of the constants cH and cL. The key question for relative
+wages is how the ratio cH/cL evolves over time.
+
+738
+
+Card/DiNardo
+
+Fig. 1.—Measures of technological change
+
+ogies, including the Internet. Figure 1 presents a time line of key events
+associated with the development of personal computers, plotted along
+with two simple measures of the extent of computer-related technological
+change. Although electronic computing devices were developed during
+World War II and the Apple II was released in 1977, many observers date
+the beginning of the “computer revolution” to the introduction of the
+IBM-PC in 1981. This was followed by the IBM-XT (the first PC with
+built-in disk storage) in 1982 and the IBM-AT in 1984. As late as 1989,
+most personal computers used Microsoft’s DOS operating system. More
+advanced graphical interface operating systems only gained widespread
+use with the introduction of Microsoft’s Windows 3.1 in 1990.
+In characterizing the workplace changes associated with the computer
+revolution, some analysts have drawn a sharp distinction between standalone computing tasks (such as word processing or database analysis) and
+organization-related tasks (such as inventory control and supply-chain
+integration and Internet commerce), and have argued that innovations in
+the latter domain are the major source of SBTC.7 This reasoning suggests
+that the evolution of network technologies is at least as important as the
+development of PC technology. The first network of mainframe computers (the Advances Research Projects Agency Network [ARPANET])
+was organized in 1970 and had expanded to about 1,000 host machines
+7
+
+This distinction is emphasized by Bresnahan 1999; Bresnahan, Brynjolfsson,
+and Hitt 2002.
+
+SOLE 2001 Invited Talk
+
+739
+
+by 1984.8 In the mid-1980s, the National Science Foundation laid the
+backbone for the modern Internet by establishing the National Science
+Foundation Network (NSFNET). Commercial restrictions on the use of
+the Internet were lifted in 1991, and the first U.S. site on the World Wide
+Web was launched in December 1991.9 The use of the Internet grew very
+rapidly after the introduction of Netscape’s Navigator program in 1994:
+the number of Internet hosts rose from about 1 million in 1992 to 20
+million in 1997, and to 100 million in 2000.
+Qualitative information on the pace of technological change is potentially helpful in drawing connections between specific innovations and
+changes in wage inequality. For example, the sharp rise in wage inequality
+between 1980 and 1985 (see Sec. III) points to technological innovations
+that occurred very early in the computer revolution (around the time of
+the original IBM-PC) as the key skill-biased events. By comparison, innovations associated with the growth of the Internet presumably had very
+limited impact until the mid-1990s. Nevertheless, comparisons of relative
+timing are subject to substantial leeway in interpretation, depending on
+lags in the adoption of new technologies.
+An alternative approach is to attempt to quantify recent technological
+changes by measuring the relative size of the information technology (IT)
+sector in the overall economy. One such measure, taken from Jorgenson
+(2001), is plotted in figure 1. There are obvious difficulties with the interpretation of such a simplified measure. On the one hand, the IT sector
+includes many disparate products and services (hardware, software, and
+network services), and the sector is characterized by rapid growth in the
+quality of products and services (for interesting discussions of some of
+these issues, see Gordon 2000; Oliner and Sichel 2000). On the other
+hand, even if IT output is accurately measured, the impact of IT-related
+technological change on other sectors of the economy may or may not
+be proportional to the size of the IT sector. Such difficulties notwithstanding, by a fairly broad measure—IT output as a percentage of total
+gross domestic product—information technology has grown steadily in
+importance since 1948, with sustained growth over the past 2 decades and
+a pronounced upsurge in the late 1990s. The rapid expansion of the IT
+sector in the late 1990s has attracted much attention, in part because
+aggregate productivity growth rates also surged between 1995 and 2000.
+Many analysts (e.g., Basu, Fernald, and Shapiro 2001) have argued that
+this was the result of an intensive burst of technological change in the
+mid- to late 1990s.
+8
+
+See Hobbes’ Internet Timeline at http://www.zakon.org/robert/internet/
+timeline.
+9
+The World Wide Web was invented at CERN (the European Laboratory for
+Particle Physics) in 1989–90.
+
+740
+
+Card/DiNardo
+
+A third approach, pioneered by Krueger (1993), is to measure the pace
+of computer-related technological change by the fraction of workers who
+use a computer on the job. The solid line in figure 1 plots the overall
+fraction of workers who reported using a computer in 1984, 1989, 1993,
+and 1997.10 Rates of on-the-job computer use, like the IT output share,
+show substantial growth over the past 2 decades: from 25% in 1984 to 37%
+in 1989, and to 50% in 1997. Nevertheless, the fact that one-quarter of
+workers were using computers on the job in 1984 suggests that some of
+the impact of computerization on the workforce preceded the diffusion of
+PCs. Indeed, Bresnahan (1999) has estimated that as early as 1971, onethird of U.S. workers were employed in establishments with mainframe
+computer access. Specialized word processing machines that predated the
+PC were also widely in use in the early 1980s. In the absence of systematic
+data prior to 1984, it is hard to know whether computer use expanded
+more quickly in the early 1980s than in the periods before or after.11 This
+in turn makes it difficult to compare changes in the rate of computer use
+with changes in wage inequality, especially in the critical early years of the
+1980s.
+While none of the available indicators of technological change is ideal,
+all of the indicators suggest that IT-related technological change has been
+going on since at least the 1970s and has continued throughout the 1980s
+and 1990s. Moreover, there is some evidence (based on the size of the IT
+sector, the pace of innovations associated with the Internet, and aggregate
+productivity growth) that the rate of technological change accelerated in
+the 1990s, relative to the 1980s. As we discuss later, this argument is
+potentially important, since most of the rise in wage inequality over the
+past 2 decades was concentrated in the period from 1980 to 1986.
+B. The Relative Impact of Computer Technology on Subgroups
+The second task in developing an empirically testable version of the
+SBTC hypothesis is to specify which skill groups have their relative productivity raised by SBTC. There are two main approaches to this issue.
+The first, articulated by Autor, Katz, and Krueger (1999), is to assume
+that groups that are more likely to use computers have skills that are
+more complementary with computers and experience bigger gains in pro10
+
+These data are based on responses to questions in the October Current Population Surveys for workers who we estimate are out of school (see the app.).
+11
+The Information Technology Industry Data Book (Information Technology
+Industry Council 1997) reports data on annual shipments of different types of
+computers since 1975. We used their data to develop estimates of total annual
+shipments of computer units, based on alternative ways to convert mini- and
+mainframe units into microcomputer units. Regardless of the specific weighting
+used, these series show fairly steady growth in shipments from 1975 to 1984.
+
+SOLE 2001 Invited Talk
+
+741
+
+ductivity with continuing innovations in computer technology.12 We refer
+to this as the “computer-use-skill-complementarity” version of SBTC. An
+alternative—advanced by Juhn, Murphy, and Pierce (1991, 1993)—is to
+assume that recent technological changes have raised the relative productivity of more highly skilled workers along every dimension of skill,
+leading to an expansion of the wage differentials among groups.13 We refer
+to this as the “rising-skill-price” hypothesis. As it turns out, the two
+approaches yield similar implications for comparisons across some dimensions of the wage structure but different implications for others.
+To set the stage, table 1 shows patterns of relative computer use on the
+job by different skill groups in 1984, 1989, 1993, and 1997. Comparisons
+of computer use across education groups reveal a substantial gradient.
+High school graduates are three to four times more likely to use a computer on the job than dropouts, and college graduates are about twice as
+likely to use a computer as those with only a high school diploma. Under
+the computer-use-skill-complementarity hypothesis, these patterns suggest that computer-related technical change would lead to a widening of
+education-related wage differentials. Moreover, since better-educated
+workers earn higher wages, an increase in the wage differential between
+the highly and less highly educated is also consistent with the rising-skillprice view of SBTC.
+The data in table 1 also show that women are more likely to use computers at work than men, and blacks are less likely to use computers than
+whites. To the extent that complementarity with computer-based technologies is measured by computer use rates, these patterns suggest that
+recent technological changes should have led to upward pressure on
+women’s wages relative to men’s, and downward pressure on black workers’ wages relative to whites. In the case of the race differential, the relative
+wage approach to gauging the impact of SBTC leads to a similar prediction.14 In the case of the gender differential, however, the two methods
+are inconsistent. Women earn less than men, and as with the racial wage
+gap, part of the gender gap is usually attributed to differences in unobserved skills. Thus, the argument that recent technological changes have
+12
+
+Note that this hypothesis does not necessarily imply that individuals who
+use computers will be paid more or less than people in the same skill group who
+do not.
+13
+To be slightly more formal, assume that the log of the real wage of individual
+i in period t(wit) is a linear function of a single index of individual ability ai p
+xi b ⫹ ui , where xi is a set of observed characteristics and ui represents unobserved
+characteristics. Then log (wit) p pt ai p xi (pt b) ⫹ pt ui , where pt is the economywide “price” of skill. Skill-biased technological change in the rising-skill-price
+view is merely an increase over time in pt.
+14
+Juhn et al. (1991) argued that blacks tend to have lower levels of unobserved
+ability characteristics and that rising returns to these characteristics held down
+black wages relative to white wages in the 1980s.
+
+742
+
+Card/DiNardo
+
+Table 1
+Use of Computers at Work
+
+All workers
+By education:
+Dropouts
+High school
+Some college
+College (or more)
+High school–
+college (%)
+By gender:
+Men
+Women
+Male-female (%)
+By gender and education:
+High school men
+College men
+High school women
+College women
+High school–
+college (men)
+High school–
+college (women)
+Male-female
+(high school)
+Male-female (college)
+By race:
+Whites
+Blacks
+Other
+Black-white (%)
+By age:
+Under 30
+30–39
+40–49
+50 and older
+
+1984
+
+1989
+
+1993
+
+1997
+
+24.5
+
+36.8
+
+46.0
+
+49.9
+
+4.8
+19.8
+31.9
+41.5
+
+7.4
+29.2
+46.4
+57.9
+
+8.9
+34.0
+53.5
+69.1
+
+11.3
+36.1
+56.3
+75.2
+
+47.7
+
+50.5
+
+49.1
+
+48.1
+
+21.1
+29.0
+73.0
+
+31.6
+43.2
+73.2
+
+40.3
+52.7
+76.5
+
+44.1
+56.7
+77.8
+
+12.9
+42.7
+27.5
+39.6
+
+20.1
+58.8
+39.2
+56.6
+
+24.1
+70.5
+45.1
+67.4
+
+26.8
+75.5
+46.8
+74.7
+
+30.2
+
+34.2
+
+34.2
+
+35.5
+
+69.4
+
+69.3
+
+66.9
+
+62.7
+
+46.9
+107.8
+
+51.3
+103.9
+
+53.4
+104.5
+
+58.3
+101.1
+
+25.3
+18.2
+23.7
+72.1
+
+37.9
+27.2
+36.0
+71.7
+
+47.3
+36.2
+42.3
+76.7
+
+51.3
+39.9
+48.2
+77.7
+
+24.7
+29.5
+24.6
+17.6
+
+34.9
+42.0
+40.6
+27.6
+
+41.4
+50.5
+51.3
+38.6
+
+44.5
+53.8
+54.9
+45.3
+
+Note.—Entries display percentage of employed individuals who answer that they “directly use a
+computer at work” in the October Current Population Survey (CPS) Computer Use Supplements.
+Samples include all workers with at least 1 year of potential experience. College workers include those
+with a college degree or higher education. All tabulations are weighted by CPS sample weights.
+
+raised the relative productivity of more highly paid workers—the risingskill-price view of SBTC—suggests that computer technology should have
+led to a widening of the male-female wage gap.
+Simple tabulations of computer use rates by education and gender hide
+an important interaction between these two factors. The education gradient in computer use is much bigger for men than women, while differences in computer use by gender are much smaller for better-educated
+workers. Indeed, as shown in table 1, college-educated men are more
+likely to use a computer than college-educated women. To the extent that
+computer use indexes the relative degree of complementarity with new
+technology, as assumed by the computer-use-skill-complementarity version of SBTC, computer technology should have widened gender differ-
+
+SOLE 2001 Invited Talk
+
+743
+
+entials for the most highly educated and narrowed them for the least
+educated. By contrast, since men earn more than women at all educational
+levels, the rising-skill-price view of SBTC suggests that the gender gap
+should have expanded at all educational levels.
+Although the data are not reported in table 1, we have also examined
+the interactions between gender and race. Black-white differences in computer use are greater for men than women, and male-female differences
+are greater for blacks than whites. Compared with the interaction between
+education and gender, however, the race-gender interactions are modest.
+Finally, an examination of computer use rates by age suggests that
+computer use has expanded slightly faster for older workers than younger
+workers. As shown in figure A1, computer use rates in the early 1980s
+were slightly declining with age. By the late 1990s, however, the age profile
+of computer use was rising slightly between the ages of 20 and 45 and
+declining after age 50. These observations suggest another divergence between the computer-use-skill-complementarity and rising-skill-price view
+of SBTC. Based on the age profiles of computer use, SBTC may have led
+to a reduction in the relative wages of older workers—at least in the 1980s.
+On the other hand, since older workers earn more than younger workers,
+the rising-skill-price view of SBTC predicts a rise in age- or experiencerelated wage premiums over the 1980s and 1990s.15
+It is also possible to derive predictions from the two versions of the
+SBTC hypothesis for other dimensions of wage inequality, including the
+differences between individuals with different types or qualities of schooling, differences across industries, and differences between workers with
+similar observed characteristics. In the next sections, we examine a variety
+of these wage differentials.
+III. The Evolution of the Wage Structure—Overall Inequality
+We begin our empirical investigation by examining trends in overall
+wage inequality in the U.S. labor market. Although it is easier to measure
+wage inequality than technological change, there are several limitations
+of the available data that potentially affect our analysis. A particular concern is that changes in data collection or processing methods—or other
+“mechanical” factors such as rising nonresponse rates—can lead to spurious changes in measured inequality. Consequently, we try to compare
+different data sets and use different methodologies to assess the “facts”
+15
+We have also examined patterns of relative computer use by education and
+age. For both men and women, computer use rates of high school graduates are
+roughly constant with age, while those for college graduates are declining. For
+college-educated women the decline with age is modest, while for college-educated
+men the negative age gradient is larger. These patterns suggest that computerrelated SBTC may have contributed to a rise in the college wage premium for
+younger men, relative to older men and to women of all ages.
+
+744
+
+Card/DiNardo
+
+about wage inequality. Our main conclusion is that aggregate wage inequality has not risen continuously since the 1970s. Instead, most of the
+rise that has attracted the attention of economic analysts and policy makers
+was concentrated in the early 1980s. This suggests a potential problem
+for the SBTC hypothesis: why did the pace of SBTC slow down after an
+initial burst during the first few years of the microcomputer revolution?
+A. Measurement Issues
+The most widely used source of data for studies of wage inequality is
+the March Current Population Survey (CPS). The main advantage of the
+March CPS is that it is available from the mid-1960s onward. On the
+minus side, the March CPS has no “point-in-time” measure of the wage
+rate. Instead, wages have to be constructed by dividing total annual earnings in the previous year by an estimate of weeks or hours of work. The
+task is made harder by the absence of information on usual hours of work
+per week prior to 1976 and by the fact that weeks are only reported in
+intervals in the pre-1976 surveys. For these reasons, many researchers
+have focused on full-time workers, or even “full-time-full-year” (FTFY)
+workers—those who report working full-time for all 52 weeks of the
+previous year.
+An alternative data source, used by Bound and Johnson (1992) and
+DiNardo, Fortin, and Lemieux (1996), is the battery of earnings questions
+administered in the May CPS from 1973 to 1978 and to individuals in
+the “outgoing rotation groups” of every monthly CPS from January 1979
+onward. For simplicity, we refer to these data as the Outgoing Rotation
+Group (OGR) data. The OGR supplements ask about usual hourly or
+weekly pay at an individual’s main job in the previous week and provide
+a potentially better source of information on wage rates than do the annual
+earnings and labor supply data in the March CPS.
+There are a number of problems with both the March CPS and OGR
+data that potentially affect the measurement of wage inequality. The first
+problem is the censoring (or topcoding) of the earnings of highly paid
+workers. In the March CPS, total annual earnings were censored at $50,000
+from 1968 to 1981, at $75,000 from 1982 to 1984, and at $99,999 from
+1985 to 1988. From 1989 onward, the topcoding is more complicated
+because earnings from an individual’s main job and all other jobs are
+censored separately, and the censoring points changed between 1995 and
+1996.16 In the OGR surveys, weekly earnings are also censored at different
+16
+
+Between 1989 and 1995, main job earnings and other earnings were both
+censored at $99,999. From 1996 onward, main job earnings were censored at
+$150,000, but other earnings were censored at $25,000. The 1996 and later public
+use files report average values for those who are censored.
+
+SOLE 2001 Invited Talk
+
+745
+
+values in different years (e.g., $1,000 per week up to 1985).17 There are
+two main approaches to handling topcoded data. The first is to ignore
+the problem, leading to an understatement of earnings for the 1%–5%
+of individuals with censored data. The second is to adjust the censored
+values by a factor that approximates the mean for those above the censoring point (typically, a factor like 1.33 or 1.4). As described below, we
+compare both approaches.
+A second problem is the presence of outliers. A few individuals report
+implausibly low earnings relative to their hours of work, and the inclusion
+of these observations can have a significant impact on the estimated mean
+and variance of wages. We follow much of the literature by trimming the
+data to delete extreme values. In constructing our samples of hourly wages,
+we delete observations with measured hourly earnings below $1 per hour
+or above $100 per hour in 1979 dollars, using the CPI-U-X1 price series
+to convert nominal wages to 1979 values. In constructing our samples of
+FTFY workers, we delete observations whose annual earnings are less
+than $2,000 in 1979 dollars.
+A third problem is the presence of allocated or imputed earnings responses. For a variety of reasons, 15% or more of people refuse to answer
+the earnings questions in the March CPS and the OGR earnings supplement. The Census Bureau uses a “hot deck” procedure to impute earnings
+for the nonrespondents, based on the response for a sample person with
+similar demographic characteristics. Unfortunately, flags indicating which
+observations are allocated are not available in the March survey until 1976
+and are miscoded in the OGR supplements from 1989 to 1993. Thus, in
+our analysis, we use both allocated and nonallocated responses.18
+A final problem is that the CPS questionnaires and processing procedures have been revised several times since the 1960s. As we note below,
+changes in the 1990s appear to have been particularly important. In 1994,
+the CPS was switched from a paper survey instrument to computer-aided
+interviewing. Many questions were changed or reordered, and new questions were added to refine the measurement of hours and earnings (see
+Polivka 1996). In 1996, the topcoding algorithm in the March CPS was
+revised. To the extent possible, we have tried to process the data from
+the earlier and later surveys to reduce the impact of these changes. Nevertheless, it appears that the changes in the mid-1990s led to a rise in
+measured inequality.
+In addition to these basic measurement issues, there are several con17
+As described in the appendix, we make use of unedited earnings responses
+in the years from 1986 to 1988 to alleviate some problems with topcoding.
+18
+Comparisons of inequality measures with and without the allocated responses
+after 1976 suggest that the inclusion of allocators does not change the main trends
+in inequality.
+
+746
+
+Card/DiNardo
+
+ceptual questions that have to be addressed before deriving measures of
+wage inequality for the economy as a whole. A key decision is whether
+to focus on a subset of workers or to consider wage inequality more
+generally. Much of the existing literature (e.g., Katz and Murphy 1992;
+Juhn, Murphy, and Pierce 1993) has focused on the dispersion in estimated
+weekly earnings of full-time men. Census Bureau publications typically
+restrict attention to FTFY workers (e.g., Jones and Weinberg 2000). The
+use of full-time or FTFY workers resolves some problems in the measurement of hours of work at the cost of substantial selection bias. Typically less than 60% of all those who worked in the previous year were
+FTFY workers, and only about one-third are FTFY men. An alternative
+approach that we prefer is to use data on hourly wages for all workers—men and women, full-time and part-time workers—and to weight
+each wage observation by an individual’s hours of work. A weeks-worked
+weighting procedure is implicit in the analysis of data derived from the
+OGR, since individuals only appear in this sample if they were working
+in the survey week, and demographic groups with higher weeks worked
+per year are overrepresented relative to those with fewer weeks.
+Another conceptual issue is the treatment of self-employed workers.
+In the OGR surveys, earnings data are only collected from individuals
+whose main job is a wage and salary job. Implicitly, then, the OGR data
+ignore self employment earnings. The March CPS collects information
+on both wage and salary and self-employment income. Nevertheless, because of concerns over the accuracy and interpretation of self-employment
+income, it is conventional to focus on wage and salary earnings and to
+divide wage and salary income by an estimate of annual hours to obtain
+a rate of pay (e.g., Juhn, Murphy, and Pierce 1993). Although this leads
+to an underestimate of pay for the small fraction of people who hold both
+types of jobs, we have found that alternative procedures for eliminating
+observations with some self-employment income do not have much impact, and so we follow the simpler convention.
+A final question is how to measure overall wage inequality. We use two
+measures: the standard deviation of log wages and the log of the ratio of
+the ninetieth percentile of wages to the 10th percentile—the so-called
+90–10 wage gap. For convenience, we divide the 90–10 wage gap by 2.56:
+if the underlying data are lognormally distributed, the rescaled 90–10 wage
+gap and the standard deviation have the same probability limit. Although
+the normality assumption is false, the two measures are usually very close,
+with differences mainly reflecting topcoding and the treatment of very
+low-wage observations.
+B. Trends in Overall Wage Inequality
+Figure 2 plots three different measures of aggregate wage dispersion. The
+first is the standard deviation of log-annual earnings of FTFY male workers,
+
+SOLE 2001 Invited Talk
+
+747
+
+Fig. 2.—Alternative measures of aggregate wage inequality
+
+constructed from March CPS data from 1968 to 2001. The second is the
+normalized 90–10 log wage gap in hourly earnings, based on the May CPS
+files for 1973–78 and the OGR files from 1979 onward. This series is based
+on estimates constructed by the Economic Policy Institute (EPI), using
+procedures very similar to ours.19 The third is the standard deviation of
+log-hourly wages for all workers in the March CPS files from 1976 to 2001,
+weighted by the hours worked in the previous year.20
+An examination of figure 2 suggests that the recent history of U.S. wage
+inequality can be divided into three episodes. During the late 1960s and
+1970s, aggregate wage inequality was relatively constant. The standard
+deviation of log wages for FTFY men rose by only 0.01 between 1967
+and 1980 (from 0.51 to 0.52).21 Wage inequality measures from the May
+19
+See Mishel, Bernstein, and Schmitt (2001, table 2.17). In their wage samples,
+EPI includes workers whose reported or constructed hourly wage is between
+$0.50 and $100.00 per hour (in 1989 dollars) versus our cutoffs of $1.00 and
+$100.00 in 1979 dollars. They also compute wage percentiles using an algorithm
+that smooths spikes in the wage distribution—see Mishel et al. (2001, app. B).
+20
+The standard deviations of wages for FTFY men and all workers are both
+constructed using annual earnings data that are uncorrected for censoring but
+adjusted for the major change in censoring limits between 1995 and 1996, as
+described in the appendix. As discussed below, series that are based on March
+CPS earnings data with a 1.4 adjustment for censoring are similar in most years
+but show a slightly larger rise over the 1990s.
+21
+Similarly, the standard deviation of log wages for all full-time workers (men
+and women) was slightly lower in 1980 than in 1967.
+
+748
+
+Card/DiNardo
+
+CPS–OGR series also show stability (or even a slight decline) between
+1973 and 1980, while the hours-weighted standard deviation of log-hourly
+wages for all workers in the March CPS was stable from 1975 to 1980.22
+The 1980s was a period of expanding inequality, with most of the rise
+occurring early in the decade. Among FTFY men, for example, 85% of
+the 10 point rise in the standard deviation of log wages between 1980 and
+1989 occurred before 1985. Finally, in the late 1980s, wage inequality
+appears to have stabilized. Indeed, none of the three series in figure 2
+shows a noticeable change in inequality between 1988 and 2000.
+The apparent stability of aggregate wage inequality over the 1990s presents a potentially important puzzle for the SBTC hypothesis, since there
+were continuing advances in computer-related technology throughout the
+decade that were arguably as skill biased as the innovations in the early
+1980s. In an effort to verify the robustness of the patterns in figure 2, we
+constructed a variety of other measures of wage inequality for both the
+OGR and March data. Alternative measures derived from the OGR all
+show nearly constant wage inequality in the 1990s, apart from a small
+rise between 1993 and 1994, which coincided with the switch to the new
+computer-based questionnaire. For example, the hours-weighted standard
+deviation of log-hourly wages increased by 0.01 (from 0.55 to 0.56) between 1990 and 2000. On the other hand, inferences from the March CPS
+data are more sensitive to the handling of topcoding and to the choice of
+inequality measure. As noted in the appendix, inequality series derived
+from topcode-adjusted data typically show a rise of up to 0.02 or 0.03
+(roughly 5%) over the 1990s. In view of the difficulties in adjusting the
+March CPS data for changes in data collection and topcoding, we believe
+that more weight should be given to the results from the OGR-based
+measures. Regardless of which data sources or adjustment procedures are
+used, however, it is clear that the rate of growth in wage inequality slowed
+substantially after the mid-1980s.
+Another interesting feature of the series in figure 2 is that the rise in
+wage inequality over the 1980s was larger for FTFY men than for workers
+as a whole. The reasons for this are unclear. It does not appear to be a
+result of a change in the mean or variance of hours of work among FTFY
+men, or of a relative change in size or composition of the FTFY male
+22
+Larry Katz pointed out to us in a private communication that the fall in
+inequality between 1974 and 1975 in the March series coincided with a change
+in the imputation procedures used for nonrespondents. We tried to assess the
+effect of the change by calculating changes in inequality between 1974 and 1975
+for different age-education-race groups and by correlating the change with the
+fraction of each group with allocated data in 1976. The decline in inequality is
+largest for groups with the smallest fraction of allocated responses, suggesting
+that the change in allocation procedures is not the explanation. Note that the May
+1973–78 data have no allocated earnings responses.
+
+SOLE 2001 Invited Talk
+
+749
+
+Fig. 3.—Alternative measures of wage inequality for male workers
+
+workforce.23 If viewed with an eye toward SBTC, however, the relative
+rise in inequality for FTFY men is a puzzle. To the extent that SBTC
+tends to widen inequality across skill and ability groups, we would expect
+to see a larger rise in inequality for less-homogeneous samples (e.g., pooled
+samples of men and women and full- and part-time workers) and a smaller
+rise for more homogeneous samples (e.g., FTFY men). The data suggest
+the opposite.
+Although we prefer to measure aggregate wage inequality using the
+broadest possible sample of workers, the tradition in the inequality literature is to analyze men and women separately (although Lee [1999] and
+Fortin and Lemieux [2000] are important counterexamples). Figures 3 and
+4 show trends in wage inequality by gender, using three series from the
+March CPS and OGR: the standard deviation of log-earnings for FTFY
+workers (based on the March CPS), the hours-weighted standard deviation of average hourly earnings for all workers (also from the March
+CPS), and the hours-weighted standard deviation of log-hourly wages for
+all workers (from the OGR). For men, all three series show a rise in the
+1980s and relative stability in the 1990s, although the OGR-based series
+shows a small jump (about ⫹0.01) between 1993 and 1994, coincident
+with the switch in the CPS to a computer-based questionnaire.24 For
+23
+
+The standard deviation of log-annual hours for FTFY men was about 0.155
+in 1975, 0.157 in 1989, and 0.166 in 1999.
+24
+See the appendix for a comparison of gender-specific inequality trends using
+different procedures with the OGR data.
+
+750
+
+Card/DiNardo
+
+Fig. 4.—Alternative measures of wage inequality for female workers
+
+women, the trends in inequality are a little different. First, inequality
+among FTFY women clearly tended down over the 1967–80 period. Second, the March-based inequality measures show more evidence of a rise
+over the 1990s, particularly after 1996. On the other hand, the OGRbased series is stable or even declining after 1994, and, apart from the
+0.02 jump associated with the changes in the CPS between 1993 and 1994,
+rises only about 0.01 over the 1990s.25 Based on the OGR data—which
+we prefer—one would conclude that wage inequality among both men
+and women was nearly constant over the 1990s. Based on the March data,
+however, one would conclude that inequality rose slightly for women
+between 1990 and 2000. In either case, it is clear that most of the rise in
+gender-specific wage inequality, like the rise in overall inequality, was
+concentrated in the first half of the 1980s, with surprisingly little change
+in the 1990s.
+IV. Components of the Wage Structure—Education
+A. Returns to College
+We now shift our focus to specific dimensions of the wage structure.
+We begin with wage differences by education, which are at the core of
+the SBTC hypothesis. Figure 5 presents estimates of the college–high
+25
+Again, using the 90–10 wage gap as a measure of inequality, the OGR series
+shows almost no jump between 1993 and 1994 and rises from 0.51 to 0.52 over
+the 1990s.
+
+SOLE 2001 Invited Talk
+
+751
+
+Fig. 5.—College–high school wage ratio by gender, 1975–99
+
+school wage gap by gender for the period 1975–99, based on average
+hourly earnings data from the March CPS. These estimates are obtained
+from regression models fit separately by gender and year to samples of
+people with either 12 or 16 years of education. The models include a
+dummy for college education, a cubic in years of potential experience,
+and a dummy for nonwhite race. Trends in the college–high school gap
+are similar to the trends in overall inequality and suggest three distinct
+episodes: the 1970s, when the college gap was declining slightly; the 1980s,
+when the gap rose quickly; and the 1990s, when the gap was stable or
+rising slightly. For both men and women, the college–high school wage
+gap rose by about 0.15 log points between 1980 and 1990. The rise for
+men was concentrated in the 1980–85 period, while for women it was
+more evenly distributed over the decade. The similar overall rise in returns
+to college for men and women is interesting, however, because, as noted
+earlier, there is a much larger education gradient in computer use rates
+for men than women. Based on this fact, the computer-use-skill-complementarity version of the SBTC hypothesis would predict a larger rise in
+the college–high school wage gap for men than for women during the
+1980s and 1990s. On the other hand, since the college–high school wage
+gaps are similar for men and women, the skill-price version of the SBTC
+hypothesis predicts about the same rise in returns for both. Thus, the
+similarity of the rise in the college gap for men and women is a puzzle
+for one version of the theory but not for the other.
+A number of previous authors, including Freeman (1975) and Katz and
+Murphy (1992), have argued that variation in the college–high school wage
+
+752
+
+Card/DiNardo
+
+Fig. 6.—Relative supply of college-educated labor
+
+premium can be explained by a model like equation (2), with the added
+assumption that the technology variables follow a smooth trend. In these
+studies, the relative supply of college-educated workers is estimated by
+assigning various fractions of “college equivalent” and “high school equivalent” labor units to workers in different education categories.26 We used
+a variant of this method to derive the relative supply series shown in
+figure 6 (see appendix for details). A notable feature of this index is that
+it follows a roughly constant trend between 1967 and 1982 (4.5% per
+year) and a slower but again nearly constant trend after 1982 (2.0% per
+year). Indeed, a regression of the supply index on a linear trend and post1982 trend interaction yields an R2 of 0.997. Assuming that 1/j is positive,
+shifting trends in relative supply can explain an upward shift in the rate
+of growth of the college–high school wage gap in the early 1980s but not
+the slowdown in the 1990s.
+The problem is further revealed by comparing estimates of models based
+on equation (2) that exclude or include the 1990s. Fitting a model with
+a linear trend to the returns to college for men over the period from 1967
+to 1990 yields an estimate of 1/j p 0.64 (with a SE of 0.14) and a trend
+estimate of 0.027—very close to the estimates reported by Katz and Murphy (1992). Fitting the same model to the period from 1967 to 1999,
+however, leads to an estimate of 1/j equal to 0.30 (with a SE of 0.10) and
+an estimate of the trend equal to 0.014. Adding a trend shift term that
+26
+For example, a worker with 14 years of education contributes one-half unit
+of college labor and one-half unit of high school labor, while a worker with 10
+years of education contributes something less than one unit of high school labor.
+
+SOLE 2001 Invited Talk
+
+753
+
+allows for an acceleration in SBTC after 1980, the estimate of the relative
+supply term becomes wrong signed, and the model substantially overpredicts returns to college in the late 1990s. We conclude that the slowdown in the rate of growth in the return to college in the 1990s is a
+problem for the SBTC hypothesis that cannot be easily reconciled by
+shifts in relative supply.
+B. Education and Age
+So far we have focused on the average difference in wages between
+college and high school workers in all age groups. This focus arises naturally out of a model such as the one described by equations (1) and (2),
+where there are only two skill groups—high and low education—and
+workers with different years of labor-market experience are treated as
+perfect substitutes. In such a model, there is a unique “return to education”
+in the economy as a whole at any point in time. Moreover, the focus on
+average returns to college is descriptively adequate whenever the wage
+differentials between education groups are the same for people with different ages—or different years of experience, as in Mincer’s (1974) human
+capital earnings function.27
+While the rise in the average wage gap between college and high school
+workers has been extensively documented, the fact that the increases have
+been very different for different age groups is less well known. In fact,
+most of the rise in the returns to schooling has been concentrated among
+younger workers. Figure 7 shows the evolution of the college–high school
+wage gap for younger men (ages 26–35) and older men (ages 45–60) from
+1975 to 1999. (These gaps are estimated from year-specific regression
+models, fit to samples of college and high school men, that include a
+college dummy, a linear experience term, and a nonwhite dummy.) During
+the 1970s, returns to college were higher for older men than younger
+men. Starting in the 1980s, however, the returns for younger men accelerated rapidly, with very little change for older men. As shown in figure
+8, a similar relative pattern is present for women, although older women
+experienced more of a rise in the college–high school gap than older men.
+Can SBTC explain the very different rates of increase in the college–high
+school wage gap for different age groups? For the skill-price version of
+SBTC, the answer is probably not. This theory predicts that all wage
+differentials will widen as a result of ongoing technical change. Thus, it
+is hard to explain why the college wage gap for young workers nearly
+doubled, while the wage gap for old workers rose by only a few log
+27
+
+The simplest way to justify Mincer’s (1974) formulation within the framework
+of the model in eq. (1) is to assume that the relative efficiency units of different
+age groups depend only on experience (i.e., age minus education) and that the
+relative efficiency profile is the same for college and high school labor.
+
+754
+
+Card/DiNardo
+
+Fig. 7.—College–high school wage ratio for men by age group
+
+points. The computer-use-skill-complementarity version of SBTC is more
+promising, because the college–high school gap in computer use is somewhat larger for younger men than for older men. (For example, the ratio
+of computer use rates of college to high school men in 1989 was 3.1 for
+men ages 26–35, versus 2.5 for men ages 45–60.) Computer driven SBTC
+may have led to a shift in the relative efficiency of younger and older
+workers with different levels of education, leading to different shifts in
+the college–high school wage gap at different ages. Nevertheless, the age
+profile of the college–high school gap in computer use flattened between
+1984 and 1997, while the difference in wage gaps between younger and
+older men widened substantially. Thus, changing relative patterns of computer use by college versus high school workers at different ages cannot
+fully explain the differential trends on the college wage gap in figure 7.
+Moreover, among women the college–high school gap in computer use
+is very similar across age groups, so the computer-use-skill-complementarity version of SBTC offers no insight into the trends in figure 8.
+The assumption embedded in equation (1), that workers with similar
+education but different ages are perfect substitutes in production, can be
+relaxed. Card and Lemieux (2001) show that one implication of a more
+general model that allows for imperfect substitution across age groups is
+the presence of cohort effects in the returns structure. Because education
+is (essentially) fixed once a cohort enters the labor market, a cohort with
+fewer highly educated workers will experience higher relative returns at
+each age, leading to cohort-specific deviations from the average pattern.
+Evidence of such cohort effects is presented in figure 9 (taken from Card
+
+SOLE 2001 Invited Talk
+
+755
+
+Fig. 8.—College–high school wage ratio for women by age group
+
+and Lemieux 2001), which shows the age profiles of the college–high
+school age gap for 5-year age cohorts of men in five periods: 1960–76
+(based on pooled data from the 1960 Census and early CPS surveys),
+1979–81, 1984–86, 1989–91, and 1994–96. In the 1960s and early 1970s,
+the college–high school wage gap was an increasing and slightly concave
+function of age, consistent with the functional form posited by Mincer
+(1974). Between 1975 and 1980 the entire profile shifted down, with the
+exception of the youngest age group, whose gap remained constant. By
+the mid-1980s, the gaps for older workers were back to pre-1976 levels,
+but the gaps for the two youngest age groups were much higher. Five
+years later, the gaps for the three youngest age groups were substantially
+higher than those in the mid-1970s, while those for the older cohorts for
+the same two time periods were not too different. Finally, by the mid1990s, the gaps for the four youngest age groups were well above the
+levels of the mid-1970s, but the gaps for older age groups for these periods
+were still comparable with those of 20 years earlier.
+Based on the data in figure 9 and a series of formal statistical tests, Card
+and Lemieux (2001) argue that the trends in the college–high school wage
+gap for different age groups reflect systematically higher college–high
+school wage premiums received by successive cohorts that have entered
+the labor market since the late 1970s. Moreover, they argue that these
+cohort effects are explained by cohort-specific changes in the relative
+supply of college workers. In particular, a regression of the college–high
+school wage gap for 5-year age groups of men on year effects, age effects,
+and a measure of the relative fraction of “college equivalent” workers in
+
+756
+
+Card/DiNardo
+
+Fig. 9.—Changing age structure of the college–high school wage gap
+
+the cohort shows a strong negative effect of the relative supply of college
+workers in a given cohort on their relative wages. After controlling for
+cohort-specific supplies, Card and Lemieux’s estimates suggest that relative demand for college-educated workers grew at a fairly even pace over
+the past 40 years, apart from a transitory dip in the late 1970s. This
+interpretation of the returns structure in figure 7 leaves little or no room
+for accelerating technical change. While one might argue that the spread
+of computers led to cohort-specific relative productivity gains for collegeeducated workers, there is no direct evidence of such a phenomenon. The
+age profiles of the college–high school gap in computer use shifted uniformly between 1984 and 1997, rather than twisting like the returns profiles in figure 9.28
+C. Returns to Different College Degrees
+One concern with evidence for SBTC based on overall wage differences
+between college and high school workers is that computer-related technology may have had different effects on college graduates from different
+fields of study. In particular, it seems plausible that the computer revolution would lead to a rise in the relative demand for college graduates
+28
+Card and Lemieux (1999) try to evaluate the hypothesis that cohort- or agespecific SBTC effects can explain the patterns in fig. 9 by including measures of
+the relative use of computers by college versus high school workers by different
+age groups in different years. Controlling for relative supplies, these models show
+small and statistically insignificant relative computer use effects.
+
+SOLE 2001 Invited Talk
+
+757
+
+Fig. 10.—Mean salary offer relative to humanities/social sciences
+
+with more technical skills (like engineers and scientists), especially in the
+early 1980s, when microcomputers were first introduced and the college–high school wage gap was expanding rapidly. Figures 10 and 11
+present some data on the changing relative wages of recent college graduates in different fields of study. The data in figure 10 represent mean
+starting salaries offered to graduating students with bachelor’s degrees in
+various fields, compiled from a survey of career placement offices conducted by the National Association of Colleges and Employers.29 For
+convenience, we have scaled the data to show mean salaries relative to
+humanities and social sciences. The most obvious feature of the data is
+that the relative salaries in more technical fields rose in the 1970s and fell
+in the 1980s. This is particularly true for the relative salaries in the two
+fields most closely connected with computers: computer science and electrical engineering. Paradoxically, the introduction of microcomputers was
+associated with a fall in the relative salaries of specialized college graduates
+with the strongest computer skills. Although the data in figure 10 only
+cover the period up to 1993, more recent data suggest that in the late
+1990s the relative salaries of electrical engineering and computer science
+graduates rose back to the levels of the late 1970s. Thus, the IT sector
+29
+
+This organization was known as the College Placement Council until 1995.
+It has published an annual report of starting salary offers since the early 1960s.
+The 1979 survey was based on 186 placement offices. By 1993 the survey covered
+378 offices. The report states that the data pertain to salary offers made to new
+graduates by employers in business, government, and nonprofit sectors and include base salaries only, excluding bonuses, fringe benefits, etc.
+
+758
+
+Card/DiNardo
+
+Fig. 11.—First-year salaries relative to humanities/social sciences
+
+boom in the late 1990s was associated with a rise in relative wages of
+graduates with computer-related skills.
+An alternative source of data on the relative salaries of college graduates
+in different fields is the Recent College Graduates (RCG) Survey, conducted by the National Center of Education Statistics.30 Figure 11 shows
+median salaries 1 year after graduation for full-time workers with different
+bachelor’s degrees, relative to humanities and social sciences. Although
+RCG data are available only since 1977, the general pattern is similar to
+that in figure 10. In particular, the wage premium for engineering and
+computer science graduates fell between 1980 and 1986. Also somewhat
+surprisingly, the relative wage for graduates specializing in education rose
+slightly over the 1980s. Thus, RCG data suggest that the cross-field dispersion in salaries of recent college graduates narrowed during the period
+of widening wage inequality.
+We regard the trends in the relative salaries of college graduates in
+different fields as at least a puzzle, if not a problem, for the SBTC hypothesis. Innovations in computer technology do not necessarily raise the
+relative demand for workers with the most specialized computer training.
+However, engineers and computer scientists have very high rates of computer use and also earn higher wages than other B.A. or B.S. degree
+30
+
+The 1976 RCG survey collected data on 1977 salaries for 4,350 graduates
+from 200 schools who graduated in 1974–75. Later surveys have expanded coverage. See U.S. Department of Education National Center for Education Statistics
+(1998, suppl. table 33-1).
+
+SOLE 2001 Invited Talk
+
+759
+
+Fig. 12.—Male-female wage gaps
+
+holders. Thus, the decline in the wage premium for engineers and computer science graduates over the 1980s is inconsistent with either the
+computer-use-skill-complementarity or rising-skill-price versions of the
+SBTC hypothesis. Moreover, it appears that inequality in the pay of recent
+college graduates across different fields of specialization fell in the 1980s.
+V. Changes in Gender and Racial Wage Gaps
+A. The Male-Female Wage Gap
+One of the most prominent changes in the U.S. wage structure is the
+recent closing of the male-female gap. Figure 12 displays three estimates
+of the gap in wages between men and women: the difference in mean logannual earnings of FTFY workers (based on March CPS data), the difference in mean log-average hourly earnings from the March CPS (for
+1975 and later), and the difference in mean log-average hourly earnings
+from the OGR supplements (for 1979 and later). Like overall inequality
+and returns to college, trends in the male-female wage gap seem to fall
+into three distinct episodes. During the 1970s, the gender gap was relatively stable. During the 1980s and early 1990s, the gap fell. Finally, in
+the mid- to late 1990s, the gap was stable again. Although the different
+wage series give somewhat different estimates of the size of the gender
+gap, all three show a 15 percentage point decline between 1980 and 1992.
+Moreover, trends in the male-female gap are very similar for different age
+and education groups (see Card and DiNardo 2002, fig. 12).
+At face value, the trends in the gender gap appear to pose a number
+of problems and puzzles for different versions of the SBTC hypothesis.
+
+760
+
+Card/DiNardo
+
+Fig. 13.—White-black wage gaps
+
+As we noted earlier, the closing of the gender gap in the 1980s is a particular problem for the rising-skill-price version of SBTC, which predicts
+that technological change raises the return to all different kinds of skills,
+including the unobserved skills that are usually hypothesized to explain
+the gender gap. Since women use computers on the job more than men,
+some observers have argued that the decline in the gender wage gap is
+consistent with the computer-use-skill-complementarity version of
+SBTC.31 This theory alone cannot explain the similarity of the trends in
+the gender gap for high school and college graduates, however, since
+college-educated women are actually less likely to use a computer than
+college-educated men. Thus, like Blau and Kahn (1997), we conclude that
+the rise in women’s wages relative to men’s over the 1980s has to be
+attributed to gender-specific factors.
+B. The Black-White Wage Gap
+Figure 13 shows the evolution of another important dimension of wage
+inequality—the difference in wages between white and black workers. We
+show the wage gaps for FTFY men and women (derived from March
+CPS data) and for all men and women (based on average hourly earnings
+31
+For example, Weinberg (2000) argues that “since computers [jobs] are likely
+to be less physically demanding than the average noncomputer job, the elimination
+of noncomputer jobs in which men have a comparative advantage and the creation
+of computer jobs in which women have a comparative advantage would tend to
+favor women” (p. 291).
+
+SOLE 2001 Invited Talk
+
+761
+
+from the OGR data). The gaps for women are similar whether the data
+are confined to FTFY workers or not, while the gaps for men are a little
+different between FTFY workers and all workers, at least in the early
+1980s. As previous studies have documented, racial wage gaps are also
+much smaller for women than for men. More interesting from our perspective are the trends in the racial wage gap, which are quite different
+from the trends in other dimensions of inequality. During the 1970s, when
+the gender gap and overall wage inequality were relatively stable, the wage
+advantage of white workers fell sharply: from 28% to 18% for men and
+from 18% to 4% for women. During the 1980s, when overall wage inequality was rising and the gender gap was closing, the black-white wage
+gap was relatively stable. Finally, over the 1990s, racial wage gaps were
+roughly constant.32 We have also examined trends in the black-white wage
+gap within narrow education and age groups. The gaps for high school–
+and college-educated men and women are similar to the corresponding
+gaps for all education groups and follow roughly similar trends.
+Like the gender wage gap, we view the evolution of racial wage differences as at least a puzzle, and potentially a problem, for SBTC. Both
+the rising-skill-price and the computer-use-skill-complementarity views
+suggest that SBTC should have led to a widening of racial wage gaps in
+the 1980s. The gap in computer use between blacks and whites is about
+the same magnitude as the male-female gap, so the same arguments that
+have been made about the effect of computerization on male-female wage
+differences would seem to apply to racial wage gaps. Indeed, Hamilton
+(1997) argues that a computer skills gap contributed to an increase in the
+wage differentials between whites and blacks. In view of the data in figure
+13, however, it is clear that other factors must have worked in the opposite
+direction to offset any such effects of SBTC.
+C. Potential Difficulties in Interpreting Trends in the Gender
+and Racial Gaps
+As we have emphasized, the SBTC hypothesis by itself is not very
+helpful in characterizing movements in the gender and racial gaps. It is
+certainly the case, however, that a combination of one or more labormarket developments along with SBTC could potentially explain the
+trends. Indeed, there is a large literature in labor economics, largely independent of the literature on SBTC, that has sought explanations for
+trends in both the race and gender gaps. At least two widely studied
+possibilities are potentially relevant in this context and would be consistent with, say, both the rising-skill-price view of SBTC and the wage
+trends that we have documented.
+32
+
+Couch and Daly (2002) focus on the racial wage gap for FTFY men and note
+that the gap for this group declined slightly in the 1990s.
+
+762
+
+Card/DiNardo
+
+First is the possibility of differential selection bias in the observed wages
+of men versus women, or blacks versus whites, induced by differential
+trends in employment participation (Gronau 1974; Butler and Heckman
+1977). Based on analysis of the black-white wage gap in 1990 and differences in the participation trends of black and white women, Neal (2001)
+argues that measured trends in the black-white wage gap among women
+are potentially contaminated by differential selection bias.
+Second is the more general possibility that differences by race or gender
+in unobserved skill might contaminate trends in the unadjusted wage gaps
+or in adjusted gaps that account only for observed skill factors like age and
+education. Cook and Evans (2000), for example, observe that the blackwhite test score gap narrowed during the 1970s and 1980s. To the extent
+that test scores are indicative of labor-market “skill,” it could be argued
+that the constancy of the black-white wage gap during the 1980s is consistent
+with a simultaneous SBTC-induced rise in skill prices offset by fall in the
+black-white skills gap. Couch and Daly (2002) find some evidence of this
+pattern for FTFY men. Focusing directly on the 1980–85 period, however,
+Card and Lemieux (1994) find little support for a model that links the
+black-white gap for a fixed sample of workers to changes in the “returns”
+to either observed or unobserved skills. At a minimum, the observed trends
+in the gender and race gaps would appear to support our view that further
+investigation of non-SBTC-based explanations for changes in the structure
+of wages is warranted.
+VI. Components of the Wage Structure: Experience
+Along with education, gender, and race, a fourth key dimension of wage
+inequality in the U.S. labor market is age. Following Mincer (1974), most
+labor-market analysts have adopted the assumption that log wages are a
+separable function of education and potential labor-market experience (age
+minus education minus 6). As we have shown, however, the wage gap
+between different education groups expanded faster for younger workers
+in the 1980s and 1990s, suggesting that there were differential shifts in the
+experience profiles of different education groups. To examine this issue
+nonparametrically, we used OGR data for three periods—1979–81,
+1989–91, and 1997–99—to construct estimates of mean log wages by single
+year of experience for workers with either a high school or college degree.
+The results are shown in figures 14, 15, 16, and 17. Figure 14 shows the
+experience profiles for men with 12 years of education in the three time
+periods.33 Over the past 20 years, the entire profile of wages for high
+school–educated men has shifted downward, with most of the decline in
+33
+We use the CPI-U-X1 to deflate hourly wages to a common 2000 p 100
+base. We have smoothed the graph using a 3-year moving average with weights
+(0.25, 0.50, 0.25).
+
+Fig. 14.—Wage profiles for men with 12 years of education
+
+Fig. 15.—Wage profiles for men with 16 years of education
+
+Fig. 16.—Wage profiles for women with 12 years of education
+
+Fig. 17.—Wage profiles for women with 16 years of education
+
+SOLE 2001 Invited Talk
+
+765
+
+the 1980s. There is little evidence of either a rise or a fall in the average
+return to experience for this group.
+For younger college-educated men (those with 1–15 years of potential
+experience), there was a slight rise in the return to experience between
+the early 1980s and the late 1990s. For college-educated men in the middle
+range of experience, however, the wage profile became flatter over the
+1980s and 1990s, indicating a fall in the return to experience. This shift,
+coupled with the fact that the age-related wage differentials for high school
+men were relatively constant, implies that the college–high school wage
+declined for older men relative to younger men, as observed in figure 7.
+For women with a high school education (fig. 16), the experience profile
+shifted downward for younger workers over the 1980s, leading to a rise
+in the conventional return to experience, especially for women with 10–20
+years of experience (i.e., those ages 28–38). The experience profiles for
+college-educated women in figure 17 also show a rise in returns to experience, although for the college group most of the gain was concentrated
+among women with under 10 years of experience. The differential shifts
+in the profiles of high school– and college-educated women are consistent
+with the relative expansion in the college–high school wage gap for
+younger versus older workers that is illustrated in figure 8.
+The changes in experience profiles documented in figures 14–17 are not
+easily explained by any simple version of SBTC. The rising-skill-price
+version of the theory, for example, predicts that we should have seen a
+steepening of experience profiles over the 1980s and 1990s. Although the
+profiles for women became steeper, there was little systematic change in
+the experience gradient for high school–educated men, and the experience
+profile for college-educated men actually flattened. The computer-useskill-complementarity version of SBTC, on the other hand, suggests that
+wages should have risen more for experience groups that use computers
+more intensively. Since computer use rates are relatively flat across age
+groups for high school–educated men, this theory is roughly consistent
+with the lack of change in returns to experience for this group. For the
+other groups, however, the patterns of computer use are not easily reconciled with the shifts in the wage differentials by experience.
+The evolution of the experience profile for college-educated women is
+a particularly interesting feature of the changing U.S. wage structure that
+deserves much further analysis. Manning (2001) has shown that in the
+United Kingdom, where the male-female wage gap also closed substantially over the 1980s, the increase in returns to experience for younger
+women can be partially explained by a shift across cohorts in the fraction
+of time spent working. These shifts have raised the average gain in actual
+labor-market experience per year of potential experience and have translated into a rise in the measured returns to potential experience for more
+
+766
+
+Card/DiNardo
+
+Fig. 18.—Overall and residual wage inequality for male workers
+
+recent cohorts. There is an interesting question here: How far can a similar
+analysis go toward explaining the data in figures 16 and 17?
+VII. Within-Group Wage Inequality
+Some have proposed SBTC as an explanation for the rise in inequality
+among workers with similar observable skill characteristics. To the extent
+that wage differences between workers with the same education, age,
+gender, and race reflect the labor market’s valuation of unmeasured productivity attributes, the rising-skill-price version of SBTC predicts a rise
+in the residual variance associated with a standard human capital earnings
+model of wage determination (Juhn, Murphy, and Pierce 1993). The connection between SBTC and within-group inequality in the computer-useskill-complementarity version of the theory is less clear. If only a fraction
+of workers in each narrowly defined skill group have skills that are complementary with computer technology, however, then within-group inequality will tend to rise as the returns to these skills rises over time.34
+A. Residual Inequality
+Figure 18 presents time-series evidence on the changing overall and
+residual standard deviations of wages for male workers. We show the two
+34
+Note that for groups in which nearly all workers have these complementary
+skills, or very few of the group have these skills, within-group inequality will
+increase less than in groups where the ratio is closer to one-half.
+
+SOLE 2001 Invited Talk
+
+767
+
+measures for FTFY men in the March CPS and for all men in the OGR
+supplements. For both groups, residual inequality is measured as the
+square root of j 2 (1 ⫺ R 2 ), where j 2 is the overall variance of wages and
+R2 is the goodness of fit statistic from a year-specific regression of log
+wages on race, education, and experience variables. For the FTFY samples,
+the regression models include a dummy for nonwhite race, years of education and its square, a third order polynomial in labor-market experience, interactions up to second order between education and experience,
+a dummy for 16 or more years of education, and interactions of this
+dummy with experience and its square. For the OGR samples, the regression models include a full set of interactions of years of education
+with years of experience, and a dummy for nonwhite race.35
+Measures of residual inequality for men move in parallel to the corresponding measures of overall inequality. This reflects the fact that the
+fraction of overall variance explained by age, education, and race is fairly
+constant over time. For example, over the late 1960s and early 1970s, the
+R2 for FTFY men is in the 0.28–.29 range, while in the late 1990s the
+range is from 0.29 to 0.30. The R2 from the models for the OGR sample
+starts at 0.28 in 1979, rises to 0.35 over the 1980s, and remains at about
+0.35 throughout the 1990s. Like overall inequality, then, residual wage
+inequality among men appears to have been fairly stable in the 1970s, to
+have risen in the early 1980s, and to have remained roughly constant since
+then.
+As shown in figure 19, the patterns of residual inequality are broadly
+similar for women, although the fraction of the overall variance in wages
+that can be explained by age and education rises more rapidly for women
+and continues to rise in the 1990s. The R2 of a regression of log wages
+for all female workers in the OGR sample on the full set of interactions
+of age and education rises from 0.22 in 1979 to 0.31 in 1989 and to 0.34
+by 2000. As a consequence, the residual standard deviation of wages is
+nearly constant over the 1990s, despite a small rise (0.02 points) in the
+overall standard deviation. The relative rise in the fraction of female wage
+inequality explained by age and education is partially driven by the steepening of the age profiles observed in figures 16 and 17.
+Trends in residual wage inequality cause the same difficulties for SBTCbased models as the do trends in overall inequality. In particular, the fact
+that all of the rise in residual inequality was concentrated in the early 1980s
+suggests that the only significant period of skill-biased technological change
+occurred during the earliest years of the microcomputer revolution.
+35
+This model has about 875 degrees of freedom in the 1979–91 period, and
+about 600 in the 1992 and later samples, reflecting the reduction in the number
+of education categories.
+
+768
+
+Card/DiNardo
+
+Fig. 19.—Overall and residual wage inequality for female workers
+
+B. Changes between Industries
+One of the important implications of an SBTC-driven rise in the reward
+to unobserved skills is that it should lead to a widening of the wage
+differentials between groups that have been selected or sorted on the basis
+of unobserved ability. Over the past 2 decades, a number of analysts—most notably Murphy and Topel (1987)—have argued that the
+higher wages observed for workers in some industries (e.g., durable manufacturing) relative to others (e.g., retail trade) result from the nonrandom
+allocation of higher- and lower-ability workers to industries. More recent
+research by Abowd and Kramarz (2000) suggests that in the United States,
+about one-half of the observed variance in industry wage differences can
+be attributed to differences in the permanent unobserved characteristics
+of workers in different industries. Assuming that SBTC has led to a rise
+in the return to these unobserved skills, we should expect to see a systematic widening of industry wage differentials, particularly over the
+1980s when many other dimensions of wage inequality expanded.36
+36
+Formally, consider the wage (wijt) of an individual j who works in industry
+i in period t and has observed characteristics Xij and unobserved abilities aij, with
+E(aijFXit) p 0. Assume that
+
+log wijt p Xijbt ⫹ lt aij ⫹ rit,
+where lt represents the “return” to unobserved ability in period t, and rit represents
+a rent (or other nonability-related wage premium) for workers in industry i in
+period t. The industry wage differential for workers in industry i in period t is
+
+SOLE 2001 Invited Talk
+
+769
+
+Fig. 20.—Industry wage differentials in 1989 versus 1979
+
+To test this prediction, we assembled very large microdata samples from
+the 1980 and 1990 Censuses on wages by industry. The Census questions
+on earnings and hours are very similar to those in the March CPS, and
+we used the same selection rules that we applied to our March CPS extracts
+to construct one-quarter samples of all wage and salary workers from the
+5% samples of the two Censuses (see appendix). The samples include
+about 1.1 million men and women between the ages of 16 and 64 with
+at least 1 year of potential experience in 1980, and about 1.3 million similar
+workers in 1990. We used a concordance between the 1980 and 1990
+three-digit industry classifications to assign workers to a set of 224 industries. Then, we fit regression models that include industry dummies
+and a full set of interactions of age, education, and gender. The estimated
+industry effects from these models are plotted against each other in figure
+20.
+Although the standard deviation of the industry wage effects widened
+dit p lt ait ⫹ rit , where ait is the mean of unobserved ability in industry i in period
+t. Note that any component of individual ability that is correlated with observed
+characteristics will be absorbed by the X’s under the assumption that
+E(aijFXit) p 0. If the degree of sorting of individuals across industries does not
+change, then a rise in the return to unobserved ability from l1 to l2 will cause a
+rise in the dispersion of industry wage differentials. Moreover, if rents and abilities
+are uncorrelated, the industry differential in period 2 will be related to the differential in period 1 by a regression coefficient b, with
+plim b p [l1l2 Var (ait) ⫹ Cov (ri1, ri2)] ⫼ [l12 Var (ait) ⫹ Var (ri1)].
+This is an increasing function of l2/l1.
+
+770
+
+Card/DiNardo
+
+by about 10% between 1980 and 1990, there is no indication that the gap
+between higher and lower wage industries widened systematically. A regression of the 1990 industry differentials on the 1980 differentials yields
+a coefficient of 0.97 (with a SE of 0.03) using 1980 industry sizes as
+weights, and a coefficient of 1.02 (with a SE of 0.03) using 1990 industry
+sizes as weights. Similar results are obtained using industry wage differentials for FTFY men only and for all FTFY workers.
+An examination of the biggest outliers in figure 20 suggests some obvious explanations for the changing structure of industry wage differentials. For example, the logging, farm machinery, air transport, and blast
+furnace industries all experienced relatively large declines in their wage
+premiums. Over the 1980s, the logging and steel industries faced a combination of rising trade pressures, deunionization, and a shift in employment toward the South that may have reduced rents in these industries.
+Farm machinery was affected by some of the same factors and a prolonged
+slump in agriculture, while air transport was affected by deregulation. On
+the other side, the tobacco industry and several service industries (e.g.,
+securities dealers and credit agencies) experienced rather large increases
+in their industry wage premiums. Although the expansion of wages for
+high-skilled service industries could reflect SBTC-related factors, the explanation for the tobacco industry presumably lies elsewhere. Taken as a
+whole, we conclude that the changing pattern of industry wage differentials over the 1980s is not particularly supportive of the joint hypotheses
+that industry wage differentials represent unobserved ability differences
+and that the returns to these skills increased because of SBTC.37
+VIII. Summary: SBTC and Widening Wage Inequality
+Table 2 summarizes the main conclusions from our comparison of the
+predictions of SBTC with the actual changes in the wage structure in the
+U.S. labor market. For each dimension of wage inequality, we present the
+predicted changes implied by the two alternative versions of SBTC. In
+developing these predictions, we have assumed that computer-related
+technological change leads to a widening of the wage differences between
+groups who are more or less likely to use a computer on the job (for the
+computer-use-skill-complementarity version of the theory) or that com37
+It is interesting that the 1980 industry residuals are uncorrelated with mean
+education in the industry, whereas the 1990 residuals are positively correlated
+with industry-average education levels. As a result, the change in the industry
+residual is positively correlated with mean industry education in 1980: the regression coefficient is 0.025 with a SE of 0.003. There is a similar pattern with
+the fraction of women in the industry: in 1980 the regression coefficient of the
+industry residual on the fraction of female workers is ⫺0.30 and in 1990 the
+coefficient is ⫺0.23. Consequently, industry differentials rose for industries with
+more female workers.
+
+Table 2
+Summary of Predictions of SBTC for Dimensions of Wage Inequality
+
+Wage Structure
+Feature
+
+Prediction from
+ComputerUse-SkillComplementarity
+View
+
+Prediction from
+Rising-SkillPrice View
+
+Overall inequality:
+By decade:
+1970s
+1980s
+
+?
+Increase
+
+?
+Increase
+
+Increase
+
+Increase
+
+?
+
+Larger for all
+
+Larger for
+FTFY
+
+Between group differences:
+By education:
+College–high school,
+1980s
+
+Increase
+
+Increase
+
+All workers, 1990s
+
+Increase
+
+Increase
+
+Large
+increase
+Little
+increase
+
+Increase
+
+Increase
+
+Increase
+
+Increase
+
+Increase
+
+Little
+increase
+
+Increase
+
+Increase
+
+Decrease
+
+Decrease
+
+Increase
+
+Decrease
+
+Increase
+Decrease
+Increase
+
+Increase
+Increase
+Increase
+
+Decrease
+Decrease
+Little change
+
+Small decrease
+
+Increase
+
+Little change
+
+Increase
+
+No change
+for lower
+education;
+decrease
+for higher
+education
+Increase
+
+?
+
+Expand
+
+Little change
+
+1990s
+FTFY men versus all
+workers,
+1980–2000
+
+College–high school
+by age:
+Younger workers,
+1980s onward
+Older workers,
+1980s onward
+Science versus humanities, 1980s, B.S.B.A. degree
+holders
+Other differentials:
+Male-female:
+All
+Highly educated
+(college plus)
+Less educated
+White-nonwhite (all)
+High-low experience:
+Men
+
+Women
+Interindustry, 1990
+versus 1980
+
+What
+Happened?
+
+Little change
+Large
+increase
+Little change
+
+Note.—See text for explanation. A question mark denotes the possibility that the relevant theory does
+not provide a clear prediction. FTFY p full-time-full-year.
+
+772
+
+Card/DiNardo
+
+puter-related technological change leads to a steady rise in wage differentials across all dimensions of skill (for the rising-skill-price version of
+the theory). We acknowledge that these predictions may be oversimplistic.
+For example, some analysts have argued that computer-related technological changes became less skill biased in the 1990s, possibly changing
+the predicted effect of technological change in the 1990s (e.g., Johnson
+1997; Katz 1999). Absent an independent method for measuring skill
+biasedness, however, allowing for such possibilities reduces the SBTC
+hypothesis to a purely descriptive device.
+Although both versions of SBTC are consistent with some of the
+changes that have occurred over the past 3 decades, both fall short in
+many key dimensions. A fundamental problem is that rises in overall
+wage inequality have not persisted in the 1990s, despite the continuing
+advances in computer technology. Focusing on differences between
+groups, both versions of SBTC have difficulty explaining the stability of
+the race differential, the uniform closing of the gender differential across
+all education groups, and the relative widening of education gaps for
+younger versus older workers. Other interesting puzzles are the fall in
+the relative wages of computer science and engineering graduates, the
+greater widening of wage inequality among FTFY men than among
+broader groups of workers, and the failure of industry wage differences
+to expand over the 1980s.
+IX. SBTC and Productivity
+A final issue worth discussing is the relationship between SBTC and
+productivity growth. Many analysts have noted that the pace of aggregate
+productivity growth was stable during the 1980s and early 1990s, despite
+the rapid diffusion of computers and the almost immediate effect that this
+is presumed to have had on wage inequality.38 As an illustration, figure
+21 plots the log of real output per hour in the nonfarm business sector
+of the United States over the period from 1947 to 2000, along with a
+fitted trend line that allows a productivity showdown after 1975.39 Between 1979 and 1986, when aggregate wage inequality was expanding
+rapidly, productivity first fell relative to trend (during the 1980 and
+1982–83 recessions) and then recovered to its earlier trend level. There is
+38
+For example, in a 1996 statement, Alan Greenspan observed: “The advent of
+the semiconductor, the microprocessor, the computer, and the satellite . . . has
+puzzled many of us in that the growth of output as customarily measured has
+not evidenced a corresponding pickup” (quoted in McGuckin, Stiroh, and van
+Ark [1997], p. 9).
+39
+The productivity series is series PRS85006093, from the U.S. Bureau of Labor
+Statistics, uploaded December 2001. The fitted trend in the log of output per hour
+is 0.0262 in the period from 1947 to 1975, and 0.0139 in the period from 1976
+to 2000.
+
+SOLE 2001 Invited Talk
+
+773
+
+Fig. 21.—Trends in productivity per hour (nonfarm business sector)
+
+no indication that developments in the early 1980s led to a corresponding
+change in the economy’s long-run productive capacity.
+We regard the absence of a link between SBTC (as measured by the
+rate of increase in wage inequality) and aggregate productivity growth as
+a puzzle, although not necessarily a problem, for SBTC. While some
+theoretical discussions of technological change assume that any new technology leads to an outward shift in the economy-wide production frontier,
+some specific versions of SBTC do not. A rise in the share parameter a
+in the aggregate production function given by equation (1) raises the
+productivity of some workers and lowers that of others—thus raising
+wage inequality but not necessarily raising aggregate labor productivity.
+Looking at figures 2 and 21 together, however, it is rather surprising that
+whatever shifts in technology led to the rapid growth in inequality between 1980 and 1985 had no effect on the trend in aggregate productivity.
+In comparison to the early 1980s, the late 1990s may turn out to be a
+better example of a period of rapid technologically driven output growth.
+As shown in figure 21, aggregate output growth was considerably above
+trend in the period 1998–2000. Moreover, some (but not all) measures of
+wage inequality show a rise after 1995 or 1996. Finally, detailed microlevel
+analyses (e.g., Bresnahan, Brynjolfsson, and Hitt 2002) point to specific
+technology-related changes in workplace organization that have a significant impact on productivity. In view of the confounding effect of the
+extraordinary business cycle conditions during the late 1990s, however,
+it may be some time before a definitive interpretation of this period is
+reached.
+
+774
+
+Card/DiNardo
+
+X. Conclusions
+What should we make of recent trends in wage inequality and productivity, and the connection (or lack of connection) to computer-related
+technology? From the vantage point of the late 1980s, there were many
+reasons to find SBTC a plausible explanation for the rise in inequality
+over the previous decade. Most important, the timing seemed right. During the 1970s, the college–high school wage gap narrowed. In a widely
+publicized book, Richard Freeman (1976) argued that the United States
+suffered from an oversupply of educated workers. By 1985, however, it
+was clear that the situation had reversed and that education-related wage
+gaps and other dimensions of inequality were on the rise. At the same
+time, personal computers were making dramatic inroads in the workplace,
+and articles in the business press extolled the potential of the new technology.40 Analysts in the late 1980s had no way of knowing that although
+computer technology would continue to develop rapidly, and computer
+use would expand, the increase in wage inequality was largely over.
+Viewed from 2002, it now appears that the rise in wage inequality was
+an episodic event. Of the 17% rise in the 90–10 wage gap between 1979
+and 1999 for all workers in the OGR wage series (see fig. 2), 13 percentage
+points (or 76%) occurred by 1984, the year that the IBM-AT was introduced. While some of the early rise in inequality may have resulted from
+rapid technological change, we suspect that the increase in the early 1980s
+is largely explained by other plausible—albeit more mundane—factors.
+A primary candidate is the fall in the real value of the minimum wage.
+In 1979, the modal wage for women with a high school education was
+$2.90 an hour—the level of the federal minimum wage (DiNardo, Fortin,
+and Lemieux 1996). Over the next 5 years, the real value of the minimum
+wage fell by 33%, leading to a steep decline in the influence of the minimum wage on the low-wage labor market. Figure 22 plots the real value
+of the federal minimum wage between 1973 and 2000. Examination of
+this figure suggests that it is nearly a mirror image of the inequality series
+in figure 2. Indeed, as shown in figure 23, predictions from a simple
+regression of the normalized 90–10 wage gap (from the May CPS and
+OGR data) on the log of the real minimum wage track the actual wage
+gap very closely. This simple model explains over 90% of the variation
+in the 90–10 wage gap and even captures many of the turning points.
+Of course, neither this informal analysis, nor the more exhaustive study
+by Lee (1999), imply that the minimum wage can explain all the changes
+in the wage structure that occurred in the 1980s and 1990s. Indeed, we
+have documented several important changes that cannot be explained by
+40
+
+For example, Time named the computer its “Man of the Year” for 1982.
+
+Fig. 22.—Real minimum wage, 1973–2000
+
+Fig. 23.—Wage inequality and the minimum wage
+
+776
+
+Card/DiNardo
+
+the minimum wage, including the closing of the gender gap.41 Nevertheless, we suspect that trends in the minimum wage, and other factors such
+as declining unionization and the reallocation of labor induced by the
+1982 recession, can explain much of the rise in overall wage inequality in
+the early 1980s.
+Overall, the evidence linking rising wage inequality to SBTC is surprisingly weak. Moreover, we believe that a narrow focus on technology
+has diverted attention away from many interesting developments in the
+wage structure that cannot be easily explained by SBTC. Perhaps the
+perspective of a new decade will help to open up the field to a broader
+set of explanations.
+Appendix
+Data
+I. October CPS
+We use the October 1984, 1989, 1994, and 1997 Computer Use Supplements of the CPS to measure computer use on the job and to construct
+table 1 and figure A1. Our samples include people who were working in
+the survey week, and whose potential labor market experience is greater
+than zero. We exclude individuals who did not answer the computer-useat-work question. All tabulations are weighted by the regular CPS
+weights.
+II. March CPS
+We use the 1968–2001 March CPS Supplements to construct samples
+of FTFY workers and all workers. Our samples include individuals between the ages of 16 and 64 who had positive weeks of work and reported
+positive wage and salary earnings in the previous year, and whose potential
+labor market experience is greater than zero. For the period from 1989
+onward, we recensor main job earnings and earnings at all other jobs at
+$100,0000 and $25,000, respectively, prior to any further manipulations.
+We consider two estimates of total wage and salary earnings: one that
+ignores topcoding and another than assigns $1.4T to any value that is
+topcoded at $T. For the 1968–88 samples (with data for 1967–87), only
+total wage and salary earnings from all sources are reported, and the
+topcode adjustment is performed on the total. For the 1989–2001 data
+41
+Lee (1999) presents a detailed cross-state evaluation of the effect of the minimum wage on overall wage inequality and concludes that the fall in the real
+minimum wage can explain nearly all of the rise in aggregate inequality in the
+1980s. The observation that the minimum wage explains most of the change in
+overall inequality but cannot explain specific changes in the wage structure is not
+as puzzling as it might first appear. Fortin and Lemieux (1998, 2000) show that
+although the 1980s saw very large increases in gender-specific wage inequality,
+there were much smaller changes in the overall distribution of wages. Lee’s (1999)
+analysis suggest that these are largely explainable by the minimum wage.
+
+SOLE 2001 Invited Talk
+
+777
+
+Fig. A1.—Age profiles of computer use on the job
+
+sets, earnings on the main job and all other wage and salary earnings are
+reported and topcoded separately, and we perform the topcode adjustment
+on the two totals separately before adding them together.
+For our analysis of FTFY workers, we use the log of total wage and
+salary earnings (with or without a topcode adjustment) as our measure
+of wages. For our analyses of other samples, we use the log of average
+hourly earnings, which is constructed by dividing total wage and salary
+earnings (with or without a topcode adjustment) by the product of weeks
+worked and usual hours per week. The latter information is only available
+in the March 1976 and later surveys. The samples of hourly wages exclude
+all observations whose estimated hourly wage is less than one dollar or
+greater than $100 per hour in 1979 dollars, using the CPI-U-X1 price
+index. (This index has value 36.3 for 1967, 74.0 for 1979, and 97.6 for
+December 1982. After January 1983, it is the same as the CPI-U.) The
+samples of annual earnings of FTFY workers exclude all observations
+whose total annual earnings are less than $2,000 or over $200,000 in 1979
+dollars.
+In constructing statistics for FTFY workers, we use the CPS sample
+weights. In constructing statistics for all workers, we use the CPS sample
+weights, multiplied by the number of hours worked in the previous year
+(divided by 2,000). Our estimated percentiles are constructed by converting the weights to integers and treating them as “frequency weights.”
+We do not adjust the percentiles for heaping.
+
+778
+
+Card/DiNardo
+
+Table A1
+FTFY Men
+No Topcode
+Adjustment
+
+1979
+1989
+1994
+1995
+1999
+
+All Workers
+
+Topcode
+Adjustment
+
+No Topcode
+Adjustment
+
+Topcode
+Adjustment
+
+j
+(1)
+
+90–10
+(2)
+
+j
+(3)
+
+90–10
+(4)
+
+j
+(5)
+
+90–10
+(6)
+
+j
+(7)
+
+90–10
+(8)
+
+.53
+.60
+.61
+.60
+.60
+
+.49
+.60
+.62
+.62
+.63
+
+.55
+.60
+.61
+.63
+.64
+
+.49
+.60
+.62
+.62
+.63
+
+.57
+.61
+.61
+.61
+.60
+
+.55
+.60
+.62
+.61
+.62
+
+.58
+.61
+.61
+.63
+.63
+
+.55
+.60
+.62
+.61
+.63
+
+Note.—FTFY p full-time-full-year.
+
+III. OGR Samples
+We use the earnings supplements of the 1979–2001 monthly CPS files
+to construct our OGR samples. Our samples include individuals between
+the ages of 16 and 64 who are eligible for the earnings-supplement questions and report positive hours and earnings for their main job. For workers who are paid by the hour, we use their edited hourly wage as a wage
+measure, with no adjustment for topcoding. For individuals who are not
+paid by the hour, we consider two estimates of weekly earnings: one that
+ignores topcoding and another that assigns $1.4T to any value that is
+topcoded at $T. For all years except 1986–88, we use edited weekly earnings. For the 1986–88 samples, edited weekly earnings are topcoded at
+$1,000, but unedited earnings are topcoded at $1,923. In cases where the
+edited field is topcoded and the unedited field is greater than $1,000, we
+use the unedited field. For the 1979–93 surveys, we convert weekly wages
+to an estimated hourly wage by dividing by usual hours. For the 1994
+and later surveys, a small number of people report that their usual hours
+on their main job vary. We use an algorithm developed by Anne Polivka
+to assign an estimate of hours for most of these cases, based on actual
+hours last week, whether individuals say that they are usually full time
+or part time, and whether they have one or more than one job. The samples
+of hourly wages exclude all observations whose estimated hourly wage
+is less than one dollar or greater than $100 per hour in 1979 dollars, using
+the CPI-U-X1 price index.
+In constructing statistics for the OGR samples, we use the outgoing
+rotation supplement weights, multiplied by the number of hours worked
+in the previous week. As with the March CPS samples, our estimated
+percentiles are constructed by converting the weights to integers and
+treating them as frequency weights. We do not adjust the percentiles for
+heaping.
+IV. Alternative Estimates of Overall Wage Inequality—March CPS
+Table A1 shows the effects of alternative methods for dealing with
+topcoding on two measures of wage inequality derived from the March
+
+SOLE 2001 Invited Talk
+
+779
+
+Table A2
+All Workers
+
+1979
+1989
+1993
+1994
+1999
+
+No
+Adjustment
+j
+(1)
+
+j
+(2)
+
+.50
+.55
+.55
+.56
+.56
+
+.50
+.56
+.56
+.57
+.56
+
+Men Only
+
+90–10
+(3)
+
+No
+Adjustment
+j
+(4)
+
+j
+(5)
+
+.49
+.56
+.57
+.57
+.55
+
+.48
+.55
+.56
+.56
+.56
+
+.49
+.56
+.57
+.58
+.57
+
+Topcode
+Adjustment
+
+Women Only
+
+90–10
+(6)
+
+No
+Adjustment
+j
+(7)
+
+j
+(8)
+
+90–10
+(9)
+
+.48
+.55
+.57
+.58
+.57
+
+.42
+.51
+.52
+.53
+.52
+
+.42
+.51
+.52
+.54
+.53
+
+.38
+.51
+.51
+.52
+.53
+
+Topcode
+Adjustment
+
+Topcode
+Adjustment
+
+CPS: the standard deviation of log wages (j) and the adjusted 90–10 wage
+gap (90–10). We show wage dispersion estimates for annual earnings of
+FTFY men and hourly wages of all workers (hours weighted). The columns labeled “No Topcode Adjustment” use the censored earnings data
+as is. The columns labeled “Topcode Adjustment” multiply any censored
+earnings value by 1.4 before calculating total earnings or hourly wages.
+V. Alternative Estimates of Overall Wage Inequality—OGR
+Table A2 shows the effects of alternative methods for dealing with
+topcoding on two measures of wage inequality derived from the OGR
+samples: the standard deviation of log wages (j) and the adjusted 90–10
+wage gap (90–10). We show wage dispersion estimates for hourly wages
+of all workers, men, and women (hours weighted). The columns labeled
+“No Topcode Adjustment” use the censored earnings data as is. The
+columns labeled “Topcode Adjustment” multiply any censored weekly
+earnings value by 1.4 before calculating hourly wages.
+VI. Calculation of Relative Supply Index
+We calculated the relative supply index shown in figure 6 using March
+CPS data. We first estimated annual hours for workers in the 1968–75
+samples by assigning mean annual hours by gender and full-time status
+for each reported interval of weeks worked. We then assign each person
+two numbers: his or her “college equivalent” units, and his or her “high
+school equivalent” units. For those with education (E) under 12, we assume that college units p zero and high school units p exp [0.1(E ⫺
+12)]. For those with E p 12, we assume that college units p zero and
+high school units p one. For those with E ≥ 16, we assume that high
+school units p zero and college units p exp [0.1(E ⫺ 12)]. Finally, for
+those with 12 ! E ! 16, we assume that high school units p 1 ⫺ (E ⫺
+12)/4 and college units p (E ⫺ 12)/4. We then multiplied each workers
+hours by his or her equivalent units to get total hours supplied of the
+two types of labor. Finally, we calculated the mean number of hours
+
+780
+
+Card/DiNardo
+
+supplied of the two types of labor by all workers and took the ratio of
+these means as our relative supply index.
+VII. 1980 and 1990 Census Samples
+We calculate the industry wage differentials in figure 20 using 25%
+random samples of the 1980 and 1990 Census 5% public use files. We
+include only workers between the ages of 16 and 64 with at least 1 year
+of potential experience, and with positive hours of work and positive
+wage and salary earnings in the previous year. We divide wage and salary
+earnings by annual hours (weeks times usual hours per week) to estimate
+a wage. We exclude observations with hourly wages under two dollars
+or over $100 in the 1980 Census, and those with wages under three dollars
+or over $150 in the 1990 Census.
+References
+Abowd, John M., and Kramarz, Francis. “Inter-industry and Firm-Size
+Wage Differentials: New Evidence from Linked Employer-Employee
+Data.” Unpublished manuscript. Ithaca, NY: Cornell University School
+of Industrial and Labor Relations, July 2000.
+Autor, David, and Katz, Lawrence. “Changes in the Wage Structure and
+Earnings Inequality.” In Handbook of Labor Economics, vol. 3A, ed.
+Orley Ashenfelter and David Card, pp. 1463–1555. Amsterdam: Elsevier, 1999.
+Autor, David; Katz, Lawrence; and Krueger, Alan B. “Computing Inequality: Have Computers Changed the Labor Market?” Quarterly Journal of Economics 113 (November 1999): 1169–1214.
+Basu, Susanto; Fernald, John G.; and Shapiro, Matthew D. “Productivity
+Growth in the 1990s: Technology, Utilization, or Adjustment?” NBER
+Working Paper no. 8359. Cambridge, MA: National Bureau of Economic Research, July 2001.
+Berg, Maxine. The Machinery Question and the Making of Political Economy, 1815–1848. Cambridge: Cambridge University Press, 1984.
+Berman, Eli; Bound, John; and Griliches, Zvi. “Changes in the Demand
+for Skilled Labor within U.S. Manufacturing Industries.” Quarterly
+Journal of Economics 109 (May 1994): 367–98.
+Blau, Francine, and Kahn, Lawrence M. “Swimming Upstream: Trends
+in the Gender Wage Differential in the 1980s.” Journal of Labor Economics 15, pt. 1 (January 1997): 1–42.
+Bluestone, Barry, and Harrison, Bennet. The Great U-Turn: Corporate
+Restructuring and the Polarizing of America. New York: Basic, 1988.
+Bound, John, and Johnson, George. “Changes in the Structure of Wages
+in the 1980s: An Evaluation of Alternative Explanations.” American
+Economic Review 83 (June 1992): 371–92.
+Bresnahan, Timothy F. “Computerisation and Wage Dispersion: An Analytical Reinterpretation.” Economic Journal 109 (June 1999): 390–415.
+Bresnahan, Timothy F.; Brynjolfsson, Erik; and Hitt, Lorin M. “Information Technology, Workplace Organization and the Demand for
+
+SOLE 2001 Invited Talk
+
+781
+
+Skilled Labor: Firm-Level Evidence.” Quarterly Journal of Economics
+117 (February 2002): 339–76.
+Butler, Richard, and Heckman, James J. “The Government’s Impact on
+the Labor Market Status of Black Americans: A Critical Review.” In
+Equal Rights and Industrial Relations, ed. Leonard J. Hausman, Orley
+Ashenfelter, Bayard Rustin, Richard F. Shubert, and Donald Slaiman,
+pp. 235–81. Madison, WI: Industrial Relations Research Association,
+1977.
+Card, David, and DiNardo, John E. “Skill Biased Technological Change
+and Rising Wage Inequality: Some Problems and Puzzles.” NBER
+Working Paper no. 8769. Cambridge, MA: National Bureau of Economic Research, February 2002.
+Card, David, and Lemieux, Thomas. “Changing Wage Structure and
+Black-White Wage Differences.” American Economic Review 84 (May
+1994): 29–33.
+———. “Can Falling Supply Explain the Rising Return to College for
+Younger Men? A Cohort-Based Analysis.” University of California
+Department of Economics Center for Labor Economics Working Paper
+no. 13. Berkeley: University of California, Berkeley, March 1999.
+———. “Can Falling Supply Explain the Rising Return to College for
+Younger Men? A Cohort-Based Analysis.” Quarterly Journal of Economics 116 (May 2001): 705–46.
+Cook, Michael D., and Evans, William N. “Families or Schools? Explaining the Convergence in White and Black Academic Performance.” Journal of Labor Economics 18 (October 2000): 729–54.
+Couch, Kenneth, and Daly, Mary C. “Black-White Wage Inequality in
+the 1990s: A Decade of Progress.” Economic Inquiry 40 (January 2002):
+31–41.
+DiNardo, John E.; Fortin, Nicole; and Lemieux, Thomas. “Labor Market
+Institutions and the Distribution of Wages, 1973–1992: A Semi-parametric Approach.” Econometrica 64 (September 1996): 1001–44.
+Fortin, Nicole, and Lemieux, Thomas. “Rank Regressions, Wage Distributions, and the Gender Gap.” Journal of Human Resources 33 (Winter
+1998): 610–43.
+———. “Are Women’s Wage Gains Men’s Losses? A Distributional Test.”
+American Economic Review 90 (May 2000): 456–60.
+Freeman, Richard B. “Overinvestment in College Training?” Journal of
+Human Resources 10 (Summer 1975): 287–311.
+———. The Overeducated American. New York: Academic Press, 1976.
+Gordon, Robert J. “Does the ‘New Economy’ Measure Up to the Great
+Inventions of the Past?” Journal of Economic Perspectives 14 (Fall 2000):
+49–74.
+Gronau, Reuben. “Wage Comparisons—a Selectivity Bias.” Journal of
+Political Economy 82 (November–December 1974): 1119–43.
+Hamilton, Barton Hughes. “Returns to Computer Skills and Black White
+Wage Differentials.” Unpublished manuscript. St. Louis: Washington
+University, Department of Economics, 1997.
+Information Technology Industry Council. Information Technology In-
+
+782
+
+Card/DiNardo
+
+dustry Data Book, 1960–2007. Washington, DC: Information Technology Industry Council, 1997.
+Johnson, George. “Changes in Earnings Inequality: The Role of Demand
+Shifts.” Journal of Economic Perspectives 11 (Spring 1997): 41–54.
+Jones, Arthur F., and Weinberg, Daniel. “The Changing Shape of the
+Nation’s Income Distribution.” U.S. Department of Commerce, Bureau
+of the Census. Population Report P60-204. Washington, DC: U.S. Government Printing Office, June 2000.
+Jorgenson, Dale W. “Information Technology and the U. S. Economy.”
+American Economic Review 91 (March 2001): 1–32.
+Juhn, Chinhui; Murphy, Kevin M.; and Pierce, Brooks. “Accounting for
+the Slowdown in Black-White Wage Convergence.” In Workers and
+Their Wages, ed. Marvin H. Kosters, pp. 107–43. Washington, DC:
+AEI, 1991.
+———. “Wage Inequality and the Rise in Returns to Skill.” Journal of
+Political Economy 101 (June 1993): 410–42.
+Katz, Lawrence. “Technological Change, Computerization, and the Wage
+Structure.” Unpublished manuscript. Cambridge, MA: Harvard University, Department of Economics, 1999.
+Katz, Lawrence, and Murphy, Kevin M. “Changes in Relative Wages,
+1963–1987: Supply and Demand Factors.” Quarterly Journal of Economics 107 (February 1992): 35–78.
+Krueger, Alan B. “How Computers Have Changed the Wage Structure:
+Evidence from Microdata, 1984–1989.” Quarterly Journal of Economics
+108 (February 1993): 33–60.
+Lee, David S. “Wage Inequality during the 1980s: Rising Dispersion or
+Falling Minimum Wage?” Quarterly Journal of Economics 114 (August
+1999): 977–1023.
+Levy, Frank, and Murnane, Richard J. “U.S. Earnings and Earnings Inequality: A Review of Recent Trends and Proposed Explanations.” Journal of Economic Literature 30 (September 1992): 1333–81.
+Manning, Alan. “Can Rising Labor Market Attachment Explain the Closing of the UK Gender Gap?” Unpublished manuscript. London: London School of Economics, Department of Economics, October 2001.
+McGuckin, Robert H.; Stiroh, Kevin J.; and van Ark, Bart. “Computers,
+Productivity, and Economic Growth.” Report no. 1206-97-RR. New
+York: Conference Board, 1997.
+Mincer, Jacob. Education, Experience, and Earnings. New York: Columbia University Press, 1974.
+Mishel, Lawrence; Bernstein, Jared; and Schmitt, John. The State of Working America: 2000/2001. Ithaca, NY: Cornell University Press, 2001.
+Additional tables available at http://www.epinet.org/datazone/.
+Murphy, Kevin J., and Topel, Robert H. “Unemployment, Risk and Earnings: Testing for Equalizing Wage Differences in the Labor Market.”
+In Unemployment and the Structure of Labor Markets, ed. Kevin Lang
+and Jonathan S. Leonard, pp. 103–40. Oxford: Blackwell, 1987.
+Neal, Derek. “Is the Measured Black-White Wage Gap among Women
+
+SOLE 2001 Invited Talk
+
+783
+
+Too Small?” Unpublished manuscript. Chicago: University of Chicago,
+Department of Economics, November 2001.
+Oliner, Stephen D., and Sichel, Daniel E. “The Resurgence of Growth in
+the Late 1990s: Is Information Technology the Story?” Journal of Economic Perspectives 14 (Fall 2000): 3–22.
+Polivka, Anne E. “Data Watch: The Redesigned Current Population Survey.” Journal of Economic Perspectives 10 (Summer 1996): 169–80.
+Smith, W. Hawkes. “On the Tendency and Prospects of Mechanics’ Institutions.” Analyst 2 (1835): 333–38.
+U.S. Department of Education, National Center for Education Statistics.
+The Condition of Education. Washington, DC: U.S. Government Printing Office, 1998. Tabulations at http://nces.ed.gov/pubs98/condition98.
+Weinberg, Bruce. “Computer Use and the Demand for Female Workers.”
+Industrial and Labor Relations Review 53 (January 2000): 290–308.
+
+

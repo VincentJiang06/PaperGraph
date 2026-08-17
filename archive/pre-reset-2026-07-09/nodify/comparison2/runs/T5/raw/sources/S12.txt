@@ -1,0 +1,19 @@
+Source: UC Berkeley Institute for Research on Labor and Employment (IRLE). "Effects of the $20 California Fast-Food Minimum Wage" (research brief, 2024/2025).
+URL: https://irle.berkeley.edu/publications/brief/effects-of-the-20-california-fast-food-minimum-wage/
+Retrieved via WebFetch on 2026-07-09.
+
+Extracted content:
+
+**Wage Impact:**
+"an estimated wage increase of 8 to 9 percent for workers covered by the policy"
+
+**Employment Effects:**
+"no negative effects on fast-food employment" and "The number of fast-food establishments grew faster in California than in the rest of the U.S."
+
+**Price Increases:**
+"price increases of about 1.5 percent— or about 6 cents on a four-dollar hamburger"
+
+**Spillover Effects:**
+"no spillovers to non-covered workers"
+
+The brief also notes the researcher identified "questionable methods in a recent industry report" that claimed larger negative employment and price effects, stating that report "cherry picks its numbers and does not use modern causal identification methods."

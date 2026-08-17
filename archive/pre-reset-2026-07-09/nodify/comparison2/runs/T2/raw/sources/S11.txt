@@ -1,0 +1,15 @@
+Source S11
+Title: What is a soft landing?
+Publisher: Brookings Institution
+URL: https://www.brookings.edu/articles/what-is-a-soft-landing/
+Fetched: 2026-07-09 (via WebFetch)
+
+Extracted verbatim quotes:
+
+"if the Fed can raise interest rates just enough to slow the economy and reduce inflation without causing a recession, it has achieved what is known as a soft landing."
+
+2023 data points (article updated December 2023): headline CPI rose at a 3.9% annual rate (June-August 2023); unemployment remained low at 3.8% (August 2023); GDP continued rising at a solid pace.
+
+Janet Yellen quote: "the economy continues to grow, the labor market remains strong and inflation comes down."
+
+"69% of economists surveyed in August 2023 expressed confidence the Fed could achieve a soft landing, up from only 30% five months earlier." Recession probability estimates dropped below 50% by late 2023.

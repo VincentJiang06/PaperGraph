@@ -1,0 +1,8 @@
+{
+  "parent_id": "N-0007",
+  "children": [
+    {"statement": "加州快餐$20(AB1228,2024生效)——极新自然实验:Berkeley(Reich等)报告就业无显著损失且价格小幅上升,而其他分析(如Employment Policies Institute/部分BLS序列解读)称快餐岗位下降,证据尚在争议。", "why_helps_parent": "最前沿、高比值的自然实验,直接检验高上调下的就业效应与证据分歧", "orientation": "neutral"},
+    {"statement": "青年/无经验/低技能群体:teen与低技能就业弹性通常比总体更负,disemployment集中在最边际群体,尽管绝对幅度仍不大。", "why_helps_parent": "把平均效应拆到最可能受损的群体,校准分配后果", "orientation": "neutral"},
+    {"statement": "小企业/低薪部门承压:反方证据显示小企业(尤其低利润餐饮)在大幅上调后退出增加、招聘减少、评级更差(如Dube-Luca-Bazzoli的Yelp餐厅退出研究)。", "why_helps_parent": "检验平均近零是否掩盖了边际企业的退出与局部就业损失", "orientation": "adversarial"}
+  ]
+}

@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0009",
+ "lean": "mixed",
+ "summary": "西雅图$15是'方法决定结论'的教科书案例:UW团队用州行政工时数据发现$13档使低薪工时降6-7%、月报酬降约$74;Berkeley团队用餐饮机构数据未见就业损失。两者并不矛盾——headcount近零可与工时/收入下降并存,分歧主要在测量对象(工时vs人数)与设定,而非政策效果本身。",
+ "confidence": "high",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Jardim(UW):工时下降",
+    "doc_id": "DOC-0005",
+    "quote": "the second wage increase to $13 reduced hours worked in low-wage jobs by 6-7 percent",
+    "url": "https://www.nber.org/papers/w23532",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "title": "Reich(Berkeley):餐饮无就业损失",
+    "doc_id": "DOC-0006",
+    "quote": "found no evidence of job loss in Seattle's restaurant industry, even as hourly pay reached $13.",
+    "url": "https://irle.berkeley.edu/publications/",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "若统一到'总工时'口径,两队差距还剩多少?"
+ ]
+}

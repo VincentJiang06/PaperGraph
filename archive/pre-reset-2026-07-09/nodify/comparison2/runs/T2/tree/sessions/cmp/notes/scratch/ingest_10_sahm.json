@@ -1,0 +1,11 @@
+{
+  "kind": "report",
+  "title": "CRS IN12410 / Fortune reporting: The Sahm Rule Trigger and 2024-2025 labor market",
+  "url": "https://www.congress.gov/crs-product/IN12410",
+  "text_file": "notes/scratch/doc_sahm_rule.txt",
+  "summary": "2024年7月Sahm规则触发(3个月均值失业率较周期低点高0.53pp),但未发生衰退,创立者称'这次可能不同'(移民驱动的劳动力供给增长而非需求崩溃);2025年8月失业率升至4.3%,较2024年1月低点3.7%累计上升0.6pp。",
+  "bindings": [
+    {"node_id": "N-0014", "relation": "supports", "note": "2024-2025年实际数据显示软着陆已实现:GDP保持正增长,尽管Sahm规则技术性触发但未发生衰退"},
+    {"node_id": "N-0015", "relation": "supports", "note": "失业率持续爬升且接近Sahm规则再次触发的阈值(4.6%),显示软着陆的脆弱性并未完全消除"}
+  ]
+}

@@ -1,0 +1,19 @@
+{
+ "kind": "report",
+ "title": "Contrarian analysis of AB 1228 ($20 fast food), via Cato / NBER 34033",
+ "url": "https://www.cato.org/research-briefs-economic-policy/did-californias-fast-food-minimum-wage-reduce-employment",
+ "text_file": "notes/src_ca20_con.txt",
+ "summary": "对AB 1228的反方分析:调整其他行业趋势后,快餐就业下降3.2-3.6%(中位约18000个岗位);$20对快餐是高相对工资,负估计与高Kaitz非线性一致——AB1228就业证据存在真实分歧。",
+ "bindings": [
+  {
+   "node_id": "N-0025",
+   "relation": "refutes",
+   "note": "高相对水平出现负就业一侧"
+  },
+  {
+   "node_id": "N-0019",
+   "relation": "supports",
+   "note": "高Kaitz非线性"
+  }
+ ]
+}

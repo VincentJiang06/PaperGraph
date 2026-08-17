@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Does the logic tree help? — Ablation v2 (Sonnet 5, 5 hard topics)</title>
+<style>
+  :root{
+    --bg:#f4f5f7; --surface:#ffffff; --surface-2:#fbfcfd; --ink:#191c22; --muted:#5c6672;
+    --line:#e3e6ec; --line-strong:#cdd2db;
+    --accent:#345b86;            /* steel blue = framework/tree */
+    --raw:#8a94a2; --skills:#b07d1c; --tree:#345b86;
+    --win:#2f7d4a; --tie:#8a6d1e; --behind:#a4562a;
+    --shadow:0 1px 2px rgba(20,28,40,.05),0 8px 26px rgba(20,28,40,.06);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#12151a; --surface:#191d24; --surface-2:#1e232b; --ink:#e7eaef; --muted:#9aa4b2;
+      --line:#2a303a; --line-strong:#39414d;
+      --accent:#7aa6d8; --raw:#8892a1; --skills:#d6a54a; --tree:#7aa6d8;
+      --win:#5cc07f; --tie:#d8b657; --behind:#e08a5a;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12151a; --surface:#191d24; --surface-2:#1e232b; --ink:#e7eaef; --muted:#9aa4b2;
+    --line:#2a303a; --line-strong:#39414d; --accent:#7aa6d8; --raw:#8892a1; --skills:#d6a54a;
+    --tree:#7aa6d8; --win:#5cc07f; --tie:#d8b657; --behind:#e08a5a;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{
+    --bg:#f4f5f7; --surface:#ffffff; --surface-2:#fbfcfd; --ink:#191c22; --muted:#5c6672;
+    --line:#e3e6ec; --line-strong:#cdd2db; --accent:#345b86; --raw:#8a94a2; --skills:#b07d1c;
+    --tree:#345b86; --win:#2f7d4a; --tie:#8a6d1e; --behind:#a4562a;
+    --shadow:0 1px 2px rgba(20,28,40,.05),0 8px 26px rgba(20,28,40,.06);
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    line-height:1.62;margin:0;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:clamp(1.1rem,4vw,3rem) clamp(1.1rem,5vw,2rem)}
+  .serif{font-family:"Iowan Old Style",Georgia,"Times New Roman",serif}
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+  h1{font-size:clamp(1.8rem,5vw,2.9rem);line-height:1.1;letter-spacing:-.015em;margin:.2em 0 .3em;
+    text-wrap:balance;font-weight:650}
+  h2{font-size:clamp(1.25rem,3.2vw,1.6rem);letter-spacing:-.01em;margin:2.6rem 0 .5rem;
+    padding-top:1.4rem;border-top:1px solid var(--line);text-wrap:balance;font-weight:640}
+  h3{font-size:1.02rem;margin:1.4rem 0 .3rem;font-weight:640}
+  p{margin:.6rem 0}
+  .eyebrow{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .dek{font-size:clamp(1.02rem,2.3vw,1.18rem);color:var(--muted);max-width:60ch;margin:.4rem 0 0}
+  .lead-fig{display:flex;flex-wrap:wrap;gap:1rem;margin:1.8rem 0 .4rem}
+  .stat{flex:1 1 210px;background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:1.05rem 1.15rem;box-shadow:var(--shadow)}
+  .stat .k{font-size:.76rem;letter-spacing:.04em;color:var(--muted);text-transform:uppercase;font-weight:600}
+  .stat .v{font-size:2.15rem;line-height:1.05;margin-top:.25rem;font-weight:650}
+  .stat .s{font-size:.86rem;color:var(--muted);margin-top:.15rem}
+  .now{color:var(--accent)}
+  .tableScroll{overflow-x:auto;margin:.7rem 0;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+  table{border-collapse:collapse;width:100%;font-size:.93rem}
+  caption{caption-side:top;text-align:left;color:var(--muted);font-size:.84rem;padding:.6rem .8rem .1rem}
+  th,td{padding:.5rem .8rem;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  th:first-child,td:first-child{text-align:left;white-space:normal}
+  thead th{font-weight:600;font-size:.82rem;color:var(--muted);border-bottom:1px solid var(--line-strong)}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums}
+  .m-raw{color:var(--raw)} .m-skills{color:var(--skills)} .m-tree{color:var(--tree)}
+  .col-tree{background:color-mix(in srgb,var(--tree) 8%,transparent)}
+  tr.total td{font-weight:700;border-top:1px solid var(--line-strong)}
+  .best{font-weight:700}
+  .chip{display:inline-block;font-size:.76rem;font-weight:650;padding:.08rem .5rem;border-radius:999px;
+    font-family:ui-monospace,monospace}
+  .c-tree{background:color-mix(in srgb,var(--tree) 16%,transparent);color:var(--tree)}
+  .c-skills{background:color-mix(in srgb,var(--skills) 18%,transparent);color:var(--skills)}
+  .c-tie{background:color-mix(in srgb,var(--tie) 18%,transparent);color:var(--tie)}
+  .callout{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:12px;padding:1.1rem 1.25rem;margin:1.3rem 0;box-shadow:var(--shadow)}
+  .callout.warn{border-left-color:var(--behind)}
+  .verdict{display:flex;gap:.6rem;align-items:baseline;margin:.35rem 0}
+  .verdict .tag{font-size:.72rem;font-weight:700;letter-spacing:.05em;padding:.12rem .5rem;border-radius:6px;
+    text-transform:uppercase;flex:none}
+  .tag.no{background:color-mix(in srgb,var(--behind) 16%,transparent);color:var(--behind)}
+  .tag.yes{background:color-mix(in srgb,var(--win) 16%,transparent);color:var(--win)}
+  ul{margin:.5rem 0;padding-left:1.15rem} li{margin:.3rem 0}
+  .legend{font-size:.82rem;color:var(--muted);margin:.3rem 0 0}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:.86em;background:var(--surface-2);
+    border:1px solid var(--line);border-radius:5px;padding:.05rem .32rem}
+  footer{margin-top:2.6rem;padding-top:1.2rem;border-top:1px solid var(--line);color:var(--muted);font-size:.86rem}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.8rem 0}
+  @media(max-width:620px){.grid2{grid-template-columns:1fr}}
+  .mini{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.9rem 1rem;box-shadow:var(--shadow)}
+  .mini h3{margin:.1rem 0 .4rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="eyebrow">Nodify · three-mode ablation, v2</span>
+  <h1 class="serif">Does the logic tree actually make the writing better?</h1>
+  <p class="dek">A harder, fairer re-run — <strong>Sonnet 5</strong> instead of Opus,
+  <strong>five</strong> contested economic-analysis questions instead of one, blind
+  Opus judge panel. Built specifically to give the tree its best shot. The answer came
+  back honest and a little humbling.</p>
+
+  <div class="lead-fig">
+    <div class="stat">
+      <div class="k">Judged quality spread</div>
+      <div class="v"><span class="mono now">0.20</span></div>
+      <div class="s">raw 4.53 · skills 4.60 · tree 4.73 (overall, /5)</div>
+    </div>
+    <div class="stat">
+      <div class="k">Same spread in v1 (Opus, 1 easy topic)</div>
+      <div class="v"><span class="mono">2.00</span></div>
+      <div class="s">raw 3.0 → tree 5.0</div>
+    </div>
+    <div class="stat">
+      <div class="k">Cold-resume recoverability</div>
+      <div class="v"><span class="mono">5 · 5 · 3</span></div>
+      <div class="s">tree · skills · raw (/5)</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>One-line finding.</strong> On a harder, fairer, five-topic test with a
+    capable model, the logic tree is <strong>not a meaningful article-quality lever over
+    disciplined thinking</strong>. The discipline is the lever; the tree ties it on
+    quality (+0.20 vs raw, ±0 vs skills). The tree's defensible value is
+    <em>structural</em> — enforced auditability, guaranteed recoverability, and a small
+    consistent calibration edge — not better prose.
+  </div>
+
+  <h2 class="serif">The hypothesis, and the verdict</h2>
+  <p>The whole point of this run was to test the claim I'd made after v1: that the tree
+  would help <em>more</em> with a weaker model on harder tasks, where an agent can't hold
+  the reasoning in its head. Three conditions, isolated single-context runs, the only
+  variable is the framework: <span class="m-raw">raw</span> (no method),
+  <span class="m-skills">skills</span> (thinking discipline, no tooling),
+  <span class="m-tree">tree</span> (full <code>nd</code> CLI + skill).</p>
+
+  <div class="verdict"><span class="tag no">not supported</span>
+    <span>“A weaker model needs the tree more.” The judged gap got <em>smaller</em>
+    (0.20) than the Opus run (2.0), not larger — Sonnet 5 was strong enough that the
+    floor the tree provides rarely bound.</span></div>
+  <div class="verdict"><span class="tag yes">supported</span>
+    <span>The tree's edge lives in <em>disciplined-reasoning</em> dimensions
+    (calibration, adversarial rigor) and in structural guarantees (auditability,
+    recoverability) — not in evidence breadth or prose quality.</span></div>
+
+  <h2 class="serif">Blind judge panel — 3 Opus judges × 5 topics</h2>
+  <div class="tableScroll">
+  <table>
+    <caption>Mean score /5. Mode hidden from judges, citations format-normalized, slots Latin-square rotated. Best in each row bolded.</caption>
+    <thead><tr><th>dimension</th><th class="m-raw">raw</th><th class="m-skills">skills</th><th class="m-tree col-tree">tree</th></tr></thead>
+    <tbody>
+      <tr><td>structure / logic</td><td class="num">4.67</td><td class="num">4.67</td><td class="num best col-tree">4.73</td></tr>
+      <tr><td>evidence quality</td><td class="num">4.27</td><td class="num best">4.60</td><td class="num col-tree">4.40</td></tr>
+      <tr><td>adversarial rigor</td><td class="num">4.47</td><td class="num">4.60</td><td class="num best col-tree">4.73</td></tr>
+      <tr><td>calibration</td><td class="num">4.73</td><td class="num">4.60</td><td class="num best col-tree">4.93</td></tr>
+      <tr class="total"><td>overall</td><td class="num">4.53</td><td class="num">4.60</td><td class="num best col-tree">4.73</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="legend">The tree leads on calibration and adversarial rigor — judges
+  repeatedly credited its <em>enforced</em> adversarial line (on the AI-jobs topic it
+  “deliberately imports disconfirming data: METR slower-but-believed-faster,
+  Revelio/Ramp heavy-adopters-hire-more”). It does <strong>not</strong> lead on evidence
+  quality — skills wins there.</p>
+
+  <h2 class="serif">Per-topic winner — a wash, not a sweep</h2>
+  <div class="tableScroll">
+  <table>
+    <caption>“Overall” score /5 per topic. tree ≥ raw on all five; tree vs skills splits 2–2–1.</caption>
+    <thead><tr><th>topic</th>
+      <th>T1 AI-jobs</th><th>T2 inflation</th><th>T3 QE·ineq</th><th>T4 China demog</th><th>T5 min-wage</th></tr></thead>
+    <tbody>
+      <tr><td class="m-raw">raw</td><td class="num">5.00</td><td class="num">4.33</td><td class="num">5.00</td><td class="num">4.00</td><td class="num">4.33</td></tr>
+      <tr><td class="m-skills">skills</td><td class="num">4.00</td><td class="num">4.00</td><td class="num">5.00</td><td class="num best">5.00</td><td class="num best">5.00</td></tr>
+      <tr><td class="m-tree">tree</td><td class="num best col-tree">5.00</td><td class="num best col-tree">4.67</td><td class="num col-tree">5.00</td><td class="num col-tree">4.33</td><td class="num col-tree">4.67</td></tr>
+      <tr class="total"><td>top</td>
+        <td><span class="chip c-tie">tie</span></td>
+        <td><span class="chip c-tree">tree</span></td>
+        <td><span class="chip c-tie">tie</span></td>
+        <td><span class="chip c-skills">skills</span></td>
+        <td><span class="chip c-skills">skills</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2 class="serif">Mechanical metrics — the v1 breadth edge didn't replicate</h2>
+  <div class="tableScroll">
+  <table>
+    <caption>By-mode mean across 5 topics.</caption>
+    <thead><tr><th>metric</th><th class="m-raw">raw</th><th class="m-skills">skills</th><th class="m-tree col-tree">tree</th></tr></thead>
+    <tbody>
+      <tr><td>article length (中文字)</td><td class="num">1755</td><td class="num">1820</td><td class="num col-tree">1833</td></tr>
+      <tr><td>distinct sources cited</td><td class="num">12.8</td><td class="num">12.8</td><td class="num col-tree">12.2</td></tr>
+      <tr><td>citation traceability</td><td class="num">100%</td><td class="num">100%</td><td class="num col-tree">100%</td></tr>
+      <tr><td>verbatim-verified archive (by code)</td><td class="num">—</td><td class="num">—</td><td class="num best col-tree">5/5 sessions</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="legend">In v1 the tree had ~2× the sources (18 vs 8–9). Here they're even —
+  the Sonnet raw/skills authors cited prolifically, and tree DOC-bundling
+  <em>undercounts</em> (one tree folded ~6 studies into 4 “case-file” entries). The lone
+  surviving mechanical tree-win is <strong>enforced auditability</strong>: every tree
+  quote is checked against saved source text by <code>nd check</code>. raw/skills had
+  good provenance too — but nothing <em>verified</em> it.</p>
+
+  <h2 class="serif">Cold-resume — keep the sources, lose the thinking</h2>
+  <div class="grid2">
+    <div class="mini">
+      <h3>The test</h3>
+      <p style="margin:.2rem 0;font-size:.92rem;color:var(--muted)">Each investigation
+      was “interrupted.” A fresh Opus agent had to rebuild the reasoning state from
+      disk-only artifacts — tree via <code>nd brief</code>, skills via <code>log.md</code>,
+      raw via <code>sources/</code> — <em>without</em> reading the finished article.</p>
+    </div>
+    <div class="mini">
+      <h3>Recoverability (mean, /5)</h3>
+      <p class="mono" style="font-size:1.5rem;margin:.2rem 0">
+        <span class="m-tree">tree 5.0</span> · <span class="m-skills">skills 5.0</span> ·
+        <span class="m-raw">raw 3.0</span></p>
+      <p style="margin:.1rem 0;font-size:.9rem;color:var(--muted)">raw keeps its sources
+      but loses <em>leanings + next-action</em>.</p>
+    </div>
+  </div>
+  <p class="legend">Structured persistence — a disciplined log <em>or</em> the tree —
+  fully preserves the investigation; raw preserves evidence but not reasoning. Tree ties
+  skills because Sonnet wrote good logs: the tree's advantage here is
+  <strong>enforcement</strong>, not magnitude — <code>nd brief</code> is guaranteed,
+  whereas a log's quality is author-dependent (it was an empty placeholder in v1).</p>
+
+  <h2 class="serif">What I'd fix before believing more</h2>
+  <div class="callout warn">
+    <ul style="margin:0">
+      <li><strong>Confound, disclosed:</strong> the <span class="m-raw">raw</span> prompt
+      still asked for a counterpoints section + calibration — so “raw” here is a
+      competent baseline, not zero-method. That inflates the low end (4.53 vs v1's 3.0)
+      and compresses the gap.</li>
+      <li><strong>Test a genuinely weak model.</strong> Sonnet 5 is “weaker than Opus,”
+      not weak. The hypothesis needs <strong>Haiku</strong> to see if the floor binds.</li>
+      <li><strong>Count studies, not DOC entries</strong>, so tree bundling stops
+      undercounting sources.</li>
+    </ul>
+  </div>
+
+  <h2 class="serif">The honest answer</h2>
+  <p>The rigorous version of the experiment <em>weakened</em> the easy story. The tree
+  is a <strong>floor on rigor and a guarantee of auditability + recoverability</strong> —
+  not a quality multiplier for a good agent having a good day. It reliably matches-or-beats
+  the unstructured baseline and never loses to it; it does not beat a disciplined agent on
+  judged quality. Where it earns its keep is exactly where discipline-alone degrades: at
+  scale, under real compaction, with genuinely weak models, or when the output must be
+  <em>audited</em> rather than just read. On a clean single pass by a capable model, those
+  benefits are close to free-and-invisible — which is why the gap is 0.20, not 2.0.</p>
+
+  <footer>
+    <strong>Reproduce.</strong> <code>runs/T{1..5}/{raw,skills,tree}/</code> — articles +
+    sources + (tree) the <code>nd</code> session · <code>aggregate.py</code> mechanical ·
+    <code>blind.py</code> blind · <code>judge_aggregate.py</code> panel ·
+    <code>blinded/KEY.json</code> slot→mode (withheld from judges) ·
+    <code>results.json</code> aggregated.<br>
+    15 Sonnet-5 author runs · 3 Opus judges · 6 cold-resume probes · single-context, no
+    sub-workers (compute held equal across arms).
+  </footer>
+</div>
+
+</body>
+</html>

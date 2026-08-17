@@ -1,0 +1,25 @@
+S17 — PwC, "The Fearless Future: 2025 Global AI Jobs Barometer" (June 2025)
+URL: https://www.pwc.com/gx/en/issues/artificial-intelligence/job-barometer/2025/report.pdf
+Facet/Line: L2 (jobs), L3 (wages), L6 (adversarial — optimistic counter-narrative)
+Tier: D (observational/industry-level correlational; PwC analysis of ~1 billion job ads + financial
+data across industries & several countries; exposure = Felten et al. AI-exposure index. NOT causal —
+selection into AI-exposed industries/skills is not addressed.)
+
+DESIGN/SAMPLE: PwC analysis of close to a billion job advertisements and firm financial data; industries
+ranked by AI exposure (Felten et al.); "productivity measured by revenue per employee 2018–2024."
+EFFECT + DIRECTION: POSITIVE for wages & jobs in AI-exposed industries — but correlational.
+
+VERBATIM QUOTES:
+- "Workers with AI skills like prompt engineering command a 56% wage premium (up from 25% last year)."
+- "On average, the wages of workers with AI skills are 56% higher. What's more, every industry we
+  analysed pays wage premiums for AI skills."
+- "Wages are rising 2x faster in industries most vs least exposed to AI."
+- "Contrary to fears about job losses, job numbers – and wages – are growing" [in AI-exposed occupations].
+- "Wages are growing in both the most highly automatable and highly augmentable jobs."
+- "Since 2022, revenue growth in industries best positioned to adopt AI has nearly quadrupled."
+- "Industries most exposed to AI have 3x higher growth in revenue [per employee]."
+
+LIMITS: Tier-D, correlational; "AI-skill wage premium" reflects who lists AI skills (selection), not a
+causal return to AI. Industry-level growth conflates AI with sector boom (finance/software). "Jobs still
+growing" is a levels statement, not counterfactual. Vendor (PwC) with commercial interest. Directly
+COUNTERS S6/S10 job-loss framing and Acemoglu's modest-macro (S14) — but on weaker (D) evidence.

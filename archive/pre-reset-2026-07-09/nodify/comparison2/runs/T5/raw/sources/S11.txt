@@ -1,0 +1,16 @@
+Source: Clemens, Jeffrey; Edwards, Olivia; Meer, Jonathan (2025). "Did California's Fast Food Minimum Wage Reduce Employment?" NBER Working Paper No. 34033.
+URL: https://www.nber.org/papers/w34033
+Retrieved via WebFetch on 2026-07-09.
+
+Extracted content:
+
+**Abstract Summary:**
+The researchers examined California's $20 fast food minimum wage enacted in September 2023 and implemented April 2024 (AB 1228).
+
+**Key Verbatim Findings:**
+1. "employment in California's fast food sector declined by 2.7 percent relative to employment in the fast food sector elsewhere"
+2. "Adjusting for pre-AB 1228 trends increases this differential decline to 3.2 percent"
+3. "Our median estimate translates into a loss of 18,000 jobs in California's fast food sector"
+
+**Study Details:**
+The analysis used Quarterly Census of Employment and Wages data covering September 2023 through September 2024. The researchers applied multiple methodologies, including trend adjustments and comparisons with non-minimum-wage-intensive industries, with each adjustment showing larger employment declines than the previous measure.

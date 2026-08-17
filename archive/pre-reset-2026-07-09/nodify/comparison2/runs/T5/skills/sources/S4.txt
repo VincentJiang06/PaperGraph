@@ -1,0 +1,12 @@
+Title: Minimum Wage Employment Effects and Labor Market Concentration
+Authors: José Azar, Ioana Marinescu, Marshall Steinbaum
+Published: Review of Economic Studies (2023); earlier NBER Working Paper No. 26101; also Journal of Human Resources 57(S): S167-S199 (2022) companion piece "Labor Market Concentration."
+URL: https://www.restud.com/wp-content/uploads/2023/09/MS29359manuscriptPub.pdf ; https://www.nber.org/papers/w26101 ; https://marinescu.eu/publication/azar-minimum-2023/
+
+Verbatim / closely-quoted key findings (as extracted):
+In low concentration labor markets, minimum wage increases "significantly decrease employment."
+In high concentration labor markets, the employment effects become "less negative" and "are even estimated to be positive."
+
+Interpretation (from source summary): "a model of oligopsonistic competition can explain these effects: there is more room to increase wages in high concentration areas where wages tend to be further below marginal productivity, providing evidence supporting monopsonistic wage setting as an explanation for the near-zero minimum wage employment effect."
+
+Data: CareerBuilder-derived concentration measures across ~8,000 geographic-occupational labor markets; main analysis on the retail sector with results extending to fast food and the broader low-wage labor market.

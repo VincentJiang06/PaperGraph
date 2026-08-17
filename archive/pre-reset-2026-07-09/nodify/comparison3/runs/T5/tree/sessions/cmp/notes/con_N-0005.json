@@ -1,0 +1,27 @@
+{
+ "node_id": "N-0005",
+ "lean": "mixed",
+ "summary": "非线性:方向可信、拐点位置不精。观测充分的温和区间内(Cengiz)即便较高水平也近零;但$15联邦(CBO中位-130万)与$20快餐(反方-3.6%)所处相对工资更高,出现或预测明显负效应。校准:就业效应确随最低/中位(Kaitz)比值非线性放大,存在低比值'安全区'与高比值'风险区',但拐点的经验精度低,现有安全结论不宜外推到未观测的高比值。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [
+   "N-0018",
+   "N-0019",
+   "N-0020"
+  ],
+  "evidence": [
+   {
+    "title": "高相对水平负估计",
+    "doc_id": "DOC-0013",
+    "quote": "reduced fast-food employment by 3.6 percent",
+    "url": "https://www.cato.org/research-briefs-economic-policy/did-californias-fast-food-minimum-wage-reduce-employment",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": "report"
+   }
+  ]
+ },
+ "open_questions": [
+  "美国数据能否把拐点定位到具体的Kaitz区间(如0.5-0.6)?"
+ ]
+}

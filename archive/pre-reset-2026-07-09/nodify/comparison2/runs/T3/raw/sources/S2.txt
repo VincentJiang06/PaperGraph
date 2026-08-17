@@ -1,0 +1,1830 @@
+254
+
+Quarterly Bulletin 2012 Q3
+
+The distributional effects of asset
+purchases
+In its report on the 2012 Budget, the Treasury Committee highlighted the redistributive impact of
+monetary policy, and asked the Bank, and MPC members in particular, to improve their efforts to
+explain the costs and benefits of their policy actions to groups that are perceived to have been
+particularly badly affected.(1) This report(2) forms part of the Bank’s response.(3)
+Summary
+• The Monetary Policy Committee (MPC) sets monetary
+policy for the economy as a whole in order to achieve the
+Government’s inflation target. Changes in interest rates
+and asset purchases financed by issuing reserves
+(commonly referred to as quantitative easing (QE))
+unavoidably have distributional implications.
+• Without the Bank’s asset purchases, most people in the
+United Kingdom would have been worse off. Economic
+growth would have been lower. Unemployment would
+have been higher. Many more companies would have gone
+out of business. This would have had a significant
+detrimental impact on savers and pensioners along with
+every other group in our society. All assessments of the
+effect of asset purchases must be seen in that light.
+• The Bank’s asset purchases have been almost entirely of
+gilts, causing the price of gilts to rise and yields to fall. But
+this in turn has led to an increase in demand for other
+assets, including corporate bonds and equities. As a result,
+the Bank’s asset purchases have increased the prices of a
+wide range of assets, not just gilts. In fact, the Bank’s
+assessment is that asset purchases have pushed up the price
+of equities by at least as much as they have pushed up the
+price of gilts.
+
+The implications of QE for savers
+• Changes in Bank Rate — not asset purchases — have been
+the dominant influence on the interest households receive
+on bank deposits and pay on bank loans.
+• By pushing up a range of asset prices, asset purchases have
+boosted the value of households’ financial wealth held
+outside pension funds, but holdings are heavily skewed with
+the top 5% of households holding 40% of these assets.
+
+The implications of QE for pension funds and
+pensioners
+• The pension income of those already in receipt of a pension
+before asset purchases began has not been affected by QE.
+
+Defined benefit pension schemes
+• The retirement incomes of people coming up to retirement
+in a defined benefit pension scheme have not been affected
+by QE.
+• When assessing the impact of QE on the value of defined
+benefit pension funds, it is important to remember that
+asset purchases increase the value of a pension fund’s assets
+as well as its liabilities.
+• For a typical fully-funded pension scheme, asset purchases
+are likely to have had a broadly neutral impact on the net
+value of the scheme. The fall in gilt yields raised the value
+of the pension fund’s liabilities. But the associated increase
+in bond and equity prices raised the value of their assets by
+a similar amount.
+• For a defined benefit pension scheme in substantial deficit,
+asset purchases are likely to have increased the size of the
+deficit. That is because although QE raised the value of the
+assets and liabilities by a similar proportion, that
+nonetheless implies a widening in the gap between the two.
+The burden of these deficits is likely to fall on employers
+and future employees, rather than those coming up for
+retirement now.
+
+Other pension schemes
+• Asset purchases are likely to have had a broadly neutral
+impact on the value of the annuity income that could be
+purchased with a personal pension pot. By pushing down
+gilt yields, QE has reduced the annuity rate. But the flipside
+of that fall in yields has been a rise in the price of both
+bonds and equities held in those pension pots. Another way
+of explaining this is that the income flows from a pension
+pot (dividends in the case of equities and coupons in the
+(1) See www.publications.parliament.uk/pa/cm201012/cmselect/cmtreasy/1910/
+191002.htm.
+(2) The following people helped to prepare this report: Venetia Bell, Michael Joyce,
+Zhuoshi Liu and Chris Young. This version contains some small clarifications and
+corrections relative to the version sent to the Treasury Committee.
+(3) For recent comments by MPC members on this topic, see, for example, Bean (2012)
+and Miles (2012).
+
+Reports The distributional effects of asset purchases
+
+case of bonds) will not be reduced by QE. Indeed, if the
+pension pot contains equities, then the flows could even be
+higher than they otherwise would have been as a result of
+increased dividend payments from the boost to the wider
+economy from QE.
+• Over the past five years, the main factor driving both the
+widening of deficits in defined benefit schemes and the
+decline in the annuity income that can be purchased from
+other pension funds has been the fall in equity prices
+relative to gilt prices. This fall in the relative price of
+equities was not caused by QE. It happened in all the major
+economies, much of it occurred prior to the start of asset
+purchases, and stemmed in large part from the reluctance
+of investors to hold risky assets, such as equities, given the
+deterioration in the economic outlook, almost certainly as a
+result of the financial crisis. Indeed, by boosting the
+economy, monetary policy actions in the United Kingdom
+and overseas probably dampened this effect.
+
+Introduction
+The MPC’s objective is to maintain price stability, where stable
+prices are defined by the Government’s inflation target, which
+is currently 2% as measured by the annual change in the
+consumer prices index (CPI). Subject to that, the MPC is also
+tasked with supporting the Government’s other economic
+objectives, including those for growth and employment. In
+pursuing its objectives, the MPC sets monetary policy for the
+economy as a whole.
+Changes in the monetary policy stance will unavoidably have
+distributional implications. That is the case regardless of the
+instrument used to implement policy. Such distributional
+effects typically balance out over the course of a policy cycle:
+some groups benefit relative to others as interest rates are
+increased, but that is reversed as interest rates are lowered.
+In response to the severe global financial crisis and the
+subsequent deep and prolonged recession, UK monetary policy
+has, however, been exceptionally accommodative for an
+unusually long time. Bank Rate has been at an historic low of
+0.5% since March 2009. And since then, the MPC has
+authorised the purchase of £375 billion of assets, financed by
+the issuance of central bank reserves, through its asset
+purchase programme. The Bank’s asset purchases, commonly
+referred to as quantitative easing, have depressed longer-term
+yields. Consequently, some groups have borne a greater
+burden than usual from the sustained period of low interest
+rates. But, on the other hand, the benefits have also been
+greater than usual, by helping to avoid a far worse outcome for
+the economy as a whole.
+This report sets out the distributional effects of QE, drawing
+out the parallels with the distributional effects of a low level of
+Bank Rate. The first section of this paper discusses the aims of
+
+255
+
+QE and how it affects the economy. The second section
+discusses the impact that QE is estimated to have had on the
+economy in aggregate. The third and fourth sections set out
+the economic channels through which QE leads to
+distributional effects for savers and pensioners respectively,
+and provides a rough quantification of the direct financial
+implications of QE for these groups. A final section concludes.
+
+1 How quantitative easing affects financial
+markets and the real economy
+The MPC began QE in March 2009 following the
+intensification of the financial crisis after the collapse of
+Lehman Brothers and the associated sharp contraction in
+output. The MPC had reduced interest rates sharply, with
+reductions of 3 percentage points in Bank Rate during
+2008 Q4 and a further 1½ percentage points in early 2009,
+such that by early March 2009, Bank Rate had been reduced to
+0.5%. But, despite this substantial relaxation of policy, the
+MPC judged that, without additional monetary easing,
+nominal spending would be too weak to meet the 2% CPI
+inflation target in the medium term. The aim of QE was,
+therefore, to ease monetary conditions further in order to
+boost nominal spending and thus help to achieve the inflation
+target. The MPC completed £200 billion of asset purchases
+between March 2009 and January 2010, and a further
+£125 billion of purchases between October 2011 and
+May 2012. At its July 2012 meeting, the Committee voted
+to increase the size of its asset purchase programme by a
+further £50 billion to a total of £375 billion, which is expected
+to take four months to complete. The analysis in this paper
+focuses on the effects of the £325 billion of asset purchases
+that the Bank has already completed.
+There are a number of potential channels through which such
+asset purchases affect spending and inflation.(1) Purchases of
+financial assets — which in the United Kingdom have largely
+been UK government debt (gilts)(2) — from the non-bank
+private sector financed by the issuance of central bank money
+increased private sector broad money holdings. In turn, that
+affected a wide range of asset prices through three main
+channels. The first is through portfolio balance effects. When
+the central bank purchases gilts, the monetary deposits of the
+sellers are increased. Unless that money is regarded as a
+perfect substitute for the gilts sold, the sellers will seek to
+rebalance their portfolios by buying other assets that are
+better substitutes for the gilts that they have sold. That shifts
+the excess money balances to the sellers of those assets who
+will, in turn, attempt to rebalance their portfolios by buying
+other assets — and so on. That process will raise the prices of
+
+(1) For more details, see Benford et al (2009) and Joyce, Tong and Woods (2011).
+(2) A key reason for concentrating purchases on gilts was that the gilt market was judged
+to be deep and liquid enough to accommodate the volume of purchases thought
+necessary.
+
+256
+
+Quarterly Bulletin 2012 Q3
+
+all assets to the point where investors, in aggregate, willingly
+hold the overall supplies of assets and money. Higher asset
+prices mean lower yields, and so lower borrowing costs for
+companies and households, which acts to stimulate
+spending.(1) In addition, higher asset prices stimulate spending
+by increasing the net wealth of asset holders.
+
+Of course, these figures do not translate into extra cash for
+each individual in the economy. One reason is because they
+are an attempt to gauge the impact of QE relative to what
+would otherwise have happened, so the benefits might show
+up as smaller falls in wages than employees would otherwise
+have experienced, and lower job losses. In addition, there will
+have been distributional consequences, with some groups
+being affected more than others. The remainder of this note
+explores the particular implications of QE for savers and
+pensioners.
+
+The second channel is through policy signalling effects. This
+channel includes anything that market participants conclude
+about the likely path of future monetary policy from the MPC’s
+asset purchases. For example, QE may have led market
+participants to expect policy rates to remain low for longer
+than would otherwise have been the case.
+The third channel is through liquidity effects. When financial
+markets are dysfunctional, central bank asset purchases can
+improve market functioning by increasing market liquidity
+through actively encouraging trading. Asset prices may
+consequently increase as a result of lower illiquidity premia.
+In addition to these asset price channels, QE may also have a
+stimulatory impact through its broader effects on
+expectations. To the extent that QE leads to an improved
+economic outlook, it may directly boost consumer confidence,
+and thus people’s willingness to spend. Some of this more
+general improvement in confidence may also be reflected back
+in higher asset prices, especially by reducing risk premia.(2)
+
+2
+
+The impact of QE in aggregate
+
+Previous Bank analysis has sought to quantify the impact of QE
+on the economy in aggregate. Joyce, Tong and Woods (2011)
+present a range of estimates of the macroeconomic impact of
+QE using a number of different methodologies. None of the
+methods used fully capture all the transmission channels
+discussed above. The effects of QE nevertheless appear
+economically significant, though subject to considerable
+uncertainty. According to the reported estimates of the peak
+impact, the £200 billion of QE between March 2009 and
+January 2010 is likely to have raised the level of real GDP by
+1½% to 2% relative to what might otherwise have happened,
+and increased annual CPI inflation by ¾ to 1½ percentage
+points. Assuming that the additional £125 billion of purchases
+made between October 2011 and May 2012 had the same
+proportionate impact, this would translate into an impact from
+the £325 billion of completed purchases to date of roughly
+£500–£800 per person in aggregate. For comparison, a simple
+ready-reckoner from the primary forecasting model used by
+the Bank of England suggests that a cut in Bank Rate of
+between 250 and 500 basis points would have been required
+to achieve the same effect. This suggests that, in the absence
+of QE, the UK recession would have been even deeper.
+Moreover, these calculations do not explicitly incorporate
+impacts of QE operating through the exchange rate and
+confidence.
+
+When considering these distributional impacts, however, it is
+important to remember that without the Bank’s asset
+purchases, most people in the United Kingdom would have
+been worse off. Economic growth would have been lower.
+Unemployment would have been higher. More companies
+would have gone out of business. That would have had a
+detrimental impact on savers and pensioners along with every
+other group in our society. All assessments of the effect of
+asset purchases must be seen in that light.
+
+3
+
+The implications of QE for savers
+
+‘Savers’ can be defined in several different ways, and the
+impact of QE will vary depending on the group that is
+considered. One definition is households who have a higher
+value of financial assets than financial liabilities (eg debt): put
+another way, savers are those with positive net financial
+assets.(3) Another commonly used definition of savers is
+households that have any gross savings, even if their debt is
+larger than their assets (ie they have negative net financial
+assets). Households may think of themselves as savers if they
+regularly save money out of their income, even if their net
+financial assets are negative. In this section, we use this wider
+definition, and focus on the impact of QE on those with gross
+financial assets.(4) Limited data are available on the number of
+savers in the economy, but data from the 2011 NMG survey
+suggest that around 80% of households typically have some
+gross savings, although not all will yield interest.
+The calculations in this section relate to the impact of QE on
+savers in terms of direct financial flows. They are therefore
+partial, and omit wider impacts of QE on savers. For instance,
+(1) The first stage of this process is that companies respond to higher equity and bond
+prices by increasing their use of capital markets to raise funds. There was some
+evidence of that in 2009, with both net equity and corporate bond issuance by UK
+private non-financial corporations particularly strong relative to the 2003–08 period.
+(2) Other channels include the effects of QE on bank lending. When assets are purchased
+from non-banks (either directly or indirectly via intermediate transactions), the
+banking sector gains both new reserves at the Bank of England and a corresponding
+increase in customer deposits. A higher level of liquid assets could then encourage
+banks to extend more new loans than they otherwise would have done. But, given the
+strains in the financial system at the time and the resultant pressures on banks to
+reduce the size of their balance sheets, the MPC expected little impact through this
+channel when it first started its asset purchase programme.
+(3) For many households, however, their mortgage is the largest component of their
+financial liabilities, so for them, the relevant asset concept may include housing
+wealth, as well as financial assets.
+(4) Detailed information on the composition and distribution of household net financial
+assets are not readily available.
+
+Reports The distributional effects of asset purchases
+
+257
+
+in the absence of QE, savers may have been more likely to lose
+their jobs, or seen companies that they owned go out of
+business. In addition, they do not take account of the impact
+of QE on inflation, and hence how these financial flows
+translate into real spending on goods and services. Other
+things being equal, increased inflation as a result of QE
+reduced the volume of goods and services that a household
+could purchase with a fixed amount of money spending. There
+are likely to be distributional consequences of that higher
+inflation.(1)
+
+cumulated to a total of around £70 billion by April 2012
+(Table A). By contrast, the household sector may have
+benefited by around £100 billion by having to pay less on
+outstanding loans. The gap between interest paid on deposits
+and interest received on loans over the period would have
+been absorbed in the first instance by the banking sector, but
+ultimately that would have resulted in lower profits and hence
+potentially lower dividends or remuneration, or in higher
+banking costs and fees. Either way, much of that would feed
+back eventually to household incomes.
+
+Monetary policy affects households in a number of ways.(2)
+First, looser monetary policy pushes down the nominal
+interest rates paid on the stock of deposits and loans. That
+reduces both the interest income savers receive on their
+savings and the interest payments made by debtors (what is
+sometimes called an ‘income effect’). There is also an
+additional ‘substitution effect’, as lower interest rates
+encourage households to bring forward spending at the
+expense of saving. Looser monetary policy also typically
+pushes up asset prices (sometimes referred to as the ‘wealth
+effect’), so those households with significant asset holdings
+will benefit by more than those without. There will also be an
+effect on the exchange rate, which would be expected to
+depreciate, raising the price of imported goods and services
+and reducing the price of exports. All of these channels would
+tend to raise spending in the economy in the near term. The
+income and wealth channels, in particular, will give rise to
+important distributional effects on savers. These effects would
+operate for changes in both Bank Rate and QE. But the
+strength of these channels is likely to vary across the two
+policy instruments.
+
+Table A Estimated impact of changes in interest rates since
+September 2008(a)
+
+One difference between the transmission channels of
+Bank Rate and QE to spending and inflation is that a change in
+Bank Rate acts largely by affecting short-term market interest
+rates, while QE acts largely through longer-term interest
+rates.(3) Households can hold their savings directly or
+indirectly, for instance via a pension fund. The majority of
+households’ direct savings are held as deposits in banks and
+building societies, and generally in forms that are easily
+accessible: over the past year, around 55% of the stock of
+deposits was held in relatively short-term accounts (sight and
+non interest bearing deposits), with the remainder being time
+deposits. And only around 10% was in accounts with interest
+rates fixed for more than two years. As a consequence,
+households tend to receive a return linked to short-term rather
+than long-term interest rates. That suggests that deposit
+holders are likely to have been affected much more by the cuts
+in Bank Rate than by downward pressure on longer-term
+interest rates as a result of QE.
+Reduced interest rates have depressed the aggregate interest
+payments received by households on deposits. Lower interest
+receipts on deposits compared with September 2008 levels
+
+Change in effective
+interest rates
+(basis points)
+Memo: Bank Rate
+
+Effect on income from
+change in interest
+payments (£ billions)
+
+-450
+
+Deposits
+
+-70.0
+
+of which, sight
+
+-206
+
+-37.4
+
+of which, time
+
+-218
+
+-32.6
+
+Secured lending
+
+94.4
+
+of which, floating rate
+
+-312
+
+89.1
+
+of which, fixed rate
+
+-102
+
+5.9
+
+-116
+
+0.7
+
+Unsecured lending
+of which, credit cards
+of which, overdrafts
+of which, personal loans
+Total
+
+7.9
+3
+
+1.2
+
+-109
+
+6.1
+32.3
+
+Sources: Bank of England and Bank calculations.
+(a) Latest data are for April 2012. In estimating the effect on interest payments and receipts, the calculations
+assume that the stocks of loans and deposits were as actually occurred. In practice, the stock of deposits
+and loans are likely to have been higher if interest rates had remained at 2008 levels.
+
+These estimates are likely to represent a lower bound on the
+impact that monetary policy has had on interest flows,
+however, as other factors have tended to raise deposit rates
+over the past few years. Bank Rate was cut by 450 basis points
+between September 2008 and March 2009, and has remained
+at 0.5% since then. But effective rates on the stock of sight
+and time deposits were only around 200 basis points lower in
+April 2012 than in September 2008 (Chart 1). In part, that is
+likely to reflect the zero lower bound on nominal interest rates:
+sight deposit rates tended to be significantly below Bank Rate
+before the crisis, so banks were not able to reduce deposit
+rates by as much as the fall in Bank Rate. Deposit rates have
+drifted up since mid-2009, despite Bank Rate remaining flat at
+0.5%. In part, that may reflect banks competing more
+aggressively for deposits as part of a wider strategy to reduce
+their reliance on wholesale market funding. Without these
+factors, deposit rates received by households are likely to have
+been even lower.
+(1) See Galli and van der Hoeven (2001) for a review of the empirical literature on the
+complex distributional effects of inflation.
+(2) For a fuller account of the transmission mechanism of monetary policy, see
+www.bankofengland.co.uk/publications/Documents/other/monetary/montrans.pdf.
+(3) The bulk of the gilts purchased during the QE period have maturities of between 5 and
+25 years.
+
+258
+
+Quarterly Bulletin 2012 Q3
+
+Chart 1 Household deposit rates and Bank Rate(a)
+Per cent
+
+Chart 2 Equity prices and corporate bond yields
+6
+
+9
+
+Per cent
+
+Index: 2 January 2007 = 100
+Corporate bond yield(a)
+(left-hand scale)
+
+8
+5
+
+110
+100
+
+7
+90
+4
+
+6
+5
+
+80
+
+4
+
+70
+
+3
+
+Time deposit
+
+2
+
+3
+60
+2
+
+Sight deposit
+
+FTSE All-Share
+(right-hand scale)
+
+1
+
+50
+
+1
+Bank Rate
+2008
+
+09
+
+10
+
+11
+
+12
+
+0
+
+(a) Monthly average of UK-resident monetary financial institutions’ effective interest rates on
+the stock of outstanding deposits.
+
+There will have been differences in experiences across
+households too. For example, savers with floating-rate
+products were affected soon after the cuts in Bank Rate, with
+their rates falling from around 3% in September 2008 to under
+1% by February 2009 (the green line in Chart 1). In contrast,
+households with savings in fixed-rate products and accounts
+would not have been affected until later. Moreover, around
+10% of the stock of deposits pay no interest at all. Similarly,
+there will have been different experiences among debtors.
+One channel through which expansionary monetary policy will
+have benefited some individuals is by raising asset prices,
+including government and corporate bonds, and equities
+(Chart 2 shows movements in equity prices and corporate
+bond yields). Moreover, by supporting activity, QE will also
+have boosted dividend payments and reduced corporate
+defaults (raising the returns on corporate bonds). So the larger
+the share of these types of assets in households’ portfolios, the
+greater the boost from QE relative to reduced interest
+payments on money held in the form of deposits. QE may also
+have supported non-financial asset prices. For example, to the
+extent that QE prevented a deeper recession and a sharper fall
+in employment, the fall in house prices during the crisis is likely
+to have been smaller than would otherwise have been the
+case.
+The impact of these changes in asset prices on a given
+individual’s welfare is, however, complex. If the market price
+of an asset such as equity rises because corporate earnings and
+dividends rise, then he will be able to sustain a higher level of
+consumption than before, and he will be better off. If,
+however, the rise in the market price of the asset is a reflection
+of a fall in the interest rate used to discount future dividends —
+as will in large part be the case with QE — then the impact on
+his welfare is less clear. For instance, if he expected to retain
+the asset and just spend the dividends as they are received,
+then he will be no better off than before. But if he expected to
+sell part of his asset holdings in order to finance his spending
+— for instance, if he is in the latter stages of his life — then he
+will have been made better off, as he can now finance a higher
+
+0
+
+2007
+
+08
+
+09
+
+10
+
+11
+
+12
+
+40
+
+Sources: Bank of America/Merrill Lynch and Thomson Reuters Datastream.
+(a) Non-financial companies (excluding utility companies) sterling investment-grade corporate
+bond yield.
+
+level of future consumption. Conversely, if he expected to be
+acquiring more of the asset — for instance, because he is
+saving for future retirement — then he will have been made
+worse off, as he now has to pay more to acquire the associated
+future stream of income. Thus whether individuals are made
+better or worse off as a result of an increase in asset prices as a
+result of QE will depend on whether they are initially ‘long’ or
+‘short’ in their asset holdings. Generally speaking, those later
+in their life cycle will tend to be long in assets, while those
+earlier in their life cycle will tend to be short in assets. For
+both sets of individuals, however, the fall in the discount rate
+will encourage them to bring forward spending from the future
+to the present, thus boosting aggregate demand today.
+The overall impact of QE on household wealth is likely to have
+been substantial. Joyce, Tong and Woods suggest that the
+£200 billion of asset purchases made between March 2009
+and January 2010 lowered gilt yields by around 100 basis
+points. The effect on a wider range of financial asset prices is
+more uncertain. Taking into account the estimated
+composition of household net financial assets, their analysis
+suggests an overall boost to UK households’ net financial
+wealth (which includes partial estimates of pension wealth) of
+about 16%. Assuming that the £125 billion of asset purchases
+made between October 2011 and May 2012 had the same
+proportionate impact as the first round of asset purchases,
+that would give an estimate of the total increase in household
+wealth stemming from the Bank’s £325 billion of asset
+purchases up to May 2012 of just over £600 billion, equivalent
+to around £10,000 per person if assets were evenly distributed
+across the population.
+In practice, the benefits from these wealth effects will accrue
+to those households holding most financial assets. Evidence
+from the 2011 survey by NMG Financial Services Consulting,(1)
+(1) For a detailed discussion on the results of this survey, see Kamath et al (2011).
+Analysis of the survey data has suggested that households tend to underreport the
+value of the assets, but that issue ought not to affect the distribution of assets across
+households.
+
+Reports The distributional effects of asset purchases
+
+Chart 3 Distribution of household financial assets by age
+group(a)
+Percentage of household financial assets
+
+35
+30
+25
+20
+15
+10
+5
+
+18–24
+
+25–34
+
+35–44
+
+45–54
+
+55–64
+
+65+
+
+0
+
+Age
+Sources: NMG Consulting survey 2011 and Bank calculations.
+(a) Respondents to the NMG survey are asked: ‘How much do you (or any member of your
+household) currently have in total, saved up in savings and investments? Include
+bank/building society savings accounts or bonds, stock and shares, ISAs, Child Trust Funds,
+NS&I account/bonds and premium bonds. Please exclude any pensions you may have.’
+
+Chart 4 Distribution of household financial assets(a)
+£ thousands
+
+200
+180
+160
+140
+120
+100
+80
+
+259
+
+carried out on behalf of the Bank, suggests that close to 80%
+of financial assets (excluding pension wealth, but including
+deposits) are held by those above the age of 45 (Chart 3).(1)
+And the survey suggested that the median household held
+only around £1,500 of gross assets, while the top 5% of
+households held an average of £175,000 of gross assets
+(Chart 4), or around 40% of the financial assets of the
+household sector as a whole. Without knowing the precise
+composition of assets held by each percentile of households, it
+is difficult to assess the size of the boost to wealth provided by
+QE across these groups. The data from the NMG survey
+exclude pension wealth, and that is also distributed unevenly
+across the population. Compared with non-pension wealth,
+however, households might be less likely to sell assets
+earmarked for pension provision to fund current consumption.
+The distributional issues associated with pension wealth are
+discussed below.
+The balance between the income and wealth effects from QE
+depends on the distribution of assets across households. In
+aggregate, sterling deposits with UK monetary financial
+institutions (deposit-taking banks and building societies) make
+up around 25% of households’ financial wealth, while around
+15% is held directly in equities and other securities
+(Chart 5).(2) According to the 2006/08 Wealth and Assets
+Survey,(3) the vast majority of households hold deposit
+accounts, with the median household holding around £1,000
+in current accounts, excluding overdrafts. In the same survey,
+around 15% of households reported that they directly held UK
+shares, ie in addition to shares held indirectly via pension
+funds, and 10% held stocks and shares ISAs.
+
+60
+40
+
+Median household
+
+20
+5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95
+Percentile of households
+Sources: NMG Consulting survey 2011 and Bank calculations.
+(a) See footnote to Chart 3 for details of the question asked.
+
+Chart 5 Composition of stock of household gross
+financial assets in 2011 Q4(a)
+Other(b)
+(9%)
+
+Insurance
+technical reserves
+(53%)
+
+Sterling deposits
+with UK monetary
+financial institutions (24%)
+
+Securities, shares
+and other equity
+(14%)
+
+(a) Includes households and non-profit institutions serving households.
+(b) Includes currency, other deposits, loans and other accounts receivable/payable.
+
+0
+
+To conclude, monetary policy has reduced interest rates and
+supported asset prices in order to stimulate spending and
+avoid an even deeper and more prolonged recession following
+the financial crisis. Largely as a result of the sharp reductions
+in Bank Rate — and not of QE — nearly all savers have seen the
+interest payments on their deposits fall since 2008. The vast
+majority of households hold deposit accounts, so these lower
+rates have affected most households to some extent. But
+some households have been affected more than others.
+Working against the effect of lower interest rates on deposits,
+some savers will have seen an increase in the value of their
+holdings of other financial assets as a result of the low level of
+Bank Rate and QE. In aggregate, such assets make up a larger
+share of households’ total portfolio of financial assets than
+
+(1) By contrast, financial liabilities are less skewed towards older groups, with only around
+30% of liabilities held by those aged over 45. Those aged 35–44 have the largest
+liabilities, at around 45%.
+(2) Consistent with the importance of pension-related issues for savers, the largest share
+of household assets is made up of assets held on behalf of the household sector by
+insurance companies and pension funds (referred to as ‘insurance technical reserves’),
+making up a little over 50%.
+(3) Since the version of this report that was sent to the Treasury Committee was finalised,
+the ONS has released the 2008/10 Wealth and Assets Survey. The figures in this
+version of the report have not been updated to reflect that release.
+
+260
+
+Quarterly Bulletin 2012 Q3
+
+deposits. Holdings of financial assets, including deposits, are
+heavily concentrated among certain households.
+
+decade (Chart 7) suggests that there have been other
+important global factors driving the reduction in yields apart
+from monetary policy. Some have suggested that downward
+pressure on interest rates has arisen from unusually high levels
+of savings in some emerging market economies, especially
+China, which have been more than enough to finance the high
+levels of investment there.(6) Other factors that may have
+pushed down gilt yields include a shortage of high-quality safe
+assets, and the sharp declines in corporate investment during
+the crisis. Pension wealth is normally held in the form of
+equities and corporate bonds in addition to government
+bonds. The prices of such assets have been affected by many
+factors other than QE over the past five years, including the
+weak economic environment. Continued increases in life
+expectancy have also affected pension schemes, raising the
+average costs of pension providers and increasing the amount
+that people need to save for their retirement. In addition,
+many pension funds were in deficit before the crisis, and, as
+discussed below, this was an important contributory factor in
+the deterioration of their financial deficits during the current
+crisis.
+
+4
+
+The implications of QE for pensions
+
+This section discusses the implications of QE for pensioners,
+and for those approaching retirement. It also considers the
+implications for pension providers,(1) because developments for
+these companies will affect the pensions provided to the
+individuals participating in these schemes as they retire.
+People in, or close to, retirement make up a relatively large
+share of the UK population. According to the latest available
+population estimates (data for mid-2010), people older than
+the relevant state pension age(2) account for around 20% of
+the UK population. The pension incomes of the bulk of these
+individuals — those who had already retired prior to the start
+of the financial crisis — will not have been adversely affected
+by QE.(3) Indeed, some individuals may even have benefited if
+they were net holders of financial wealth, because QE
+increased the prices of bonds and equities. Data on real
+consumption growth rates by age group show that the
+over-65s are the only group that has been able to maintain
+positive consumption growth during the crisis (Chart 6).(4)
+Those who have reached the state pension age since mid-2007
+— around three million people, approximately 5% of the
+population — will have potentially been more affected.(5) This
+section includes calculations of changes in the position of
+hypothetical pension schemes over four periods within the
+past five years.
+
+Chart 7 Fifteen-year spot government bond yields(a)
+Per cent
+
+8
+7
+
+United States
+6
+5
+United
+Kingdom
+
+4
+
+Chart 6 Average annual real consumption growth rates
+by age group
+
+Germany
+
+3
+2
+
+2003–07
+2007–10
+
+Per cent
+
+1
+
+6
+2000
+
+02
+
+04
+
+06
+
+08
+
+10
+
+12
+
+0
+
+4
+Sources: Bloomberg and Bank calculations.
+
+2
+
++
+0
+
+–
+2
+
+4
+
+21–30
+
+31–40
+
+41–50
+Age
+
+51–64
+
+65+
+
+(a) Zero-coupon yields.
+
+Pensioners, people saving specifically for their retirement and
+pension providers are affected by many of the same issues as
+savers in general. For example, lower Bank Rate and QE
+reduce interest rates received on deposits and raise the value
+of asset holdings in exactly the same way as for savers. So, as
+for savers in general, both the composition of assets and type
+
+6
+
+Sources: EFS, FES, LCF and Bank calculations.
+
+It is worth noting at the outset that, just as deposit rates have
+been affected by factors other than monetary policy in recent
+years, there have been factors other than QE affecting
+pensioners and pensions too. Although UK monetary policy
+has put downward pressure on gilt yields in recent years, it
+cannot explain all of their fall. The broadly similar trend in UK
+and other international government bond yields over the past
+
+(1) That includes both institutional investors, such as insurance companies and pension
+funds, and employers providing pensions to their past and future employees. But it
+excludes the provision of state pensions, and other related payments during
+retirement such as Pension Credit.
+(2) The state pension age is likely to rise over time to 68 for both females and males.
+(3) To the extent that QE pushed up inflation, that would have reduced the real income of
+some pensioners. But that has to be seen in the context of the wider benefits of QE.
+Analysis in this section focuses on the direct impact of QE on interest rates and asset
+prices.
+(4) See Weale (2012).
+(5) That does not equate to the precise number of people drawing pensions, for example
+because some above the state pension age remain in employment, while others below
+that age will have begun to draw on pensions.
+(6) See Bernanke (2005).
+
+Reports The distributional effects of asset purchases
+
+of deposits will be important. One difference, however, is that
+assets held in order to save for retirement are likely to be in a
+more illiquid form than other savings, so they are more likely
+to receive a return based on longer-term interest rates. As a
+result, downward pressure on longer-term interest rates from
+QE has played a more important role than cuts in Bank Rate in
+determining the overall impact on this group. And pension
+wealth (ie dedicated savings for retirement) is more likely to be
+held in the form of non-deposit assets.
+There are several different ways that individuals may save for
+their retirement, and the channels through which QE affects
+these individuals will vary depending on the methods that they
+use. Historically, the most common types of scheme are those
+that provide defined benefits (eg final or career average salary
+schemes), where the employer/shareholder bears the main
+risks. According to Towers Watson (2012), around 60% of
+wealth held by pension funds was in defined benefit (DB)
+schemes in 2011. An alternative model is one in which
+individuals, or their employers, pay in a fixed contribution
+per period, and there is not a pre-defined income in
+retirement. These are commonly referred to as ‘defined
+contribution’ — DC — or ‘money purchase’ schemes. Upon
+retirement, individuals use the assets accumulated in the
+scheme(1) to purchase an insurance (or annuity) contract
+paying out a stream of payments for the remainder of their
+life. Here, the main risks are borne by the individual.(2) Assets
+held in DC schemes made up the remaining 40% of pension
+fund assets in 2011. Alternatively, individuals may save for
+their retirement independently. In that case, they could either
+live off the income from their assets during retirement, or else
+they use their savings on retirement to buy an annuity. If
+individuals take up the latter option, the channels through
+which QE affects them are likely to be similar to those
+individuals in DC schemes. In practice, many individuals are
+likely to use a combination of these approaches to provide for
+their retirement.(3)
+
+Defined benefit schemes
+The net impact of QE on DB pension schemes’ overall position
+reflects two additional factors to the general channels
+discussed above.
+First, the extent to which there is a mismatch between the
+funds’ assets and liabilities. If a pension fund is fully funded
+and holds government debt with coupon payments that
+exactly match the future flow of its liabilities, then a change in
+gilt yields would have no net impact.(4) But many pension
+funds hold a mix of assets, including equities and other types
+of securities. Estimates by the Bank suggest that QE increased
+the value of equities by a broadly similar amount to gilts, so
+even with a mix of gilts and equities, a fully-funded pension
+fund would not have been materially affected by QE. But over
+the period since the start of the financial crisis, equity prices
+have fallen relative to gilt prices for reasons unrelated to QE,
+
+261
+
+causing pension deficits to open up. The mismatch between
+assets and liabilities, which is common across many pension
+funds, has had an important bearing on the performance of
+pension funds over the past five years or so.
+Second, if a DB pension scheme is in deficit, then QE can lead
+to a widening in that deficit. That comes about because
+although QE causes the assets and liabilities of a pension
+scheme to rise by similar proportionate amounts, because the
+pension fund’s liabilities are greater than its assets, the
+absolute size of the deficit increases. The larger the size of the
+deficit, the larger the detrimental impact of QE. The average
+pension fund deficit was equal to about 35% of total liabilities
+in March 2007, calculated on a full buy-out basis, falling to
+33% in 2011.(5)
+In order to illustrate the importance of the asset and liability
+structure of the pension scheme when assessing the effect of
+QE, both in terms of underfunding and asset and liabilities
+mismatch, Table B sets out illustrative scenarios for how the
+deficits of different hypothetical DB pension schemes would
+have evolved over time, given actual movements in asset
+prices and yields. The calculations are sensitive to the precise
+assumptions used, so they should be treated as indicative only.
+The table considers three hypothetical pension schemes. The
+first column sets out a baseline case, in which the scheme is
+assumed to be fully funded in March 2007 (with £100 million
+assets and £100 million liabilities), and the expected future
+cash flows from the assets and liabilities of the scheme are
+matched as the scheme holds only gilts. That is then
+compared with two alternative schemes. Scheme 1 is assumed
+to be fully funded in March 2007, but its assets are composed
+of 60% equities and 40% bonds (column 2). Scheme 2 has
+the same asset structure as Scheme 1, but is assumed to start
+in March 2007 with a deficit of £30 million (column 3), ie
+liabilities are £100 million compared with assets of
+£70 million. Scheme 1 therefore has an asset-liability
+mismatch but was fully funded in March 2007; Scheme 2
+has an asset-liability mismatch but was under-funded in
+March 2007.
+The table traces out changes in the deficit of each pension
+scheme from March 2007 to the following four dates:
+February 2009 (ie just before the start of QE), February 2010
+(ie after the first £200 billion of purchases had been
+(1) That would typically include the accumulated income from those assets (less any
+fees).
+(2) Until the annuity is taken out, all the risks are borne by the individual. After the
+annuity is taken out, the balance of risk-sharing depends on the type of annuity
+chosen. For example, for an index-linked annuity, the individual would always receive
+the same real income, and the provider would bear the risk of inflation evolving in a
+way that it had not expected. For a ‘with-profits’ scheme, the individual bears the risk
+of the return proving less than expected.
+(3) For example, an individual may have been part of a DB scheme with one employer,
+but subsequently moved into a DC scheme with a new employer.
+(4) Pension fund liabilities will normally be uprated in line with RPI inflation, so
+index-linked gilts might be a better match for them than conventional gilts.
+(5) See Purple Book (2011).
+
+262
+
+Quarterly Bulletin 2012 Q3
+
+Table B Illustrative examples of DB scheme deficits(a)
+£ million deficit for £100 million (valued at March 2007) DB pension schemes
+Baseline scheme
+
+Scheme 1
+
+Scheme 2
+
+Fully funded at March 2007
+
+Fully funded at March 2007
+
+Under-funded at March 2007
+
+Matched asset/liability
+
+Asset/liability mismatch
+
+Asset/liability mismatch
+
+End-March 2007
+
+0.0
+(100/100)
+
+0.0
+(100/100)
+
+-30.0
+(70/100)
+
+End-February 2009
+
+0.0
+(102.9/102.9)
+
+-26.5
+(76.4/102.9)
+
+-49.4
+(53.5/102.9)
+
+End-February 2010
+
+0.0
+(99.3/99.3)
+
+-9.6
+(89.7/99.3)
+
+-36.5
+(62.8/99.3)
+
+End-September 2011
+
+0.0
+(125.0/125.0)
+
+-26.5
+(98.5/125.0)
+
+-56.1
+(69.0/125.0)
+
+End-May 2012
+
+0.0
+(140.1/140.1)
+
+-33.5
+(106.6/140.1)
+
+-65.5
+(74.6/140.1)
+-19.4 [-27.8%]
+
+Deficits at:
+
+Changes March 2007–February 2009
+
+0 [0%]
+
+-26.5 [-26.5%]
+
+due to QE
+
+0
+
+0
+
+0
+
+due to other factors
+
+0
+
+-26.5
+
+-19.4
+
+Changes March 2007–February 2010
+
+0 [0%]
+
+-9.6 [-9.6%]
+
+-6.5 [-9.3%]
+
+due to QE
+change in assets
+change in liabilities
+
+0
+13.8
+-13.8
+
+0.0
+13.9
+-13.8
+
+-4.1
+9.7
+-13.8
+
+due to other factors
+Changes March 2007–September 2011
+due to QE
+change in assets
+change in liabilities
+due to other factors
+
+0
+
+-9.6
+
+-2.4
+
+0 [0%]
+
+-26.5 [-26.5%]
+
+-26.1 [-37.2%]
+
+0
+17.4
+-17.4
+
+-2.4
+15.1
+-17.4
+
+-6.9
+10.5
+-17.4
+
+0
+
+-24.1
+
+-19.2
+
+Changes March 2007–May 2012
+
+0 [0%]
+
+-33.5 [-33.5%]
+
+-35.5 [-50.7%]
+
+due to QE
+change in assets
+change in liabilities
+
+0
+30.3
+-30.3
+
+-5.1
+25.2
+-30.3
+
+-12.6
+17.7
+-30.3
+
+due to other factors
+
+0
+
+-28.4
+
+-22.8
+
+Note: Negative figures indicate deficits or any increase in deficits/liabilities. Numbers in ( ) are the values of assets/liabilities at point in time; numbers in [ ] are the changes in deficits as a proportion/percentage of the initial asset
+level.
+Sources: Bloomberg, Thomson Reuters Datastream and Bank calculations.
+(a) In all the schemes, liabilities are assumed to be discounted using fifteen-year gilt (spot) yields, and the value of gilts held as assets is assumed to move in line with fifteen-year gilts. The baseline scheme is assumed to hold 100%
+gilts. Schemes 1 and 2 each hold 40% gilts and 60% equities. Scheme 2 is 70% funded, while Scheme 1 is fully funded. The value of equities is assumed to follow the FTSE All-Share index. The impact from QE on gilt yields and
+equity prices are based on the estimates in Joyce, Tong and Woods (2011). In particular, it is assumed that the £200 billion of QE between March 2009 and January 2010 led to an immediate 100 basis point fall in gilt yields and a
+gradual 20% increase in equity prices over the period of the purchases. A similar proportionate impact is assumed for the £125 billion of QE between October 2011 and May 2012; that is, a 62.5 basis point fall in gilt yields and a
+12.5% rise in equity prices. Estimates are rounded to the nearest £0.1 million, so the impacts may not add up due to rounding. As a property of the approach taken here, the estimated changes in assets and liabilities as a result of
+QE continue to grow after the completion of the first £200 billion of QE in January 2010 and before the start of the £125 billion of QE in October 2011.
+
+completed), September 2011 (ie just before the announcement
+of further purchases) and May 2012 (ie after the completion of
+a further £125 billion of purchases).
+The table also contains some illustrative estimates that isolate
+the impact of QE. In each example, QE has two effects: first,
+it increases the scheme’s assets by pushing up the value of the
+gilts and equities held by the scheme; second, it increases the
+scheme’s liabilities by reducing the discount rate the pension
+scheme applies to its future liabilities, and hence increasing the
+current value of its liabilities. The impact of ‘other factors’
+affecting deficits is calculated by residual, and includes
+movements in gilt and equity prices that are unrelated to QE
+(as discussed on page 260).
+In the case of the baseline scheme, which is fully funded and
+whose assets and liabilities are matched, the scheme remains
+fully funded, ie there is no deficit and the net impact of QE is
+zero. The fall in gilt yields, which is used to discount the
+
+pension fund’s future liabilities, causes the current value of its
+liabilities to rise. But this is exactly matched by the rise in the
+value of the gilts that it holds. That is the case for all
+movements in gilt yields, irrespective of whether they are
+caused by QE or not.
+In contrast, although Scheme 1 is assumed to have been fully
+funded in March 2007, the mismatch between its assets and
+liabilities means that a deficit gradually opens up over the
+subsequent period, such that by February 2009 Scheme 1 is
+estimated to have a deficit of around £27 million. That
+widening deficit largely reflects the sharp fall in equity prices
+that occurred between March 2007 and February 2009. The
+impact of QE on Scheme 1 is very similar to that of the
+baseline scheme; it raises its assets and liabilities by a similar
+proportionate amount.(1) That means that, had Scheme 1
+(1) In fact, Bank estimates suggest that QE raised equity prices by slightly more than gilt
+prices — see footnote (a) in Table B for more details.
+
+Reports The distributional effects of asset purchases
+
+been fully funded at the point at which the asset purchase
+programme was started, the impact on the scheme would
+have been broadly neutral. But since the scheme was in deficit
+by February 2009, by increasing its assets and liabilities by
+similar amounts, QE acted to increase the absolute size of the
+deficit. Even so, the vast majority of the widening in the deficit
+in Scheme 1 over the entire period considered (£28 million out
+of £34 million) was not caused by QE.
+The results for Scheme 2 are qualitatively similar, but the fact
+that Scheme 2 was assumed to start in deficit means that the
+deterioration in the portfolio is more pronounced. QE
+accounts for around £13 million (just over a third, ie 13/36) of
+the increased deficit by May 2012. That is a larger
+proportionate effect than in Scheme 1, reflecting the fact that
+the scales of the funding deficits at the points when the asset
+purchases were conducted were greater.
+Increases in costs for DB schemes are borne in the first
+instance by employers, rather than by employees. So there
+would be no implications for existing pensioners on a DB
+scheme, nor for those on a DB scheme close to retirement.
+But, faced with higher costs of providing pensions, employers
+might seek to increase contributions or bear down on other
+staff costs including pay; it may also make them more likely to
+close, or alter the terms of, such pension schemes. For
+example, individuals on a final salary scheme might receive
+smaller pay rises than they had been expecting, potentially
+reducing their future retirement income. The extent to which
+that occurs may in part reflect the speed with which sponsors
+are required by the Pensions Regulator to make up any deficits
+in their funds.
+The increased costs for some DB schemes needs to be set
+against what would have happened in the absence of QE,
+however. For example, by supporting nominal demand in the
+economy, QE has cushioned many companies from the
+financial crisis and ameliorated the rise in company closures
+and insolvencies. As well as the effect that had on supporting
+asset prices, it may have protected some individuals from the
+closure of their pension scheme.
+
+Defined contribution schemes and individuals taking
+out an annuity
+In assessing the channels through which QE affects individuals
+with DC pension schemes, and those taking out an annuity, it
+is helpful to split out two time periods. First, the period in
+which individuals are accumulating assets to fund their
+retirement. Second, the period from which they wish to begin
+drawing down on those assets by purchasing an annuity.
+During the accumulation phase, the impact of QE arises via its
+impact on the value of their asset portfolio. The net impact
+will therefore depend on the same factors as those affecting
+savers in general, namely the composition and type of those
+
+263
+
+assets. During this accumulation period, the composition of
+assets held by an individual may well change, for example with
+equities being held at early life stages, gradually shifting into
+fixed-income assets such as gilts as the point of retirement
+approaches. For simplicity, our analysis assumes a constant
+asset allocation over time.
+When an individual wishes to begin drawing down their
+pension, they normally exchange their pension fund for a life
+annuity. There could be some flexibility in terms of the point
+at which they take out that annuity; some individuals may be
+able to choose to delay taking out their annuity for a period if
+they expect annuity rates to pick up. The annuity offered to an
+individual is a function of the value of the pension fund and the
+prevailing annuity rate in the market. In turn, the annuity rate
+will depend on the discount rate — which will be affected by
+long-term interest rates — and the annuity provider’s
+estimates of the likely longevity of the individual. So the net
+impact of QE will depend on two factors: its positive impact
+on the value of asset holdings on the one hand and, on the
+other, its negative impact on annuity rates through
+longer-term interest rates. In assessing the impact of QE,
+some commentators have focused solely on the latter.
+Table C considers an illustrative example of the average
+life annuity income that would have been available to a
+65 year old male with a lump sum of £100,000 before the
+financial crisis in March 2007. In the upper half of the table,
+the first three columns show the annuity income that he
+would have received as a result of purchasing an annuity at the
+same four dates considered in Table B. The changes in the
+annuity incomes take into account changes in the value of the
+pension pot and the annuity rate over those periods.(1) The
+three columns differ according to the assumed split of assets
+between gilts and equities in three pension pots:
+‘conservative’ (100%, 0%), ‘balanced’ (50%, 50%) and
+‘high risk’ (0%, 100%). The final column is based on actual
+annuity market data and shows the level or standard annuity
+rate offered to a 65 year old male at each point in time. For
+example, based on the annuity rate shown in the final column,
+a male with a pension pot of £100,000 in February 2010 could
+have received an annual pension income of around £6,800
+(market annuity rate of 6.8% multiplied by £100,000), but
+would have only got £5,900 with a £100,000 pot in May 2012
+(market annuity rate of 5.9% multiplied by £100,000).
+In the lower half of the table, the first three columns
+decompose changes in annuity income for each of the three
+hypothetical portfolios over the different time periods. The
+fourth column shows the change in the actual annuity rate
+based on market data broken down into the contribution from
+(1) These simple calculations assume that the age of the individual taking out the annuity
+remains at 65 for the whole period. In practice, by delaying the point at which the
+annuity is taken out, the individual would be offered a higher annuity rate because he
+would be expected to live for fewer years.
+
+264
+
+Quarterly Bulletin 2012 Q3
+
+Table C Illustrative examples of annuities(a)
+£ per year from a pension fund valued at £100,000 at end-March 2007
+Portfolio 1
+
+Portfolio 2
+
+Portfolio 3
+
+Annuity rate
+(per cent/percentage points (pp))
+
+‘Conservative’
+
+‘Balanced’
+
+‘High risk’
+
+7,140
+
+7,140
+(100,000)
+
+7,140
+(100,000)
+
+7.14%
+(100,000)
+
+End-February 2009
+
+7,160
+(102,940)
+
+5,630
+(80,860)
+
+4,090
+(58,780)
+
+6.96%
+
+End-February 2010
+
+6,710
+(99,330)
+
+6,170
+(91,340)
+
+5,630
+(83,360)
+
+6.76%
+
+End-September 2011
+
+7,700
+(125,020)
+
+6,340
+(102,930)
+
+4,980
+(80,850)
+
+6.16%
+
+End-May 2012
+
+8,200
+(140,130)
+
+6,560
+(112,210)
+
+4,930
+(84,280)
+
+5.85%
+
+Changes March 2007–February 2009
+
+20
+
+-1,510
+
+-3,050
+
+-0.18pp
+
+due to QE
+
+0
+
+0
+
+0
+
+0pp
+
+due to other factors
+
+20
+
+-1,510
+
+-3,050
+
+-0.18pp
+
+Changes March 2007–February 2010
+
+-430
+
+-970
+
+-1,510
+
+-0.38pp
+
+due to QE
+of which, impact from higher asset value
+of which, impact from lower annuity rate
+
+80
+1,080
+-1,000
+
+160
+1,160
+-1,000
+
+240
+1,240
+-1,000
+
+-1pp
+
+due to other factors
+
+-510
+
+-1,130
+
+-1,750
+
+0.62pp
+
+Changes March 2007–September 2011
+
+560
+
+-800
+
+-2,160
+
+-0.98pp
+
+0
+1,000
+-1,000
+
+80
+1,080
+-1,000
+
+160
+1,160
+-1,000
+
+-1pp
+
+Annuity bought at:
+End-March 2007
+
+due to QE
+of which, impact from higher asset value
+of which, impact from lower annuity rate
+due to other factors
+
+560
+
+-880
+
+-2,320
+
+0.02pp
+
+Changes March 2007–May 2012
+
+1,060
+
+-580
+
+-2,210
+
+-1.29pp
+
+due to QE
+of which, impact from higher asset value
+of which, impact from lower annuity rate
+
+-10
+1,620
+-1,630
+
+130
+1,760
+-1,630
+
+260
+1,890
+-1,630
+
+-1.63pp
+
+due to other factors
+
+1,070
+
+-710
+
+-2,470
+
+0.34pp
+
+Note: Negative figures indicate reduction in annuity. Numbers in ( ) are the values of assets/liabilities at point in time.
+Sources: Bloomberg, Thomson Reuters Datastream, William Burrows Annuities and Bank calculations.
+(a) Based on a male aged 65. Life annuity rates are on a guaranteed five-year and level payment basis. The value of the gilts held in the portfolios is assumed to move in line with fifteen-year gilts. The impacts of QE are based on the
+same assumptions as those underlying Table B. As a simplifying assumption, QE is assumed to have the same impact on the annuity rate as it does on gilt yields. Estimates are rounded to the nearest £10, so impacts may not add
+up due to rounding.
+
+QE and other factors. The reduction due to QE is calculated by
+assuming that the estimated reduction in gilt yields due to QE
+is fully passed through to lower annuity rates. This may
+exaggerate the negative impact of QE, as the historical
+relationship between gilt yields and annuity rates suggests a
+less than 100% pass-through from gilt yields.
+Take as an example the results for the ‘conservative’ portfolio.
+If an individual had invested £100,000 solely in gilts in
+March 2007, that would have given an annuity of £7,140. By
+February 2010, the annuity value would have fallen by £430,
+to £6,710. That would not have reflected QE, which would
+have had a broadly neutral effect, as the increase in the value
+of the pension pot associated with the rise in gilt prices would
+have broadly offset the reduction in the annuity rate
+associated with the lower gilt yields. Over the period from
+March 2007 to May 2012, the annuity income from this fund
+would have increased by £1,060. Within that, QE would again
+have had a broadly neutral effect.(1)
+The overall performance of the balanced and high-risk
+portfolios (shown in columns 2 and 3 of Table C) was worse
+
+than the conservative one. Over the period March 2007 to
+May 2012, annuity income fell, by £580 for the balanced
+portfolio and by £2,210 for the high-risk portfolio. This mainly
+reflected other factors, and particularly the sharp fall in
+equities over the period up to February 2009. The net impact
+of QE on both these portfolios was actually to boost annuity
+income by £130 in the case of the balanced portfolio and by
+£260 for the high-risk one. This reflects the fact that QE is
+estimated to have increased equity prices by a little more than
+gilt prices.(2)
+
+(1) The net impact of QE on annuity income is not exactly zero, with a positive
+estimated impact of £80 up to February 2010 and a negative impact of £10 in the
+period up to May 2012. The intuition for this result is that there is a small mismatch
+between the assets held in the portfolio and the annuity rate used. The gilts held in
+the portfolio are assumed to move in line with fifteen-year gilts. The annuity rates
+used in the calculations do not have a specified maturity: they are always quoted for
+a 65 year old, and there is no fixed date at which the annuity will cease. This
+maturity mismatch means that, for a given fall in gilt yields, the increase in the value
+of the pension pot associated with the rise in gilt prices does not generally exactly
+offset the reduction in the annuity rate associated with lower gilt yields (they would
+only exactly offset if the annuity rate were equal to 1/15, ie the inverse of the gilt
+maturity). This maturity mismatch effect is similar to that driving the difference in
+the estimated impact of QE between the DB baseline scheme and Scheme 1 in
+Table B.
+(2) See footnote (a) in Table B and Joyce, Tong and Woods (2011).
+
+Reports The distributional effects of asset purchases
+
+This section has set out the implications of QE for pensioners
+and pension providers. In making that assessment, it is
+important to consider that QE affects the value of pension
+fund assets as well as their liabilities. For a fully-funded DB
+scheme, QE had a broadly neutral impact. But, in practice,
+many DB schemes were under-funded at the point that QE
+began, and, as such, QE is likely to have increased those
+deficits. By contrast, it is likely that QE had a broadly neutral
+impact on the annuities offered to those approaching
+retirement on DC pension schemes. And those already in
+receipt of a pension before QE began would have been
+unaffected. In general, other factors have been more
+important than the Bank’s asset purchases in widening pension
+fund deficits and weighing on annuities over the past five
+years. In particular, the main factor affecting pensions has
+been the fall in equity prices relative to gilt prices since 2007.
+
+Conclusion
+The past few years have been extremely difficult for many
+households, with weak growth and above-target inflation
+being the painful but unavoidable consequences of the severe
+financial crisis and the associated deep recession, as well as a
+sharp rise in oil and other commodity prices. In response to
+these difficult circumstances, monetary policy has been
+exceptionally expansionary for an unusually long period of
+time. That has supported nominal spending and incomes in
+the economy as a whole, mitigating the adverse effects of the
+financial crisis and subsequent recession. Without the
+loosening in monetary policy, it is likely that the economic
+downturn would have been far more severe, to the detriment
+of almost everyone in the economy, including savers and
+pensioners.
+The benefits of loose monetary policy have not been shared
+equally across all individuals, however. Some individuals are
+likely to have been adversely affected by the direct effects of
+
+265
+
+QE. Many households have received lower interest income on
+their deposits. But changes in Bank Rate — not asset
+purchases — have been the dominant influence on the interest
+households receive on bank deposits and pay on bank loans.
+By pushing up a range of asset prices, asset purchases have
+boosted the value of households’ financial wealth held outside
+pension funds, although holdings are heavily skewed with the
+top 5% of households holding 40% of these assets.
+Some pension schemes have been adversely affected by the
+direct effects of QE. In particular, for a DB pension scheme in
+substantial deficit, asset purchases are likely to have increased
+the size of the deficit. That is because although QE raised the
+value of the assets and liabilities by a similar proportion, that
+nonetheless implies a widening in the gap between the two.
+By contrast, for a typical fully-funded DB pension scheme,
+asset purchases are likely to have had a broadly neutral impact
+on the net value of the scheme. The fall in gilt yields raised the
+value of the pension fund’s liabilities. But the associated
+increase in bond and equity prices raised the value of their
+assets by a similar amount. Likewise, asset purchases are likely
+to have had a broadly neutral impact on the value of the
+annuity income that could be purchased with a personal
+pension pot. The fall in gilt yields reduced the annuity rate.
+But this was offset by the rise in the value of equities and
+bonds held in the fund. Furthermore, the pension income of
+those already in receipt of a pension before asset purchases
+began has not been affected by QE, and the same is true for
+the retirement incomes of people coming up to retirement in a
+DB pension scheme. The main factor affecting the valuation of
+DB pension schemes and DC pension pots over the past five
+years has been the fall in equity prices relative to gilt prices.
+That fall in the relative price of equities was not caused by QE,
+and stemmed in large part from the reluctance of investors to
+hold risky assets, such as equities, given the deterioration in
+the economic outlook, almost certainly as a result of the
+financial crisis.
+
+266
+
+Quarterly Bulletin 2012 Q3
+
+References
+Bean, C (2012), ‘Pension funds and quantitative easing’, available at
+www.bankofengland.co.uk/publications/Documents/speeches/2012/
+speech573.pdf.
+Benford, J, Berry, S, Nikolov, K, Robson, M and Young, C (2009),
+‘Quantitative easing’, Bank of England Quarterly Bulletin, Vol. 49,
+No. 2, pages 90–100.
+
+Kamath, K, Nielsen, M, Radia, A and Reinold, K (2011), ‘The financial
+position of British households: evidence from the 2011 NMG
+Consulting survey’, Bank of England Quarterly Bulletin, Vol. 51, No. 4,
+pages 305–18.
+Miles, D (2012), ‘Asset prices, saving and the wider effects of
+monetary policy’, available at www.bankofengland.co.uk/
+publications/Documents/speeches/2012/speech549.pdf.
+
+Bernanke, B (2005), ‘The global saving glut and the US current
+account deficit’, Sandridge Lecture, Virginia Association of
+Economists.
+
+Purple Book (2011), available at www.pensionprotectionfund.org.uk/
+Pages/ThePurpleBook.aspx.
+
+Galli, R and van der Hoeven, R (2001), ‘Is inflation bad for income
+inequality: the importance of the initial rate of inflation’,
+International Labor Organization Employment Paper 2001/29.
+
+Towers Watson (2012), Global Pension Assets Study 2012, available at
+www.towerswatson.com/assets/pdf/6267/Global-Pensions-AssetStudy-2012.pdf.
+
+Joyce, M, Tong, M and Woods, R (2011), ‘The United Kingdom’s
+quantitative easing policy: design, operation and impact’, Bank of
+England Quarterly Bulletin, Vol. 51, No. 3, pages 200–12.
+
+Weale, M (2012), ‘From retailers’ paradise to shoppers’ strike: what
+lies behind the weakness in consumption?’, available at
+www.bankofengland.co.uk/publications/Documents/speeches/2012/
+speech548.pdf.
+
+

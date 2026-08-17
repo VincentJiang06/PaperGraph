@@ -1,0 +1,8 @@
+Meer, West (2016), "Effects of the Minimum Wage on Employment Dynamics," Journal of Human Resources 51(2):500-522 (NBER WP 19262).
+
+Key findings (verbatim):
+"the minimum wage will impact employment over time, through changes in growth rather than an immediate drop in relative employment levels"
+"commonly-used specifications in this literature, especially those that include state-specific time trends, will not accurately capture these effects"
+"the minimum wage reduces job growth over a period of several years. These effects are most pronounced for younger workers and in industries with a higher proportion of low-wage workers."
+
+Note: Argues the disemployment margin operates through slower job GROWTH/flows, which level-in-levels regressions (and state-specific trends) systematically miss — a methodological reason near-zero "level" estimates may understate the true negative effect.

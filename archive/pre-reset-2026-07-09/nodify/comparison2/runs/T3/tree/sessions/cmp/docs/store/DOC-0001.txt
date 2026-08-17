@@ -1,0 +1,21 @@
+Domanski, Dietrich; Scatigna, Michela; Zabai, Anna. "Wealth inequality and monetary policy." BIS Quarterly Review, March 2016.
+URL: https://www.bis.org/publ/qtrpdf/r_qt1603f.htm
+
+Key extracted findings (paraphrase + verbatim quotes from WebFetch summary of the article):
+
+On the asset-price channel decomposition:
+- "rising equity prices have been a key driver of inequality" since the financial crisis.
+- "unconventional monetary policies might have had the most significant effects on the dynamics of wealth inequality through changes in equity returns and house prices."
+- "The evidence suggests that unconventional policies had a relatively strong and immediate effect on equity prices."
+- On bonds: "The impact of low interest rates and rising bond prices on wealth inequality may have been small." / "rising bond prices have had a negligible impact on wealth inequality." Reason: "differences in the holdings of fixed income claims between 'richer' and 'poorer' households are generally relatively small."
+- On housing: "A recovery of house prices appears to have only partly offset" the inequality-increasing effects of equity gains, since housing wealth concentrates among lower-wealth households while equity holdings concentrate at the top.
+
+On quantification / identification caveats (also relevant to identification-difficulty claims):
+- The authors explicitly avoid attributing specific numerical magnitudes to monetary policy's role: "the simulation does not establish a direct link between wealth inequality and monetary policy."
+- Illustrative equivalence: "if monetary policy were to lift equity prices by 10%, it would have to raise house prices by about 4 1/4% to be distributionally neutral."
+- Caveat: "Important caveats apply when interpreting these results. First, the simulation is only a partial equilibrium exercise."
+- Missing channels: "Assets and liabilities vary over time not only because of valuation effects but also because of saving, borrowing and default, none of which are taken into account here."
+- Incomplete wealth measure: "Our measure of wealth is incomplete. It does not capture the value of human capital... As regards the former, monetary policy in the aftermath of the crisis obviously matters through its impact on unemployment and growth."
+- "The empirical research on the nexus between monetary policy and inequality is still in its infancy."
+
+Summary: BIS's own household-balance-sheet simulation for advanced economies finds the asset-price/wealth channel is concentrated in equities (top-heavy holdings), with bonds contributing negligibly and housing partially offsetting (since housing wealth is more broadly held). But the authors are explicit that this is a partial-equilibrium valuation exercise that does NOT establish direct causal attribution to monetary policy specifically (as opposed to whatever else moved equity/house prices), omits the offsetting employment/growth channel, and that research on the monetary-policy-inequality nexus was (as of 2016) still nascent.

@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0021",
+ "lean": "supports",
+ "summary": "红队最强弹药:Neumark-Shirley对美国最低工资-就业文献做系统普查,结论是'负估计明显占多数'(核心估计约79.2%为负),且对青年/低技能与直接受影响群体更强负;低薪行业研究不那么一边倒。这说明'文献重心是零'的说法过强——重心其实偏负。",
+ "confidence": "high",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Neumark-Shirley:负估计占多数",
+    "doc_id": "DOC-0009",
+    "quote": "there is a clear preponderance of negative estimates in the literature",
+    "url": "https://www.nber.org/papers/w28388",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "title": "Neumark-Shirley:青年/低教育更强负",
+    "doc_id": "DOC-0009",
+    "quote": "this evidence is stronger for teens and young adults as well as the less-educated",
+    "url": "https://www.nber.org/papers/w28388",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "核心估计的选取(依作者回复)是否引入了倾向负结果的选择?"
+ ]
+}

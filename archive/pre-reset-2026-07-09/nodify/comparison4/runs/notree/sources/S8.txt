@@ -1,0 +1,18 @@
+SOURCE S8
+Title: GPTs are GPTs: An Early Look at the Labor Market Impact Potential of Large Language Models
+Authors: Tyna Eloundou, Sam Manning, Pamela Mishkin, Daniel Rock
+Venue: arXiv:2303.10130 (Mar 2023); published Science 2024, Vol 384 Issue 6702, pp.1306-1308 (doi 10.1126/science.adj0998)
+URL fetched: https://arxiv.org/abs/2303.10130
+Fetched: 2026-07-09
+
+VERBATIM POINTS:
+- Method: used "a new rubric" "integrating both human expertise and GPT-4 classifications."
+- Headline exposure: "Around 80% of the U.S. workforce could have at least 10% of their work tasks affected" while "approximately 19% of workers may see at least 50% of their tasks impacted."
+- Task-speed: "With access to an LLM, about 15% of all worker tasks in the US could be completed significantly faster at the same level of quality. When incorporating software and tooling built on top of LLMs, this share increases to between 47 and 56% of all tasks."
+- Distribution: "higher-income jobs potentially facing greater exposure to LLM capabilities and LLM-powered software."
+- Framing: "LLMs such as GPTs exhibit traits of general-purpose technologies."
+
+DESIGN: Exposure-mapping / task-rubric study (NOT an outcome study). Human + GPT-4 annotations of O*NET task exposure across US occupations.
+SAMPLE: US occupations/tasks (O*NET).
+DIRECTION: Measures EXPOSURE POTENTIAL, not realized employment/wage effects. Exposure is broad and skewed toward higher-wage/higher-education work.
+KEY LIMITS: "Exposure" ≠ automation ≠ job loss (explicitly potential, not prediction); subjective rubric; annotator bias (GPT-4 rating GPT tasks); says nothing about augmentation vs substitution or net jobs.

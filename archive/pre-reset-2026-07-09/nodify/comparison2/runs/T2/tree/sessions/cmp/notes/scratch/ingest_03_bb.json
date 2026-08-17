@@ -1,0 +1,14 @@
+{
+  "kind": "paper",
+  "title": "Bernanke & Blanchard (2023), What Caused the US Pandemic-Era Inflation? (NBER w31417)",
+  "url": "https://www.nber.org/papers/w31417",
+  "text_file": "notes/scratch/doc_bernanke_blanchard.txt",
+  "summary": "动态工资价格模型分解2020Q1-2023Q1季度CPI通胀:供给侧冲击(能源食品+供应链)贡献约2020Q4-2022Q2通胀激增的2/3至3/4;劳动力市场紧张贡献在2021Q3-2023Q2为正但'微小',后期成为持续性主因。",
+  "bindings": [
+    {"node_id": "N-0003", "relation": "supports", "note": "供给侧冲击贡献约通胀激增的三分之二至四分之三"},
+    {"node_id": "N-0011", "relation": "context", "note": "劳动力市场紧张在激增阶段贡献微小,但在2022年后期成为持续性的主要驱动"},
+    {"node_id": "N-0009", "relation": "supports", "note": "劳动力市场(需求侧核心指标)对通胀激增阶段的直接贡献'微小',对'需求侧被高估'构成支持"},
+    {"node_id": "N-0004", "relation": "supports", "note": "提供权威量化模型的具体分解数字,作为归因模型对比的核心参照系"},
+    {"node_id": "N-0012", "relation": "supports", "note": "能源与食品价格是早期阶段通胀的主导驱动因素"}
+  ]
+}

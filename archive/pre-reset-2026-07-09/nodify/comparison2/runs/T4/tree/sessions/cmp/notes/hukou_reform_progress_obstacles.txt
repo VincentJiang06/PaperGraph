@@ -1,0 +1,14 @@
+Source: web search synthesis of Chinese official/policy-research sources on 农业转移人口市民化 (migrant-worker citizenization) and hukou reform progress, 2023-2025
+URLs: https://www.gov.cn/zhengce/202408/content_6966337.htm ; http://rdi.cass.cn/gzsn/202504/t20250408_5867329.shtml ; https://china.gansudaily.com.cn/system/2024/08/04/031042057.shtml
+
+Key points (progress):
+- Cities with urban resident population under 3 million have essentially removed hukou-settlement restrictions; cities of 3-5 million have further relaxed conditions; mega-cities continue to optimize points-based settlement systems.
+- The share of migrant children attending public schools or receiving government-purchased places in private schools for compulsory education reached about 97% (96.7% cited in one 2023 figure).
+- Central fiscal government allocated 40 billion yuan (400亿元) in reward funds in 2024, and budgeted 42 billion yuan (420亿元) for 2025, specifically to strengthen local governments' fiscal capacity to implement migrant-worker citizenization policy.
+- 2024 national permanent-resident urbanization rate rose to 67%.
+
+Key points (obstacles / gap between nominal and real):
+- At end of 2023, China's permanent-resident urbanization rate (常住人口城镇化率) was 66.16%, which exceeds the HOUSEHOLD-REGISTRATION-based urbanization rate (户籍人口城镇化率) by 17.86 percentage points — meaning more than 251 million (2.51亿) urban permanent residents do NOT hold local urban hukou at their place of residence, i.e., are only partially "citizenized" despite living in cities.
+- Public services remain tied to hukou status, which impedes rapid integration of rural-transferred population into cities.
+- Financing of migrant children's compulsory education faces multiple difficulties (funding, teacher staffing, land): although a "funding follows the person" (钱随人走) policy has begun, it currently only covers the baseline per-student public-funding quota, NOT the per-student general public budget education operating costs, capital construction costs, or education surcharges — i.e., the fiscal transfer is only partial.
+- Separately (PIIE commentary, not directly quoted here): local government resistance and job-creation capacity are flagged as the two biggest hurdles to whether the urbanization/citizenization push will actually succeed in practice, beyond the announced targets (70% urbanization rate target, overhaul of the two-track urban-rural hukou system).

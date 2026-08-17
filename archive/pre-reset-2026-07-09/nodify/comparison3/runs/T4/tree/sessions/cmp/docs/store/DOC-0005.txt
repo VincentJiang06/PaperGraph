@@ -1,0 +1,7 @@
+SOURCE: IFR — "Robot Density Surges in Europe, Asia, and the Americas" / World Robotics 2025 (ifr.org)
+VERBATIM QUOTES / FIGURES:
+- China robot density: "166 robots for every 10,000 people employed" (2024).
+- Top-ranked density countries: "Republic of Korea (1,220 units), Singapore (818 units), Germany (449 units), and Japan (446 units)."
+- China has "the world's largest operational stock of approximately 2 million robots."
+- China ranks 22nd worldwide in robot density (2024).
+CONTEXT (IFR press, from search): 54% of all industrial robots installed worldwide in 2024 were deployed in China (295,000 units).

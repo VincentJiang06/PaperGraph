@@ -1,0 +1,15 @@
+Source S4
+Title: Unpacking the Causes of Pandemic-Era Inflation in the US
+Publisher: NBER Digest (No. 20239), summarizing Bernanke & Blanchard (2023)
+URL: https://www.nber.org/digest/20239/unpacking-causes-pandemic-era-inflation-us
+Fetched: 2026-07-09 (via WebFetch)
+
+Extracted content:
+
+Summarizes Bernanke & Blanchard's decomposition of US inflation 2020-2023 into contributions from: energy prices, food prices, shortages/sectoral shocks, and labor market tightness.
+
+Key quote: "Energy prices, food prices, and price spikes due to shortages were the dominant drivers of inflation in its early stages." "As commodity and supply disruptions faded, the tight labor market and the resulting persistence in nominal wage increases have become the main factors behind wage and price inflation."
+
+Chart description (as rendered by WebFetch summarizer): the accompanying chart shows relative contributions with shortages reaching over 5 percentage points at peaks, energy prices fluctuating between -4 and 4 percentage points, and labor market tightness hovering around plus/minus 1 percentage point.
+
+Conclusion: this wage-driven inflation component "is unlikely to recede without macroeconomic policy intervention," implying persistent labor-market tightness requires deliberate monetary tightening rather than passive supply normalization.

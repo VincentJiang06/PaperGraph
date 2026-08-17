@@ -1,0 +1,4 @@
+SOURCE: Greg Kaplan, Benjamin Moll, Giovanni L. Violante (2018), American Economic Review 108(3):697-743 — "Monetary Policy According to HANK"
+URL: https://www.aeaweb.org/articles?id=10.1257/aer.20160042
+VERBATIM QUOTES:
+"In this environment, the indirect effects of an unexpected cut in interest rates, which operate through a general equilibrium increase in labor demand, far outweigh direct effects such as intertemporal substitution."

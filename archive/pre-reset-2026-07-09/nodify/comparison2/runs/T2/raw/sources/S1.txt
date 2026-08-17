@@ -1,0 +1,17 @@
+Source S1
+Title: Global Supply Chain Pressures and U.S. Inflation (FRBSF Economic Letter 2023-15)
+URL: https://www.frbsf.org/research-and-insights/publications/economic-letter/2023/06/global-supply-chain-pressures-and-us-inflation/
+Publisher: Federal Reserve Bank of San Francisco
+Fetched: 2026-07-09 (via WebFetch)
+
+Extracted verbatim quotes:
+
+"Supply chain pressures pushed up the cost of inputs for goods production and the public's expectations of higher future prices. These factors accounted for about 60% of the surge in U.S. inflation beginning in early 2021."
+
+"During this period, GSCPI shocks contributed on average about 60% of the above-trend run-up of headline inflation."
+
+"A one standard deviation shock to the GSCPI raises PCE goods inflation by up to 1.5 percentage points relative to the pre-shock level, about three times the peak effect on overall inflation."
+
+"A one standard deviation shock to the GSCPI leads to an increase in headline PCE inflation of about 0.5 percentage point at the peak."
+
+"Since mid-2022, the contributions of GSCPI shocks have declined from 2.5 to 1.4 percentage points, and headline inflation has also slowed, reflecting the recent easing of supply chain constraints."

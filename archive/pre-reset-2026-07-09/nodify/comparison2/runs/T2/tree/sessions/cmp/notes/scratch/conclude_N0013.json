@@ -1,0 +1,14 @@
+{
+  "node_id": "N-0013",
+  "lean": "supports",
+  "summary": "供给侧解释被高估的论点获得较强支持:供应链压力(GSCPI)自2022年初起持续改善,核心商品通胀随之滞后回落,但'超核心'(核心服务剔除房租)通胀自2022年年中起持续高企且对失业缺口不敏感;2023年全年核心PCE通胀回落2.0个百分点中,70%(1.3pp)来自需求侧降温而非供给侧改善(仅30%/0.6pp)。这说明2022年后期至2023年的通胀持续性与disinflation,主要靠需求侧收缩(含紧缩政策)而非供给侧自然改善驱动。",
+  "confidence": "medium",
+  "based_on": {
+    "children": [],
+    "evidence": [
+      {"ref_id": "E-01", "title": "SF Fed供给需求PCE分解数据(2023年)", "doc_id": "DOC-0002", "url": null, "locator": null, "quote": "Over 2023, core PCE inflation declined by 2.0 percentage points, with 0.6 percentage points coming from supply (30% of total decline) and 1.3 percentage points coming from demand (70% of total decline).", "tool": "web_search", "note": null},
+      {"ref_id": "E-02", "title": "FRBSF EL2023-19 超核心通胀粘性与供应链分化", "doc_id": "DOC-0008", "url": null, "locator": null, "quote": "Core services inflation, even after excluding shelter -- known as supercore inflation -- has remained steadily high since the middle of 2022.", "tool": "web_search", "note": null}
+    ]
+  },
+  "open_questions": ["需求侧降温本身多大程度上是紧缩政策的结果、多大程度上是供给侧红利消退后的'次生效应',二者边界并不清晰"]
+}

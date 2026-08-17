@@ -1,0 +1,47 @@
+# Gate-2 pipeline: three data stages off one shared dataset (two lookups + one derived ratio).
+stages:
+  c1:
+    wdir: ../..
+    cmd: python3 runs/nuclear-safety/transforms/c1.py
+    deps:
+      - runs/nuclear-safety/transforms/c1.py
+      - data/energy/death_rates_per_twh.csv
+    metrics:
+      - runs/nuclear-safety/metrics/c1.json:
+          cache: false
+  c2:
+    wdir: ../..
+    cmd: python3 runs/nuclear-safety/transforms/c2.py
+    deps:
+      - runs/nuclear-safety/transforms/c2.py
+      - data/energy/death_rates_per_twh.csv
+    metrics:
+      - runs/nuclear-safety/metrics/c2.json:
+          cache: false
+  c3:
+    wdir: ../..
+    cmd: python3 runs/nuclear-safety/transforms/c3.py
+    deps:
+      - runs/nuclear-safety/transforms/c3.py
+      - data/energy/death_rates_per_twh.csv
+    metrics:
+      - runs/nuclear-safety/metrics/c3.json:
+          cache: false
+  c4:
+    wdir: ../..
+    cmd: python3 runs/nuclear-safety/transforms/c4.py
+    deps:
+      - runs/nuclear-safety/transforms/c4.py
+      - data/energy/death_rates_per_twh.csv
+    metrics:
+      - runs/nuclear-safety/metrics/c4.json:
+          cache: false
+  c5:
+    wdir: ../..
+    cmd: python3 runs/nuclear-safety/transforms/c5.py
+    deps:
+      - runs/nuclear-safety/transforms/c5.py
+      - data/energy/death_rates_per_twh.csv
+    metrics:
+      - runs/nuclear-safety/metrics/c5.json:
+          cache: false

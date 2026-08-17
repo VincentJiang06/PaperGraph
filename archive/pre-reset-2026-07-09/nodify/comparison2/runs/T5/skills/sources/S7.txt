@@ -1,0 +1,10 @@
+Title: Minimum Wage Increases, Wages, and Low-Wage Employment: Evidence from Seattle
+Authors: Ekaterina Jardim, Mark C. Long, Robert D. Plotnick, Emma van Inwegen, Jacob Vigdor, Hilary Wething
+Published: NBER Working Paper No. 23532; related published version "Minimum-Wage Increases and Low-Wage Employment: Evidence from Seattle," American Economic Journal: Applied Economics / AEA Papers.
+URL: https://www.nber.org/papers/w23532 ; https://www.nber.org/system/files/working_papers/w23532/revisions/w23532.rev0.pdf ; https://www.aeaweb.org/articles?id=10.1257%2Fpol.20180578
+
+Study description: evaluates wage, employment, and hours effects of the first and second phase-in of the Seattle Minimum Wage Ordinance, which raised the minimum wage from $9.47 to as much as $11 in 2015 and to as much as $13 in 2016, using Washington State administrative employment data with short-duration longitudinal panels (nearest-neighbor matching, treated cohorts vs. placebo cohorts).
+
+Verbatim / closely-quoted key findings (as extracted):
+The second wage increase to $13 "reduced hours worked in low-wage jobs by 6-7 percent, while hourly wages in such jobs increased by 3 percent." Total payroll for such jobs decreased, implying the Ordinance "lowered the amount paid to workers in low-wage jobs by an average of $74 per month per job in 2016."
+"The entirety of earnings gains accrued to workers with above-median experience at baseline; less-experienced workers saw no significant change to weekly pay."

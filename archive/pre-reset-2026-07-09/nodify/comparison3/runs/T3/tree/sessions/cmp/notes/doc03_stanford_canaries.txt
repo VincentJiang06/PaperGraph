@@ -1,0 +1,9 @@
+SOURCE: Brynjolfsson, Chandar, Chen (2025). "Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence." Stanford Digital Economy Lab. Aug 26 2025 preprint (13%); abstract updated Nov 13 2025 (16%). Uses ADP payroll microdata.
+URL: https://digitaleconomy.stanford.edu/publications/canaries-in-the-coal-mine/
+
+VERBATIM (Nov 2025 abstract):
+"since the widespread adoption of generative AI, early-career workers (ages 22-25) in the most AI-exposed occupations have experienced a 16 percent relative decline in employment even after controlling for firm-level shocks"
+"In contrast, employment for workers in less exposed fields and more experienced workers in the same occupations has remained stable or continued to grow."
+"employment declines are concentrated in occupations where AI is more likely to automate, rather than augment, human labor."
+
+DISTILLED: First large-scale micro evidence of an AI employment effect: concentrated in young/entry-level in high-exposure, automation-type occupations (coding, customer service); older/augmentation workers stable-to-up. A COHORT/OCCUPATION signal invisible in aggregate totals. Aug preprint said 13%; peer version 16%.

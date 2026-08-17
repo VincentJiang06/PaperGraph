@@ -1,0 +1,19 @@
+SOURCE S4
+Title: Robots and Jobs: Evidence from US Labor Markets
+Authors: Daron Acemoglu, Pascual Restrepo
+Venue: NBER WP w23285 (2017); published Journal of Political Economy 128(6), 2020
+URL fetched: https://www.nber.org/papers/w23285
+Fetched: 2026-07-09
+
+VERBATIM POINTS (NBER working-paper abstract):
+- Design: "regressing the change in employment and wages on the exposure to robots in each local labor market—defined from the national penetration of robots into each industry"
+- Employment effect: "one more robot per thousand workers reduces the employment to population ratio by about 0.18-0.34 percentage points"
+- Wage effect: "wages by 0.25-0.5 percent"
+- Displacement: "the arrival of one new industrial robot in a local labor market coincides with an employment drop of 5.6 workers"
+
+NOTE: Published JPE 2020 version reports the headline point estimates as ~0.2 pp (employment-to-population) and 0.42% (wages) per robot per thousand workers.
+
+DESIGN: Observational / quasi-experimental (commuting-zone panel, IV using industry robot exposure from EU adoption). Period 1990-2007.
+SAMPLE: US commuting zones (local labor markets), industrial robots (IFR data).
+DIRECTION: NEGATIVE on employment and wages (industrial robots, not GenAI — a historical-automation benchmark).
+KEY LIMITS: Industrial robots ≠ AI/LLMs; pre-2020 period; local (commuting-zone) design captures relative not aggregate effects; results debated (identification, general-equilibrium offsets).

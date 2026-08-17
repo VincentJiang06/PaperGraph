@@ -1,0 +1,4 @@
+{"phase": "p1", "tree": {"nodes": 19, "claims": 12, "docs": 8, "resume_read_bytes": 6069}, "notree": {"log_bytes": 9532, "sources": 9, "resume_read_bytes": 9532}}
+{"phase": "p2", "tree": {"nodes": 28, "claims": 20, "docs": 16, "resume_read_bytes": 7663}, "notree": {"log_bytes": 15335, "sources": 16, "resume_read_bytes": 15335}}
+{"phase": "p3", "tree": {"nodes": 35, "claims": 27, "docs": 23, "resume_read_bytes": 10072}, "notree": {"log_bytes": 24509, "sources": 23, "resume_read_bytes": 24509}}
+{"phase": "p4", "tree": {"nodes": 37, "claims": 29, "docs": 25, "resume_read_bytes": 12882}, "notree": {"log_bytes": 29641, "sources": 27, "resume_read_bytes": 29641}}

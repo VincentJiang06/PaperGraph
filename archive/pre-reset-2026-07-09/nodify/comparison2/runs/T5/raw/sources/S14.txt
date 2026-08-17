@@ -1,0 +1,17 @@
+Source: Dube, Arindrajit and Ben Zipperer. "Own-Wage Elasticity: Quantifying the Impact of Minimum Wages on Employment." NBER Working Paper No. 32925 (2024/2025).
+URL: https://ideas.repec.org/p/nbr/nberwo/32925.html
+Retrieved via WebFetch on 2026-07-09.
+
+Extracted content:
+
+## Abstract Summary
+According to the paper by Dube and Zipperer, the own-wage elasticity (OWE) provides a standardized economic measure for evaluating minimum wage policy impacts on employment.
+
+## Key Findings on Magnitude
+The authors report that "the median OWE estimate of 72 studies published in academic journals is -0.13," indicating relatively modest employment losses relative to wage gains. They further explain that this figure "suggests that only around 13 percent of the potential earnings gains from minimum wage increases are offset due to associated job losses."
+
+## Temporal Variation
+A notable trend emerges in the research literature: "Estimates published since 2010 tend to be closer to zero," suggesting that more recent scholarship finds diminishing employment effects from minimum wage increases.
+
+## Context
+The paper establishes an accessible repository of 88 studies examining minimum wage effects, serving as a contemporary reference point for policymakers and researchers evaluating this contentious economic policy question.

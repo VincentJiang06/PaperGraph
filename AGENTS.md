@@ -1,30 +1,82 @@
 # Agent Protocol
 
-`docs/` (00 → 18) is the single source of truth. Boundary questions: `docs/08-module-contracts.md` wins. Checks: the V-* registry in `docs/09-verification.md`. Scope + CLI surface: `docs/10-v1-design.md`. Test structure: `docs/11-test-suite.md`. WebUI design: `docs/12-webui-spec.md`. `docs/13`–`18` are the search program (S1–S5): **all five sets are ADOPTED and BINDING** (docs/00 changelog entries, 2026-07-08 — latest: Spec Revision v2.1). `archive/` is superseded legacy material; `product/` is product/GTM planning — neither is build spec. Never treat them as authoritative for implementation.
+## Current scope
 
-Roles are defined in `docs/07-runtime-and-tooling.md`:
+This repository is in **documentation-only mode** unless the user explicitly asks to implement or
+change executable behavior. Documentation work may inspect and test existing scripts, but it must
+not edit Python, data, generated reports, or run artifacts.
+
+The active PaperGraph is a small topic-to-paper workflow. Do not restore the archived Logic Graph,
+`paperproof`/`nd` CLIs, schemas, queues, database, WebUI, or worker framework.
+
+## Read order and authority
+
+1. `DESIGN.md` - goals, boundaries, and why the system is deliberately small.
+2. `WORKFLOW.md` - the orchestrator loop, parallel waves, and artifact ownership.
+3. `gates/divergence.md` and `gates/rigor.md` - exact in-loop file and verdict contracts.
+4. `eval/EVAL.md` - held-out evaluation policy and final ship criteria.
+5. `eval/protocol.md` - independent-agent inputs and output handoff.
+
+For a boundary conflict, the narrowest contract wins. Gate interfaces win for gate files; `EVAL.md`
+wins for release verdicts; `WORKFLOW.md` wins for orchestration. `archive/` and `product/` are never
+implementation authority.
+
+## Roles
 
 ```text
-Orchestrator   main session; scoping, layer expansion, dispatch, gates via CLI
-ProofWorker    one bounded proof task -> one ProofResult file
-DocsWorker     one DocsRequest (or S2 wave member, with its SearchPlan)
-               -> Documents + EvidenceUnits in one docs_result file
-CoverageCritic one wave (claim, plans, merged result, query_logs as inputs)
-               -> one coverage_report.v1 in agent_outputs/coverage_reports/;
-               read-only and adversarial — never searches, never adds evidence;
-               code computes the wave verdict (docs/15, docs/10 §5)
-CompileWorker  DraftMap -> prose (the only prose producer)
-Implementation agents  build src/paperproof/ following docs/10-v1-design.md
+Orchestrator       owns scope, shared artifacts, dispatch, merges, revisions, and stop decisions
+Cartographer       maps the author-side field positions; returns one bounded map
+Advocate           steelmans exactly one mapped position
+Adversary          constructs the strongest objection to the working thesis
+ClaimGrounder      grounds exactly one empirical claim in a transform or saved source
+EvalKeyBuilder     derives an answer key from real literature, blind to author scaffolding
+EvalAdvocate       scores exactly one answer-key position, blind to other judges
+EvalAdversary      searches for a stronger unaddressed objection
+ClaimAuditor       extracts empirical assertions independently of claims.tsv
+Referee            one blind rubric judgment; at least three run independently
+EvalAggregator     validates completeness and merges judge outputs; does not author judgments
 ```
 
-Rules for every agent:
+All model work uses the host coding agent's native subagents. The project must not require an API
+key, provider SDK, or hidden network model call.
 
-1. Read the doc for your stage before acting; read only your task's declared inputs.
-2. Write only your declared output paths; workers never write graph/, commit/, freeze/, compiler/.
-3. Chat text is not state — only validated output files are.
-4. Never bypass the Validator or Committer; never edit frozen structures.
-5. Never invent citations; every citation resolves to an archived Document.
-6. Discrete enums for academic judgment; never numeric scores.
-7. JSONL is append-only; never rewrite history.
-8. Parallel work requires disjoint task_ids and output files.
-9. Implementation work: follow milestone order in docs/10 §7 with the test gates in docs/11 §9; tests before non-trivial code; schemas live only in src/paperproof/schemas/; text measurement only via textutil (docs/09 §0); a change that deviates from docs/ must update the doc in the same change.
+## Parallelism and ownership
+
+Parallelism is the default whenever tasks are independent:
+
+1. After cartography, dispatch one Advocate per position plus one Adversary concurrently.
+2. After the empirical claims are identified, dispatch one ClaimGrounder per `claim_id`
+   concurrently.
+3. At held-out eval, dispatch all EvalAdvocates, the EvalAdversary, ClaimAuditor, and at least three
+   Referees concurrently. Aggregate only after every required return exists.
+
+Workers receive bounded inputs and never edit shared artifacts. Only the Orchestrator writes
+`paper.md`, `positions.md`, and `claims.tsv`. Gate scripts alone update `gate_report.md`.
+ClaimGrounders may write only their assigned `transforms/<claim_id>.py`,
+`metrics/<claim_id>.json`, or `sources/<claim_id>.txt` when explicitly authorized; claim IDs and
+paths must be disjoint. Eval judges write only their assigned output, and the EvalAggregator alone
+writes the merged verdict file.
+
+Chat text is not durable state. The orchestrator must validate each worker return against the
+relevant interface before merging it.
+
+## Quality and release rules
+
+- Both author-facing gates run on every paper and every candidate must pass both.
+- Gate success means **candidate**, not `SHIP`.
+- Held-out eval agents must be blind to `positions.md`, gate results, and one another wherever the
+  eval protocol says so.
+- A final `SHIP` requires every D1-D5 input and every required referee return. Missing dimensions
+  are incomplete and fail closed, regardless of what the current harness prints.
+- Never edit an answer key, threshold, gate, or eval rubric to make a paper pass.
+- Workflow changes and eval changes use separate changelogs and must not be bundled as one quality
+  adjustment.
+
+## Change discipline
+
+- Keep edits small and consistent with the current file-based design.
+- A file-format or pass-rule change must update its matching interface document in the same change.
+- A workflow change belongs in `CHANGELOG.md`; an eval change belongs in `eval/CHANGELOG.md`.
+- Do not manually edit generated `gate_report.md`, `eval/reports/`, or `eval/scoreboard.tsv`.
+- Do not commit or push unless the user explicitly asks. Push only to
+  `github.com/VincentJiang06/PaperGraph`, never to a company GitLab.

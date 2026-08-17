@@ -1,0 +1,9 @@
+{
+  "parent_id": "N-0004",
+  "children": [
+    {"statement": "价格转嫁:最低工资上调迅速传导到餐饮/食品价格(Renkin-Montialoux-Siegenthaler杂货价格;Leung;快餐研究),消费者承担相当份额,弹性约0.05-0.36。", "why_helps_parent": "证明成本主要经价格转嫁,而非裁员——headcount近零的核心通道", "orientation": "neutral"},
+    {"statement": "工时与调度边际:西雅图证据显示低薪工时/新增岗位受影响大于在职人数;雇主削减工时、减少排班而非直接裁员。", "why_helps_parent": "说明就业冲击落在工时而非headcount,'近零就业'掩盖工时损失", "orientation": "neutral"},
+    {"statement": "自动化/招聘门槛:最低工资上调加速可自动化(routine)岗位替代(Lordan-Neumark),并提高招聘技能门槛(labor-labor替代,偏向更高技能求职者)。", "why_helps_parent": "揭示长期与门槛边际:成本转嫁到技术替代与求职者构成", "orientation": "neutral"},
+    {"statement": "反方:非工资边际调整证据薄弱/不一致——多项研究未发现工时、福利或培训显著下降;'成本被转移到非工资维度'可能被夸大。", "why_helps_parent": "对'边际吸收'机制的红队:若margins没动,则要么真无成本要么就业该降", "orientation": "adversarial"}
+  ]
+}

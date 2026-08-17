@@ -1,0 +1,20 @@
+SOURCE S6  [ENTRY-LEVEL / YOUTH facet]
+Title: Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence
+Authors: Erik Brynjolfsson, Bharat Chandar, Ruyu Chen
+Venue: Stanford Digital Economy Lab, 2025 (Nov 2025 revision)
+URL fetched: https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recent-employment-effects-of-artificial-intelligence/
+Fetched: 2026-07-09
+
+VERBATIM POINTS (Nov 2025 version):
+- Data: "high-frequency administrative data from the largest payroll software provider in the United States" (ADP).
+- Headline: "early-career workers (ages 22-25) in the most AI-exposed occupations have experienced a 16 percent relative decline in employment"
+- Robustness: decline persists "even after controlling for firm-level shocks."
+- Automation vs augmentation: "Employment declines are concentrated in occupations where AI is more likely to automate, rather than augment, human labor."
+- Age gradient: "employment for workers in less exposed fields and more experienced workers in the same occupations has remained stable or continued to grow."
+- Margin: "adjustments occur primarily through employment rather than compensation."
+
+NOTE: Earlier draft (Aug/Sept 2025) headline figure was cited as a 13% relative decline; Nov 2025 version states 16%. Report as ~13-16%. Software developers 22-25 reportedly down ~20% from late-2022 peak to mid-2025.
+DESIGN: Observational, difference-in-differences on high-frequency individual payroll microdata (ADP), since ChatGPT launch (late 2022) to 2025.
+SAMPLE: US workers in firms using ADP payroll (millions of records); firms with 5+ yrs history.
+DIRECTION: NEGATIVE and concentrated on youngest/entry-level in automate-type AI-exposed jobs; older/experienced stable.
+KEY LIMITS: Correlational/AI-exposure attribution (can't fully isolate AI from post-2022 macro, rate hikes, tech over-hiring correction, remote-work unwind); ADP sample not fully representative; "relative decline" (vs less-exposed) not necessarily absolute; exposure measure contested.

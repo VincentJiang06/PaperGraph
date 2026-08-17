@@ -1,0 +1,22 @@
+{
+  "T1": {
+    "A": "tree",
+    "B": "notree"
+  },
+  "T2": {
+    "A": "notree",
+    "B": "tree"
+  },
+  "T3": {
+    "A": "tree",
+    "B": "notree"
+  },
+  "T4": {
+    "A": "notree",
+    "B": "tree"
+  },
+  "T5": {
+    "A": "tree",
+    "B": "notree"
+  }
+}

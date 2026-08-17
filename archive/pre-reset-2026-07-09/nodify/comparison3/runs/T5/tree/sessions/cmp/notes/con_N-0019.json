@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0019",
+ "lean": "mixed",
+ "summary": "非线性证据双向:在观测区间内Cengiz明确称'即便考虑更高的最低工资水平也无就业损失',压制了强阈值叙事;但加州快餐$20(相对快餐工资极高)出现约-3.6%就业的反方估计,与'高Kaitz负效应放大'一致。综合看,非线性(比值越高越可能转负)有理论与上端证据支撑,但在美国已充分观测的区间内阈值尚不清晰。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "CA20反方:高相对水平出现负就业",
+    "doc_id": "DOC-0013",
+    "quote": "This approach, namely adjusting for the performance of other industries, suggests that AB 1228 reduced fast-food employment by 3.6 percent.",
+    "url": "https://www.cato.org/research-briefs-economic-policy/did-californias-fast-food-minimum-wage-reduce-employment",
+    "locator": "report",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "title": "Cengiz:观测区间内更高水平仍无就业损失",
+    "doc_id": "DOC-0001",
+    "quote": "We also find no evidence of disemployment when we consider higher levels of minimum wages.",
+    "url": "https://www.nber.org/papers/w25434",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "把'比值'而非'水平'作为自变量的跨案例元回归能否定位拐点?"
+ ]
+}

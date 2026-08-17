@@ -1,0 +1,18 @@
+Source: web search synthesis — IMF Global Debt Database / Article IV Consultation coverage (via Continuum Economics, Carnegie Endowment, Statista aggregation); RFA/Caixin Global on LGFV hidden debt; Trading Economics on PBOC policy rate
+URLs: https://continuumeconomics.com/a/97350a89/china-and-japan-debt-compared ; https://www.imf.org/external/datamapper/GG_DEBT_GDP@GDD ; https://www.rfa.org/english/china/2024/11/18/china-local-government-hidden-debt-explained/ ; https://tradingeconomics.com/china/interest-rate
+
+Key figures — government debt levels:
+- China's OFFICIAL general government debt-to-GDP ratio: about 61% in 2024, up sharply from 38.5% in 2019 (per IMF Article IV, Aug 2024 estimate).
+- China's IMF "AUGMENTED" debt-to-GDP measure (including local government financing vehicle/LGFV debt and general government funds): about 124% of GDP in 2024, up from roughly 86.3% previously. One source frames the central IMF estimate (2/3 of LGFV, excluding GGF) at about 90% of GDP -- already "a worse starting point than for the Japanese government in 1990."
+- Japan's national government debt-to-GDP ratio: about 250% in 2024, up from about 180% in 2004.
+- Comparison: even China's augmented (~124% of GDP) debt ratio remains substantially LOWER than Japan's headline 250% of GDP in 2024 -- i.e. in aggregate stock terms China still has more nominal fiscal headroom than Japan currently carries, though China's debt is rising much faster in relative terms (61%->124% in one framing over a handful of years) than Japan's did during a comparable early stage.
+
+Key figures — local hidden debt (LGFV):
+- IMF estimated LGFV-related local government debt totaled about 60 trillion yuan (~US$8.3 trillion), or about 47.6% of GDP, by end of 2023; another IMF-linked figure cites 58 trillion yuan of LGFV debt as posing "a serious risk to financial stability."
+- China launched a three-year debt-restructuring/debt-swap program (from Nov. 2023) to refinance about 10 trillion yuan of "hidden debt" (LGFV bonds); Finance Minister Lan Fo'an reported hidden debt fell by 3.8 trillion yuan, from an end-2023 level down to about 10.5 trillion yuan by end-2024 (i.e., the officially tracked "hidden debt" category, not total LGFV debt, has been actively shrinking under a policy-directed swap program).
+- Operational LGFV debt (about 14.8 trillion yuan) is flagged as a tougher category, since curbs on new financing have cut off LGFVs' main cash source for paying interest, forcing many to borrow new funds just to repay old bonds -- a rollover/liquidity-strain dynamic.
+
+Key figures — monetary policy space:
+- As of mid-2026, PBOC's key policy rates remain positive in nominal terms: 1-year Loan Prime Rate at 3.0%, 5-year LPR at 3.5% (held for 13 consecutive months as of the report), described as "supportive"/"moderately loose."
+- Since the start of the 14th Five-Year Plan (2021), PBOC cut reserve requirement ratios nine times (cumulative -3.5 percentage points), releasing about RMB 7 trillion of long-term liquidity; in May 2025 it cut the 7-day reverse repo rate from 1.5% to 1.4% plus a 50bp RRR cut.
+- By contrast, the Bank of Japan spent most of the "lost decades" era at or below the zero lower bound (formally exiting negative rates and yield-curve control only in March 2024) -- i.e. Japan had essentially exhausted conventional interest-rate policy space for roughly three decades, whereas China's policy rate, though low and falling, has not yet hit the zero bound and nominally retains some further room to cut.

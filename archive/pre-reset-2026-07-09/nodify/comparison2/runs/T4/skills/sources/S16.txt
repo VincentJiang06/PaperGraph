@@ -1,0 +1,6 @@
+Title: China GDP Per Capita PPP (World Bank data, via Trading Economics)
+Source: Trading Economics
+URL: https://tradingeconomics.com/china/gdp-per-capita-ppp-us-dollar-wb-data.html
+
+Key verbatim extraction (via fetch):
+- "GDP per capita, PPP (current international $) in China was reported at 27105 USD in 2024, according to the World Bank collection of development indicators, compiled from officially recognized sources."

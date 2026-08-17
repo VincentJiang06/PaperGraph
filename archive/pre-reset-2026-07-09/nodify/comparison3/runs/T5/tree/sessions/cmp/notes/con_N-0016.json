@@ -1,0 +1,32 @@
+{
+ "node_id": "N-0016",
+ "lean": "supports",
+ "summary": "自动化与岗位构成是长期/门槛边际:Lordan-Neumark(CPS 1980-2015)发现上调显著降低低技能工人在'可自动化'岗位的份额,并提高其转为非就业或更差岗位的概率,对年长低技能工人尤甚。这类替代不体现在短期总headcount上,却是竞争理论压力的真实出口。",
+ "confidence": "medium",
+ "based_on": {
+  "children": [],
+  "evidence": [
+   {
+    "title": "Lordan-Neumark:可自动化份额下降",
+    "doc_id": "DOC-0007",
+    "quote": "increasing the minimum wage decreases significantly the share of automatable employment held by low-skilled workers",
+    "url": "https://www.nber.org/papers/w23667",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   },
+   {
+    "title": "Lordan-Neumark:转为非就业/更差岗位",
+    "doc_id": "DOC-0007",
+    "quote": "increases the likelihood that low-skilled workers in automatable jobs become nonemployed or employed in worse jobs",
+    "url": "https://www.nber.org/papers/w23667",
+    "locator": "abstract",
+    "tool": "web_fetch",
+    "note": null
+   }
+  ]
+ },
+ "open_questions": [
+  "2020年代AI/自助点餐加速后,自动化边际的斜率是否变陡?"
+ ]
+}

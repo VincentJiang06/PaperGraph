@@ -1,94 +1,140 @@
 # PaperGraph
 
-PaperGraph is a research framework that runs under Claude Code. It treats linear "write the paper top to bottom" workflows as harmful to argument quality, and instead:
+PaperGraph is a small, coding-agent-supervised workflow that turns a research topic into a
+finished Markdown paper. It improves two failure modes with re-runnable checks:
 
-1. Builds the paper's ideas as a **Logic Graph** (claims = nodes, argumentative moves = directed, strength-classed edges), expanded layer by layer.
-2. Proves every node and edge atomically with a **Proof Machine** — bounded, parallel Claude workers fill fixed check forms ("in scope? evidence sufficient? inference holds?"); code computes the verdict from each form via a published decision table.
-3. Archives all literature in a **Docs Database** with memoized search, so evidence is found once, reused forever, and citations cannot be hallucinated.
-4. Produces prose exactly once, at the final **Compiler** step, from a frozen, evidence-bound argument — then audits it.
+- **Divergence:** the paper must engage the field's real positions and its strongest objection.
+- **Rigor and traceability:** every empirical claim must reproduce from raw data or verify against
+  a saved source.
 
-It is not an autonomous paper writer and not a RAG chatbot. It makes arguments verifiable before prose exists.
+The project deliberately does not provide a claim graph, queue framework, model API wrapper,
+database, or product CLI. The host coding agent coordinates native subagents; PaperGraph itself
+does not need a model API key.
 
-## Repository State
+## Current state
 
-Implementation complete through **v2**: milestones M0–M4 plus the full search
-program S1–S5 (docs/13–18) are built, adopted, and BINDING. `src/paperproof/`
-implements the spec; `tests/` carries the docs/11 suite (several hundred tests —
-counts are approximate; the gates in docs/11 are what bind). `docs/` 00→18 are
-all binding; the docs/00 changelog records every adoption, latest entry "Spec
-Revision v2.1" (post-adoption consistency + live-run readiness).
+The project was reset on 2026-07-09 after the previous graph/CLI designs failed to improve paper
+quality reliably. That implementation is retained only under `archive/pre-reset-2026-07-09/` and
+is not an implementation source.
 
-```text
-docs/        the specification (read 00 → 18 in order; 13–18 = the ADOPTED
-             search program)
-src/         the paperproof package (schemas, gates, queue, committer, docs
-             engine, CLI, WebUI)
-tests/       the executable suite per docs/11
-examples/    topic-input-p4.md — the test topic used by milestone acceptance
-product/     product form, usage patterns, go-to-market planning (not build spec)
-archive/     legacy documentation, superseded, do not use
-```
+The active workflow is experimental but runnable:
 
-## The Documents
+- Four domain runs under `runs/` pass both author-facing gates.
+- The independent eval has literature answer keys for all four runs.
+- Only `nuclear-safety` currently has the complete D2/D3/D4b/D5 judgment panel; it is `REVISE`.
+- The other runs have only partial evals. A mechanical `SHIP` result without a complete panel is
+  provisional and must not be treated as a release decision.
+- The required gated-versus-freehand A/B baseline has not been completed.
 
-Four layers: **modules** (01–07), **binding contracts** (08–09), **the concrete first version** (10), **the executable test plan** (11).
+Known executable conformance gaps, intentionally not fixed during documentation-only work:
 
-```text
-docs/00-overview.md             what PaperGraph is; component map; non-negotiables; r2 changelog
-docs/01-topic-and-scoping.md    topic input file, parsing rules, PaperSpec, ProjectContract
-docs/02-logic-graph.md          nodes, edges, lifecycle, BFS expansion, spine, MSA checklist
-docs/03-proof-machine.md        proof tasks, evaluation ladder, decision table, worker protocol
-docs/04-docs-database.md        documents, EvidenceUnits, matcher algorithm, memoized search
-docs/05-workflow-and-queue.md   pipeline, queue state machine, gates, parallelism rules
-docs/06-compiler-and-audit.md   freeze, dry run, section plan, draft map, prose, audit
-docs/07-runtime-and-tooling.md  storage layout, ids, snapshots, CLI, worker dispatch, WebUI
-docs/08-module-contracts.md     AUTHORITATIVE boundary contracts: artifact ownership,
-                                pre/postconditions, verdict→action map, failure policy
-docs/09-verification.md         shared text algorithms, V-* validation rule registry,
-                                integration scenarios, invariant sweep, trace chain
-docs/10-v1-design.md            v1 scope and stack, per-command CLI contracts,
-                                worker prompts, milestones M0–M4, definition-of-done demo
-docs/11-test-suite.md           AUTHORITATIVE test plan: fixtures, FakeWorkers, golden
-                                decision rows, hostile catalog, meta-tests, milestone gates
-docs/12-webui-spec.md           AUTHORITATIVE WebUI design: shell, tokens, views,
-                                components, accessibility, test hooks
-docs/13..18                     the SEARCH PROGRAM (S1-S5): thorough evidence
-                                search — planning, waves+critic, source tiers,
-                                saturation, semantic retrieval. ALL FIVE SETS
-                                ADOPTED AND BINDING (docs/00 changelog; docs/13)
-```
+- `eval/harness.py` does not yet fail closed when judgment fields are absent. It also does not
+  fully enforce the steelman mean, honesty-flag, and referee-band rules in `eval/EVAL.md`.
+- `gates/rigor_gate.py` reports a failed DVC reproduction, but its final exit decision currently
+  depends only on values found in metric files; stale metrics could therefore mask a DVC failure.
+- `eval/protocol.md` does not yet define every per-judge output and aggregation field consumed by
+  the demonstrated verdict artifact. That interface must be completed on the eval track.
+- `eval/selftest.py` passes its present cases but has no negative case proving that a missing panel
+  cannot produce `SHIP`.
 
-## Core Loop (first thing to build)
+## Document map
 
-```text
-seed edge A -> B
-  -> ProofTask (+ ContextPack + DocsPack)
-  -> parallel Claude ProofWorkers write check-form files
-  -> Validator checks the form and COMPUTES the verdict (decision table)
-  -> Committer (only graph mutator): edge -> needs_repair(bridge), bridge nodes C/D enqueued
-  -> loop until Minimal Sufficient Argument
-  -> Freeze -> Compiler dry run -> prose -> Audit
-```
+The documents are intentionally split by responsibility:
 
-## Non-Negotiables
+| Layer | Canonical files | Purpose |
+|---|---|---|
+| Design | `DESIGN.md` | Product goal, trade-offs, and the small-system architecture |
+| Workflow | `WORKFLOW.md` | Topic-to-paper loop, agent roles, parallel waves, and stop conditions |
+| Gate interfaces | `gates/divergence.md`, `gates/rigor.md` | Exact author-side file formats and deterministic pass rules |
+| Held-out eval | `eval/EVAL.md` | Independent quality policy and final ship criteria |
+| Eval interface | `eval/protocol.md` | Agent inputs, output contract, and aggregation handoff |
+| History | `CHANGELOG.md`, `eval/CHANGELOG.md` | Separate workflow and eval change tracks |
+
+`AGENTS.md` is the cross-agent operating contract. `CLAUDE.md` is the Claude Code supplement.
+`archive/` is historical evidence only, and `product/` is product planning; neither is binding.
+
+When documents disagree, the narrowest boundary document wins: gate file questions go to the
+matching `gates/*.md`; held-out verdict questions go to `eval/EVAL.md`; orchestration questions go
+to `WORKFLOW.md`; design intent goes to `DESIGN.md`. Executable scripts must be brought into
+conformance with these documents rather than silently redefining them.
+
+## Quality model
 
 ```text
-JSON/JSONL is canonical state; DB/cache is derived and rebuildable.
-Committer is the only Logic Graph mutator.
-Workers fill closed-enum check forms along the evaluation ladder; code computes
-  verdicts — no AI numeric scoring of academic judgment.
-Inference gaps get at most 2 bridge proposals; no recursive expansion inside proof tasks.
-Docs never sets verdicts; Proof never searches; Compiler never adds claims; Audit never rewrites.
-No prose before the Compiler stage.
-Every citation resolves to an archived Document.
-Parallel workers have disjoint output files; shared state passes through gates.
+topic
+  -> native subagents map positions, steelman, attack, and ground evidence
+  -> orchestrator owns and revises paper.md
+  -> both in-loop gates PASS                    candidate paper
+  -> held-out eval re-derives the yardstick     SHIP or REVISE
 ```
 
-## Naming
+The two layers solve different problems:
+
+- `gates/` is a fast, deterministic floor used during every revision. It is useful but gameable
+  because the author also creates `positions.md` and `claims.tsv`.
+- `eval/` is an out-of-loop, author-blind judge. It derives its position map from real literature,
+  dispatches independent judgment agents, and is required for a final `SHIP` decision.
+
+Passing both gates produces a candidate, not a finished release. Missing eval dimensions fail
+closed: the result is incomplete, never `SHIP`.
+
+## Per-paper files
 
 ```text
-Product:      PaperGraph
-Package/CLI:  paperproof
-Source root:  src/paperproof/
-Data root:    data/projects/<project_id>/
+runs/<slug>/
+  paper.md          artifact revised by the orchestrator
+  positions.md      author-side map used by the divergence gate
+  claims.tsv        empirical-claim ledger used by the rigor gate
+  transforms/       one deterministic transform per data claim
+  metrics/          transform outputs checked by the rigor gate
+  sources/          saved text for source claims
+  dvc.yaml          data-claim pipeline; omitted when there are no data claims
+  dvc.lock          generated provenance for data claims
+  gate_report.md    latest results from both in-loop gates
 ```
+
+The exact `positions.md` and `claims.tsv` contracts live in the two gate interface documents.
+
+## Run the checks
+
+From the repository root:
+
+```bash
+python3 gates/rigor_gate.py runs/<slug>
+python3 gates/divergence_gate.py runs/<slug>
+```
+
+For a pre-ship held-out evaluation, first create the literature answer key and judgment panel by
+following `eval/protocol.md`, then run:
+
+```bash
+python3 eval/harness.py score runs/<slug> \
+  --key eval/corpus/<slug>/answer_key.json \
+  --arm gated
+python3 eval/selftest.py
+```
+
+Data claims require DVC because the rigor gate delegates re-execution and provenance to it.
+Source-only papers do not need a DVC pipeline.
+
+## Agent execution
+
+Use the host coding agent's native subagent framework. Do not add provider SDKs or API-key
+configuration to PaperGraph. Parallel work is expected, but shared files have one writer:
+
+- advocates run in parallel, one bounded task per mapped position;
+- the adversary runs alongside the advocates;
+- claim grounders run in parallel with disjoint `claim_id` outputs;
+- held-out advocates, adversary, claim auditor, and at least three referees run independently;
+- only the orchestrator merges worker returns into shared paper artifacts.
+
+The full dispatch and ownership rules are in `WORKFLOW.md` and `AGENTS.md`.
+
+## Non-negotiables
+
+- Never use archived framework files as current guidance.
+- Never invent a source, quote, number, or provenance record.
+- Never weaken a gate or the eval to admit a failing paper.
+- Never call an in-loop gate result an independent quality verdict.
+- Never ship while any held-out eval dimension is missing or failing.
+- Keep workflow and eval changes on their separate documented tracks.

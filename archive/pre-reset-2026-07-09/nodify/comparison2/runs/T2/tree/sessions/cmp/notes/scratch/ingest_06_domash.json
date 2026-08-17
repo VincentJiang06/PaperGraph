@@ -1,0 +1,12 @@
+{
+  "kind": "paper",
+  "title": "Domash & Summers (2022), How Tight Are U.S. Labor Markets? (NBER w29739)",
+  "url": "https://www.nber.org/papers/w29739",
+  "text_file": "notes/scratch/doc_domash_summers.txt",
+  "summary": "职位空缺率/离职率等需求侧指标显示劳动力市场紧张程度对应历史上失业率低于2%的水平;2022年2月工资同比增速达6.5%,创纪录,支持'劳动力市场过热'的需求侧叙事。",
+  "bindings": [
+    {"node_id": "N-0011", "relation": "supports", "note": "职位空缺率/离职率等指标显示劳动力市场极度紧张,构成对通胀有实质贡献的证据"},
+    {"node_id": "N-0004", "relation": "supports", "note": "与Bernanke-Blanchard模型'劳动力市场贡献微小'的结论直接矛盾,展示归因模型间的实质性分歧"},
+    {"node_id": "N-0009", "relation": "refutes", "note": "以需求侧指标(空缺率、离职率、工资增速)证明劳动力市场确实过热,对'需求侧被高估'构成反驳"}
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "parent_id": "N-0006",
+  "children": [
+    {
+      "statement": "若供给侧贡献更大、需求侧贡献相对有限,这对美联储紧缩政策的必要性/边际有效性、以及降息路径判断意味着什么",
+      "why_helps_parent": "直接把归因结果映射到政策立场判断上,是父观点的核心论证链条",
+      "orientation": "neutral"
+    },
+    {
+      "statement": "美联储官方表态(如Powell历次讲话)在通胀成因归因上是否与学术模型(如Bernanke-Blanchard)存在张力,这对美联储沟通可信度/未来框架调整意味着什么",
+      "why_helps_parent": "检验父观点隐含假设(即归因结果能顺畅转化为对美联储的政策评价)是否成立,揭示官方叙事与学术证据之间可能的分歧",
+      "orientation": "adversarial"
+    }
+  ]
+}

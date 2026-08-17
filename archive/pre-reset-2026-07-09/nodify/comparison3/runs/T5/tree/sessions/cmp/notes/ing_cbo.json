@@ -1,0 +1,14 @@
+{
+ "kind": "report",
+ "title": "Congressional Budget Office (July 2019), Effects of Increasing the Federal Minimum Wage ($15 option)",
+ "url": "https://www.cbo.gov/publication/55410",
+ "text_file": "notes/src_cbo.txt",
+ "summary": "CBO对$15联邦(2025)测算:中位约130万人失业(就业-0.8%),区间约0到370万;1700万人加薪、130万人脱贫。高相对水平(高Kaitz)下预测明显负就业——非线性上端。",
+ "bindings": [
+  {
+   "node_id": "N-0018",
+   "relation": "supports",
+   "note": "高相对水平的负效应锚"
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+Source S14
+Title: Fed expected to stand pat on interest rates amid ongoing uncertainty from Iran conflict
+Publisher: Yahoo Finance (Reuters/wire)
+URL: https://finance.yahoo.com/economy/policy/article/fed-expected-to-stand-pat-on-interest-rates-amid-ongoing-uncertainty-from-iran-conflict-100000761.html
+Fetched: 2026-07-09 (via WebFetch)
+
+Extracted verbatim quotes:
+
+Loretta Mester (former Fed official): "oil prices have been volatile. But they're still well above where they were before the war started."
+
+"inflation overall has shot up because gas prices have soared," though this has not yet spread broadly to goods and services.
+
+The Federal Reserve is anticipated to maintain current interest rates at its meeting, with officials monitoring whether elevated energy costs will "bleed into" underlying/core inflation.
+
+Luke Tilley (chief economist, Wilmington Trust) on stagflation risk: "the longer the conflict lasts and energy prices remain high, the greater the chance that higher prices will hurt economic growth" more than cause sustained inflation. He noted consumers are cutting back as tax refunds are consumed by gasoline costs: "They will cut back. Firms will see that. They will cut jobs."
+
+Mester cautioned against premature rate cuts until inflation demonstrates a "downward trajectory" — illustrating the Fed's dilemma between "looking through" a temporary supply shock and treating it as a persistent inflationary threat.

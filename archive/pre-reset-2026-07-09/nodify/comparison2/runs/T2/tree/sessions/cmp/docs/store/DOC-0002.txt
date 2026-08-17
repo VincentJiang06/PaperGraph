@@ -1,0 +1,7 @@
+San Francisco Fed data series, "Supply- and Demand-Driven PCE Inflation" (Adam Shapiro, updated/extended series).
+
+Adam Shapiro created two data series quantifying the supply- and demand-driven contributions to personal consumption expenditures (PCE) inflation, measuring the degree to which either demand or supply is driving inflation in a given month, dividing the PCE basket of goods and services into supply- and demand-driven spending categories.
+
+Key finding for 2023: Over 2023, core PCE inflation declined by 2.0 percentage points, with 0.6 percentage points coming from supply (30% of total decline) and 1.3 percentage points coming from demand (70% of total decline).
+
+The series show expected time-series patterns, with the demand-driven contribution tending to decline during recessions and the supply-driven contribution tending to follow food and energy prices, while monetary policy tightening acts to reduce the demand-driven contribution and oil-supply shocks increase the supply-driven contribution.

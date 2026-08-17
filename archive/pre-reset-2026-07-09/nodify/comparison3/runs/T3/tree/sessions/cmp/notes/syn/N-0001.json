@@ -1,0 +1,44 @@
+{
+ "node_id": "N-0001",
+ "lean": "mixed",
+ "confidence": "medium",
+ "summary": "分层校准判断。任务层:AI在2020-25已产生广泛任务级影响,但已实现以增强为主、端到端整任务替代窄(N-0002,高置信)。岗位层:总量无可归因于AI的净减少,但入门级/高暴露(自动化型)职业出现真实早期人群下降信号(N-0003,中置信)。识别:'本就中性'与'滞后未显现'两假设机制皆真、在温和总量上观测等价且被强混杂淹没,现有手段无法干净区分——数据欠定,不能据总量温和径直判为中性(N-0004)。权衡:采用与可靠能力直到2024-25才起步(N-0006)使'太早/滞后'成为更强的默认解释;'替代加速'强形式不成立、仅局部命中(N-0007);'能力永缺→永不到来'亦不被支持(N-0005)。净判断:2020-25的净岗位效应很可能确实接近中性至轻微负,但这更像'尚早'的产物而非已证的长期中性;方向性证据(入门级信号、采用曲线、可靠时程外推)整体偏向'效应真实、正待显现'而非'内在中性'。置信度:任务层高;岗位层总量中;'中性vs滞后'之分低。",
+ "based_on": {
+  "children": [
+   "N-0002",
+   "N-0003",
+   "N-0004",
+   "N-0005",
+   "N-0006",
+   "N-0007"
+  ],
+  "evidence": [
+   {
+    "title": "Yale Budget Lab (aggregate flat)",
+    "doc_id": "DOC-0004",
+    "quote": "measures of exposure, automation, and augmentation show no sign of being related to changes in employment or unemployment to date",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "总量温和的直接口径"
+   },
+   {
+    "title": "Canaries in the Coal Mine (cohort signal)",
+    "doc_id": "DOC-0003",
+    "quote": "early-career workers (ages 22-25) in the most AI-exposed occupations have experienced a 16 percent relative decline in employment",
+    "url": null,
+    "locator": null,
+    "tool": "web_search",
+    "note": "总量掩盖下的局部真实信号"
+   }
+  ]
+ },
+ "open_questions": [
+  "何种识别策略能把AI边际从疫情/加息/科技回吐中干净剥离(暴露×采用双差、IV、职业层高频面板)?",
+  "入门级人群信号会随时间上移到资深与更多职业(滞后兑现),还是稳定/回撤(一次性重置)?",
+  "agent可靠时程跨过整工作日阈值后,采用与替代是否非线性加速,把滞后效应集中释放?",
+  "增强带来的生产率是否通过产出扩张/新任务再创造把净就业拉回正(reinstatement)?",
+  "雇主'AI归因'裁员口径的可信度——真实驱动还是重组说辞?",
+  "2026+总量数据延长窗口后,是否开始显现Yale所述尚未出现的滞后效应?"
+ ]
+}

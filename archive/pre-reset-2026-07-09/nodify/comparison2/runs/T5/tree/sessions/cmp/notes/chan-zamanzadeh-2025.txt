@@ -1,0 +1,31 @@
+SOURCE: Marc K. Chan & Akbar Zamanzadeh, "Minimum wage and employment in the U.S.: an
+application of Bayesian quantile kink regression", Econometric Reviews, 2025, 44(6):
+673-695. DOI: 10.1080/07474938.2025.2451339. Also on SSRN (abstract_id=5083927).
+
+PROVENANCE NOTE: The publisher page (tandfonline.com) and the SSRN abstract/PDF pages both
+returned HTTP 403 (paywalled / bot-blocked) when fetched directly. The content below is
+reconstructed from a web-search engine's synthesized summary of the abstract (multiple
+independent search-result summaries converged on the same wording), not from a direct fetch
+of the primary text. Treat the quoted sentence as a close paraphrase of the abstract rather
+than an independently verified verbatim quote.
+
+Method: continuous threshold regression ("regression kink with unknown thresholds") applied
+to U.S. state-level panel data, 1993-2016, to estimate an employment "tipping point" as a
+function of the minimum-to-median-wage ratio (effectively the Kaitz index).
+
+Reported finding (per search-engine synthesis of the abstract): "The tipping occurs at
+50-55% of the state's median wage among women, and 40-45% among men." The marginal
+employment effect is reported to be near-zero or mildly negative below this ratio, and
+"considerably more negative" above it -- i.e., a nonlinear, threshold-shaped (not smoothly
+increasing) relationship between the minimum-to-median wage ratio and the disemployment
+effect, with the threshold differing by gender. Simulations of minimum wage reforms in the
+paper reportedly show "nonlinear and asymmetric employment effects."
+
+Cross-check: this threshold-shaped pattern is directionally consistent with, though from an
+independent methodology than, the Clemens & Strain (2021) finding (see DOC-0001 /
+dube-lindner-2024.txt) that six states raising minimums by $2.50/hour or more (implying
+larger jumps in the minimum-to-median ratio) had OWE=-1.01, versus OWE=+0.46 for states
+raising by less -- both point to a convex, threshold-like rather than linear dose-response
+relationship between the size of the increase (relative to the wage distribution) and the
+disemployment effect, even though Cengiz et al. (2019) and Godoey & Reich (2021) did not
+detect such heterogeneity in their (different, pre-2016 or sub-state) samples.

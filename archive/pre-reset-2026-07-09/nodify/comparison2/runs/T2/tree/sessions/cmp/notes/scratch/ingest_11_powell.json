@@ -1,0 +1,11 @@
+{
+  "kind": "web",
+  "title": "Federal Reserve: Selected Powell speeches on inflation causes (2022-2023)",
+  "url": "https://www.federalreserve.gov/newsevents/speech/powell20221130a.htm",
+  "text_file": "notes/scratch/doc_powell_speeches.txt",
+  "summary": "Powell历次讲话:2021年初通胀'不涉及工资',源于商品市场供应链紧张;2023年8月称通胀'始于需求与供给的碰撞',紧缩需同时依赖供需两侧修复,叙事与学术模型总体方向一致但未量化。",
+  "bindings": [
+    {"node_id": "N-0017", "relation": "context", "note": "Powell的定性叙事(早期供给主导、后期需求供给并重)与Bernanke-Blanchard等学术模型方向大体一致,张力有限但缺乏量化对应"},
+    {"node_id": "N-0016", "relation": "context", "note": "Powell明确表示即使通胀主要源于供给冲击,紧缩仍是必要的,反映美联储'不管成因、只管结果'的政策取向"}
+  ]
+}

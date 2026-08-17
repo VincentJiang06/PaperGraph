@@ -1,0 +1,7 @@
+Source: web search synthesis — China Briefing, ScienceDirect (delayed retirement CGE model), Global Times, on China's 2025 delayed retirement reform
+URLs: https://www.china-briefing.com/news/chinas-gradual-retirement-age-delay-to-tackle-demographic-shifts/ ; https://www.sciencedirect.com/science/article/pii/S1059056025002667
+
+Key points:
+- New retirement system implemented starting January 1, 2025: statutory retirement age for male employees delayed by one month every four months, gradually extending to 63; female employees' original retirement age of 55 gradually extended to 58, and those at 50 extended to 55. Implementation is gradual/incremental (people near retirement delayed only by a few months, not years, at first).
+- One CGE-model based estimate found delayed retirement reduced overall labor force participation by 0.14 percentage points and young labor force participation by 0.22 percentage points in the short term, with male manual laborers' unemployment rate increasing by 2.4% (i.e., some crowding-out / friction effects, not simply additive labor supply).
+- Because implementation is gradual, "the scale of the labor force released in the short term is limited and the impact on the job market is small." The absolute number of people affected by delayed retirement in the near term is small relative to China's workforce of more than 740 million.

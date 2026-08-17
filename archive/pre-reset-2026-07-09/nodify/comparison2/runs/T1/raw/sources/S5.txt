@@ -1,0 +1,23 @@
+SOURCE: S5
+Title: Automation and New Tasks: How Technology Displaces and Reinstates Labor
+Authors: Daron Acemoglu, Pascual Restrepo
+Publisher: NBER Working Paper No. 25684 (1)
+URL: https://www.nber.org/papers/w25684
+Fetched: 2026-07-09 (via WebFetch, content extracted and quoted verbatim below)
+
+=== EXTRACTED CONTENT / VERBATIM QUOTES ===
+
+Abstract:
+"We present a framework for understanding the effects of automation and other types of technological changes on labor demand, and use it to interpret changes in US employment over the recent past."
+
+Displacement Effect:
+"Automation, which enables capital to replace labor in tasks it was previously engaged in, shifts the task content of production against labor because of a displacement effect."
+
+Reinstatement Effect:
+"The introduction of new tasks changes the task content of production in favor of labor because of a reinstatement effect, and always raises the labor share and labor demand."
+
+Net Balance:
+"Automation always reduces the labor share in value added and may reduce labor demand even as it raises productivity. The effects of automation are counterbalanced by the creation of new tasks in which labor has a comparative advantage."
+
+Conclusion on Recent Decades:
+The authors conclude that slower employment growth over three decades stems from "an acceleration in the displacement effect, especially in manufacturing, a weaker reinstatement effect, and slower growth of productivity than in previous decades."

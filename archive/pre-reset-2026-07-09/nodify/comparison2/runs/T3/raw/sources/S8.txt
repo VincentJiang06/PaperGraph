@@ -1,0 +1,26 @@
+SOURCE: Moritz Kuhn, Moritz Schularick, Ulrike Steins, "Income and Wealth Inequality in America, 1949-2016"
+CEPR Discussion Paper DP12218 (also NBER-affiliated; published in Journal of Political Economy, 2020, vol. 128(9), pp. 3469-3519)
+URL: https://cepr.org/publications/dp12218
+[Fetched via WebFetch extraction tool; this is the extraction pass's captured verbatim quotations from the live CEPR abstract/summary page.]
+
+## Portfolio Composition and Wealth Inequality
+
+The research identifies a critical structural divide: "Middle-class portfolios are dominated by housing, while rich households predominantly own equity." This compositional difference creates differential vulnerability to asset price movements. When equity markets surge, wealthy households gain disproportionately, while housing booms benefit leveraged middle-class households.
+
+## Decoupling Income and Wealth Distributions
+
+The study reveals that "Housing booms lead to substantial wealth gains for leveraged middle-class households and tend to decrease wealth inequality, all else equal. Stock market booms primarily boost the wealth of households at the top of the distribution."
+
+This dynamic has "decoupled the income and wealth distribution over extended periods" throughout the postwar era, meaning income inequality trends don't necessarily track wealth inequality trends.
+
+## Asset Price Dynamics as a Wealth Driver
+
+The authors emphasize that "asset prices shift the wealth distribution because the composition and leverage of household portfolios differ systematically along the wealth distribution." This suggests monetary policy and financial conditions—which influence both equity and housing markets—have asymmetric distributional consequences depending on which asset class appreciates.
+
+## Long-Term Stagnation Finding
+
+Notably, "close to half of all American households have less wealth today in real terms than the median household had in 1970," indicating structural wealth challenges persist despite periodic asset booms.
+
+## Additional context (from search-result summary)
+
+"The paper introduces a new long-run dataset based on archival data from historical waves of the Survey of Consumer Finances, with household-level data allowing study of the joint distributions of household income and wealth since 1949." "Differential changes in equity and house prices shaped wealth dynamics in postwar America and decoupled the income and wealth distribution over extended periods" — i.e., this portfolio-composition mechanism long predates the QE era (2008-2021) and operates as a standing structural channel through which any asset-price shock (monetary or not) will be dis-equalizing.

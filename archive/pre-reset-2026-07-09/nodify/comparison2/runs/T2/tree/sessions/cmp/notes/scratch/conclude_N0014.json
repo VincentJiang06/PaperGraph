@@ -1,0 +1,15 @@
+{
+  "node_id": "N-0014",
+  "lean": "mixed",
+  "summary": "截至可得数据(2025年末),软着陆在传统意义上已经实现:未发生NBER认定的衰退,2024年实际GDP增速保持1.4%-2.8%区间正增长,核心PCE从2022年峰值逐步回落至2024年9月2.1%、2025年4月2.5%附近(仍高于2%目标)。但过程并不'干净':Sahm规则于2024年7月技术性触发(尽管其创立者认为本轮可能因移民驱动的劳动力供给增长而失效),失业率从2024年1月3.7%的周期低点持续爬升至2025年8月4.3%,逼近2025年底再次触发Sahm规则的4.6%阈值。软着陆'已发生'但'尚未完全巩固'。",
+  "confidence": "medium",
+  "based_on": {
+    "children": [],
+    "evidence": [
+      {"ref_id": "E-01", "title": "Sahm规则触发与2024年GDP", "doc_id": "DOC-0010", "url": null, "locator": null, "quote": "real GDP growing 1.4% and 2.8% in Q1 and Q2 2024 respectively", "tool": "web_search", "note": null},
+      {"ref_id": "E-02", "title": "2025年失业率爬升", "doc_id": "DOC-0010", "url": null, "locator": null, "quote": "unemployment rose to 4.3% by August 2025 (up 0.6 percentage points from the cycle low of 3.7% in January 2024)", "tool": "web_search", "note": null},
+      {"ref_id": "E-03", "title": "核心PCE路径与降息周期", "doc_id": "DOC-0012", "url": null, "locator": null, "quote": "core PCE inflation eased to 2.1% year-on-year in September 2024, then remained \"somewhat elevated\" through early 2025, receding from 2.9% in December 2024 to 2.5% in April 2025", "tool": "web_search", "note": null}
+    ]
+  },
+  "open_questions": ["2025年末失业率若继续上行触及4.6%,是否会被追溯认定为软着陆已经失败、只是衰退的滞后显现"]
+}

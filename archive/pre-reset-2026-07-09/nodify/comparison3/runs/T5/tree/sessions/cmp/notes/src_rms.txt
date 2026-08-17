@@ -1,0 +1,6 @@
+Renkin, Montialoux, Siegenthaler (2022), "The Pass-Through of Minimum Wages into U.S. Retail Prices: Evidence from Supermarket Scanner Data," Review of Economics and Statistics 104(5):890-908.
+
+ABSTRACT (verbatim):
+"This paper estimates the pass-through of minimum wage increases into the prices of U.S. grocery and drug stores. We use high-frequency scanner data and leverage a large number of state-level increases in minimum wages between 2001 and 2012. We find that a 10% minimum wage hike translates into a 0.36% increase in the prices of grocery products. This magnitude is consistent with a full pass-through of cost increases into consumer prices. We show that price adjustments occur mostly in the three months following the passage of minimum wage legislation rather than after implementation, suggesting that pricing of groceries is forward-looking."
+
+Note: Distributional implication — consumers (including poor households) bear the cost of minimum wage increases through higher prices; cost is passed to prices rather than to headcount.

@@ -1,0 +1,4 @@
+Acemoglu & Restrepo — "Robots and Jobs: Evidence from US Labor Markets" — Journal of Political Economy 128(6):2188-2244 (2020); NBER WP 23285.
+KEY RESULT (verbatim, published JPE abstract): One more robot per thousand workers reduces the employment-to-population ratio by 0.2 percentage points and wages by 0.42%.
+CONTEXT: Effects estimated across US commuting zones using variation in exposure to robots derived from industry-level advances in robotics and local industry employment structure (shift-share instrument). Most-exposed areas show no differential pre-trends before 1990.
+DESIGN: quasi-experimental shift-share IV (observational, causal identification). LIMITS: subject is INDUSTRIAL ROBOTS (automation), not generative AI; local (commuting-zone) not national general-equilibrium net effect.

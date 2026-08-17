@@ -1,0 +1,16 @@
+Title: Fed researchers see a 'full pass-through' of Trump's tariff costs to consumers, adding almost a full percentage point to inflation
+Publisher: Fortune
+URL: https://fortune.com/2026/05/11/trumptariff-cost-full-pass-through-on-consumers/
+Date: May 11, 2026
+
+Key verbatim extracted content:
+
+Core inflation impact: "core inflation would have been 0.80 percentage points lower in March absent tariffs, coming in at a much more manageable 2.3%" (vs. the actual reading that year).
+
+Pass-through rate: "tariffs have already had a measurable impact on inflation" with a "full pass-through" occurring — companies are no longer absorbing costs and have transferred them entirely to consumers.
+
+Household cost: "Trump's 2025 tariffs amounted to a tax increase of $1,000 for the average American household," with estimates suggesting "$700 per household, on average" for 2026.
+
+Timeline: per Fed analysis, effects build over "seven months" — "if retailers' acquisition costs for a good rise $1 because of tariffs, they charge $1 more for that good seven months later."
+
+[Related: Dallas Fed research note (2026-05, "Effects of realized tariff changes on PCE prices peaked in first quarter 2026") and Minneapolis Fed commentary found tariffs implemented through November 2025 raised core goods PCE prices by 3.1% through February 2026, contributing about 0.8 percentage point to core PCE inflation overall.]

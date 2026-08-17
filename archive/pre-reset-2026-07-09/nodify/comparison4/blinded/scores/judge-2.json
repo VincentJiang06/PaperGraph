@@ -1,0 +1,22 @@
+{
+  "T1": {
+    "A": {
+      "coverage": 4,
+      "depth": 5,
+      "adversarial_completeness": 5,
+      "grounding": 5,
+      "convergence": 5,
+      "calibration": 5,
+      "rationale": "Biggest strength: an explicit Tier A-D methodological-quality ladder plus a KILLED/DEMOTED/WATCH/RETIRED dead-ends ledger that disciplines every conclusion, prevents commensurability errors (Tier-D exposure vs Tier-B null), and adds two genuinely non-obvious angles (overreliance/deskilling externality, level-dependent equalize/polarize), all reconciled by a crisp diffusion-bridge synthesis scoped as 'mean not variance.' Biggest weakness: thin on the first-hand automation/robots causal literature and cross-national institutional variation the brief explicitly names (only one robots study, treated as a benchmark; L5 is mostly exposure potential + one RCT), leaving named facets undercovered."
+    },
+    "B": {
+      "coverage": 5,
+      "depth": 5,
+      "adversarial_completeness": 5,
+      "grounding": 5,
+      "convergence": 5,
+      "calibration": 4,
+      "rationale": "Biggest strength: the more complete systematic map for this brief -- fuller automation/robots causal evidence (Koch, Dauth, Adachi, Aghion, A-R 2022), a rich cross-national institutional-mediation facet with genuine reversals (US negative, Spain/France/Japan positive, Germany zero), three converging platform quasi-experiments, and strict per-study verbatim grounding, red-teaming both the GenAI-aggregate-null and the robots-negative hypotheses. Biggest weakness: no explicit study-quality tier stratification and no ruled-out/killed-hypotheses ledger, so its (still honest, confidence-tagged) calibration is a notch less disciplined than A's for a brief that demands method-quality stratification, and unresolved cross-ref placeholders leave visible seams in the synthesis."
+    }
+  }
+}

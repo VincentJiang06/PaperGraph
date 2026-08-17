@@ -1,0 +1,349 @@
+{
+  "per_run": {
+    "T1/raw": {
+      "mode": "raw",
+      "words": 1790,
+      "citations_inline": 21,
+      "distinct_sources": 10,
+      "traceable_sources": 10,
+      "traceability": 1.0,
+      "cited_source_bytes": 42275,
+      "has_adversarial_section": true,
+      "adversarial_hits": 5,
+      "fid_english_quotes": 2,
+      "fid_verbatim_in_sources": 0,
+      "fid_fidelity": 0.0,
+      "fid_unverified_examples": [
+        "(automation)为主;但企业通过API将Claude嵌入生产流程时,自动化模式占比骤升至77%(S7)——说明一旦AI agent被部署为流程中的执行环",
+        "(S3)。IMF测算,全球约40%的就业暴露于AI(发达经济体达60%),但暴露岗位中约一半预期因AI提升生产率、另一半可能因需求下降受损——总量上大致抵消,结"
+      ]
+    },
+    "T1/skills": {
+      "mode": "skills",
+      "words": 1822,
+      "citations_inline": 17,
+      "distinct_sources": 14,
+      "traceable_sources": 14,
+      "traceability": 1.0,
+      "cited_source_bytes": 19046,
+      "has_adversarial_section": true,
+      "adversarial_hits": 2,
+      "fid_english_quotes": 17,
+      "fid_verbatim_in_sources": 0,
+      "fid_fidelity": 0.0,
+      "fid_unverified_examples": [
+        "（displacement effect）相互抵消或叠加(S12)。因此必须分层作答：任务层面发生了什么、岗位层面观测到了什么，最后才是——若岗位数据看起来温和",
+        "的简单解释。与此同时，Indeed 数据显示，2022-2025 年职业 AI 暴露度越高招聘启事降幅越大；2025 年 Claude Code 上线后出现反弹",
+        "并非纯粹假象：IMF 基于跨地区 AI 技能需求差异的准因果设计发现，高需求地区中高暴露、低互补性职业的就业水平五年后仅比对照地区低 3.6%，AI 技能本身还",
+        "外推总量性失业将至——真正该跟踪的先行指标，是企业 AI 部署率与试点成功率，而非等待失业率本身给出答案。\n\n## 参考文献\n\n- S1: Erik Brynj"
+      ]
+    },
+    "T1/tree": {
+      "mode": "tree",
+      "words": 1715,
+      "citations_inline": 17,
+      "distinct_sources": 15,
+      "traceable_sources": 15,
+      "traceability": 1.0,
+      "cited_source_bytes": 41046,
+      "has_adversarial_section": true,
+      "adversarial_hits": 8,
+      "fid_english_quotes": 4,
+      "fid_verbatim_in_sources": 0,
+      "fid_fidelity": 0.0,
+      "fid_unverified_examples": [
+        "须先拆开两个层次:一是**任务层面的替代**——AI在具体任务上替代或辅助了多少人类劳动;二是**岗位层面的净增减**——任务被替代后,相关职业岗位数究竟净增还",
+        "(cite: DOC-0004)。但外部效度有边界:METR让16名资深开发者在真实代码库上实验,允许用AI反而慢19%,他们却仍相信快了20%(cite: D",
+        "情形;IMF估计全球约40%(发达经济体60%)岗位暴露,约一半可能被替代(cite: DOC-0011)。那么温和是中性还是滞后?历史证明滞后真实:电气化约三",
+        "——Revelio Labs与Ramp基于两万余家企业发现,AI高强度采用企业的入门级用工占比反而升1.15个百分点,与按职业暴露度测得的青年下降相反(cite"
+      ]
+    },
+    "T2/raw": {
+      "mode": "raw",
+      "words": 1715,
+      "citations_inline": 35,
+      "distinct_sources": 14,
+      "traceable_sources": 14,
+      "traceability": 1.0,
+      "cited_source_bytes": 16433,
+      "has_adversarial_section": true,
+      "adversarial_hits": 7,
+      "fid_english_quotes": 18,
+      "fid_verbatim_in_sources": 0,
+      "fid_fidelity": 0.0,
+      "fid_unverified_examples": [
+        "两部分(S2);San Francisco Fed另用全球供应链压力指数(GSCPI)做冲击响应分析(S1);Bernanke与Blanchard则用工资—价格",
+        ",并指出2.5万亿美元(占GDP 11%)的财政脉冲不可能不推高价格(S5)。但San Francisco Fed用职位空缺/失业比模型测算,ARP实际拉动通胀",
+        "(S7)。两者相差近一个数量级,凸显Phillips曲线斜率、乘数假设的选择对归因结果的决定性影响。\n\n## 三、供给侧:供应链与劳动力短缺的量化证据\n\n供给侧",
+        "(S3);2022年下半年至2023年,随GSCPI回落,San Francisco Fed的分解显示核心PCE中需求驱动份额不降反升,即便货币政策已明显收紧("
+      ]
+    },
+    "T2/skills": {
+      "mode": "skills",
+      "words": 1790,
+      "citations_inline": 26,
+      "distinct_sources": 12,
+      "traceable_sources": 12,
+      "traceability": 1.0,
+      "cited_source_bytes": 17029,
+      "has_adversarial_section": true,
+      "adversarial_hits": 7,
+      "fid_english_quotes": 12,
+      "fid_verbatim_in_sources": 0,
+      "fid_fidelity": 0.0,
+      "fid_unverified_examples": [
+        "品类）显示：截至2022年4月，核心PCE通胀缺口中供给与需求因素各解释约45%，接近五五开；headline PCE缺口中供给贡献约一半(2.5个百分点)、需",
+        " FRBSF Economic Letter 2022-15, Federal Reserve Bank of San Francisco, June 2022",
+        " FRBSF Economic Letter, Federal Reserve Bank of San Francisco, June 2025. https:",
+        " NBER Working Paper 31417 / PIIE Working Paper, 2023. https://www.piie.com/publi"
+      ]
+    },
+    "T2/tree": {
+      "mode": "tree",
+      "words": 1932,
+      "citations_inline": 23,
+      "distinct_sources": 16,
+      "traceable_sources": 16,
+      "traceability": 1.0,
+      "cited_source_bytes": 18367,
+      "has_adversarial_section": true,
+      "adversarial_hits": 4,
+      "fid_english_quotes": 4,
+      "fid_verbatim_in_sources": 0,
+      "fid_fidelity": 0.0,
+      "fid_unverified_examples": [
+        "服务通胀自2022年年中起持续高企、对失业缺口的敏感度很弱(cite: DOC-0008);更关键的是,2023年全年核心PCE通胀2.0个百分点的回落中,仅3",
+        ",很可能是两个答案不同的问题。\n\n## 软着陆能否持续\n\n截至2025年末可得的数据显示,软着陆在传统意义上已经实现:美国未发生NBER认定的衰退,2024年一",
+        ":2024年7月Sahm规则技术性触发,尽管创立者认为本轮可能因移民驱动的劳动力供给扩张而失效(cite: DOC-0010);超额储蓄这一需求缓冲垫已于202",
+        "(cite: DOC-0015);Storm的批评更进一步指出,Bernanke-Blanchard式模型可能为超出实际所需的紧缩提供了正当性(cite: DO"
+      ]
+    },
+    "T3/raw": {
+      "mode": "raw",
+      "words": 1731,
+      "citations_inline": 25,
+      "distinct_sources": 12,
+      "traceable_sources": 12,
+      "traceability": 1.0,
+      "cited_source_bytes": 696604,
+      "has_adversarial_section": true,
+      "adversarial_hits": 18,
+      "fid_english_quotes": 13,
+      "fid_verbatim_in_sources": 3,
+      "fid_fidelity": 0.231,
+      "fid_unverified_examples": [
+        "(S8)——这一传导带并非QE首创,而是几十年既存的结构机制,QE只是放大了其中的信号。\n\n## 储蓄者/借款者渠道:方向不确定,净效应有限\n\nAuclert的",
+        "——趋势始于QE前三十年,并非QE的产物(S10)。更根本地,Rachel与Summers估计工业化世界中性实际利率一代人内下降了至少300、私人部门口径下甚至",
+        "The distributional effects of asset purchases,",
+        "Gauging the Impact of the Fed on Inequality During the Great Recession,"
+      ]
+    },
+    "T3/skills": {
+      "mode": "skills",
+      "words": 1843,
+      "citations_inline": 18,
+      "distinct_sources": 9,
+      "traceable_sources": 9,
+      "traceability": 1.0,
+      "cited_source_bytes": 1231065,
+      "has_adversarial_section": true,
+      "adversarial_hits": 13,
+      "fid_english_quotes": 10,
+      "fid_verbatim_in_sources": 0,
+      "fid_fidelity": 0.0,
+      "fid_unverified_examples": [
+        "),而非简单的储蓄者/债务人二分:持有长期债券等长久期资产者(往往是富裕家庭)同样能从利率下行的估值效应中获益,这部分抵消了对低MPC群体不利的直接收入效应(S",
+        "是关键词。这一净效应叠加在一个自1980年代起、由技术偏向性进步与全球化驱动的四十年结构性上升趋势之上(S6),且QE运行的低利率环境本身部分内生于这一结构性趋",
+        ", Bank of England, 12 July 2012 (Bank of England Quarterly Bulletin 2012 Q3). ht",
+        ", American Economic Review, 109(6), 2333-2367. https://web.stanford.edu/~aaucler"
+      ]
+    },
+    "T3/tree": {
+      "mode": "tree",
+      "words": 2076,
+      "citations_inline": 17,
+      "distinct_sources": 12,
+      "traceable_sources": 12,
+      "traceability": 1.0,
+      "cited_source_bytes": 37307,
+      "has_adversarial_section": true,
+      "adversarial_hits": 5,
+      "fid_english_quotes": 0,
+      "fid_verbatim_in_sources": 0,
+      "fid_fidelity": null,
+      "fid_unverified_examples": []
+    },
+    "T4/raw": {
+      "mode": "raw",
+      "words": 1851,
+      "citations_inline": 40,
+      "distinct_sources": 14,
+      "traceable_sources": 14,
+      "traceability": 1.0,
+      "cited_source_bytes": 21517,
+      "has_adversarial_section": true,
+      "adversarial_hits": 4,
+      "fid_english_quotes": 1,
+      "fid_verbatim_in_sources": 0,
+      "fid_fidelity": 0.0,
+      "fid_unverified_examples": [
+        " Local Government Debt Is a Bad Idea*, 2025. https://carnegieendowment.org/posts"
+      ]
+    },
+    "T4/skills": {
+      "mode": "skills",
+      "words": 1798,
+      "citations_inline": 21,
+      "distinct_sources": 14,
+      "traceable_sources": 14,
+      "traceability": 1.0,
+      "cited_source_bytes": 15335,
+      "has_adversarial_section": true,
+      "adversarial_hits": 6,
+      "fid_english_quotes": 1,
+      "fid_verbatim_in_sources": 0,
+      "fid_fidelity": 0.0,
+      "fid_unverified_examples": [
+        "并非由人口曲线单独决定——日本自身机器人普及未能自救的先例证明了这一点。中国与1990年代日本相比，追赶空间更大是真实优势，但债务存量、资本回报率与货币政策空间"
+      ]
+    },
+    "T4/tree": {
+      "mode": "tree",
+      "words": 1548,
+      "citations_inline": 15,
+      "distinct_sources": 14,
+      "traceable_sources": 14,
+      "traceability": 1.0,
+      "cited_source_bytes": 27854,
+      "has_adversarial_section": true,
+      "adversarial_hits": 11,
+      "fid_english_quotes": 1,
+      "fid_verbatim_in_sources": 0,
+      "fid_fidelity": 0.0,
+      "fid_unverified_examples": [
+        "压力；2024年资本账户逆差达4962亿美元创新高，FDI转为净流出，汇率压力压缩了名义降息空间(cite: DOC-0011)。两国政策受限方向相反：日本困于"
+      ]
+    },
+    "T5/raw": {
+      "mode": "raw",
+      "words": 1687,
+      "citations_inline": 36,
+      "distinct_sources": 14,
+      "traceable_sources": 14,
+      "traceability": 1.0,
+      "cited_source_bytes": 18416,
+      "has_adversarial_section": true,
+      "adversarial_hits": 10,
+      "fid_english_quotes": 15,
+      "fid_verbatim_in_sources": 0,
+      "fid_fidelity": 0.0,
+      "fid_unverified_examples": [
+        "只是问题的一个切面,岗位质量、工时结构与进入门槛的变化同样值得纳入政策评估的框架,不能因为总量就业未见明显下滑,就断定涨薪没有代价。\n\n## 参考文献\n\n- (",
+        " NBER Working Paper No. 4509, 1994. https://www.nber.org/papers/w4509\n- (S2) Cen",
+        " Quarterly Journal of Economics 134(3), 2019; NBER Working Paper No. 25434. http",
+        " NBER Working Paper No. 23532, 2017. https://www.nber.org/papers/w23532\n- (S4) J"
+      ]
+    },
+    "T5/skills": {
+      "mode": "skills",
+      "words": 1847,
+      "citations_inline": 35,
+      "distinct_sources": 15,
+      "traceable_sources": 15,
+      "traceability": 1.0,
+      "cited_source_bytes": 18944,
+      "has_adversarial_section": true,
+      "adversarial_hits": 7,
+      "fid_english_quotes": 2,
+      "fid_verbatim_in_sources": 0,
+      "fid_fidelity": 0.0,
+      "fid_unverified_examples": [
+        "未必下降(S11)。\n\n## 非线性:效应随相对幅度(bite)变化\n\n现有零效应证据本身是有边界的。Cengiz等人研究覆盖的州级样本中,最低工资相对当地中位",
+        "(S12)。但2024年加州快餐业从16美元一次性跳涨到20美元——相对该行业自身工资分布是极高的一次性冲击——给出的证据不再是稳定的零:Clemens、Edw"
+      ]
+    },
+    "T5/tree": {
+      "mode": "tree",
+      "words": 1892,
+      "citations_inline": 11,
+      "distinct_sources": 4,
+      "traceable_sources": 4,
+      "traceability": 1.0,
+      "cited_source_bytes": 20905,
+      "has_adversarial_section": true,
+      "adversarial_hits": 1,
+      "fid_english_quotes": 0,
+      "fid_verbatim_in_sources": 0,
+      "fid_fidelity": null,
+      "fid_unverified_examples": []
+    }
+  },
+  "by_mode_mean": {
+    "raw": {
+      "n_topics": 5,
+      "words": 1754.8,
+      "citations_inline": 31.4,
+      "distinct_sources": 12.8,
+      "traceable_sources": 12.8,
+      "traceability": 1.0,
+      "cited_source_bytes": 159049.0,
+      "adversarial_hits": 8.8,
+      "fid_english_quotes": 9.8,
+      "fid_verbatim_in_sources": 0.6,
+      "fid_fidelity": 0.05
+    },
+    "skills": {
+      "n_topics": 5,
+      "words": 1820.0,
+      "citations_inline": 23.4,
+      "distinct_sources": 12.8,
+      "traceable_sources": 12.8,
+      "traceability": 1.0,
+      "cited_source_bytes": 260283.8,
+      "adversarial_hits": 7.0,
+      "fid_english_quotes": 8.4,
+      "fid_verbatim_in_sources": 0.0,
+      "fid_fidelity": 0.0
+    },
+    "tree": {
+      "n_topics": 5,
+      "words": 1832.6,
+      "citations_inline": 16.6,
+      "distinct_sources": 12.2,
+      "traceable_sources": 12.2,
+      "traceability": 1.0,
+      "cited_source_bytes": 29095.8,
+      "adversarial_hits": 5.8,
+      "fid_english_quotes": 1.8,
+      "fid_verbatim_in_sources": 0.0,
+      "fid_fidelity": 0.0
+    }
+  },
+  "coverage": {
+    "T1": [
+      "raw",
+      "skills",
+      "tree"
+    ],
+    "T2": [
+      "raw",
+      "skills",
+      "tree"
+    ],
+    "T3": [
+      "raw",
+      "skills",
+      "tree"
+    ],
+    "T4": [
+      "raw",
+      "skills",
+      "tree"
+    ],
+    "T5": [
+      "raw",
+      "skills",
+      "tree"
+    ]
+  }
+}

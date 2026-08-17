@@ -1,0 +1,18 @@
+Source S2
+Title: Decomposing Supply and Demand Driven Inflation (Working Paper 2022-18) and Supply- and Demand-Driven PCE Inflation (data tool)
+URL: https://www.frbsf.org/research-and-insights/publications/working-papers/2022/10/decomposing-supply-and-demand-driven-inflation/
+URL2: https://www.frbsf.org/research-and-insights/data-and-indicators/supply-and-demand-driven-pce-inflation/
+Publisher: Federal Reserve Bank of San Francisco (Adam Hale Shapiro)
+Fetched: 2026-07-09 (via WebFetch)
+
+Extracted content:
+
+Adam Shapiro proposes "a framework to decompose inflation into supply- and demand-driven components," generating two new data series that quantify the degree to which either demand or supply is driving PCE inflation in a given month.
+
+Methodology quote: "Demand-driven categories are identified as those where an unexpected change in price moves in the same direction as the change in quantity in a given month. Supply-driven categories are identified as those where unexpected changes in price and quantity move in opposite directions."
+
+Findings: "The demand-driven contribution tends to decline during recessions, while the supply-driven contribution tends to follow food and energy prices... oil-supply shocks act to increase the supply driven contribution, but decrease the demand-driven contribution of inflation."
+
+2023 context (from search summary of data tool): "a substantial portion of core PCE inflation has been driven by demand rather than supply. As supply chains have recovered, supply-driven inflation has receded but remains well above pre-pandemic levels. In contrast, demand-driven inflation has continued to grow in recent quarters, despite tighter monetary policy."
+
+Data tool page notes: "Figure 1 shows the contributions to annualized monthly changes in PCE inflation for headline PCE inflation, and Figure 2 shows the same for core PCE inflation." Bars represent supply-driven (green), demand-driven (blue), and ambiguous categories.

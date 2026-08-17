@@ -1,0 +1,12 @@
+{
+  "kind": "report",
+  "title": "FRBSF Economic Letter 2022-15: How Much Do Supply and Demand Drive Inflation? (Shapiro, 2022)",
+  "url": "https://www.frbsf.org/research-and-insights/publications/economic-letter/2022/06/how-much-do-supply-and-demand-drive-inflation/",
+  "text_file": "notes/scratch/doc_shapiro_2022.txt",
+  "summary": "SF Fed(2022年6月)对核心PCE通胀的供给/需求分解:供给因素解释约一半通胀上升,需求因素约三分之一;具体为供给较疫情前均值高2.5个百分点,需求高1.4个百分点。",
+  "bindings": [
+    {"node_id": "N-0003", "relation": "supports", "note": "供给侧对核心PCE通胀贡献约2.5pp,高于需求侧的1.4pp"},
+    {"node_id": "N-0002", "relation": "supports", "note": "需求侧对核心PCE通胀贡献约1.4pp"},
+    {"node_id": "N-0004", "relation": "context", "note": "提供二分法下的具体量化拆分方法与结果,作为归因模型之一"}
+  ]
+}

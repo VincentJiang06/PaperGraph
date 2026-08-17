@@ -1,0 +1,19 @@
+Source: Carnegie Endowment for International Peace — "Using China's Central Government Balance Sheet to 'Clean up' Local Government Debt Is a Bad Idea" (2025-08)
+URL: https://carnegieendowment.org/posts/2025/08/using-chinas-central-government-balance-sheet-to-clean-up-local-government-debt-is-a-bad-idea?lang=en
+Fetched via WebFetch (extracted key content and verbatim quotes below).
+
+## Total Debt Levels
+China's total social financing reached "RMB 430.2 trillion, up 8.9% year-on-year" by mid-2025, while nominal GDP grew only 4.1%. This created a significant imbalance: the total social financing-to-GDP ratio climbed "from 303% of GDP at the end of 2024 to 309% six months later."
+
+## Global Context
+The IMF data cited indicates that "debt has grown so rapidly in China that the nation accounts for more than half of the increase in the global economy's debt-to-GDP ratio since 2008." Among major economies, only Japan has a higher debt-to-GDP ratio, though this makes China particularly notable as a middle-income economy.
+
+## Japan Comparison
+Japan entered its adjustment phase in the early 1990s with "government debt was roughly 40% of GDP," according to World Bank data. Despite this initial advantage, Japan experienced a difficult transition where "its share of global GDP dropped from 17-18% at its peak to 9-10% two decades later."
+
+## Policy Space Implications
+The author emphasizes that "China still has policy space to act, mainly in the form of a strong central-government balance sheet." However, this window remains limited: "that window will not remain open forever."
+
+Additional figures (from search synthesis of the same source): China's official measure of government debt is 61% of GDP in 2024, but this excludes LGFV (local government financing vehicle) debt of about 50% of GDP and general government funds of about 14%. Corporate debt-to-GDP is higher in China now than in Japan in 1990.
+
+The core warning is that postponing asset revaluation will eventually force losses onto the economy through either controlled policy mechanisms or disruptive market mechanisms.

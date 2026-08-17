@@ -1,0 +1,14 @@
+Title: Global Supply Chain Pressure Index: May 2022 Update (Liberty Street Economics)
+Publisher: Federal Reserve Bank of New York, Liberty Street Economics
+URL: https://libertystreeteconomics.newyorkfed.org/2022/05/global-supply-chain-pressure-index-may-2022-update/
+Date: May 2022
+
+Key verbatim extracted content:
+
+Definition: GSCPI is "a parsimonious global measure designed to capture supply chain disruptions using a range of indicators" (PMI supplier delivery times, backlogs, inventories, freight and airfreight rates across major economies).
+
+2021-2022 trajectory: index eased from its December 2021 peak through March 2022, though pressures "remained at historically elevated levels." April 2022 data showed a reversal, with "renewed strains emerge in global supply chains."
+
+Drivers of the April 2022 worsening: "predominantly driven by the Chinese 'delivery times' component, the increase in airfreight costs from the United States to Asia, and the euro area 'delivery times' component," attributed to COVID-19 lockdowns in China and the Russia-Ukraine conflict.
+
+[Related NY Fed research finding cited in search summary: a one-standard-deviation GSCPI shock has "significant pass through effects onto U.S. PPI and CPI inflation"; a 1 percentage point shock in annual growth rates of shipping charges per import transaction impacts consumer inflation for about 10 months, peaking at roughly 10 basis points 6 months after the shock. Source: NY Fed staff report "The GSCPI: A New Barometer of Global Supply Chain Pressures," https://www.newyorkfed.org/research/staff_reports/sr1017]

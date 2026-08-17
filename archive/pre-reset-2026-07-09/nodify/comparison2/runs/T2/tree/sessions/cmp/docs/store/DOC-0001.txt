@@ -1,0 +1,5 @@
+FRBSF Economic Letter 2022-15, "How Much Do Supply and Demand Drive Inflation?" by Adam Hale Shapiro (June 21, 2022).
+
+Methodology: demand-driven categories are identified as those where an unexpected change in price moves in the same direction as the unexpected change in quantity in a given month; supply-driven categories are identified as those where unexpected changes in price and quantity move in opposite directions.
+
+Key finding: Supply factors explain about half of the run-up in current inflation levels, while demand factors are responsible for about one-third. More specifically, supply-related issues are contributing 2.5 percentage points more than the pre-pandemic average to core PCE inflation, while demand-driven factors are contributing 1.4 percentage points more than the pre-pandemic average. The analysis concludes that both supply and demand factors are responsible for current elevated inflation levels.
