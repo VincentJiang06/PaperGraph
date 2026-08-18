@@ -1,0 +1,344 @@
+{
+  "round": "R4 fix-audit · 机器层（gates/ + src/status.mjs + .loop/m0 + .attack/pointer-debt.json）",
+  "auditor_stance": "独立攻击者，未参与 R3 修复；默认假设修复是假的，直到未能推翻",
+  "PROCESS_WARNING": {
+    "what_happened": "被审文件在审计进行中被并发改写。我的攻击基线是 16:35–16:59 的快照（即任务书描述的那一版）；findings 于 17:28 写入本文件；随后 17:35–18:00 之间 src/status.mjs、gates/check_m0.mjs、gates/check_pointers.mjs、gates/check_status_spec.mjs、gates/check_status_mutants.mjs、gates/check_status_exhaustive.mjs **六个文件全部被重写**（体积普遍增长 10%–110%）。同时目录里出现了另一个并行审计者的 .attack/r4-docs-findings.json（17:24）。",
+    "evidence_of_consumption": "check_m0.mjs:267 的新注释逐字引用了我的攻击：「R4 用**五个字符**推翻了它：把 command 写成 `touch <那个陈旧文件>`……门打印「25/25 条哈希对上」并 PASS」——那个 25/25 正是我这次实验的输出。负例套件也新增了 R-11b（touch）与 R-13/R-13b（默认全跑可区分夹具），一一对应我的 P1 #1/#2/#3。即修复方在审计结束前就读取并消费了本文件的中间产物。",
+    "why_it_matters": "① 本文件的 findings 全部是对 16:35–16:59 快照的真实实测，可复现性以那一版为准；② 但它们对**当前树**的适用性必须逐条重测，见下面 retest_against_live_tree；③ 更重要的是流程本身：fix-audit 的独立性建立在「审计对象在审计期间冻结」之上。目标一边被审一边被改，会让『门是否守得住』这个问题失去确定的指称对象——本轮出现的两次现象都是这个的直接后果：一次 `./gates/run_all.sh everything` 报 9/10 而紧接着的同一条命令报 10/10（树在两次运行之间被改），以及 check_status_mutants 从 15 个变异体变成 18 个。建议后续轮次对被审目标做 tag/hash 冻结（仓库里已有 .attack/r1-target-hashes.json 与 r3-target-hashes.json 这个机制，本轮没用）。"
+  },
+  "retest_against_live_tree": {
+    "retested_at": "2026-08-18 18:00 CST",
+    "live_hashes": {
+      "src/status.mjs": "374e7f1a486d241f74a75bf7e3afc299e1af6ae07a0aefa95c9759da2b4ed56c（审计时 d8c0c2e0…）",
+      "gates/check_m0.mjs": "9e959d38451d2da9ad131ed37a7a51f8e5ea74a7cd4316c30b702c0d75787541（审计时 93ab0d6b…）",
+      "gates/check_pointers.mjs": "1a84693c80ac49c52baed082559168f8579f7c7be82448bcedace56d7aaed372（审计时 2a86a920…）",
+      "gates/check_status_spec.mjs": "f0fdddcad3c07895aba95277b29035df5185f68ba45164235f8c4234d08ccf4e"
+    },
+    "now_closed": [
+      "P1 #1 touch 绕过新鲜度断言 —— 已封。新实现改为**事前控制**：跑命令前先把 declared 目标 renameSync 移走。重跑我的 touch 攻击 → FAIL『哈希对不上：记录 19494edbd142… 实测 e3b0c44298fc…』（e3b0c442 是空文件的 sha256），陈旧文件这条路被物理切断而不是被检测。这是比我预期更好的修法。",
+      "P1 #2 新鲜度断言无负例覆盖 —— 已补 R-11b『touch 刷新 mtime 冒充本次产出』。",
+      "P1 #3 默认全跑无负例覆盖 —— 已补 R-13『第二条证据哈希编造（恒定抽样会漏掉）』+ R-13b（用 --sample 0 证明夹具真的可区分）。夹具形状问题被正面解决。",
+      "P1 #4/#5 §3.4 grade 表 / §1.5.2 K 表 / §8.6.2 tier 表无绑定无覆盖 —— 大幅收口。重跑我那套 10 个独立变异：规范符合性门击杀率从 **2/10 升到 8/10**，X-01(G1→ST-V)、X-02(G3)、X-03(G2)、X-04(K(K-I))、X-05(降一档(ST-E))、X-07(2e/2c 换序) 现在全部被抓。",
+      "P1 #10 规划文档内部互引免检 —— 已封。注入 `[E: 01-CONTRACTS.md#根本不存在的锚点XYZ]` 与 `[E: 06-SURVEY.md#这个锚也是假的ABC]` → FAIL『新增不可解析指针 · 2 处 …… 锚点在规划文档中找不到』。",
+      "P2 #12 重跑目标按 process.cwd() 解析 —— 已封（target 现在 join(cwdFinal, declared)）。"
+    ],
+    "still_open": [
+      "P1 #7 excerpt / answer 与重跑输出无任何绑定 —— **仍成立**。把 M0-1.json 的 answer 与 evidence[0].excerpt 改成与实测输出完全相反（command 与 sha256 一字不动），当前门仍 **PASS，24/24 条哈希对上**。:155 依旧只查 excerpt 非空。这是当前剩余的最大洞：哈希证明命令跑过，而记录里唯一被人读、唯一驱动文档改写的部分不受任何约束。",
+      "P1 #9 parsePointer 仍静默丢弃不带 # 的段 —— **仍成立**，判据行逐字未变（`if (/#/.test(s) || /^[^\\s]+\\.[a-z0-9]{1,5}$/i.test(s)) junk.push(s)`）。注入 `[E: ext-完全不存在的语料]`、`[E: 我瞎编的]`、`[E: 见 ext-academic-apis 的相关章节]` 三条，指针总数 1486→1488（只多了带 .md 的那两条），三条伪造引用**既不计 total 也不进 junk**。真实树上 143 个真实承重锚（`核验表13-19`、`设计含义6`、`结论摘要2`、`D6` 等，逗号续写时省掉 # 的形态）照旧不在任何统计里。",
+      "P1 #6 变异集与黄金用例同源 —— **方法论问题仍成立**，且本轮的修复恰好再次演示了它：新增的 M-16/M-17/M-18 依旧是照着新增的黄金用例写的，门对自家变异集仍报 18/18 = 100%，而我这套独立变异集上是 8/10。绝对辨别力已大幅提升（这一点要认），但『100%』这个数字依然是构造出来的，不是测出来的。建议把击杀率的度量权交给一个不看 GOLDEN 的人，或引入随机/自动变异算子。",
+      "P1 #8 豁免 + 一条琐碎锚洗白整份记录 —— 未重测（每次 check_m0 全跑约 90–120 秒，且 anyReproducible 的判据行未见改动）。按代码判断仍成立，但**我没有在当前版本上实测**，故降级为待验。",
+      "P2 #11 新克隆不可复现（gates/repro/out 被 gitignore + run_m0_1.sh 无 mkdir）—— **仍成立**，`grep -c mkdir gates/repro/run_m0_1.sh` = 0。",
+      "P2 #13 自述数字 —— **仍成立且未动**：README.md:9/:110 仍写「六个门脚本」「8/8 全绿」（实测 10 个门段、8 个 .mjs），README.md:112 仍写「550 万输入向量 / C-1 回归 4/4」（实测 13,893,120 / 8 条回归），gates/run_all.sh:50 与 gates/check_status_exhaustive.mjs:42 仍写「550 万」。自述数字门仍 PASS。",
+      "P2 #14 check_m0 头注仍描述修复前行为 —— **仍成立**：:9「随机抽一条 resolved 记录」、:13「结构检查 + 抽一条重跑」、:16「--pick <n>」（该 flag 仍不存在）。这一轮改了实现与负例套件，没改用法块。",
+      "P2 #16 m0_2_normalization.py 的「与 .loop/m0/M0-2.json 的记录一致」是自我断言 —— **仍成立**，脚本仍零文件读取。",
+      "P3 src/status.mjs 的 RANK 死代码 —— 仍在（唯一命中就是定义行）。"
+    ],
+    "second_wave_18_37": {
+      "note": "写完 retest 之后树又动了一次：check_status_mutants.mjs 18:24、check_m0.mjs 18:36，并新增了一个此前不存在的 gates/check_profile.mjs（18:34）。以下是对 18:37 状态的观察，不构成完整重测——目标仍在移动，我停在这里。",
+      "observed": [
+        "check_status_mutants 已按 P1 #6 的判词重构：34 个变异体按**来源**分三档（手写/与黄金用例同源、规范表机械派生、R4 独立攻击者构造），并只把独立来源的击杀率 13/16 标为「唯一可引用的数字」，明写「手写那部分与黄金用例同源，其击杀率不构成辨别力的证据 —— R4 判词」。这是对 P1 #6 的正面采纳。",
+        "该重构**当场找出 3 个此前不可见的存活者**：D-G5（§3.4 G5 上限抬到 ST-V）、D-K-K-D（K(K-D) 降到 1）、D-K-K-L-T（K(K-L-T) 降到 1）——全部落在规范表机械派生这一档，即手写变异集在结构上永远照不到的地方。这既证实了 P1 #6 的判断，也说明 P1 #4/#5 只关闭了一半：grade 表与 K 表的**其余格子**仍无覆盖。",
+        "run_all.sh everything 因此报 9/10、1 道红——这是门在正确工作（它抓到了真实的假阳性通道），不是回归。",
+        "穷举 oracle 的向量数已从 13,893,120 涨到 27,786,240，而 README.md:112 / run_all.sh:50 / check_status_exhaustive.mjs:42 仍写「550 万」——P2 #13 的偏差从 2.5 倍扩大到约 5 倍，自述数字门仍 PASS。"
+      ]
+    }
+  },
+  "baseline_observed": {
+    "run_all_everything": "10/10 门通过",
+    "check_m0": "PASS，重跑验证 24/24 条哈希对上",
+    "check_pointers": "PASS，1487 个实例，可解析率 92.2%，欠债 96 种 / 115 次",
+    "check_status_spec": "PASS，§7.3 绑定 ceiling 4 / step-down 6，黄金映射 33/33",
+    "check_status_mutants": "PASS，规范符合性门 15/15，穷举 oracle 6/15",
+    "check_status_exhaustive": "PASS，13,893,120 个合法向量"
+  },
+  "findings": [
+    {
+      "lens": "Gaming",
+      "location": "gates/check_m0.mjs:282-290",
+      "claim": "注释原文：「③ 新鲜度：declared 指向门的临时目录之外时，该文件必须由**本次运行**产出。这条是三者里唯一无法用「记录多写一个字段」绕过的——它比对的是墙上时钟。」",
+      "reproduction": {
+        "steps": "1) mkdir -p /tmp/r4/stale && printf 'FAKE MEASUREMENT RESULT: everything works, 100%% pass\\n' > /tmp/r4/stale/evidence.txt\n2) touch -t 202001010000 /tmp/r4/stale/evidence.txt   # 让它是 2020 年的陈旧文件\n3) H=$(shasum -a 256 /tmp/r4/stale/evidence.txt | cut -d' ' -f1)\n4) 复制 .loop/m0/*.json 到 /tmp/r4/.loop/m0/，把 M0-1.json 的 evidence 换成单条：\n   {\"command\":\"touch /tmp/r4/stale/evidence.txt\",\"output_file\":\"/tmp/r4/stale/evidence.txt\",\"raw_output_sha256\":\"$H\",\"excerpt\":\"FAKE MEASUREMENT RESULT\"}\n5) node gates/check_m0.mjs --root /tmp/r4\n对照组（证明断言平时确实会响）：把 command 换成 `true` 或 `cat <该文件>`，重跑。",
+        "expected": "新鲜度断言判红：该文件不是本次重跑产出的",
+        "observed": "command=`true`   → FAIL「output_file 指向的 … 不是本次重跑产出的（mtime 比本次运行早 209236199s）」\ncommand=`cat FILE` → FAIL 同上\ncommand=`touch FILE` → **PASS  M0 记录齐全、结构合法、24 条证据全部重跑且哈希一致**\n一个 5 字符的命令即可让一份 2020 年的伪造文件冒充「本次重跑产出」。`touch` 不在 DESTRUCTIVE 正则内（实测 `touch /x/y.txt` → ALLOWED）。断言比对的是 mtime，而 mtime 是被测方可写的，不是墙上时钟。"
+      },
+      "severity": "P1",
+      "axis": "gate-hollow"
+    },
+    {
+      "lens": "Reality",
+      "location": "gates/test_check_m0.sh:260-290（红样本 R-11）",
+      "claim": "R-11 头注：「攻击：命令必然失败 + output_file 指向一个**早已存在**的文件……守住它的是新鲜度断言」——即 R-11 是新鲜度断言的负例证明。",
+      "reproduction": {
+        "steps": "把 gates/check_m0.mjs 里整个新鲜度断言块停用（唯一改动）：\n  `    if (declared && existsSync(target)) {`  →  `    if (false) {`\n然后跑 ./gates/test_check_m0.sh",
+        "expected": "R-11 变绿，套件失败（若 R-11 真的钉住新鲜度断言）",
+        "observed": "套件 **14 通过 / 0 失败**，R-11 仍然 exit=1。原因：R-11 的命令是 `this-command-does-not-exist-and-will-fail`，非零退出且未声明 exit_code，于是**退出码断言**先把它判红——红样本是过定的（over-determined），它证明的是 R-12 的机制，不是新鲜度。新鲜度断言在整个负例套件里**没有任何一条红样本覆盖**，这正是上一条 P1（touch 绕过）能长期存活的原因。\n对照：同样手法停用退出码断言 → R-12 变绿（套件正确失败）；停用子 shell 包裹 → R-12b 变红（正确失败）；把 design-changed 重新豁免 → R-10 变绿（正确失败）。这三条是有牙齿的。"
+      },
+      "severity": "P1",
+      "axis": "gate-hollow"
+    },
+    {
+      "lens": "Reality",
+      "location": "gates/test_check_m0.sh:36-79（seed_valid / seed_real_resolved）与 gates/check_m0.mjs:230-232",
+      "claim": "R3 的头号 gate-hollow 修复：「重跑默认全跑（原为恒定抽 1 条，索引 12 % 11 恒等于 1）」。",
+      "reproduction": {
+        "steps": "把默认全跑改回原来的恒定抽样（唯一改动）：\n  `  const picks = SAMPLE === null\\n    ? rerunnable\\n    : [rerunnable[SAMPLE % rerunnable.length]]`\n  →  `  const picks = [rerunnable[records.size % rerunnable.length]]`\n然后跑 ./gates/test_check_m0.sh",
+        "expected": "至少一条红样本失败（若「默认全跑」被负例套件钉住）",
+        "observed": "套件 **14 通过 / 0 失败**，一条都没变。根因是夹具形状：seed_valid 造 12 条 still-blocked（零 evidence），seed_real_resolved 只加**一条**可重跑证据，于是 rerunnable.length 恒为 1，`全跑` 与 `抽一条` 在夹具上**逐字节等价**，负例套件在结构上不可能区分二者。本轮最被强调的那条修复（24/24 vs 1/11）因此完全没有回归保护——任何人把它改回去，全部门依旧全绿。"
+      },
+      "severity": "P1",
+      "axis": "gate-hollow"
+    },
+    {
+      "lens": "Foundation",
+      "location": "gates/check_status_spec.mjs:96-142（GOLDEN）与 src/status.mjs:101-108（GRADE_CEILING）",
+      "claim": "check_status_spec 声称「逐条源自 §1.5 的黄金用例」+「33/33」，check_status_mutants 声称规范符合性门击杀 15/15 = 100%。",
+      "reproduction": {
+        "steps": "自建 10 个独立的**单向抬高状态**变异，逐个跑两道门（脚本形态与 check_status_mutants 相同：临时目录 + 复制两道门 + 01-CONTRACTS.md + `--root/--impl`）。其中三个只改 GRADE_CEILING 一行：\n  X-01  `G1: ST.N` → `G1: ST.V`\n  X-02  `G3: ST.A` → `G3: ST.V`\n  X-03  `G2: ST.A` → `G2: ST.V`\n复现单条影响：\n  node --input-type=module -e \"const {S}=await import('<变异体>/src/status.mjs'); console.log(S({kind:'K-D',source_integrity:'intact',evidence_grade:'G1',independent_cluster_count:3,counter_evidence_searched:true,counter_evidence_found:false,mechanism_results:[{gate_class:'GC-0'}],flags:[],budget_state:'ok',retention_tier:'A',question_frozen:true,rerun_gate_passed:true,has_verbatim_quote:false,quote_faithful:'na',chart_extracted:false}).status)\"",
+        "expected": "规范符合性门判红（§3.4 明写 G1 → ST-N「不得作为任何 claim 的承重证据」，G3/G2 → ST-A）",
+        "observed": "X-01 / X-02 / X-03 在**规范符合性门与穷举 oracle 上双双存活**。X-01 的实际后果：同一条 claim，正确实现返回 `not_covered`，变异实现返回 `verified`。\n根因：GOLDEN 的 2c 只有两条用例（`evidence_grade:'G4'` 与 `retention_tier:'C'`）。§3.4 表六行里 G0/G1/G2/G3 **一行都没有黄金用例**，而 G1/G0 → ST-N 是全表最承重的一格（§1.5.1.1 专门为它补了 meet 的吸收态定义）。穷举 oracle 枚举了 G0..G5，但只断言性质不断言映射，且 ST-N 经 0c/0e/0f/0g 仍可达，值域覆盖照样绿。"
+      },
+      "severity": "P1",
+      "axis": "gate-hollow"
+    },
+    {
+      "lens": "Foundation",
+      "location": "gates/check_status_spec.mjs:37-80（只绑定 §7.3）；src/status.mjs:90-95 (K)、101-108 (GRADE_CEILING)、114-118 (TIER_CEILING)",
+      "claim": "「§7.3 作用表与实现 FLAG_CEILING/FLAG_STEPDOWN 的双向绑定」被列为本门的第一部分，用以补上「没有任何门把规范表和实现绑起来」这条判词。",
+      "reproduction": {
+        "steps": "同上变异框架。\n  X-04  `'K-I': 2,` → `'K-I': 1,`（§1.5.2 明写 K(K-I)=2）\n  X-05  `case ST.E: return ST.U` → `case ST.E: return ST.E`（§1.5.1.1 明写 降一档(ST-E)=ST-U）\n验证影响：K-I + 1 簇；以及 chart_extracted + 0 簇 + F-01/F-02 + budget degraded。",
+        "expected": "至少规范符合性门判红",
+        "observed": "X-04、X-05 **双门存活**。\n  X-04：K-I / 单簇，正确 `unverified` → 变异 `attributed`。\n  X-05：图形读数叠加 4 次降档，正确 `unverified` → 变异 `estimated`。\n结论：本轮只给 §7.3 这一张表建了双向绑定，而 §1.5.2 的 K 表、§3.4 的 evidence_grade 表、§8.6.2 的 retention_tier 表**三张同等承重的规范表一张都没有绑定**，且黄金用例对它们的覆盖分别是 K：0 行（K-I）、grade：1/6 行、tier：1/3 行。修复选中的是最容易绑的那张表（flag id 是结构化的），漏掉的是最承重的那张（evidence_grade 决定每一条 claim 的天花板）。"
+      },
+      "severity": "P1",
+      "axis": "not-closed"
+    },
+    {
+      "lens": "Foundation",
+      "location": "gates/check_status_mutants.mjs:31-91（MUTANTS）",
+      "claim": "「本门把它变成**我自己每次都会重新测出来的数字**」「PASS 规范符合性门抓住全部 15 个变异体」「这是唯一能回答『绿灯值多少钱』的方法」。",
+      "reproduction": {
+        "steps": "逐条比对 MUTANTS 的 15 个锚点与 check_status_spec.mjs 的 GOLDEN 33 条：M-01↔『GC-2 → ST-A』、M-02↔『0e』、M-03↔『必填字段缺失』、M-04↔『K-L-T 锚点不过』、M-05↔『§2.1 开放式』、M-06↔『§2.3.1 K-I』、M-07/M-08↔『F-13/F-03/F-01/F-01+F-02』、M-09↔『0b』、M-10↔『2a』、M-11↔『0d』、M-12↔『0f』、M-13↔『0g』、M-14↔『§3.5』。逐一对应，无一例外。\n再跑上面 X-01..X-10 这套独立变异（同一框架、同样是单向抬高状态）。",
+        "expected": "若 15/15 度量的是门的辨别力，独立变异集上的击杀率应当同量级",
+        "observed": "规范符合性门在我这套独立变异集上击杀 **2/10 = 20%**（只抓住 X-07『把 2e 挪到 2c 之前』与 X-10『tier C → ST-V』），5/10 双门存活（X-01..X-05）。\n15 个变异体与 33 条黄金用例是**同一个人按同一张清单写的一对一映射**——变异集只覆盖了 GOLDEN 已经覆盖的分支，因此 100% 是构造出来的，不是测出来的。该数字目前只能读成「GOLDEN 的 33 条各自确实有效」，不能读成「这道门抓得住错的实现」。这与本文件头注自陈的目的（「一道从不判红的门与一道抓得住全部变异的门，只有变异体能把它们分开」）正相反：变异体是照着门写的，分不开。"
+      },
+      "severity": "P1",
+      "axis": "gate-hollow"
+    },
+    {
+      "lens": "Evidence",
+      "location": "gates/check_m0.mjs:144-174（结构检查）与 306-315（哈希比对）",
+      "claim": "文件头注：「这道门要抓的不是『有没有写记录』，而是**记录是不是真的来自实测**」；报告行「N 条证据全部重跑且哈希一致」。",
+      "reproduction": {
+        "steps": "1) cp -R .loop/m0 /tmp/r4exc/.loop/\n2) 只改 M0-1.json 的**结论字段**，command 与 raw_output_sha256 一字不动：\n   r.answer = '实测确认：四个抽取库全都拿不到颜色/字号/图层，H0 成立，隐藏文本检测不可实现。'\n   r.evidence[0].excerpt = 'pdftotext no no no no no / … / PyMuPDF no no no no no —— H0 未被证伪'\n   （实测输出恰恰相反：PyMuPDF color/size/rendermode/opacity/layer 全 yes，判定行是「H0 被证伪」）\n3) node gates/check_m0.mjs --root /tmp/r4exc",
+        "expected": "记录声称的结论与重跑输出相反，应当判红",
+        "observed": "**PASS  M0 记录齐全、结构合法、24 条证据全部重跑且哈希一致**。\n`excerpt` 只被检查非空（:155），`answer` 只被检查非空（:126），两者从不与重跑输出做任何比对。哈希证明的是「这条命令跑过」，而记录里唯一被人读、唯一驱动 doc_action 与文档改写的部分（answer / excerpt）**完全不受约束**。R3 修复把编造从 verdict 层赶走，编造原样搬进了 excerpt 层。最低成本的封堵是断言 excerpt 是重跑输出的子串（现有记录里绝大多数 excerpt 本就是逐字摘录）。"
+      },
+      "severity": "P1",
+      "axis": "not-closed"
+    },
+    {
+      "lens": "Gaming",
+      "location": "gates/check_m0.mjs:180-186（anyReproducible）与 gates/test_check_m0.sh:199-234（红样本 R-9）",
+      "claim": "「注意豁免不是免费的：resolved 仍必须**至少有一条**真正可复现的证据，所以这个口子不能被用来把整份记录洗白。」R-9 是它的负例证明。",
+      "reproduction": {
+        "steps": "把 M0-5.json 改成：verdict=resolved，answer 写承重结论，evidence 三条 —— \n  [0] {command:'echo hi', raw_output_sha256:<echo hi 的真实 sha256>, excerpt:'hi'}\n  [1] {reproducible:false, irreproducible_reason:'夹具在会话临时目录中，已随会话销毁，不可原样重跑。', excerpt:'observed: compaction never fired across 900 turns'}\n  [2] {reproducible:false, irreproducible_reason:'该扫描随目录增长，哈希必然漂移，无法逐字节比对。', excerpt:'totals: 0 compaction events'}\n然后 node gates/check_m0.mjs --root <副本>",
+        "expected": "承重结论全部落在被豁免的证据上，可复现证据与结论无关，应当判红",
+        "observed": "**PASS，25/25 条哈希对上**。`anyReproducible` 只要求存在一条带 64 位哈希且命令无占位符的证据，**不要求它与结论有任何关系**。R-9 只覆盖「全部证据都被豁免」这一种形态；「一条琐碎锚 + 其余全豁免」是真实产出中更自然的形态，且完全绕过。豁免门槛本身也弱：`irreproducible_reason` 只查 `.length >= 10`（10 个字符），任何一句话都够。"
+      },
+      "severity": "P1",
+      "axis": "gate-hollow"
+    },
+    {
+      "lens": "Gaming",
+      "location": "gates/check_pointers.mjs:113-117（parsePointer 末尾的 junk 判据）",
+      "claim": "本轮声称：「`parsePointer` 不再静默丢弃」；文件头注：「三种形态都不匹配 —— 不许静默丢弃。」",
+      "reproduction": {
+        "steps": "1) 把仓库复制到 /tmp/r4ptr（含 *.md、research/、.attack/、.loop/、gates/）\n2) 往 05-TESTING.md 追加：\n   A [E: ext-完全不存在的语料]\n   B [E: 我瞎编的]\n   E [E: 见 ext-academic-apis 的相关章节]\n3) node gates/check_pointers.mjs --root /tmp/r4ptr\n4) node gates/check_pointers.mjs --root /tmp/r4ptr --list-unresolved | grep 05-TESTING\n量化现状（给 parsePointer 的丢弃分支加计数后重跑真实树）。",
+        "expected": "三条伪造引用至少出现在不可解析统计里",
+        "observed": "指针总数 1487 → 1489（**只多了 2**，全部来自另两条带 .md 的伪造），A/B/E 三条**既不计 total 也不进 junk，完全静默消失**，门 PASS。\n判据 `if (/#/.test(s) || /^[^\\s]+\\.[a-z0-9]{1,5}$/i.test(s)) junk.push(s)` 只认「带 # 的」或「像 file.ext 的」，**不带 # 且不带扩展名的段一律静默丢弃**。\n真实树上量化：**143 个段落被静默丢弃**，且其中大量是**真实的承重锚**——形态是逗号续写时省掉 #：`[E: ext-orchestration.md#B, 核验表13-19]` 里的 `核验表13-19` 被丢弃（00-PREMISE.md:75、05-TESTING.md:458 各一次）。高频样本：`核验表`×5、`D6`×4、`D2`×4、`核验表V30`、`设计含义6`、`结论摘要2`、`01-CONTRACTS §7.2.2`×2。同一个锚 `假独立佐证登记` 在 04-ORCHESTRATION.md:37 写成 `#假独立佐证登记` 被正常解析，在 00-PREMISE.md:75 写成 `假独立佐证登记` 就被丢弃——**同一条指针的可解析性取决于作者有没有敲 #**。\n后果：宣称的「可解析率 92.2%」的分母排除了这 143 条，欠债表也看不见它们。这与本门取代 D-1 的理由是同一类空心，只是下移了一层。"
+      },
+      "severity": "P1",
+      "axis": "not-closed"
+    },
+    {
+      "lens": "Gaming",
+      "location": "gates/check_pointers.mjs:233（`if (PLAN_DOCS.includes(target)) continue`）",
+      "claim": "文件头注把 D-1 的罪状定为「`[E: 我瞎编的.md#根本不存在的锚]` 能过」，并称本文件是它的替代。",
+      "reproduction": {
+        "steps": "在 /tmp/r4ptr 的 05-TESTING.md 追加：\n   C [E: 01-CONTRACTS.md#根本不存在的锚点XYZ]\n   D [E: 06-SURVEY.md#这个锚也是假的ABC]\n然后 node gates/check_pointers.mjs --root /tmp/r4ptr（并 --list-unresolved 查它们在不在）",
+        "expected": "锚点不存在 → 计入不可解析 → 棘轮判红",
+        "observed": "两条都被 `stats.total++` 计数（1487→1489）后立刻 `continue`，**从不解析锚点**，不进 unresolved，门 PASS。九份规划文档的任意锚点因此是一条无条件免检通道——与 D-1 被判死的理由逐字相同，只是把目标域从语料换成了规划文档。\n注：真实树里走这条通道的只有 1 条（07-ATTACK-LEDGER.md:123 → 06-SURVEY.md#MAS-ProVe），所以这是**通道洞**而非当前债务；但它对新写入的内容完全敞开，且规划文档之间的互引正是后续维护中最容易腐的部分。"
+      },
+      "severity": "P1",
+      "axis": "not-closed"
+    },
+    {
+      "lens": "Reality",
+      "location": ".gitignore:49-50、gates/repro/run_m0_1.sh（无 mkdir）、.loop/m0/M0-1.json evidence[0]",
+      "claim": "本轮声称 gates/repro/ 是「两份自包含复现脚本，零第三方语料、字节确定、版本钉死」，并把 M0-1 evidence[0] 换成它以根治不可复现。",
+      "reproduction": {
+        "steps": "模拟新克隆（gates/repro/out/ 与 .venv-repro/ 都在 .gitignore 里，新克隆不会有）：\n  mv gates/repro/out /tmp/bak\n  bash -c 'bash gates/repro/run_m0_1.sh > gates/repro/out/m0_1.txt 2> gates/repro/out/m0_1.err'; echo $?\n  mv /tmp/bak gates/repro/out\n核对：git check-ignore -v gates/repro/out/m0_1.txt .venv-repro",
+        "expected": "自包含 ⇒ 新克隆上可直接重跑",
+        "observed": "`bash: gates/repro/out/m0_1.txt: No such file or directory`，**退出码 1，零输出**。run_m0_1.sh 没有 `mkdir -p`，而 out/ 与 .venv-repro/ 都被 gitignore。于是在新克隆上：M0-1 evidence[0] 的命令非零退出且未声明 exit_code → 门判红。当前的「24/24 全绿」依赖本机未入库的目录状态，不可移植。\n附带：run_m0_1.sh 在缺 .venv-repro 时会执行 `python3 -m venv` + `pip install pymupdf/pypdf/pdfplumber`——一次**联网安装**，发生在一道自称 GC-0「离线、确定性、零模型」的门的重跑路径里。DESTRUCTIVE 正则封了 `npm install` 却没封 `pip install`（实测 `pip install foo` → ALLOWED）。"
+      },
+      "severity": "P2",
+      "axis": "new-defect"
+    },
+    {
+      "lens": "Reality",
+      "location": "gates/check_m0.mjs:248-249、271（declared 相对路径按 process.cwd() 解析）",
+      "claim": "门显式为每条证据设置 execSync 的 cwd（:255），意在让重跑与记录声明的目录一致。",
+      "reproduction": {
+        "steps": "cd /tmp && node /Users/vince/.../academic-research-plugin/gates/check_m0.mjs\n（对照：在仓库根目录跑同一条命令）",
+        "expected": "结论与 cwd 无关",
+        "observed": "仓库根目录：PASS 24/24。/tmp 下：**FAIL 2 处**，M0-1 evidence[0] 与 M0-2 evidence[1] 报「哈希对不上：记录 40633828fa6d… 实测（无输出）」。\n根因：命令用 e.cwd 跑（正确，文件写对了地方），但 `target` 是尾部 shasum 捕获到的**相对路径** `gates/repro/out/m0_1.txt`，`existsSync/readFileSync` 按门进程的 cwd 解析。诊断信息还是误导性的——真实原因是路径解析，报出来的却是哈希不符。受影响的恰好是本轮新增的两条复现脚本证据（其余证据都用绝对路径或纯 stdout）。"
+      },
+      "severity": "P2",
+      "axis": "new-defect"
+    },
+    {
+      "lens": "Coherence",
+      "location": "README.md:9、110、112；gates/run_all.sh:50；gates/check_status_exhaustive.mjs:42",
+      "claim": "项目论点是「数字落笔即验证」，并为此专门造了 gates/check_doc_metrics.mjs（自述数字门），其头注：「一个以『数字落笔即验证』为卖点的项目，自己的自述数字对不上，是最伤的一类缺陷。把它做成门。」该门当前 PASS。",
+      "reproduction": {
+        "steps": "./gates/run_all.sh everything | tail -3\nnode gates/check_status_exhaustive.mjs | head -3\nls gates/*.mjs | wc -l ; ls gates/test_*.sh | wc -l\ngrep -nE '550|1389|8/8|六个门|C-1 回归' README.md gates/run_all.sh gates/check_status_exhaustive.mjs\nnode gates/check_doc_metrics.mjs",
+        "expected": "自述数字与实测一致，或自述数字门判红",
+        "observed": "全部对不上，而自述数字门 PASS：\n · README:9 与 :110「`./gates/run_all.sh everything` 当前 **8/8 全绿**」 → 实测 **10/10**（本轮新增的两道门没进计数）\n · README:9「`gates/` 下有六个门脚本与三套负例套件」 → 实测 **8 个 .mjs / 3 套负例**\n · README:112「**550 万输入向量**」 → 实测 **13,893,120**（约 1389 万，差 2.5 倍）\n · README:112「C-1 回归 **4/4**」 → 实测 8/8（4 条 C-1 + 4 条 R3）\n · gates/run_all.sh:50「约 6 秒，550 万向量」 → 同上错\n · gates/check_status_exhaustive.mjs:42「550 万向量全绿与产品最承重的分界线完全无关」 → **同一个文件自己打印 13,893,120**\n · 而 gates/check_status_spec.mjs:6 与 check_status_mutants.mjs:5 写的是「1389 万」——两个数字在本轮新旧代码里并存。\n自述数字门只对「N 行」「N 条可检验断言」「N 份调研文件」「N 行语料」四种正则形态生效，本轮新造的所有门自述数字都在它的射程之外。它自己的头注已经预言过这件事（「门和它要守的那句话擦肩而过」「数字断言的形态是无穷的，逐条写正则永远追不上」），但本轮既没扩大射程也没修数字。"
+      },
+      "severity": "P2",
+      "axis": "not-closed"
+    },
+    {
+      "lens": "Coherence",
+      "location": "gates/check_m0.mjs:9、13、15、16（文件头注与用法块）",
+      "claim": "本轮把默认行为从「恒定抽 1 条」改成「全跑」，并把抽样 flag 命名为 --sample。",
+      "reproduction": {
+        "steps": "sed -n '9,17p;30,34p' gates/check_m0.mjs\ngrep -n -- '--pick' gates/check_m0.mjs",
+        "expected": "头注与行为一致",
+        "observed": "头注仍逐字描述修复前的行为：\n · :9「排除它的机制就在本文件的 §3：**随机抽一条 resolved 记录**，重跑它的命令」——现在是全跑，且从来不「随机」（无随机源）\n · :13「node gates/check_m0.mjs   结构检查 + 抽一条重跑」——默认已是全跑\n · :15「--rerun-all  全部 resolved 记录都重跑（慢）」——:31 自陈已是 no-op\n · :16「--pick <n>  指定抽第 n 条（用于负例套件）」——**`--pick` 这个 flag 在代码里根本不存在**（实际是 --sample），且负例套件一次都没用过它\n一个照着用法块调用这道门的人，会得到与他预期完全不同的覆盖度。"
+      },
+      "severity": "P2",
+      "axis": "reworded-only"
+    },
+    {
+      "lens": "Evidence",
+      "location": "gates/repro/m0_2_normalization.py:56、169",
+      "claim": "脚本末行打印「PASS：6 条用例 × 3 格全部与 .loop/m0/M0-2.json 的记录一致。」",
+      "reproduction": {
+        "steps": "grep -nE 'open\\(|read_text|json\\.load|Path\\(' gates/repro/m0_2_normalization.py",
+        "expected": "脚本读取 .loop/m0/M0-2.json 并做比对",
+        "observed": "**零命中** —— 脚本从不读那个文件。:56 的注释自陈「期望值全部是 S0 记录 .loop/m0/M0-2.json 的**逐字结论**」，即期望值是人手抄进脚本的常量。于是这条 PASS 是一句自我断言：M0-2.json 的记录怎么改，脚本都照样打印「全部一致」。「18 格与记录一致」这个结论本身没有任何机制支撑。\n（本条只针对那句 PASS 的措辞与机制；脚本计算出的 18 格数值本身是真实的、确定的，见下面 flags 里未被攻破的部分。）"
+      },
+      "severity": "P2",
+      "axis": "not-machine-decidable"
+    },
+    {
+      "lens": "Gaming",
+      "location": "gates/check_m0.mjs:296-304（exit_code 断言）",
+      "claim": "「② 退出码：命令失败就不可能产出被记录的输出……那种情况记录必须**显式声明** exit_code，把它变成一条可检验的断言。」",
+      "reproduction": {
+        "steps": "把 M0-3a.json 的 evidence 换成单条：\n  {\"command\":\"printf 'x\\\\n'\",\"cwd\":\"~\",\"exit_code\":99,\"raw_output_sha256\":\"<printf 'x\\\\n' 的 sha256>\",\"excerpt\":\"x\"}\n命令实际退出 0，记录声明 99。\nnode gates/check_m0.mjs --root <副本>",
+        "expected": "声明的 exit_code 与实测不符 → 判红",
+        "observed": "**PASS**。断言整块包在 `if (!bypass && err !== null)` 里，命令成功时 `err === null`，声明的 exit_code **一个字符都不被读**。所以 exit_code 是单向断言：它拦住「失败却不声明」，但不拦「声明了却没发生」。影响有限（不构成抬高路径），但它让 exit_code 字段无法被当作可信元数据使用，也让「把它变成一条可检验的断言」这句话只对一半的情形成立。"
+      },
+      "severity": "P3",
+      "axis": "not-closed"
+    },
+    {
+      "lens": "Coherence",
+      "location": "gates/check_m0.mjs:327-329、338",
+      "claim": "「抽样必须显式索取，且抽样运行会在报告里被明确标记为不完整」。",
+      "reproduction": {
+        "steps": "node gates/check_m0.mjs --sample 0 2>&1 | tail -3",
+        "expected": "结论行不宣称完整性",
+        "observed": "⚠️ 标记确实打印在统计行上，但最终结论行仍是 `PASS  M0 记录齐全、结构合法、1 条证据**全部重跑**且哈希一致` —— 「全部」在抽样运行下是假的。任何按退出码 + 末行取信的调用方（run_all.sh 正是按退出码）拿不到「不完整」这个信号：**抽样运行的退出码与全跑完全相同，都是 0**。若要让「不完整」真正承重，抽样运行应当退非零码或至少不打印 PASS。"
+      },
+      "severity": "P3",
+      "axis": "gate-hollow"
+    },
+    {
+      "lens": "Coherence",
+      "location": ".attack/pointer-debt.json:103",
+      "claim": "check_pointers.mjs:284-285 把「本门自己的反面教材字符串 `我瞎编的.md#根本不存在的锚`（R2 写台账时被 --update-debt 一并登记了进去）」列为旧棘轮的罪状之一。",
+      "reproduction": {
+        "steps": "grep -n 瞎编 .attack/pointer-debt.json",
+        "expected": "重基线时清掉这条自污染登记",
+        "observed": "`\"07-ATTACK-LEDGER.md\\t我瞎编的.md#根本不存在的锚\": 1` 仍在表内。新键格式把它限制在单一文档、单次出现，因此**免死金牌的效力确实消除了**（这一半修复成立）；但门自己点名的这条自污染条目原样带进了新基线，96/115 这个「重基线后的干净数字」里含着它。属登记表卫生问题，不是承重洞。"
+      },
+      "severity": "P3",
+      "axis": "reworded-only"
+    },
+    {
+      "lens": "Coherence",
+      "location": "src/status.mjs:33",
+      "claim": "—",
+      "reproduction": {
+        "steps": "grep -n RANK src/status.mjs",
+        "expected": "被使用，或不存在",
+        "observed": "`const RANK = { … }` 只有定义行一处命中，全文件从不使用（真正用它的是 check_status_exhaustive.mjs 里自己重新定义的同名常量）。本轮改动了它周围的格结构注释却没清掉它。两处同名常量各自维护，是将来单调性断言与实现悄悄分叉的入口。"
+      },
+      "severity": "P3",
+      "axis": "new-defect"
+    }
+  ],
+  "flags": [
+    {
+      "note": "check_status_spec 的 §7.3 双向绑定只防漂移，不防合谋：同时修改 01-CONTRACTS.md 的表格行与 src/status.mjs 的常量，两边一致就恒绿。这是一致性检查的固有性质，不算缺陷；但值得记下来是因为规范与实现由同一方维护，且它是本轮唯一一张被绑定的表。没有实测出可利用的具体路径，故不列为 finding。"
+    },
+    {
+      "note": "怀疑 check_pointers 的 `--update-debt` 可被用来一键重基线（把任何新增坏指针洗成已知欠债），而欠债表本身无签名、无审计痕迹。但这是棘轮机制的公开设计（门的头注明写修法就是跑 --update-debt），且 git diff 会暴露，我没能构造出一条『看起来正常的提交里悄悄重基线』的路径。列为 flag。"
+    },
+    {
+      "note": "怀疑 check_m0 的 DESTRUCTIVE 正则可用管道/变量间接绕过（例如把 rm 拼进变量再 eval）。没有在真实记录里找到这种形态，也没有构造出会被门放行且真正有副作用的最小例子，故不列为 finding。相关但已实证的是 `touch` 与 `pip install` 不在名单内（已写进 P1 与 P2 两条）。"
+    },
+    {
+      "note": "怀疑黄金用例对 §1.5 第 1 步 K-L-A 的 `partial` 分支无覆盖（只有 support / not-support）。但 partial 与 not-support 在实现与规范里映射到同一个 ST-U，构造不出抬高状态的变异，故只是覆盖缺口而非可利用路径。"
+    }
+  ],
+  "not_broken": [
+    {
+      "target": "gates/repro/m0_1_pdf_attributes.py 与 m0_2_normalization.py 的字节确定性",
+      "method": "各连跑三次，比对 sha256；并与 .loop/m0/M0-1.json evidence[0] / M0-2.json evidence[1] 声明的哈希核对",
+      "result": "三次全同。m0_1 = 40633828fa6d6b7498fcce4212032ba776a8a59242ff4844907dcc4866eb8f3b，与记录逐字符一致；m0_2 = e72313579287e0093ce1cb6f703771ba5dd871dafa669c32b124f860adf0fed3，与记录逐字符一致。夹具确为纯 Python 现场生成（1207 字节，输出里带自哈希），无时间戳、无路径、无随机数，无第三方语料。这是本轮质量最高的产物。"
+    },
+    {
+      "target": "M0-1 声称「四个库全都读进隐藏文本」",
+      "method": "亲手重跑 run_m0_1.sh 读原始输出",
+      "result": "成立。pdftotext 4/6、pypdf 6/6、pdfplumber 6/6、PyMuPDF 5/6 段隐藏文本被读出；属性表里 pdfplumber(color,size) 与 PyMuPDF(color,size,rendermode,opacity,layer) 共 7 格为 yes，H0 被证伪的判定与输出一致。脚本也确实有判红路径（:237 `H0 未被证伪`），不是恒真。"
+    },
+    {
+      "target": "M0-2 声称「18 格与记录一致」中的 18 格数值本身",
+      "method": "亲手重跑 m0_2_normalization.py 读原始输出",
+      "result": "6 用例 × 3 列（raw/as_written/fixed）确实全部打印，BUG-2 的未修状态被显式标红呈现而非静默吞掉。数值本身可信。不可信的只是那句「与 .loop/m0/M0-2.json 的记录一致」——见 P2 findings。"
+    },
+    {
+      "target": "check_pointers 的棘轮多重集（新键格式）",
+      "method": "跑 test_check_pointers.sh 全套；并逐条核对 R-8（跨文档复用已知坏 pair）、R-9（同文档次数上升）、R-11（回滚旧数组格式）",
+      "result": "没能攻破。键含出处文档 + 计数，brandNew 与 settled 双向断言构成**精确匹配**（n > known 判红，n < known 也判红），「挪到另一个文件再挪回来」两个方向都会红。R-11 还堵死了回滚旧格式重新拿免死金牌。这一条修复是实的。"
+    },
+    {
+      "target": "check_m0 的退出码断言、子 shell 包裹、design-changed 证据要求",
+      "method": "逐条停用后跑 test_check_m0.sh",
+      "result": "三条都有牙齿：停用退出码断言 → R-12 变绿（套件正确失败）；改回裸重定向 → R-12b 变红（套件正确失败）；把 MEASURED 改回只含 resolved → R-10 变绿（套件正确失败）。这三条负例是真的钉住了对应修复。"
+    },
+    {
+      "target": "src/status.mjs 的吸收态补齐（meet / stepDown 对 ST-N、ST-C 有定义，2c 的提前返回补丁已移除）",
+      "method": "读代码比对 §1.5.1.1 补齐后的逐点定义；跑穷举 oracle 13,893,120 向量（V1.7 全函数 / V1.1 值域 / V1.2 纯 / V1.3 单调+交换律 / V1.8 全绿）；确认 G1+F-01 这条规范点名的路径不再抛异常",
+      "result": "没能攻破。meet(x,ST.N)=ST.N、meet(x,ST.C)=ST.C、stepDown(ST.N)=ST.N、stepDown(ST.C)=ST.C 与 §1.5.1.1 逐点一致；2c 不再特判，走正常 meet 路径。全函数论证现在由规范承接而非由补丁掩盖。"
+    },
+    {
+      "target": "check_pointers 的空集闸",
+      "method": "node gates/check_pointers.mjs --root /tmp（负例 R-7）",
+      "result": "exit 2，拒绝在 0 个指针上给绿灯。check_m0 的空集闸同样有效（exit 2）。check_status_spec 也有同类闸（§7.3 解析出 0 条 → exit 2）。"
+    },
+    {
+      "target": "check_status_spec 的 §7.3 双向绑定本身",
+      "method": "构造 FLAG_CEILING['F-12'] 改值、增删 flag 的变异",
+      "result": "绑定确实是双向的：实现多一个 §7.3 没有的 ceiling flag、少一个 §7.3 有的 step-down flag、或值列对不上，三种都判红。M-07/M-08（清空整张表）被稳定击杀。问题不在这张表的绑定质量，而在只绑了这一张表（见 P1 findings）。"
+    }
+  ],
+  "coverage_gaps": {
+    "lenses_not_run": [],
+    "notes": "五个视角全部实际执行，每条 finding 都由命令实测而非读码推断。未覆盖：① gates/check_contracts.mjs 与 check_publishable.mjs 不在本轮攻击面内，未审；② check_doc_metrics.mjs 只审了它与本轮新数字的交集（P2 一条），没有系统攻击它自己的正则覆盖面；③ 我没有验证 .loop/m0 里 12 条记录的**结论**在事实层面是否正确（只验了机制层：命令能否重跑、哈希是否一致、excerpt 是否被约束）——除了亲手重跑的 M0-1 与 M0-2 两条；④ M0-3a/3b/3c/4/5/6/7、C-12a/12b 的证据命令依赖本机安装的 dsh 与 ~/.dsh 状态，我在本机重跑它们全部哈希一致，但无法判断它们在别的机器上是否可复现（.loop/m0 里多条 cwd 写作 `~`，且命令读 ~/.volta 下的具体安装路径）——这与 P2「新克隆不可复现」是同一类风险的更大面，未展开。\n\n本轮的结构性判断：修复的**方向**基本正确（棘轮加宽、design-changed 收口、吸收态补齐、复现脚本入库、加一道映射门），但有一条贯穿性的模式 —— **每一处修复都把断言写对了，却没有为那条断言配一个会红的负例**。新鲜度断言（P1 #1/#2）、默认全跑（P1 #3）、GRADE/K/TIER 三张表（P1 #4/#5）、excerpt 绑定（P1 #7）全都落在「有断言、无红样本」或「有门、无覆盖」的同一个格子里。而 check_status_mutants 这道本该量化辨别力的门，因为变异集与黄金用例一对一同源，把这个格子涂成了绿的（P1 #6）。这正是 MEMORY 里那条「门必须先证明会红才算数」的第四次复发，只是这次发生在**元层**：负例套件与变异集本身没有先证明会红。"
+  }
+}

@@ -1,0 +1,10 @@
+# dsh-academic-fetch —— 学术取证工具。
+#
+# 〔裁定 B-1〕本 bundle **绝不 patch `id: web`**。
+# 02-ARCHITECTURE §A 第 3 条实测：两个 bundle 同时 patch 同一行时后者全胜且无任何警告
+# （本机 web profile 里 bocha 与 serper 都 patch `id: web`，最终生效的是排在后面的 serper）。
+# 我们排在 `dsh-web-search-serper` 之后，若也去抢 `id: web` 就会静默夺走它的 searchProvider。
+# 学术取证是**另一条通道**，不是 web 的替代品。
+- insert:
+    - id: tool-academic-fetch
+      name: 'dsh-academic-fetch'

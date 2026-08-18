@@ -1,0 +1,500 @@
+{
+  "task": "Implement the academic-research-plugin DSH profile from its frozen planning docs (README/PRINCIPLES/ARCHITECTURE/EVIDENCE-ENGINE/ORCHESTRATION/TESTING) into a runnable, TUI/headless profile whose product is credibility: every claim carries a machine-decided verified/unverified state. Build sequentially by module M1-M8 with a deterministic gate + fresh adversarial attack + fix-audit at each stage, and the gated-vs-freehand + hyper-parallel-vs-serial A/B honest test as milestone 1 that green-lights the expensive scale-up.",
+  "loop_altitude": "medium",
+  "loop_altitude_rationale": "The PRODUCT is hyper-parallel multi-loop, but BUILDING it is strictly sequential: each module consumes the prior module's frozen contract on one shared build surface, so parallel construction would conflict-edit (P-11). Single-agent gated stages, no build-time fan-out — matches both house pipelines (plugin-creator/serper-harvester) which are medium with deliberate zero internal fan-out. Fan-out lives inside the built product's runtime, not inside its construction loop.",
+  "selection_log": [
+    {
+      "decision": "D0",
+      "answer": "loop",
+      "why": "every stage has a fast runnable done-check: headless `dsh --profile academic-research <task>` exit code, real-boot-with-fake-key gate, the 27 negative fixtures asserting rejection, gate-script exit codes on runs/_smoke, and the held-out eval harness exit code + scoreboard delta. Done is machine-decidable without a human reading output."
+    },
+    {
+      "decision": "D1",
+      "answer": "staged (8 seams by module dependency, ARCHITECTURE §4)",
+      "why": "each seam hands a stable checkable artifact downstream and its check runs without the downstream existing: booting profile -> green gates+fixtures -> booting plugin emitting evidence events -> a headless run producing a gate-passing claim ledger -> an A/B scoreboard delta -> a scaled+hardened system -> an attack+fix-audit ledger -> a wrapped+regressed profile. Contract-first (gates before the plugin that feeds them) satisfies seam-test (a): the gate scripts run standalone on _smoke fixtures."
+    },
+    {
+      "decision": "D2",
+      "answer": "retry / plan_execute_verify / review + human_in_the_loop",
+      "why": "skeleton and prose-exit-bench are mechanical (retry); the credibility core (evidence-contracts, academic-search, research-preset, hardening-scale) is risky and needs mid-flight correction (plan_execute_verify, red-green); milestone-1-ab is a quality judgment on the whole approach (review) with a human go/no-go; attack-fixaudit is adversarial (review)."
+    },
+    {
+      "decision": "D3",
+      "answer": "on_the_loop, except milestone-1-ab = in_the_loop",
+      "why": "dev-only, reversible, discriminating checks -> human reviews at gates. Exception: the A/B honest-test verdict (does hyper-parallel earn its cost, P-15) is a judgment no check can make — the check only proves the A/B RAN honestly with paired metrics; the human owns the go/no-go and a null result is an accepted honest outcome, not a failure to grind against (anti-reward-hacking, P-18)."
+    },
+    {
+      "decision": "D4",
+      "answer": "medium",
+      "why": "stages are strictly sequential (each depends_on the prior); the single build surface makes parallel construction a shared-write conflict. The product's hyper-parallelism is a runtime property of M4, not a property of the build loop."
+    },
+    {
+      "decision": "D5",
+      "answer": "caps + loopback + pre-registered restart + budget/zero-change/min-progress gates",
+      "why": "per-stage caps; downstream failures loopback to the implicated upstream gate; evidence-contracts and academic-search carry pre-registered restart counters (a build-turned-archaeology is rewritten from the contract, not patched); outer zero-change brake + minimum-progress floor; house budget guard (DeepSeek balance floor + per-stage token cap)."
+    },
+    {
+      "decision": "D6",
+      "answer": "completeness-first (mixed: red-green inner cycle is iteration-first)",
+      "why": "the discriminating checks are slow/expensive (headless dsh runs are minutes-long, real boots, held-out eval, e2e evidence-materialization) and the artifacts reward a coherent whole (contracts, a profile, a migration cutover), so few thorough passes beat many cheap ones -> low caps, plan_execute_verify, thorough checks. The exception is the negative-fixture red-green cycle inside evidence-contracts, which is genuinely iteration-first (fast unit checks) and carries a higher inner cap — recorded per-stage."
+    }
+  ],
+  "stages": [
+    {
+      "id": "skeleton",
+      "definition_of_done": {
+        "goal": "the profile ~/.dsh/profiles/academic-research (package.json dsh.profile.bundles + cordis.patch.yml) boots headless and exits 0 on a no-op task, and a real boot with a deliberately-fake API key dies at AUTH (not at the cordis plugin-loader), proving the bundle graph and every plugin's exported Config are valid",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "retry",
+      "feedback_signal": {
+        "check": "dsh --profile academic-research --dump-config >/dev/null && DEEPSEEK_API_KEY=sk-fake-000 dsh --profile academic-research 'noop; exit' 2>&1 | grep -q 'Authentication' && echo BOOT_OK",
+        "expect": "pass",
+        "falsifiable_when": "dump-config errors, OR the fake-key boot dies with a cordis-plugin-loader / Config-validation error instead of an AUTH error — proving a bundle or an exported Config schema is broken (the house plugin_load.sh lesson: dump-config alone passed a pure stub, only a real boot catches load-time invariants)",
+        "passing_but_wrong": "a plugin that dump-config accepts but that has no `export const Config = z.object(...)` and would crash at load — ruled out: the fake-key real-boot must reach AUTH, which only happens after every plugin's load-time Config validation passes (@deepseek-ai/cordis runtime.Config.validate)"
+      },
+      "stop_conditions": {
+        "failure": [
+          "3 consecutive boots fail at plugin-loader with the same Config error (a bundle is structurally wrong, not our task)"
+        ],
+        "max_iterations": 4,
+        "on_failure": {
+          "action": "escalate"
+        }
+      },
+      "depends_on": []
+    },
+    {
+      "id": "evidence-contracts",
+      "definition_of_done": {
+        "goal": "the credibility core exists and is proven by red-green: claims.tsv 8-col schema + per-claim manifest + CAS; the M3 gate scripts (data 4-layer / source ladder / inference DAG / source-integrity L0-L1); all 27 EVIDENCE-ENGINE §6 negative fixtures are tool-triggered and assert-REJECTED; the fail-closed selftest includes the missing-panel negative case; status is written ONLY by the gate",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "plan_execute_verify",
+      "feedback_signal": {
+        "check": "node checks/gates_selftest.mjs --fixtures 27 --require-all-red-then-green && python3 gates/run.py runs/_smoke && git diff gates-baseline-evidence -- checks/ gates/ | wc -l | grep -qx 0",
+        "expect": "pass",
+        "falsifiable_when": "any of the 27 negative fixtures is NOT rejected when tool-triggered (e.g. a constant/epsilon-dependency transform passes the input-dependency gate; a worker write to the status column is not rejected; a fabricated snapshot passes anti-forgery; reviewer_id==producer_id still writes a terminal state) — a fixture stays green when it must go red",
+        "passing_but_wrong": "the fixtures 'pass' because they were weakened to vacuous asserts, or because a fixture file exists but is never tool-triggered ('存在即覆盖', banned by P-9) — ruled out: gates_selftest requires each fixture to first FAIL on the un-fixed gate (RED) then be rejected by the fixed gate (GREEN), and the baseline-tag diff proves no check/gate file drifted since the conductor committed it"
+      },
+      "stop_conditions": {
+        "failure": [
+          "a fixture that was green goes red again after a fix to a sibling rule (patch-vs-break arms race)",
+          "the gate scripts cannot be made to reject all 27 fixtures without weakening an assertion"
+        ],
+        "max_iterations": 12,
+        "on_failure": {
+          "action": "restart"
+        }
+      },
+      "depends_on": [
+        "skeleton"
+      ]
+    },
+    {
+      "id": "academic-search",
+      "definition_of_done": {
+        "goal": "the M1 dsh-academic-search plugin retrieves via the academic stack + generic-web fallback chain, materializes each snapshot into CAS AT FETCH TIME with the tool executor recording the response sha256 in a log-only event, and the anti-forgery gate binds every manifest.snapshot_hash to a real tool RESULT event; pure lib/ has zero @deepseek-ai imports and unit-tests standalone",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "plan_execute_verify",
+      "feedback_signal": {
+        "check": "npm --prefix dsh-academic-search test && bash checks/evidence_materialization_e2e.sh && node checks/antiforgery_probe.mjs --tamper-snapshot --expect-fail --bypass-gateway --expect-fail",
+        "expect": "pass",
+        "falsifiable_when": "the e2e run's session jsonl shows a manifest.snapshot_hash with no matching tool RESULT event hash; OR a tampered CAS snapshot still passes the anti-forgery gate; OR content fetched by a direct bash+curl (bypassing the gateway tool, thus no RESULT event) is accepted as evidence — any of these means provenance is not bound to runtime traces (P-10)",
+        "passing_but_wrong": "the plugin returns real search results but the snapshot bytes are the worker's self-reported extracted_text rather than the tool-executor's fetched bytes (the RT-4 bypass: real fetch + forged extract) — ruled out: antiforgery_probe tampers the extracted_text while leaving the CAS snapshot intact and asserts the gate matches against the门-side CAS extraction, not the worker's text"
+      },
+      "stop_conditions": {
+        "failure": [
+          "a top-severity anti-forgery bypass lands inside the previous iteration's own fix (pre-registered stall -> restart, do not patch forward)",
+          "the fetch fallback chain cannot produce a bound snapshot for the golden source set after 5 iterations"
+        ],
+        "max_iterations": 6,
+        "on_failure": {
+          "action": "restart"
+        }
+      },
+      "depends_on": [
+        "evidence-contracts"
+      ]
+    },
+    {
+      "id": "research-preset-min",
+      "definition_of_done": {
+        "goal": "M4 as a MINIMAL single external RESEARCH-ROUND (L1-L5 internal loops at fan-out 1) runs headless on a fixed golden topic and produces runs/<slug>/claims.tsv whose full gate run exits 0, with at least one claim of each kind (data/source/inference) reaching a terminal state (verified-*/contested/unverified) that was written only by the gate, never by the conductor",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "plan_execute_verify",
+      "feedback_signal": {
+        "check": "dsh --profile academic-research \"$(cat checks/golden-topic.txt)\" && python3 gates/run.py runs/$(cat runs/LATEST) && node checks/assert_terminal_states.mjs --kinds data,source,inference --writer gate-only",
+        "expect": "pass",
+        "falsifiable_when": "the headless run exits non-zero, OR the produced ledger has no claim in some kind, OR assert_terminal_states finds a status transition whose session-event writer is the conductor/worker rather than the gate script — the credibility write-authority (RT-2) leaked",
+        "passing_but_wrong": "the run produces a ledger where every claim is trivially 'unverified' (the loop did no real grounding) and the gate vacuously passes — ruled out: assert_terminal_states requires ≥1 claim per kind to reach a POSITIVE terminal state (verified-* or contested via a real reproduce/quote/inference gate), not merely the unverified default"
+      },
+      "stop_conditions": {
+        "failure": [
+          "3 consecutive runs produce a ledger with zero positively-verified claims (the loop is not doing real research, only defaulting to unverified)",
+          "goal-round-driver cannot drive a single round to a gate-passing ledger"
+        ],
+        "max_iterations": 6,
+        "on_failure": {
+          "action": "loopback",
+          "to": "academic-search"
+        }
+      },
+      "depends_on": [
+        "academic-search"
+      ]
+    },
+    {
+      "id": "milestone-1-ab",
+      "definition_of_done": {
+        "goal": "MILESTONE 1 (P-15 honest test, gates the expensive scale-up): the held-out eval harness runs BOTH A/B arms to completion — arm A gated-vs-freehand, arm B hyper-parallel-vs-same-budget-serial — on physically isolated held-out tasks, and populates scoreboard.tsv with each success number paired to its integrity counterpart. The GATE is that the A/B ran honestly with paired metrics and burned-task isolation held; the VERDICT (proceed / redesign / honestly report null) is the human's",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "review",
+      "feedback_signal": {
+        "check": "node eval/harness.mjs --ab gated:freehand --ab parallel:serial-same-budget --held-out --fail-closed && node checks/scoreboard_integrity.mjs --require-paired-metrics --require-burned-task-isolation",
+        "expect": "pass",
+        "falsifiable_when": "the harness cannot complete either arm, OR the scoreboard has a success number with no paired integrity/damage metric (unpaired success = the shape of slop, P-18), OR a held-out task that entered any dev loop is re-scored (isolation broken), OR the two arms differ in a variable other than the one under test (gated-ness / parallelism)",
+        "passing_but_wrong": "the A/B is tuned until gated+parallel wins (reward-hacking the honest test) — ruled out: the gate does NOT check 'gated wins'; it checks the run completed with paired metrics and isolation intact. A null or negative result (parallel does not beat serial) PASSES this gate and ESCALATES to the human go/no-go, which may honestly stop the project ('do not add more framework to hide it')"
+      },
+      "stop_conditions": {
+        "failure": [
+          "the held-out eval harness or the isolation checker cannot be made to run to completion (infra broken, not a result)"
+        ],
+        "max_iterations": 3,
+        "on_failure": {
+          "action": "escalate"
+        }
+      },
+      "depends_on": [
+        "research-preset-min"
+      ]
+    },
+    {
+      "id": "hardening-scale",
+      "definition_of_done": {
+        "goal": "ONLY after the human green-lights milestone 1: M5 eval-track fail-closed (eval-of-eval negative tests) + M4 scaled to hyper-parallel multi-loop, proven safe by concurrent-write integrity and the flat hyper-parallel regression curve",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "plan_execute_verify",
+      "feedback_signal": {
+        "check": "node eval/selftest.mjs --plant confident-but-wrong --expect REVISE --plant missing-panel --expect NOT-SHIP && node checks/concurrent_admission.mjs --grounders 8 --assert-no-corruption && node checks/parallel_regression.mjs --toolcalls 2,20,150 --assert-support-rate-flat",
+        "expect": "pass",
+        "falsifiable_when": "a planted confident-but-wrong candidate is NOT forced to REVISE, OR a missing-panel candidate can SHIP (fail-closed broken, TESTING §8), OR 8 concurrent grounders corrupt the ledger (admission serialization broken, RT-18), OR citation-support-rate falls as tool-calls scale 2->150 (parallelism amplifies sourcing error, TESTING §3)",
+        "passing_but_wrong": "the parallel regression 'passes' because it never actually reached 150 concurrent tool-calls (fan-out capped silently) — ruled out: parallel_regression asserts the achieved tool-call count reached each target before it judges the support-rate curve"
+      },
+      "stop_conditions": {
+        "failure": [
+          "2 consecutive iterations fail in the same class (eval-of-eval or concurrent-write)",
+          "the flat-curve property cannot be met without capping fan-out below the design's parallelism target"
+        ],
+        "max_iterations": 6,
+        "on_failure": {
+          "action": "loopback",
+          "to": "evidence-contracts"
+        }
+      },
+      "depends_on": [
+        "milestone-1-ab"
+      ]
+    },
+    {
+      "id": "attack-fixaudit",
+      "definition_of_done": {
+        "goal": "M6 house attack battery over the BUILT system (not the docs): seed-verified multi-lens attackers + a cross-vendor attacker find defects; every P1/P2 is adjudicated and fixed; a fresh-context fix-audit (never saw the fixes) confirms the repairs are real and introduced no new contradiction",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "review",
+      "feedback_signal": {
+        "check": "node checks/attack_battery.mjs --require-seed-hit --lenses coherence,gaming,evidence,reality,foundation --cross-vendor && node checks/fixaudit.mjs --fresh-context --require-verdict CONVERGED --adjudicated-p1p2-zero-open",
+        "expect": "pass",
+        "falsifiable_when": "a lens run misses its planted seed (attacker is blind, run void — not counted), OR any P1/P2 is left open, OR the fresh-context fix-audit returns FIX_FIRST (a repair was cosmetic or introduced a new defect)",
+        "passing_but_wrong": "the battery reports clean because the attackers were weak (found nothing), read as 'system clean' — ruled out: the seed gate voids any lens run that misses its fingerprinted seed, so 'clean' only counts when the attackers demonstrably CAN find planted defects"
+      },
+      "stop_conditions": {
+        "failure": [
+          "a P1 lands inside the previous round's own fix (fix-audit rotation stall -> loop back to the implicated module stage, do not patch forward)",
+          "3 attack rounds fail to reach CONVERGED"
+        ],
+        "max_iterations": 4,
+        "on_failure": {
+          "action": "loopback",
+          "to": "hardening-scale"
+        }
+      },
+      "depends_on": [
+        "hardening-scale"
+      ]
+    },
+    {
+      "id": "prose-exit-bench",
+      "definition_of_done": {
+        "goal": "M7 thin prose exit (every empirical sentence cites a claim_id, zero ledger-external assertions) + M8 headless regression batch green with an append-only scoreboard, closing the build",
+        "machine_verifiable": true
+      },
+      "loop_pattern": "retry",
+      "feedback_signal": {
+        "check": "node checks/prose_exit_closure.mjs --assert-sentences-subset-of-ledger && bash checks/regression_batch.sh --headless --assert-exit-codes && node checks/scoreboard_append_only.mjs",
+        "expect": "pass",
+        "falsifiable_when": "the prose exit emits an empirical sentence with no claim_id or an assertion absent from the ledger (ledger-external claim leaked into prose), OR a regression-batch headless run exits non-zero, OR a scoreboard row was deleted/mutated (append-only violated)",
+        "passing_but_wrong": "the closure check passes because the prose is empty / trivially cites but the citations point at unverified claims presented as settled — ruled out: prose_exit_closure asserts every load-bearing empirical sentence maps to a claim_id AND surfaces that claim's actual state (verified/contested/unverified), never laundering an unverified claim into declarative prose"
+      },
+      "stop_conditions": {
+        "failure": [
+          "the regression batch cannot be made green without weakening a check"
+        ],
+        "max_iterations": 4,
+        "on_failure": {
+          "action": "loopback",
+          "to": "attack-fixaudit"
+        }
+      },
+      "depends_on": [
+        "attack-fixaudit"
+      ]
+    }
+  ],
+  "human_placement": "on_the_loop",
+  "human_placement_note": "on_the_loop at every stage gate; ONE in_the_loop exception — the milestone-1-ab go/no-go verdict (the P-15 honest-test decision: proceed to scale / redesign / honestly report a null result and stop) is a judgment no check can make and must not be reward-hacked. Captured as the milestone-1-ab stage's review pattern + escalate-on-null routing, and in D3 of the selection_log.",
+  "maker_checker": {
+    "separate_checker": true,
+    "scope": "at each stage a fresh adversarial evaluator context (never saw the generator's impl or reasoning) is told the artifact is broken and must prove it — this IS the per-stage attack verification. For the credibility-core stages it runs the house lens battery (coherence/gaming/evidence/reality/foundation) + a cross-vendor attacker; it verifies the gate DISCRIMINATES (would fail on a broken impl), not merely that a green check exists. The conductor owns checks/ and .loop-state/ (generator may not edit them) and commits gates-baseline-<stage> tags so a gate is honoured only when git diff against its baseline tag is empty and the tree is clean."
+  },
+  "roles": {
+    "planner": {
+      "mandate": "Fable conductor: read the frozen planning docs -> per-stage spec + the negotiated contract assertions; never writes plugin/gate/preset code. Resolves the docs as the frozen contract source (README/PRINCIPLES/ARCHITECTURE/EVIDENCE-ENGINE/ORCHESTRATION/TESTING), not its own memory."
+    },
+    "generator": {
+      "mandate": "Opus subagents: write the plugin/gates/preset/checks to satisfy the contract; may NOT weaken a check, edit checks/ or .loop-state/, or grade their own output. Negative tests must be red-before-green with the RED evidence committed."
+    },
+    "evaluator": {
+      "separate_context": true,
+      "adversarial": true,
+      "mandate": "a FRESH context that never saw the impl or the generator's reasoning; assume the credibility machinery is broken and prove it — forge a snapshot, bypass the gateway, launder an unverified claim into verified via a constant transform or a self-reviewed rescue, game the head metric denominator, break burned-task isolation. Different-vendor attacker on the high-stakes stages buys model-tier independence. A fixer never audits its own fix (fix-audit rotation)."
+    }
+  },
+  "contract": {
+    "negotiated_by": [
+      "generator",
+      "evaluator"
+    ],
+    "assertions": [
+      {
+        "id": "A1",
+        "must": "the profile boots headless and exits 0 on a no-op task",
+        "check": "dsh --profile academic-research 'noop; exit'; test $? -eq 0",
+        "stage": "skeleton"
+      },
+      {
+        "id": "A2",
+        "must": "a real boot with a fake API key dies at AUTH, not at the cordis plugin-loader, and every plugin exports a valid Config",
+        "check": "DEEPSEEK_API_KEY=sk-fake dsh --profile academic-research 'x' 2>&1 | grep Authentication",
+        "stage": "skeleton"
+      },
+      {
+        "id": "A3",
+        "must": "all 27 EVIDENCE-ENGINE §6 negative fixtures are tool-triggered and each is RED-before-green then rejected by the fixed gate",
+        "check": "node checks/gates_selftest.mjs --fixtures 27 --require-all-red-then-green",
+        "stage": "evidence-contracts"
+      },
+      {
+        "id": "A4",
+        "must": "the claims.tsv status column is physically written ONLY by the gate script; admission writes new rows at status=pending; a worker/conductor write attempt to status is observably rejected and the column is unchanged",
+        "check": "node checks/write_authority.mjs --attempt-worker-write --expect-rejected --assert-status-unchanged",
+        "stage": "evidence-contracts"
+      },
+      {
+        "id": "A5",
+        "must": "a constant transform and an epsilon-dependency transform both FAIL the data input-dependency gate, while a genuinely input-dependent transform PASSES (the trichotomy)",
+        "check": "node checks/input_dependency.mjs --constant FAIL --epsilon FAIL --real PASS",
+        "stage": "evidence-contracts"
+      },
+      {
+        "id": "A6",
+        "must": "reviewer!=producer is enforced from the harness childId in session events, not a self-reported manifest field; a verdict whose reviewer childId equals the producer childId cannot write a terminal state",
+        "check": "node checks/reviewer_independence.mjs --same-childid --expect-no-terminal",
+        "stage": "evidence-contracts"
+      },
+      {
+        "id": "A7",
+        "must": "load-bearing is machine-decided: a claim that is prose-cited OR an inference premise OR on a conclusion chain is immutably load-bearing; an author 'non-load-bearing' mark on such a claim is rejected",
+        "check": "node checks/load_bearing.mjs --mark-prose-cited-nonbearing --expect-rejected",
+        "stage": "evidence-contracts"
+      },
+      {
+        "id": "A8",
+        "must": "an inference whose conclusion is stronger than its steps support is caught by the reviewer's conclusion-strength question",
+        "check": "node checks/inference_strength.mjs --overclaim --expect-flagged",
+        "stage": "evidence-contracts"
+      },
+      {
+        "id": "A9",
+        "must": "the fail-closed selftest includes a missing-panel negative case proving a missing eval dimension cannot yield SHIP",
+        "check": "node checks/gates_selftest.mjs -t missing-panel-cannot-ship",
+        "stage": "evidence-contracts"
+      },
+      {
+        "id": "A10",
+        "must": "every manifest.snapshot_hash binds to a real tool RESULT event hash in the session jsonl; a tampered CAS snapshot fails anti-forgery",
+        "check": "node checks/antiforgery_probe.mjs --tamper-snapshot --expect-fail",
+        "stage": "academic-search"
+      },
+      {
+        "id": "A11",
+        "must": "a fabricated URL not present in any tool RESULT event fails the anti-forgery gate",
+        "check": "node checks/antiforgery_probe.mjs --fabricate-url --expect-fail",
+        "stage": "academic-search"
+      },
+      {
+        "id": "A12",
+        "must": "evidence fetched by bypassing the gateway tool (direct bash+curl, no RESULT event) is rejected as unbindable",
+        "check": "node checks/antiforgery_probe.mjs --bypass-gateway --expect-fail",
+        "stage": "academic-search"
+      },
+      {
+        "id": "A13",
+        "must": "a load-bearing source claim requires >=2 independent-publisher sources; a two-preprint combo gets a preprint-only flag and verified-by-source is downgraded",
+        "check": "node checks/source_independence.mjs --two-preprints --expect-flag-and-downgrade",
+        "stage": "academic-search"
+      },
+      {
+        "id": "A14",
+        "must": "the retraction / hijacked-journal L0 join runs offline and default-on; citing retracted work raises a flag",
+        "check": "node checks/source_integrity_l0.mjs --cite-retracted --expect-flag",
+        "stage": "academic-search"
+      },
+      {
+        "id": "A15",
+        "must": "the pure lib/ has zero @deepseek-ai imports and its unit tests pass standalone",
+        "check": "grep -rL '@deepseek-ai' dsh-academic-search/lib && npm --prefix dsh-academic-search test",
+        "stage": "academic-search"
+      },
+      {
+        "id": "A16",
+        "must": "a headless run produces a claim ledger with >=1 claim per kind (data/source/inference) reaching a POSITIVE terminal state written only by the gate",
+        "check": "node checks/assert_terminal_states.mjs --kinds data,source,inference --writer gate-only --require-positive",
+        "stage": "research-preset-min"
+      },
+      {
+        "id": "A17",
+        "must": "the milestone-1 A/B runs BOTH arms (gated:freehand and parallel:serial-same-budget) to completion on held-out tasks and populates the scoreboard",
+        "check": "node eval/harness.mjs --ab gated:freehand --ab parallel:serial-same-budget --held-out",
+        "stage": "milestone-1-ab"
+      },
+      {
+        "id": "A18",
+        "must": "every scoreboard success number is paired with an integrity/damage metric (unpaired success is rejected) and a held-out task that entered any dev loop is never re-scored",
+        "check": "node checks/scoreboard_integrity.mjs --require-paired-metrics --require-burned-task-isolation",
+        "stage": "milestone-1-ab"
+      },
+      {
+        "id": "A19",
+        "must": "the head metric denominator is the ledger load-bearing set UNION the prose (measured held-out side), never the L1 pass-rate; a prose that narrates only verified claims cannot inflate it",
+        "check": "node checks/head_metric_denominator.mjs --curate-prose --expect-no-inflation",
+        "stage": "milestone-1-ab"
+      },
+      {
+        "id": "A20",
+        "must": "eval-of-eval: a planted confident-but-wrong candidate is forced to REVISE and a missing-panel candidate cannot SHIP",
+        "check": "node eval/selftest.mjs --plant confident-but-wrong --expect REVISE --plant missing-panel --expect NOT-SHIP",
+        "stage": "hardening-scale"
+      },
+      {
+        "id": "A21",
+        "must": "8 concurrent grounders do not corrupt the ledger (admission single-instance lock + content-hash keys)",
+        "check": "node checks/concurrent_admission.mjs --grounders 8 --assert-no-corruption",
+        "stage": "hardening-scale"
+      },
+      {
+        "id": "A22",
+        "must": "citation-support-rate stays flat as tool-calls scale 2->20->150 (parallelism does not amplify sourcing error), and the achieved tool-call count reached each target",
+        "check": "node checks/parallel_regression.mjs --toolcalls 2,20,150 --assert-support-rate-flat --assert-achieved",
+        "stage": "hardening-scale"
+      },
+      {
+        "id": "A23",
+        "must": "the attack battery is seed-verified (planted seeds hit, blind runs voided) and a fresh-context fix-audit returns CONVERGED with zero open P1/P2",
+        "check": "node checks/attack_battery.mjs --require-seed-hit --cross-vendor && node checks/fixaudit.mjs --fresh-context --require-verdict CONVERGED",
+        "stage": "attack-fixaudit"
+      },
+      {
+        "id": "A24",
+        "must": "the prose exit emits only ledger-backed empirical sentences (each cites a claim_id and surfaces its true state), zero ledger-external assertions",
+        "check": "node checks/prose_exit_closure.mjs --assert-sentences-subset-of-ledger",
+        "stage": "prose-exit-bench"
+      },
+      {
+        "id": "A25",
+        "must": "no gate/test/check assertion is weakened relative to its gates-baseline tag over the whole build",
+        "check": "human-verify: the evaluator diffs checks/ and gates/ against each gates-baseline-<stage> tag and confirms no assertion was loosened (includes untracked files via git status --porcelain)",
+        "stage": "cross-cutting"
+      },
+      {
+        "id": "A26",
+        "must": "every gate threshold is calibrated on a self-built golden set, never a number copied from the survey/literature (P-21)",
+        "check": "human-verify: the evaluator confirms each numeric threshold traces to a runs/_calib golden artifact, not a SURVEY citation",
+        "stage": "cross-cutting"
+      },
+      {
+        "id": "A27",
+        "must": "all runtime/debug/verification surfaces are TUI/headless (dsh --profile, exit codes); no gate or acceptance step depends on the WebUI",
+        "check": "grep -rL 'web-app\\|WebUI\\|--port' checks/ && node checks/headless_only.mjs",
+        "stage": "cross-cutting"
+      }
+    ]
+  },
+  "harness_primitives": [
+    "the frozen planning docs (README/PRINCIPLES/ARCHITECTURE/EVIDENCE-ENGINE/ORCHESTRATION/TESTING) as the immutable contract source the planner reads each stage",
+    "checks/ and .loop-state/ owned exclusively by the conductor; generator may not edit them; a gate counts only when git status --porcelain -- checks/ .loop-state/ is clean AND git diff gates-baseline-<stage> -- checks/ is empty (catches committed tampering + untracked shadow files)",
+    ".loop-state/STATE.md (per-stage status + spend), findings.json (attack ledger: lenses[] + findings[] with severity/evidence/fix_commit), DECISIONS.md — durable across compaction/context resets",
+    "runs/_smoke as the resident golden self-test run; runs/_calib as the threshold-calibration golden set",
+    "e2e-session.jsonl + metrics.json recomputed FROM the jsonl every gate (never trust self-reported numbers — house R5 lesson: the driver model has forged plausible citations)",
+    "git worktree isolation per stage + gates-baseline-<stage> tags committed by the conductor before the generator receives a stage",
+    "held-out eval task set + rubric stored in a separate directory that never enters any agent context (physical isolation, burned-task ledger)"
+  ],
+  "stop_conditions": {
+    "success": "all eight stages' checks pass in dependency order (skeleton -> evidence-contracts -> academic-search -> research-preset-min -> milestone-1-ab -> hardening-scale -> attack-fixaudit -> prose-exit-bench), the milestone-1 human go/no-go was recorded, and the built profile runs a research task headless producing a gate-passing claim ledger whose prose exit is ledger-closed. Minimum-progress floor: every stage gate must have been reached and attempted with a real diff, and milestone-1-ab must have produced a populated paired-metric scoreboard, before any stop is honoured — a stop below that floor escalates, it does not count as done.",
+    "failure": [
+      "any stage exhausts its max_iterations without passing its check",
+      "a downstream stage forces a redesign of an already-accepted upstream stage twice (error amplification -> escalate the contract, not the build)",
+      "2 consecutive outer iterations produce zero new file changes (zero-change gate: the loop is buying iterations, stop)",
+      "2 consecutive iterations fail in the same class OR a top-severity defect lands inside the previous iteration's own fix (pre-registered stall -> the stage's on_failure restart fires; do not patch forward)",
+      "DeepSeek balance floor breached (< the pre-set threshold) — shared budget guard, stop rather than overrun (house precedent)"
+    ],
+    "escalate": [
+      "milestone-1-ab produces a null or negative A/B result (hyper-parallel does not beat same-budget serial, or gated does not beat freehand) — escalate the P-15 go/no-go to the human; honestly report and possibly stop, do NOT tune the A/B until it wins",
+      "a change to the frozen planning-doc contract becomes necessary (the contract is wrong, not the build)",
+      "real credentials, real user data, or a non-headless surface becomes required to verify a gate",
+      "the loop proposes to stop before the minimum-progress floor (premature-abandonment gate)"
+    ],
+    "max_iterations": 5
+  },
+  "risk_guards": [
+    {
+      "risk": "reward hacking the gates — the system being BUILT is itself a gate-checker, so the generator has an unusually direct incentive to weaken the very credibility gates it implements (the deepest overfitting surface in this build)",
+      "mitigation": "A25 diffs every check against its gates-baseline tag; the fresh adversarial evaluator re-derives whether each gate DISCRIMINATES (red-before-green fixtures); conductor owns checks/ and the generator cannot edit them; attack-fixaudit stage re-attacks the built gates cross-vendor"
+    },
+    {
+      "risk": "reward hacking the A/B honest test — tuning the loop until gated+parallel wins, defeating the whole P-15 point",
+      "mitigation": "milestone-1-ab's gate checks the A/B RAN with paired metrics + isolation, NOT that gated wins; a null result passes the gate and escalates to a human verdict; the held-out set is physically isolated with a burned-task ledger so it cannot be tuned against"
+    },
+    {
+      "risk": "error amplification — a wrong evidence-contract (stage 2) silently poisons every downstream credibility judgment",
+      "mitigation": "contract-first with 27 red-before-green fixtures gates stage 2 before anything consumes it; downstream failures loopback to evidence-contracts rather than patching in place; stage 2 carries a restart (not loopback) because a rotted contract is rewritten, not patched"
+    },
+    {
+      "risk": "context drift / provenance rot over a long multi-stage build — the credibility claims of the build itself decay",
+      "mitigation": "durable .loop-state on disk survives compaction; metrics always recomputed from e2e-session.jsonl; the planner re-reads the frozen docs each stage rather than its own memory; A26 forbids literature-cited thresholds"
+    },
+    {
+      "risk": "token / budget blowup — the product's hyper-parallelism multiplied across build iterations",
+      "mitigation": "per-stage token caps + the DeepSeek balance floor stop condition (house shared-balance guard); build-time loop is medium (no fan-out) so construction cost is bounded even though the product fans out at runtime"
+    },
+    {
+      "risk": "premature over-delegation — spinning up the hyper-parallel M4 machinery before the minimal loop is proven",
+      "mitigation": "milestone-1-ab (a MINIMAL single-loop A/B) gates the hardening-scale stage; the expensive multi-loop scale-up only proceeds on a human green-light, faithful to P-15 'prove it before building more framework'"
+    }
+  ]
+}

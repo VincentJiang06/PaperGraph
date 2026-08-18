@@ -1,0 +1,29 @@
+{
+  "name": "dsh-academic-fetch",
+  "description": "Academic fetch tool for DeepSeek Harness — writes evidence anchors into tool/result.data.meta",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./anchor": {
+      "default": "./lib/anchor.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "@deepseek-ai/dsh-tools": "*"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

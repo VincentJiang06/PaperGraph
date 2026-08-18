@@ -1,15 +1,57 @@
-# academic-research-plugin — 规划仓（v2，从零重做）
+# academic-research-plugin — DSH 学术证据探索 profile（v2）
 
 > 一个全新的 DSH profile：**超并行、多 loop 的学术证据探索系统**。
 > 产品是**可信度**——每条 claim 携带机器判定的状态，背书通道只有三条：
 > 数据分析可重跑 / 他文引证可回溯到原文 / 逻辑推断前提可追。
 > **研究是产品，散文只是渲染层。**
 
-**当前状态：规划完成 + 过 R1 攻击轮 + R2 部分修复 + S0 实测跑完；实现尚未开始，但门已经有了。**
-`gates/` 下有六个门脚本与三套负例套件；`./gates/run_all.sh everything` 当前 **8/8 全绿**
-（八项 = 五道门 + 三套负例套件；`check_publishable` 另走 `publish` scope），退出码判定。
-`.loop/` 下有过 linter 的九阶段迭代 runbook；`.loop/m0/` 下有 S0 阶段的 **12 条实测记录**
-（**6 resolved / 6 design-changed / 0 still-blocked**，每条带 verdict、复现命令、原始输出 sha256、逐字 excerpt）。
+**当前状态：规划 + 七轮攻击（R1–R5 · S3 自攻 · R6 独立攻击）+ 产品层跑通。**
+
+`./gates/run_all.sh all` 当前 **26/26 全绿**，退出码判定。产品代码约 2700 行，门另有约 4200 行：
+
+| 层 | 模块 | 门 |
+|---|---|---|
+| profile | `profile/` + `packages/dsh-academic-fetch`（实测可跑：`dsh --profile academic-research`） | patch 生效值逐键比对；dump 里必须有 `tool-academic-fetch` |
+| 写者契约 | `src/writer-contract.mjs` | S 读的每个字段都不能是被检查方能写的 |
+| **供给侧契约** | `src/gate-ctx.mjs`（构造 ctx 的唯一入口） | 结构 4 条 + 行为 6 条反例 + 1 条绿控 |
+| 归一化 | `src/normalize.mjs`（与 Python 复现脚本互为独立实现） | 双实现逐格对拍 |
+| 证据引擎 | `g-polarity`（L1-c）· `g-cluster` · `g-ctr-scan`（X-2） | 三套两侧标定集（L1-c 32 条 / X-2 10 条） |
+| **把关谓词** | `g-rerun` · `g-freeze` · `g-inference` · `g-attribution` | 四个谓词从 `?? true` 变成真的有门在算 |
+| 存储 | `src/cas.mjs`（CAS + 证据卡 + `source_integrity`） | id 五分量敏感、断链当场拒、留存前提可检验 |
+| 管线 | `src/pipeline.mjs` → `src/status.mjs`（S） | 端到端 15 条 + 2778 万向量 oracle |
+| 组稿 | `src/composer.mjs`（W-10，拒裸数字） | 25 条，豁免须**自证身份** |
+| 编排 | `src/orchestrator.mjs` · `src/research.mjs`（并行多 loop） | 调度可复现、预算硬闸 |
+
+**核心承诺，以及它被判过假这件事：**
+
+> 从抓取到成稿，中间没有任何一步允许 agent 直接写结论。
+
+这句话在 R6（第一次真正独立的攻击）被判**假**，给出三条互不相干的反例路径，
+最短的一条不需要后门、不需要伪造证据、不触发任何门——而当时 22 道门全绿。
+根因是所有门都站在 S 的**内部**，没有一道站在它的**供给侧**（`07-ATTACK-LEDGER.md` §S4）。
+
+三条路径现已封死，并新建 `gates/check_supply_contract.mjs` 守着这一侧：
+它有 8 条红样本，逐条把 R6 那一版的代码形态倒回去，要求门判红**且理由是它自己声称的那条**
+（`gates/test_check_supply_contract.sh`）。红样本本身也被审过——其中三条初版是空心的
+（被一条无关的否决救了），由负例套件抓出来。
+
+仍然开着的，写在 §S4 四：L1-c 对**前置位之外**的改写仍是黑名单；
+V1.2 已改写为条件式（留存前提成立时才成立），无条件形式与 §8.6.2.1 互斥。
+
+`gates/check_research.mjs` 跑三条线要同一个数字 `92%`：
+
+```
+A 线（合法转录）      → 92%〔已验证，来源 1/独立簇 1〕
+B 线（从否定句里取）   → 92%〔未验证，来源 1/独立簇 1〕
+C 线（5 来源但同源）   → 92%〔未验证，来源 5/独立簇 1〕
+```
+
+三条线状态相同则本项目没有存在的理由——这是门的原话。
+
+`.loop/m0/` 下有 S0 阶段的 **12 条实测记录**（6 resolved / 6 design-changed），
+**26/26 条证据全部重跑且哈希一致**。`07-ATTACK-LEDGER.md` 记着七轮攻击的全部发现，
+包括我自己造的空心门、我自己编造的引用、以及我自己报错的数字。
+
 v1 规划已归档于 `.archive/v1-2026-08-17/`，本轮从零重做。
 
 ---
@@ -33,10 +75,20 @@ v1 规划已归档于 `.archive/v1-2026-08-17/`，本轮从零重做。
 前代的价值不在于它的代码能跑，而在于它留下了**可以被检验的失败记录**——
 本项目的第一条产品主张（可信度 = 机器判定的状态）正是从那里长出来的。
 
-**部分调研未收录**：`research/v2/` 在本仓库是 21 份而非 26 份，
-差的五份是对第三方包（`@deepseek-ai/dsh`，npm 公开包）的实现细节逆向档案。
-理由与后果（456 个指针在本仓库内解析不了，占 33.8%）写在 [`research/v2/EXCLUDED.md`](research/v2/EXCLUDED.md)，
-并由 `gates/check_pointers.mjs` 识别为独立的「已声明排除」状态，不与「欠债」混同。
+**发布时会排除部分调研**：`research/v2/` 在**本仓库**是完整的 26 份。
+向 public 仓库发布时，其中 5 份对第三方包（`@deepseek-ai/dsh`，npm 公开包）的实现细节逆向档案
+会被排除——`gt-profile-plugin.md` / `gt-orchestration.md` / `gt-evidence-substrate.md` /
+`gt-exec-security.md` / `GROUND-TRUTH-CORRECTIONS.md`。这不是保密问题（DSH 是公开包），
+而是「别把别人包的逆向档案当自己仓库的内容发布」。清单由 `gates/check_publishable.mjs` 强制。
+
+排除是有代价的：发布仓库里指向这 5 份的 `[E:]` 指针读者解析不了。
+`gates/check_pointers.mjs` 把它们识别为独立的「已声明排除」状态，不与「欠债」混同；
+`gates/check_doc_metrics.mjs` 对**两种仓库形态**分别校验本节的数字。
+
+〔R3 修复〕本节此前写作「在本仓库是 21 份而非 26 份……理由写在 `research/v2/EXCLUDED.md`
+（456 个指针解析不了，占 33.8%）」——**描述的是一个不存在的仓库状态**：目录里实际有 26 份、
+`EXCLUDED.md` 这个文件不存在、456/33.8% 没有任何口径能得出，且同一份 README 的文档地图
+同时写着「26 份调研文件」。自述数字门当时没抓住它，因为正则只匹配「N 份调研文件」的写法。
 
 ---
 
@@ -45,14 +97,14 @@ v1 规划已归档于 `.archive/v1-2026-08-17/`，本轮从零重做。
 | 文件 | 职责 | 规模 |
 |---|---|---|
 | [00-PREMISE.md](00-PREMISE.md) | **前提审计**——本项目押的每一条赌注，其正反证据与强度，以及会推翻它的观测 | 927 行 / 9 条赌注 |
-| [01-CONTRACTS.md](01-CONTRACTS.md) | **唯一规范源**——状态模型、claim 种类、证据等级、写权矩阵、身份与独立性、门分级、flag 词表、文件契约、术语表 | 1225 行 / 68 条可检验断言 |
-| [02-ARCHITECTURE.md](02-ARCHITECTURE.md) | profile 形态、模块分拆 M0–M8、DSH 能力映射、加载期门、运行时约束 | 856 行 / 27 条能力判定 |
-| [03-EVIDENCE-ENGINE.md](03-EVIDENCE-ENGINE.md) | 三通道验证机制、门实现契约、反伪造接线、admission、负向测试 | 1764 行 |
-| [04-ORCHESTRATION.md](04-ORCHESTRATION.md) | 拓扑、循环结构、扇出准入、停止与饱和、预算双计数器、检索资源治理、人在环 | 968 行 |
-| [05-TESTING.md](05-TESTING.md) | 三层评测、指标纪律、held-out、A/B 证伪、红队、校准、eval-of-eval、人力预算 | 1283 行 |
+| [01-CONTRACTS.md](01-CONTRACTS.md) | **唯一规范源**——状态模型、claim 种类、证据等级、写权矩阵、身份与独立性、门分级、flag 词表、文件契约、术语表 | 1365 行 / 68 条可检验断言 |
+| [02-ARCHITECTURE.md](02-ARCHITECTURE.md) | profile 形态、模块分拆 M0–M8、DSH 能力映射、加载期门、运行时约束 | 867 行 / 27 条能力判定 |
+| [03-EVIDENCE-ENGINE.md](03-EVIDENCE-ENGINE.md) | 三通道验证机制、门实现契约、反伪造接线、admission、负向测试 | 1998 行 |
+| [04-ORCHESTRATION.md](04-ORCHESTRATION.md) | 拓扑、循环结构、扇出准入、停止与饱和、预算双计数器、检索资源治理、人在环 | 971 行 |
+| [05-TESTING.md](05-TESTING.md) | 三层评测、指标纪律、held-out、A/B 证伪、红队、校准、eval-of-eval、人力预算 | 1289 行 |
 | [06-SURVEY.md](06-SURVEY.md) | 调研摘要与**载荷数字总表**（全项目引用数字的唯一入口） | 1131 行 / 784 行核验表 |
-| [07-ATTACK-LEDGER.md](07-ATTACK-LEDGER.md) | **攻击台账**——每轮的靶标指纹、种子命中率、findings 全量、裁决与修复状态 | 372 行 / R1 收 164 条 |
-| `research/v2/` | 证据基座：26 份调研文件 / 25 维度 / 11,661 行 | ~1.1 MB |
+| [07-ATTACK-LEDGER.md](07-ATTACK-LEDGER.md) | **攻击台账**——每轮的靶标指纹、种子命中率、findings 全量、裁决与修复状态 | 1121 行 / R1 收 164 条 |
+| `research/v2/` | 证据基座：26 份调研文件 / 25 维度 / 11,675 行 | ~1.1 MB |
 | `.loop/` | 持续迭代开发 runbook（**设计态，不自动启动**） | — |
 
 **阅读顺序**：00 → 01 → 02 → 03/04/05。
@@ -99,7 +151,7 @@ v1 规划已归档于 `.archive/v1-2026-08-17/`，本轮从零重做。
 **本项目对自己的门押注必须分层说**（00-PREMISE B8）。
 **已落地的是文档层 + 状态函数层的门**：`./gates/run_all.sh everything` 当前 **8/8 全绿**，退出码判定，
 其中三套负例套件在临时副本（`--root`）上走真实入口证明这些门会红；
-`check_status_exhaustive.mjs` 是 `src/status.mjs` 的**穷举 oracle**——**550 万输入向量、六值全可达、C-1 回归 4/4**，
+`check_status_exhaustive.mjs` 是 `src/status.mjs` 的**穷举 oracle**——**2778 万输入向量、六值全可达、回归 8/8**，
 "`S` 是全函数"由此从断言变成了实测。
 **尚未落地的是证据层与运行层的门**：判据写成可核对的形式——`gates/` 下**没有任何一道门读过一件证据工件**
 （`claims/*`、快照、`status.json`、台账完备性），**也没有任何一道门读过一条运行时痕迹**

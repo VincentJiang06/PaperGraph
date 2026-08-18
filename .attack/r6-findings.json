@@ -1,0 +1,306 @@
+{
+ "round": "R6",
+ "attacker": "独立攻击者（未参与实现）",
+ "target": "/Users/vince/playground/dsh-projects/academic-research-plugin/",
+ "frozen_baseline": ".attack/r6-target-hashes.json（53 文件，开始前逐条核对：53/53 一致）",
+ "baseline_gates": "开始时 ./gates/run_all.sh all = 20/20 通过；审计结束时 = 22/22 通过（两道门是审计期间新增的）",
+ "verdict_on_core_promise": "**假。** 「从抓取到成稿，没有任何一步允许 agent 直接写结论」在冻结态与当前态都不成立。最短反例是 R6-03：producer 在合法的 W-03 payload 里放一个叫 status 的槽，成稿的状态标记即由它决定，S 的判定被静默盖掉——不需要后门、不需要伪造证据、不触发任何门。第二短是 R6-02：声称 kind=K-D 即无条件得到 ST-V，因为 K-D 的两个把关谓词在出厂产品里是字面量 true。真实成立的是一句弱得多的话：**在 status.mjs 内部，S 不读 producer 可写的字段（kind 除外）**——这条被 check_writer_contract 真正钉住了，但它离核心承诺还差整个供给侧。",
+ "findings": [
+  {
+   "id": "R6-01",
+   "lens": "gaming",
+   "severity": "P1",
+   "axis": "foundation",
+   "location": "src/run.mjs:75-92（ctx 构造）+ src/research.mjs:71-86（同缺陷复制）",
+   "claim": "`__` 前缀字段是绕过 `denyProducerSubmission` 白名单的完整后门。producer 的 claim 对象里 `__rerun/__frozen/__inference/__attribution/__grade/__tier/__counter_found` 被读进 ctx（= 门侧上下文），**然后才**从 submission 里删掉，因此白名单从未见过它们。这些字段全部是 W-04 门代码拥有的判定输入。落盘的 claims/*.json 已被剥干净，status.json 的 `provided_by` 还把它们标注为 `gate(W-04)` —— 不只是绕过，是**洗白**：审计工件主动声称这些值来自门。",
+   "reproduction": {
+    "steps": [
+     "cd /Users/vince/playground/dsh-projects/academic-research-plugin",
+     "node /private/tmp/claude-501/-Users-vince-playground-dsh-projects/49a72e10-a725-4806-8367-7896c0d4c08e/scratchpad/r6/a1_ctx_backdoor.mjs"
+    ],
+    "expected": "claim 载荷 99.9% 在快照里根本不存在（快照原文：'No accuracy figure is reported here.'），应被拒或至少不得 verified",
+    "observed": "status = verified；成稿「结果为 99.9%〔已验证，来源 1/独立簇 1〕」；claims/c1.json 里 __ 字段已被剥除，status.json 的 provided_by 声明 rerun_gate_passed/question_frozen 来自 'gate(W-04)'"
+   }
+  },
+  {
+   "id": "R6-02",
+   "lens": "gaming",
+   "severity": "P1",
+   "axis": "foundation",
+   "location": "src/run.mjs:84-89；src/research.mjs:80-82",
+   "claim": "不用后门也能拿到 ST-V —— 六个谓词里有四个是 **fail-open 默认值**。`rerun_gate_passed: c.__rerun ?? true`、`question_frozen: c.__frozen ?? true`、`inference_gate_passed: c.__inference ?? true`、`attribution_verdict: c.__attribution ?? 'support'`。`src/research.mjs`（S3 新入口）把前三个直接**硬编码成字面量 true**。这正是 R5 第 5 条预测的原话形态，而 `src/writer-contract.mjs` 的文件头与 07-ATTACK-LEDGER §S2 一都宣称这条已被堵住。`KIND_GATED_BY['K-D'] = ['rerun_gate_passed','question_frozen']` 的论证因此在出厂产品里为空：K-D 的两个把关谓词**没有任何门在算**。",
+   "reproduction": {
+    "steps": [
+     "cd /Users/vince/playground/dsh-projects/academic-research-plugin",
+     "node /private/tmp/claude-501/-Users-vince-playground-dsh-projects/49a72e10-a725-4806-8367-7896c0d4c08e/scratchpad/r6/a2_defaults.mjs",
+     "# 以及 grep -n 'rerun_gate_passed' src/research.mjs"
+    ],
+    "expected": "声称 kind=K-D 而重跑门从未运行的 claim，不得到达 ST-V",
+    "observed": "K-D → verified（载荷 99.9% 与源无关）；K-L-T/K-L-A/K-I → unverified。src/research.mjs 第 81 行：`rerun_gate_passed: true, question_frozen: true, inference_gate_passed: true`"
+   }
+  },
+  {
+   "id": "R6-03",
+   "lens": "gaming",
+   "severity": "P1",
+   "axis": "foundation",
+   "location": "src/run.mjs:98 与 src/research.mjs:92 —— `statusById.set(id, { ...r.statusRecord, ...submission.payload })`",
+   "claim": "payload 在 statusRecord **之后**展开，因此 producer 只要在 payload 里放一个叫 `status`（或 `independent_cluster_count` / `nominal_source_count`）的槽，就直接改写读者看到的状态标记与来源计数。payload 是 W-03 合法的 producer 字段，`denyProducerSubmission` 放行它是**正确的**——问题在组稿侧的展开顺序。这是全项目最短的一条反例路径：不需要后门、不需要伪造证据，S 判 unverified 而成稿印「已验证」。",
+   "reproduction": {
+    "steps": [
+     "cd /Users/vince/playground/dsh-projects/academic-research-plugin",
+     "node /private/tmp/claude-501/-Users-vince-playground-dsh-projects/49a72e10-a725-4806-8367-7896c0d4c08e/scratchpad/r6/a8_payload_shadow.mjs"
+    ],
+    "expected": "成稿的状态标记必须等于 status.json 里 S 算出的 status",
+    "observed": "status.json = unverified；manifest.statuses = verified；成稿 =「结果为 99.9%〔已验证，来源 9/独立簇 9〕」。真实簇数是 1。"
+   }
+  },
+  {
+   "id": "R6-04",
+   "lens": "gaming",
+   "severity": "P1",
+   "axis": "evidence",
+   "location": "src/gates/g-polarity.mjs（NEG_S/NEG_C/NEG_Q/NEG_R 四张有限表）",
+   "claim": "L1-c 是**有限枚举对开放类**，而它守着产品唯一一条文献 ST-V 通道。冻结版本下 22 条表外否定/限定形态中 20 条直通 ST-V。审计期间作者现场扩表（新增 NEG-L 类，接住 far from / up to / 最多），我用**新一批**表外形态复测，25 条里仍有 22 条直通——扩表的速度追不上构造的速度。07-ATTACK-LEDGER §S2 四称「P1-C 在产品层闭合」，该表述只对表内形态成立。",
+   "reproduction": {
+    "steps": [
+     "cd /Users/vince/playground/dsh-projects/academic-research-plugin",
+     "node /private/tmp/claude-501/-Users-vince-playground-dsh-projects/49a72e10-a725-4806-8367-7896c0d4c08e/scratchpad/r6/a3_polarity.mjs   # 冻结版：20/22 漏",
+     "node /private/tmp/claude-501/-Users-vince-playground-dsh-projects/49a72e10-a725-4806-8367-7896c0d4c08e/scratchpad/r6/a3b_polarity_v2.mjs # 现场加固后：22/25 仍漏",
+     "node /private/tmp/claude-501/-Users-vince-playground-dsh-projects/49a72e10-a725-4806-8367-7896c0d4c08e/scratchpad/r6/a4_polarity_e2e.mjs # 全链路复现"
+    ],
+    "expected": "源句否定/限定了该数值时，L1-c 判 fail，K-L-T 降为 K-L-A",
+    "observed": "源句 'AlphaFold achieved less than 92% accuracy on CASP14.' → 成稿「该方法达到 92%〔已验证，来源 1/独立簇 1〕」status=verified。同样漏过：hardly / disproved / refuted / retracted / is false / overstates / lacks / seldom / below / fewer than / as low as / 低于 / 小于 / 撤稿 / 存疑 / 是错的 / 号称 / 反驳 / 远逊于 / 距离…尚远"
+   }
+  },
+  {
+   "id": "R6-05",
+   "lens": "gaming",
+   "severity": "P1",
+   "axis": "evidence",
+   "location": "src/gates/g-cluster.mjs + src/run.mjs:63-67（refs 构造）",
+   "claim": "**逐字节相同的快照可以算作 2 个独立簇。** run.mjs/research.mjs 只把 `evidence_id / work_id / upstream_id / cites_source_id` 递给 G-CLUSTER，从不递 `doi / arxiv_id / title / authors / self_cite_group`。于是 G-CLUSTER 六条归并规则里，规则①的 doi/arxiv 分支、规则②（预印本三版同文）、规则⑤（F-22 自证回路）、规则⑥（低置信人审队列）在出厂链路上**全是死代码**，只剩 work_id 精确匹配。同一份 body 用两个 work_id 抓两次即得 K=2，K-L-A / K-I 的「最低防线」直接失效。更糟的是 §5.5 R-I6 的诚实展示机制此时在**主动误导**：它印「来源 2/独立簇 2」。",
+   "reproduction": {
+    "steps": [
+     "cd /Users/vince/playground/dsh-projects/academic-research-plugin",
+     "node /private/tmp/claude-501/-Users-vince-playground-dsh-projects/49a72e10-a725-4806-8367-7896c0d4c08e/scratchpad/r6/a5_cluster.mjs"
+    ],
+    "expected": "body 逐字节相同的两条证据不得算作 2 个独立簇",
+    "observed": "CAS 对象个数 = 1（内容寻址已证明是同一份字节），证据卡 2 张，independent_cluster_count = 2，K-I → attributed，成稿「92%〔已归因，来源 2/独立簇 2〕」。带 doi/title/authors 时 cluster() 能正确归并成 1，说明门本身能做——是管线没喂给它。"
+   }
+  },
+  {
+   "id": "R6-06",
+   "lens": "gaming",
+   "severity": "P1",
+   "axis": "evidence",
+   "location": "src/gates/g-ctr-scan.mjs:36-52（NEG_LIT 表）与 src/run.mjs（counterSearches 来源）",
+   "claim": "§7.2.3 称 `counter_evidence_searched` 是「逃不过的只有这一条」，实际有两层空。(1) **query 与 result_keys 全部是自报的**——链路里没有任何真实检索，X-2 只检查一个字符串的形状。捏造的 result_keys 与零命中都过 (d′)。(2) NEG-LIT 标定期扩表时收进了 `reproduce/reproduced/reproduction/replicate/replicated/replication`——这些是**中性甚至求确证**的词。`AlphaFold 92% accuracy CASP14 replicated` 四条判据全过，被记作已做反证检索，而它检索的是**确认**。这是钳形夹的实证：为压假阳而扩的表，直接打开了假阴。",
+   "reproduction": {
+    "steps": [
+     "cd /Users/vince/playground/dsh-projects/academic-research-plugin",
+     "node /private/tmp/claude-501/-Users-vince-playground-dsh-projects/49a72e10-a725-4806-8367-7896c0d4c08e/scratchpad/r6/a6_ctrscan.mjs"
+    ],
+    "expected": "求确证的 query 不得算作反证检索；未真正执行的检索不得置 counter_evidence_searched=true",
+    "observed": "'AlphaFold 92% accuracy CASP14 replicated' → pass, counter_operator=['NEG-3']。'…reproduced' / '…replication' / '…reproduction' / '…limitations' / '…no' 同样 pass。resultKeys=['我编的'] → pass；resultKeys=[] → pass。"
+   }
+  },
+  {
+   "id": "R6-07",
+   "lens": "gaming",
+   "severity": "P2",
+   "axis": "evidence",
+   "location": "src/composer.mjs:26（BARE_NUMBER 正则与两条豁免）",
+   "claim": "W-10「作者 agent 不写数字」由一条 ASCII 正则 + 两条豁免执行，绕过面很宽：中文数字、科学计数法（小数点被 lookbehind 挡住导致整串逃逸）、罗马数字，以及两条豁免本身——1900..2099 区间内的任何数（『共纳入 2019 名患者』『死亡 1987 例』）与 ≤20 的任何数（『18 人死亡』）无条件放行，它们都是真实的承重数据。审计期间作者补了 NFKC 接住全角数字，其余仍在。",
+   "reproduction": {
+    "steps": [
+     "cd /Users/vince/playground/dsh-projects/academic-research-plugin",
+     "node /private/tmp/claude-501/-Users-vince-playground-dsh-projects/49a72e10-a725-4806-8367-7896c0d4c08e/scratchpad/r6/a7_composer.mjs"
+    ],
+    "expected": "正文里任何承重数字都必须走占位符",
+    "observed": "放行：『百分之九十二』『四千五百二十三名患者』『参数量 9.2e10』『XCII%』『共纳入 2019 名患者』『死亡 1987 例』『18 人死亡』。挡住：92% / 0.92 / 4523 万元 / ９２％（后者为审计期间新修）"
+   }
+  },
+  {
+   "id": "R6-08",
+   "lens": "gaming",
+   "severity": "P2",
+   "axis": "evidence",
+   "location": "src/run.mjs:71 与 src/research.mjs:69 —— `sourceIntegrity(root, refs[0].evidence_id)`",
+   "claim": "`source_integrity` **只核第一条证据引用**。多引用的 claim 里 refs[1..n] 的快照完整性从不检查，因此 0a 前置否决对它们不存在。与 R6-05 合用：第一条留干净，其余随便换。",
+   "reproduction": {
+    "steps": [
+     "cd /Users/vince/playground/dsh-projects/academic-research-plugin",
+     "node /private/tmp/claude-501/-Users-vince-playground-dsh-projects/49a72e10-a725-4806-8367-7896c0d4c08e/scratchpad/r6/a9_cas.mjs"
+    ],
+    "expected": "任一条证据的快照被篡改，source_integrity 应为 mutated → S 走 0a → ST-U",
+    "observed": "直接核第二张卡 = mutated；管线仍给 status=attributed，成稿「92%〔已归因，来源 2/独立簇 2〕」"
+   }
+  },
+  {
+   "id": "R6-09",
+   "lens": "coherence",
+   "severity": "P1",
+   "axis": "foundation",
+   "location": "gates/check_writer_contract.mjs:35-48 与 src/pipeline.mjs:135-146（PROVIDED_BY）",
+   "claim": "写者契约门的不变式（∀f ∈ S 的读集：FIELD_OWNER[f] ≠ producer）**只作用在 S 上，对 S 的供给方完全失明**。读集从 `src/status.mjs` 源码正则提取，门从不看 `run.mjs` / `research.mjs`。`denyProducerSubmission` 也只看 `submission`，从不看 `ctx`。于是「谁写这个字段」的证明链在 pipeline 的入口断掉：`PROVIDED_BY` 那张表标注的写者是**注释**，不是被任何东西检验的事实——R6-01/R6-02 就从这个缺口进。`KIND_GATED_BY` 的门断言只检查『谓词存在、是门字段、被 S 读』三件事，唯独不检查**有没有门在算它**。",
+   "reproduction": {
+    "steps": [
+     "cd /Users/vince/playground/dsh-projects/academic-research-plugin",
+     "node gates/check_writer_contract.mjs   # 全绿",
+     "node gates/check_full_chain.mjs        # 全绿",
+     "node /private/tmp/claude-501/-Users-vince-playground-dsh-projects/49a72e10-a725-4806-8367-7896c0d4c08e/scratchpad/r6/a1_ctx_backdoor.mjs          # 同时成立",
+     "grep -rn 'run.mjs\\|research.mjs' gates/check_writer_contract.mjs   # 无匹配"
+    ],
+    "expected": "若「status 由门代码计算，从不由 agent 断言」成立，写者契约门应能发现 ctx 通道",
+    "observed": "22/22 门全绿，同时 producer 可给自己发 ST-V 通行证。check_writer_contract.mjs 里没有任何一行读 run.mjs / research.mjs / pipeline.mjs 的 ctx 构造。"
+   }
+  },
+  {
+   "id": "R6-10",
+   "lens": "coherence",
+   "severity": "P2",
+   "axis": "evidence",
+   "location": "07-ATTACK-LEDGER.md §S2 六（文末）；README.md:10,114-115",
+   "claim": "台账**没有 S3 节**，且 S2 节的收尾数字在冻结时已全部作废。台账写「产品代码 1046 行、门 14 道全绿」，冻结态实为 1683 行 / 20 道门（审计结束时 1927 行 / 22 道门）。台账「仍未做」列的四项（G-CTR-SCAN、G-CLUSTER 真实归并、抓取工具与 data.meta 锚点、组稿器）**全部已在冻结文件表内**。README 更旧：仍写「八项 = 五道门 + 三套负例套件」「gates/ 下没有任何一道门读过一件证据工件」，而 check_cas / check_full_chain / check_m0 都读证据工件。任务书要我核的『20 门、1641 行』这两个 S3 数字在冻结的台账里根本不存在。",
+   "reproduction": {
+    "steps": [
+     "cd /Users/vince/playground/dsh-projects/academic-research-plugin",
+     "grep -n '^## S3' 07-ATTACK-LEDGER.md   # 无输出",
+     "tail -12 07-ATTACK-LEDGER.md",
+     "wc -l src/cas.mjs src/composer.mjs src/normalize.mjs src/pipeline.mjs src/run.mjs src/status.mjs src/writer-contract.mjs src/gates/*.mjs packages/dsh-academic-fetch/lib/anchor.js | tail -1",
+     "./gates/run_all.sh all 2>&1 | tail -2"
+    ],
+    "expected": "台账数字与树一致",
+    "observed": "无 S3 节；台账 1046 行 / 14 门；实测冻结态 1683 行 / 20 门，现 1927 行 / 22 门；『仍未做』四项均已做"
+   }
+  },
+  {
+   "id": "R6-11",
+   "lens": "coherence",
+   "severity": "P3",
+   "axis": "evidence",
+   "location": "gates/check_polarity.mjs 结尾 PASS 串",
+   "claim": "L1-c 门的通过消息与自身用例数不符：打印「标定集 18 条（假阴侧 6 / 假阳侧 5）」。6+5=11≠18。S3 补入 7 条后只改了 `CASES.length`，括号里的分侧计数没跟着改——正是台账 §R4 反复记录的「追加而非替换」的第 N 次复发，且发生在为修复该模式而建的门里。",
+   "reproduction": {
+    "steps": [
+     "cd /Users/vince/playground/dsh-projects/academic-research-plugin",
+     "node gates/check_polarity.mjs | tail -1"
+    ],
+    "expected": "分侧计数与用例表一致",
+    "observed": "'PASS  L1-c 标定集 18 条（假阴侧 6 / 假阳侧 5）全部符合' —— 实际假阴侧 12 / 假阳侧 6"
+   }
+  },
+  {
+   "id": "R6-12",
+   "lens": "reality",
+   "severity": "P1",
+   "axis": "reality",
+   "location": "profile/package.json、profile/cordis.patch.yml、packages/dsh-academic-fetch/",
+   "claim": "**取证插件从未接进 profile。** profile 的 bundles 只有 `@deepseek-ai/dsh-base` 与 `dsh-headless`；profile/cordis.patch.yml 里没有一行提到 academic-fetch；`packages/dsh-academic-fetch/cordis.patch.yml`（那条把自己插进树的 insert）没有任何脚本会安装它；install.sh 只 cp profile 自己的两个文件。实测 `--dump-config` 355 行里 academic 只出现在本地路径注释里，`tool-academic-fetch` 不存在。该包的 package.json 还把 `main`/`exports` 指向不存在的 `lib/index.js`（lib/ 下只有 anchor.js），`files` 列了不存在的 README.md —— 它作为 npm 包装不起来。02-ARCHITECTURE §B.2 把它列为 M1 交付件、`data.meta.evidence` 锚点的唯一落点；实际上产品链路是用相对路径 import 那个纯函数文件，**DSH 里没有这个工具**。",
+   "reproduction": {
+    "steps": [
+     "cd /Users/vince/playground/dsh-projects/academic-research-plugin",
+     "bash profile/install.sh",
+     "dsh --profile academic-research --dump-config 2>/dev/null | grep -c academic-fetch   # 0",
+     "ls packages/dsh-academic-fetch/lib/   # 只有 anchor.js，无 index.js",
+     "grep -rn academic-fetch profile/   # 无输出"
+    ],
+    "expected": "profile 引入 dsh-academic-fetch，dump 里出现 tool-academic-fetch",
+    "observed": "dump 355 行，academic-fetch 命中 0；lib/index.js 与 README.md 均不存在；无任何脚本安装 packages/dsh-academic-fetch/cordis.patch.yml"
+   }
+  },
+  {
+   "id": "R6-13",
+   "lens": "reality",
+   "severity": "P2",
+   "axis": "evidence",
+   "location": "profile/cordis.patch.yml:12-14 的注释",
+   "claim": "profile patch 的注释把 `gates/check_profile_boot.sh` 称作「第一条断言，不可移动」的门——该文件不存在。真实存在的是 gates/check_profile.mjs。一条指向不存在的门的「不可移动」声明，本身就是空心门（本仓库自己记过三次的教训）。",
+   "reproduction": {
+    "steps": [
+     "cd /Users/vince/playground/dsh-projects/academic-research-plugin",
+     "ls gates/check_profile_boot.sh   # No such file",
+     "grep -n check_profile_boot profile/cordis.patch.yml"
+    ],
+    "expected": "被点名为承重的门存在",
+    "observed": "ls: gates/check_profile_boot.sh: No such file or directory；profile/cordis.patch.yml:13 仍在引用它"
+   }
+  },
+  {
+   "id": "R6-14",
+   "lens": "foundation",
+   "severity": "P2",
+   "axis": "foundation",
+   "location": "src/cas.mjs:78-95（sourceIntegrity）；src/ 全域无留存/重取实现",
+   "claim": "**R5 第 1 条预测在有了 src/cas.mjs 之后仍然成立。** CAS 只把非确定性从「重取」搬到「本地对象是否还在」。§8.6.2.1 的 Tier B 留存到期在 src/ 里**完全没有实现**——没有重取路径、没有 GC、`retention_tier` 只被 TIER_CEILING 消费。一旦 CAS 对象因任何原因消失，同一条 claim 记录重跑 S 从 verified 变 unverified，V1.2「重跑逐字节相同」为假。仍然没有任何门能看见这条：全部门都构造性站在 S 的输入侧，且没有一道门做跨时间重跑。",
+   "reproduction": {
+    "steps": [
+     "cd /Users/vince/playground/dsh-projects/academic-research-plugin",
+     "node /private/tmp/claude-501/-Users-vince-playground-dsh-projects/49a72e10-a725-4806-8367-7896c0d4c08e/scratchpad/r6/a10_v12.mjs",
+     "grep -rn 'retention\\|expir' src/ | grep -v retention_tier   # 无实现"
+    ],
+    "expected": "若 CAS 使 V1.2 成立，同一记录重跑应恒定",
+    "observed": "第一次 verified；删掉 CAS 对象后 sourceIntegrity=missing，同一条记录重跑 S = unverified。src/ 里零行留存/重取代码。"
+   }
+  },
+  {
+   "id": "R6-15",
+   "lens": "evidence",
+   "severity": "INFO",
+   "axis": "evidence",
+   "location": "gates/repro/*, gates/check_m0.mjs",
+   "claim": "**没能攻破**：证据层是真的。m0_1 与 m0_2 连跑三次输出哈希逐字节相同；check_m0 的 26 条证据全部重跑且哈希一致；check_normalize_parity 的 JS/Python 双实现逐格一致，且用例从 Python 侧出题。这三块是本轮唯一经得起「重跑对哈希」的部分。",
+   "reproduction": {
+    "steps": [
+     "cd /Users/vince/playground/dsh-projects/academic-research-plugin",
+     "for i in 1 2 3; do ./gates/repro/run_m0_1.sh 2>&1 | shasum -a 256; done",
+     "for i in 1 2 3; do .venv-repro/bin/python gates/repro/m0_2_normalization.py 2>&1 | shasum -a 256; done",
+     "node gates/check_m0.mjs | tail -5"
+    ],
+    "expected": "三次哈希一致",
+    "observed": "m0_1 三次均 40633828fa6d6b74…；m0_2 三次均 e72313579287e009…；check_m0：记录 12/12，重跑验证 26/26 条哈希对上"
+   }
+  }
+ ],
+ "flags": [
+  {
+   "id": "R6-F1",
+   "suspicion": "`independent_cluster_count` 的低置信人审队列（identity_merge_candidates）在出厂链路上恒为空（R6-05 的推论），因此 §1.5.2「若假合并率高到使 K=2 等价于 K=1」这条自陈的推翻条件**无法被观测**——没有队列就没有人审，没有人审就没有假合并率。未能构造出直接证伪的运行，因为需要真实语料。",
+   "status": "未跑通，仅静态推断"
+  },
+  {
+   "id": "R6-F2",
+   "suspicion": "`src/orchestrator.mjs` / `src/research.mjs` 与其两道门是审计期间（21:31–21:34）新增的，不在冻结集内。我只静态读了 research.mjs 并确认 R6-02/R6-03/R6-08 三条在其中逐字复制；orchestrator.mjs 的并行调度与预算路径**未攻**。",
+   "status": "未攻"
+  },
+  {
+   "id": "R6-F3",
+   "suspicion": "`denyProducerSubmission` 对 `payload` 的**内部**不做任何约束（只约束 slot_types 取值域）。除 R6-03 的 status 槽外，payload 键名与 statusRecord 键名的碰撞面未穷举（如 caveats / gate_version / inputs_hash / trace / provided_by）。",
+   "status": "部分验证（status / independent_cluster_count / nominal_source_count 已证）"
+  },
+  {
+   "id": "R6-F4",
+   "suspicion": "`packages/dsh-academic-fetch` 的 Cordis 接线（cordis.patch.yml 的 insert、与 serper 的排序裁定 B-1）零测试覆盖。因为该包根本没进 profile（R6-12），这个未覆盖面的实际大小是「整个 M1 交付件」，而不是「一部分接线」。无法进一步实测——需要 Harness 安装。",
+   "status": "未跑通"
+  }
+ ],
+ "coverage_gaps": [
+  {
+   "gap": "**目标在审计期间移动（连续第三轮）。** 开始前 53/53 哈希一致；审计中作者实时改了 5 个冻结文件并新增 4 个文件。漂移：src/gates/g-polarity.mjs（306a081f→f6ddf52b）、gates/check_polarity.mjs（8299778c→3b339c28）、src/composer.mjs（714068c4→7f66bd82）、gates/check_composer.mjs（08ca7617→032f5eb3）、gates/run_all.sh（94867093→dd34458a）。新增：src/orchestrator.mjs、src/research.mjs、gates/check_orchestrator.mjs、gates/check_research.mjs。",
+   "impact": "R6-04 与 R6-07 的**冻结态**观测（20/22、含全角数字）已失去基线；我对当前态各重跑了一遍并两组数字都记在案（当前态 22/25、全角已修）。R6-04 的结构性结论不受影响——扩表后我用新一批表外形态复现，漏率反而更高。"
+  },
+  {
+   "gap": "未攻：`src/orchestrator.mjs`（并行调度、预算耗尽、诊断查表）、`gates/check_orchestrator.mjs`、`gates/check_research.mjs`、`gates/check_status_mutants.mjs` 的变异体集合、`gates/check_doc_metrics.mjs`、`gates/check_pointers.mjs` 的指针语料。"
+  },
+  {
+   "gap": "未攻：01-CONTRACTS/03-EVIDENCE-ENGINE 的规范文本与产品代码的逐条一致性。本轮只核了 W-03/W-04/W-10/W-13、§1.5 S、§1.2.2 归一化、§3.1.1.2 L1-c、§5A.1 X-2、§5A.3.5 归并这几处。"
+  },
+  {
+   "gap": "无法攻：DSH Harness 内的真实运行（tools/pre-execute 钩子是否真的调用 denyProducerSubmission、data.meta.evidence 是否真的由我们写）。R6-12 表明这条链在 profile 层就断了，因此这个未覆盖面无从收窄。"
+  },
+  {
+   "gap": "无法攻：真实语料上的假合并率、L1-c 假阳率、NEG-LIT 假阳率（03 §5A.0 已自认 power_basis=unmeasured）。所有标定集都是作者自己出的题。"
+  }
+ ]
+}

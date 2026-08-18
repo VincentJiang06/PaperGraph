@@ -1,0 +1,16 @@
+{
+  "name": "dsh-profile-academic-research",
+  "private": true,
+  "dsh": {
+    "profile": {
+      "bundles": [
+        "@deepseek-ai/dsh-base",
+        "@deepseek-ai/dsh-headless",
+        "dsh-academic-fetch"
+      ]
+    }
+  },
+  "dependencies": {
+    "dsh-academic-fetch": "file:__DEST__/.dsh-vendor/dsh-academic-fetch-0.1.0.tgz"
+  }
+}

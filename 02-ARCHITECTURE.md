@@ -364,7 +364,7 @@
 
 **为什么它必须不是插件**（四条）：
 
-1. **gate 完整性依赖 git**：`git status --porcelain -- checks/` 干净 **且** `git diff <gates-baseline-tag> -- checks/` 为空（§9.22）。这是文件系统与版本控制层的事，与 DSH 无关。本仓库有 22 个真实使用过的 `gates-baseline-*` tag，但**该校验零代码实现**，目前完全靠 conductor 自觉 [E: GROUND-TRUTH-CORRECTIONS.md#D1；gt-house-method.md#A7, #A8]。**v2 必须把它写成真脚本**（00-PREMISE B8 的第一条前置代码）。
+1. **gate 完整性依赖 git，而且依赖一个仓库外的入口**：`git status --porcelain -- checks/` 干净 **且** 工作树 `checks/` 与从 **40 位 commit sha** 展开的 pinned 副本逐文件 sha256 相同（规范表述见 01-CONTRACTS §9.22）。这是文件系统与版本控制层的事，与 DSH 无关。〔裁定 · S0 实测，[E: .loop/m0/M0-7.json]〕**锚点不许写成 tag**：实测 git 2.55.0 上服务端 `receive.denyDeletes` 与 `receive.denyNonFastForwards` 对 `refs/tags/*` **全部不生效**（tag 的非快进强推与删除都 ACCEPTED，同一次实验里 `refs/heads/*` 双双 REJECTED），且默认 `core.logAllRefUpdates=true` 时 tag 连 reflog 都不写（0 条）——**tag 可被重指且不留痕**。本仓库那 22 个 `gates-baseline-*` tag 因此**不承担锚点职责**（其中带 PGP 签名的是 0 个，`gates-baseline-22` 已退化成轻量 tag，对象类型 `commit`），它们至多是人类可读的发布标记。该校验**至今零代码实现**，目前完全靠 conductor 自觉 [E: GROUND-TRUTH-CORRECTIONS.md#D1；gt-house-method.md#A7, #A8]。**v2 必须把它写成真脚本**（00-PREMISE B8 的第一条前置代码），但**写成脚本不等于补上洞**——写在 `checks/` 里的脚本从仓库内入口调用时可被一行 `echo` 替换掉（红样本 R3，见 §B.9）。
 2. **门要读原始 session JSONL**——多帧 zstd、`decodeStorageRecord`、`surfaceOp === 'append'` 过滤三个地雷（§6.5.4）。这三件事在 DSH 进程内做反而更难（进程内只有活体 session 的内存视图）。
 3. **重跑门要在全新临时目录里跑 `uv sync --frozen` + 禁网沙箱**（§2.1）。DSH 的沙箱**不管网络**（bwrap 参数无 `--unshare-net`，Seatbelt profile 是 `(allow default) (deny file-write*)`，Landlock 只表达路径 grant）[E: GROUND-TRUTH-CORRECTIONS.md#A7；gt-exec-security.md#结论摘要-1]。禁网必须由**我们自己的 OS 级沙箱 profile** 提供。
 4. **门是 `status` 的唯一物理写者**（§4 W-04）。把它放进插件，等于把写者放进模型可触达的进程——即使模型触达不到那个函数，**审计上无法区分**。
@@ -375,7 +375,7 @@
 - 每个门在 CI 中有对应的 red-case fixture，且该 fixture 使门非零退出（§6.6 V6.4）。
 - **红样本（继承的最刺眼一条）**：向重跑门喂一个伪造 metric、无 transform、无原始数据的 claim，门必须非零退出。前代同样的构造得到 **exit 0 PASS**——那是文档宣称「门重执行」而 `rigor_gate.py:189` 只比对 metric 文件的结果 [E: GROUND-TRUTH-CORRECTIONS.md#C1；01-CONTRACTS §2.5 V2.5]。
 - **红样本（跨帧）**：含 ≥2 个 zstd frame 的 fixture，只读到第一帧即失败（§6.6 V6.6）。
-- **红样本（gate 完整性活着）**：**必须构造一次真实篡改**让 `gate_integrity` 脚本非零退出。00-PREMISE B8 明写「gate-integrity 脚本从未在真实 run 中触发过一次非零退出」需要被证明它活着——**没触发过 ≠ 有效**。
+- **红样本（gate 完整性活着）**：**必须构造一次真实篡改**让 `gate_integrity` 非零退出。00-PREMISE B8 明写「gate-integrity 脚本从未在真实 run 中触发过一次非零退出」需要被证明它活着——**没触发过 ≠ 有效**。〔裁定 · S0 实测，[E: .loop/m0/M0-7.json]〕这条已有跑通的电池，**并且实测把「一次篡改」的下限抬高了**：只篡改一个普通 check 不够，必须包含「**把 `gate_integrity.sh` 自身换成假货并同步补上台账行**」这一格，且**两个入口都要跑**。验收断言（退出码，可机器判定）：干净仓库两个入口皆 `0`；普通 check 被改但未提交 → `2`；已提交 → `3`；`gate_integrity.sh` 自身被替换 + 台账被补 → **仓库外 pinned runner 必须 `3`**。同一格从仓库内入口调用实测为 `0`（被骗过），该值按**已知洞的存档值**记录，**不作为验收断言**——它将来变成非零是能力提升，不是回归。
 - **符号执行 `S`**：对第 2 步全部规则断言输出状态不高于输入（§1.6 V1.3）。这条是**纯静态**的，不需要跑数据。
 
 **依赖**：M2（读台账）、M0（zstd 解帧器）。GC-1 子集额外依赖注册表同步器（§4 W-09）。
@@ -476,13 +476,18 @@
 
 | 步骤 | 断言 | 它对治的实证失败 |
 |---|---|---|
-| 第 1 行 | 调 `checks/gate_integrity.sh`（porcelain 干净 + 与 gates-baseline tag 的 diff 为空），非零即拒 | 该机制**零代码实现**，仅存在于散文 [E: GROUND-TRUTH-CORRECTIONS.md#D1] |
+| 第 1 行 | **由仓库外的 pinned runner 起跑**：runner 自带 40 位 commit sha（**不从仓库内任何文件读**），`git archive <sha> checks` 展开到仓库外，再断言 `git status --porcelain -- checks/` 干净 **且** 工作树 `checks/` 与展开副本逐文件 sha256 相同，非零即拒 | 该机制**零代码实现**，仅存在于散文 [E: GROUND-TRUTH-CORRECTIONS.md#D1]；且**仓库内入口不算数**——〔裁定 · S0 实测，[E: .loop/m0/M0-7.json]〕把 `gate_integrity.sh` 换成只 `echo OK` 的假货并提交后，仓库内入口 **exit 0**，同一份仓库的仓库外 pinned runner **exit 3** |
 | live 幂等 | 同一批输入连续跑两次，第二次 `accepted == 0` | `harvest_e2e.sh` 的 run-2 **从不断言**，实测 run-2 accepted=8；幂等只在离线单测里证过 [E: GROUND-TRUTH-CORRECTIONS.md#D2；01-CONTRACTS §4.6 V4.4] |
 | 真实 boot | 一次真实 headless boot（假密钥）必须走到 AUTH 失败而不是 `dsh: plugin tree failed to load` | 配置层检查是空心的，同一失败类连中三次 [E: gt-house-method.md#结论摘要-2；gt-profile-plugin.md#设计含义-8] |
 | 并行压测 | §8.7 V8.7 | 「并行 worker 输出不相交这条规则没出过事」已被本仓库自身证伪（m7-eval1 数据丢失 + rm -rf 事故）[E: GROUND-TRUTH-CORRECTIONS.md#B6] |
 | 配对记账 | REPORT 中每个成功数必须配一个完整性对子，或显式 `not measured` | `report_gate.sh` 已是这个形状 [E: gt-house-method.md#A11, #M7] |
 
-**〔已知的自指问题〕** `gate_integrity.sh` 自己也在 `checks/` 里，谁证明它没被改？本仓库**无答案** [E: gt-house-method.md#未决-1]。候选解：由 conductor 从 tag 检出一份干净副本到 `checks/` 之外的路径执行。**本文件不裁定这一条**，列入 open questions。
+**〔已知的自指问题 · 已缩小到一个可命名的信任根，未闭合〕** `gate_integrity.sh` 自己也在 `checks/` 里，谁证明它没被改？house 无答案 [E: gt-house-method.md#未决-1]。〔裁定 · S0 实测，[E: .loop/m0/M0-7.json]〕本文件**改裁**——原来那句「本文件不裁定这一条，列入 open questions」连同它给的候选解一起作废：
+
+- **原候选解「由 conductor 从 tag 检出一份干净副本到 `checks/` 之外的路径执行」被两条实测判死。** ① tag 不是不可变锚点：`refs/tags/*` 不受 `receive.denyDeletes` / `receive.denyNonFastForwards` 保护，实测强推与删除都 ACCEPTED，且默认配置下 tag 不写 reflog。② **自提升（self-hoisting）不成立**：发起「检出干净副本」这个动作的代码本身就在被检查的文件里——红样本 R3 把 `gate_integrity.sh` 换成只 `echo OK` 的假货并提交、同时把 `BASELINE.ledger` 追加一行，从仓库内入口 `./checks/gate_integrity.sh` 调用得到 **exit 0**。
+- **本仓库能真正做到的最强形态**（红样本已跑通，不是设计）：锚点是 **40 位 commit sha**；该 sha 与调用入口都必须落在 producer 写不到的地方；由一个**仓库外**的 runner 执行 `git archive <sha> checks` 展开到仓库外再跑，并与工作树 `checks/` 逐文件 sha256 比对。同一份被篡改的仓库，仓库内入口 **exit 0**、仓库外 pinned runner **exit 3**。
+- **它挡不住什么（逐条都是实测或已确认的推理，不要读成已修）**：① **外部锚点今天不存在**——本仓库 `git remote` 数为 **0**，那个「仓库外的 40 位 sha」现在没有任何地方可放；放在本机另一个文件里，对一个持有 bash 的 producer 不构成边界。② **pinned runner 的绿是买来的**——它能抓到篡改的唯一原因是 sha 由外部传入；第一版 runner 忘了这点、仍去读仓库内的台账，同样被骗过（exit 0）。该机制对实现细节极其脆弱。③ **TOFU**——第一条 baseline 因为它第一才被信任，没有任何东西为它背书。④ **GitHub ruleset 只是搬家**：它能把 tag 配成受限，但那是远端管理员配置项、带 bypass 豁免，且本轮**没有真建仓库、没有真配、没有真试强推**（只读了官方文档）。⑤ **同机同用户不是两条轨道**：「门轨道与 producer 轨道进程级隔离」在一台机器一个用户下只是执行上下文不同，不是权限主体不同。⑥ **签名路径一次没跑过**：22 个 `gates-baseline-*` tag 中带 PGP 签名的是 0 个，本机是否有可用签名密钥也未验证。⑦ tag 实验只在本地 `file://` 传输上做过，ssh/https 服务端是否一致属推理。⑧ 台账的哈希链只防静默改写中间行，**不防整条链重建**——R3 里攻击者直接追加一行就过了仓库内入口。
+- **本文件的裁定**：架构层面**认账**「谁能改那 40 位字符串或那个 runner，谁就能让门说谎」，并把**「外部信任根尚未配置」列为 M8 的阻塞项**（不是已解决项）。在它落地之前，M8 第 1 行只能证明「相对于某个由人在仓库外提供的 sha，`checks/` 没被改」，不能证明那个 sha 本身可信。
 
 **依赖**：M3。
 
@@ -598,7 +603,13 @@ set -Eeuo pipefail
 PROFILE=academic-research
 
 # ── 第 0 段：门自身的完整性（必须是第一行，见 §9.22 / M8）
-checks/gate_integrity.sh            # porcelain 干净 + 与 gates-baseline tag 的 diff 为空
+#    〔裁定 · S0 实测，[E: .loop/m0/M0-7.json]〕锚点是 40 位 commit sha，且**必须由仓库外传入**：
+#    任何从仓库内文件（含 BASELINE.ledger、含 tag 名）读锚点的写法都被红样本 R3 骗过（仓库内入口 exit 0）。
+#    本脚本自身也在 checks/ 里，所以这一段只在「boot_gate.sh 是仓库外 runner 从 GATES_PINNED_SHA
+#    展开出来的那一份」时才算数——直接在仓库内跑 boot_gate.sh 不构成证明，只是自查。
+: "${GATES_PINNED_SHA:?refuse: pinned sha must be supplied by the out-of-repo runner}"
+[[ "$GATES_PINNED_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo "BAD PIN: not a 40-hex commit sha"; exit 1; }
+checks/gate_integrity.sh "$GATES_PINNED_SHA"   # porcelain 干净 + 工作树 checks/ 与 git archive <sha> 逐文件 sha256 相同
 
 # ── 第 1 段：组合成立 + 零 patch warning + 两个用户层被钉死
 #    ⚠️ 这一段只证明「组合成立」，不证明模块可 import、不证明 Config 有效。[E: gt-profile-plugin.md#设计含义-8]

@@ -1,0 +1,81 @@
+# academic-research profile · 用户层 patch
+#
+# ⚠️ patch 的每个顶层键是**整体赋值**：config 作为一个对象被整体换掉，没有深合并。
+#    因此凡是我们要改一个字段的行，必须把该 config 的**全部**字段写回来。
+#    官方注释原文见 @deepseek-ai/dsh-base/cordis.patch.yml:6-7。
+#
+# ⚠️ patch 匹配不到目标行 = **真静默**（S0 实测 M0-3c）：
+#    `--dump-config` 的 stderr 报 `patch: entry "<id>" not found`，
+#    而**真实 boot 报 0 条**——运行路径上连 warn 都没有。
+#    ⇒ 唯一抓得住它的地方是 `--dump-config` 的 stderr，
+#      `gates/check_profile.mjs` 的第一条断言就是它，不可移动。
+#      〔R6-13〕这里原先写的是 `gates/check_profile_boot.sh` —— **该文件不存在**。
+#      一条指向不存在的门的「不可移动」声明，本身就是空心门（本仓库已记过三次）。
+#
+#    对照：插件 `inject` 的服务名猜错是**响亮失败**，但**只在真实 boot 路径上**：
+#      · `dsh --profile … "<task>"`   → exit 1，点名 `pending (waiting for service: …)`
+#      · `dsh --profile … --help`     → **exit 0**（实测）：它根本不加载插件树
+#      · `dsh --profile … --dump-config` → 同样不加载插件树
+#    拿 --help 当 boot 证据会得到一个假绿。三条均为 S4 实测，见 07-ATTACK-LEDGER。
+
+# ── 0. 呈现模式与 Code Mode 执行能力：两道都显式写死 ────────────────────
+#    headless bundle 把 tools 行的 config 整键换成 `mode: !!js process.env.DSH_TOOLS_MODE`。
+#    不写死，本 profile 的呈现模式就由**启动进程的环境变量**决定，
+#    而 --dump-config 只会原样打印那个 !!js 表达式，读 dump 的门无从知道实际生效值。
+- id: tools
+  config:
+    mode: native
+- id: code-runtime
+  disabled: true
+
+# ── 1. 同 turn 兄弟工具调用的滚动池 ─────────────────────────────────────
+#    base 里这行 config 就是 {agents: []}，整体替换必须把它写回来。
+- id: agent-loop
+  config:
+    agents: []
+    maxParallelToolCalls: 4
+
+# ── 2. 角色实例：一个角色 = 一个独立命名的 subagent 工具实例 ─────────────
+- id: tool-subagent
+  config:
+    provider: spawn
+    toolName: subagent
+    backgroundMode: one-shot
+    maxDepth: 3
+    agentOptions:
+      provider: deepseek-official
+      model: deepseek-v4-flash
+
+# 取证子代理必须零父历史，因此本 profile 不用 fork。
+- id: tool-subagent-fork
+  disabled: true
+
+- id: tool-ralph
+  disabled: true
+
+# ── 3. spill 阈值与 pruner：显式重述出厂值，让漂移在 diff 里可见 ─────────
+- id: spill-policy
+  config:
+    maxInlineBytes: 50000
+- id: tool-result-pruner
+  config:
+    thresholdChars: 8192
+    headChars: 4096
+    tailChars: 1024
+
+# ── 4. web 只做兜底，不抢学术检索 ───────────────────────────────────────
+- id: tool-web
+  config:
+    fetch: false
+    searchTimeoutMs: 60000
+    searchMaxResults: 8
+
+# ── 5. workflow 引擎的并发闸显式写死，不吃 CPU 推导值 ────────────────────
+#    两行 id 均由 S0 实测确认（M0-3c）。`tool-workflow` **不 disable**：
+#    workflow 是批量扇出的唯一入口。
+- id: workflow-worker-thread
+  config:
+    provider: spawn
+    maxConcurrentAgents: 6
+    maxTotalAgents: 1000
+    maxItemsPerCall: 4096

@@ -1,0 +1,122 @@
+{
+ "note": "S3 自攻发现。目标在 R6 期间冻结，故只登记不修改；R6 交付后一并处理。自攻与独立攻击者的重合度本身是一条数据——若 R6 独立找到同样的洞，说明这类洞是'可被任何认真攻击者找到'的；若 R6 找到别的，说明自攻有系统性盲区。 【S3 收尾】6 条中 3 条已修并配回归用例，2 条认账未修，1 条撤回。修 SA-2 的过程中该修复自己制造了一个新假阴，由 NT-L-43 抓住——修复引入缺陷这件事在本轮又发生了一次。",
+ "target": "src/gates/g-polarity.mjs 的四类受控算子表",
+ "method": "对 anchorSentence 施加 11 种否定/限定形态，载荷固定取 '92%'，看 L1-c 判 pass 还是 fail",
+ "findings": [
+  {
+   "id": "SA-1",
+   "severity": "P1",
+   "axis": "not-closed",
+   "claim": "L1-c 的 NEG-S 表是**有限枚举**，8 种常见的否定/限定形态不在表内，全部拿到 ST-V。K-L-T 是产品唯一一条文献 ST-V 通道，这些是它的直通车。",
+   "false_negatives": [
+    {
+     "form": "范围限定",
+     "sentence": "该方法仅在理想条件下才能达到 92%。",
+     "missing_ops": [
+      "仅",
+      "才"
+     ]
+    },
+    {
+     "form": "反问",
+     "sentence": "该方法真的达到了 92% 吗？",
+     "missing_ops": [
+      "吗",
+      "？"
+     ]
+    },
+    {
+     "form": "英文程度否定",
+     "sentence": "The method hardly reaches 92% accuracy.",
+     "missing_ops": [
+      "hardly",
+      "barely",
+      "scarcely"
+     ]
+    },
+    {
+     "form": "英文短语否定",
+     "sentence": "The method falls short of 92% accuracy.",
+     "missing_ops": [
+      "falls short of",
+      "short of"
+     ]
+    },
+    {
+     "form": "上界限定",
+     "sentence": "The method achieves at most 92% accuracy.",
+     "missing_ops": [
+      "at most",
+      "up to",
+      "no more than"
+     ]
+    },
+    {
+     "form": "转折否定",
+     "sentence": "The authors claim 92% accuracy, but we could not verify it.",
+     "note": "claim 命中 NEG-R 但在**另一个子句**；转折后的否定不在 anchor 子句作用域内"
+    }
+   ],
+   "reproduction": {
+    "steps": "node --input-type=module -e \"import {polarityScope} from './src/gates/g-polarity.mjs'; console.log(polarityScope('The method hardly reaches 92% accuracy.',['92%'],'').pass)\"",
+    "expected": "false（hardly 是否定，载荷落在其作用域内）",
+    "observed": "true"
+   }
+  },
+  {
+   "id": "SA-2",
+   "severity": "P2",
+   "axis": "new-defect",
+   "claim": "**假阳**：双重否定被误拦。「该方法不是没有达到 92% 的准确率」在语义上等于「达到了」，载荷 92% 是合法转录，但 L1-c 命中两个 NEG-S 并判 fail。这是 R5 第 2 条预测的钳形夹的假阳侧——合法转录被降到 ST-A。",
+   "reproduction": {
+    "steps": "polarityScope('该方法不是没有达到 92% 的准确率。',['92%'],'')",
+    "expected": "true（双重否定 = 肯定）",
+    "observed": "false，polarity_marker = [NEG-S:不, NEG-S:没有]"
+   }
+  },
+  {
+   "id": "SA-3",
+   "severity": "P2",
+   "axis": "not-machine-decidable",
+   "claim": "词表是**有限枚举**这件事本身没有任何门守着。加一条否定形态到自然语言里是免费的，而加一条到词表里需要人。03 §11.15 已认领「跨句极性」这一种，但没有认领「表外形态」这个**类**。标定集只有 11 条，且全部由作者自己出题——与变异测试当初的循环性同构。"
+  },
+  {
+   "id": "SA-4",
+   "severity": "P1",
+   "axis": "gate-hollow",
+   "claim": "组稿器的裸数字检查只认**阿拉伯数字**。作者写中文数字（「九十二个百分点」）或全角数字（「９２％」）即可绕过整条证据链——读者看到的数字与任何 claim 无关，也没有 status。这正是 W-10 存在的全部理由被绕开。",
+   "reproduction": {
+    "steps": "compose('该方法达到九十二个百分点。', st) / compose('该方法达到 ９２％ 。', st)",
+    "expected": "两条都 deny",
+    "observed": "两条都 ok（放行）"
+   },
+   "fix_direction": "扫描前先 NFKC 归一化（吃掉全角）；中文数字需单独的字符类（〇一二三四五六七八九十百千万亿两）"
+  },
+  {
+   "id": "SA-5",
+   "severity": "P2",
+   "axis": "not-closed",
+   "claim": "G-CLUSTER 只按**自陈**的 upstream_id / cites_source_id / self_cite_group 归并。11 家媒体若不自陈上游，就是 11 个独立簇——而真实语料里转引链几乎从不自陈。本门自己的 knownLimitation 已认领这条，但它意味着 R5 第 3 条预测**完全没有闭合**：K≥2 的防线在真实数据上仍然是纸面的。",
+   "reproduction": {
+    "steps": "cluster(11 条不带 upstream_id 的媒体记录)",
+    "expected": "1 个独立簇（它们实际同源）",
+    "observed": "11 个独立簇"
+   }
+  },
+  {
+   "id": "SA-6",
+   "severity": "none",
+   "axis": "withdrawn",
+   "claim": "〔已撤回〕初稿断言「同文标题微调后 exact 合并失效，落到 low 置信候选」。实测相反：标题微调（大小写 + 尾点）仍被 exact 合并成 1 簇（归一化吃掉了两者）；而同作者不同论文正确地**未**合并（2 簇 + 1 条待人审候选）。撤回这条——在一份讲诚实的记录里留一条没跑就写的断言，比不写更坏。",
+   "lesson": "自攻同样要**先跑再写**。这条是本轮唯一一条我先写后跑的，也是唯一一条错的。"
+  }
+ ],
+ "resolution": {
+  "SA-1": "已修：NEG_S 补入 hardly/barely/scarcely/falls short of/far from/fails to/insufficient；新增 NEG-L（上界限定：至多/仅/only/at most/up to）与 NEG-I（疑问/反问，作用域覆盖全句）两类。标定集 11 → 18 条。",
+  "SA-2": "已修：同一子句内 NEG-S 命中**偶数**次相消（双重否定 = 肯定）。修复过程中该规则自己制造了一个新假阴——`falls short of` 与 `short of` 是同一短语的两次重叠匹配，被当成双重否定放行；去重改为比**算子文本本身**的位置而非作用域（同一子句里两个否定的作用域必然重叠）。NT-L-43 是这条的回归。",
+  "SA-3": "**未修，认账**：词表是有限枚举这件事没有任何门守着。加一条否定形态到自然语言是免费的，加进词表要人。18 条标定集仍由作者自己出题——与变异测试当初的循环性同构。真正的闭合需要一个外部标定语料，本轮没有。",
+  "SA-4": "已修：扫描前 NFKC 归一化（吃掉全角）+ 中文数字字符类。组稿器标定集 9 → 13 条，含防过修用例「第三节」。",
+  "SA-5": "**未修，认账**：G-CLUSTER 只按自陈关系归并，不自陈就是独立簇。R5 第 3 条预测完全没有闭合——K≥2 在真实数据上仍是纸面防线。",
+  "SA-6": "已撤回（先写后跑，写错了）。"
+ }
+}

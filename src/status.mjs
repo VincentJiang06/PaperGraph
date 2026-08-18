@@ -42,6 +42,11 @@ export class ContractGap extends Error {
 
 /** §1.5.1.1 降一档。下界饱和——ST-U 再降还是 ST-U。 */
 export function stepDown(x) {
+  // §1.5.1.1〔R3/C-1b 修复〕吸收态在 `降一档` 下也必须有定义，而且这条**可达**：
+  // G1/G0 证据在 2c 把 base 压成 ST-N 之后，2d′ 的 step-down flag 会对它调用本函数。
+  // 移除 2c 里那行提前返回补丁后，穷举 oracle 立刻在 {G1, [F-01]} 上抛
+  // 「not_covered 不在格内」——补丁一直在掩盖全函数论证的这个缺口。
+  if (x === ST.N || x === ST.C) return x
   switch (x) {
     case ST.V: return ST.A
     case ST.A: return ST.U
@@ -59,6 +64,14 @@ export function stepDown(x) {
  * 那么既没有干净的归因、也没有干净的估计——诚实的答案就是 unverified。
  */
 export function meet(x, y) {
+  // §1.5.1.1〔R3/C-1b 修复〕吸收态必须在 meet 下有定义。
+  // 规范原本写「ST-C / ST-N 是吸收态，在第 0 步/2a 已返回，不参与」，
+  // 但 §3.4 给 G0 的上限就是 ST-N，而 2c 要求 `meet(base, 两个上限)`
+  // ——那是 ST-N 的第三个入口，既不在第 0 步也不在 2a。
+  // 原实现在 2c 里用一行契约里没有的补丁 `if (g === ST.N) return …` 绕过，
+  // 于是「S 是全函数」证明的是实现自洽而非规范完备。现按补齐后的 §1.5.1.1 逐点实现。
+  if (x === ST.N || y === ST.N) return ST.N
+  if (x === ST.C || y === ST.C) return ST.C
   if (!LATTICE.includes(x)) throw new ContractGap('meet', `左操作数 ${x} 不在格内`)
   if (!LATTICE.includes(y)) throw new ContractGap('meet', `右操作数 ${y} 不在格内`)
   if (x === y) return x
@@ -186,6 +199,64 @@ export function S(c) {
     throw new ContractGap('0', `source_integrity 取值 ${JSON.stringify(si)} 不在值域内`)
   }
 
+  // ── §7.3.1 flag ↔ 驱动字段 一致性（fail-closed） ──────────────────
+  // 〔R4/R4-03 修复，实测扩为 15 条〕R4 报的是一个实例（F-10 与 chart_extracted 无绑定），
+  // 实测发现它是**整族**：§7.3.1 的每个 flag 都能在驱动字段说「不」的情况下置位，
+  // 而 S 照样返回 verified —— F-29/F-28/F-31/F-05/F-16/F-11 逐条实测均如此。
+  //
+  // 根因：这些 flag 在设计上是**输出标注**（门判定后贴的标签），但 schema 允许它们
+  // 作为**输入**出现。规范用 flag 做主语（「每条含 F-29 的 claim……」），
+  // 实现用驱动字段做条件——**主语和条件是两套词汇，中间没有桥**。
+  // V7.2 之类以 flag 为主语的断言因此全部落空。
+  //
+  // 修法不是给 F-10 打特例，是把 §7.3.1 那张表本身变成可执行约束：
+  // flag 置位 ⟹ 其驱动条件必须成立。不成立 = 贴标签的门与写字段的门不一致
+  // = 程序没跑完 ⇒ 按 §9.19「MISSING == FAIL」判 ST-N。
+  const FLAG_DRIVER = {
+    'F-05': x => x.source_integrity === 'contaminated',
+    'F-06': x => x.source_integrity === 'contaminated',
+    'F-07': x => x.source_integrity === 'contaminated',
+    'F-16': x => x.source_integrity === 'mutated' || x.source_integrity === 'missing',
+    'F-27': x => x.source_integrity === 'mutated' || x.source_integrity === 'missing',
+    'F-18': x => x.source_integrity === 'not_covered',
+    'F-21': x => x.source_integrity === 'not_covered',
+    'F-30': x => x.source_integrity === 'not_covered',
+    'F-32': x => x.source_integrity === 'not_covered',
+    'F-33': x => x.source_integrity === 'not_covered',
+    'F-28': x => x.has_verbatim_quote === true && x.quote_faithful === 'fail',
+    'F-29': x => x.counter_evidence_searched === false,
+    'F-11': x => x.budget_state === 'exhausted' || x.budget_state === 'degraded',
+    'F-31': x => x.counter_evidence_found === true,
+    // 〔R5 后实测〕本行被下面的 §7.2.4 双向绑定**完全覆盖**：删掉它门仍判红。
+    // 因此驱动表逐行删除的诚实数字是 **17 行被钉住 + 1 行冗余**，不是 18/18。
+    // 保留它是为了让这张表与 §7.3.1 逐行对齐（表的完整性本身是可读性资产），
+    // 但不得把它计入「被负例钉住的规则数」。
+    'F-10': x => x.chart_extracted === true,
+    'F-14': x => x.independent_cluster_count === 1,
+    // 〔R5-03 修复〕规则句是**全称**的（「§7.3.1 的每一个 flag」），但表只抄了 §7.3.1，
+    // 漏掉 §7.3 主表里同样有真实状态通路的两条：
+    'F-34': x => x.retention_tier === 'C',            // §7.3 indirect：压 evidence_grade ≤ G2
+    'F-28a': x => Array.isArray(x.flags) && x.flags.includes('F-28'), // §7.3：F-28 已置位是它的前提
+  }
+  if (Array.isArray(c.flags)) {
+    for (const f of c.flags) {
+      const driver = FLAG_DRIVER[f]
+      if (driver && !driver(c)) {
+        trace.push(`flag ${f} 已置位，但 §7.3.1 规定的驱动条件不成立`)
+        return ret('0-flag-driver', ST.N)
+      }
+    }
+  }
+
+  // §7.2.4〔R4/R4-03 修复〕F-10 与 chart_extracted 必须同真同假。
+  // V7.2 / §7.3.1 的主语是「含 F-10 的 claim」，而第 1 步读的是 chart_extracted——
+  // 两者此前无任何绑定，`flags:['F-10'], chart_extracted:false` 直接返回 verified。
+  // 不一致 = 抽取工具没把两处都写完 ⇒ 按 §9.19 fail-closed。
+  if (Array.isArray(c.flags) && c.flags.includes('F-10') !== (c.chart_extracted === true)) {
+    trace.push(`F-10 与 chart_extracted 不一致: flags=${JSON.stringify(c.flags)} chart_extracted=${c.chart_extracted}`)
+    return ret('0-domain', ST.N)
+  }
+
   if (c.has_verbatim_quote && c.quote_faithful === 'fail') return ret('0d', ST.U)
   if (c.counter_evidence_searched === false) return ret('0e', ST.N)
   if (c.budget_state === 'exhausted') return ret('0f', ST.N)
@@ -214,12 +285,20 @@ export function S(c) {
       // 造出一条洗白通道：同样的证据，声明成 K-L-T 再让锚点检验失败（→ attributed），
       // 比诚实声明成 K-L-A（→ unverified）拿到**更高**的 status。
       // 实测复现：两条只差 kind 的向量，(a) attributed / (b) unverified。
-      if (c.anchor_containment_passed) {
+      // §2.2.1 / §1.5〔R4/R4-02 修复〕K-L-T 是**两个合取项**：
+      // 包含检验 ∧ 极性作用域检验（L1-c）。载荷是源句 token 的真子集时，
+      // 它可以断言源句所否定的东西（「该方法**并未**达到 92% 的准确率」→ 载荷取「92% 的准确率」），
+      // 旧判据下 base = ST-V。R3 那一轮只改了 §2.2.1 的散文，
+      // 没改自称「唯一的计算式」的 §1.5，也没进实现——规范与实现分叉了整整一轮。
+      if (c.polarity_scope_passed === undefined) {
+        throw new ContractGap('1/K-L-T', 'polarity_scope_passed 缺失——K-L-T 是两个合取项，不能省（§2.2.1）')
+      }
+      if (c.anchor_containment_passed && c.polarity_scope_passed) {
         base = ST.V
       } else {
         effectiveKind = 'K-L-A'
         base = c.attribution_verdict === 'support' ? ST.A : ST.U
-        trace.push('1 K-L-T 锚点检验未过 → 有效 kind 降为 K-L-A（K 值随之变为 2）')
+        trace.push(`1 K-L-T 合取项未全过（包含=${c.anchor_containment_passed} 极性=${c.polarity_scope_passed}）→ 降为 K-L-A（K=2）`)
       }
       break
 
@@ -283,7 +362,8 @@ export function S(c) {
 
   // G1/G0 的上限是 ST-N —— 吸收态，不能喂给 meet（meet 只定义在 {V,A,E,U} 上）。
   // 语义：本项目的证据标准根本没覆盖这条 claim，而不是"覆盖了但没通过"。
-  if (g === ST.N) return ret(`2c grade=${c.evidence_grade}`, ST.N)
+  // 〔R3/C-1b 修复〕此处原有一行契约里没有的提前返回补丁，现已由 meet 的
+  // 吸收态定义承接（§1.5.1.1），走正常的 meet 路径，不再特判。
 
   base = meetAll(base, g, t)
   trace.push(`2c meet(grade=${g}, tier=${t}) → ${base}`)
@@ -315,3 +395,13 @@ export function S(c) {
 }
 
 export default S
+
+
+// 导出给 gates/check_status_spec.mjs 与 §7.3 作用表做双向绑定比对。
+// 〔R3 修复〕此前没有任何门读过 §7.3 的作用类型列与值列。
+export const FLAG_CEILING_EXPORT = FLAG_CEILING
+export const FLAG_STEPDOWN_EXPORT = FLAG_STEPDOWN
+
+export const GRADE_CEILING_EXPORT = GRADE_CEILING
+export const K_EXPORT = K
+export const TIER_CEILING_EXPORT = TIER_CEILING

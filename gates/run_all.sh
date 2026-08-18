@@ -11,6 +11,7 @@
 #   all         docs + negative —— **默认**，也是「文档层是否绿」的信号
 #   m0          loop 的 S0 阶段验收（M0 阻塞项实测记录）
 #   everything  all + m0
+#   mutants     变异测试（慢，约 5 分钟）
 #   publish     发布前门
 #
 # 为什么 m0 不在 all 里：S0 阶段未完成时 check_m0 **应该**是红的（那是它的职责），
@@ -46,9 +47,40 @@ if [ "$SCOPE" = all ] || [ "$SCOPE" = everything ] || [ "$SCOPE" = gc0 ] || [ "$
 fi
 
 if [ "$SCOPE" = all ] || [ "$SCOPE" = everything ] || [ "$SCOPE" = s1 ]; then
-  # 状态函数 S 的穷举 oracle。约 6 秒，550 万向量。
+  # 状态函数 S 的穷举 oracle。约 60 秒，2778 万向量（维度增加后规模随之涨，见自述数字门）。
   # 它是本项目目前最强的一条证据：「S 是全函数」从断言变成了实测。
   run '状态函数 S · 穷举 oracle'   node gates/check_status_exhaustive.mjs
+
+  # 分工（R4 后确立）：穷举 oracle 管**性质**，规范符合性门管**映射**，
+  # 变异测试**量化两者各自的辨别力**。任何一方单独绿灯都不构成「S 正确」的证据。
+  # 实测：扩维让反例**可达**之后，针对新约束的变异体在 oracle 下**仍然全部存活**——
+  # 因为删掉那些约束不破坏任何性质。**扩空间是必要条件，不是充分条件。**
+  #
+  # 〔R3 修复〕穷举 oracle 只断言**性质**（全函数/纯/单调/值域），不断言**映射**。
+  # 变异测试实测：它对 15 个抬高状态的变异只击杀 6 个（40%）——删掉 0e 反例检索
+  # 否决、清空整张 flag 表、让 K-I 直达 ST-V 全都活着。下面两道门补的正是那条缺口。
+  run '规范符合性门（§1.5 黄金映射 + §7.3 绑定）' node gates/check_status_spec.mjs
+  # 写者契约门：S 读的每个字段都不能是被检查方能写的（R5 第 5 条预测的守卫）
+  run '写者契约门'        node gates/check_writer_contract.mjs
+  run '负例套件 · 写者契约门'  bash gates/test_check_writer_contract.sh
+  run '供给侧契约门'      node gates/check_supply_contract.mjs
+  run '负例套件 · 供给侧契约门'  bash gates/test_check_supply_contract.sh
+
+  # ── S2 · 产品层 ─────────────────────────────────────────────────────
+  run 'profile 门（patch 生效值）'  node gates/check_profile.mjs
+  run '取证插件门'        node gates/check_fetch_plugin.mjs
+  run '归一化双实现对拍门'  node gates/check_normalize_parity.mjs
+  run 'L1-c 极性作用域门'   node gates/check_polarity.mjs
+  run 'G-CLUSTER 标定门'    node gates/check_cluster.mjs
+  run 'G-CTR-SCAN X-2 门'   node gates/check_ctr_scan.mjs
+  run '证据锚点门'          node gates/check_anchor.mjs
+  run 'CAS 与证据卡门'      node gates/check_cas.mjs
+  run '留存门'            node gates/check_retention.mjs
+  run '组稿器门'            node gates/check_composer.mjs
+  run '端到端管线门'        node gates/check_pipeline_e2e.mjs
+  run '全链路门（抓取→成稿）' node gates/check_full_chain.mjs
+  run '编排层门（并行探索）' node gates/check_orchestrator.mjs
+  run '顶层研究门'          node gates/check_research.mjs
 fi
 
 if [ "$SCOPE" = all ] || [ "$SCOPE" = everything ] || [ "$SCOPE" = negative ]; then
@@ -61,6 +93,11 @@ fi
 if [ "$SCOPE" = m0 ] || [ "$SCOPE" = everything ]; then
   # loop 的 S0 阶段验收。S0 未完成时它**应该**红——那是它在正确工作。
   run 'M0 阻塞项门（loop S0）'     node gates/check_m0.mjs
+fi
+
+if [ "$SCOPE" = everything ] || [ "$SCOPE" = mutants ]; then
+  # 变异测试：唯一能量化「门的辨别力」的机制。约 5 分钟，故不进 all。
+  run '变异测试（S 的门抓不抓得住错实现）' node gates/check_status_mutants.mjs
 fi
 
 if [ "$SCOPE" = publish ]; then

@@ -16,6 +16,7 @@
 // 用法:  node gates/check_status_exhaustive.mjs [--full] [--enum|--monotone|--coverage]
 // 退出码: 0 = 通过，1 = 有反例
 
+import { writeFileSync } from 'node:fs'
 import { S, ST, stepDown, meet, ContractGap } from '../src/status.mjs'
 
 const FULL = process.argv.includes('--full')
@@ -39,7 +40,7 @@ const D = {
   // 〔R3/P1-2 修复〕原本这里只有 mechanism_empty: [false, true]，
   // 而向量生成器把 gate_class 硬编码成 'GC-0'。于是「GC-2 永不得写 ST-V」
   // ——被四处规范化、被两份下游文档当作唯一依据的那条规则——**从未被枚举到**。
-  // 550 万向量全绿与产品最承重的分界线完全无关。
+  // 当时 550 万向量全绿，与产品最承重的分界线完全无关。
   // 教训：**枚举的是维度，不是空间；没进枚举的维度，穷举再多也照不亮。**
   mechanism: [
     { label: 'empty', value: [] },
@@ -52,12 +53,20 @@ const D = {
   retention_tier: ['A', 'B', 'C'],
   independent_cluster_count: [0, 1, 2, 3],
   chart_extracted: [false, true],
+  // 〔R4/R4-02〕K-L-T 的第二个合取项（极性作用域 L1-c）。此前 §2.2.1 改成两个合取项，
+  // 但 §1.5 与实现都没跟上，向量空间里也没有这一维——规范与实现分叉了整整一轮。
+  polarity_scope_passed: [true, false],
   // §7.3 幂集的代表元：空集、每个 ceiling 单独、每个 step-down 单独、
   // 以及会叠加的组合（叠加是 2d′ 的语义，必须被覆盖）
   flags: FULL
     ? [[], ['F-13'], ['F-12'], ['F-03'], ['F-04'], ['F-01'], ['F-02'], ['F-09'], ['F-15'], ['F-24'], ['F-25'],
        ['F-01', 'F-02'], ['F-09', 'F-15', 'F-25'], ['F-03', 'F-01'], ['F-13', 'F-09'],
-       ['F-01', 'F-02', 'F-09', 'F-15', 'F-24', 'F-25'], ['F-14'], ['F-14', 'F-01']]
+       ['F-01', 'F-02', 'F-09', 'F-15', 'F-24', 'F-25'], ['F-14'], ['F-14', 'F-01'],
+       // 〔R4/R4-03〕§7.3.1 的 flag 代表元。它们此前**一个都不在向量空间里**，
+       // 于是「flags:['F-10'], chart_extracted:false → verified」这个反例
+       // 在当时的向量空间里**构造性不可达**。教训与 GC-2 那次逐字相同，
+       // 同一轮内复发：枚举的是维度，不是空间。
+       ['F-10'], ['F-29'], ['F-28'], ['F-31'], ['F-05'], ['F-16'], ['F-11'], ['F-18']]
     : [[], ['F-13'], ['F-03'], ['F-01'], ['F-01', 'F-02'], ['F-09', 'F-15', 'F-25'], ['F-03', 'F-01'], ['F-14']],
 }
 
@@ -97,6 +106,7 @@ function* vectors() {
                     for (const retention_tier of D.retention_tier)
                       for (const independent_cluster_count of D.independent_cluster_count)
                         for (const chart_extracted of D.chart_extracted)
+                          for (const psp of D.polarity_scope_passed)
                           for (const flags of D.flags)
                             yield {
                               kind,
@@ -112,6 +122,7 @@ function* vectors() {
                               independent_cluster_count,
                               chart_extracted,
                               flags,
+                              polarity_scope_passed: psp,
                             }
 }
 
@@ -191,7 +202,12 @@ for (const x of [ST.V, ST.A, ST.E, ST.U]) {
 function withAutoFlags(v) {
   const auto = []
   if (v.independent_cluster_count === 1) auto.push('F-14') // §7.2 F-14: count==1 由 GC-0 置位
-  if (v.chart_extracted) auto.push('F-10')                 // §7.2 F-10: 图形读数由抽取工具置位
+  // §7.2 F-10: 图形读数由抽取工具置位。保留这条派生是为了让**一致**的向量占多数，
+  // 否则 §3.5 的 ST-E 路径几乎无覆盖。
+  // 〔R4/R4-03〕不一致的反例改由 flags 维度显式提供（['F-10'] 与 chart_extracted:false 相遇时
+  // 本行不触发，向量天然不一致）——此前 flags 维度里**根本没有 §7.3.1 的 flag**，
+  // 于是反例在当时的向量空间里构造性不可达。教训与 GC-2 那次逐字相同，同一轮内复发。
+  if (v.chart_extracted) auto.push('F-10')
   const flags = [...new Set([...(v.flags ?? []), ...auto])]
   return { ...v, flags }
 }
@@ -204,7 +220,7 @@ const BASE_OK = {
   source_integrity: 'intact', has_verbatim_quote: false, quote_faithful: 'na',
   counter_evidence_searched: true, counter_evidence_found: false, budget_state: 'ok',
   evidence_grade: 'G5', retention_tier: 'A', independent_cluster_count: 3,
-  chart_extracted: false, flags: [],
+  chart_extracted: false, flags: [], polarity_scope_passed: true,
 }
 
 // R3 fix-audit 的三条 P1 各配一个回归用例。它们全都能在旧实现上复现，
@@ -249,7 +265,7 @@ const C1_CASES = [
       counter_evidence_searched: true, counter_evidence_found: false,
       budget_state: 'ok', mechanism_results: [{ gate_class: 'GC-0', gate_id: 'G-RERUN', verdict: 'pass' }],
       evidence_grade: 'G5', retention_tier: 'A', independent_cluster_count: 1,
-      chart_extracted: false, flags: [],
+      chart_extracted: false, flags: [], polarity_scope_passed: true,
     },
     want: ST.V,
   },
@@ -261,7 +277,7 @@ const C1_CASES = [
       counter_evidence_searched: true, counter_evidence_found: false,
       budget_state: 'ok', mechanism_results: [{ gate_class: 'GC-0', gate_id: 'G-L1', verdict: 'pass' }],
       evidence_grade: 'G5', retention_tier: 'B', independent_cluster_count: 1,
-      chart_extracted: false, flags: [],
+      chart_extracted: false, flags: [], polarity_scope_passed: true,
     },
     want: ST.V,
   },
@@ -273,7 +289,7 @@ const C1_CASES = [
       counter_evidence_searched: true, counter_evidence_found: false,
       budget_state: 'ok', mechanism_results: [{ gate_class: 'GC-2', gate_id: 'G-L2', verdict: 'support' }],
       evidence_grade: 'G5', retention_tier: 'B', independent_cluster_count: 1,
-      chart_extracted: false, flags: [],
+      chart_extracted: false, flags: [], polarity_scope_passed: true,
     },
     want: ST.U, // K(K-L-A)=2，单簇触发 2b：ST-A → ST-U
   },
@@ -302,6 +318,19 @@ for (const c of [...C1_CASES, ...R3_CASES]) {
 // ── 报告 ────────────────────────────────────────────────────────────────
 console.log('状态函数 S · 穷举 oracle\n')
 console.log(`枚举 ${n.toLocaleString()} 个合法向量（另 ${illegal.toLocaleString()} 个非法向量断言抛出）`)
+// 把规模落成工件，供自述数字门比对——否则那道门得每次重跑 60 秒的 oracle。
+writeFileSync(new URL('./.oracle-stats.json', import.meta.url),
+  JSON.stringify({
+    generated_by: 'node gates/check_status_exhaustive.mjs',
+    legal_vectors: n,
+    illegal_vectors: illegal,
+  }, null, 1) + '\n')
+// 把规模落成工件，供自述数字门比对——否则那道门得每次重跑 60 秒的 oracle。
+// 工件本身带 generated_by 与实测值，人也能直接读。
+try {
+  writeFileSync(new URL('./.oracle-stats.json', import.meta.url),
+    JSON.stringify({ generated_by: 'node gates/check_status_exhaustive.mjs', legal_vectors: n, illegal_vectors: illegal }, null, 1) + '\n')
+} catch { /* 只读环境下不致命 */ }
 console.log(`  ${FULL ? '完整 flag 幂集代表元' : '默认 flag 代表元（--full 展开）'}`)
 console.log(`  命中的状态值: ${[...hit].sort().join(', ')}\n`)
 

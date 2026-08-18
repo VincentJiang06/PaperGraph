@@ -1,6 +1,6 @@
 # GT · 前代失败考古（Paper Graph）— v2 一手证据复核
 
-> **调查范围**：`<repo>`，重点是
+> **调查范围**：`~/playground/misc/Paper Graph`，重点是
 > `archive/pre-reset-2026-07-09/`（失败的 paperproof v2 实现 + nodify）、四份
 > `nodify/comparison{,2,3,4}/RESULTS.md`、`v3/docs/01-anti-failure.md`、
 > `archive/legacy-2026-07-07/`，以及仓库自身的 git 历史与 `.loop/state/log.md`。

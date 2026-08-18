@@ -628,7 +628,10 @@ B1 是上游裁决，本文件不得单方面改写。**处置**：臂 II 按 EP
    依据是一手考古发现的渲染伪影：前代 comparison3 的 calibration −1.00 的 15/15 零方差源自
    `dossier.py` 只在 `status ∈ {retired, stuck}` 时渲染 Dead ends 段；剔除具伪影签名的维度后净差 **−0.13**
    [E: GROUND-TRUTH-CORRECTIONS.md#B3]。**渲染差异会被读成质量差异。**
-2. **同一 claim schema 与同一 L1 门二进制**（gate 完整性脚本在实验开始前打 `gates-baseline` tag，见 §9.22）。
+2. **同一 claim schema 与同一 L1 门二进制**（实验开始前记录 `checks/` 的 **40 位 commit sha**，
+   由仓库外注入，见 §9.22）。〔R4/R4-06 修复〕原写作「打 `gates-baseline` tag」，
+   而 §9.22 现在逐字写着「**不是 git tag**」——tag 可被 `git tag -f` 原地重指且远程亦然。
+   R3 那一轮改了十处散文，**漏掉的恰恰是本条与 03 的 NT-00 这两个可执行判据**。
 3. **同一 judge 版本、同一批次、交错、随机顺序、双向换位**（JP-2/JP-3）。
 4. **同一题集与同一配对单元**：topic 级配对，两臂跑同一批 topic。
 5. **两臂的 producer `agentOptions.provider` 相同**，判官的 `agentOptions.provider` 与两臂都不同（R-I2；两义消歧见 §9.25）。
@@ -819,7 +822,10 @@ FActScore 式分解后的 71.11 [E: ext-verification-mechanisms.md#M9]，
 - **C · 该门有能让它红的构造**：存在一个对应的红案 fixture 使该门非零退出（§6.6 V6.4）。
 
 **为什么 B 是必需的**：这正是本项目最核心的一条产品诚实性——`quote_faithful` 与 `source_integrity`
-是可以 100% 兑现的承诺，`claim_supported` 不是（§1.3）。一个只验证 A 的红队套件，
+的**判据可机器判定**，`claim_supported` 不是（§1.3）。
+〔R4/R4-05 修复〕原写作「是可以 100% 兑现的承诺」——该措辞已由 §1.2.2.2 收窄：
+归一化算法本身不保子串（S0 实测 M0-2），且 Tier B 下 `source_integrity` 是构造性恒真。
+本节的论证不依赖「100%」这个强度，只依赖「A 类可判定、B 类不可判定」这条界线，因此结论不变。一个只验证 A 的红队套件，
 证明的是「我们的门在运行」，而不是「我们没有把 faithfulness 当 factuality 卖」。
 RT-1 的失败判据逐字就是后者 [E: ext-security-injection.md#RT-1]。
 

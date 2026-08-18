@@ -2,7 +2,7 @@
 
 读取范围：`PLAN.md`、`.loop/*.loop.{md,json}` 与 `.loop/design-*.json`、`mp-automator/`（`.attack/r1-ledger.md`、`.attack/r1-v4pro-report.txt`、`PLAN.md`、`lib/`）、`plugin-creator/`（preset / workflows / targets / checks / REPORT.md / .loop-state/）、`serper-harvester/`（provider / preset skill / dedup / checks / README / REPORT.md / .loop-state/）、`git log` 与 `git tag`。
 攻击协议的规范文本一手来源为已安装 skill：`~/.claude/skills/vince-attacker/`（SKILL.md + references/ + lenses/）。
-凡涉及 DSH 原语的载重断言，均回到已安装包 `$DSH_PKGS/@deepseek-ai/dsh/node_modules/@deepseek-ai/`（194 个包）核验，见 §2.E 与 §3。
+凡涉及 DSH 原语的载重断言，均回到已安装包 `~/.volta/tools/image/packages/@deepseek-ai/dsh/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/`（194 个包）核验，见 §2.E 与 §3。
 
 ---
 

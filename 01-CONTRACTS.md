@@ -151,7 +151,7 @@ S0 对该算法做了端到端实测（7 份 PDF × 每份 120 条引语 + 5 份
 > 此时走 §1.2.2.1 的修复建议通道（F-28a），由 producer 改用快照里的真实跨度。
 
 **这条把一个营销式的「100%」换成了一个有口径、有实测数字、有失败去向的承诺。**
-它是本项目仅有的两条「可 100% 兑现」承诺之一——**现在只剩一条半**。
+它曾是本项目仅有的两条「判据可机器判定」承诺之一——**现在只剩一条半**（措辞按 §1.2.2.2 收窄，见 §1.3）。
 另一条（`source_integrity`）在默认档 Tier B 下也已按 §8.6.2.1 收窄。
 产品页上不得再出现不带口径的「100%」。
 
@@ -170,7 +170,12 @@ S0 对该算法做了端到端实测（7 份 PDF × 每份 120 条引语 + 5 份
 
 **为什么这条不能省**：原写法是「≥95 命中 → 把引语改写成快照里的真实跨度后重判 → pass」。
 它让 `pass` 的含义从「逐字引语是快照的子串」滑成「存在一个与引语 95% 相似的跨度」，
-**哈希可判定性直接没了**——而 `quote_faithful` 是全项目仅有的两条「可 100% 兑现」承诺之一（§0.1）。
+**哈希可判定性直接没了**——而 `quote_faithful` 曾是全项目仅有的两条「判据可机器判定」承诺之一。
+〔R4/R4-05 修复〕本句原写作「**可 100% 兑现**……（§0.1）」，两处都错：
+① 该措辞已由 §1.2.2.2 与 §1.3 收窄（归一化算法本身不保子串，S0 实测 M0-2）；
+② `§0.1` 里根本没有这句话，是一条指向空处的自引。
+R3 那一轮改了 §1.3 结尾，修复注甚至自己写着「同一文件 50 行后原样幸存」——
+**然后只向后扫，没有向前扫**，于是同一措辞在更早 40 行处原样存活。
 更糟的是改写由门执行，等于门在替被检查方修改被检查对象，违反 §4 的写权分离。
 R1 两个独立攻击者各自命中此处（F079 / F152）。
 
@@ -178,7 +183,11 @@ R1 两个独立攻击者各自命中此处（F079 / F152）。
 （PDF 连字符、中文空格）。合并成一个 `fail` 会让「抽取管线有 bug」和「producer 在编引语」不可区分。
 所以两者都判 `fail`，但带不同的 flag，进不同的队列。
 
-**§1.2.3 抽取质量哨兵（fail-closed）。** 抽取文本为空、或 CJK/拉丁字符比例异常 → `source_integrity = not_covered`，**绝不能因为抽取失败而让匹配「找不到」并静默降级** [E: ext-reproducibility.md#溯源门必须 fail closed 的五个点]。中文 PDF 抽取是该假阴性的最大来源；阈值未标定前，中文引语门偏保守。
+**§1.2.3 抽取质量哨兵（fail-closed）。** 抽取文本为空、或 CJK/拉丁字符比例异常 → `source_integrity = not_covered`，**绝不能因为抽取失败而让匹配「找不到」并静默降级** [E: ext-reproducibility.md#溯源门必须 fail closed 的五个点]。中文 PDF 抽取是该假阴性的最大来源。
+〔R3 修复 · 原文写作「阈值未标定前，中文引语门偏保守」〕该处方被 S0 实测（M0-2）证伪并删除：
+保守化**只会放大假阴性**——中文路径的失配根因是归一化算法的非对称性，不是阈值太松，
+把门调保守只是让更多真引语判不出来。正确处方是修算法（§1.2.2.0 已落），不是调松紧
+[E: .loop/m0/M0-2.json]。阈值标定本身仍未做，列为未偿项（§11）。
 
 ### §1.3 `claim_supported` 是核算记录，不是谓词
 
@@ -202,7 +211,15 @@ claim_supported := {
 2. 逐条（per-claim）口径的最好成绩在 BAcc 74.7–77.4 区间（MiniCheck-FT5 在 LLM-AggreFact 10 个数据集平均 74.7；Bespoke-Minicheck-7B 在公开 leaderboard 11 个数据集平均 77.4）[E: ext-verification-mechanisms.md#M6]。**注意：LLM-AggreFact 的数据集数量在论文（10）/leaderboard（11）/后续论文（14）之间漂移，跨版本数字不可直接比。**
 3. LLM-judge 的一致率被系统性高报：MT-Bench 上 exact match 0.788–0.851 对应的 Cohen κ 只有 0.376–0.511，raw agreement 平均虚高 **38.6 个百分点**（区间 33.8–41.3 pp；**样本 = MT-Bench 2,391 对**。⚠️ 不是 541,000——那是全研究规模：21 judge / 9 厂商 / 约 541,000 次判定 / 118 次 run，本数字的分母比它小两个数量级）[E: ext-evaluation.md#C1, #16]。
 
-**因此**：`quote_faithful` 与 `source_integrity` 是**可以 100% 兑现**的产品承诺；`claim_supported` 只能是分级判断。产品语义、门的实现、对外文案三处必须同时保持这条界线。
+**因此**：`quote_faithful` 与 `source_integrity` 是**判据可机器判定**的产品承诺，
+`claim_supported` 只能是分级判断。产品语义、门的实现、对外文案三处必须同时保持这条界线。
+
+〔R3 修复 · 本句原写作「**可以 100% 兑现**」〕S0 实测（M0-2）证明该措辞在两个方向上都不成立，
+而 §1.2.2.2 已就此收窄，本句却在同一文件 50 行后原样幸存——单一规范源内部自相矛盾。
+两条实测理由：① `quote_faithful` 的归一化算法本身不保子串（含 CJK 的快照 + 纯英文引语必然失配），
+即使抽取管线完美也兑现不了；② Tier B 下 `source_integrity` 是构造性恒真（§8.6.2.1），
+恒真的东西不构成承诺。**对外文案不得再出现不带口径的「100%」**（§1.2.2.2）
+[E: .loop/m0/M0-2.json, gates/repro/m0_2_normalization.py]。
 
 ### §1.4 派生的、面向用户的 claim 状态（唯一枚举）
 
@@ -266,8 +283,10 @@ S:
   第 1 步 · 按 kind 取基准值 base（§2）
     K-D 数据推导（封闭式）: 重跑门通过 → ST-V        否则 ST-U
     K-D 数据推导（开放式）: 重跑门通过 → ST-A        否则 ST-U      （开放式端到端永不可达 ST-V，§2.1）
-    K-L-T 文献转录       : 锚点包含检验通过 → ST-V   否则降为 K-L-A 处理
+    K-L-T 文献转录       : 锚点包含检验 ∧ 极性作用域检验（L1-c）→ ST-V   任一不过则降为 K-L-A 处理
     K-L-A 文献归因       : 归因裁决 support → ST-A   partial/not-support → ST-U
+       注：K-L-T 的两个合取项分别由 `anchor_containment_passed` 与 `polarity_scope_passed`
+           承载（两者皆 §1.3 必填）；后者是 L1-c 的判定结果（03-EVIDENCE-ENGINE §3.1.1.2）
     K-I 逻辑推断         : 推断门全项通过 → ST-A     否则 ST-U      （K-I 永不可达 ST-V，§2.3.1）
     图形读数的数值断言    : base 强制为 ST-E（覆盖上述结果）        （§3.5）
 
@@ -318,6 +337,7 @@ S:
 
 降一档(ST-V) = ST-A        降一档(ST-A) = ST-U
 降一档(ST-E) = ST-U        降一档(ST-U) = ST-U        （下界饱和，不再下降）
+降一档(ST-N) = ST-N        降一档(ST-C) = ST-C        （吸收态，见下）
 
 meet(x, y) = 该格中同时 ≤ x 且 ≤ y 的最大元素：
   meet(x, x)        = x
@@ -325,14 +345,38 @@ meet(x, y) = 该格中同时 ≤ x 且 ≤ y 的最大元素：
   meet(ST-A, ST-E)  = ST-U      ← 关键一条：两个同层不可比元素的下确界是 ST-U
   meet(ST-U, y)     = ST-U
   （meet 满足交换律与结合律，因此 2c/2d 内多个上限的求值顺序不影响结果）
+
+吸收态进入 meet 的唯一入口（补齐全函数论证的洞）：
+  meet(x, ST-N)     = ST-N       ← 对一切 x
+  meet(x, ST-C)     = ST-C       ← 对一切 x ≠ ST-N；meet(ST-C, ST-N) = ST-N
 ```
+
+〔R3/C-1b 修复 · 本段原写作「ST-C / ST-N 是吸收态，在第 0 步/2a 已返回，不参与」〕
+那句话有一个反例，而 §1.5.1.2 的全函数论证正建立在它之上：**§3.4 给 G0 的上限就是 ST-N**，
+2c 又要求 `base = meet(base, 两个上限)`——这是 ST-N 的**第三个入口**，既不在第 0 步也不在 2a。
+原实现用一行契约里没有的补丁 `if (g === ST.N) return …` 绕过它，于是「穷举向量证明 S 是全函数」
+证明的其实是**实现自洽**，不是规范完备。现在把两个吸收态在 meet 下的行为逐点定义，
+论证补完：`降一档` 与 `meet` 在六元素集上逐点有定义 ⇒ S 对任意合法输入有唯一返回值。
+`ST-C` 一列为完备性而写；在 2c 处它不可达（2a 已返回），列出是为了让 meet 本身成为全函数。
+
+**`降一档` 同样必须对吸收态有定义**，而且这一条是**可达的**：G1/G0 证据在 2c 把 base 压成 ST-N 后，
+2d′ 的 step-down flag 会对它调用 `降一档`。移除实现里那行补丁后，穷举 oracle 立刻在
+`{evidence_grade: G1, flags: [F-01]}` 这类向量上抛出「not_covered 不在格内」——
+**那行补丁一直在掩盖全函数论证的一个真实缺口**，而 V1.7 的绿灯来自补丁，不是来自完备性。
 
 `meet(ST-A, ST-E) = ST-U` 不是权宜之计，是格论里下确界的定义本身，而且语义正确：
 若证据等级只撑得起「归因」、同时数值又来自图形几何读数，那么我们既没有干净的归因、
 也没有干净的估计，**诚实的答案就是 unverified**。
 
-**§1.5.1.2 `S` 是全函数（可机器检查）**：`降一档` 与 `meet` 在四元素集 {ST-V, ST-A, ST-E, ST-U} 上
-逐点定义完毕，第 0 步的七条前置否决覆盖了全部吸收态入口。因此对任意合法输入向量 `S` 都有唯一返回值。
+**§1.5.1.2 `S` 是全函数（可机器检查）**：`降一档` 与 `meet` 在**六元素集**
+{ST-V, ST-A, ST-E, ST-U, ST-C, ST-N} 上逐点定义完毕（§1.5.1.1，含两个吸收态在两个算子下的取值）。
+因此对任意合法输入向量 `S` 都有唯一返回值。
+
+〔R4/R4-01 修复〕本段原写作「在**四元素集** {ST-V, ST-A, ST-E, ST-U} 上逐点定义完毕，
+**第 0 步的七条前置否决覆盖了全部吸收态入口**」——后半句正是 §1.5.1.1 用 G0/G1 的 ST-N 上限
+（第三个入口，既不在第 0 步也不在 2a）推翻的那句原话。R3 那一轮**只在 §1.5.1.1 追加了更正，
+没有回来替换这里**，而 V1.7 引用的恰恰是本段。
+这是本项目反复栽的同一个形状：**更正写成追加，被更正的原句在别处继续承重。**
 V1.7 用穷举验证这一点。
 
 **§1.5.2 `K(kind)` 的取值**〔裁定〕：`K(K-D) = 1`（数据推导的独立性由重跑保证，不由多源保证）；`K(K-L-T) = 1`（转录只需要一个真实锚点）；`K(K-L-A) = 2`；`K(K-I) = 2`（前提集合的独立簇数）。
@@ -342,7 +386,11 @@ V1.7 用穷举验证这一点。
 ### §1.6 可检验断言
 
 - **V1.1** 对任意 claim，`status` 字段的值必须落在 §1.4 的六值枚举内；出现第七个值即失败。
-- **V1.2** 对任意 claim，重跑 `S` 必须得到与存档 `status` 逐字节相同的值（`S` 是纯函数，输入全在 CAS 与注册表快照里）。
+- **V1.2**〔R6-14 改为条件式〕**留存前提成立时**，对任意 claim，重跑 `S` 必须得到与存档 `status` 逐字节相同的值（`S` 是纯函数，输入全在 CAS 与注册表快照里）。
+  留存前提 = 该 claim 引用的每一个 CAS 对象仍在场且字节未变，由 `gates/check_retention.mjs` 逐条核。
+  **无条件形式的 V1.2 是假的**，且这不是实现缺陷：它与 §8.6.2.1 的 Tier B 留存到期直接互斥——
+  R5 第 1 条预测提出、R6-14 在有了 `src/cas.mjs` 之后复测仍然成立（删掉 CAS 对象，同一条记录重跑从 verified 变 unverified）。
+  CAS 做到的是把非确定性从「重取」搬到「对象还在不在」，并让后者**可检验**；它没有、也不可能让留存到期消失。
 - **V1.3** 符号执行 `S` 的第 2 步全部规则，断言每条规则的输出状态在 §1.5.1 的偏序下不高于输入。
 - **V1.4** 语料中不存在任何 `status == verified` 且 `mechanism_results` 中含 `gate_class == GC-2` 的 claim（§6.4）。
 - **V1.5** 不存在名为 `overall_status` / `all_verified` / `pass_rate` 且被写进交付物的字段。
@@ -414,7 +462,19 @@ kind ::= data-derived | literature-cited | logically-inferred
 
 **§2.2.1 两个子模式，边界由机器判定，不由人判断**：
 
-- **K-L-T 转录型**：claim 的**全部载重载荷**（结构化字段中的数字、命名实体、口径三元组、比较对象）能被 `anchor_span` 逐字覆盖。判定式：`normalized(claim.payload) ⊆ normalized(anchor_span)`。**可达 ST-V。**
+- **K-L-T 转录型**：**两个合取项同时成立**——
+  (i) **包含检验**：claim 的全部载重载荷（结构化字段中的数字、命名实体、口径三元组、比较对象）
+      能被 `anchor_span` 逐字覆盖，判定式 `normalized(claim.payload) ⊆ normalized(anchor_span)`；
+  (ii) **极性作用域检验**（L1-c，03-EVIDENCE-ENGINE §3.1.1.2）：载荷不落在 `anchor_span` 中
+      任何否定/条件/疑问/反驳算子的作用域内，或载荷自身已纳入该算子。
+  **可达 ST-V。**
+
+  〔R3/C-6 修复〕(ii) 为本轮新增。原判据只有 (i)，其论证是「载荷的每个 token 都来自源句，
+  所以不可能出现源句没说的限定或因果方向」——**该论证只对「载荷 == 整句」成立**。
+  载荷是源句 token 的**真子集**时，它可以断言源句所否定的东西；学术散文里最常见的形态
+  就是否定句里带着数字（「该方法**并未**达到 92% 的准确率」→ 载荷取「92% 的准确率」）。
+  此时旧判据下 sub_mode=T、判定路径 {G-L0, G-L1, G-CLUSTER, G-CTR-SCAN} 无一读极性，
+  base = ST-V（最高状态）。(ii) 不成立时 `sub_mode` 落 A（上限 ST-A），交给已含 G-ENTAIL 的归因路径。
 - **K-L-A 归因型**：claim 是对 `anchor_span` 的转述、概括或蕴含。**上限 ST-A。**
 
 之所以这个边界可以机器判定，是因为 claim 的载重载荷是**结构化字段**，不是散文句子（§0.1、§8.4 W-10）。
@@ -463,7 +523,9 @@ kind ::= data-derived | literature-cited | logically-inferred
 - **V2.3** 每条 K-I claim 的全部 `premises` 在台账中可解析、构成 DAG、且无一条前提的 status ∈ {unverified, not_covered, contested}。
 - **V2.4** 每条 K-I claim 的 `warrant` 落在五值封闭枚举内，且 `inferences/<id>.md` 的反例搜索记录段非空（含「未找到反例 + 搜索预算」的显式记法）。
 - **V2.5** 负向门（red-first）：向重跑门喂一个伪造 metric、无 transform、无原始数据的 claim，门必须非零退出。前代同样的构造得到 `exit 0 PASS` [E: GROUND-TRUTH-CORRECTIONS.md#C1]。
-- **V2.6** 对每条 K-L claim，`normalized(payload) ⊆ normalized(anchor_span)` 的判定结果与其 `sub_mode`（T/A）一致。
+- **V2.6** 对每条 K-L claim，**包含检验与极性作用域检验（L1-c）的合取结果**与其 `sub_mode`（T/A）一致。
+  〔R3/C-6 修复〕原断言只比对包含检验。改后 NT-L-32（否定句里取数字）会让 V2.6 对旧实现稳定判红
+  ——包含检验 = true 而 sub_mode 应为 A——**那正是期望行为**，与 NT-X-16 的处理一致。
 
 ---
 
@@ -511,8 +573,8 @@ v1 缺失该维度。中文场景下「拿到全文」经常不可能，英文�
 | G5 | ST-V | 锚点使「独立复核寻址」成为可能 |
 | G4 | **ST-A** | 逐字包含仍可判（`quote_faithful` 可为 `pass`），但无锚点 → claim 载荷与段落的绑定不可独立复核 |
 | G3 | **ST-A，且仅限「关于摘要内容本身」的断言** | OpenAlex 语义检索**只检索标题+摘要**，用它做「这篇论文是否支持某结论」会系统性漏掉只在正文/结果节里出现的证据 [E: ext-academic-apis.md#A6] |
-| G2 | **仅存在性断言**；**不得支撑任何数值断言** | [E: ext-chinese-ecosystem.md#设计含义-2 L1] |
-| G1 | **不得作为任何 claim 的承重证据**，只能是 `candidate`（§9.6） | 见 §3.4.1 |
+| G2 | **ST-A**，且**仅存在性断言**；**不得支撑任何数值断言** | [E: ext-chinese-ecosystem.md#设计含义-2 L1]。〔R4 修复〕本格原只有散文没给状态，与 G1 那格同一类缺口——实现自行取 ST-A，而没有任何门比对得了 |
+| G1 | **ST-N**（不得作为任何 claim 的承重证据，只能是 `candidate`，§9.6） | 见 §3.4.1。〔R3 修复〕本格原只有散文「不得作为承重证据」而**没有给状态**，实现自行判成 ST-N——一条实现自己发明的规范。现按其语义显式定为 ST-N：既然它不能承重，本项目的证据标准就没有覆盖这条 claim |
 | G0 | ST-N | — |
 
 **§3.4.0 `evidence_grade` 还要再过一道正交约束**：`retention_tier`（§8.6）。前者是「我拿到了多少」，后者是「我被允许留多少」。耦合规则见 §8.6.2；两者的下限取交集。
@@ -569,7 +631,15 @@ v1 缺失该维度。中文场景下「拿到全文」经常不可能，英文�
 
 ### §4.1 不变量（原文，可逐字引用）
 
-> **I-W1 · status 是由门代码计算的，从不由 agent 断言。** 系统中不存在任何一条从 agent 输出到 `status` 字段的写路径。
+> **I-W1 · status 由门代码计算，从不由 agent 断言。** 提交工具的 schema **不含** `status` 字段，
+> 含 `status` 的提交由 `tools/pre-execute` deny；`claims/<id>.status.json`（W-04）的唯一写者是门代码。
+>
+> **这是一条被门强制的设计约束，不是结构性不可能。**〔R3/C-2 修复〕本条此前写作
+> 「系统中不存在任何一条从 agent 输出到 status 字段的写路径」——那句话被 §0.2 逐字禁止，
+> 理由是 gate-integrity 真脚本尚未落地，该保障按 00-PREMISE B8 一律作 `unverified` 对待，
+> **且不得在下游文档里被引用为已建立的保障**。而 §4.1 恰是全文档集**唯一被授权原样复制**的段落，
+> 于是那句被禁的话正沿着复制路径向下游播散。现改为只陈述已由门兑现的部分；
+> 更强的「不存在任何写路径」主张在外部信任根配置完成前不成立（§6.5.2）。
 >
 > **I-W2 · 一个工件，一个物理写者。** 若两类主体都需要向同一逻辑记录写入，则该记录**必须拆成两个物理文件**。
 >
@@ -582,7 +652,10 @@ v1 缺失该维度。中文场景下「拿到全文」经常不可能，英文�
 | W-01 | `objects/<sha256>`（CAS：快照原始字节、抽取文本、run 输出） | **我们自建的检索/抓取工具执行器**，在同一次工具执行内写入 | 只读 | 落库 `tool/result` 存的是**截断后**内容；超阈值纯文本结果原文不在日志里 [E: GROUND-TRUTH-CORRECTIONS.md#A2, gt-evidence-substrate.md#E4]。且工具的 canonical value 是 execution-local、不进持久日志 [E: gt-exec-security.md#H-2] |
 | W-02 | `tool/result.data.meta.evidence`（抓取锚点：`object_sha256/url/retrieved_at/http_status/bytes/extractor_version`） | **同一个工具执行器的返回值** | 不可写 | 唯一零风险落点：模型不可见、被 pruner 完整保留、被持久化逐字保留、事件类型已知不影响 resume [E: GROUND-TRUTH-CORRECTIONS.md#A1/#E2, gt-evidence-substrate.md#B8/#D4] |
 | W-03 | `claims/<id>.json`（**内容**：kind、结构化载荷、metric_frame、证据指针、premises、tolerance） | **producer agent**，经 claim 提交工具，schema 硬校验 | 门只读 | — |
-| W-04 | `claims/<id>.status.json`（**status 及全部派生字段**：status、evidence_grade、independent_cluster_count、**nominal_source_count**、counter_evidence_*、computed_at、gate_version、inputs_hash） | **门代码（确定性脚本）** | 任何 agent 不可写；提交工具的 schema **不含** status 字段，出现即 `tools/pre-execute` deny | I-W1、I-W2；前代 `reproduced` 列门既不读也不写，「门的输出才是记录」只兑现在旁路文件里，台账本身永远停在 `?` [E: gt-pg-current.md#C-8]。**`nominal_source_count` 于本轮补入**：写者是门代码（03-EVIDENCE-ENGINE 的 **G-CLUSTER**，与 `independent_cluster_count` **同一写者、同一行为**——同门产出、同门写入、该门自己不做任何降级动作），补入理由是 §5.5 R-I6 要求它与独立簇数**并排展示**，不补则渲染层拿不到这个数。**`cluster_map` 不随之进入 W-04**：它体量大且只用于审计与人审队列，落在 `gate-reports/<run_id>/G-CLUSTER.json`（W-08） |
+| W-04 | `claims/<id>.status.json`（**status 及全部派生字段**：status、evidence_grade、independent_cluster_count、**nominal_source_count**、counter_evidence_*、computed_at、gate_version、inputs_hash；**以及 S 实际消费的全部判定输入**——`mechanism_results[]`（含每项 `gate_class`，0g 与 §6.1 GC-2 上限的输入）、`flags[]`（2d/2d′ 的输入）、`budget_state`（0f/2e 的输入）、`retention_tier`、`kind`、`source_integrity`、`counter_evidence_searched`、`counter_evidence_found`、`chart_extracted`、`sub_mode`，及**九个**正交谓词 `has_verbatim_quote` / `quote_faithful` / `question_frozen` / `anchor_containment_passed` / **`polarity_scope_passed`** / `rerun_gate_passed` / `inference_gate_passed` / `chart_extracted` / `attribution_verdict` | **门代码（确定性脚本）** | 任何 agent 不可写；提交工具的 schema **不含** status 字段，出现即 `tools/pre-execute` deny | I-W1、I-W2 |
+
+〔R5-08 修复〕`polarity_scope_passed` 本轮成了 K-L-T 的必填合取项（缺失即抛 ContractGap）， 但本清单——它自称是「S 实际消费的**全部**判定输入」——**没跟上**； 原文还写「七个」却列了八个。后果不是笔误：**没进 W-04 就没有写者契约**， 对照 EE-L-20 对 `sub_mode` 明令 producer 声明即 deny，而 producer 直接把 `polarity_scope_passed` 填 `true` 就能拿 ST-V。九个谓词全部由 W-04 指派写者为门代码。〔R3 修复〕本节自称「穷举，不留『等等』」，但此前只列派生字段，**S 的判定输入一个都没列**——七个谓词在全部规划文档里出现 0 次，而它们决定 §1.5 第 1 步的 base）   **门代码（确定性脚本）**   任何 agent 不可写；提交工具的 schema **不含** status 字段，出现即 `tools/pre-execute` deny   I-W1、I-W2；前代 `reproduced` 列门既不读也不写，「门的输出才是记录」只兑现在旁路文件里，台账本身永远停在 `?` [E: gt-pg-current.md#C-8]。**`nominal_source_count` 于本轮补入**：写者是门代码（03-EVIDENCE-ENGINE 的 **G-CLUSTER**，与 `independent_cluster_count` **同一写者、同一行为**——同门产出、同门写入、该门自己不做任何降级动作），补入理由是 §5.5 R-I6 要求它与独立簇数**并排展示**，不补则渲染层拿不到这个数。**`cluster_map` 不随之进入 W-04**：它体量大且只用于审计与人审队列，落在 `gate-reports/<run_id>/G-CLUSTER.json`（W-08）
+
 | W-05 | `ledger/`（per-claim manifest，append-only） | **门代码** | 只读 | — |
 | W-06 | `evidence/<evidence_id>.json`（证据卡；id = `sha256(work_id ‖ version_id ‖ locator ‖ normalize(quote) ‖ extractor_version)`） | **抓取工具执行器** | 只读 | 按**来源坐标**内容寻址 → 并行写入天然幂等、去重不需要 embedding、**矛盾在构造上不可能被去重门吃掉** [E: ext-evidence-schema.md#结论摘要-7] |
 | W-07 | `verdicts/<gate>/<claim_id>.json`（Class-2 裁决原件，含 `childId/provider/model/prompt_hash/ts`） | **裁决 subagent 自身** | 门只读；裁决是门的**输入**，不是 status | §5、§6 |
@@ -766,7 +839,12 @@ reviewer ≠ producer 保证的是「这份裁决出自另一个上下文、另�
 
 **§6.5.1 red-first**：门必须先证明自己会红，红案 fixture 由 conductor 播种、且事件形状必须来自**真实捕获**而非手编 [E: gt-house-method.md#A9]。
 
-**§6.5.2 gate 完整性必须是脚本，不是纪律。** 本仓库宣称 "Gate-integrity is pinned, not vibes"（`git status --porcelain -- checks/` 干净 **且** `git diff <gates-baseline-tag> -- checks/` 为空），但全量 grep `gates-baseline|porcelain` 在三个子项目里**零命中代码**，只命中两处散文——**目前完全依赖 conductor 自觉** [E: GROUND-TRUTH-CORRECTIONS.md#D1, gt-house-method.md#A8]。v2 必须把它写成真脚本，否则是空心门。
+**§6.5.2 gate 完整性必须是脚本，不是纪律。** 本仓库宣称 "Gate-integrity is pinned, not vibes"（`git status --porcelain -- checks/` 干净 **且** 工作树 `checks/` 与从 **40 位 commit sha** 展开的 pinned 副本逐文件 sha256 相同），但全量 grep `gates-baseline|porcelain` 在三个子项目里**零命中代码**，只命中两处散文——**目前完全依赖 conductor 自觉** [E: GROUND-TRUTH-CORRECTIONS.md#D1, gt-house-method.md#A8]。v2 必须把它写成真脚本，否则是空心门。
+**锚点不得是 git tag**〔裁定 · S0 实测 M0-7〕：tag 可被 `git tag -f` 原地重指且**远程亦然**
+（`refs/tags/*` 不受 `receive.denyDeletes` / `denyNonFastForwards` 保护、不写 reflog），
+本机 22 个 `gates-baseline-*` tag 中 0 个带签名。tag 至多是人类可读的发布标记，
+**不承担锚点职责**；锚点一律为 40 位 commit sha，且由仓库**之外**的 runner 提供
+[E: .loop/m0/M0-7.json]。
 
 **§6.5.3 跨越执行边界的检查是空的。** 同一失败类在本仓库连续出现三次（persona mount / role-pack 子串检测 / plugin_load dump-config），每次都是配置层通过、运行时打脸，每次都由新鲜上下文的对抗读者发现，**从来不是门套件发现的**。修法永远相同：**对运行系统自己的痕迹断言**（session jsonl、真实 boot）[E: gt-house-method.md#结论摘要-2]。
 
@@ -850,7 +928,10 @@ fi
 - **V6.2** 不存在 `gate_class == GC-2` 且 `verdict` 直接导致 `status == verified` 的路径（对 `S` 做一次可达性分析）。
 - **V6.3** 每个 GC-1 门的输出携带 `data_as_of`；超过该门阈值的输出其结论为 `not_covered`。
 - **V6.4** 每个门在 CI 中有对应的 red-case fixture，且该 fixture 使门非零退出。
-- **V6.5** gate 完整性脚本存在且被 CI 调用：断言 `git status --porcelain -- checks/` 为空且 `git diff <gates-baseline-tag> -- checks/` 为空。
+- **V6.5** gate 完整性脚本存在且被 CI 调用：断言 `git status --porcelain -- checks/` 为空，
+  且工作树 `checks/` 与 `git archive <40 位 commit sha> checks` 展开到仓库外的副本**逐文件 sha256 相同**。
+  该 sha 必须由仓库之外提供（环境变量注入，缺失即拒），**不得从仓库内任何文件读取**——
+  否则攻击者改了 checks 再改锚点即可自洽。〔S0 实测 M0-7 后由 tag 改为 sha〕
 - **V6.6** 任意读 session 日志的门，在一个含 ≥2 个 zstd frame 的固定 fixture 上必须读出全部记录（负例：只读到第一帧即失败）。
 - **V6.7** 每个 GC-2 judge 有一份带日期与 `judge_version` 的 κ 校准记录，且 κ ≥ 0.60 才被标记为终判档；跨 `judge_version` 的分数不得出现在同一张图/表里。
 - **V6.8** 文档 lint：任何文档中「确定性 / deterministic / 机器判定」一词出现在描述 GC-2 的段落内即失败。
@@ -880,7 +961,45 @@ fi
 | F-07 | `hijacked-journal` | ISSN 或域名命中劫持刊表（456 条，表头自述 last updated 2026-07-17） | GC-1 | S 0b → ST-C | [E: ext-literature-integrity.md#B1] |
 | F-08 | `predatory-suspect` | 疑似掠夺性期刊 | **仅人工**（Cabells 订阅制、无 API，本项目不可编程访问） | 人审队列 | [E: ext-literature-integrity.md#B2] |
 | F-09 | `preprint-only` | 未经同行评议（arXiv / bioRxiv / ChinaXiv） | GC-1 | S 2d：自动降一档 | [E: ext-chinese-ecosystem.md#5] |
-| F-10 | `chart-extracted` | 数值来自图形几何读数；**必须携带 `epsilon` 与 `method`** | 抓取/抽取工具 | S 第 1 步强制 ST-E；渲染器必须原样显示 ε | [E: ext-multimodal-evidence.md#D1] |
+| F-10 | `chart-extracted` | 数值来自图形几何读数；**必须携带 `epsilon` 与 `method`**。**F-10 置位 ⟺ `chart_extracted === true`**，抽取工具必须同时写这两处 | 抓取/抽取工具 | S 第 1 步强制 ST-E；渲染器必须原样显示 ε | [E: ext-multimodal-evidence.md#D1] |
+
+**§7.2.4 F-10 与 `chart_extracted` 必须一致，不一致即 fail-closed**〔裁定 · R4/R4-03〕。
+V7.2 与 §7.3.1 的主语是「含 **F-10** 的 claim」，而 S 第 1 步读的是**另一个字段** `chart_extracted`
+——两者此前**没有任何绑定**。实测：`flags: ['F-10'], chart_extracted: false` 的向量返回 `verified`，
+V7.2 断言的「status ≤ ST-E」当场落空。
+两道门都构造性地看不见它：穷举 oracle 把 F-10 从 `chart_extracted` **派生**（反例向量在其空间里不可达），
+规范符合性门的 §7.3 绑定正则只吃主表、不解析 §7.3.1 那 17 个 flag。
+**这与本项目刚记下的「枚举的是维度，不是空间」是同一个形状，且在同一轮复发。**
+
+规则：`flags.includes('F-10')` 与 `chart_extracted === true` **必须同真同假**。
+不一致意味着抽取工具没把两处都写完，按 §9.19「MISSING == FAIL」判 `ST-N`，不得放行。
+
+**§7.2.5 这不是 F-10 的特例，是整族**〔裁定 · R4 后实测扩展〕。
+R4 报的是一个实例，实测发现 §7.3.1 的**每一个** flag 都有同样的暴露面：
+裸置位 `F-29` / `F-28` / `F-31` / `F-05` / `F-16` / `F-11` 而驱动字段说「不」，S 逐条返回 `verified`
+——而 §7.3.1 逐字声称它们「在第 0 步已经决定了返回值」。
+
+根因是**主语错位**：这些 flag 在设计上是**输出标注**（门判定后贴的标签），
+但 schema 允许它们作为**输入**出现。规范以 flag 为主语（「每条含 F-29 的 claim……」），
+实现以驱动字段为条件——两套词汇之间没有桥，于是所有以 flag 为主语的断言（V7.2 是其一）全部落空。
+
+因此 §7.3.1 那张表**本身**是一条可执行约束，不只是说明：
+
+> 对每个 flag，**置位 ⟹ 其驱动条件成立**。不成立即 `ST-N`（fail-closed）。
+
+| flag | 驱动条件 |
+|---|---|
+| F-05 / F-06 / F-07 | `source_integrity == contaminated` |
+| F-16 / F-27 | `source_integrity ∈ {mutated, missing}` |
+| F-18 / F-21 / F-30 / F-32 / F-33 | `source_integrity == not_covered` |
+| F-28 | `has_verbatim_quote ∧ quote_faithful == fail` |
+| F-29 | `counter_evidence_searched == false` |
+| F-11 | `budget_state ∈ {exhausted, degraded}` |
+| F-31 | `counter_evidence_found == true` |
+| F-10 | `chart_extracted == true` |
+| F-14 | `independent_cluster_count == 1` |
+
+（F-22 / F-23 不作用于 `S`，不在此表。）
 | F-11 | `budget-degraded` | 判定因时间/token/RPS/美元预算而降级或中止 | 编排层 + 门 | S 2e（degraded 降一档）/ 0f（exhausted → ST-N） | [E: ext-reproducibility.md#5] |
 | F-12 | `metric-frame-mismatch` | claim 声明的口径三元组与源文本实际口径不一致；或前提间口径不可比 | GC-2（口径畸变检测维度）+ GC-0（三元组非空） | S 2d；人审队列 | [E: gt-pg-current.md#I-4, ext-evaluation.md#L2] |
 | F-13 | `unstable-decomposition` | 同一子命题做 N 次同义改写后独立走检索-判定链，判定不稳定 | GC-1 + GC-2 组合 | S 2d：强制降至 ST-U | [E: ext-security-injection.md#D4, #V16] |
@@ -915,7 +1034,17 @@ fi
 **架构性的那一半是有效的**：野外普查（1.2B URL / 24.8M host / 15,387 条已验证注入，Common Crawl 2025-10 快照）显示 **10,779 / 15,387 = 70.0%** 的注入落在非渲染通道（HTTP 响应头 7,887 + 结构化数据 1,996 + 注释 675 + meta 221）；且抽取表示本身是 20 倍杠杆——纯文本合规率 3.9%、HTML 标记 1.1%、渲染快照 1.1%、原始 HTTP 响应 0.2%（5,200 次试验 = 100 提示 × 4 表示 × 13 模型）[E: ext-security-injection.md#V5, #V6, #V7]。
 **因此**：抓取管线必须把页面拆成互不混合的字段 `rendered_text` / `non_rendered_text` / `structured_data` / `http_headers`，**只有 `rendered_text` 进入可引用证据池**，其余三路单独存档、只用于告警与取证。
 **并且**：野外已有 **542 条明确的「强制引用（citation forcing）」注入**——专门冲着「让 AI 引用我」来的。这正是我们被瞄准的形态 [E: ext-security-injection.md#V8]。
-**⚠️ 一个可能推翻架构的前提**：若 PDF 抽取管线拿不到「这段文字是否对人可见」的信息（大多数 PDF 文本抽取库确实拿不到颜色/字号/图层），通道分离在 PDF 路径上就失效——而 PDF 恰是学术场景的主要摄取对象。**这条必须前移为架构可行性验证，不能留到测试阶段** [E: ext-security-injection.md#未决-12, #RT-5]。
+**该前提已被 S0 实测推翻，架构成立**〔裁定 · S0 实测 M0-1〕。原文曾写「大多数 PDF 文本抽取库
+确实拿不到颜色/字号/图层」，并据此把通道分离在 PDF 路径上的可行性列为架构风险。实测结论相反：
+`PyMuPDF.get_texttrace()` 逐 span 同时给出 `color` / `size` / `type`（渲染模式）/ `opacity` / `layer`，
+`pdfplumber` 亦给出 `non_stroking_color` 与 `size`——7 个 (库, 属性) 组合直接提供可判定隐藏的数值。
+
+**且反面比原前提更糟**：四个受测库**全都**会把隐藏文本读进下游——`pdftotext` 4/6 段、
+`pypdf` 6/6、`pdfplumber` 6/6、`PyMuPDF` 5/6（它是唯一在默认路径上尊重 OCG 默认 OFF 的）。
+即：不做属性过滤的抽取器不是**能力不足**，而是**主动把不可见文本引入证据链**。
+因此 §7.2.2 的要求从「验证可行性」升级为「fail-closed 强制」：抽取器必须逐 span 取属性并
+把不可见 span 归入 `non_rendered_text`，拿不到属性的抽取后端**不得用于承重路径**
+[E: .loop/m0/M0-1.json, gates/repro/m0_1_pdf_attributes.py]。
 
 **§7.2.3 F-29 的必要性**：注入不改引语真伪，只改「引哪一句」——攻击者诱导 agent 只引对其有利的**真实**句子，逐字匹配必然全绿。逃不过的只有「你有没有找过反面」这个可审计的过程字段 [E: ext-security-injection.md#N6, #D5]。因此每条承重 claim 必须附带一次**主动反证检索**，并记录 `counter_evidence_found` 与其快照 id；**找不到反证也要记录搜索过程与预算**。
 
@@ -977,13 +1106,24 @@ fi
 ### §7.4 可检验断言
 
 - **V7.1** 语料中出现的每一个 flag 都在 §7.2 词表内；出现表外 flag 即失败。
-- **V7.2** 每条含 F-10 的 claim 都携带非空 `epsilon` 与 `method`，且其 status == ST-E。
+- **V7.2** 每条含 F-10 的 claim 都携带非空 `epsilon` 与 `method`，且其 status **≤ ST-E**
+  （即 ∈ {ST-E, ST-U, ST-C, ST-N}，等价地：**恒不为 ST-V、亦不为 ST-A**）。
+  〔R3/C-1b 修复〕本条原断言 `status == ST-E`，在 C-1b 取 `meet(ST-A, ST-E) = ST-U` 之后**恒假**：
+  §3.5 强制图形读数 base = ST-E，而 2c 的 `evidence_grade` 上限只要 ≤ G4 就把它 meet 成 ST-U。
+  ST-E 仅在 G5 + Tier A/B + 簇数达标 + 零 step-down flag 时存活——那是少数情形，不是全称。
+  改为上界断言后，它检验的东西反而更强：**图形几何读数永远拿不到 ST-V/ST-A**。
 - **V7.3** 每条含 F-24 的 claim 都携带 `expires_at`；过期后重跑 `S` 必须触发 F-25。
 - **V7.4** 对每条承重 claim，`counter_evidence_searched == true`；否则 status == ST-N。
 - **V7.5** 红队用例 RT-4：一个页面同时在 HTML 注释、`<meta>`、`alt`、`aria-label`、`display:none` 节点、零尺寸元素、屏外定位元素、JSON-LD、HTTP 响应头（`X-AI:` / `X-LLM:`）里各放一条不同注入；期望九条**全部**落入 `non_rendered_*` 字段，**零条**进入可引用证据池，告警计数 = 9 [E: ext-security-injection.md#RT-4]。
 - **V7.6** 红队用例 RT-6：构造一条不含任何指令动词的注入（>90% 的野外形态）；期望模式匹配检测器漏报是**可接受的**，但 status 仍因独立簇数不足而拒绝升格 [E: ext-security-injection.md#RT-6]。
 - **V7.7** 红队用例 RT-8：一个真实页面同时含支持句与反对句，注入诱导只引支持句；期望 `counter_evidence_found == true`、status 降为 ST-C [E: ext-security-injection.md#RT-8]。
-- **V7.8** 架构可行性前置验证（RT-5）：PDF 抽取管线能否把白色/极小字号文本归入 `non_rendered_text`。**该验证失败即为必须先解决的架构前提**，不是一条普通失败用例。
+- **V7.8** PDF 抽取管线把不可见文本归入 `non_rendered_text`：对 `gates/repro/m0_1_pdf_attributes.py`
+  生成的对抗夹具（1 段可见 + 6 段分别以白底白字 / 0.1pt / `Tr 3` / 不透明矩形覆盖 / 页面外 /
+  OCG 默认 OFF 隐藏），承重路径的抽取器必须把 **6 段全部**归入 `non_rendered_text`，
+  且可见段不得被误归。使用拿不到属性的后端时该断言**判红而非跳过**（fail-closed）。
+  〔R3 修复〕原判据写作「能否把白色/极小字号文本归入 non_rendered_text」——那是一个
+  没有夹具、没有阈值、没有裁决器的问句，无法机器判定；且 S0 实测（M0-1）已证明
+  属性可得，问题不在「能否」而在「有没有强制」。
 - **V7.9**〔R1/C-1 后新增，检查的是**本文件自身**〕**词表与作用表必须双向完备**：
   §7.2 词表里的每一个 flag，在 §7.3 作用表与 §7.3.1 别处表中**恰好出现一次**；
   §7.3 / §7.3.1 里提到的每一个 flag 都在 §7.2 词表内。
@@ -1086,7 +1226,7 @@ fi
 
 **§8.6.2.1 默认档下两条谓词的真实成色**〔裁定 · R1/C-7，本条不在任何已知弱点清单里〕。
 
-R1 攻击者 F138 指出：在**默认**档 Tier B 下，本项目仅有的两条「可 100% 兑现」承诺同时塌。逐条承认并收口。
+R1 攻击者 F138 指出：在**默认**档 Tier B 下，本项目仅有的两条「判据可机器判定」承诺同时塌。逐条承认并收口。
 
 **① `quote_faithful` 在 Tier B 下离线复核是构造性恒真。**
 Tier B 保存的是「围绕引语裁出来的摘录」（§8.6.1）。拿引语去匹配这段摘录，
@@ -1163,7 +1303,7 @@ Tier B 保存的是「围绕引语裁出来的摘录」（§8.6.1）。拿引语
 | # | 术语 | 定义 | 备注 |
 |---|---|---|---|
 | §9.1 | **承重 / load-bearing** | 一条 claim 是承重的，当且仅当它被 `{{claim:...}}` 占位符引用进正文，或被另一条 claim 列为前提。**凡进入正文的数字、命名实体、比较，一律是承重的**；正文中不允许出现非承重的数字（白名单：年份、章节号、页码） | 机器可判：裸数字扫描 |
-| §9.2 | **载荷 / payload** | claim 的结构化字段集合（数字、命名实体、口径三元组、比较对象），**不是散文句子**。§2.2.1 的包含检验作用于载荷 | — |
+| §9.2 | **载荷 / payload** | claim 的结构化字段集合，**不是散文句子**。每个槽必须带**槽类型**标注，取值域 `entity` / `metric` / `sample` / `value` / `comparator`。§2.2.1 的包含检验与极性作用域检验（L1-c）均作用于载荷；03-EVIDENCE-ENGINE 的 EE-X-3 (a′) 锚槽覆盖下界与 EE-L-24 都依赖槽类型。〔R3/C-6 修复〕槽类型为本轮新增：不标注则门只能靠字段名启发式推断槽类型，等于把自由文本判据混进 GC-0 门 | — |
 | §9.3 | **规范源 / normative source** | 本文件。术语定义只此一份；其他文档复述定义即为回归（lint：对本文件的定义句做 n-gram 检索） | — |
 | §9.4 | **口径三元组 / metric frame** | `(什么指标 metric / 在什么样本或档位上 sample_or_tier / 与什么比 comparator)` 三字段。**缺任一项直接判 ST-N，不进 GC-2** [E: ext-evaluation.md#R7] | 一等公民字段 |
 | §9.5 | **独立来源 / independent source** | 按 `upstream_id` 归并后的一个簇。**不是 URL，不是域名**（§5.5） | — |
@@ -1183,7 +1323,7 @@ Tier B 保存的是「围绕引语裁出来的摘录」（§8.6.1）。拿引语
 | §9.19 | **fail-closed / fail-open** | fail-closed = 异常时落到最保守状态（ST-N 或 ST-U）。**fail-open 是禁止的**：前代唯一的 SHIP 就是缺面板文件导致的 fail-open 产物 [E: GROUND-TRUTH-CORRECTIONS.md#C4] | MISSING == FAIL |
 | §9.20 | **maker ≠ checker** | 产出者与复核者的 harness 身份不同（§5.3）。**不是** prompt 措辞 | — |
 | §9.21 | **red-first** | 门在被信任之前必须先证明自己会红（§6.5.1） | — |
-| §9.22 | **gates-baseline** | conductor 在编写 checks 时打的 git tag；门只在 `git status --porcelain -- checks/` 干净且 `git diff <tag> -- checks/` 为空时算数。**本仓库该机制目前零代码实现** [E: GROUND-TRUTH-CORRECTIONS.md#D1] | v2 必须补脚本 |
+| §9.22 | **gates-baseline** | checks 的 pinned 基线，值是一个 **40 位 commit sha**（**不是 git tag**——tag 可被 `git tag -f` 原地重指且远程亦然、不写 reflog、本机 22 个全部无签名，S0 实测 M0-7 判其不构成锚点）。门只在 `git status --porcelain -- checks/` 干净、且工作树 `checks/` 与由该 sha 展开的仓库外副本逐文件 sha256 相同时算数；sha 必须从仓库外注入。**本仓库该机制目前零代码实现，且外部信任根未配置** [E: GROUND-TRUTH-CORRECTIONS.md#D1, .loop/m0/M0-7.json] | v2 必须补脚本 |
 | §9.23 | **出厂值 / shipped value** | `dsh-base/cordis.patch.yml` 与各 preset 实际生效的值。**与「包默认值」（包 README/代码 default）不同，冲突时以出厂值为准** [E: GROUND-TRUTH-CORRECTIONS.md#A9] | 引用默认值必须标明是哪一种 |
 | §9.24 | **轮预算 / round budget** | 两个**不同**的东西：goal 的 `defaultMaxGoalRounds = 256`（确认）；ralph 的 `maxRounds` README 写 256 但**出厂全部组合覆盖为 64**。引用时必须标明是 goal 还是 ralph [E: GROUND-TRUTH-CORRECTIONS.md#A10] | 不得混谈 |
 | §9.25 | **provider（三义）** | ①`agentOptions.provider` = LLM 路由（可 per-call）；②`subagentProvider` = subagent 传输后端（作用于整个 run）；③**检索供应商** = 外部检索/抓取服务商（serper/bocha/Exa…）。见 §5.2.1。第三义在其他文档中一律写全称「检索供应商」，不得裸用 provider | 必须消歧 |

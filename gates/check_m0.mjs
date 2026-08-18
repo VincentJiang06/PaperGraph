@@ -1,5 +1,15 @@
 #!/usr/bin/env node
-// M0 阻塞项门（loop 的 S0 阶段验收，GC-0：离线、确定性、零模型）
+// M0 阻塞项门（loop 的 S0 阶段验收）
+//
+// 〔R5-07 更正〕本行原写作「GC-0：离线、确定性、零模型」——**不成立**。
+// C-12a[2] 与 M0-3a[2] 的命令是 `dsh --profile headless "<自然语言 prompt>"`，
+// 即**真实模型调用**（攻击者亲手重跑 4.98s；--no-rerun 0.03s vs 完整 20s）。
+// 更微妙的是这两条的**全部输出是 2 字节 `1\n`**（sha256 = 4355a46b… = sha256("1\n")），
+// 哈希匹配约携带 1 bit 信息——非确定性被命令末尾的 `grep -c` 洗成了确定性。
+// 而它们正是 README 诚实声明里两条 M0 阻塞项的唯一闭合证据。
+//
+// 因此本门的正确定级是：**结构检查是 GC-0；重跑验证的门类取决于被重跑的命令**。
+// 下面的 §3 会把「命令会调用模型」的证据单独标出来，不让它们混在「离线确定性」里。
 //
 // M0 阻塞项之所以是阻塞项，正是因为它们「读对了但没跑过」。
 // 所以这道门要抓的不是「有没有写记录」，而是**记录是不是真的来自实测**。
@@ -16,7 +26,7 @@
 //   node gates/check_m0.mjs --pick <n>      指定抽第 n 条（用于负例套件）
 // 退出码: 0 = 通过，1 = 有阻塞项，2 = 空集（一条记录都没有）
 
-import { readFileSync, existsSync, readdirSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs'
+import { readFileSync, existsSync, readdirSync, mkdtempSync, writeFileSync, rmSync, statSync, renameSync } from 'node:fs'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { createHash } from 'node:crypto'
@@ -28,9 +38,10 @@ const ROOT = rootArg > -1 ? process.argv[rootArg + 1] : fileURLToPath(new URL('.
 const DIR = join(ROOT, '.loop/m0')
 
 const NO_RERUN = process.argv.includes('--no-rerun')
-const RERUN_ALL = process.argv.includes('--rerun-all')
-const pickArg = process.argv.indexOf('--pick')
-const PICK = pickArg > -1 ? Number(process.argv[pickArg + 1]) : null
+// --rerun-all 现在是默认行为，保留该 flag 只为不打断既有调用（no-op）。
+// --sample N：只重跑第 N 条（模长度），供快速迭代用；**运行会被标记为不完整**。
+const sampleArg = process.argv.indexOf('--sample')
+const SAMPLE = sampleArg > -1 ? Number(process.argv[sampleArg + 1]) : null
 
 // 00-PREMISE §M0 声明的七条，其中第 3 条拆成三个可独立实测的子项；
 // 另加 R1 判出的两条架构实测项与一条会烧掉实现的地雷。
@@ -128,10 +139,16 @@ for (const [id, r] of records) {
 
   const ev = Array.isArray(r.evidence) ? r.evidence : []
 
-  // resolved 的门槛最高：必须有可复现的证据
-  if (r.verdict === 'resolved') {
+  // 〔R3 修复 · gate-hollow〕原本只有 resolved 要求证据，design-changed 完全豁免。
+  // 那是个大洞：design-changed 的语义是「我实测了，而实测推翻了一条设计前提」——
+  // 承重比 resolved 更大（它会引发文档改写）。12 条记录里 6 条是 design-changed，
+  // 独立审计把它们全部改写成纯编造后本门仍 exit 0。
+  // 现在：resolved 与 design-changed 同属**已测量**判决，证据要求完全相同。
+  // 只有 still-blocked 豁免——它的语义恰恰是「本机测不了」。
+  const MEASURED = r.verdict === 'resolved' || r.verdict === 'design-changed'
+  if (MEASURED) {
     if (!ev.length) {
-      note(id, 'verdict=resolved 却没有 evidence —— 这正是本门要抓的「凭推理写 resolved」')
+      note(id, `verdict=${r.verdict} 却没有 evidence —— 这正是本门要抓的「凭推理写判决」`)
       continue
     }
     for (const [i, e] of ev.entries()) {
@@ -167,14 +184,14 @@ for (const [id, r] of records) {
     }
   }
 
-  // resolved 必须至少有一条**真正可复现**的证据。
-  // 全部证据都声明"不可逐字节复现"的 resolved，和凭推理写的 resolved 没有区别——
+  // 已测量判决必须至少有一条**真正可复现**的证据。
+  // 全部证据都声明"不可逐字节复现"的记录，和凭推理写的没有区别——
   // 重跑验证在那种记录上无事可做，本门的牙齿就落空了。
-  if (r.verdict === 'resolved') {
+  if (MEASURED) {
     const anyReproducible = ev.some(e =>
       /^[0-9a-f]{64}$/.test(String(e.raw_output_sha256 ?? '')) && e.command && !PLACEHOLDER.test(e.command))
     if (!anyReproducible) {
-      note(id, 'verdict=resolved 但没有任何一条可复现的证据（全部声明不可逐字节复现）—— 重跑验证无事可做')
+      note(id, `verdict=${r.verdict} 但没有任何一条可复现的证据（全部声明不可逐字节复现）—— 重跑验证无事可做`)
     }
   }
 
@@ -199,20 +216,50 @@ for (const [id, r] of records) {
 
 // ── §3 重跑验证（反自报的唯一机制） ─────────────────────────────────────
 const rerunnable = [...records.values()]
-  .filter(r => r.verdict === 'resolved' && Array.isArray(r.evidence) && r.evidence.length)
+  .filter(r => (r.verdict === 'resolved' || r.verdict === 'design-changed') &&
+               Array.isArray(r.evidence) && r.evidence.length)
   .flatMap(r => r.evidence.map((e, i) => ({ id: r.id, idx: i, ...e })))
   // 只重跑**声称可复现**的证据。声明了「不可逐字节复现」的条目上没有可比对的哈希，
   // 硬拿它去比只会产出噪声，而噪声会让人学会忽略这道门的输出。
-  .filter(e => e.command && !DESTRUCTIVE.test(e.command) && !PLACEHOLDER.test(e.command))
   .filter(e => /^[0-9a-f]{64}$/.test(String(e.raw_output_sha256 ?? '')))
 
+// 〔R5-02 修复〕此前这里用**原始** command 测 DESTRUCTIVE，而 §2 的结构检查用的是
+// 剥掉 mktemp 自清理后的 `cmdSansCleanup`。两套口径不一致的后果是一条**通用豁免**：
+// 命令末尾加 `; rm -rf "$D"` 就能让整条证据**静默**退出重跑池，
+// 而 R-9 的守卫 `anyReproducible` 不测 DESTRUCTIVE，于是整份 resolved 记录可以哈希全编造仍 exit 0。
+//
+// 真实树上已经生效：M0-4[0] 与 M0-5[2] 带合法 64-hex 哈希却从未被重跑，
+// 而报告逐字打印「全部 24 条」——**带哈希的实际有 26 条**。
+// 报告在宣称一个它没做到的完整性。
+const stripCleanup = c => /mktemp\s+-d/.test(c)
+  ? String(c).replace(/;\s*rm\s+-rf?\s+"?\$\{?[A-Za-z_][A-Za-z0-9_]*\}?"?\s*$/, '')
+  : String(c)
+const excludedFromRerun = []
+const rerunnableFinal = rerunnable.filter(e => {
+  const c = stripCleanup(e.command ?? '')
+  const bad = !e.command ? '缺 command'
+    : DESTRUCTIVE.test(c) ? '含破坏性操作'
+    : PLACEHOLDER.test(e.command) ? '含未展开占位符' : null
+  if (bad) { excludedFromRerun.push({ id: e.id, idx: e.idx, why: bad }); return false }
+  return true
+})
+
 const rerunResults = []
-if (!NO_RERUN && rerunnable.length) {
-  // 抽样规则：默认抽一条，用记录总数取模轮转（不是随机数——本门必须是确定性的，
-  // 否则「这次抽中的那条恰好是真的」会让绿灯不可复现）。
-  const picks = RERUN_ALL
-    ? rerunnable
-    : [rerunnable[PICK !== null ? PICK % rerunnable.length : records.size % rerunnable.length]]
+const SAMPLED = SAMPLE !== null
+if (!NO_RERUN && rerunnableFinal.length) {
+  // 〔R3 修复 · gate-hollow〕原写法：默认抽一条，索引 = `records.size % rerunnable.length`。
+  // 注释自称「用记录总数取模轮转」，但两个操作数都是**仓库状态的常数**
+  // （12 与 11），于是 `12 % 11 === 1` 恒等于 1，永不轮转——11 条可重跑证据里
+  // 10 条从未被任何一次默认运行验证过。对外宣称的「8/8 全绿」是抽样器
+  // 恒定选中同一条好样本的产物，不是记录可复现的证据。
+  //
+  // 教训：**确定性 ≠ 覆盖**。我把「绿灯必须可复现」这个正确要求，
+  // 错误地实现成了「只跑固定的一条」。确定性该管的是「跑哪些」的顺序，
+  // 不是「只跑哪一条」。现在默认**全跑**；抽样必须显式索取，
+  // 且抽样运行会在报告里被明确标记为不完整。
+  const picks = SAMPLE === null
+    ? rerunnableFinal
+    : [rerunnableFinal[SAMPLE % rerunnableFinal.length]]
 
   const tmp = mkdtempSync(join(tmpdir(), 'm0-verify-'))
   for (const e of picks) {
@@ -231,11 +278,49 @@ if (!NO_RERUN && rerunnable.length) {
     const tail = String(e.command).match(/(?:shasum\s+-a\s+256|sha256sum)\s+("?)([^"'\s;|&]+)\1\s*$/)
     const declared = e.output_file ?? (tail ? tail[2] : null)
     const out = join(tmp, 'out.txt')
+    // target 与 stash 都必须在**命令跑之前**算好。
+    // 〔自我更正〕初版把 stash 块放在了 execSync **之后**的判定段里——
+    // 注释写着「事前控制」，位置却是事后，于是命令刚产出的文件被立刻移走，
+    // 真实记录全部误红。**注释说一套、位置做另一套**是这类 bug 的典型形状，
+    // 而它只在真实记录上暴露，负例套件看不见（负例的命令本来就不产出文件）。
+    const cwdResolved = e.cwd ? e.cwd.replace(/^~/, process.env.HOME ?? '~') : ROOT
+    const cwdFinal = existsSync(cwdResolved) ? cwdResolved : ROOT
+    const target = declared
+      ? (declared.startsWith('/') ? declared
+         : declared.startsWith('~') ? declared.replace(/^~/, process.env.HOME ?? '~')
+         : join(cwdFinal, declared))
+      : out
+    // ③ 新鲜度。〔R4/gate-hollow 修复〕
+    //
+    // 原实现比对 mtime：declared 目标的 mtime 必须晚于本次重跑起点。注释还自夸
+    // 「这条是三者里唯一无法用『记录多写一个字段』绕过的——它比对的是墙上时钟」。
+    // R4 用**五个字符**推翻了它：把 command 写成 `touch <那个陈旧文件>`。
+    // mtime 被命令自己刷新，2020 年的伪造文件当场冒充「本次运行产出」，
+    // 门打印「25/25 条哈希对上」并 PASS。
+    //
+    // 教训：**墙上时钟是被测方能写的。** 任何「事后观察某个属性」的判据，
+    // 只要那个属性在被测方的写权限内，就不是判据。
+    //
+    // 现在改为**事前控制**而非事后观察：跑命令之前先把 declared 目标移走。
+    // 命令若真的产出它，文件会重新出现且内容正确；命令若只是 `touch`，
+    // 得到的是空文件，哈希对不上；命令若什么都不做，文件不存在，同样判红。
+    // 陈旧文件这条路被物理切断，而不是被检测。
+    let stashed = null
+    if (declared && existsSync(target)) {
+      stashed = join(tmp, `stash-${rerunResults.length}`)
+      renameSync(target, stashed)
+    }
     let got = null
     let err = null
+    const runStart = Date.now()
     try {
       const cwd = e.cwd ? e.cwd.replace(/^~/, process.env.HOME ?? '~') : ROOT
-      execSync(`${e.command} > ${JSON.stringify(out)} 2>&1`, {
+      // 必须把整条命令套进子 shell 再重定向。
+      // 〔R3 修复 · 由负例 R-12b 抓出〕原写法 `${command} > out 2>&1` 在 command
+      // 含 `;` 时只把**最后一条语句**的输出重定向进 out，前面的全部丢失。
+      // 现有记录都走 output_file / 尾部 shasum 分支，所以这条兜底路径一直是坏的
+      // 而没人走过——一个只在负例里才会暴露的洞。
+      execSync(`( ${e.command} ) > ${JSON.stringify(out)} 2>&1`, {
         cwd: existsSync(cwd) ? cwd : ROOT,
         timeout: 120_000,
         shell: '/bin/bash',
@@ -245,17 +330,102 @@ if (!NO_RERUN && rerunnable.length) {
       // 命令自身非零退出是允许的——我们比对的是输出内容，不是它的退出码
       err = x.status ?? x.message
     }
-    const target = declared ? declared.replace(/^~/, process.env.HOME ?? '~') : out
+
+    // ── 〔R3 修复 · gate-hollow〕重跑绕过 ────────────────────────────────
+    // 原实现可被「命令必然失败 + output_file 指向一个早已存在的陈旧文件」
+    // 完全绕过：门会打印「重跑验证 1/1 条哈希对上」并 PASS。三个根因叠加：
+    //   ① declared 让记录自己声明一个**在门的临时目录之外**的绝对路径；
+    //   ② 命令的退出码被 catch 捕获进 err 后**从未被任何一行检查**；
+    //   ③ 没有新鲜度检查——门从不追问这个文件是不是**本次运行**产出的。
+    // 三条现在各有一道断言。教训：捕获了异常却不断言，等于没捕获。
+    let bypass = null
+
+
+    // ② 退出码：命令失败就不可能产出被记录的输出。
+    //    确实有证据命令合法地非零退出（grep 无命中、被测门本就该判红），
+    //    但那种情况记录必须**显式声明** exit_code，把它变成一条可检验的断言，
+    //    而不是让门默默吞掉。
+    if (!bypass && err !== null) {
+      const declaredExit = e.exit_code
+      if (declaredExit === undefined) {
+        bypass = `命令非零退出（${err}）却没有声明 exit_code —— ` +
+                 `失败的命令产不出被记录的输出；若非零退出是预期的，在证据里写明 exit_code`
+      } else if (Number(declaredExit) !== Number(err)) {
+        bypass = `退出码对不上：记录声明 ${declaredExit}，实测 ${err}`
+      }
+    }
+
     if (existsSync(target)) {
       got = createHash('sha256').update(readFileSync(target)).digest('hex')
     }
-    const match = got === e.raw_output_sha256
-    rerunResults.push({ ...e, got, match, err })
-    if (!match) {
+    // 第三种形态：**命令自己把哈希打印到 stdout**。
+    // `set -e; D=$(mktemp -d); …; shasum -a 256 "$D/out.txt"` 这一类——
+    // 被测内容落在跑完即删的临时目录里，唯一留下的就是那行哈希。
+    // 〔R5-02 修复过程中发现〕此前这两条证据被 DESTRUCTIVE 过滤器静默剔除，
+    // 从没跑到这里；解除剔除后它们判红，根因是门在哈希别的东西。
+    if (got !== e.raw_output_sha256 && existsSync(out)) {
+      const printed = readFileSync(out, 'utf8').match(/^([0-9a-f]{64})\s/m)
+      if (printed) got = printed[1]
+    }
+    if (got === null && stashed) {
+      bypass = bypass ?? `命令没有产出它声明的 ${target}——原有文件已被本门移走，` +
+                         `说明记录里的哈希来自一个**不是这条命令产生**的文件`
+    }
+    // 无论判定结果如何都把原文件放回去：本门是只读的审计者，不该破坏工作树。
+    if (stashed && existsSync(stashed) && !existsSync(target)) renameSync(stashed, target)
+
+    // ── excerpt 必须真的来自重跑输出 ────────────────────────────────
+    // 〔R4/机器层 P1-7 修复 · 现存最大的洞〕此前 excerpt 与 answer 与实测输出
+    // **完全无绑定**：把 M0-1 的结论改成与实测**完全相反**
+    //（"四个库全都拿不到颜色/字号/图层，H0 成立"），command 与 sha256 一字不动，
+    // 本门打印「PASS，24/24 条哈希对上」，退出码 0。
+    //
+    // 哈希证明的是**命令跑过**；而记录里唯一被人读、唯一驱动 doc_action 与
+    // 文档改写的那部分，不受任何约束。
+    // **R3 把编造从 verdict 层赶走，编造原样搬进了 excerpt 层。**
+    //
+    // excerpt 自述是「输出里承重的那几行逐字」，那就按字面检验：
+    // 它的每一行（去掉纯分隔/省略行）都必须**逐字出现在重跑输出里**。
+    // 允许节选（行的子集）与重排，不允许出现输出里没有的行。
+    let excerptMiss = null
+    if (!bypass && got === e.raw_output_sha256 && existsSync(target)) {
+      const outText = readFileSync(target, 'utf8')
+      const flat = outText.replace(/[ \t]+/g, ' ')
+      const lines = String(e.excerpt ?? '').split('\n')
+        .map(l => l.replace(/[ \t]+/g, ' ').trim())
+        // `〔…〕` 是本仓库统一的**编者注**约定（解释这条证据的意义），
+        // 它本来就不是输出的一部分，排除。其余行一律按逐字核对。
+        // 长度下限只排纯分隔行，不排短内容行：`grep -c` 类命令的承重输出
+        // 就是一个 `1`，把它当"没有可核对内容"是门在惩罚最干净的那种证据。
+        .filter(l => l.length >= 1 && !/^[-=_.·…\s]+$/.test(l) && !/^〔/.test(l))
+      const missing = lines.filter(l => !flat.includes(l))
+      if (lines.length && missing.length) {
+        excerptMiss = `excerpt 有 ${missing.length}/${lines.length} 行不在重跑输出里 —— ` +
+                      `第一条：${JSON.stringify(missing[0].slice(0, 60))}`
+      }
+      if (!lines.length && String(e.excerpt ?? '').trim()) {
+        excerptMiss = 'excerpt 全部由分隔符/省略号构成，不含任何可核对的内容行'
+      }
+    }
+    if (excerptMiss) note(e.id, `evidence[${e.idx}] 的 ${excerptMiss}`)
+
+    const hashOk = got === e.raw_output_sha256
+    const match = hashOk && !bypass && !excerptMiss
+    rerunResults.push({ ...e, got, match, err, bypass, excerptMiss })
+    if (bypass) {
+      note(e.id, `重跑 evidence[${e.idx}] 不成立：${bypass}`)
+    } else if (!hashOk) {
       note(e.id, `重跑 evidence[${e.idx}] 的哈希对不上：记录 ${String(e.raw_output_sha256).slice(0, 12)}… 实测 ${String(got ?? '（无输出）').slice(0, 12)}…`)
     }
   }
   rmSync(tmp, { recursive: true, force: true })
+}
+
+// 〔R5-02〕带哈希却进不了重跑池 = 那个 64 位十六进制**没有任何人验过**。
+// 它比「声明不可复现」更坏：后者至少诚实，前者看起来像证据。
+for (const x of excludedFromRerun) {
+  note(x.id, `evidence[${x.idx}] 带 64 位哈希却无法重跑（${x.why}）—— ` +
+             `该哈希从未被验证过。要么改成可重跑的命令，要么显式声明 reproducible:false 并给理由`)
 }
 
 // ── 报告 ────────────────────────────────────────────────────────────────
@@ -265,7 +435,9 @@ console.log(`记录 ${records.size}/${Object.keys(REQUIRED).length}`)
 console.log(`  resolved ${byVerdict('resolved')}   design-changed ${byVerdict('design-changed')}   still-blocked ${byVerdict('still-blocked')}`)
 if (rerunResults.length) {
   const ok = rerunResults.filter(r => r.match).length
-  console.log(`  重跑验证 ${ok}/${rerunResults.length} 条哈希对上` + (NO_RERUN ? '' : `（抽样，用 --rerun-all 全跑）`))
+  console.log(`  重跑验证 ${ok}/${rerunResults.length} 条哈希对上` +
+    (SAMPLED ? `  ⚠️ 抽样运行（--sample），共 ${rerunnable.length} 条可重跑，本次绿灯不完整`
+             : `（全部 ${rerunnableFinal.length} 条）`))
 } else if (NO_RERUN) {
   console.log('  重跑验证：已跳过（--no-rerun）⚠️ 本次绿灯不构成「记录来自实测」的证据')
 } else {
@@ -274,7 +446,7 @@ if (rerunResults.length) {
 console.log()
 
 if (!problems.length) {
-  console.log('PASS  M0 记录齐全、结构合法、抽样重跑哈希一致')
+  console.log(`PASS  M0 记录齐全、结构合法、${rerunResults.length} 条证据全部重跑且哈希一致`)
   process.exit(0)
 }
 

@@ -43,11 +43,25 @@ const POSITIONAL = /末行|末段|同上|头注/
 
 const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
-/** 解析一条 [E: ...] 的内容为 (target, anchor) 对 */
+/**
+ * 解析一条 [E: ...] 的内容为 (target, anchor) 对。
+ *
+ * 〔R3 修复 · gate-hollow〕原实现对**任何不匹配三种形态的段**静默丢弃：
+ * 不计入 stats.total、不进 unresolved、不报错。于是本门引入了它取代 D-1 时
+ * 要消灭的**同一类空心**——D-1 放过 `[E: 我瞎编的.md#不存在的锚]`，
+ * 本门放过 `[E: 我瞎编的#不存在的锚]`（少一个 .md 后缀即可）。
+ * 负例 R-1 只覆盖了有 .md 后缀的那一半。
+ *
+ * 现在第二个返回值是**无法解析的原文段**，调用方必须把它们计入不可解析。
+ */
 function parsePointer(body) {
   const out = []
+  const junk = []
   let currentTarget = null
-  for (const seg of body.split(/[,，]/)) {
+  // 分隔符：逗号与分号，全角半角都算。
+  // 〔R3 修复〕原本只 split 逗号，于是 `A.md#x；B.md#y` 整条被当成一段、
+  // 三种形态都不匹配、被静默丢弃 —— 全角分号在本文档集里是通用分隔符。
+  for (const seg of body.split(/[,，;；]/)) {
     const s = seg.trim()
     if (!s) continue
     const withFile = s.match(/^([^#\s]+\.md|<[^>]+>)\s*#\s*(.+)$/)
@@ -62,9 +76,60 @@ function parsePointer(body) {
       continue
     }
     const fileOnly = s.match(/^([^#\s]+\.md)$/)
-    if (fileOnly) { currentTarget = fileOnly[1]; out.push({ target: currentTarget, anchor: null }) }
+    if (fileOnly) { currentTarget = fileOnly[1]; out.push({ target: currentTarget, anchor: null }); continue }
+
+    // ── 以下三类原本全被静默丢弃，逐类认领 ────────────────────────────
+    // (a) S0 实测记录：`.loop/m0/M0-2.json`。它们是承重引用
+    //     （01-CONTRACTS §1.2.2.0 的裁定就挂在上面），却从来没被本门检查过。
+    const record = s.match(/^((?:\.loop\/|\.attack\/)[^#\s]+\.json)(?:\s*#\s*(.+))?$/)
+    if (record) { currentTarget = record[1]; out.push({ target: currentTarget, anchor: record[2]?.trim() ?? null }); continue }
+
+    // (b) 省了 .md 后缀的规划文档：`00-PREMISE#B4-5`。
+    //     这正是审计点名的那一类——D-1 放过带 .md 的，本门放过不带 .md 的。
+    const bareStem = s.match(/^([A-Za-z0-9][A-Za-z0-9_-]*)\s*#\s*(.+)$/)
+    if (bareStem && PLAN_DOCS.includes(bareStem[1] + '.md')) {
+      currentTarget = bareStem[1] + '.md'
+      out.push({ target: currentTarget, anchor: bareStem[2].trim() })
+      continue
+    }
+
+    // (c) 外部标识符（URL / arXiv / DOI）：合法引用，但本门是离线的，判不了。
+    //     单列一档，既不冒充可解析，也不混进欠债。
+    if (/^(https?:\/\/|arxiv:|arXiv:|doi:|DOI:)/i.test(s)) { out.push({ target: '(外部)', anchor: s, external: true }); continue }
+
+    // (c2) 仓库内相对路径（复现脚本、门代码、夹具）：`gates/repro/x.py`、`src/status.mjs`。
+    //      它们是承重引用——§7.2.2 的裁定就挂在一条复现脚本上——存在性必须被检查。
+    const repoPath = s.match(/^((?:gates|src|checks|scripts)\/[^\s#]+\.[a-z0-9]{1,4})(?:\s*#\s*(.+))?$/i)
+    if (repoPath) { currentTarget = repoPath[1]; out.push({ target: currentTarget, anchor: repoPath[2]?.trim() ?? null }); continue }
+
+    // (d) 打捞：段首带中文标签时（`一手：arXiv:…`、`同向记录 ext-x.md#R9`），
+    //     上面几条的锚定正则都不匹配。在段内任意位置搜一次可识别的目标。
+    //     打捞不到才算无法解析——但打捞**只认完整形态**，不猜。
+    const salvageFile = s.match(/([^\s#，,;；]+\.md)\s*#\s*([^，,;；]+)$/)
+    if (salvageFile) { currentTarget = salvageFile[1]; out.push({ target: currentTarget, anchor: salvageFile[2].trim() }); continue }
+    const salvageUrl = s.match(/(https?:\/\/\S+|(?:arxiv|doi):\s*\S+)/i)
+    if (salvageUrl) { out.push({ target: '(外部)', anchor: salvageUrl[1], external: true }); continue }
+
+    // (e) 锚点续写省掉了井号：`[E: ext-orchestration.md#B, 核验表13-19]`
+    //     第二段是**同一目标**的另一个锚，只是作者没敲那个 `#`。人读得懂，旧解析器读不懂。
+    //     〔R4/机器层 P1-9 修复〕本门此前宣称「不再静默丢弃」，实测**仍在丢**：
+    //     全 9 份文档 1635 个段里有 145 个（8.9%）落在这一形态上被无声吞掉，
+    //     而宣称的 92.2% 可解析率的分母正好把它们排除在外。
+    //     最刺眼的证据：同一个锚 `假独立佐证登记`，在 04-ORCHESTRATION 写成
+    //     `#假独立佐证登记` 被正常解析，在 00-PREMISE 少个井号就被丢弃——
+    //     **指针的可解析性取决于作者有没有敲那个符号。**
+    if (currentTarget && !/^[<（(]/.test(s)) {
+      out.push({ target: currentTarget, anchor: s })
+      continue
+    }
+
+    // 三种形态都不匹配 —— 不许静默丢弃。
+    // 纯散文注解（不含 # 且不像文件名）是合法的补充说明，不计；
+    // 但凡带 # 的、或形如「名字.扩展名」的，都是**长得像指针却解析不了**的东西，
+    // 必须暴露出来。
+    if (/#/.test(s) || /^[^\s]+\.[a-z0-9]{1,5}$/i.test(s)) junk.push(s)
   }
-  return out
+  return { pointers: out, junk }
 }
 
 /**
@@ -126,28 +191,39 @@ function resolveAnchor(text, anchor) {
 
 // ── 扫描 ────────────────────────────────────────────────────────────────
 const corpusCache = new Map()
-const readCorpus = f => {
-  if (!corpusCache.has(f)) {
-    const p = join(CORPUS, f)
-    corpusCache.set(f, existsSync(p) ? readFileSync(p, 'utf8') : null)
+const readCorpus = (f, base = CORPUS) => {
+  const key = `${base}::${f}`
+  if (!corpusCache.has(key)) {
+    const p = join(base, f)
+    corpusCache.set(key, existsSync(p) ? readFileSync(p, 'utf8') : null)
   }
-  return corpusCache.get(f)
+  return corpusCache.get(key)
 }
 
 // ── 已声明排除的语料 ────────────────────────────────────────────────────
 // 某些语料在**某些仓库**里被刻意不收录（例如公开仓不收对第三方包的逆向档案）。
 // 指向它们的指针既不是「欠债」（不是我们写错了），也不能算「可解析」（读者确实找不到）。
 // 它是第三类状态：**已声明排除**——前提是排除本身被显式记录并说明理由。
-// 判据：research/v2/EXCLUDED.md 存在，且文件名以 `\`名字\`` 或表格首列的形式出现在其中。
+// 判据：research/v2/EXCLUDED.md 存在，且文件名出现在它的 ```excluded 围栏块里。
 // 没有这份声明，缺文件就是缺文件，照旧判红。
+//
+// 〔口径与 check_doc_metrics 共用同一个块〕原实现扫全文反引号，于是
+// EXCLUDED.md 里「这几份**不在此列**」那句提到的文件也会被当成已排除——
+// 一句说明反而扩大了豁免面。两道门读同一个围栏块，就不会各自漂。
 const excluded = new Set()
 const exclDecl = join(CORPUS, 'EXCLUDED.md')
 if (existsSync(exclDecl)) {
   const d = readFileSync(exclDecl, 'utf8')
-  for (const m of d.matchAll(/`([A-Za-z0-9_.-]+\.md)`/g)) excluded.add(m[1])
+  const block = d.match(/```excluded\n([\s\S]*?)```/)
+  if (!block) throw new Error('EXCLUDED.md 缺 ```excluded 声明块 —— 排除必须是机器可读的')
+  for (const line of block[1].split('\n')) {
+    const f = line.trim()
+    if (/\.md$/.test(f)) excluded.add(f)
+  }
 }
 
-const stats = { total: 0, T1: 0, T2: 0, fuzzy: 0, positional: 0, missing: 0, noFile: 0, selfCite: 0, declaredExcluded: 0 }
+const stats = {
+  unparseable: 0, external: 0, total: 0, T1: 0, T2: 0, fuzzy: 0, positional: 0, missing: 0, noFile: 0, selfCite: 0, declaredExcluded: 0 }
 const unresolved = []
 const selfCites = []
 
@@ -157,9 +233,19 @@ for (const doc of PLAN_DOCS) {
   const text = readFileSync(p, 'utf8')
   for (const m of text.matchAll(/\[E:([^\]]*)\]/g)) {
     const line = text.slice(0, m.index).split('\n').length
-    for (const { target, anchor } of parsePointer(m[1])) {
+    const { pointers, junk } = parsePointer(m[1])
+    // 无法解析的段：形状像指针却三种形态都不匹配。计入 total 并直接判不可解析，
+    // 否则它就是一条免检通道（见 parsePointer 头注）。
+    for (const j of junk) {
+      stats.total++
+      stats.unparseable++
+      unresolved.push({ doc, line, target: '(无法解析)', anchor: j, why: '[E:] 内容不符合任何指针形态' })
+    }
+    for (const { target, anchor, external } of pointers) {
       if (TEMPLATE_TARGETS.has(target)) continue
       stats.total++
+      // 外部标识符：本门离线，无法判定；单列，不计入可解析率的分子分母。
+      if (external) { stats.external++; continue }
 
       // 00-PREMISE 自陈「不得引用本文件的裁决作为证据」（其 §下游引用规则）
       if (/^00-PREMISE/.test(target)) {
@@ -167,9 +253,39 @@ for (const doc of PLAN_DOCS) {
         selfCites.push(`${doc}:${line}  [E: ${target}#${anchor ?? ''}]`)
         continue
       }
-      if (PLAN_DOCS.includes(target)) continue // 规划文档内部互引，不由本门管
+      // 〔R4 修复 · gate-hollow〕原写作 `if (PLAN_DOCS.includes(target)) continue`，
+      // 注释是「规划文档内部互引，不由本门管」——于是 9 份规划文档之间的引用
+      // **一条都没被检查过**。实证：往 05-TESTING 追加
+      // `[E: 01-CONTRACTS.md#这个锚点根本不存在XYZ]`，门退出码 0。
+      // 那正是本门声称取代 D-1 的那一类，而且发生在引用量最大的地方
+      // （01-CONTRACTS 是唯一规范源，被其余八份反复引用）。
+      // 现在与语料文件同等对待：文件必存在（同一目录下），锚点必可解析。
+      if (PLAN_DOCS.includes(target)) {
+        const planText = readCorpus(target, ROOT)
+        if (planText === null) {
+          stats.noFile++
+          unresolved.push({ doc, line, target, anchor, why: '规划文档不存在' })
+          continue
+        }
+        if (!anchor) { stats.T1++; continue }
+        const pr = resolveAnchor(planText, anchor)
+        stats[pr.tier]++
+        if (pr.tier === 'fuzzy' || pr.tier === 'positional' || pr.tier === 'missing') {
+          unresolved.push({ doc, line, target, anchor, why: pr.why ?? '锚点在规划文档中找不到' })
+        }
+        continue
+      }
 
       if (excluded.has(target)) { stats.declaredExcluded++; continue }
+
+      // S0 实测记录 / 攻击台账：判文件是否存在即可。
+      // 记录**内部**的结构由 check_m0.mjs 负责，本门不重复。
+      if (/\.json$/.test(target) || /^(gates|src|checks|scripts)\//.test(target)) {
+        if (existsSync(join(ROOT, target))) { stats.T1++; continue }
+        stats.noFile++
+        unresolved.push({ doc, line, target, anchor, why: '被引用的仓库内文件不存在' })
+        continue
+      }
 
       const corpus = readCorpus(target)
       if (corpus === null) {
@@ -205,22 +321,44 @@ if (stats.total === 0) {
   process.exit(2)
 }
 
-const key = u => `${u.target}#${u.anchor}`
+// 〔R3 修复 · gate-hollow〕棘轮的键原本只由 (目标, 锚) 构成，**不含出处文档**。
+// 于是「新增坏指针」被定义成「新增一个此前没见过的 (目标,锚) 组合」，
+// 而不是「新增一条不可解析的引用」——已登记的 109 个坏 pair 成了 109 张
+// **通用免死金牌**：任何文档、任意数量的全新伪造引用只要复用其中之一，门恒绿。
+// 其中还包括本门自己的反面教材字符串 `我瞎编的.md#根本不存在的锚`
+// （R2 写台账时被 --update-debt 一并登记了进去）。
+//
+// 现在键含出处文档，且登记表是**多重集**（记出现次数）：
+//   · 在新文档里复用一个已知坏 pair → 新键 → 红
+//   · 在同一文档里增加该 pair 的出现次数 → 计数上升 → 红
+// 「欠债只能下降」这条主张因此从「坏引用的**种类**不可变坏」
+// 恢复成读者真正关心的「引用质量不可变坏」。
+const key = u => `${u.doc}\t${u.target}#${u.anchor}`
+const keyLabel = k => { const [d, r] = k.split('\t'); return `${d}  ${r}` }
+const countKeys = us => {
+  const m = {}
+  for (const u of us) m[key(u)] = (m[key(u)] ?? 0) + 1
+  return m
+}
 
 if (process.argv.includes('--list-unresolved')) {
-  for (const u of unresolved) console.log(`${u.doc}:${u.line}\t${key(u)}\t${u.why}`)
+  for (const u of unresolved) console.log(`${u.doc}:${u.line}\t${u.target}#${u.anchor}\t${u.why}`)
   process.exit(0)
 }
 
 if (process.argv.includes('--update-debt')) {
-  const debt = [...new Set(unresolved.map(key))].sort()
+  const counts = countKeys(unresolved)
+  const total = Object.values(counts).reduce((a, b) => a + b, 0)
   writeFileSync(DEBT_FILE, JSON.stringify({
-    note: '已知不可解析的 [E:] 指针。只能减少，不能增加。还清后必须销账，否则本门判红。',
+    note: '已知不可解析的 [E:] 指针。键 = 出处文档 + 目标 + 锚，值 = 出现次数。' +
+          '种类与次数都只能减少。还清后必须销账，否则本门判红。',
+    key_format: '<出处文档>\\t<目标>#<锚>',
     generated_by: 'node gates/check_pointers.mjs --update-debt',
-    count: debt.length,
-    pointers: debt,
+    distinct: Object.keys(counts).length,
+    occurrences: total,
+    pointers: Object.fromEntries(Object.entries(counts).sort(([a], [b]) => a < b ? -1 : 1)),
   }, null, 1) + '\n')
-  console.log(`已登记 ${debt.length} 条欠债 → .attack/pointer-debt.json`)
+  console.log(`已登记 ${Object.keys(counts).length} 种 / ${total} 次欠债 → .attack/pointer-debt.json`)
   process.exit(0)
 }
 
@@ -228,8 +366,9 @@ if (process.argv.includes('--update-debt')) {
 console.log('[E:] 溯源指针门\n')
 console.log(`扫描 ${PLAN_DOCS.length} 份规划文档，共 ${stats.total} 个 (目标, 锚) 实例`)
 console.log(`  T1 字面标记 ${stats.T1}   T2 约定推导 ${stats.T2}   模糊 ${stats.fuzzy}   位置性 ${stats.positional}   找不到 ${stats.missing}   文件不存在 ${stats.noFile}`)
+console.log(`  外部标识符 ${stats.external}（URL/arXiv/DOI，本门离线判不了，单列）   无法解析 ${stats.unparseable}（形似指针但不符任何形态）`)
 const resolvable = stats.T1 + stats.T2
-const inScope = stats.total - stats.declaredExcluded
+const inScope = stats.total - stats.declaredExcluded - stats.external
 console.log(`  可解析率 ${(resolvable / inScope * 100).toFixed(1)}%（分母已剔除已声明排除的部分）`)
 if (stats.declaredExcluded) {
   console.log(`  ⚠️  另有 ${stats.declaredExcluded} 个指针（占全部 ${(stats.declaredExcluded / stats.total * 100).toFixed(1)}%）指向本仓库**已声明排除**的语料，`)
@@ -244,27 +383,40 @@ if (!existsSync(DEBT_FILE)) {
   process.exit(1)
 }
 const debt = JSON.parse(readFileSync(DEBT_FILE, 'utf8'))
-const known = new Set(debt.pointers)
-const now = new Set(unresolved.map(key))
+if (Array.isArray(debt.pointers)) {
+  console.log('FAIL  欠债登记表还是旧的「只按指针文本作键」格式（数组）——')
+  console.log('      该格式让已登记的坏 pair 成为跨文档通用的免死金牌。')
+  console.log('      修法: node gates/check_pointers.mjs --update-debt')
+  process.exit(1)
+}
+const known = debt.pointers ?? {}
+const nowCounts = countKeys(unresolved)
 
-const brandNew = [...now].filter(k => !known.has(k))
-const settled = [...known].filter(k => !now.has(k))
+// 新增 = 新键，或已知键的出现次数上升
+const brandNew = Object.entries(nowCounts)
+  .filter(([k, n]) => n > (known[k] ?? 0))
+  .map(([k, n]) => ({ k, n, was: known[k] ?? 0 }))
+const settled = Object.entries(known)
+  .filter(([k, n]) => (nowCounts[k] ?? 0) < n)
+  .map(([k, n]) => ({ k, n, now: nowCounts[k] ?? 0 }))
 
 if (brandNew.length) {
   failed++
-  console.log(`FAIL  新增不可解析指针 · ${brandNew.length} 条（棘轮方向：只许减少）`)
-  for (const k of brandNew.slice(0, 15)) {
+  console.log(`FAIL  新增不可解析指针 · ${brandNew.length} 处（棘轮方向：种类与次数都只许减少）`)
+  for (const { k, n, was } of brandNew.slice(0, 15)) {
     const u = unresolved.find(x => key(x) === k)
-    console.log(`      ${u.doc}:${u.line}  ${k}  —— ${u.why}`)
+    console.log(`      ${keyLabel(k)}  ${was} → ${n} 次  —— ${u?.why ?? ''}`)
   }
 } else {
-  console.log(`PASS  新增不可解析指针 · 0 条（已知欠债 ${known.size} 条）`)
+  const dk = Object.keys(known).length
+  const dn = Object.values(known).reduce((a, b) => a + b, 0)
+  console.log(`PASS  新增不可解析指针 · 0 条（已知欠债 ${dk} 种 / ${dn} 次）`)
 }
 
 if (settled.length) {
   failed++
-  console.log(`FAIL  欠债已还清但未销账 · ${settled.length} 条（登记表会腐，必须同步）`)
-  for (const k of settled.slice(0, 15)) console.log(`      ${k}`)
+  console.log(`FAIL  欠债已还清但未销账 · ${settled.length} 处（登记表会腐，必须同步）`)
+  for (const { k, n, now } of settled.slice(0, 15)) console.log(`      ${keyLabel(k)}  ${n} → ${now} 次`)
   console.log('      修法: node gates/check_pointers.mjs --update-debt')
 } else {
   console.log('PASS  欠债登记表与现状一致')

@@ -1,0 +1,5 @@
+{
+ "generated_by": "node gates/check_status_exhaustive.mjs",
+ "legal_vectors": 27786240,
+ "illegal_vectors": 4561920
+}

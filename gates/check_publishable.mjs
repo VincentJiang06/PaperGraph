@@ -12,7 +12,8 @@
 // 用法:  node gates/check_publishable.mjs [目录]
 // 退出码: 0 = 可发布，1 = 有阻塞项
 
-import { readFileSync, readdirSync, statSync } from 'node:fs'
+import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs'
+import { execFileSync } from 'node:child_process'
 import { join, relative, basename } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -23,6 +24,22 @@ const SKIP_DIRS = new Set(['.git', 'node_modules', '.archive', '.venv', '__pycac
 
 // ② 本机绝对路径：只认用户主目录前缀，`~/...` 是可以的
 const LOCAL_PATH = /\/Users\/[a-z][a-z0-9_-]*\//gi
+
+/**
+ * 路径检查的**冻结记录豁免**——一条豁免，因此必须把论证写全。
+ *
+ * `.attack/` 是各轮攻击的 findings 全量，`.archive/` 是 v1 的原样归档。
+ * 两者都是**只读的历史记录**，且 `.attack/r1-findings.sha256` 把其中一份的哈希钉死了。
+ * 要清掉里面的绝对路径就得改写它们，而改写一份自带防篡改哈希的攻击记录，
+ * 是拿「证据可信」去换「路径好看」——这个交换在本项目里方向明显是错的。
+ *
+ * 代价评估：泄露的是用户名与一段目录结构，而用户名在 git 提交作者里本来就在。
+ * 于是净收益接近零，净损失是一份不再可信的记录。
+ *
+ * 豁免的条件是**不可静默**：命中数照常统计并单独打印。
+ * 一条被藏起来的豁免会长大，一条每次都被念出来的不会。
+ */
+const FROZEN_RECORD_DIRS = ['.attack/', '.archive/']
 
 // ③ 排除清单：第三方（DSH）内部实现的逆向调研。
 //    DSH 本身是 npm 公开包，这不是保密问题——是「别把别人包的逆向档案当自己仓库的内容发布」。
@@ -57,8 +74,38 @@ function walk(dir, out = []) {
   return out
 }
 
-const files = walk(ROOT)
-const problems = { secrets: [], paths: [], excluded: [] }
+/**
+ * 扫描范围 = **git 真的会推上去的那些文件**。
+ *
+ * 〔为什么改成问 git〕本门原先自己走目录树，只跳过一张硬编码的 SKIP_DIRS。
+ * 于是它把 `.venv-repro/`（一个本机 Python 虚拟环境，已在 .gitignore 里）整个扫了进去，
+ * 报出 30+ 处「本机绝对路径」和 1 处「PEM 私钥」——全都在 cryptography 包的测试夹具里。
+ * 一道**噪音远多于信号**的发布门，结果是没人看它，跟没有一样。
+ *
+ * `git ls-files -co --exclude-standard` 给的正是「已跟踪 + 未跟踪但未被忽略」，
+ * 也就是发布面的精确定义。口径与 .gitignore 绑定之后，
+ * 「加进 .gitignore」与「不发布」从此是同一件事，不会再分叉。
+ */
+function publishableFiles(root) {
+  if (!existsSync(join(root, '.git')) && !gitTopLevel(root)) return walk(root)
+  try {
+    const out = execFileSync('git', ['-C', root, 'ls-files', '-co', '--exclude-standard'],
+                             { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 })
+    return out.split('\n').filter(Boolean).map(f => join(root, f))
+      .filter(p => { try { return statSync(p).size < 8 * 1024 * 1024 } catch { return false } })
+  } catch {
+    // git 不可用时退回自走目录树，并**明说**范围不同——静默退化会让读者以为口径一致
+    console.log('注：git 不可用，退回自走目录树；扫描范围可能宽于实际发布面\n')
+    return walk(root)
+  }
+}
+function gitTopLevel(root) {
+  try { return execFileSync('git', ['-C', root, 'rev-parse', '--show-toplevel'], { encoding: 'utf8' }).trim() }
+  catch { return null }
+}
+
+const files = publishableFiles(ROOT)
+const problems = { secrets: [], paths: [], frozenPaths: [], excluded: [] }
 
 for (const f of files) {
   const rel = relative(ROOT, f)
@@ -83,11 +130,12 @@ for (const f of files) {
   }
 
   const seen = new Set()
+  const frozen = FROZEN_RECORD_DIRS.some(d => rel.startsWith(d))
   for (const m of text.matchAll(LOCAL_PATH)) {
     if (seen.has(m[0])) continue
     seen.add(m[0])
     const line = text.slice(0, m.index).split('\n').length
-    problems.paths.push({ rel, line, sample: m[0] })
+    ;(frozen ? problems.frozenPaths : problems.paths).push({ rel, line, sample: m[0] })
   }
 }
 
@@ -95,6 +143,14 @@ console.log(`发布前门 — ${ROOT}`)
 console.log(`扫描 ${files.length} 个文件\n`)
 
 let failed = 0
+
+// ①.5 冻结记录里的路径：**豁免，但每次都念出来**（论证见 FROZEN_RECORD_DIRS）
+if (problems.frozenPaths.length) {
+  const dirs = [...new Set(problems.frozenPaths.map(p => p.rel.split('/')[0] + '/'))]
+  console.log(`豁免  冻结记录里的本机绝对路径 · ${problems.frozenPaths.length} 处（${dirs.join('、')}）`)
+  console.log('      理由：改写自带防篡改哈希的攻击记录，是拿「证据可信」换「路径好看」。')
+  console.log('      泄露面是用户名 + 一段目录结构，而用户名在 git 提交作者里本来就在。\n')
+}
 
 // ① 密钥
 if (problems.secrets.length) {

@@ -11,6 +11,17 @@ credentials.*
 
 # DSH 运行时产物
 .dsh/
+
+# ⚠️ 父仓（dsh-projects/）的 .gitignore 有一条 `.loop/`，是给各项目的**运行时
+#    loop 状态**用的。但本仓库的 `.loop/m0/` 是**承重证据**：12 条 M0 实测记录，
+#    README 与 07-ATTACK-LEDGER 都在引它们，`gates/check_m0.mjs` 逐条重跑对哈希。
+#    深层 .gitignore 优先，所以这一行把它救回来。
+#    〔怎么发现的〕把发布面改成「git 会推的那些文件」之后，这 12 条记录静默地
+#    掉出了发布集——README 里指向它们的指针在同步树上全部解析不了，指针门抓住了。
+#    一条为别的目的写的忽略规则，跨仓库继承过来就成了证据链上的洞。
+!.loop/
+!.loop/**
+
 runs/*/session.jsonl
 runs/*/*.zst
 
@@ -46,3 +57,25 @@ build/
 data/
 data/**/db/
 **/db/semantic/
+.venv-repro/
+gates/repro/out/
+
+# M0 证据的重跑产物 —— check_m0 每次运行都会重新生成它们（记录里的 command
+# 自带 `> out-xxx.txt`）。它们是**产物不是源**，且内容里带本机绝对路径
+# （失败命令的错误信息原样落盘）。发布面不需要它们，重跑的人自己会得到一份。
+out-*.txt
+
+# ── 第三方（DSH）内部实现的逆向调研：**本地保留，不发布** ────────────────
+# 决策来自仓库所有者：仓库保持 public，但这一类调研不推上去。
+# DSH 本身是 npm 公开包，所以这不是保密问题——是「别把别人包的逆向档案
+# 当成自己仓库的内容发布」。自己项目的考古（gt-pg-*）与自己仓库的方法论
+# （gt-house-method）**不在此列**，它们照常发布。
+#
+# `gates/check_publishable.mjs` 的 EXCLUDED_BASENAMES 与这几行是同一条约束的
+# 两个执行点：.gitignore 让它们不进发布面，门在它们万一被 `git add -f` 强行
+# 塞回来时判红。两处都在，是因为任何一处单独都能被绕过。
+research/v2/GROUND-TRUTH-CORRECTIONS.md
+research/v2/gt-evidence-substrate.md
+research/v2/gt-exec-security.md
+research/v2/gt-orchestration.md
+research/v2/gt-profile-plugin.md

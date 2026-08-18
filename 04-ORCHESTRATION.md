@@ -895,10 +895,10 @@ exit=0    distinct_gateway_pids=2    dsh_own_stderr_lines=0
 | M7 | 双层记账：成功数必须配 integrity 对子，由 grep 门强制 [E: gt-house-method.md#M7] | §4.6 停机报告的五项必填 |
 | M11 | 把「太严的门」也当缺陷记——逼着记录说假话的门和放行假话的门一样坏 [E: gt-house-method.md#M11] | §7.4 的 CP-2 容量闸双向推翻条件 |
 | M12 | 成本按 subagent 数 × 真实时长记，并提前接受「更贵」 [E: gt-house-method.md#M12] | §5.5、§8.3 末段 |
-| M13 | 立刻补 `checks/gate_integrity.sh`（规范表述见 01-CONTRACTS §6.5.2 与 §9.22）[E: gt-house-method.md#M13] | 全部门的第一行 |
+| M13 | 立刻补 `checks/gate_integrity.sh`（规范表述见 01-CONTRACTS §6.5.2 与 §9.22）[E: gt-house-method.md#M13] | 全部门的第一行——且〔裁定 · S0 实测，[E: .loop/m0/M0-7.json]〕**该第一行只在从仓库外的 pinned runner 起跑、锚点是 40 位 commit sha 时才算数**；从仓库内入口调用同一个脚本，实测可被替换成 `echo OK` 而 exit 0 |
 | M14 | 台账本身要有格式门（规范表述见 01-CONTRACTS D-8.13）[E: gt-house-method.md#M14] | §4.4 的 `no-result` schema、V-4.15 |
 
-**一条 house 的未决问题在本文件里仍然未决**：`gate_integrity.sh` 自己也在 `checks/` 里，谁来证明它没被改？本仓库无答案 [E: gt-house-method.md#未决1]。已列入 §10。
+**一条 house 的未决问题在本文件里只偿了一半**：`gate_integrity.sh` 自己也在 `checks/` 里，谁来证明它没被改？house 无答案 [E: gt-house-method.md#未决1]。〔裁定 · S0 实测，[E: .loop/m0/M0-7.json]〕已偿的一半是**锚点与入口**（40 位 commit sha + 仓库外 pinned runner，红样本跑通）；未偿的一半是**那个「仓库外」在本仓库不存在**（`git remote` 数为 0）。完整交代见 §10 第 8 条。
 
 ---
 
@@ -948,7 +948,10 @@ M2（首批 checkable-answer eval）→ 等预算 A/B（A = 单线程深挖 vs B
 6. **§6.5 的执行论证保护的是「升格」，不保护「资源」。** 一个被攻陷或只是写得差的 worker 绕过网关，会真实地打爆配额、越过 robots、丢失留存决策，而产物门一条也发现不了。§6.5 (b3) 已写明，但这意味着网关本身是一个**没有强隔离兜底的软约束**。**〔裁定 · S0 实测〕这条本轮从「理论风险」升级为「观测到的行为」**（`.loop/m0/M0-6.json` 实测 C 格）：网关缺席时模型**自发**用 bash 搜寻替代通道（`which` / 扫 `PATH` / 试 `npm` / 试 `python`），并发现了本机 `127.0.0.1:6152` 代理；它没有 `curl` 的**唯一**原因是 prompt 里写了 must。**prompt 纪律不是门。**
    - **§6.1.4 的「网关被静默换进程」目前没有任何机械防线（本条与上一条同属「网关是软约束」这一族，编号沿用 6 以免打断既有引用）。**〔裁定 · S0 实测〕`.loop/m0/M0-6.json` 实测 D 格：网关中途崩溃 → DSH 换进程（pid 71338→71389）→ 退出码 0、DSH 自身 stderr **零行**、模型报告 no errors，而令牌桶 / 429 集体退避 / 跨 agent 缓存的内存态在断点被**静默清零**。应对（规则 O-13a 的 `gateway_epoch` / `gateway_boot_id` + V-4.29）**只有设计、没有实现、没有红样本**，且它防的是「重启未留痕」，**防不了「网关自己撒谎报一个假 epoch」**。在 V-4.29 落地之前，**任何一次跨越网关重启的 run，其证据的可重跑性没有依据**。另有两条未测：`reconnect.maxAttempts` 耗尽后工具被注销时模型的实际行为；streamable-http 形态（唯一能跨进程共享的形态）**一次都没跑过**。
 7. **§8.2 的 house 数据对本设计不利，且我们没有反驳它，只有结构性解释。** 「治理不等于质量」在本项目上是否成立，M2 之前无答案。
-8. **`gate_integrity.sh` 的自指问题无解**（谁证明它没被改）。house 无答案，本文件也没有。
+8. **`gate_integrity.sh` 的自指问题有一半答案，另一半仍未偿**（谁证明它没被改）。house 无答案；〔裁定 · S0 实测，[E: .loop/m0/M0-7.json]〕本文件把它改判为部分可解：
+   - **已偿的一半（红样本已跑通，不是设计）**：锚点从 tag 换成 **40 位 commit sha**，入口换成**仓库外的 pinned runner**（sha 由仓库外传入，`git archive <sha> checks` 展开到仓库外执行，再与工作树 `checks/` 逐文件 sha256 比对）。同一份被篡改的仓库：仓库内入口 **exit 0**，仓库外 pinned runner **exit 3**。**任何以 tag 为锚的旧写法一律作废**——实测 `refs/tags/*` 不受 `receive.denyDeletes` / `receive.denyNonFastForwards` 保护（强推与删除都 ACCEPTED，同实验 `refs/heads/*` 双双 REJECTED），且默认配置下 tag 不写 reflog。
+   - **未偿的一半**：本仓库 `git remote` 数为 **0**，那个 runner 与那个 40 位 sha **今天没有仓库外的存放处**；放在本机另一个文件里，对一个持有 bash 的 producer 不构成边界。另有三条残余：pinned runner 对实现细节极其脆弱（第一版 runner 仍去读仓库内台账，同样被骗过）；第一条 baseline 是 **TOFU**；「门轨道与 producer 轨道进程级隔离」在同机同用户下只是执行上下文不同，不是权限主体不同——这与本文件 §1.4「中心化不是隔离」、§6.5 (b4)「它们不构成隔离」同源，并同样适用于 02-ARCHITECTURE §C-12c 所指的「门在独立 profile 里跑」那条进程级隔离。
+   - 架构侧的对应裁定与完整残余清单见 02-ARCHITECTURE §B.9。
 9. **本文件引用的全部检索供应商限速与价格在 30–90 天内会变。** 峰谷窗口有被取消的先例（2025-09-04）；Crossref polite pool 已经失效过 16 倍。凡引用本文件的数字必须连 as-of 日期一起引用。
 
 ### §10.A 待回填 01-CONTRACTS 的条目（本文件不自行铸词）
