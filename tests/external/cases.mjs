@@ -29,7 +29,7 @@ function run(id, { topic, desc, realWorld, fetches, claim, skeleton, counterSear
   } catch (e) {
     out = { status: 'REJECTED', trace: e.message.slice(0, 90), prose: '(无成稿)', k: 0, n: 0 }
   } finally { rmSync(root, { recursive: true, force: true }) }
-  results.push({ id, topic, desc, realWorld, expectNote, expect, ...out })
+  results.push({ id, topic, desc, realWorld, expectNote, expect, fetches, claim, ...out })
 }
 
 /**
@@ -316,7 +316,11 @@ run('T4-6', {
 // ── 报告 ──────────────────────────────────────────────────────────────
 // 条数由 results 算出来。手写的自述数字会腐——本文件初稿写「12 条」而实际 13 条，
 // 正是本项目一直在抓的那一类，作者在自己的测试报告里又犯了一次。
-console.log(`外部标定测试 — 三个真实话题 / ${new Set(results.map(r => r.topic)).size} 组语料 / ${results.length} 条 claim\n`)
+// 〔又一处半硬编码〕这行原写「三个真实话题 / ${...} 组语料」——
+// 组数是算出来的，话题数是手写的「三」，同一行里一半会腐一半不会。
+// 加了 T4/T5 之后它就错了，而它每次运行都印在最上面。
+console.log(`外部标定测试 — ${new Set(results.map(r => r.topic)).size} 个真实话题 / ` +
+  `${Object.keys(SRC).length} 份文献 / ${results.length} 条 claim\n`)
 console.log(`${pad('用例', 7)}${pad('状态', 12)}${pad('簇', 6)}说明`)
 console.log('─'.repeat(100))
 let topic = null

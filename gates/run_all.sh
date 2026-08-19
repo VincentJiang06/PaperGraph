@@ -83,7 +83,8 @@ if [ "$SCOPE" = all ] || [ "$SCOPE" = everything ] || [ "$SCOPE" = s1 ]; then
   run '锚点包含门'          node gates/check_containment.mjs
   run '同源竞争读数门'      node gates/check_frame.mjs
   run 'L1-c 外部标定集'     node tests/external/l1c-external.mjs
-  run '外部标定测试(4 话题)' node tests/external/cases.mjs
+  run '外部标定测试(5 话题)' node tests/external/cases.mjs
+  run '基线对照'            node tests/external/baselines.mjs
   run '组稿器门'            node gates/check_composer.mjs
   run '端到端管线门'        node gates/check_pipeline_e2e.mjs
   run '全链路门（抓取→成稿）' node gates/check_full_chain.mjs
