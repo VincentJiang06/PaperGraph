@@ -71,6 +71,12 @@ const NEG_N = [
   'no significant difference', 'no statistically significant difference',
   'no significant association', 'no significant effect', 'no difference',
   '相当', '相仿', '接近', '无差异', '无显著差异', '未达显著', '未见差异', '无统计学差异',
+  // 〔真实中文文献 T4-5 抓到的〕中文空结果同样把被否定的主语放在算子**之前**：
+  //   「但对SPH、平均草茎长度、LSP、SSP生物学产量和经济没有显著影响。」
+  // 「没有」是 NEG-S，作用域只往后延，够不着它前面的 SPH。
+  // 与英文那一批同理，归入 NEG-N 取子句作用域。
+  '没有显著影响', '没有显著差异', '无显著影响', '无显著相关性', '无显著相关',
+  '没有显著相关', '无统计学意义', '未见显著', '差异不显著', '相关性不显著',
 ]
 
 const NEG_C = [ // 条件让步

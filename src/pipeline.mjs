@@ -80,7 +80,7 @@ export function runClaim(submission, ctx) {
   // discriminator（逐字取自锚句、且不出现在兄弟读数里）。
   // 「只有 36% 的心理学研究可以被复现」逐字转录无误、极性无误、来源真实，
   // 错在把四个判据塌成一个——那是框架问题，包含与极性两道门都看不见。
-  const frm = frameGate(ctx.snapshotText ?? '', anchorSent, submission.discriminator)
+  const frm = frameGate(ctx.snapshotText ?? '', anchorSent, submission.discriminator, payloadFields)
   record.frame_gate_passed = frm.pass
   mech.push({ gate_id: 'G-FRAME', gate_class: 'GC-0', verdict: frm.pass ? 'pass' : 'fail',
               params: { frame_version: frm.version, triggered: frm.triggered,

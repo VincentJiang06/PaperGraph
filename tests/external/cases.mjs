@@ -187,10 +187,75 @@ run('T3-6', {
   topic: 'T3', desc: 'Wouters 的中位估计 $985.3 million',
   realWorld: '第三个独立估计',
   fetches: [fetchOf('wouters', '$985.3 million')],
+  // 〔G-FRAME 抓到了我没注意到的东西〕Wouters 那句同时给了**中位数** $985.3M
+  // 与**均值** $1335.9M —— 两个同量纲读数。我写这条用例时只看见了中位数，
+  // 是门告诉我这句需要 discriminator 的。这是它第一次在**我没为它设计的用例**上触发。
   claim: base('c1', { cost: '$985.3 million' }, { cost: 'value' },
-              { metric: '资本化研发投入(中位)', sample_or_tier: '63 种新药' }),
+              { metric: '资本化研发投入(中位)', sample_or_tier: '63 种新药' }, 'median'),
   skeleton: '研发投入中位数为 {{claim:c1.cost}}。',
   counterSearch: 'AUTO',
+})
+
+// ── T4 · 真实中文文献 ────────────────────────────────────────────────
+// 本项目第一次在真实中文语料上跑整条链路。此前 CJK 归一化、中文否定表、
+// 中文数字处理**只在作者自己造的句子上验过**——那正是 SA-3 那条循环性。
+run('T4-1', {
+  topic: 'T4', desc: '全角数字 73．55％（全角句点+全角百分号）',
+  realWorld: '中文期刊排版常用全角。作者转录成半角 73.55% 是标准做法',
+  fetches: [fetchOf('cnNema', '73．55％')],
+  claim: base('c1', { rate: '73.55%' }, { rate: 'value' },
+              { metric: '杀虫率', sample_or_tier: '滤液浓100%下72h' }, '73．55％'),
+  skeleton: '杀虫率为 {{claim:c1.rate}}。',
+  counterSearch: 'AUTO',
+  expectNote: '半角载荷 vs 全角原文 —— 靠 NFKC 归一化',
+})
+run('T4-2', {
+  topic: 'T4', desc: '同句里两个并列读数（73．55％ 与 78．45％）',
+  realWorld: '两种制剂各一个杀虫率，写「杀虫率为 73.55%」不说是哪一种',
+  fetches: [fetchOf('cnNema', '73．55％')],
+  claim: base('c1', { rate: '73.55%' }, { rate: 'value' },
+              { metric: '杀虫率', sample_or_tier: '滤液浓100%下72h' }),
+  skeleton: '杀虫率为 {{claim:c1.rate}}。',
+  counterSearch: 'AUTO',
+  expectNote: 'G-FRAME 在中文上该触发',
+})
+run('T4-3', {
+  topic: 'T4', desc: '中文空结果「无显著相关性」',
+  realWorld: '把一个空结果当成支持性证据',
+  fetches: [fetchOf('cnRice', '无显著相关性')],
+  claim: base('c1', { relation: '相关性', target: '供氮水平' },
+              { relation: 'entity', target: 'entity' },
+              { metric: '反射率差值与氮素的关系', sample_or_tier: '水稻叶片' }),
+  skeleton: '反射率差值与供氮水平的 {{claim:c1.relation}} 已被报告。',
+  counterSearch: 'AUTO',
+})
+run('T4-4', {
+  topic: 'T4', desc: '中文上界限定「小于2%」',
+  realWorld: '原文写「绝对差值一般小于2%」，转录成「差值为 2%」',
+  fetches: [fetchOf('cnRice', '小于2%')],
+  claim: base('c1', { diff: '2%' }, { diff: 'value' },
+              { metric: '上下表面反射率绝对差值', sample_or_tier: '水稻叶片' }),
+  skeleton: '上下表面反射率绝对差值为 {{claim:c1.diff}}。',
+  counterSearch: 'AUTO',
+})
+run('T4-5', {
+  topic: 'T4', desc: '中文子句边界：「但」前后一正一负',
+  realWorld: '取「但」之后被否定的那半句当支持证据',
+  fetches: [fetchOf('cnJuncus', '没有显著影响')],
+  claim: base('c1', { effect: 'SPH' }, { effect: 'entity' },
+              { metric: '移栽期对 SPH 的影响', sample_or_tier: '蔺草' }),
+  skeleton: '移栽期对 {{claim:c1.effect}} 有影响。',
+  counterSearch: 'AUTO',
+})
+run('T4-6', {
+  topic: 'T4', desc: '同句「但」之前的肯定发现（不得误伤）',
+  realWorld: '「随着移栽的推迟，SFP显著增强」是真实的肯定结论',
+  fetches: [fetchOf('cnJuncus', 'SFP显著增强')],
+  claim: base('c1', { effect: 'SFP' }, { effect: 'entity' },
+              { metric: '移栽推迟对 SFP 的影响', sample_or_tier: '蔺草' }),
+  skeleton: '移栽推迟使 {{claim:c1.effect}} 增强。',
+  counterSearch: 'AUTO',
+  expectNote: '★ 假阳侧：中文否定不得越过「但」打中前半句',
 })
 
 // ── 报告 ──────────────────────────────────────────────────────────────

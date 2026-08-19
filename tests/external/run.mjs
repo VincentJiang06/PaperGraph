@@ -34,16 +34,23 @@ function sentenceWith(text, needle) {
   const i = text.indexOf(needle)
   if (i < 0) throw new Error(`快照里没有 ${JSON.stringify(needle)} —— 夹具坏了`)
   // 句末:句点/分号后跟空格+大写,或文本末尾。小数点不算句末。
+  // 中文句号/分号也是句末。〔T4-6 抓到的夹具 bug〕不认 `。` 时两句被当成一句，
+  // 前一句的否定打中了后一句的载荷 —— 那是**夹具**造出来的假阳，不是门的。
+  // 〔自纠〕初版还加了一句 `!/\d/.test(text[k+2])`，本意是躲小数点，
+  // 但小数点的判据是「前后都是数字」，而这里已经要求后面是空白——
+  // 那个多余的守卫反而让 `results; 47%` 里的分号不算句末（k+2 是 '4'），
+  // 锚句一口气吞掉三个并列子句，T2-2 与 T3-6 因此回归。
+  // 守卫写在错的位置，比没有守卫更难查。
+  const isEnd = k => {
+    const c = text[k]
+    if (/[。；]/.test(c)) return true
+    if (!/[.;]/.test(c)) return false
+    return k + 1 >= text.length || /\s/.test(text[k + 1])
+  }
   let end = i + needle.length
-  while (end < text.length) {
-    if (/[.;]/.test(text[end]) && (end + 1 >= text.length || /\s/.test(text[end + 1]))) { end++; break }
-    end++
-  }
+  while (end < text.length) { if (isEnd(end)) { end++; break } end++ }
   let start = i
-  while (start > 0) {
-    if (/[.;]/.test(text[start - 1]) && /\s/.test(text[start]) && !/\d/.test(text[start - 2] ?? '')) break
-    start--
-  }
+  while (start > 0) { if (isEnd(start - 1)) break; start-- }
   return text.slice(start, end).trim()
 }
 
@@ -68,6 +75,19 @@ const SRC = {
               url: 'https://doi.org/10.1001/jamainternmed.2017.3601', doi: '10.1001/jamainternmed.2017.3601',
               title: 'R&D Spending to Bring a Single Cancer Drug to Market',
               authors: ['Prasad V'], locator: 'abstract', content_kind: 'abstract' },
+  // ── T4 · 真实中文文献（本项目第一次在中文语料上跑整条链路） ──────────
+  cnNema:   { file: 'T4a-cn-nematode.txt', work_id: 'pmid:386886',
+              url: 'https://europepmc.org/article/CBA/386886', doi: undefined,
+              title: '生防制剂与呋喃丹颗粒剂防治根结线虫幼虫的效果',
+              authors: ['佚名'], locator: 'abstract', content_kind: 'abstract' },
+  cnRice:   { file: 'T4b-cn-rice.txt', work_id: 'pmid:382278',
+              url: 'https://europepmc.org/article/CBA/382278', doi: undefined,
+              title: '水稻叶片上下表面反射率差异及其与氮素状况的关系',
+              authors: ['佚名'], locator: 'abstract', content_kind: 'abstract' },
+  cnJuncus: { file: 'T4c-cn-juncus.txt', work_id: 'pmid:391824',
+              url: 'https://europepmc.org/article/CBA/391824', doi: undefined,
+              title: '种植密度、母本大小和移栽期对蔺草生长、开花及产量的影响',
+              authors: ['佚名'], locator: 'abstract', content_kind: 'abstract' },
   wouters:  { file: 'T3c-wouters2020.txt', work_id: 'doi:10.1001/jama.2020.1166',
               url: 'https://doi.org/10.1001/jama.2020.1166', doi: '10.1001/jama.2020.1166',
               title: 'Estimated R&D Investment Needed to Bring a New Medicine to Market',

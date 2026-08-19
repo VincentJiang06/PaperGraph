@@ -34,6 +34,7 @@ const WITH_CI = 'The median investment was $985.3 million (95% CI, $683.6 millio
 const AND_CLAUSE = 'The model reached 92% precision and 87% recall on the held-out set.'
 const COMMA_LIST = 'Accuracy was 36%, 47%, 39% across the three evaluation criteria.'
 const ONE_AND    = 'The system achieved 92% accuracy and was released under an open license.'
+const NOUN_AND   = 'The median capitalized research and development investment was estimated at $985.3 million.'
 
 // [编号, 期望pass, 正文, 锚句, discriminator, 说明]
 const CASES = [
@@ -69,6 +70,9 @@ const CASES = [
    '★ 逗号枚举：三个同量纲读数'],
   ['F-13', true,  ONE_AND, ONE_AND, '',
    '★ `and` 连的不是两个读数（一个数 + 一段文字）—— 不得误伤'],
+  ['F-14', true,  NOUN_AND, NOUN_AND, 'median',
+   '★★ `research and development` 是名词短语内部的 and：切开会让含载荷的半句丢掉 median，' +
+   ' 于是 discriminator 被判成「不是逐字片段」—— 一个理由完全错误的红（真实文献 T3-6）'],
 ]
 
 let bad = 0

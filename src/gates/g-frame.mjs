@@ -100,7 +100,7 @@ function containingSentence(body, anchor) {
  * @param {string} [discriminator] claim 自带的区分片段
  * @returns {{pass:boolean, triggered:boolean, siblings:string[], why:string|null, version:string}}
  */
-export function frameGate(body = '', anchor = '', discriminator = '') {
+export function frameGate(body = '', anchor = '', discriminator = '', payloadValues = []) {
   const b = String(body), a = String(anchor).trim()
   const base = { triggered: false, siblings: [], why: null, version: FRAME_VERSION }
   if (!a || !b.includes(a)) return { ...base, pass: true, why: '锚句不在快照里 —— 由 G-QUOTE 负责' }
@@ -118,9 +118,29 @@ export function frameGate(body = '', anchor = '', discriminator = '') {
   // 也会因为句中提到 confidence interval 而被整条丢掉（F-3 由此红过一次）。
   // 正确的粒度是：只抹掉区间本身那一段，句子的其余部分照常参与判定。
   const masked = window.replace(/[（(][^）)]*(?:confidence\s+interval|\bCI\b|置信区间)[^）)]*[）)]/gi, ' ')
-  const clauses = masked.split(/[;；，,]|\sand\s|\s与\s/).map(c => c.trim()).filter(Boolean)
+  // 分号/逗号一律切；`and` / `与` **只在两侧各有一个数时**才切。
+  // 〔真实文献 T3-6 抓到的〕`the median capitalized research and development
+  // investment … $985.3 million` 里的 and 是名词短语内部的，
+  // 切开之后含载荷的那半句丢掉了 “median”，于是 discriminator 判成
+  // 「不是锚句子句的逐字片段」—— 一个理由完全错误的红。
+  // 而 `92% precision and 87% recall` 里的 and 确实分开两个读数。
+  // 区别不在词性，在**两侧是否各自带一个数**：本门要找的就是并列的读数。
+  const hasNum = t => /\d/.test(t)
+  const clauses = masked.split(/[;；，,]/).flatMap(seg => {
+    const parts = seg.split(/\sand\s|\s与\s/)
+    return parts.length > 1 && parts.every(hasNum) ? parts : [seg]
+  }).map(c => c.trim()).filter(Boolean)
   const aMasked = a.replace(/[（(][^）)]*(?:confidence\s+interval|\bCI\b|置信区间)[^）)]*[）)]/gi, ' ')
-  const mine = clauses.find(c => aMasked.includes(c) || c.includes(aMasked.replace(/[;；]\s*$/, '').trim()))
+  // 锚句所在的那个子句 = **含本 claim 载荷**的那一个。
+  // 〔真实中文文献 T4-1 抓到的〕原实现取「第一个是锚句子串的子句」，
+  // 于是在 `…分别为100％，75％，和50％，结果发现，…杀虫率分别为73．55％和78．45％`
+  // 这种句子上选中了 `分别为100％` —— 一个与载荷无关的子句，
+  // 于是 discriminator「不是锚句子句的逐字片段」，判红的理由完全是错的。
+  // 一道理由错了的红，和放行一样坏：它把人引去改一个没坏的地方。
+  const inAnchor = clauses.filter(c => aMasked.includes(c) || c.includes(aMasked.replace(/[;；]\s*$/, '').trim()))
+  const pv = (payloadValues ?? []).map(String).filter(Boolean)
+  const mine = inAnchor.find(c => pv.length && pv.some(v => c.includes(v) || c.normalize('NFKC').includes(v.normalize('NFKC'))))
+    ?? inAnchor.sort((x, y) => y.length - x.length)[0]
   if (!mine) return { ...base, pass: true, why: '锚句不构成分号子句 —— 本门只看分号枚举' }
 
   const myNums = numbersIn(mine)

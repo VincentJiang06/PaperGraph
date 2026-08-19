@@ -69,7 +69,13 @@ const unifyPercent = t => t
 
 /** 一个字符串的数值归一化形态 */
 export function numericForm(s) {
-  return unifyPercent(cnNumeralsToDigits(enWordsToDigits(String(s)))).replace(/\s+/g, ' ')
+  // 〔真实中文文献 T4-1 抓到的〕先 NFKC。中文期刊排版常用全角：
+  // `73．55％` 用的是全角句点 U+FF0E 与全角百分号 U+FF05，
+  // 而作者转录成半角 `73.55%` 是标准做法。不归一化则两侧永远对不上，
+  // 一条完全合法的转录被判成假。
+  // 组稿器那边早就在扫描前 NFKC 了（E-3），这边漏了——同一个坑挖了两次。
+  return unifyPercent(cnNumeralsToDigits(enWordsToDigits(String(s).normalize('NFKC'))))
+    .replace(/\s+/g, ' ')
 }
 
 // ── 词干（仅 entity 槽） ─────────────────────────────────────────────
