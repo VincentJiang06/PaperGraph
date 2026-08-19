@@ -1,0 +1,1 @@
+The predictions made by AlphaFold had a median domain GDT_TS of 92.4;

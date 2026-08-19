@@ -22,7 +22,10 @@ const SNAP = 'AlphaFold reached 92% accuracy on CASP14. It was evaluated on 87 t
 const FETCH = {
   url: 'https://arxiv.org/abs/2401.001', body: SNAP, httpStatus: 200,
   retrievedAt: '2026-08-18T10:00:00Z', extractorVersion: 'pymupdf-1.28.2',
-  work_id: 'W1', version_id: 'v1', locator: 'p3:l12',
+  work_id: 'W1', version_id: 'v1', locator: 'jats:sec-2/p-4',
+  // G-GRADE 按 §3.3 从这两项算等级：全文 + 结构化锚 = G5，才够得着 ST-V。
+  // 〔外部标定测试 E-1 之后新增〕此前等级是夹具直接声明的，缺省还是最高档。
+  content_kind: 'fulltext', retention_tier: 'A',
   quote: 'AlphaFold reached 92% accuracy on CASP14.',
   anchorSentence: 'AlphaFold reached 92% accuracy on CASP14.',
 }

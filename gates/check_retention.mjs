@@ -61,7 +61,7 @@ const SNAP = 'AlphaFold reached 92% accuracy on CASP14.'
 const FETCH = {
   url: 'https://arxiv.org/abs/2401.001', body: SNAP, httpStatus: 200,
   retrievedAt: '2026-08-18T10:00:00Z', extractorVersion: 'pymupdf-1.28.2',
-  work_id: 'W1', version_id: 'v1', locator: 'p3:l12',
+  work_id: 'W1', version_id: 'v1', locator: 'jats:sec-2/p-4', content_kind: 'fulltext', retention_tier: 'A',
   quote: SNAP, anchorSentence: SNAP,
 }
 const CLAIM = {

@@ -56,7 +56,13 @@ export function compose(skeleton, statusById, opts = {}) {
 
   // ① 裸数字检查：先把占位符挖掉，再扫剩下的
   // 先 NFKC 归一化：全角数字「９２％」在归一化后变成半角，否则同样绕过。
-  const masked = String(skeleton).normalize('NFKC').replace(PLACEHOLDER, ' ')
+  // 占位符换成哨兵而不是空格:后面要靠它区分「单位」与「裸数字」。
+  // 〔E-3,外部标定测试发现〕骨架 `{{claim:c1.cost}} 十亿美元` 被判成裸数字——
+  // 「十亿美元」是**单位**,数字由占位符提供。结果是「X 十亿美元」这种最普通的
+  // 中文量纲写法根本写不出来,而作者会转而去写阿拉伯数字,正好绕开 W-10。
+  // 一条把正确写法也拦掉的规则,会把人推向错误写法。
+  const SENTINEL = '\u0000'
+  const masked = String(skeleton).normalize('NFKC').replace(PLACEHOLDER, SENTINEL)
   const bare = []
   for (const m of masked.matchAll(BARE_NUMBER)) {
     const n = Number(m[1])
@@ -76,7 +82,11 @@ export function compose(skeleton, statusById, opts = {}) {
     bare.push(m[0].trim())
   }
   for (const re of [SCI_NUMBER, ROMAN_NUMBER, CN_NUMBER, CN_PERCENT]) {
-    for (const m of masked.matchAll(re)) bare.push(m[0].trim())
+    for (const m of masked.matchAll(re)) {
+      // 紧跟在占位符之后 = 量纲后缀,数字已经由占位符带着 status 出场了
+      if (/\u0000\s*$/.test(masked.slice(0, m.index))) continue
+      bare.push(m[0].trim())
+    }
   }
   if (bare.length) {
     return { ok: false, denial:

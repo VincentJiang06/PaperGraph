@@ -151,7 +151,7 @@ const SNAP = 'Method X reached 99.9% accuracy on the test set.'
 const FETCH = {
   url: 'https://arxiv.org/abs/2401.999', body: SNAP, httpStatus: 200,
   retrievedAt: '2026-08-18T10:00:00Z', extractorVersion: 'pymupdf-1.28.2',
-  work_id: 'W9', version_id: 'v1', locator: 'p1:l1',
+  work_id: 'W9', version_id: 'v1', locator: 'jats:sec-1/p-1', content_kind: 'fulltext', retention_tier: 'A',
   quote: 'Method X reached 99.9% accuracy on the test set.',
   anchorSentence: 'Method X reached 99.9% accuracy on the test set.',
 }

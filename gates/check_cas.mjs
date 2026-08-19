@@ -68,7 +68,41 @@ for (const [want, run] of cases) {
 }
 if (!failed) ok('source_integrity 的 intact / not_covered / mutated 三态判定正确')
 
+// ── G-GRADE · 证据等级两侧标定（外部标定测试 E-1/E-2 之后新增） ─────────
+// 〔为什么加在这里〕等级是 §3.4 的天花板，天花板错了，后面所有门都白做。
+// 而它此前**没有任何门在算**：缺省 G5（最高档），多条证据取 max（最好那条）。
+{
+  const { gradeOfEvidence, gradeOfClaim } = await import(join(ROOT, 'src/gates/g-grade.mjs'))
+  const B = 'AlphaFold reached 92% accuracy on CASP14.'
+  const CASES = [
+    ['无快照',          {},                                                              'G0'],
+    ['引语不在正文',    { body: B, quote: '这句话不在正文里' },                          'G1'],
+    ['只有题录',        { body: B, quote: B, content_kind: 'metadata' },                 'G2'],
+    ['只有摘要',        { body: B, quote: B, content_kind: 'abstract' },                 'G3'],
+    ['未声明 kind',     { body: B, quote: B },                                           'G3'],
+    ['全文无稳定锚',    { body: B, quote: B, content_kind: 'fulltext', locator: 'p3:l12' }, 'G4'],
+    ['全文+JATS 锚',    { body: B, quote: B, content_kind: 'fulltext', locator: 'jats:sec-2/p-4' }, 'G5'],
+  ]
+  let bad = 0
+  for (const [why, f, want] of CASES) {
+    const got = gradeOfEvidence(f)
+    if (got !== want) { bad++; console.log(`FAIL  G-GRADE ${why}：期望 ${want}，实测 ${got}`) }
+  }
+  // 多条证据取**最坏**，不是最好 —— E-2 的回归
+  const worst = gradeOfClaim([
+    { fetch: { body: B, quote: B, content_kind: 'fulltext', locator: 'jats:x' } },   // G5
+    { fetch: { body: B, quote: '不在正文里' } },                                      // G1
+  ])
+  if (worst !== 'G1') { bad++; console.log(`FAIL  G-GRADE 多条证据应取最坏值 G1，实测 ${worst}`) }
+  // 未声明不得拿到最高档 —— E-1 的回归
+  if (gradeOfEvidence({ body: B, quote: B }) === 'G5') { bad++; console.log('FAIL  未声明 content_kind 却拿到 G5（fail-open 复发）') }
+  if (bad) { failed += bad } else {
+    console.log(`PASS  G-GRADE ${CASES.length} 档全部符合；多条取最坏值；未声明不得拿最高档`)
+  }
+}
+
 rmSync(store, { recursive: true, force: true })
 console.log()
 if (failed) { console.log(`${failed} 处不一致`); process.exit(1) }
 console.log('PASS  CAS 与证据卡：id 五分量敏感、断链当场拒、source_integrity 由门算')
+

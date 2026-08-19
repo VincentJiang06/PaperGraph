@@ -36,6 +36,7 @@ import { rerunGate } from './gates/g-rerun.mjs'
 import { freezeGate } from './gates/g-freeze.mjs'
 import { inferenceGate } from './gates/g-inference.mjs'
 import { attributionGate } from './gates/g-attribution.mjs'
+import { gradeOfClaim, GRADE_VERSION } from './gates/g-grade.mjs'
 import { quoteFaithful } from './normalize.mjs'
 import { polarityScope } from './gates/g-polarity.mjs'
 
@@ -121,7 +122,7 @@ export function buildGateCtx({ root, submission, evidence = [], frozen = null,
     quote,
     source_integrity: si,
     source_integrity_per_ref: perRef,
-    evidence_grade: gradeOf(evidence),
+    evidence_grade: gradeOfClaim(evidence),
     retention_tier: tierOf(evidence),
     budget_state: budgetState,
     counter_evidence_found: false,      // 由 G-CTR-SCAN 在管线内覆盖（ctr.found）
@@ -140,20 +141,24 @@ export function buildGateCtx({ root, submission, evidence = [], frozen = null,
       { gate_id: 'G-INFERENCE', gate_class: 'GC-0', verdict: inf.pass ? 'pass' : 'fail', params: inf.params, reasons: inf.reasons },
       { gate_id: 'G-ATTRIBUTION', gate_class: 'GC-0', verdict: att.verdict, params: att.params, reasons: att.reasons },
       { gate_id: 'G-INTEGRITY', gate_class: 'GC-0', verdict: si, params: { per_ref: perRef } },
+      { gate_id: 'G-GRADE', gate_class: 'GC-0', verdict: gradeOfClaim(evidence),
+        params: { grade_version: GRADE_VERSION, per_ref: evidence.map(e => e.ref?.work_id) } },
     ],
     ctx_version: CTX_VERSION,
   }
 }
 
-// 证据等级 / 留存档取全体最坏值。单条证据决定不了一条 claim 的等级。
-const GRADE_ORDER = ['G1', 'G2', 'G3', 'G4', 'G5']
-const gradeOf = ev => ev.length
-  ? GRADE_ORDER[Math.max(...ev.map(e => Math.max(0, GRADE_ORDER.indexOf(e.fetch?.evidence_grade ?? 'G5'))))]
-  : 'G5'
+// 留存档取全体**最坏**值,且未声明时按最短档 C 算。
+// 〔与 G-GRADE 同一次修复,一并扳向 fail-closed〕缺省此前是 A(最长留存),
+// 也就是说「没说留多久」= 「留最久」,而 §8.6.2 的档位上限正是拿它当天花板的。
+// 说不清自己能留多久的证据,不该因为没人问就拿到最高天花板。
+// 证据等级见 src/gates/g-grade.mjs——
+// 它此前也在这里,写成 `Math.max`(取最好)而注释说「取最坏」,
+// 且缺省是最高档 G5。两条都由外部标定测试 E-1/E-2 抓出来,已搬进独立的门。
 const TIER_ORDER = ['A', 'B', 'C']
 const tierOf = ev => ev.length
-  ? TIER_ORDER[Math.max(...ev.map(e => Math.max(0, TIER_ORDER.indexOf(e.fetch?.retention_tier ?? 'A'))))]
-  : 'A'
+  ? TIER_ORDER[Math.max(...ev.map(e => Math.max(0, TIER_ORDER.indexOf(e.fetch?.retention_tier ?? 'C'))))]
+  : 'C'
 
 /**
  * ③ 组稿视图：门算出的字段永远压过 payload。
