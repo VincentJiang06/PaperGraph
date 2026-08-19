@@ -44,6 +44,16 @@ const autoQuery = (claim, op = '反驳') => {
   return { query: [...new Set(slots)].join(' ') + ' ' + op, result_keys: [] }
 }
 const CTR = q => ({ query: q, result_keys: [] })
+
+/**
+ * 首轮那批**人会写的**自然语言 query。X-2 当时判红 2/3。
+ * E1 修复后重跑，看还剩几条 —— 这是本轮唯一一个「可用性」侧的度量。
+ */
+export const NATURAL = {
+  T1: 'AlphaFold CASP14 GDT_TS refute',
+  T2: 'psychology replication rate refute',
+  T3: 'drug development cost refute',
+}
 // discriminator：逐字取自锚句、且不出现在任何兄弟读数里的片段。
 // 原文在同一处并列给了多个同量纲读数时，G-FRAME 要求 claim 声明它取的是哪一个。
 const base = (id, payload, slot_types, metric_frame, discriminator) => ({

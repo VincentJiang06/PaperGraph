@@ -202,8 +202,15 @@ const GOLDEN = [
   // 〔R4/R4-02 修复〕这三条此前只有第一条，且它写作
   //   `c({ kind: 'K-L-T', anchor_containment_passed: true })` → ST-V，
   // 即**本门在为已被 §2.2.1 废止的单合取判据背书**——新增的门反过来给旧判据发绿灯，
-  // 是本轮最难堪的一条。K-L-T 现在是两个合取项，三种组合各占一行。
-  ['§2.2.1',  'K-L-T 两个合取项全过 → ST-V',
+  // 是本轮最难堪的一条。
+  //
+  // 〔外部标定测试 T2-4 之后〕K-L-T 现在是**三个**合取项，每一项都要有一行
+  // 单独证明它在起作用。加合取项时我把全部黄金向量的 frame_gate_passed
+  // 一律填成 true —— 于是没有任何一条向量能区分这个合取项在不在，
+  // 变异体 M-19（去掉框架检验）在本门下**存活**。
+  // 那正是本仓库栽过三次的空心门形态：约束进了 S、进了规范，
+  // 黄金集里却没有一条案例能证明它起作用。下面两行是补上的那个证明。
+  ['§2.2.1',  'K-L-T 三个合取项全过 → ST-V',
               c({ kind: 'K-L-T', anchor_containment_passed: true, polarity_scope_passed: true, frame_gate_passed: true }), ST.V],
   ['§2.2.1',  'K-L-T 包含检验过但**极性作用域不过** → 降为 K-L-A（K=2，1 簇不足）',
               c({ kind: 'K-L-T', anchor_containment_passed: true, polarity_scope_passed: false, frame_gate_passed: true,
@@ -211,8 +218,16 @@ const GOLDEN = [
   ['§1.5 1',  'K-L-T 包含检验不过 → 降为 K-L-A 处理（K 值随之为 2，故 1 簇不足）',
               c({ kind: 'K-L-T', anchor_containment_passed: false, polarity_scope_passed: true, frame_gate_passed: true,
                   attribution_verdict: 'support', independent_cluster_count: 1 }), ST.U],
+  ['§2.2.1',  'K-L-T 包含与极性都过但**框架检验不过** → 降为 K-L-A（K=2，1 簇不足）',
+              c({ kind: 'K-L-T', anchor_containment_passed: true, polarity_scope_passed: true, frame_gate_passed: false,
+                  attribution_verdict: 'support', independent_cluster_count: 1 }), ST.U],
+  ['§2.2.1',  'K-L-T 框架不过但簇够（K-L-A 的 K=2）→ ST-A，而非 ST-V',
+              c({ kind: 'K-L-T', anchor_containment_passed: true, polarity_scope_passed: true, frame_gate_passed: false,
+                  attribution_verdict: 'support', independent_cluster_count: 2 }), ST.A],
   ['§2.2.1',  'K-L-T 缺 polarity_scope_passed → 抛 ContractGap（合取项不能省）',
               (() => { const x = c({ kind: 'K-L-T' }); delete x.polarity_scope_passed; return x })(), '抛异常'],
+  ['§2.2.1',  'K-L-T 缺 frame_gate_passed → 抛 ContractGap（第三个合取项同样不能省）',
+              (() => { const x = c({ kind: 'K-L-T' }); delete x.frame_gate_passed; return x })(), '抛异常'],
   ['§1.5 1',  'K-L-A support → ST-A',            c({ kind: 'K-L-A', attribution_verdict: 'support' }), ST.A],
   ['§1.5 1',  'K-L-A not-support → ST-U',        c({ kind: 'K-L-A', attribution_verdict: 'not-support' }), ST.U],
   ['§2.3.1',  'K-I 永不可达 ST-V（推断门过也只到 ST-A）',

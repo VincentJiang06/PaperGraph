@@ -125,6 +125,9 @@ export function runClaim(submission, ctx) {
     ctr = counterQueryOk(submission, ctx.counterSearch.query, {
       resultKeys: ctx.counterSearch.result_keys ?? [],
       knownWorkIds: ctx.knownWorkIds,
+      // 锚句取自 ctx（门从快照算的那一份），不取 submission 上的任何字段
+      anchorSentence: ctx.anchorSentence ?? '',
+      snapshotText: ctx.snapshotText ?? '',
     })
     record.counter_evidence_searched = ctr.pass
     mech.push({ gate_id: 'G-CTR-SCAN', gate_class: 'GC-0',

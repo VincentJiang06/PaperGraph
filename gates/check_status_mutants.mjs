@@ -107,8 +107,19 @@ const HAND = [
    "if (false && c.flags.includes('F-10') !== (c.chart_extracted === true)) {"],
 
   ['M-18', '把 K-L-T 退回单合取项（去掉极性作用域检验 L1-c）',
-   'if (c.anchor_containment_passed && c.polarity_scope_passed) {',
+   'if (c.anchor_containment_passed && c.polarity_scope_passed && c.frame_gate_passed) {',
    'if (c.anchor_containment_passed) {'],
+
+  // 〔外部标定测试 T2-4 之后新增〕第三个合取项要有自己的变异体，
+  // 否则它在变异测试里是无保护的——新增一条约束却不给它配变异，
+  // 等于把这条约束排除在「门抓不抓得住错实现」这个度量之外。
+  //
+  // 顺带记一笔：M-18 的锚点在这次改动里**被打断了**（那一行多了一个合取项），
+  // 于是变异器静默地少跑一个变异体、击杀率虚高。抓住它的是变异测试自己的
+  // 锚点唯一性检查。承重的度量工具必须先能证明自己没坏。
+  ['M-19', '去掉框架检验（同源竞争读数不再参与 K-L-T 判定）',
+   'if (c.anchor_containment_passed && c.polarity_scope_passed && c.frame_gate_passed) {',
+   'if (c.anchor_containment_passed && c.polarity_scope_passed) {'],
 
   ['M-15', '恒返回 verified（最粗暴的一条：任何门都必须抓住）',
    'export function S(c) {',

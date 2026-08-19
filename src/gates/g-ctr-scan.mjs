@@ -13,6 +13,7 @@
  * **方向相反，不存在单调安全方向**——这是它挡住模板攻击的全部原因。
  */
 import { normalizeQuote, baseNormalize } from '../normalize.mjs'
+import { stem } from './g-containment.mjs'
 
 export const TABLE_VERSIONS = Object.freeze({
   NEG: 'neg-2026-08-18', NEG_LIT: 'neglit-2026-08-18',
@@ -87,6 +88,12 @@ const CLAUSE_SPLIT = /[，；。：,;.!?]/
  * @param {string} query  producer 发出的反证检索 query
  * @param {object} [opts] { resultKeys:[], supportKeys:[] }
  */
+/**
+ * @param {object} opts.snapshotText    证据快照全文。只进 (b′) 的词汇基底，不进 (a′)。
+ * @param {object} opts.anchorSentence  claim 所引的那句原文。**由门递入，不由 producer 递**——
+ *   它现在参与 (a′)/(b′) 的判定，若可由被判定方指定，就等于允许它自带一份词汇表。
+ *   调用点在 pipeline，取自 ctx（gate-ctx 从快照算出来的那一份）。
+ */
 export function counterQueryOk(claim, query, opts = {}) {
   const reasons = []
   const params = { table_versions: TABLE_VERSIONS, k_op: K_OP }
@@ -108,17 +115,74 @@ export function counterQueryOk(claim, query, opts = {}) {
   // NEG-2 会替换掉数值槽/comparator 槽，那个槽不计入 Slot(P)
   const slotTokens = new Set(slots.flatMap(tok))
 
-  // ── (a′) 锚槽覆盖**下界**（子串包含，中英通用，不依赖分词） ─────────────
+  // ── (a′) 锚槽覆盖**下界** ─────────────────────────────────────────────
+  //
+  // 〔外部标定测试 E1 修复〕原判据要求**每一个**锚槽都字面出现在 query 里。
+  // 在真实数据上这条几乎不可能满足：metric_frame 常写中文（「研发成本」），
+  // 而 query 是英文；同一个东西在两侧的措辞永远对不上。
+  // 实测：三条人会写的自然语言 query，判红 2/3，整批 claim 落 not_covered。
+  // 那是 R5 第 2 条预测的钳形夹的**假阳侧**——真反证被判成假。
+  //
+  // 下界要挡的东西没变：**一句泛泛的「refute」不能算做过反证检索**。
+  // 但「是否关于这条 claim」不必靠逐槽字面匹配来证明，
+  // 只需要 query 里有**足够多的锚**落在这条 claim 自己的材料上。
+  // 材料 = 载荷 ∪ 槽值 ∪ metric_frame ∪ **锚句**（claim 自己引的那句原文）。
+  // 锚句进来是关键：真实研究者写 query 时用的正是原文里的词。
   const nq = normalizeQuote(query)
-  const missing = slots.filter(sl => {
-    const n = normalizeQuote(sl)
+  //
+  // 两条边界**取材不同**，这一点要写清楚：
+  //   下界 (a′) 只看 载荷 ∪ 槽值 ∪ **锚句** —— 它要证明的是
+  //     「这条 query 是关于**这条 claim** 的」。若把整篇快照算进来，
+  //     一条关于同一篇论文里**另一个数**的 query 也会通过，下界就废了。
+  //   上界 (b′) 额外把**整篇快照**算进来 —— 它要挡的是**无中生有的填充**
+  //     （堆词保证零命中），而写在原文里的词不是无中生有。
+  const material = [...slots, ...Object.values(claim.payload ?? {}).map(String),
+                    String(opts.anchorSentence ?? '')]
+  // 按**词干**比，不按字面。原文写 `drugs` 而 query 写 `drug` 是同一个词——
+  // 这条在锚点包含门那边已经立过一次（`replication` vs `replicated`），
+  // 这里是同一个理由：真实文本总有词形变化，逐字比对会把合法的判成越界。
+  const stems = xs => new Set(xs.filter(t => t && !STOP.has(t)).map(stem))
+  const materialTokens = stems(material.flatMap(tok))
+  const vocabTokens = new Set([...materialTokens, ...stems(tok(String(opts.snapshotText ?? '')))])
+  const anchoredTokens = [...TQ].filter(t => materialTokens.has(stem(t)))
+  const MIN_ANCHORS = 2
+
+  // 松只给 metric_frame，**不给实体槽**。
+  // 〔标定用例 X-8 抓到的〕初版写成「任意 ≥2 个锚 token 即可」，
+  // 于是 `accuracy CASP14 refute`（删掉了「AlphaFold」）通过——
+  // 一条不点名系统的反证检索会捞回**别的系统**的结果，那不是这条 claim 的反证。
+  // 实体槽是这个东西的身份，删掉它 query 就换了对象；
+  // 而 metric_frame 是我们自己写的判据名（常是中文），它跟原文措辞对不上
+  // 才是那条真问题。两者不该共用一条判据。
+  const entitySlots = Object.entries(claim.payload ?? {})
+    .filter(([k]) => (claim.slot_types ?? {})[k] === 'entity')
+    .map(([, v]) => String(v))
+  const missingEntity = entitySlots.filter(e => {
+    const n = normalizeQuote(e)
     return n && !nq.includes(n)
   })
-  params.slot_coverage = { required: slots.length, missing: missing.length }
-  if (missing.length) reasons.push(`(a′) 锚槽覆盖不足：query 缺少 ${missing.join('、')}`)
+  const frameSlots = [mf.metric, mf.sample_or_tier].filter(Boolean).map(String)
+  const missingFrame = frameSlots.filter(f => {
+    const n = normalizeQuote(f)
+    return n && !nq.includes(n)
+  })
+  params.slot_coverage = { entity_required: entitySlots.length, entity_missing: missingEntity.length,
+                           frame_required: frameSlots.length, frame_missing: missingFrame.length,
+                           anchored_tokens: anchoredTokens.length, min_anchors: MIN_ANCHORS }
+  if (missingEntity.length) {
+    reasons.push(`(a′) 实体槽缺失：query 缺少 ${missingEntity.join('、')} —— 换了对象的检索不是这条 claim 的反证`)
+  }
+  if (missingFrame.length && anchoredTokens.length < MIN_ANCHORS) {
+    reasons.push(`(a′) 锚不足：query 缺判据 ${missingFrame.join('、')}，` +
+                 `且落在本 claim 材料（载荷/槽值/锚句）上的 token 只有 ${anchoredTokens.length} 个（需 ≥${MIN_ANCHORS}）`)
+  }
 
   // ── (b′) 载荷外 token **预算** ────────────────────────────────────────
-  const E = [...TQ].filter(t => !TP.has(t) && !STOP.has(t) && !slotTokens.has(t))
+  // 〔同一次修复〕「载荷外」的口径从「不在载荷/锚槽里」放宽到
+  // 「不在这条 claim 的**材料**里」。原口径把 `drug` `development` `cost`
+  // 判成越界 token —— 而这三个词就写在被引的那句原文里。
+  // 上界要挡的是**无中生有的填充**（堆词保证零命中），不是原文里的词。
+  const E = [...TQ].filter(t => !TP.has(t) && !STOP.has(t) && !slotTokens.has(t) && !vocabTokens.has(stem(t)))
   // NEUTRAL_LIT 进 (b′) 但**不**进 (c′)：允许出现 ≠ 构成反证（R6-06）。
   const inOps = t => NEG.has(t) || NEG_LIT.has(t) || NEUTRAL_LIT.has(t) || COMP.has(t) || NUM_UNIT(t) ||
     // 中文片段：只要它整体由受控词 + 载荷/锚槽内容拼成，就不算越界 token
