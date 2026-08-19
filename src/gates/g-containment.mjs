@@ -67,6 +67,38 @@ const unifyPercent = t => t
   .replace(/(\d)\s*(?:percent|per cent|％|%)/gi, '$1%')
   .replace(/(\d)\s*个百分点/g, '$1%')
 
+/**
+ * 减号的各种写法统一到 ASCII 连字符。
+ *
+ * 〔留出集二 J-3 抓到的〕**NFKC 帮不上忙，反而把两边推得更远**：
+ * 上标负号 U+207B 的兼容分解目标是 **U+2212 MINUS SIGN**，不是 U+002D。
+ * 于是作者写 `4.8 × 10⁻³`、原文写 `4.8 × 10-3`，
+ * NFKC 之后一个是 `10−3`、一个是 `10-3` —— **仍然不相等**，
+ * 一条完全属实的转录被判成假。
+ *
+ * 此前所有 NFKC 相关修复（E-3 / T4-1）处理的都是全角→半角，
+ * 那一类 NFKC 确实解决了；这一类它解决不了，因为 U+2212 本身就是 NFKC 的**目标**。
+ *
+ * 覆盖的码位（都是排版上用作负号或连接号的）：
+ *   U+2010 ‐ 连字符   U+2011 ‑ 不断行连字符  U+2012 ‒ 数字连接号
+ *   U+2013 – 短破折号  U+2014 — 长破折号     U+2015 ― 水平线
+ *   U+2212 − 减号     U+FF0D － 全角减号     U+207B ⁻ 上标负号（NFKC 前也可能直接遇到）
+ */
+const unifyMinus = t => t.replace(/[\u2010-\u2015\u2212\uff0d\u207b]/g, '-')
+
+/**
+ * 科学计数法指数前后的空格折叠：`10- 8` → `10-8`。
+ *
+ * 〔留出集二 J-4/P-8 抓到的〕PMID 41844886 的原文排版是
+ * `5\u2009\u00d7\u200910\u2212\u20098` —— 真负号与指数之间还夹了一个
+ * **U+2009 窄空格**。NFKC 把窄空格变成普通空格，于是 `10- 8` 与 `10-8` 不等。
+ *
+ * 规则刻意收得很窄：**只折叠紧跟在 `10` 后面的那个减号两侧的空格**。
+ * 写成通用的「数字-空格-减号-空格-数字」会把 `5 - 3`（区间或减法）
+ * 一起折成 `5-3`，那是改变含义，不是归一化。
+ */
+const tightenExponent = t => t.replace(/\b10\s*-\s*(\d)/g, '10-$1')
+
 /** 一个字符串的数值归一化形态 */
 export function numericForm(s) {
   // 〔真实中文文献 T4-1 抓到的〕先 NFKC。中文期刊排版常用全角：
@@ -74,7 +106,8 @@ export function numericForm(s) {
   // 而作者转录成半角 `73.55%` 是标准做法。不归一化则两侧永远对不上，
   // 一条完全合法的转录被判成假。
   // 组稿器那边早就在扫描前 NFKC 了（E-3），这边漏了——同一个坑挖了两次。
-  return unifyPercent(cnNumeralsToDigits(enWordsToDigits(String(s).normalize('NFKC'))))
+  return unifyPercent(cnNumeralsToDigits(enWordsToDigits(
+    tightenExponent(unifyMinus(String(s).normalize('NFKC'))))))
     .replace(/\s+/g, ' ')
 }
 

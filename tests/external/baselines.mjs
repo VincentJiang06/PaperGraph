@@ -133,7 +133,13 @@ console.log('     基线没有受过这个待遇，它们是固定算法，一�
 console.log('     所以两侧的数字**可信度不对等**：')
 console.log('       · 基线那几列是硬的 —— 「B1 会放走 T1-1」这件事与我们调不调无关；')
 console.log('       · 我们那一列是软的 —— 它同时包含「设计对了」和「拟合了这批题」。')
-console.log('     要把我们那一列变硬，需要一批**没参与过修复的**用例。本轮没有。')
+console.log('     要把我们那一列变硬，需要一批**没参与过修复的**用例。')
+console.log()
+console.log('  ⑤ 〔此后补上了两批留出集〕tests/holdout/（meta 分析摘要）首跑 **5/8**，')
+console.log('     tests/holdout2/（GWAS 摘要，含科学计数法）首跑 **4/8**。')
+console.log('     只有**首跑**数字是硬的；两批修完之后的分数都不能引用 ——')
+console.log('     修过的用例就不再是留出集了。')
+console.log('     **首跑 4/8 与本表的 21/21 放在一起看，才是这套系统的真实位置。**')
 
 const ours = summary['本系统']
 process.exit(ours.agree === rows.length ? 0 : 1)

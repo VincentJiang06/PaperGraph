@@ -58,7 +58,27 @@ function unitClass(numTok, ctx) {
 }
 
 /** 一个子句里出现的数（跳过置信区间水平这类非读数用法） */
-const NUM_RE = /\$?\d[\d,]*(?:\.\d+)?%?|[〇零一二三四五六七八九十]+(?=个百分点)|(?:thirty|forty|fifty|sixty|seventy|eighty|ninety|twenty)[\s-]?(?:one|two|three|four|five|six|seven|eight|nine)?(?=\s*(?:percent|per cent))/gi
+// 〔留出集二 J-6 抓到的两处〕
+//
+// ① **科学计数法必须是一个 token。** `5 × 10-8` 原本被拆成 `10` 和 `8` 两个"读数"，
+//    于是一条只报了一个 p 值的句子，凭空多出两个竞争读数 —— 触发的理由完全是错的。
+//    合成一个 token 之后，它前面的 `p ≤ ` 就能让整串走 p 值角色排除。
+//    分隔符用 \s：真实排版里是 U+2009 窄空格，不是普通空格（G3/G4 实测）。
+// ② **英文数词。** GWAS 摘要里 `three ... loci` 与 `49 ... loci` 在同一句并列，
+//    而 NUM_RE 原本只在「数词 + percent」这一种形态下认英文数词。
+//    单独成词的计数用法（`three loci`）此前完全看不见。
+const SCI_NOTATION = String.raw`\d[\d,]*(?:\.\d+)?\s*[×x]\s*10\s*[-−–]?\s*\d+`
+const EN_COUNT_WORDS = 'two|three|four|five|six|seven|eight|nine|ten|eleven|twelve'
+const NUM_RE = new RegExp([
+  SCI_NOTATION,
+  String.raw`\$?\d[\d,]*(?:\.\d+)?%?`,
+  String.raw`[〇零一二三四五六七八九十]+(?=个百分点)`,
+  String.raw`(?:thirty|forty|fifty|sixty|seventy|eighty|ninety|twenty)[\s-]?(?:one|two|three|four|five|six|seven|eight|nine)?(?=\s*(?:percent|per cent))`,
+  String.raw`\b(?:${EN_COUNT_WORDS})\b`,
+].join('|'), 'gi')
+const EN_WORD_NUM = new RegExp(`^(?:${EN_COUNT_WORDS})$`, 'i')
+// 「这一段里有没有数」用的是**出现即可**，不是整段等于一个数词。
+const EN_COUNT_ANY = new RegExp(`\\b(?:${EN_COUNT_WORDS})\\b`, 'i')
 const NON_READING = /(?:confidence\s+interval|\bCI\b|significance\s+level|置信区间)/i
 
 /**
@@ -78,8 +98,16 @@ const NON_READING = /(?:confidence\s+interval|\bCI\b|significance\s+level|置信
  * 它们都不是「这个量的另一个读法」，混进来只会制造假阳。
  */
 const ROLE_EXCLUDE = [
-  { why: '研究数/样本量', re: /\b(?:n\s*=\s*|N\s*=\s*)$|\b(?:from\s+)?$/,
-    after: /^\s*(?:studies|trials|RCTs|patients|participants|subjects|nonunions|cases|篇|项|例)\b/i },
+  // 〔§S23〕判据从「前缀枚举 + 后接名词」改成**只看后接名词**。
+  // 原来要求 before 匹配 `from ` 或 `n = `，于是 `pooled three cohorts`
+  // 这种同样是研究规模的写法漏网（F-29）。而枚举前缀是无底洞：
+  // pooled / included / comprising / across / spanning …
+  // **后接名词才是判据的实质**：数字后面跟 studies/cohorts/patients，
+  // 它就是研究规模，前面是什么动词不改变这一点。
+  { why: '研究数/样本量', re: /(?:)/,
+    // 〔§S23〕`cohorts` / `centres` / `sites` 与 `studies` 同类：研究规模，不是效应量。
+    // `loci` **不在**此列 —— 它是发现本身（留出集二 J-6 的载荷就是位点数）。
+    after: /^\s*(?:studies|trials|RCTs|cohorts|centres|centers|sites|patients|participants|subjects|nonunions|cases|篇|项|例)\b/i },
   { why: 'p 值', re: /\b[pP]\s*[<>=≤≥]\s*$/, after: null },
   { why: '异质性', re: /\bI\s*2?\s*[²]?\s*=\s*$/, after: null },
 ]
@@ -110,15 +138,39 @@ const looksLikeIdentifier = (before, tok, after) =>
   // `IL-|6|` / `p|53|` 这类：左边是字母直接接连字符或直接接数字
   (/^-[A-Za-z\d]/.test(after) && /[A-Za-z]\s?$/.test(before))
 
-function numbersIn(clause) {
+/**
+ * @param {string} clause
+ * @param {string[]} keep  **本 claim 的载荷值**。落在这里的数不走角色排除。
+ *
+ * 〔为什么要有 keep〕角色排除防的是「别的角色的数冒充竞争读数」。
+ * 但当 claim 的载荷**本身就是**那个角色的数时（一条关于样本量的 claim：
+ * `The study included 374,254 participants`），排除它会让 myNums 变成空集，
+ * 门走到「锚句子句里没有数」直接放行 —— **静默失守**，与 H-2 那次同形。
+ * 载荷是本门正在审的那个读数，按定义不能被排除。
+ */
+function numbersIn(clause, keep = []) {
   const out = []
+  const keepSet = new Set(keep.map(v => String(v).normalize('NFKC').trim()).filter(Boolean))
+  const isPayload = tok => keepSet.has(String(tok).normalize('NFKC').trim())
   for (const m of clause.matchAll(NUM_RE)) {
     const after = clause.slice(m.index + m[0].length, m.index + m[0].length + 30)
     if (NON_READING.test(after)) continue
     const before = clause.slice(Math.max(0, m.index - 24), m.index)
     if (looksLikeIdentifier(before, m[0], after)) continue
+    // 英文数词只在**计数用法**下算读数。判据看**后面**，不看前面：
+    //   `three loci`              → 计数，算读数
+    //   `two of the mechanisms`   → 部分格，指的是子集不是量，不算读数
+    //   `three-dimensional`       → 复合词的前半，不算
+    // 〔第一版的错〕原判据查的是**前一个词**是否为 of/than/as。
+    // 那漏掉句首的 `Two of the …` —— 而部分格用法的标志始终在**后面**那个 of。
+    // 负例套件 F-11 当时不响，因为那条标定样本里数词与载荷同在一个子句，
+    // 切不切都不触发 —— 又一个空心样本。
+    if (EN_WORD_NUM.test(m[0]) &&
+        (!/^\s+[A-Za-z]/.test(after) || /^\s*[-‐]/.test(after) ||
+         /^\s+of\b/i.test(after))) continue
     // 角色排除：不是「这个量的另一个读法」的数，不参与竞争
-    if (ROLE_EXCLUDE.some(r => r.re.test(before) && (!r.after || r.after.test(after)))) continue
+    if (!isPayload(m[0]) &&
+        ROLE_EXCLUDE.some(r => r.re.test(before) && (!r.after || r.after.test(after)))) continue
     out.push({ tok: m[0], cls: unitClass(m[0], after) })
   }
   return out
@@ -196,11 +248,44 @@ export function frameGate(body = '', anchor = '', discriminator = '', payloadVal
   // 「不是锚句子句的逐字片段」—— 一个理由完全错误的红。
   // 而 `92% precision and 87% recall` 里的 and 确实分开两个读数。
   // 区别不在词性，在**两侧是否各自带一个数**：本门要找的就是并列的读数。
-  const hasNum = t => /\d/.test(t)
-  const clauses = masked.split(/[;；，,]/).flatMap(seg => {
+  const hasNum = t => /\d/.test(t) || EN_COUNT_ANY.test(t)
+  //
+  // 〔留出集二 J-6 抓到的〕原实现是 `parts.every(hasNum)` —— **整段全有全无**。
+  // 一句话里有两个 `and` 时：
+  //   "…in human preadipocytes | and | genetic deletion in mice. We identified
+  //    three BMI-associated loci … | and | 49 additional loci …"
+  // 第一个 and 是名词短语内部的（左侧无数字），于是 every 为假，
+  // **连第二个真正分隔两个读数的 and 也一起不切了** —— 整句退化成一个子句，
+  // 没有兄弟读数可比，一条该拦的 claim 平凡放行。
+  //
+  // 判据不变（两侧各有一个数才切），变的是**作用范围**：
+  // 每个边界各自决定，用的是**原始相邻两段**的状态（不是合并后的，
+  // 否则合并会把数字带过边界，产生连锁的错误切分）。
+  const splitAnd = seg => {
     const parts = seg.split(/\sand\s|\s与\s/)
-    return parts.length > 1 && parts.every(hasNum) ? parts : [seg]
-  }).map(c => c.trim()).filter(Boolean)
+    if (parts.length < 2) return [seg]
+    const out = [parts[0]]
+    for (let i = 1; i < parts.length; i++) {
+      if (hasNum(parts[i - 1]) && hasNum(parts[i])) out.push(parts[i])
+      else out[out.length - 1] += ' and ' + parts[i]
+    }
+    return out
+  }
+  // 千分位逗号**不是**子句分隔符。
+  //
+  // 〔J-6 的假阳侧探针抓到的〕`an independent sample of 1,079 individuals` 里的逗号
+  // 被当成子句边界，切出 `…sample of 1` 与 `079 individuals.` 两段，
+  // 于是一个数变成两个"竞争读数"，一条正常转录被逼着去写 discriminator。
+  //
+  // 这与留出集二 J-8 事前预测的机制是同一个（当时判定碰巧对了，理由是错的），
+  // 只是它表现为**假阳**而不是 fail-open —— 预测对了机制，猜错了方向。
+  //
+  // 做法：切分前把千分位逗号换成私用区占位符，切完立刻还原。
+  // 不能只在 numbersIn 里补救 —— 那时候数已经被切散在两个子句里了。
+  const protectThousands = t => t.replace(/(\d),(?=\d{3}(?!\d))/g, '$1\uE000')
+  const restoreThousands = t => t.replace(/\uE000/g, ',')
+  const clauses = protectThousands(masked).split(/[;；，,]/).flatMap(splitAnd)
+    .map(c => restoreThousands(c).trim()).filter(Boolean)
   const aMasked = maskCI(a)
   // 锚句所在的那个子句 = **含本 claim 载荷**的那一个。
   // 〔真实中文文献 T4-1 抓到的〕原实现取「第一个是锚句子串的子句」，
@@ -225,7 +310,7 @@ export function frameGate(body = '', anchor = '', discriminator = '', payloadVal
     ?? inAnchor.sort((x, y) => y.length - x.length)[0]
   if (!mine) return { ...base, pass: true, why: '锚句不构成分号子句 —— 本门只看分号枚举' }
 
-  const myNums = numbersIn(mine)
+  const myNums = numbersIn(mine, pv)
   if (!myNums.length) return { ...base, pass: true, why: '锚句子句里没有数' }
   const myCls = new Set(myNums.map(n => n.cls))
 

@@ -80,7 +80,7 @@ red_case "F-2" "兄弟读数范围退回整篇正文（全文快照上必然误�
 # 一个不再鉴别任何东西的红样本是空心的，换成两条真正会红的。
 red_case "F-3" '数字角色排除被撤掉（研究数/p值/I² 又变成竞争读数）' \
   gates/check_frame.mjs "不符" \
-  "perl -0pi -e 's/if \\(ROLE_EXCLUDE\\.some/if (false \\&\\& ROLE_EXCLUDE.some/' src/gates/g-frame.mjs"
+  "perl -0pi -e 's/ROLE_EXCLUDE\\.some\\(r =>/false \\&\\& ROLE_EXCLUDE.some(r =>/' src/gates/g-frame.mjs"
 
 red_case "F-4" '不带括号的置信区间不再屏蔽（区间上下界变成竞争读数）' \
   gates/check_frame.mjs "不符" \
@@ -93,6 +93,39 @@ red_case "F-6" '标识符里的数字又变回读数（CA 19-9 被当成两个�
 red_case "F-7" '标识符只排掉左半截（CA 19-|9| 的 9 仍算读数）' \
   gates/check_frame.mjs "不符" \
   "perl -0pi -e 's{/\\[A-Za-z\\]\\\\s\\*\\[\\\\d\\.\\]\\+-\\\$/\\.test\\(before\\) \\|\\|}{false ||}' src/gates/g-frame.mjs"
+
+# ── 留出集二逼出来的四条（§S23） ─────────────────────────────────────────
+red_case "F-8" 'and 的切分退回「整段全有全无」（J-6 原形态）' \
+  gates/check_frame.mjs "不符" \
+  "python3 gates/mutants/frame-and-split-allornothing.py"
+
+red_case "F-9" '科学计数法不再当作一个 token（10 与 8 变成两个读数）' \
+  gates/check_frame.mjs "不符" \
+  "perl -0pi -e 's/  SCI_NOTATION,\n//' src/gates/g-frame.mjs"
+
+red_case "F-10" '千分位逗号不再保护（1,079 被切成 1 与 079）' \
+  gates/check_frame.mjs "不符" \
+  "perl -0pi -e 's/protectThousands\\(masked\\)/masked/' src/gates/g-frame.mjs"
+
+red_case "F-11" '英文数词的计数用法守卫被撤（散文里的数词也算读数）' \
+  gates/check_frame.mjs "不符" \
+  "perl -0pi -e 's/if \\(EN_WORD_NUM\\.test\\(m\\[0\\]\\) &&/if (false \\&\\&/' src/gates/g-frame.mjs"
+
+red_case "F-12" '角色排除退回「必须前缀 from / n =」（pooled three cohorts 漏网）' \
+  gates/check_frame.mjs "不符" \
+  "perl -0pi -e 's/\\{ why: .研究数\\/样本量., re: \\/\\(\\?:\\)\\//{ why: \\x27研究数\\/样本量\\x27, re: \\/\\\\bfrom\\\\s+\\\$\\//' src/gates/g-frame.mjs"
+
+red_case "F-13" '载荷不再豁免角色排除（载荷是样本数时门看不到数）' \
+  gates/check_frame.mjs "不符" \
+  "perl -0pi -e 's/const myNums = numbersIn\\(mine, pv\\)/const myNums = numbersIn(mine)/' src/gates/g-frame.mjs"
+
+red_case "C-4" '减号变体不再统一（上标负号 vs 连字符，J-3 原形态）' \
+  gates/check_containment.mjs "不符" \
+  "perl -0pi -e 's/const unifyMinus = .*/const unifyMinus = t => t/' src/gates/g-containment.mjs"
+
+red_case "C-5" '科学计数法指数的空格不再折叠（10- 8 vs 10-8）' \
+  gates/check_containment.mjs "不符" \
+  "perl -0pi -e 's/const tightenExponent = .*/const tightenExponent = t => t/' src/gates/g-containment.mjs"
 
 # ── 成本门 · 台账数字与实测的绑定（§S21） ────────────────────────────────
 # 这道门守的是本仓库栽过五次的那一类：**抄进文档的数字**。

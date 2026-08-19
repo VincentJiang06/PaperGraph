@@ -16,6 +16,11 @@ const A_CN    = '该方法在测试集上达到三十六个百分点。'
 const A_COST  = 'The cost to develop a cancer drug is $648.0 million, a figure significantly lower than prior estimates.'
 
 // [编号, 期望, 载荷, 槽型, 锚句, 说明]
+// 〔留出集二 J-3〕真实 GWAS 摘要的三种减号写法（PMID 41125582 / 41844886）
+const A_SCI  = 'Five-year overall survival among carriers was significantly worse ' +
+  '(83% versus 96% in non-carriers, P = 4.8 \u00d7 10-3).'
+const A_MINUS = 'Genome-wide significance was set at p < 5 \u00d7 10\u2212 8.'
+
 const CASES = [
   // ── 正例：合法转录必须放行（外部标定测试发现的假阴） ──────────────
   ['P-1', true,  { finding: 'replication', value: '36' }, { finding: 'entity', value: 'value' }, A_OSC36,
@@ -31,11 +36,25 @@ const CASES = [
   ['P-6', true,  { drug: 'estimation', value: '$648.0 million' }, { drug: 'entity', value: 'value' }, A_COST,
    'estimation vs 原文 estimates（同词干；逐字比对够不着）+ 数值逐字'],
 
+  // 〔留出集二 J-3 · §S23〕NFKC 帮不上忙的那一档：
+  // 上标负号 U+207B 的兼容分解目标是 **U+2212**，不是连字符 U+002D。
+  // 只做 NFKC 的话，`10\u207b\u00b3` 与原文 `10-3` 归一化后仍不相等。
+  ['P-7', true,  { value: '4.8 \u00d7 10\u207b\u00b3' }, { value: 'value' }, A_SCI,
+   '★ 上标负号 10\u207b\u00b3 vs 原文连字符 10-3（NFKC 之后仍不等，靠减号统一）'],
+  ['P-8', true,  { value: '5 \u00d7 10-8' }, { value: 'value' }, A_MINUS,
+   '★ 反方向：载荷用连字符，原文用真负号 U+2212'],
+  ['P-9', true,  { value: '\u221270.18' }, { value: 'value' }, 'The pooled MD was -70.18 U/L.',
+   '★ 载荷用 U+2212，原文用 ASCII 连字符（同一个数）'],
+
   // ── 负例：放松不得顺带放走这些 ───────────────────────────────────
   ['N-1', false, { value: '36%' }, { value: 'value' }, A_OSC47,
    '★ T2-3 的核心：声称 36% 而锚在 47% 那句 —— 数值等价**不得**让它通过'],
   ['N-2', false, { value: '46' }, { value: 'value' }, A_OSC36,
    '数词写对了但数错了：Thirty-six ≠ 46'],
+  ['N-12', false, { value: '4.8 \u00d7 10\u207b\u2075' }, { value: 'value' }, A_SCI,
+   '★ 减号统一不得顺带放走**指数不同**的数：10\u207b\u2075 ≠ 10-3'],
+  ['N-13', false, { value: '5 \u00d7 10-7' }, { value: 'value' }, A_MINUS,
+   '★ 指数空格折叠不得顺带放走 10-7 ≠ 10\u22128'],
   ['N-3', false, { value: '3' }, { value: 'value' }, A_OSC36,
    '★ 子串陷阱：归一化后锚句含 “36”，但载荷 3 不是它的一个合法读数……'],
   ['N-4', false, { metric: 'replication', value: '36' }, { metric: 'metric', value: 'value' }, A_OSC39,

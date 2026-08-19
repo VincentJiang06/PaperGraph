@@ -58,6 +58,26 @@ const BIOMARKER = 'The pooled results for CA 19-9 showed significantly lower lev
 const BIOMARKER_TWO = 'The pooled results for CA 19-9 showed lower levels with combination therapy ' +
   '(MD: -70.18U/L) and with monotherapy (MD: -45.02U/L).'
 
+// 〔留出集二 J-6 · §S23〕真实 GWAS 摘要（PMID 42181176）：
+// 一句里两个 and —— 前一个是名词短语内部的（左侧无数字），后一个真正分隔两个读数。
+const TWO_ANDS = 'The functional role was examined using pharmacological inhibition ' +
+  'in human preadipocytes and genetic deletion in mice. We identified three ' +
+  'BMI-associated loci reaching genome-wide significance (p \u2264 5 \u00d7 10-8) ' +
+  'and 49 additional loci previously implicated in obesity-related traits.'
+// 科学计数法：整串是一个 p 值，不是两个读数
+const SCI_PVAL = 'Genome-wide significance was set at p < 5 \u00d7 10-8 ' +
+  'and the meta-analysis identified 56 variants.'
+// 千分位逗号：一个数，不是两个
+const THOUSANDS = 'We replicated it in an independent sample of 1,079 individuals.'
+// 散文里的部分格数词不是读数。**必须与载荷分处不同子句**，
+// 否则切不切都不触发 —— 那样的样本没有鉴别力（F-11 第一版就栽在这）。
+const PROSE_WORD = 'Two of the mechanisms were validated, and the effect was observed in 42 patients.'
+// 研究规模名词（cohorts）与效应量不同类
+const COHORT_CNT = 'The analysis pooled three cohorts, and the combined odds ratio was 2.19.'
+// 载荷**本身就是**样本数时：角色排除不得把它一起排掉，否则门看不到数而平凡放行
+const SAMPLE_PAYLOAD = 'The study included 374,254 participants, with 4,305 individuals ' +
+  'diagnosed with POAG and 369,949 controls.'
+
 const CASES = [
   // ── 该触发且该拦 ────────────────────────────────────────────────────
   ['F-1', false, OSC, A36, '',
@@ -125,6 +145,30 @@ const CASES = [
   ['F-24', false, BIOMARKER_TWO, BIOMARKER_TWO, '',
    '★★ 绿的对照：同一句里**真的**并列了两个读数（-70.18 与 -45.02），此时必须拦',
    ['-70.18']],
+
+  ['F-25', false, TWO_ANDS, TWO_ANDS, '',
+   '★★ 两个 and：前一个不切（名词短语），后一个必须切 —— 否则 three 与 49 比不上，平凡放行',
+   ['three']],
+  ['F-26', true,  SCI_PVAL, SCI_PVAL, '',
+   '★★ `5 \u00d7 10-8` 是一个 p 值，不是 10 与 8 两个读数 —— 不得以错误理由触发',
+   ['56']],
+  ['F-27', true,  THOUSANDS, THOUSANDS, '',
+   '★★ 千分位逗号不是子句分隔符 —— 1,079 不得被切成 1 与 079',
+   ['1,079']],
+  ['F-28', true,  PROSE_WORD, PROSE_WORD, '',
+   '★★ 假阳侧：`One of the two` 是散文不是并列读数（of 之后的数词不计）',
+   ['42']],
+
+  ['F-29', true,  COHORT_CNT, COHORT_CNT, '',
+   '★★ `three cohorts` 是研究规模不是效应量 —— 不得与 OR 2.19 构成竞争读数',
+   ['2.19']],
+
+  ['F-30', false, SAMPLE_PAYLOAD, SAMPLE_PAYLOAD, '',
+   '★★ 载荷本身是样本数：角色排除不得把它一起排掉 —— 否则 myNums 空集 → 静默放行',
+   ['374,254']],
+  ['F-31', true,  SAMPLE_PAYLOAD, SAMPLE_PAYLOAD, 'participants',
+   '★★ 同句，给了能区分的 discriminator → 放行',
+   ['374,254']],
 
   ['F-14', true,  NOUN_AND, NOUN_AND, 'median',
    '〔空心样本，留作对照〕它看起来覆盖了「名词短语内部的 and」这条判据，实则不能鉴别：' +
