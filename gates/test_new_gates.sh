@@ -25,7 +25,18 @@ red_case() {
   cp -R "$REPO/tests" "$tmp/tests" 2>/dev/null || true
   cp -R "$REPO/packages" "$tmp/packages" 2>/dev/null || true
   cp "$REPO/01-CONTRACTS.md" "$tmp/" 2>/dev/null || true
+  cp "$REPO/07-ATTACK-LEDGER.md" "$tmp/" 2>/dev/null || true
+  # 〔F-4 教训〕变异如果一个字符都没改到（正则转义写错、perl 没匹配上），
+  # 门当然还是绿的，而套件只会报「门放行了」—— 把**空变异**读成**空心门**。
+  # 两者的修法完全相反，所以先证明变异真的落到了文件上。
+  local before after
+  before="$(cd "$tmp" && find . -type f -exec shasum {} + | shasum)"
   ( cd "$tmp" && eval "$@" )
+  after="$(cd "$tmp" && find . -type f -exec shasum {} + | shasum)"
+  if [ "$before" = "$after" ]; then
+    no "$id · $desc —— **变异是空的**：树未发生任何改动（不是门的问题）"
+    rm -rf "$tmp"; return
+  fi
   local out ec
   out="$(cd "$tmp" && node "$gate" 2>&1)"; ec=$?
   if [ "$ec" -eq 0 ]; then
@@ -52,17 +63,47 @@ red_case "N-2" "撤掉组稿器的 NFKC（E-3 原形态）" \
   "perl -0pi -e \"s/String\\(skeleton\\)\\.normalize\\('NFKC'\\)/String(skeleton)/\" src/composer.mjs"
 
 # ── 同源竞争读数门（T2-4） ───────────────────────────────────────────────
-red_case "F-1" "去掉 discriminator 校验：只要给了就放行" \
+red_case "F-1" "去掉 discriminator 属实校验：只要给了就放行" \
   gates/check_frame.mjs "不符" \
-  "perl -0pi -e 's/if \\(!mine\\.includes\\(d\\)\\) \\{/if (false) {/' src/gates/g-frame.mjs"
+  "perl -0pi -e 's/if \\(!aMasked\\.includes\\(d\\) && !a\\.includes\\(d\\)\\) \\{/if (false) {/' src/gates/g-frame.mjs"
+
+red_case "F-5" "去掉「discriminator 不得重说指标名」这一条" \
+  gates/check_frame.mjs "不符" \
+  "perl -0pi -e 's/const echoes = mt\\.find/const echoes = false \\&\\& mt.find/' src/gates/g-frame.mjs"
 
 red_case "F-2" "兄弟读数范围退回整篇正文（全文快照上必然误伤）" \
   gates/check_frame.mjs "不符" \
   "perl -0pi -e 's/const window = containingSentence\\(b, a\\)/const window = b/' src/gates/g-frame.mjs"
 
-red_case "F-3" 'and 一律切开（名词短语内部的 and 被误切）' \
+# 〔F-3 换过一次〕原变异是「and 一律切开」，在加入**数字角色排除**之后
+# 它不再造成可观测差异——切出来的半句没有效应量，本来就不算兄弟读数。
+# 一个不再鉴别任何东西的红样本是空心的，换成两条真正会红的。
+red_case "F-3" '数字角色排除被撤掉（研究数/p值/I² 又变成竞争读数）' \
   gates/check_frame.mjs "不符" \
-  "perl -0pi -e 's/parts\\.every\\(hasNum\\)/true/' src/gates/g-frame.mjs"
+  "perl -0pi -e 's/if \\(ROLE_EXCLUDE\\.some/if (false \\&\\& ROLE_EXCLUDE.some/' src/gates/g-frame.mjs"
+
+red_case "F-4" '不带括号的置信区间不再屏蔽（区间上下界变成竞争读数）' \
+  gates/check_frame.mjs "不符" \
+  "python3 -c \"import pathlib;p=pathlib.Path('src/gates/g-frame.mjs');s=p.read_text(encoding='utf-8');s=s.replace(chr(92)+'bCI',chr(92)+'bZZZNOMATCH');p.write_text(s,encoding='utf-8')\""
+
+red_case "F-6" '标识符里的数字又变回读数（CA 19-9 被当成两个数）' \
+  gates/check_frame.mjs "不符" \
+  "perl -0pi -e 's/if \\(looksLikeIdentifier\\(before, m\\[0\\], after\\)\\) continue/if (false) continue/' src/gates/g-frame.mjs"
+
+red_case "F-7" '标识符只排掉左半截（CA 19-|9| 的 9 仍算读数）' \
+  gates/check_frame.mjs "不符" \
+  "perl -0pi -e 's{/\\[A-Za-z\\]\\\\s\\*\\[\\\\d\\.\\]\\+-\\\$/\\.test\\(before\\) \\|\\|}{false ||}' src/gates/g-frame.mjs"
+
+# ── 成本门 · 台账数字与实测的绑定（§S21） ────────────────────────────────
+# 这道门守的是本仓库栽过五次的那一类：**抄进文档的数字**。
+# 它必须对两个方向都敏感 —— 文档被改，和被抄的那个量本身被改。
+red_case "K-1" '台账里的成本数被改（文档漂移）' \
+  gates/check_cost.mjs "台账已过期" \
+  "python3 gates/mutants/ledger-cost-drift.py"
+
+red_case "K-2" '读全文的输入量退回写死的 22K（实测被绕过）' \
+  gates/check_cost.mjs "台账已过期" \
+  "python3 -c \"import pathlib,re;p=pathlib.Path('tests/external/cost-model.mjs');t=p.read_text();n=re.sub(r'const READ_IN = .*','const READ_IN = 22 * 1024',t,count=1);assert n!=t;p.write_text(n)\""
 
 # ── 锚点包含门（T2-1/T2-2 + 子串陷阱） ───────────────────────────────────
 red_case "C-1" "退回裸 includes（数值等价与词干全丢）" \

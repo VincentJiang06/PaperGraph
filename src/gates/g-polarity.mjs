@@ -137,7 +137,26 @@ const PRE_ALLOWED = [
   '达到', '达', '为', '是', '取得', '到', '有', '共', '计', '的', '率',
 ]
 // 数值型载荷才走这条判据 —— 「实体名前面是什么词」不改变实体的身份。
-const NUMERICISH = /[\d０-９〇一二三四五六七八九十百千万亿]/
+//
+// 〔留出集 H-8 抓到的〕原判据是「含任一数字字符」，于是**含数字的标识符**
+// 也被当成数值载荷：生物标志物 `CA 19-9` 前面的介词 `for` 不在白名单里，
+// 一条完全正常的阳性发现被判成否定（NEG-P:for）。
+// 同一个根因在组稿器那边也犯了一次（`CA 19-9` 被判成两个裸数字）——
+// **「含数字」不等于「是数字」**，这条要在两个模块里同时立住。
+//
+// 现在的判据：剥掉货币/百分号/常见量纲后，**整体**必须是一个数。
+// `-70.18` `92%` `$2558 million` `56.8%` 是；`CA 19-9` `IL-6` `p53` 不是。
+const NUMERICISH = v => {
+  const t = String(v ?? '').normalize('NFKC').trim()
+  if (!t) return false
+  const stripped = t
+    .replace(/^[$¥€£]/, '')
+    .replace(/[%‰]$/, '')
+    .replace(/\s*(?:million|billion|thousand|万|亿|千|百分点|个百分点)\s*$/i, '')
+    .replace(/[,，]/g, '')
+    .trim()
+  return /^[-−+]?[\d０-９〇一二三四五六七八九十百千万亿]+(?:[.．][\d０-９]+)?$/.test(stripped)
+}
 
 /** 取 `at` 之前紧邻的那个词（英文按词、中文按连续 CJK 串）；句首返回 '' */
 export function precedingToken(sentence, at) {
@@ -356,7 +375,7 @@ export function polarityScope(anchorSentence, payloadFields, followingSentence =
   // NEG-P：数值载荷的前置词必须在白名单内。fail-closed。
   const preHits = []
   for (const sp of spans) {
-    if (!NUMERICISH.test(sp.value)) continue
+    if (!NUMERICISH(sp.value)) continue
     // 载荷已经被某个算子命中时不必重复报——同一件事报两次会让 params 失真。
     if (hits.some(h => overlaps(h, sp))) continue
     // 载荷**自身含否定算子**时跳过：这时 producer 断言的就是那个否定命题
@@ -364,7 +383,22 @@ export function polarityScope(anchorSentence, payloadFields, followingSentence =
     // 打到的只会是它前面那个无关的主语。——NT-L-35 的形态。
     if (scopes.some(sc => sc.mStart >= sp.start && sc.mEnd <= sp.end)) continue
     const tok = precedingToken(anchorSentence, sp.start)
-    if (!preAllowed(tok)) preHits.push({ cls: 'NEG-P', marker: tok, span: sp.value })
+    // 〔留出集二 · §S22〕类名分两档，**判定完全不变**，变的只是报告。
+    //
+    // 原先白名单未命中一律标 `NEG-P`（positional negation）。但那个标签在
+    // 绝大多数情况下是**假的**：留出集二里 J-1/J-7/J-8 的门报告都是
+    // `scopes_found: 0`——句子里根本没有否定，拦住它们的只是
+    // 「`worse`/`another`/`included` 这三个词不在受控表里」。
+    // 把「我没见过这个词」写成「这里有否定」，会让每一个读状态记录的人
+    // 得出错误结论，也让白名单的**覆盖缺口**永远统计不出来。
+    //
+    //   NEG-P    句中确实检出否定作用域，前置位判据在此之上生效
+    //   PRE-UNK  句中零否定，纯粹是前置词未收录 —— 这是覆盖缺口，不是否定
+    //
+    // 两档的**后果相同**（都降级，fail-closed 不动摇）；区别只在可读性与可统计性。
+    if (!preAllowed(tok)) {
+      preHits.push({ cls: scopes.length ? 'NEG-P' : 'PRE-UNK', marker: tok, span: sp.value })
+    }
   }
 
   let pass = hits.length === 0 && preHits.length === 0

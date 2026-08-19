@@ -16,6 +16,24 @@
   grep -c '92.4' snapshots/T1a-nature-alphafold.txt   # → 0
   ```
 
+- `T6-alphafold-full-jats.xml` —— **同一篇论文的 PMC 完整 JATS 全文**（PMC8371605）。
+  **License: CC BY**，2026-08-19 经 PMC OA 接口核实：
+
+  ```
+  curl -s "https://www.ncbi.nlm.nih.gov/pmc/utils/oa/oa.fcgi?id=PMC8371605"
+  #  <record id="PMC8371605" ... license="CC BY" retracted="no">
+  ```
+
+  **为什么要与 T1a 并存而不是替换它**：两者是同一篇论文的**两条取证路径**。
+  T1a 是纯文本抽取（G4，无结构化定位符）；T6 带 `<sec id>`/`<p id>`，
+  可做回指往返验证（G5）。外部标定的 T5-1 与 T1-3 引的是**同一句话**，
+  状态却分别是〔已验证〕与〔已归因〕——差别只在取证方式。
+  删掉任何一份，ST-V 与 ST-A 的这条对照就没了。
+
+  它同时是段落选择门（`gates/check_passage_select.mjs`）与成本模型
+  （`tests/external/cost-model.mjs`）的**共用夹具**：50 个可寻址段、
+  渲染后 42,572 字符 = 10.6K token。§S21 那次订正就是拿它量出来的。
+
 ## 只保留被引用的句子（非开放获取）
 
 下列五份**不是**开放获取。本仓库只保留测试真正引用到的那一到三句

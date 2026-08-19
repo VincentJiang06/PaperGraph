@@ -12,12 +12,18 @@
  * 凡是没有依据的地方写「假设」而不是写一个看起来精确的数。
  *
  * 三条已经**不是假设**的量（来自本仓库的实测工件）：
- *   · 一份 JATS 全文的纯文本渲染：AlphaFold 那篇 = 51 段 / 约 89K 字符
- *     ⇒ 约 22K token（tests/external/snapshots 的完整版实测）
+ *   · 一份 JATS 全文的纯文本渲染：**由本文件当场量**（见 FULLTEXT_TOK），
+ *     不再写死。〔S21〕这里原先写「51 段 / 约 89K 字符 ⇒ 约 22K token」，
+ *     两头都对不上：渲染后是 50 段 / 42,572 字符 = 10.6K token，
+ *     原始 XML 才 177K 字符。占比最大的那一行**被高估了 2×**，
+ *     而它高估的方向恰好是让这套设计显得更贵 —— 错误方向不总是对自己有利的。
  *   · 一条 claim 的证据卡 + status.json：约 1.2K 字符 ⇒ 约 0.3K token
  *   · 组稿骨架 + 成稿：19 条 claim 的那次运行产出约 2K 字符
  */
+import { readFileSync } from 'node:fs'
 import { CostLedger, PRICING, PRICING_VERIFIED_AT, estimateTokens } from '../../src/cost.mjs'
+import { passagesFromJats } from '../../packages/dsh-academic-fetch/lib/structured.js'
+import { selectPassages } from '../../src/passage-select.mjs'
 
 const K = 1000
 const fmt = n => n < 0.01 ? `$${n.toFixed(4)}` : `$${n.toFixed(2)}`
@@ -27,18 +33,27 @@ const fmt = n => n < 0.01 ? `$${n.toFixed(4)}` : `$${n.toFixed(2)}`
  * pro  = 需要判断的环节（提 claim、选证据、写骨架）
  * flash= 机械环节（抽句、拼 query、格式化）
  */
+// ── 夹具实测（先量，再拿去填表；表里不留手写的 token 数）────────────────
+const JATS = readFileSync(new URL('./snapshots/T6-alphafold-full-jats.xml', import.meta.url), 'utf8')
+const ALL_P = passagesFromJats(JATS).filter(p2 => p2.locator)
+const SECS = [...new Set(ALL_P.map(p2 => p2.secTitle).filter(Boolean))]
+const FULLTEXT_TOK = estimateTokens(ALL_P.map(p2 => p2.text).join('\n\n'))
+// 读一篇全文的输入 = 全文 + 提示词与已判定 claim 的上下文（后者按 2K 估，标为假设）
+const PROMPT_OVERHEAD = 2 * 1024
+const READ_IN = Math.round(FULLTEXT_TOK + PROMPT_OVERHEAD)
+
 const STAGES = [
   { stage: '选题拆解',     model: 'deepseek-v4-pro',   calls: 1,
     inMiss: 2 * K, out: 2 * K, note: '一次；问题 → 论据线清单' },
   { stage: '检索与筛选',   model: 'deepseek-v4-flash', calls: 12,
     inMiss: 3 * K, out: 0.5 * K, note: '每条论据线 2 次 × 6 线；吃检索结果标题+摘要' },
   { stage: '读全文提 claim', model: 'deepseek-v4-pro', calls: 9,
-    inMiss: 22 * K, inHit: 0, out: 1.5 * K,
-    note: '★ 22K = 一份 JATS 全文的实测渲染长度（AlphaFold 那篇 51 段）' },
+    inMiss: READ_IN, inHit: 0, out: 1.5 * K,
+    note: '★ 全文 token 当场实测（PMC8371605 渲染后）+ 2K 提示词开销（假设）' },
   { stage: '反证检索',     model: 'deepseek-v4-flash', calls: 21,
     inMiss: 1 * K, out: 0.3 * K, note: '每条 claim 一次；query 由槽拼出，上下文很小' },
   { stage: '读反证',       model: 'deepseek-v4-pro',   calls: 6,
-    inMiss: 22 * K, out: 1 * K, note: '只对有反证命中的读；假设三分之一命中' },
+    inMiss: READ_IN, out: 1 * K, note: '只对有反证命中的读；假设三分之一命中' },
   { stage: '推断链',       model: 'deepseek-v4-pro',   calls: 4,
     inMiss: 6 * K, out: 1.5 * K, note: 'K-I claim 的前提追溯' },
   { stage: '组稿',         model: 'deepseek-v4-pro',   calls: 2,
@@ -127,14 +142,62 @@ for (const [k, v] of Object.entries(st).sort((a, b) => b[1].usd - a[1].usd)) {
   console.log(`${k.padEnd(14)}${fmt(v.usd).padEnd(10)}${String(Math.round(v.usd / total * 100) + '%').padEnd(6)}${bar}`)
 }
 
+// ── 优化后：段落选择的实测效果 ────────────────────────────────────────
+//
+// 〔为什么这一段要现场跑，而不是抄一个常数〕
+// 这里原本写的是 `const SELECT_SAVING = 0.50`，从 check_passage_select 的
+// 输出里**手抄**过来。本仓库已经在这一类上栽过四次（PASS 行的自述数字）：
+// 抄来的数字不会随被抄对象一起变，选择器一改，成本表就开始说谎，而且没有任何门会红。
+// 现在它由**同一份真实 JATS 夹具当场跑出来**——选择器变了，这张表跟着变。
+//
+// 与门里同一条纪律：问题只由**节标题**生成，不由目标段的措辞生成。
+let charsAll = 0, charsSel = 0
+for (const sec of SECS) {
+  const sel = selectPassages(ALL_P, { question: sec, slots: [sec] })
+  charsAll += ALL_P.reduce((a, p2) => a + p2.text.length, 0)
+  charsSel += sel.kept.reduce((a, p2) => a + p2.text.length, 0)
+}
+const SELECT_SAVING = 1 - charsSel / charsAll
+const OPTIMIZED = STAGES.map(s2 => /读全文|读反证/.test(s2.stage)
+  ? { ...s2, inMiss: Math.round((s2.inMiss - PROMPT_OVERHEAD) * (1 - SELECT_SAVING) + PROMPT_OVERHEAD) } : s2)
+
+function runOpt({ cacheRate, peak }) {
+  const at = peak ? '2026-08-19T02:00:00Z' : '2026-08-19T12:00:00Z'
+  const led = new CostLedger({ at })
+  for (const s2 of OPTIMIZED) for (let i = 0; i < s2.calls; i++) {
+    const t = s2.inMiss ?? 0
+    led.record({ model: s2.model, stage: s2.stage,
+      inputCacheHit: Math.round(t * cacheRate), inputCacheMiss: Math.round(t * (1 - cacheRate)),
+      output: s2.out ?? 0 })
+  }
+  return led
+}
+console.log('\n优化后（只送可寻址段落）')
+console.log('─'.repeat(96))
+console.log(`实测夹具：PMC8371605 完整 JATS，${ALL_P.length} 段 / ${SECS.length} 个节标题各问一次`)
+console.log(`整篇渲染 ${(FULLTEXT_TOK / K).toFixed(1)}K token；选择后平均省 **${(SELECT_SAVING * 100).toFixed(0)}%** 正文`)
+console.log(`（提示词开销 ${PROMPT_OVERHEAD / K}K 不参与压缩，所以按整次调用算省得少一些）`)
+console.log('（此处两个数由本文件当场跑出，不是抄来的常数；召回率由 gates/check_passage_select.mjs 单独守）')
+console.log(`${'情形'.padEnd(28)}${'优化前'.padEnd(12)}${'优化后'.padEnd(12)}${'降幅'.padEnd(8)}`)
+for (const [why, o] of [
+  ['离峰 · 无缓存', { cacheRate: 0, peak: false }],
+  ['离峰 · 50% 前缀缓存', { cacheRate: 0.5, peak: false }],
+  ['离峰 · 80% 前缀缓存', { cacheRate: 0.8, peak: false }],
+]) {
+  const a = run(o).totalUsd, b = runOpt(o).totalUsd
+  console.log(`${why.padEnd(28)}${fmt(a).padEnd(12)}${fmt(b).padEnd(12)}${((1 - b / a) * 100).toFixed(0) + '%'}`)
+}
+console.log('降幅小于 50% 是对的：段落选择只作用于两个读全文的阶段，')
+console.log('而输出 token 与其余阶段不受影响 —— **省的是输入，不是全部**。')
+
 console.log('\n优化落点（按占比排序，不按好改排序）')
 console.log('─'.repeat(96))
 const top = Object.entries(st).sort((a, b) => b[1].usd - a[1].usd)[0]
 console.log(`最大项是「${top[0]}」，占 ${Math.round(top[1].usd / total * 100)}%。`)
-console.log('它之所以大，是因为**每读一篇全文就吃 22K 输入**，而全文是不可压缩的证据本身。')
+console.log(`它之所以大，是因为**每读一篇全文就吃 ${(READ_IN / K).toFixed(1)}K 输入**，而全文是不可压缩的证据本身。`)
 console.log('三条可试的方向，代价各不相同：')
 console.log('  ① 前缀缓存：同一篇被多条 claim 反复读时，第二次起走 cache hit（差 30×）')
 console.log('  ② 只送**可寻址段落**而不是整篇：G5 本来就是逐段的，读全文是习惯不是需求')
-console.log('  ③ 用 flash 先筛段落、pro 只读候选段：把 22K 拆成 flash 22K + pro 3K')
+console.log(`  ③ 用 flash 先筛段落、pro 只读候选段：把 ${(READ_IN / K).toFixed(1)}K 拆成 flash 全量 + pro 只读候选段`)
 console.log('\n〔本文件不做的事〕它不宣称这是实跑账单。用量是估的，依据逐条标在上面；')
 console.log('  价格不是估的，是 2026-08-19 对官方页复核的。两者的可信度不同，不能混着说。')

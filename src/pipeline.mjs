@@ -80,7 +80,14 @@ export function runClaim(submission, ctx) {
   // discriminator（逐字取自锚句、且不出现在兄弟读数里）。
   // 「只有 36% 的心理学研究可以被复现」逐字转录无误、极性无误、来源真实，
   // 错在把四个判据塌成一个——那是框架问题，包含与极性两道门都看不见。
-  const frm = frameGate(ctx.snapshotText ?? '', anchorSent, submission.discriminator, payloadFields)
+  const frm = frameGate(ctx.snapshotText ?? '', anchorSent, submission.discriminator, payloadFields,
+                        // **只传 metric，不传 sample_or_tier**。
+                        // 〔留出集 H-7 抓到的〕指标名说的是「这是什么量」，
+                        // sample_or_tier 说的是「哪一个结局」——
+                        // 而并列读数里正确的区分项恰恰就是后者
+                        // （三个结局各一个 RR，discriminator 当然是结局名）。
+                        // 把两者一起算成「重说指标名」，会把唯一正确的写法拦掉。
+                        [submission.metric_frame?.metric].filter(Boolean).map(String))
   record.frame_gate_passed = frm.pass
   mech.push({ gate_id: 'G-FRAME', gate_class: 'GC-0', verdict: frm.pass ? 'pass' : 'fail',
               params: { frame_version: frm.version, triggered: frm.triggered,

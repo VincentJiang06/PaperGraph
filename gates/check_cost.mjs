@@ -15,7 +15,13 @@
 // 用法:  node gates/check_cost.mjs
 // 退出码: 0 = 全部符合，1 = 有不符
 
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { execFileSync } from 'node:child_process'
 import { PRICING, PRICING_VERIFIED_AT, PRICING_SOURCE, isPeak, costOf, CostLedger } from '../src/cost.mjs'
+
+const ROOT = fileURLToPath(new URL('..', import.meta.url))
 
 let bad = 0
 const near = (a, b, eps = 1e-9) => Math.abs(a - b) < eps
@@ -105,6 +111,37 @@ try {
   bad++; console.log('\nFAIL  未知模型没有抛异常 —— 静默按 0 计会让一整类调用从账上消失')
 } catch { /* 期望抛 */ }
 
+// ── ⑤ 台账里的成本表必须与实测一致 ──────────────────────────────────
+//
+// 〔为什么要有这一条 · §S21〕成本模型现在从真实 JATS 夹具当场量，
+// 但**台账 §S18 里那张表仍然是手抄的**。本仓库栽在「PASS 行的自述数字」上
+// 已经五次：抄来的数字不随被抄对象一起变，而且没有任何门会红。
+// 这一条把台账那张表接回实测：跑一次成本模型，把它打印的四种情形
+// 与台账表里的数字逐格比。差一分钱就红。
+{
+  const modelOut = execFileSync(process.execPath,
+    [join(ROOT, 'tests/external/cost-model.mjs')], { encoding: 'utf8' })
+  const scen = {}
+  // 情形名里本身含空格（「离峰 · 50% 前缀缓存」），所以按**两个以上空格**切列
+  for (const m of modelOut.matchAll(/^((?:离峰|峰时) · .+?)\s{2,}\$([\d.]+)/gm)) {
+    if (scen[m[1]] == null) scen[m[1]] = m[2]   // 只取首次出现（四种情形那张表）
+  }
+  const ledger = readFileSync(join(ROOT, '07-ATTACK-LEDGER.md'), 'utf8')
+  const rows = [...ledger.matchAll(/^\|\s*(离峰 · [^|]+?|峰时 · [^|]+?)\s*\|\s*\*{0,2}\$([\d.]+)\*{0,2}\s*\|/gm)]
+  if (!rows.length) { bad++; console.log('\nFAIL  台账里找不到成本表 —— 无法核对（表被改名或删了？）') }
+  let checked = 0
+  for (const [, name, val] of rows) {
+    const want = scen[name.trim()]
+    if (want == null) { bad++; console.log(`\nFAIL  台账写了情形「${name.trim()}」，但成本模型没有输出它`); continue }
+    if (want !== val) {
+      bad++
+      console.log(`\nFAIL  台账「${name.trim()}」写 $${val}，成本模型实测 $${want} —— 台账已过期`)
+    }
+    checked++
+  }
+  if (checked) console.log(`\n台账成本表 ${checked} 格与实测逐格核对`)
+}
+
 console.log()
 if (bad) { console.log(`FAIL  ${bad} 处不符`); process.exit(1) }
-console.log(`PASS  价目表 ${CASES.length} 条手算算例 + ${WINDOW.length} 个峰时端点 + 归集口径全部符合；未知模型当场抛`)
+console.log(`PASS  台账成本表与实测一致；价目表 ${CASES.length} 条手算算例 + ${WINDOW.length} 个峰时端点 + 归集口径全部符合；未知模型当场抛`)

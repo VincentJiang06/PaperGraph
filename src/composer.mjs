@@ -79,6 +79,23 @@ export function compose(skeleton, statusById, opts = {}) {
     // 序号豁免要**带序号前缀**：`第 3 节` / `Table 2`。
     // 原规则是「≤20 的无单位整数一律放行」，于是 `18 人死亡` 免检。
     if (!m[2] && Number.isInteger(n) && ORDINAL_PREFIX.test(before.replace(/\s+$/, ""))) continue
+    // 标识符豁免要**自证是标识符**：数字长在一个名字里，而不是独立成数。
+    // 〔留出集 H-8 抓到的〕生物标志物 `CA 19-9` 里的 `19` 与 `9` 被判成两个裸数字，
+    // 于是「CA 19-9 的合并均差为 {{claim}} U/L」这句**根本写不出来**。
+    // 这与 E-3 是同一类错误：一条把正确写法也拦掉的规则，会把人推向错误写法。
+    //
+    // 判据与其余两条豁免同构 —— **自证身份，不靠数值区间猜**：
+    //   ① 数字与字母**相连无空格**：`p53` `IL-6` `COVID-19` `H3K27`
+    //   ② 全大写缩写 + 空格 + 带连字符的数字串：`CA 19-9` `HbA 1c`
+    // 单独一个数不满足任何一条，仍然判红（`共 19 例` 不会被豁免）。
+    if (!m[2]) {
+      const tail = before.replace(/\s+$/, '')
+      // `p53`（字母紧邻）与 `IL-6` `COVID-19`（字母 + 连字符）都是标识符形态
+      const glued = /[A-Za-z]$/.test(before) || /[A-Za-z]-$/.test(before)
+      const hyphenId = /^-\d/.test(after) || /\d-$/.test(before)              // 数字串内部的连字符
+      const abbrev = /\b[A-Z]{2,6}$/.test(tail) && /^-\d/.test(after)         // CA 19-9 形态
+      if (glued || abbrev || (hyphenId && /[A-Za-z]/.test(tail.slice(-8)))) continue
+    }
     bare.push(m[0].trim())
   }
   for (const re of [SCI_NUMBER, ROMAN_NUMBER, CN_NUMBER, CN_PERCENT]) {

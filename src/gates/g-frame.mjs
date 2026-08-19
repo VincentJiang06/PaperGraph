@@ -61,11 +61,64 @@ function unitClass(numTok, ctx) {
 const NUM_RE = /\$?\d[\d,]*(?:\.\d+)?%?|[〇零一二三四五六七八九十]+(?=个百分点)|(?:thirty|forty|fifty|sixty|seventy|eighty|ninety|twenty)[\s-]?(?:one|two|three|four|five|six|seven|eight|nine)?(?=\s*(?:percent|per cent))/gi
 const NON_READING = /(?:confidence\s+interval|\bCI\b|significance\s+level|置信区间)/i
 
+/**
+ * 数字的**角色**。只有「效应量/读数」彼此构成竞争读数。
+ *
+ * 〔留出集 H-3 抓到的〕原实现只分量纲（percent / currency / plain），
+ * 于是 meta 分析里的
+ *   "included data from **36 studies** and yielded … **OR = 2.19**"
+ * 被判成两个同量纲读数 —— **研究数量不是效应量的另一个读法**。
+ * 后果是一条完全正常的阳性发现被降级（H-3 假阳）。
+ *
+ * 学术写作里同一句能出现四五种角色不同的数，逐一排除：
+ *   研究数 / 样本量  n = 264 · 36 studies · 3 RCTs
+ *   p 值            p < 0.001 · P = .23
+ *   异质性          I2 = 60% · I² = 98%
+ *   置信区间        已由括号屏蔽处理
+ * 它们都不是「这个量的另一个读法」，混进来只会制造假阳。
+ */
+const ROLE_EXCLUDE = [
+  { why: '研究数/样本量', re: /\b(?:n\s*=\s*|N\s*=\s*)$|\b(?:from\s+)?$/,
+    after: /^\s*(?:studies|trials|RCTs|patients|participants|subjects|nonunions|cases|篇|项|例)\b/i },
+  { why: 'p 值', re: /\b[pP]\s*[<>=≤≥]\s*$/, after: null },
+  { why: '异质性', re: /\bI\s*2?\s*[²]?\s*=\s*$/, after: null },
+]
+
+/**
+ * 标识符里的数字**不是读数**。
+ *
+ * 〔留出集一 H-8 回归查出来的 · §S22〕生物标志物 `CA 19-9` 里的 `19-9`
+ * 被当成了一个竞争读数，于是一条只有单一读数的句子被判成「并列了两个读法」，
+ * 要求 claim 给 discriminator —— 假阳。
+ *
+ * **这是同一个根因的第三次出现。** 前两次的修法与注释都已入库：
+ *   · `g-polarity.mjs` 的 NUMERICISH：`CA 19-9` 前面的 `for` 曾被判成否定；
+ *   · `src/composer.mjs`：`CA 19-9` 曾被拆成两个"裸数字"。
+ * 那条注释的原话是「**「含数字」不等于「是数字」**，这条要在两个模块里同时立住」。
+ * 写的时候只数到两个模块 —— G-FRAME 是漏掉的第三个。
+ *
+ * 判据与另外两处保持一致：紧邻左侧是**大写字母缩写或字母**，
+ * 或数字自身形如 `19-9` / `4-1BB` 这种带连字符的标识符片段。
+ */
+const IDENTIFIER_LEFT = /(?:\b[A-Z][A-Za-z]{0,5}\s*|[A-Za-z])$/
+const looksLikeIdentifier = (before, tok, after) =>
+  // 前半截：`CA |19|-9` —— 左边是缩写，自身与右边构成 `19-9`
+  (IDENTIFIER_LEFT.test(before) && /^[\d.]+-[\d.]/.test(tok + after)) ||
+  // 后半截：`CA 19-|9|` —— 左边已经是「缩写 + 数字 + 连字符」。
+  // 少了这一条只排掉一半，剩下的那半仍然算作竞争读数（实测：H-8 仍判红）。
+  /[A-Za-z]\s*[\d.]+-$/.test(before) ||
+  // `IL-|6|` / `p|53|` 这类：左边是字母直接接连字符或直接接数字
+  (/^-[A-Za-z\d]/.test(after) && /[A-Za-z]\s?$/.test(before))
+
 function numbersIn(clause) {
   const out = []
   for (const m of clause.matchAll(NUM_RE)) {
     const after = clause.slice(m.index + m[0].length, m.index + m[0].length + 30)
     if (NON_READING.test(after)) continue
+    const before = clause.slice(Math.max(0, m.index - 24), m.index)
+    if (looksLikeIdentifier(before, m[0], after)) continue
+    // 角色排除：不是「这个量的另一个读法」的数，不参与竞争
+    if (ROLE_EXCLUDE.some(r => r.re.test(before) && (!r.after || r.after.test(after)))) continue
     out.push({ tok: m[0], cls: unitClass(m[0], after) })
   }
   return out
@@ -100,7 +153,7 @@ function containingSentence(body, anchor) {
  * @param {string} [discriminator] claim 自带的区分片段
  * @returns {{pass:boolean, triggered:boolean, siblings:string[], why:string|null, version:string}}
  */
-export function frameGate(body = '', anchor = '', discriminator = '', payloadValues = []) {
+export function frameGate(body = '', anchor = '', discriminator = '', payloadValues = [], metricTerms = []) {
   const b = String(body), a = String(anchor).trim()
   const base = { triggered: false, siblings: [], why: null, version: FRAME_VERSION }
   if (!a || !b.includes(a)) return { ...base, pass: true, why: '锚句不在快照里 —— 由 G-QUOTE 负责' }
@@ -117,7 +170,25 @@ export function frameGate(body = '', anchor = '', discriminator = '', payloadVal
   // 而若改成「整个子句含 CI 就整条排除」，47% 那条**合法的**竞争读数
   // 也会因为句中提到 confidence interval 而被整条丢掉（F-3 由此红过一次）。
   // 正确的粒度是：只抹掉区间本身那一段，句子的其余部分照常参与判定。
-  const masked = window.replace(/[（(][^）)]*(?:confidence\s+interval|\bCI\b|置信区间)[^）)]*[）)]/gi, ' ')
+  // 置信区间有两种写法，都要屏蔽：
+  //   带括号  "(95% CI, 683.6-1228.9)"        —— 初版只处理了这种
+  //   不带括号 "; 95%CI=-121.07 - -19.29; "   —— 留出集 H-8 抓到的
+  // 后者在 meta 分析里极常见（分号分隔的统计串）。不屏蔽则区间的上下界
+  // 会被当成两个竞争读数，一条正常的合并估计被判成「没说是哪一个」。
+  // 只屏蔽**置信区间那一段**，不屏蔽整个括号。
+  //
+  // 〔负例套件 F-4 抓到的 fail-open〕原实现把「含 CI 的整个括号」抹掉。
+  // 而真实 meta 分析里载荷与统计量常常在**同一个括号**里：
+  //   "(MD: -70.18U/L; 95%CI=-121.07 - -19.29; p<0.01; I2=98%)"
+  // 整括号一抹，**载荷 -70.18 也没了** → 本门看不到任何数 → 平凡放行。
+  // 那是 fail-open：一句该被检查的话，因为格式而完全绕过了这道门。
+  //
+  // 现在按「CI 标记 + 紧随其后的区间」定点屏蔽，两种写法都覆盖：
+  //   "95% CI, $683.6 million-$1228.9 million"  （逗号 + 货币）
+  //   "95%CI=-121.07 - -19.29"                  （等号 + 负数）
+  const CI_SPAN = /(?:confidence\s+interval|\bCI\b|置信区间)\s*[=:：,，]?\s*\[?[^);；]{0,60}?[-–—]\s*[-−+]?[$¥€£]?[\d.]+[^);；\]]{0,12}\]?/gi
+  const maskCI = t => t.replace(CI_SPAN, ' ')
+  const masked = maskCI(window)
   // 分号/逗号一律切；`and` / `与` **只在两侧各有一个数时**才切。
   // 〔真实文献 T3-6 抓到的〕`the median capitalized research and development
   // investment … $985.3 million` 里的 and 是名词短语内部的，
@@ -130,7 +201,7 @@ export function frameGate(body = '', anchor = '', discriminator = '', payloadVal
     const parts = seg.split(/\sand\s|\s与\s/)
     return parts.length > 1 && parts.every(hasNum) ? parts : [seg]
   }).map(c => c.trim()).filter(Boolean)
-  const aMasked = a.replace(/[（(][^）)]*(?:confidence\s+interval|\bCI\b|置信区间)[^）)]*[）)]/gi, ' ')
+  const aMasked = maskCI(a)
   // 锚句所在的那个子句 = **含本 claim 载荷**的那一个。
   // 〔真实中文文献 T4-1 抓到的〕原实现取「第一个是锚句子串的子句」，
   // 于是在 `…分别为100％，75％，和50％，结果发现，…杀虫率分别为73．55％和78．45％`
@@ -139,7 +210,18 @@ export function frameGate(body = '', anchor = '', discriminator = '', payloadVal
   // 一道理由错了的红，和放行一样坏：它把人引去改一个没坏的地方。
   const inAnchor = clauses.filter(c => aMasked.includes(c) || c.includes(aMasked.replace(/[;；]\s*$/, '').trim()))
   const pv = (payloadValues ?? []).map(String).filter(Boolean)
-  const mine = inAnchor.find(c => pv.length && pv.some(v => c.includes(v) || c.normalize('NFKC').includes(v.normalize('NFKC'))))
+  // 优先取含**带数字的载荷**的子句。
+  // 〔留出集 H-2 抓到的〕原实现取「含任一载荷值」的子句，而实体槽
+  // （`prevalence`）会命中一个**没有数字**的子句：
+  //   "The pooled prevalence of diabetic neuropathy" ← 选中了这个
+  //   "was 56.8%" / "19.5%" / "and 17.7%"            ← 三个真正的读数在这里
+  // 于是 myNums 为空，本门判「锚句子句里没有数」直接放行 —— **静默失守**。
+  // 三个并列患病率该触发而没触发，H-2 判对纯属巧合。
+  const numeric = pv.filter(v => /\d/.test(v))
+  const pick = vals => inAnchor.find(c => vals.some(v =>
+    c.includes(v) || c.normalize('NFKC').includes(v.normalize('NFKC'))))
+  const mine = (numeric.length ? pick(numeric) : null)
+    ?? (pv.length ? pick(pv) : null)
     ?? inAnchor.sort((x, y) => y.length - x.length)[0]
   if (!mine) return { ...base, pass: true, why: '锚句不构成分号子句 —— 本门只看分号枚举' }
 
@@ -156,14 +238,42 @@ export function frameGate(body = '', anchor = '', discriminator = '', payloadVal
     return { ...base, triggered: true, siblings, pass: false,
              why: `原文在同一处并列给了 ${siblings.length + 1} 个同量纲读数，claim 未声明 discriminator（取的是哪一个读法）` }
   }
-  if (!mine.includes(d)) {
+  // discriminator 对**整个锚句**验，不只对数值子句验。
+  // 〔留出集 H-1 抓到的〕英文的 `respectively` 句式里，区分项与数值**分处不同子句**：
+  //   "The pooled prevalence of diabetic neuropathy, retinopathy, and nephropathy
+  //    was 56.8%, 19.5%, and 17.7%, respectively."
+  // `neuropathy` 在前半句，`56.8%` 在后半句。要求 discriminator 出现在数值子句里，
+  // 等于要求作者用一种原文没有的句式转录 —— 而这正是本门要避免的那类
+  //「把人推向错误写法」。
+  // 判据的实质从来是**「它区分得开吗」**，那由下面「不出现在兄弟读数里」来保证；
+  // 「它属实吗」由「出现在锚句里」来保证。两条各管一半，不必挤在同一个子句上。
+  if (!aMasked.includes(d) && !a.includes(d)) {
     return { ...base, triggered: true, siblings, pass: false,
-             why: `discriminator ${JSON.stringify(d)} 不是锚句子句的逐字片段` }
+             why: `discriminator ${JSON.stringify(d)} 不是锚句的逐字片段` }
   }
   const alsoIn = siblings.filter(c => c.includes(d))
   if (alsoIn.length) {
     return { ...base, triggered: true, siblings, pass: false,
              why: `discriminator ${JSON.stringify(d)} 在 ${alsoIn.length} 个兄弟读数里也出现 —— 区分不了` }
+  }
+  // discriminator 不得只是把**指标名**重说一遍。
+  //
+  // 〔标定用例 F-22 抓到的〕`respectively` 句式里，兄弟子句往往只剩裸数字：
+  //   "…of diabetic neuropathy, retinopathy, and nephropathy was 56.8%, 19.5%, and 17.7%…"
+  // 兄弟读数是「19.5%」「and 17.7%」，不含主语里的任何词。
+  // 于是「不出现在兄弟读数里」这一条被**平凡地满足**——
+  // 主语里任何一个词都能当 discriminator，包括 `prevalence` 这个
+  // 三个读数**共享**的中心词，它什么都区分不了。
+  //
+  // 补的判据是：discriminator 与 metric_frame 的指标名不得互为包含。
+  // 指标名是「这个量叫什么」，而 discriminator 要回答「取的是哪一个读数」——
+  // 用前者答后者等于没答。
+  const mt = (metricTerms ?? []).map(x => String(x).toLowerCase().trim()).filter(Boolean)
+  const dl = d.toLowerCase()
+  const echoes = mt.find(m => m.includes(dl) || dl.includes(m))
+  if (echoes) {
+    return { ...base, triggered: true, siblings, pass: false,
+             why: `discriminator ${JSON.stringify(d)} 只是把指标名 ${JSON.stringify(echoes)} 重说了一遍 —— 它回答的是「这个量叫什么」，不是「取的是哪一个读数」` }
   }
   return { ...base, triggered: true, siblings, pass: true }
 }

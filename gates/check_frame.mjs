@@ -35,6 +35,14 @@ const AND_CLAUSE = 'The model reached 92% precision and 87% recall on the held-o
 const COMMA_LIST = 'Accuracy was 36%, 47%, 39% across the three evaluation criteria.'
 const ONE_AND    = 'The system achieved 92% accuracy and was released under an open license.'
 const NOUN_AND   = 'The median capitalized research and development investment was estimated at $985.3 million.'
+// 以下五句逐字取自真实 meta 分析摘要（Europe PMC 开放获取，PMID 见 tests/holdout/snapshots/SOURCES.md）
+const META_OR = 'Random effect meta-analysis for stone free rate included data from 36 studies and '
+  + 'yielded statistically significant higher stone free rates for LL with a pooled OR = 2.19.'
+const META_P  = 'Tissue-type distribution differed by approach with a pooled OR = 1.44 (P = 0.611).'
+const META_I2 = 'The pooled healing rate was 0.79 with considerable heterogeneity (I2 = 92%).'
+const CI_BARE = 'The pooled results showed lower levels (MD: -70.18U/L; 95%CI=-121.07 - -19.29; p<0.01; I2=98%).'
+const RESPECTIVELY = 'The pooled prevalence of diabetic neuropathy, retinopathy, and nephropathy was '
+  + '56.8% (95% CI 44.9-68.7), 19.5% (95% CI 3.9-35.2), and 17.7% (95% CI 7.3-28.0), respectively.'
 // 逐字取自 Wouters et al., JAMA 323(9):844-853 (2020)。
 const WOUTERS = 'After accounting for the costs of failed trials, the median capitalized research and '
   + 'development investment to bring a new drug to market was estimated at $985.3 million '
@@ -42,6 +50,14 @@ const WOUTERS = 'After accounting for the costs of failed trials, the median cap
   + '$1335.9 million (95% CI, $1042.5 million-$1637.5 million) in the base case analysis.'
 
 // [编号, 期望pass, 正文, 锚句, discriminator, 说明]
+// 留出集一 H-6 的真实句子（PMID 42054172，截到分号处 —— 与流水线取到的锚句一致）
+const BIOMARKER = 'The pooled results for CA 19-9 showed significantly lower levels in patients ' +
+  'receiving irreversible electroporation and immunotherapy compared with those receiving ' +
+  'irreversible electroporation alone (MD: -70.18U/L;'
+// 同一形态，但真的并列了两个读数 —— 用来证明 F-23 不是靠「一律放行」通过的
+const BIOMARKER_TWO = 'The pooled results for CA 19-9 showed lower levels with combination therapy ' +
+  '(MD: -70.18U/L) and with monotherapy (MD: -45.02U/L).'
+
 const CASES = [
   // ── 该触发且该拦 ────────────────────────────────────────────────────
   ['F-1', false, OSC, A36, '',
@@ -80,6 +96,36 @@ const CASES = [
    ' and 是名词短语内部的。切开它会让含载荷的半句丢掉 median —— ' +
    ' F-14 的合成样本**不能鉴别**这条判据（切开后前半句没数字，本来就不算兄弟读数），' +
    ' 是负例套件 F-3 抓出来的空心样本。'],
+  // ── 数字的角色（留出集 H-3）─────────────────────────────────────────
+  // 一句里可以有四五种角色不同的数，只有**效应量**彼此构成竞争读数。
+  ['F-16', true,  META_OR, META_OR, '',
+   '★★ 研究数不是效应量的另一个读法：`36 studies` 与 `OR = 2.19` 不构成竞争', ['2.19']],
+  ['F-17', true,  META_P, META_P, '',
+   '★ p 值不是读数', ['1.44']],
+  ['F-18', true,  META_I2, META_I2, '',
+   '★ I² 异质性不是读数', ['0.79']],
+  ['F-19', true,  CI_BARE, CI_BARE, '',
+   '★★ 不带括号的置信区间（meta 分析里极常见的分号统计串）不是两个竞争读数', ['-70.18']],
+
+  // ── discriminator 对整句验（留出集 H-1）─────────────────────────────
+  ['F-20', true,  RESPECTIVELY, RESPECTIVELY, 'neuropathy',
+   '★★ `respectively` 句式：区分项与数值分处不同子句，discriminator 仍应算数', ['56.8%']],
+  ['F-21', false, RESPECTIVELY, RESPECTIVELY, '',
+   '同句未声明取哪一个 → 拦', ['56.8%']],
+  ['F-22', false, RESPECTIVELY, RESPECTIVELY, 'prevalence',
+   '★★ discriminator 属实、且不在兄弟读数里，但它只是把指标名重说一遍 —— 什么都没区分', ['56.8%'], ['pooled prevalence']],
+
+  // 〔留出集一 H-8 回归查出来的 · §S22〕标识符里的数字不是读数。
+  // 同一根因的第三次出现（前两次在 g-polarity 与 composer）。
+  // 两条一起才有鉴别力：标识符在**左半截**和**右半截**都要被排掉，
+  // 只排一半的话 `CA 19-9` 里的 `9` 仍然算竞争读数（实测过）。
+  ['F-23', true, BIOMARKER, BIOMARKER, '',
+   '★★ `CA 19-9` 是标志物名，不是两个读数 —— 全句只有 -70.18 一个读数，无 discriminator 也应放行',
+   ['-70.18']],
+  ['F-24', false, BIOMARKER_TWO, BIOMARKER_TWO, '',
+   '★★ 绿的对照：同一句里**真的**并列了两个读数（-70.18 与 -45.02），此时必须拦',
+   ['-70.18']],
+
   ['F-14', true,  NOUN_AND, NOUN_AND, 'median',
    '〔空心样本，留作对照〕它看起来覆盖了「名词短语内部的 and」这条判据，实则不能鉴别：' +
    ' 切开后前半句没有数字，本来就不算兄弟读数。真正有鉴别力的是上面的 F-15。'],
@@ -89,8 +135,8 @@ let bad = 0
 console.log('同源竞争读数门 · 两侧标定\n')
 console.log(`${'编号'.padEnd(6)}${'期望'.padEnd(6)}${'实测'.padEnd(6)}${'触发'.padEnd(6)}说明`)
 console.log('─'.repeat(100))
-for (const [id, want, body, anchor, disc, why] of CASES) {
-  const r = frameGate(body, anchor, disc)
+for (const [id, want, body, anchor, disc, why, payload, metric] of CASES) {
+  const r = frameGate(body, anchor, disc, payload ?? [], metric ?? [])
   const ok = r.pass === want
   if (!ok) bad++
   console.log(`${id.padEnd(6)}${String(want).padEnd(6)}${String(r.pass).padEnd(6)}${String(r.triggered).padEnd(6)}${why}${ok ? '' : '   ← 不符'}`)
