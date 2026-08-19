@@ -11,7 +11,7 @@ import { SRC, sentenceWith, fetchOf, runOnce } from './run.mjs'
 const pad = (s, n) => String(s).padEnd(n)
 const results = []
 
-function run(id, { topic, desc, realWorld, fetches, claim, skeleton, counterSearch, expectNote }) {
+function run(id, { topic, desc, realWorld, fetches, claim, skeleton, counterSearch, expectNote, expect }) {
   const root = mkdtempSync(join(tmpdir(), 'ext-'))
   let out
   try {
@@ -27,7 +27,7 @@ function run(id, { topic, desc, realWorld, fetches, claim, skeleton, counterSear
   } catch (e) {
     out = { status: 'REJECTED', trace: e.message.slice(0, 90), prose: '(无成稿)', k: 0, n: 0 }
   } finally { rmSync(root, { recursive: true, force: true }) }
-  results.push({ id, topic, desc, realWorld, expectNote, ...out })
+  results.push({ id, topic, desc, realWorld, expectNote, expect, ...out })
 }
 
 /**
@@ -63,6 +63,7 @@ const base = (id, payload, slot_types, metric_frame, discriminator) => ({
 
 // ── T1 · AlphaFold CASP14 精度 ────────────────────────────────────────
 run('T1-1', {
+  expect: 'unverified',
   topic: 'T1', desc: '把 92.4 归给 Nature 2021(全网最常见的写法)',
   realWorld: '大量综述与新闻写「median GDT_TS 92.4 (Jumper et al., Nature 2021)」;该数字在 Nature 全文 0 次命中',
   fetches: [fetchOf('nature', '0.96')],
@@ -72,6 +73,7 @@ run('T1-1', {
   counterSearch: 'AUTO',
 })
 run('T1-2', {
+  expect: 'attributed',
   topic: 'T1', desc: '同一个 92.4,归给真正的出处 Proteins 2021',
   realWorld: '正确引用;CASP14 论文摘要逐字含该数',
   fetches: [fetchOf('proteins', '92.4')],
@@ -81,6 +83,7 @@ run('T1-2', {
   counterSearch: 'AUTO',
 })
 run('T1-3', {
+  expect: 'attributed',
   topic: 'T1', desc: 'Nature 自己的精度陈述 0.96 Å',
   realWorld: 'Nature 正文原话,承重结论',
   fetches: [fetchOf('nature', '0.96')],
@@ -92,6 +95,7 @@ run('T1-3', {
 
 // ── T2 · 心理学可复现率 ───────────────────────────────────────────────
 run('T2-1', {
+  expect: 'attributed',
   topic: 'T2', desc: '36%,判据 = 统计显著',
   realWorld: 'OSC 2015 原文四个数之一,最常被引',
   fetches: [fetchOf('osc', 'Thirty-six')],
@@ -103,6 +107,7 @@ run('T2-1', {
   counterSearch: 'AUTO',
 })
 run('T2-2', {
+  expect: 'attributed',
   topic: 'T2', desc: '39%,判据 = 主观评定',
   realWorld: '同一篇论文的另一个合法数字',
   fetches: [fetchOf('osc', '39%')],
@@ -114,6 +119,7 @@ run('T2-2', {
   counterSearch: 'AUTO',
 })
 run('T2-3', {
+  expect: 'unverified',
   topic: 'T2', desc: '声称 36%,但锚句取的是 47% 那一句',
   realWorld: '张冠李戴:判据与数字错配,人工审稿极难发现',
   fetches: [fetchOf('osc', '47%')],
@@ -124,6 +130,7 @@ run('T2-3', {
   counterSearch: 'AUTO',
 })
 run('T2-4', {
+  expect: 'unverified',
   topic: 'T2', desc: '逐字属实,但框成「只有 36% 的心理学研究可复现」',
   realWorld: '媒体与部分综述的标准写法。转录无误,框架把四个判据塌成一个',
   fetches: [fetchOf('osc', 'Thirty-six')],
@@ -137,6 +144,7 @@ run('T2-4', {
 
 // ── T3 · 新药研发成本 ─────────────────────────────────────────────────
 run('T3-1', {
+  expect: 'unverified',
   topic: 'T3', desc: '$2.6 billion 归给 DiMasi 2016',
   realWorld: '全世界通行写法。原文写的是 $2558 million,「2.6」不在原文里',
   fetches: [fetchOf('dimasi', '$2558 million')],
@@ -146,6 +154,7 @@ run('T3-1', {
   counterSearch: 'AUTO',
 })
 run('T3-2', {
+  expect: 'attributed',
   topic: 'T3', desc: '$2558 million 逐字引用 DiMasi 2016',
   realWorld: '严谨写法',
   fetches: [fetchOf('dimasi', '$2558 million')],
@@ -155,6 +164,7 @@ run('T3-2', {
   counterSearch: 'AUTO',
 })
 run('T3-3', {
+  expect: 'unverified',
   topic: 'T3', desc: '同一个数,三份"独立"来源(DiMasi + Prasad 提及 + Wouters 提及)',
   realWorld: '综述常见:引三篇看似独立的文献支持同一个数,而后两篇是在**转述并质疑**它',
   fetches: [fetchOf('dimasi', '$2558 million'), fetchOf('prasad', '$2.7 billion'), fetchOf('wouters', '$2.8 billion')],
@@ -165,6 +175,7 @@ run('T3-3', {
   counterSearch: 'AUTO',
 })
 run('T3-4', {
+  expect: 'unverified',
   topic: 'T3', desc: 'Prasad 的那句提及,单独拿来当支持证据',
   realWorld: '「$2.7 billion」出现在一篇**反驳它**的论文里,否定在下一句',
   fetches: [fetchOf('prasad', '$2.7 billion')],
@@ -175,6 +186,7 @@ run('T3-4', {
   expectNote: '跨句否定 —— 03 §11.15 已认账的结构性假阴',
 })
 run('T3-5', {
+  expect: 'attributed',
   topic: 'T3', desc: 'Prasad 自己的结论 $648.0 million',
   realWorld: '真实的反向估计,同一问题差 4 倍',
   fetches: [fetchOf('prasad', '$648.0 million, a figure')],
@@ -184,6 +196,7 @@ run('T3-5', {
   counterSearch: 'AUTO',
 })
 run('T3-6', {
+  expect: 'attributed',
   topic: 'T3', desc: 'Wouters 的中位估计 $985.3 million',
   realWorld: '第三个独立估计',
   fetches: [fetchOf('wouters', '$985.3 million')],
@@ -200,6 +213,7 @@ run('T3-6', {
 // 本项目第一次在真实中文语料上跑整条链路。此前 CJK 归一化、中文否定表、
 // 中文数字处理**只在作者自己造的句子上验过**——那正是 SA-3 那条循环性。
 run('T4-1', {
+  expect: 'attributed',
   topic: 'T4', desc: '全角数字 73．55％（全角句点+全角百分号）',
   realWorld: '中文期刊排版常用全角。作者转录成半角 73.55% 是标准做法',
   fetches: [fetchOf('cnNema', '73．55％')],
@@ -210,6 +224,7 @@ run('T4-1', {
   expectNote: '半角载荷 vs 全角原文 —— 靠 NFKC 归一化',
 })
 run('T4-2', {
+  expect: 'unverified',
   topic: 'T4', desc: '同句里两个并列读数（73．55％ 与 78．45％）',
   realWorld: '两种制剂各一个杀虫率，写「杀虫率为 73.55%」不说是哪一种',
   fetches: [fetchOf('cnNema', '73．55％')],
@@ -220,6 +235,7 @@ run('T4-2', {
   expectNote: 'G-FRAME 在中文上该触发',
 })
 run('T4-3', {
+  expect: 'unverified',
   topic: 'T4', desc: '中文空结果「无显著相关性」',
   realWorld: '把一个空结果当成支持性证据',
   fetches: [fetchOf('cnRice', '无显著相关性')],
@@ -230,6 +246,7 @@ run('T4-3', {
   counterSearch: 'AUTO',
 })
 run('T4-4', {
+  expect: 'unverified',
   topic: 'T4', desc: '中文上界限定「小于2%」',
   realWorld: '原文写「绝对差值一般小于2%」，转录成「差值为 2%」',
   fetches: [fetchOf('cnRice', '小于2%')],
@@ -239,6 +256,7 @@ run('T4-4', {
   counterSearch: 'AUTO',
 })
 run('T4-5', {
+  expect: 'unverified',
   topic: 'T4', desc: '中文子句边界：「但」前后一正一负',
   realWorld: '取「但」之后被否定的那半句当支持证据',
   fetches: [fetchOf('cnJuncus', '没有显著影响')],
@@ -248,6 +266,7 @@ run('T4-5', {
   counterSearch: 'AUTO',
 })
 run('T4-6', {
+  expect: 'attributed',
   topic: 'T4', desc: '同句「但」之前的肯定发现（不得误伤）',
   realWorld: '「随着移栽的推迟，SFP显著增强」是真实的肯定结论',
   fetches: [fetchOf('cnJuncus', 'SFP显著增强')],
@@ -274,4 +293,28 @@ for (const r of results) {
 console.log()
 const byStatus = results.reduce((a, r) => (a[r.status] = (a[r.status] ?? 0) + 1, a), {})
 console.log('状态分布:', JSON.stringify(byStatus))
+
+// ── 回归判定 ──────────────────────────────────────────────────────────
+// 〔为什么补这一段〕本文件此前只**打印**结果。19 条判定哪天翻了，
+// 没有任何东西会红——那它是一份报告，不是回归。
+// 每条期望都是本轮逐条论证过的（见 README 与 07-ATTACK-LEDGER §S5/§S9），
+// 不是「跑出来是什么就写什么」：T2-4/T3-3/T3-4 的期望是在修复**之前**
+// 就定下的，当时实测与期望相反。
+const deviations = results.filter(r => r.expect && r.status !== r.expect)
+const unlabelled = results.filter(r => !r.expect)
+console.log()
+if (unlabelled.length) {
+  console.log(`FAIL  ${unlabelled.length} 条用例没有期望值：${unlabelled.map(r => r.id).join('、')}`)
+  console.log('      没有期望的用例只是打印，不构成回归。')
+  process.exit(1)
+}
+if (deviations.length) {
+  console.log(`FAIL  ${deviations.length} 条偏离期望`)
+  for (const d of deviations) console.log(`      ${d.id}  期望 ${d.expect}，实测 ${d.status}  —— ${d.desc}`)
+  process.exit(1)
+}
+// 〔文献份数不硬编码〕这行原写「9 份真实文献」——又一个会腐的自述数字，
+// 而且就长在一份专门讲「数字要有出处」的测试里。由 SRC 表算出来。
+console.log(`PASS  外部标定 ${results.length} 条（${new Set(results.map(r => r.topic)).size} 话题 / ` +
+  `${Object.keys(SRC).length} 份真实文献）全部符合期望`)
 export { results }
