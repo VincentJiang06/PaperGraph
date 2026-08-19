@@ -103,7 +103,7 @@ v1 规划已归档于 `.archive/v1-2026-08-17/`，本轮从零重做。
 | [04-ORCHESTRATION.md](04-ORCHESTRATION.md) | 拓扑、循环结构、扇出准入、停止与饱和、预算双计数器、检索资源治理、人在环 | 971 行 |
 | [05-TESTING.md](05-TESTING.md) | 三层评测、指标纪律、held-out、A/B 证伪、红队、校准、eval-of-eval、人力预算 | 1289 行 |
 | [06-SURVEY.md](06-SURVEY.md) | 调研摘要与**载荷数字总表**（全项目引用数字的唯一入口） | 1131 行 / 784 行核验表 |
-| [07-ATTACK-LEDGER.md](07-ATTACK-LEDGER.md) | **攻击台账**——每轮的靶标指纹、种子命中率、findings 全量、裁决与修复状态 | 1402 行 / R1 收 164 条 |
+| [07-ATTACK-LEDGER.md](07-ATTACK-LEDGER.md) | **攻击台账**——每轮的靶标指纹、种子命中率、findings 全量、裁决与修复状态 | 1478 行 / R1 收 164 条 |
 | `research/v2/` | 证据基座：26 份调研文件 / 25 维度 / 11,675 行 | ~1.1 MB |
 | `.loop/` | 持续迭代开发 runbook（**设计态，不自动启动**） | — |
 

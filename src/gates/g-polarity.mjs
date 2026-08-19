@@ -46,6 +46,33 @@ const NEG_LIMIT = [
 ]
 // 疑问/反问：句末问号或疑问助词
 const NEG_INTERROG = ['吗', '呢', '?', '？']
+/**
+ * NEG-N —— **空结果表述**。作用域覆盖全句。
+ *
+ * 〔外部标定集 PMID 42299533 逼出来的〕
+ *   "Follow-up BCVA and ΔBCVA were comparable."
+ * 整句结论就是「无差异」，而 `comparable` 不在任何算子表里，L1-c 放行。
+ *
+ * 这一类的共同点是：它们**不带否定词**，却表达空结果。
+ * 学术写作里这是报告 null result 最常见的措辞之一——
+ * 作者不写 "did not differ"，写 "were comparable / similar / equivalent"。
+ * 表外形态的问题（SA-3）在这里是具体的：不是「否定词漏了几个」，
+ * 而是「有一整类不含否定词的空结果表述，此前一条都没覆盖」。
+ *
+ * 作用域覆盖全句的理由与 NEG-C 相同：它限定的是这句话报告的那个发现本身，
+ * 而不是句中某个位置之后的部分。
+ */
+const NEG_N = [
+  'comparable', 'similar', 'equivalent', 'on par with', 'no different',
+  'did not reach significance', 'not statistically significant',
+  // 空结果动词短语。它们此前只被 NEG-S 的 `not` 命中，而 NEG-S 的作用域
+  // 只往**后**延——"BMD and Z-scores did not differ" 里的主语在算子之前，够不着。
+  'did not differ', 'do not differ', 'does not differ', 'were not different',
+  'no significant difference', 'no statistically significant difference',
+  'no significant association', 'no significant effect', 'no difference',
+  '相当', '相仿', '接近', '无差异', '无显著差异', '未达显著', '未见差异', '无统计学差异',
+]
+
 const NEG_C = [ // 条件让步
   '若', '如果', '除非', '假设', '即便', '在……情况下',
   'if', 'unless', 'assuming', 'provided that', 'would', 'could',
@@ -58,7 +85,7 @@ const NEG_R = [ // 他人主张
   '声称', '据称', '有人认为', '号称', '自称',
   'claimed', 'alleged', 'purported', 'reportedly', 'claims to',
 ]
-const TABLES = [['NEG-S', NEG_S], ['NEG-C', NEG_C], ['NEG-Q', NEG_Q], ['NEG-R', NEG_R],
+const TABLES = [['NEG-S', NEG_S], ['NEG-N', NEG_N], ['NEG-C', NEG_C], ['NEG-Q', NEG_Q], ['NEG-R', NEG_R],
                 ['NEG-L', NEG_LIMIT], ['NEG-I', NEG_INTERROG]]
 
 /**
@@ -140,6 +167,40 @@ const BOUNDARY_CHARS = '，；。：,;.!?'
 const BOUNDARY_WORDS = ['而', '但', '然而', 'however', 'but', 'and', 'or']
 
 /** 该 token 所在**子句**的结束边界（保守：算子起点到子句末） */
+/**
+ * 子句**起点**：从算子位置往回找最近的子句边界。
+ *
+ * 〔外部标定集逼出来的〕空结果表述（NEG-N）的语法位置在谓语，
+ * 而它否定的主语在它**之前**：
+ *   "Follow-up BCVA and ΔBCVA were comparable."
+ * 只往后延的作用域够不着 BCVA，于是整句判 pass。
+ *
+ * 但作用域也不能扩到全句——那会打中并列的**肯定**断言：
+ *   "The 30-day mortality was 16.1% and did not differ according to the delay"
+ * 这里 16.1% 是肯定断言，`and` 是子句边界，否定只作用于后半句。
+ * 两条真实句子把边界卡在了同一个位置：**子句**。
+ */
+function clauseStart(text, from) {
+  let start = 0
+  for (let i = from - 1; i >= 0; i--) {
+    if (BOUNDARY_CHARS.includes(text[i])) { start = i + 1; break }
+    let hit = false
+    for (const w of BOUNDARY_WORDS) {
+      if (text.startsWith(w, i)) {
+        if (/^[a-z]+$/i.test(w)) {
+          const before = text[i - 1], after = text[i + w.length]
+          if (/[A-Za-z]/.test(before ?? '') || /[A-Za-z]/.test(after ?? '')) continue
+        }
+        start = i + w.length
+        hit = true
+        break
+      }
+    }
+    if (hit) break
+  }
+  return start
+}
+
 function clauseEnd(text, from) {
   let end = text.length
   for (let i = from; i < text.length; i++) {
@@ -185,7 +246,8 @@ export function scopeOf(sentence) {
         // 前者限定后件，后者让整个命题都不是断言——
         // 「该方法真的达到了 92% 吗？」里的 92% 不是一条被断言的数值。
         const end = (cls === 'NEG-C' || cls === 'NEG-I') ? sentence.length : clauseEnd(sentence, idx)
-        const start = (cls === 'NEG-I') ? 0 : idx
+        // NEG-N 的作用域覆盖**整个子句**（含算子之前的主语），理由见 clauseStart。
+        const start = (cls === 'NEG-I') ? 0 : (cls === 'NEG-N' ? clauseStart(sentence, idx) : idx)
         scopes.push({ cls, marker: w, start, end, mStart: idx, mEnd: idx + needle.length })
         idx += needle.length
       }
@@ -302,7 +364,7 @@ export function polarityScope(anchorSentence, payloadFields, followingSentence =
   let crossFail = null
   if (pass && followingSentence) {
     const nextScopes = scopeOf(followingSentence)
-    const neg = nextScopes.find(s => s.cls === 'NEG-S' || s.cls === 'NEG-C')
+    const neg = nextScopes.find(s => s.cls === 'NEG-S' || s.cls === 'NEG-C' || s.cls === 'NEG-N')
     if (neg) {
       if (CONTRAST_INITIAL.test(followingSentence.trimStart())) {
         crossFail = `NEG-X:${neg.marker}`
