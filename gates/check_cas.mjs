@@ -81,7 +81,14 @@ if (!failed) ok('source_integrity 的 intact / not_covered / mutated 三态判�
     ['只有摘要',        { body: B, quote: B, content_kind: 'abstract' },                 'G3'],
     ['未声明 kind',     { body: B, quote: B },                                           'G3'],
     ['全文无稳定锚',    { body: B, quote: B, content_kind: 'fulltext', locator: 'p3:l12' }, 'G4'],
-    ['全文+JATS 锚',    { body: B, quote: B, content_kind: 'fulltext', locator: 'jats:sec-2/p-4' }, 'G5'],
+    ['全文+JATS锚+已验往返', { body: B, quote: B, content_kind: 'fulltext', locator: 'jats:sec-2/p-4',
+                              roundtrip_verified: true }, 'G5'],
+    // 〔真正的 API 集成之后新增〕结构锚但**未验回指往返** → 只能 G4。
+    // G5 的依据是「锚点使独立复核寻址成为可能」，而一个写着 `jats:Sec9/Par99`
+    // 却在文档里根本不存在的锚，不使任何东西成为可能。
+    ['全文+JATS锚但未验往返', { body: B, quote: B, content_kind: 'fulltext', locator: 'jats:sec-2/p-4' }, 'G4'],
+    ['全文+JATS锚但往返失败', { body: B, quote: B, content_kind: 'fulltext', locator: 'jats:sec-9/p-99',
+                              roundtrip_verified: false }, 'G4'],
   ]
   let bad = 0
   for (const [why, f, want] of CASES) {
@@ -96,6 +103,10 @@ if (!failed) ok('source_integrity 的 intact / not_covered / mutated 三态判�
   if (worst !== 'G1') { bad++; console.log(`FAIL  G-GRADE 多条证据应取最坏值 G1，实测 ${worst}`) }
   // 未声明不得拿到最高档 —— E-1 的回归
   if (gradeOfEvidence({ body: B, quote: B }) === 'G5') { bad++; console.log('FAIL  未声明 content_kind 却拿到 G5（fail-open 复发）') }
+  // 未验回指往返不得拿 G5 —— 与上一条同一条 fail-closed 纪律
+  if (gradeOfEvidence({ body: B, quote: B, content_kind: 'fulltext', locator: 'jats:x/y' }) === 'G5') {
+    bad++; console.log('FAIL  未验回指往返却拿到 G5（G5 退化成一句自陈）')
+  }
   if (bad) { failed += bad } else {
     console.log(`PASS  G-GRADE ${CASES.length} 档全部符合；多条取最坏值；未声明不得拿最高档`)
   }

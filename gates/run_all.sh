@@ -77,6 +77,8 @@ if [ "$SCOPE" = all ] || [ "$SCOPE" = everything ] || [ "$SCOPE" = s1 ]; then
   run '证据锚点门'          node gates/check_anchor.mjs
   run 'CAS 与证据卡门'      node gates/check_cas.mjs
   run '留存门'            node gates/check_retention.mjs
+  run '结构化抓取门'        node gates/check_structured_fetch.mjs
+  run '成本核算门'          node gates/check_cost.mjs
   run '归一化一致性门'      node gates/check_normalization.mjs
   run '锚点包含门'          node gates/check_containment.mjs
   run '同源竞争读数门'      node gates/check_frame.mjs

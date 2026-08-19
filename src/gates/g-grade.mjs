@@ -22,7 +22,7 @@
  *   G3  只有标题+摘要,**或未声明 content_kind**——
  *       没说自己是全文,就不能按全文记(这一条是 fail-closed 的落点)
  *   G4  全文快照,但定位符不是稳定锚
- *   G5  全文快照 + 稳定可复核定位符(JATS/TEI/LaTeX/HTML 锚)
+ *   G5  全文快照 + 稳定可复核定位符，**且回指往返成立**
  *
  * 〔不宣称的部分〕`content_kind` 由抓取执行器(W-02)声明,本门不验证它说的是真话。
  * 要验证它,需要能独立判断一段字节是全文还是摘要——那不是 GC-0 能做的事。
@@ -32,6 +32,24 @@ export const GRADE_VERSION = 'g-grade-2026-08-19'
 
 /** 稳定锚:结构化定位符,可独立寻址复核 */
 const STRUCTURED_LOCATOR = /^(jats:|tei:|latex:|html:#|xpath:|sec:|§)/i
+
+/**
+ * G5 的判据是**可独立重新寻址**，不是「长得像结构化定位符」。
+ *
+ * 〔真正的 API 集成之后收紧〕原实现只做正则匹配：一个写着 `jats:Sec9/Par99`
+ * 的字段——哪怕那个锚在文档里根本不存在——照样拿到 G5。
+ * 那等于把 §3.4 里 G5 的依据（「锚点使独立复核寻址成为可能」）
+ * 降级成一句自陈。
+ *
+ * 现在要求抓取器提供 `roundtrip_verified`：用 locator 反查文档，
+ * 解析出的段落必须逐字包含该引语（`verifyRoundTrip()` 做的事）。
+ * **缺这个字段就够不上 G5** —— 与 content_kind 同一条 fail-closed 纪律：
+ * 说不清自己能不能被复核的证据，拿不到最高档。
+ *
+ * 实测支撑：AlphaFold 那篇 Nature 的 JATS（PMC8371605）里，
+ * 51 个正文段落有 50 个带 id、1 个不带——**G5 是逐段的，不是逐文档的**。
+ */
+const roundTripOk = f => f.roundtrip_verified === true
 
 export const GRADE_ORDER = Object.freeze(['G0', 'G1', 'G2', 'G3', 'G4', 'G5'])
 
@@ -46,7 +64,8 @@ export function gradeOfEvidence(f = {}) {
   if (kind === 'metadata') return 'G2'
   if (kind === 'abstract') return 'G3'
   if (kind !== 'fulltext') return 'G3'          // 未声明 ⇒ 不得按全文记
-  return STRUCTURED_LOCATOR.test(String(f.locator ?? '')) ? 'G5' : 'G4'
+  if (!STRUCTURED_LOCATOR.test(String(f.locator ?? ''))) return 'G4'
+  return roundTripOk(f) ? 'G5' : 'G4'
 }
 
 /**

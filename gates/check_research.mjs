@@ -26,7 +26,7 @@ const SNAP_NEG = 'The method did not reach 92% accuracy on CASP14.'
 const mkFetch = (id, body, wid, up) => ({
   url: 'https://arxiv.org/abs/' + id, body, httpStatus: 200,
   retrievedAt: '2026-08-18T10:00:00Z', extractorVersion: 'pymupdf-1.28.2',
-  work_id: wid, version_id: 'v1', locator: 'jats:sec-1/p-1', content_kind: 'fulltext', retention_tier: 'A',
+  work_id: wid, version_id: 'v1', locator: 'jats:sec-1/p-1', content_kind: 'fulltext', retention_tier: 'A', roundtrip_verified: true,
   quote: body, anchorSentence: body,
   ...(up ? { upstream_id: up } : {}),
 })

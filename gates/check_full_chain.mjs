@@ -25,7 +25,7 @@ const FETCH = {
   work_id: 'W1', version_id: 'v1', locator: 'jats:sec-2/p-4',
   // G-GRADE 按 §3.3 从这两项算等级：全文 + 结构化锚 = G5，才够得着 ST-V。
   // 〔外部标定测试 E-1 之后新增〕此前等级是夹具直接声明的，缺省还是最高档。
-  content_kind: 'fulltext', retention_tier: 'A',
+  content_kind: 'fulltext', retention_tier: 'A', roundtrip_verified: true,
   quote: 'AlphaFold reached 92% accuracy on CASP14.',
   anchorSentence: 'AlphaFold reached 92% accuracy on CASP14.',
 }

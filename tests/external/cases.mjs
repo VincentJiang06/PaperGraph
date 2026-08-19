@@ -6,7 +6,9 @@
 import { mkdtempSync, rmSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { SRC, sentenceWith, fetchOf, runOnce } from './run.mjs'
+import { SRC, sentenceWith, fetchOf, runOnce, structuredDoc } from './run.mjs'
+const { evidenceFrom } = await import('../../packages/dsh-academic-fetch/lib/fetch-structured.js')
+const SDOC = await structuredDoc()
 
 const pad = (s, n) => String(s).padEnd(n)
 const results = []
@@ -276,6 +278,40 @@ run('T4-6', {
   counterSearch: 'AUTO',
   expectNote: '★ 假阳侧：中文否定不得越过「但」打中前半句',
 })
+
+// ── T5 · 结构化全文：ST-V 是否真的可达 ───────────────────────────────
+// 与 T1-3 是**同一篇论文的同一句话**，只差取证方式：
+//   T1-3 走 PDF 抽取（无稳定锚）→ G4 → 天花板 ST-A
+//   T5-1 走 Europe PMC JATS（`jats:Sec1/Par5`，回指往返已验）→ G5 → 可达 ST-V
+// 这一组是「0 条到达 verified」那个结论的直接对照。
+{
+  const Q = 'AlphaFold structures had a median backbone accuracy of 0.96 Å r.m.s.d.95'
+  run('T5-1', {
+    expect: 'verified',
+    topic: 'T5', desc: '同一句话，改走 JATS 结构化全文（回指往返已验）',
+    realWorld: '出版社结构化全文；locator 可被任何人独立寻址复核',
+    fetches: [evidenceFrom(SDOC, Q, { extra: { doi: '10.1038/s41586-021-03819-2',
+      title: 'Highly accurate protein structure prediction with AlphaFold', authors: ['Jumper J'] } })],
+    claim: base('c1', { system: 'AlphaFold', value: '0.96' },
+                { system: 'entity', value: 'value' },
+                { metric: 'backbone r.m.s.d.95', sample_or_tier: 'CASP14' }),
+    skeleton: 'AlphaFold 的中位主链精度为 {{claim:c1.value}} Å。',
+    counterSearch: 'AUTO',
+    expectNote: '★ 与 T1-3 同句同文，只差取证方式',
+  })
+  run('T5-2', {
+    expect: 'unverified',
+    topic: 'T5', desc: '引语不在任何可寻址段落里（伪造的转录）',
+    realWorld: '锚点指向不存在的段落 —— G5 退化成自陈的那条通道',
+    fetches: [evidenceFrom(SDOC, 'AlphaFold achieved a median GDT_TS of 92.4 in CASP14')],
+    claim: base('c1', { system: 'AlphaFold', value: '92.4' },
+                { system: 'entity', value: 'value' },
+                { metric: 'GDT_TS', sample_or_tier: 'CASP14' }),
+    skeleton: 'AlphaFold 的中位 GDT_TS 为 {{claim:c1.value}}。',
+    counterSearch: 'AUTO',
+    expectNote: '★ 92.4 在这篇论文的**完整 JATS 全文**里 0 次命中',
+  })
+}
 
 // ── 报告 ──────────────────────────────────────────────────────────────
 // 条数由 results 算出来。手写的自述数字会腐——本文件初稿写「12 条」而实际 13 条，

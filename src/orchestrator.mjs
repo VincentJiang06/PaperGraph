@@ -60,8 +60,14 @@ const TERMINAL = new Set(['verified', 'contested'])
  * 跑一组并行论据线。
  *
  * @param {object[]} threads  [{id, explore(round, prevStatus) -> statusRecord}]
- * @param {object} opts { maxRounds, maxConcurrent, budget, noProgressRounds }
- * @returns {{results, rounds, log, budgetExhausted}}
+ * @param {object} opts { maxRounds, maxConcurrent, budget, noProgressRounds, ledger }
+ * @returns {{results, rounds, log, budgetExhausted, cost}}
+ *
+ * 〔ledger〕可选的 CostLedger（src/cost.mjs）。thread 的 explore() 若返回
+ * `{ record, usage }`，usage 会被逐条记账并按**阶段**与**最终 status** 归集。
+ * 归集到 status 是刻意的：本项目的产品是逐条 claim 的状态，
+ * 那么「拿到一条 verified 值多少钱」才是真正要优化的那个数，
+ * 而一个笼统的「这次跑了多少钱」回答不了它。
  */
 export async function exploreParallel(threads, opts = {}) {
   const maxRounds = opts.maxRounds ?? 5
@@ -88,7 +94,14 @@ export async function exploreParallel(threads, opts = {}) {
         const s = state.get(t.id)
         if (budget <= 0) { budgetExhausted = true; return { t, s, rec: null } }
         budget -= 1
-        const rec = await t.explore(round, s.status)
+        const raw = await t.explore(round, s.status)
+        // explore 可以返回裸 statusRecord（老形态），也可以返回 {record, usage}
+        const rec = raw && raw.record !== undefined ? raw.record : raw
+        if (opts.ledger && raw && raw.usage) {
+          for (const u of [].concat(raw.usage)) {
+            opts.ledger.record({ ...u, claimId: u.claimId ?? t.id, stage: u.stage ?? `round-${round}` })
+          }
+        }
         return { t, s, rec }
       }))
 
@@ -119,6 +132,12 @@ export async function exploreParallel(threads, opts = {}) {
     results: Object.fromEntries([...state].map(([id, s]) => [id, s.status])),
     rounds: Math.max(0, ...[...state.values()].map(s => s.rounds)),
     log, budgetExhausted,
+    cost: opts.ledger ? {
+      usd: opts.ledger.totalUsd,
+      tokens: opts.ledger.totalTokens,
+      calls: opts.ledger.calls.length,
+      byStage: opts.ledger.byStage(),
+    } : null,
     budgetLeft: budget === Infinity ? null : budget,
   }
 }

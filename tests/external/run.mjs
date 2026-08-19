@@ -29,6 +29,20 @@ const { runOnce } = await import(join(ROOT, 'src/run.mjs'))
 
 const snap = f => readFileSync(join(HERE, 'snapshots', f), 'utf8').trim()
 
+/**
+ * T5 · 结构化全文（真正的 API 集成）。
+ * 夹具是 AlphaFold 那篇 Nature（**CC BY 4.0**，PMC8371605）JATS 里被引用的两个
+ * `<sec>`，逐字取自 Europe PMC 的 `/PMC8371605/fullTextXML`。
+ * 它与 T1a（PDF 抽取文本）是**同一篇论文的两种取证方式**——
+ * 这正是本组用例要对照的东西：G4 与 G5 的差别不在论文，在取证。
+ */
+export async function structuredDoc() {
+  const { fetchStructured } = await import('../../packages/dsh-academic-fetch/lib/fetch-structured.js')
+  const body = snap('T5-alphafold-jats.xml')
+  return fetchStructured({ source: 'europepmc', id: 'PMC8371605',
+    http: async () => ({ status: 200, body }), now: '2026-08-19T00:00:00Z' })
+}
+
 /** 从快照里切出**包含给定子串**的那一句(逐字,不加工) */
 function sentenceWith(text, needle) {
   const i = text.indexOf(needle)

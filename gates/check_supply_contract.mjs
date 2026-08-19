@@ -151,7 +151,7 @@ const SNAP = 'Method X reached 99.9% accuracy on the test set.'
 const FETCH = {
   url: 'https://arxiv.org/abs/2401.999', body: SNAP, httpStatus: 200,
   retrievedAt: '2026-08-18T10:00:00Z', extractorVersion: 'pymupdf-1.28.2',
-  work_id: 'W9', version_id: 'v1', locator: 'jats:sec-1/p-1', content_kind: 'fulltext', retention_tier: 'A',
+  work_id: 'W9', version_id: 'v1', locator: 'jats:sec-1/p-1', content_kind: 'fulltext', retention_tier: 'A', roundtrip_verified: true,
   quote: 'Method X reached 99.9% accuracy on the test set.',
   anchorSentence: 'Method X reached 99.9% accuracy on the test set.',
 }
@@ -299,7 +299,7 @@ const RED = [
   const mk = (followingSentence) => ({
     url: 'https://doi.org/10.1001/jamainternmed.2017.3601', body: BODY, httpStatus: 200,
     retrievedAt: '2026-08-18T10:00:00Z', extractorVersion: 'x-1', work_id: 'W-P', version_id: 'v1',
-    locator: 'jats:sec-1/p-1', content_kind: 'fulltext', retention_tier: 'A',
+    locator: 'jats:sec-1/p-1', content_kind: 'fulltext', retention_tier: 'A', roundtrip_verified: true,
     quote: ANCHOR, anchorSentence: ANCHOR, followingSentence,
   })
   const claim = { claim_id: 'c1', kind: 'K-L-T', payload: { cost: '$2.7 billion' },
@@ -336,7 +336,7 @@ const RED = [
   const mk = (wid, body) => ({
     url: `https://example.org/${wid}`, body, httpStatus: 200,
     retrievedAt: '2026-08-18T10:00:00Z', extractorVersion: 'x-1', work_id: wid, version_id: 'v1',
-    locator: 'jats:sec-1/p-1', content_kind: 'fulltext', retention_tier: 'A',
+    locator: 'jats:sec-1/p-1', content_kind: 'fulltext', retention_tier: 'A', roundtrip_verified: true,
     quote: body, anchorSentence: body,
   })
   const F = [
