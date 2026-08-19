@@ -73,15 +73,24 @@ const CASES = [
    '0.611', false, '同上'],
   ['42338035', 'For other outcomes, no significant association with V̇O2peak was found.',
    'V̇O2peak', false, '「未发现关联」就是全句结论'],
-  // ★★ 唯一一条**已知未闭合**，且有确切名字：**枚举逗号截断作用域**。
+  // ★ 这一条曾经是唯一的**已知未闭合**：**枚举逗号截断作用域**。
   // `no ... difference in A, B, or C (p = …)` —— A/B/C 是并列的检测项，
-  // 中间的逗号是**枚举分隔**，不是子句边界；但 clauseEnd 把它当成了边界，
+  // 中间的逗号是枚举分隔而非子句边界，clauseEnd 把它当成了边界，
   // 作用域止于 "salivary pH,"，够不着句末括号里的 p 值。
-  // 修它要能区分「枚举逗号」与「分句逗号」，那需要句法分析，不是 GC-0 的量级。
-  // 不修、不改标签、每次运行都打印出来——被静默掉的已知缺陷会在下次重构里
-  // 被当成本来就该这样。
+  //
+  // 〔已闭合〕当时的判断是「要区分两种逗号，需要句法分析，非 GC-0 量级」。
+  // 那个判断错在**把问题问窄了**：真正需要的不是区分逗号，
+  // 而是让作用域够到句末括号。绕开逗号即可——
+  //   `(p = …)` / `(95% CI, …)` / `(HR 0.79, …)` 是同一个断言的统计附注，
+  //   它属于这句报告的那个发现，不属于它前面碰巧最近的那个子句。
+  // 于是空结果算子的作用域延伸到**句末括号**，不管中间隔了几个逗号。
+  // 它不误伤并列的肯定断言：`mortality was 16.1% and did not differ … (p = 0.816)`
+  // 里的 16.1% 不在句末括号内。
+  //
+  // 教训：**「当前手段够不着」这个结论本身也要被攻击。**
+  // 我把它写进台账 §S7/§S8 两次，都没有回头问一句「够不着的是哪一步」。
   ['42194389', 'There was no statistically significant difference in salivary pH, unstimulated whole saliva (UWS), or stimulated whole saliva (SWS) among the three groups (p = 0.343, p = 0.982, and p = 0.793, respectively).',
-   '0.343', false, '★ 已知未闭合：枚举逗号截断作用域（见上方注释）'],
+   '0.343', false, '★ 曾经的已知未闭合，现已由「句末括号附着于主谓」闭合'],
   ['42299533', 'Follow-up BCVA and ΔBCVA were comparable.',
    'BCVA', false, '★ 全句结论就是「无差异」，而 `comparable` 不在任何算子表里 —— 真词表缺口'],
 
@@ -143,18 +152,32 @@ console.log('      句子是外部的，**标签是我打的** —— SA-3 的�
 // 本文件是**度量 + 回归**：
 //   · 已知未闭合的那一条（枚举逗号）不判红，但每次运行必须打印出来。
 //   · 其余任何一条偏离都判红 —— 那意味着 L1-c 在真实句子上退化了。
-const KNOWN_OPEN = new Set(['42194389'])
+// 空集：曾经的那一条（42194389 枚举逗号）已闭合。
+// 白名单为空时下面那段判定会走「不再出现」分支——所以它也一并改了：
+// 空集是合法状态，非空集才要求那些条目真的仍然出现。
+const KNOWN_OPEN = new Set()
 const regressions = wrong.filter(w => !KNOWN_OPEN.has(w.pmid))
 const stillOpen = wrong.filter(w => KNOWN_OPEN.has(w.pmid))
-if (stillOpen.length) {
-  console.log(`\n已知未闭合（每次运行都必须可见）：${stillOpen.length} 条 —— 枚举逗号截断作用域`)
+// 白名单**非空**时，其中每一条都必须真的仍然出现——
+// 一条已经修好却还挂在豁免名单上的条目，是一个永远绿的假豁免。
+if (KNOWN_OPEN.size) {
+  const vanished = [...KNOWN_OPEN].filter(p => !stillOpen.some(w => w.pmid === p))
+  if (vanished.length) {
+    console.log(`\nFAIL  ${vanished.length} 条已知未闭合项不再出现（${vanished.join('、')}）`)
+    console.log('      要么它被修好了（请更新 KNOWN_OPEN 并写明怎么修的），要么本文件失效了')
+    process.exit(1)
+  }
+  console.log(`\n已知未闭合（每次运行都必须可见）：${stillOpen.length} 条`)
 } else {
-  console.log('\nFAIL  已知未闭合项不再出现 —— 要么它被修好了（请更新 KNOWN_OPEN），要么本文件失效了')
-  process.exit(1)
+  console.log('\n已知未闭合：0 条')
 }
 if (regressions.length) {
   console.log(`FAIL  ${regressions.length} 条在真实句子上退化`)
   process.exit(1)
 }
-console.log(`PASS  外部句子 ${CASES.length} 条：除已知的枚举逗号一条外全部符合`)
+// 〔自纠〕这行原写「除已知的枚举逗号一条外全部符合」，闭合之后就不准了。
+// 文案里写死具体豁免项，等于把一条会腐的自述数字塞进 PASS 行。
+console.log(KNOWN_OPEN.size
+  ? `PASS  外部句子 ${CASES.length} 条：除 ${KNOWN_OPEN.size} 条已知未闭合外全部符合`
+  : `PASS  外部句子 ${CASES.length} 条全部符合，无已知未闭合项`)
 process.exit(0)

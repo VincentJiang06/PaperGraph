@@ -254,7 +254,28 @@ export function scopeOf(sentence) {
         const end = (cls === 'NEG-C' || cls === 'NEG-I') ? sentence.length : clauseEnd(sentence, idx)
         // NEG-N 的作用域覆盖**整个子句**（含算子之前的主语），理由见 clauseStart。
         const start = (cls === 'NEG-I') ? 0 : (cls === 'NEG-N' ? clauseStart(sentence, idx) : idx)
-        scopes.push({ cls, marker: w, start, end, mStart: idx, mEnd: idx + needle.length })
+        // 〔§S8 三「枚举逗号截断作用域」的绕行解〕
+        //   `no ... difference in A, B, or C (p = 0.343, p = 0.982, …).`
+        // A/B/C 是并列检测项，中间的逗号是**枚举分隔**而非子句边界，
+        // 但 clauseEnd 把它当边界，作用域止于第一个逗号，够不着句末括号里的 p 值。
+        //
+        // 区分两种逗号需要句法分析（非 GC-0 量级）。但这条缺口有一个**不需要
+        // 区分逗号**的绕法：**句末括号附着于这句的主谓**。
+        //   `(p = …)` / `(95% CI, …)` / `(HR 0.79, …)` 是同一个断言的统计附注，
+        //   它属于这句报告的那个发现，而不属于它前面碰巧最近的那个子句。
+        // 于是把空结果算子的作用域延伸到**句末括号**——不管中间隔了几个逗号。
+        //
+        // 它不会误伤并列的肯定断言：
+        //   `mortality was 16.1% and did not differ … (p = 0.816)`
+        //   16.1% 不在句末括号里，仍然在作用域之外。
+        let realEnd = end
+        if (cls === 'NEG-N' || cls === 'NEG-S') {
+          const tail = sentence.match(/[（(][^）)]*[）)]\s*[.。]?\s*$/)
+          if (tail && tail.index >= idx && tail.index + tail[0].length > end) {
+            realEnd = sentence.length
+          }
+        }
+        scopes.push({ cls, marker: w, start, end: realEnd, mStart: idx, mEnd: idx + needle.length })
         idx += needle.length
       }
     }
