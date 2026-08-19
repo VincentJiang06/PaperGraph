@@ -42,7 +42,7 @@ const BASE = Object.freeze({
   flags: [], budget_state: 'ok', retention_tier: 'A',
   question_frozen: true, rerun_gate_passed: true,
   has_verbatim_quote: false, quote_faithful: 'na',
-  anchor_containment_passed: true, polarity_scope_passed: true, attribution_verdict: 'support',
+  anchor_containment_passed: true, polarity_scope_passed: true, frame_gate_passed: true, attribution_verdict: 'support',
   inference_gate_passed: true, chart_extracted: false,
 })
 const c = o => ({ ...BASE, ...o })
@@ -204,12 +204,12 @@ const GOLDEN = [
   // 即**本门在为已被 §2.2.1 废止的单合取判据背书**——新增的门反过来给旧判据发绿灯，
   // 是本轮最难堪的一条。K-L-T 现在是两个合取项，三种组合各占一行。
   ['§2.2.1',  'K-L-T 两个合取项全过 → ST-V',
-              c({ kind: 'K-L-T', anchor_containment_passed: true, polarity_scope_passed: true }), ST.V],
+              c({ kind: 'K-L-T', anchor_containment_passed: true, polarity_scope_passed: true, frame_gate_passed: true }), ST.V],
   ['§2.2.1',  'K-L-T 包含检验过但**极性作用域不过** → 降为 K-L-A（K=2，1 簇不足）',
-              c({ kind: 'K-L-T', anchor_containment_passed: true, polarity_scope_passed: false,
+              c({ kind: 'K-L-T', anchor_containment_passed: true, polarity_scope_passed: false, frame_gate_passed: true,
                   attribution_verdict: 'support', independent_cluster_count: 1 }), ST.U],
   ['§1.5 1',  'K-L-T 包含检验不过 → 降为 K-L-A 处理（K 值随之为 2，故 1 簇不足）',
-              c({ kind: 'K-L-T', anchor_containment_passed: false, polarity_scope_passed: true,
+              c({ kind: 'K-L-T', anchor_containment_passed: false, polarity_scope_passed: true, frame_gate_passed: true,
                   attribution_verdict: 'support', independent_cluster_count: 1 }), ST.U],
   ['§2.2.1',  'K-L-T 缺 polarity_scope_passed → 抛 ContractGap（合取项不能省）',
               (() => { const x = c({ kind: 'K-L-T' }); delete x.polarity_scope_passed; return x })(), '抛异常'],

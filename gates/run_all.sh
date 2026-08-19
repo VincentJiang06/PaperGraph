@@ -11,7 +11,7 @@
 #   all         docs + negative —— **默认**，也是「文档层是否绿」的信号
 #   m0          loop 的 S0 阶段验收（M0 阻塞项实测记录）
 #   everything  all + m0
-#   mutants     变异测试（慢，约 5 分钟）
+#   mutants     变异测试（慢；穷举 oracle 加了第三个合取项后约 10+ 分钟）
 #   publish     发布前门
 #
 # 为什么 m0 不在 all 里：S0 阶段未完成时 check_m0 **应该**是红的（那是它的职责），
@@ -76,6 +76,8 @@ if [ "$SCOPE" = all ] || [ "$SCOPE" = everything ] || [ "$SCOPE" = s1 ]; then
   run '证据锚点门'          node gates/check_anchor.mjs
   run 'CAS 与证据卡门'      node gates/check_cas.mjs
   run '留存门'            node gates/check_retention.mjs
+  run '锚点包含门'          node gates/check_containment.mjs
+  run '同源竞争读数门'      node gates/check_frame.mjs
   run '组稿器门'            node gates/check_composer.mjs
   run '端到端管线门'        node gates/check_pipeline_e2e.mjs
   run '全链路门（抓取→成稿）' node gates/check_full_chain.mjs
@@ -96,7 +98,9 @@ if [ "$SCOPE" = m0 ] || [ "$SCOPE" = everything ]; then
 fi
 
 if [ "$SCOPE" = everything ] || [ "$SCOPE" = mutants ]; then
-  # 变异测试：唯一能量化「门的辨别力」的机制。约 5 分钟，故不进 all。
+  # 变异测试：唯一能量化「门的辨别力」的机制。故不进 all。
+  # 〔运行时间会随 oracle 维度增长〕加 frame_gate_passed 之后向量数翻倍
+  # （2778 万 → 5557 万），这一档也随之翻倍。写死一个分钟数会腐，所以只说「慢」。
   run '变异测试（S 的门抓不抓得住错实现）' node gates/check_status_mutants.mjs
 fi
 

@@ -219,6 +219,12 @@ const overlaps = (a, b) => a.start < b.end && b.start < a.end
  * @param {string} [followingSentence] 紧随其后的一句，**仅用于报告已知假阴**，不参与判定
  * @returns {{pass:boolean, params:object, caveats:string[], knownLimitation:string|null}}
  */
+/**
+ * 转折句首标记。只认**句首**——句中的 however 不是回指上一句的。
+ * 这张表和 NEG-* 各表一样是有限枚举，SA-3 认账的那条边界同样适用于它。
+ */
+const CONTRAST_INITIAL = /^(?:(?:however|but|yet|nevertheless|nonetheless|although|though|in contrast|by contrast|on the contrary|conversely)\b|然而|但是|但|不过|可是|相反|与此相反)/i
+
 export function polarityScope(anchorSentence, payloadFields, followingSentence = '') {
   const scopes = scopeOf(anchorSentence)
   const spans = spansOf(anchorSentence, payloadFields)
@@ -272,16 +278,41 @@ export function polarityScope(anchorSentence, payloadFields, followingSentence =
     if (!preAllowed(tok)) preHits.push({ cls: 'NEG-P', marker: tok, span: sp.value })
   }
 
-  const pass = hits.length === 0 && preHits.length === 0
+  let pass = hits.length === 0 && preHits.length === 0
 
-  // 已认账的结构性假阴：算子在**下一句**，A 取不到它。不静默。
+  // ── 跨句极性 ────────────────────────────────────────────────────────
+  // 原先这里只**报告**，不参与判定（03 §11.15 认领为未修）。
+  // 外部标定测试 T3-4 让它在真实数据上兑现了：Prasad & Mailankody 摘要写
+  //   “A recent estimate of R&D spending is $2.7 billion (2017 US dollars).”
+  //   “However, this analysis lacks transparency and independent replication.”
+  // 单独取上句，L1-c 判 pass，成稿印「已归因」——而那篇论文正是在反驳这个数。
+  //
+  // 现在分成两档，判据是**下一句是否以转折词开头**：
+  //   转折词开头 + 含否定 → 参与判定（判 fail）。
+  //       “However/But/Yet/然而/但是…” 在语法上就是回指上一句的，
+  //       它后面的否定作用于上句的断言，不是一条无关的新陈述。
+  //   非转折词开头 + 含否定 → 仍然只报告。
+  //       “…is $2.7 billion. No funding was received.” 的 No 与那个数无关，
+  //       把它算进来是假阳。
+  //
+  // 〔为什么这样切而不是全都算〕这条规则的两侧都有代价，而且方向相反：
+  // 收得太紧漏掉真反驳，放得太松把无关否定算成反驳。转折词是句法上的
+  // 回指标记，是这两者之间唯一一条**不靠语义理解**就能划的线。
   let knownLimitation = null
+  let crossFail = null
   if (pass && followingSentence) {
     const nextScopes = scopeOf(followingSentence)
-    if (nextScopes.some(s => s.cls === 'NEG-S')) {
-      knownLimitation = '跨句极性：下一句含 NEG-S 算子，而 L1-c 只看 anchor_span 所在句（03 §11.15 已认领，未修）'
+    const neg = nextScopes.find(s => s.cls === 'NEG-S' || s.cls === 'NEG-C')
+    if (neg) {
+      if (CONTRAST_INITIAL.test(followingSentence.trimStart())) {
+        crossFail = `NEG-X:${neg.marker}`
+      } else {
+        knownLimitation = '跨句极性：下一句含否定算子但非转折句首，只报告不判定（无关否定的假阳风险）'
+      }
     }
   }
+
+  if (crossFail) pass = false
 
   return {
     pass,
@@ -289,7 +320,8 @@ export function polarityScope(anchorSentence, payloadFields, followingSentence =
       operator_table_version: OPERATOR_TABLE_VERSION,
       clause_boundary_version: CLAUSE_BOUNDARY_VERSION,
       pre_whitelist_version: PRE_WHITELIST_VERSION,
-      polarity_marker: [...hits, ...preHits].map(h => `${h.cls}:${h.marker}`),
+      polarity_marker: [...[...hits, ...preHits].map(h => `${h.cls}:${h.marker}`),
+                        ...(crossFail ? [crossFail] : [])],
       scopes_found: scopes.length,
       spans_found: spans.length,
     },

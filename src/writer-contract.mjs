@@ -45,6 +45,10 @@ export const FIELD_OWNER = Object.freeze({
   // 不标注则门只能靠字段名启发式推断槽类型 = 自由文本判据混进 GC-0 门。
   slot_types: WRITER.PRODUCER,
   metric_frame: WRITER.PRODUCER,
+  // producer 提出，门逐字核（必须在锚句子句里、且不在任何兄弟读数里）。
+  // 提出与核验分离，所以它归 producer——白名单在它第一次出现时拒绝了它，
+  // 这正是白名单该有的行为：新字段默认不可写，直到有人写明它归谁。
+  discriminator: WRITER.PRODUCER,
   evidence_refs: WRITER.PRODUCER,
   premises: WRITER.PRODUCER,
   tolerance: WRITER.PRODUCER,
@@ -87,6 +91,7 @@ export const FIELD_OWNER = Object.freeze({
   rerun_gate_passed: WRITER.GATE,
   anchor_containment_passed: WRITER.GATE,
   polarity_scope_passed: WRITER.GATE,
+  frame_gate_passed: WRITER.GATE,
   inference_gate_passed: WRITER.GATE,
   attribution_verdict: WRITER.GATE,
 
@@ -174,7 +179,7 @@ export function denyProducerSubmission(payload) {
  */
 export const KIND_GATED_BY = Object.freeze({
   'K-D':   ['rerun_gate_passed', 'question_frozen'],          // 封闭式 + 重跑过才到 ST-V（§2.1）
-  'K-L-T': ['anchor_containment_passed', 'polarity_scope_passed'], // 两个合取项（§2.2.1）
+  'K-L-T': ['anchor_containment_passed', 'polarity_scope_passed', 'frame_gate_passed'], // 两个合取项（§2.2.1）
   'K-L-A': ['attribution_verdict'],                            // 归因裁决（上限 ST-A）
   'K-I':   ['inference_gate_passed'],                          // 推断门（永不可达 ST-V，§2.3.1）
 })

@@ -245,10 +245,14 @@ const RED = [
     // 第二条必须是**另一份字节**，否则两条证据共用同一个 CAS 对象，
     // 篡改它会连第一条一起打中 —— 那样即使只核 refs[0] 也会判红，样本是空心的。
     // 〔这条注释同样是自纠〕初版正是这么错的，由负例套件红 R-7 抓出来。
+    // 第二条还必须**真的支持**这条 claim（锚句含全部载荷槽），否则它会被
+    // per-evidence 支持过滤排除、簇数掉到 1，于是不论完整性核不核都降级——
+    // 样本对「只核第一条」这件事失去鉴别力。〔外部标定测试 T3-3 引入该过滤后
+    // 由负例套件红 R-7 抓出来：初版第二条的锚句里没有 `method: 'X'`。〕
     fetches: [FETCH, { ...FETCH, work_id: 'W-two', version_id: 'v2',
-                       body: 'An independent replication also reports 99.9% on the same task.',
-                       quote: 'An independent replication also reports 99.9% on the same task.',
-                       anchorSentence: 'An independent replication also reports 99.9% on the same task.' }],
+                       body: 'Method X was independently reproduced at 99.9% accuracy on the same task.',
+                       quote: 'Method X was independently reproduced at 99.9% accuracy on the same task.',
+                       anchorSentence: 'Method X was independently reproduced at 99.9% accuracy on the same task.' }],
     mutateSecond: true,
     expect: r => !r.threw && r.status !== 'verified' && r.status !== 'attributed' },
 ]
@@ -282,6 +286,83 @@ const RED = [
   if (r.threw) fail(`绿样本被误伤：${r.msg}`)
   else if (r.status !== 'verified') fail(`绿样本状态是 ${r.status}，期望 verified —— 修复过修了`)
   else pass(`绿样本仍然通过：「${r.prose.trim()}」`)
+}
+
+
+// ── B-7 · followingSentence 必须由门从快照算，不得由生产方递 ──────────
+// 跨句极性参与判定之后，这个字段就是判定输入。一个能把它递成空串的生产方，
+// 可以让任何转折否定消失——与 R6-01/02 同一类洞。
+{
+  const BODY = 'A recent estimate of R&D spending is $2.7 billion (2017 US dollars). '
+             + 'However, this analysis lacks transparency and independent replication.'
+  const ANCHOR = 'A recent estimate of R&D spending is $2.7 billion (2017 US dollars).'
+  const mk = (followingSentence) => ({
+    url: 'https://doi.org/10.1001/jamainternmed.2017.3601', body: BODY, httpStatus: 200,
+    retrievedAt: '2026-08-18T10:00:00Z', extractorVersion: 'x-1', work_id: 'W-P', version_id: 'v1',
+    locator: 'jats:sec-1/p-1', content_kind: 'fulltext', retention_tier: 'A',
+    quote: ANCHOR, anchorSentence: ANCHOR, followingSentence,
+  })
+  const claim = { claim_id: 'c1', kind: 'K-L-T', payload: { cost: '$2.7 billion' },
+    slot_types: { cost: 'value' }, metric_frame: { metric: 'R&D spending', sample_or_tier: 'new drug' },
+    evidence_index: [0] }
+  const q = { query: 'R&D spending new drug $2.7 billion 反驳', result_keys: [] }
+  const run = (f) => {
+    const root = mkdtempSync(join(tmpdir(), 'sup-'))
+    try {
+      runOnce(root, 'r1', [f], [claim], 'x {{claim:c1.cost}}',
+              { question: 'q', frozen_at: '2026-08-18T00:00:00Z', counterSearches: { c1: q } })
+      return JSON.parse(readFileSync(join(root, 'claims', 'c1.status.json'), 'utf8')).status
+    } finally { rmSync(root, { recursive: true, force: true }) }
+  }
+  const honest = run(mk('However, this analysis lacks transparency and independent replication.'))
+  const hidden = run(mk(''))                               // 生产方把下一句抹掉
+  const faked  = run(mk('The estimate is widely accepted.'))  // 生产方伪造一句无害的
+  if (honest !== hidden || honest !== faked) {
+    failed++
+    console.log(`FAIL  B-7 followingSentence 可由生产方左右：诚实=${honest} 抹掉=${hidden} 伪造=${faked}`)
+  } else if (honest === 'attributed' || honest === 'verified') {
+    failed++
+    console.log(`FAIL  B-7 转折否定在下一句，却仍判 ${honest}`)
+  } else {
+    console.log(`PASS  B-7 followingSentence 由门从快照算：递空串/递伪造句都得到同一个 ${honest}`)
+  }
+}
+
+// ── B-8 · 每条证据都要自证它在支持这条 claim（外部标定测试 T3-3） ─────
+// 引三篇文献支持同一个数，而后两篇的锚句里根本没有那个数（它们讲的是各自
+// 不同的估计）。原实现只检查 evidence[0]，三篇照样算「独立簇 3」。
+{
+  const P = '$2558 million'
+  const mk = (wid, body) => ({
+    url: `https://example.org/${wid}`, body, httpStatus: 200,
+    retrievedAt: '2026-08-18T10:00:00Z', extractorVersion: 'x-1', work_id: wid, version_id: 'v1',
+    locator: 'jats:sec-1/p-1', content_kind: 'fulltext', retention_tier: 'A',
+    quote: body, anchorSentence: body,
+  })
+  const F = [
+    mk('W-A', `The total pre-approval cost estimate is ${P} (2013 dollars).`),
+    mk('W-B', 'A separate analysis put the median cost at $985.3 million.'),
+    mk('W-C', 'Another study reported $648.0 million for cancer drugs.'),
+  ]
+  const claim = { claim_id: 'c1', kind: 'K-L-A', payload: { cost: P }, slot_types: { cost: 'value' },
+    metric_frame: { metric: 'R&D cost', sample_or_tier: 'new drug' }, evidence_index: [0, 1, 2] }
+  const root = mkdtempSync(join(tmpdir(), 'sup-'))
+  let st
+  try {
+    runOnce(root, 'r1', F, [claim], 'x {{claim:c1.cost}}',
+            { question: 'q', frozen_at: '2026-08-18T00:00:00Z',
+              counterSearches: { c1: { query: `R&D cost new drug ${P} 反驳`, result_keys: [] } } })
+    st = JSON.parse(readFileSync(join(root, 'claims', 'c1.status.json'), 'utf8'))
+  } finally { rmSync(root, { recursive: true, force: true }) }
+  if (st.independent_cluster_count !== 1) {
+    failed++
+    console.log(`FAIL  B-8 三篇里只有一篇的锚句含该载荷，独立簇却是 ${st.independent_cluster_count}`)
+  } else if (st.nominal_source_count !== 3) {
+    failed++
+    console.log(`FAIL  B-8 名义来源数应仍为 3（排除必须可见），实测 ${st.nominal_source_count}`)
+  } else {
+    console.log(`PASS  B-8 三篇引证里只有一篇真的支持：来源 ${st.nominal_source_count}/独立簇 ${st.independent_cluster_count}`)
+  }
 }
 
 console.log()

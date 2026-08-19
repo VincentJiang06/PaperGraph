@@ -290,10 +290,19 @@ export function S(c) {
       // 它可以断言源句所否定的东西（「该方法**并未**达到 92% 的准确率」→ 载荷取「92% 的准确率」），
       // 旧判据下 base = ST-V。R3 那一轮只改了 §2.2.1 的散文，
       // 没改自称「唯一的计算式」的 §1.5，也没进实现——规范与实现分叉了整整一轮。
+      // 〔外部标定测试 T2-4 之后〕K-L-T 是**三个**合取项：
+      // 包含 ∧ 极性 ∧ 框架。原文在同一处并列给了多个同量纲读数时，
+      // claim 必须声明它取的是哪一个读法（G-FRAME）。
+      // 「只有 36% 的心理学研究可以被复现」在前两项上全过——
+      // 逐字转录无误、极性无误——错在把四个判据塌成一个。
+      // 缺项按缺失处理，与前两项同一条纪律：「不适用」与「通过」必须是不同的值。
       if (c.polarity_scope_passed === undefined) {
-        throw new ContractGap('1/K-L-T', 'polarity_scope_passed 缺失——K-L-T 是两个合取项，不能省（§2.2.1）')
+        throw new ContractGap('1/K-L-T', 'polarity_scope_passed 缺失——K-L-T 是三个合取项，不能省（§2.2.1）')
       }
-      if (c.anchor_containment_passed && c.polarity_scope_passed) {
+      if (c.frame_gate_passed === undefined) {
+        throw new ContractGap('1/K-L-T', 'frame_gate_passed 缺失——K-L-T 是三个合取项，不能省（§2.2.1）')
+      }
+      if (c.anchor_containment_passed && c.polarity_scope_passed && c.frame_gate_passed) {
         base = ST.V
       } else {
         effectiveKind = 'K-L-A'

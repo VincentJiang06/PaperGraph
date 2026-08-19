@@ -20,6 +20,8 @@ import { createHash } from 'node:crypto'
 import { denyProducerSubmission, denyGateWrite } from './writer-contract.mjs'
 import { quoteFaithful } from './normalize.mjs'
 import { polarityScope } from './gates/g-polarity.mjs'
+import { anchorContainment } from './gates/g-containment.mjs'
+import { frameGate } from './gates/g-frame.mjs'
 import { cluster } from './gates/g-cluster.mjs'
 import { counterQueryOk } from './gates/g-ctr-scan.mjs'
 import { S } from './status.mjs'
@@ -57,27 +59,49 @@ export function runClaim(submission, ctx) {
     record.quote_faithful = 'na'
   }
 
-  // 锚点包含检验（K-L 路径的第一个合取项）
+  // 锚点包含检验（K-L 路径的第一个合取项）。判定见 src/gates/g-containment.mjs：
+  // 按 slot_type 分档——value/comparator 认数值等价，entity 认同词干，
+  // metric/sample 一律逐字。原实现是裸 `includes`，对真实文献有系统性假阴
+  // （`36` vs 原文 `Thirty-six`、`replication` vs 原文 `replicated`）。
   const payloadFields = Object.values(submission.payload ?? {}).map(v => String(v))
   const anchorSent = ctx.anchorSentence ?? ''
-  const containment = payloadFields.length > 0 && payloadFields.every(f => anchorSent.includes(f))
+  const cont = anchorContainment(submission.payload, submission.slot_types, anchorSent)
+  const containment = cont.pass
   record.anchor_containment_passed = containment
-  mech.push({ gate_id: 'G-L1-b', gate_class: 'GC-0', verdict: containment ? 'pass' : 'fail' })
+  mech.push({ gate_id: 'G-L1-b', gate_class: 'GC-0', verdict: containment ? 'pass' : 'fail',
+              params: { containment_version: cont.version, per_slot: cont.per_slot } })
 
   // L1-c 极性作用域（第二个合取项）
   const pol = polarityScope(anchorSent, payloadFields, ctx.followingSentence ?? '')
   record.polarity_scope_passed = pol.pass
   mech.push({ gate_id: 'G-L1-c', gate_class: 'GC-0', verdict: pol.pass ? 'pass' : 'fail',
               params: pol.params, known_limitation: pol.knownLimitation ?? undefined })
-  record.sub_mode = (containment && pol.pass) ? 'T' : 'A'
+  // G-FRAME：原文在同一处并列给了多个同量纲读数时，claim 必须声明
+  // discriminator（逐字取自锚句、且不出现在兄弟读数里）。
+  // 「只有 36% 的心理学研究可以被复现」逐字转录无误、极性无误、来源真实，
+  // 错在把四个判据塌成一个——那是框架问题，包含与极性两道门都看不见。
+  const frm = frameGate(ctx.snapshotText ?? '', anchorSent, submission.discriminator)
+  record.frame_gate_passed = frm.pass
+  mech.push({ gate_id: 'G-FRAME', gate_class: 'GC-0', verdict: frm.pass ? 'pass' : 'fail',
+              params: { frame_version: frm.version, triggered: frm.triggered,
+                        sibling_readings: frm.siblings.length, why: frm.why },
+              known_limitation: frm.triggered ? undefined
+                : '本门只看分号并列的同量纲读数；没有这个指纹的框架塌陷看不见' })
+  record.sub_mode = (containment && pol.pass && frm.pass) ? 'T' : 'A'
 
   // 簇归并（G-CLUSTER）。它是本项目最脆的一块：R5 第 3 条预测说真实语料上
   // 独立簇会被转引链 / 跨语言链 / 自证回路 / 三版同文系统性压塌。
   // 本管线的立场是**认真归并、让代价可见**——少算的部分由 nominal_source_count
   // 与独立簇数并排展示（§5.5 R-I6）。
-  const cl = cluster(submission.evidence_refs)
+  // 只对**支持本 claim** 的证据归并成簇。一条锚句里没有这个载荷、
+  // 或正在否定它的文献，不该算作支持它的一个独立来源（外部标定测试 T3-3）。
+  const supporting = ctx.supporting_refs ?? submission.evidence_refs
+  const cl = cluster(supporting)
   record.independent_cluster_count = cl.independent_cluster_count
-  record.nominal_source_count = cl.nominal_source_count
+  // 名义来源数仍按**全部**证据算——排除掉的那些必须仍然可见，
+  // 否则「引了三篇、只有一篇支持」会看起来跟「只引了一篇」一样。
+  record.nominal_source_count = (submission.evidence_refs ?? []).length || cl.nominal_source_count
+  record.supporting_source_count = cl.nominal_source_count
   mech.push({ gate_id: 'G-CLUSTER', gate_class: 'GC-0', verdict: 'pass',
               params: { rules_version: cl.rules_version, applied_rules: cl.applied_rules,
                         cluster_map: cl.cluster_map },

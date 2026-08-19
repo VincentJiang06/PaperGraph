@@ -56,6 +56,8 @@ const D = {
   // 〔R4/R4-02〕K-L-T 的第二个合取项（极性作用域 L1-c）。此前 §2.2.1 改成两个合取项，
   // 但 §1.5 与实现都没跟上，向量空间里也没有这一维——规范与实现分叉了整整一轮。
   polarity_scope_passed: [true, false],
+  // 〔外部标定测试 T2-4〕K-L-T 的第三个合取项，进入穷举维度
+  frame_gate_passed: [true, false],
   // §7.3 幂集的代表元：空集、每个 ceiling 单独、每个 step-down 单独、
   // 以及会叠加的组合（叠加是 2d′ 的语义，必须被覆盖）
   flags: FULL
@@ -107,6 +109,7 @@ function* vectors() {
                       for (const independent_cluster_count of D.independent_cluster_count)
                         for (const chart_extracted of D.chart_extracted)
                           for (const psp of D.polarity_scope_passed)
+                          for (const fgp of D.frame_gate_passed)
                           for (const flags of D.flags)
                             yield {
                               kind,
@@ -123,6 +126,7 @@ function* vectors() {
                               chart_extracted,
                               flags,
                               polarity_scope_passed: psp,
+                              frame_gate_passed: fgp,
                             }
 }
 
@@ -220,7 +224,7 @@ const BASE_OK = {
   source_integrity: 'intact', has_verbatim_quote: false, quote_faithful: 'na',
   counter_evidence_searched: true, counter_evidence_found: false, budget_state: 'ok',
   evidence_grade: 'G5', retention_tier: 'A', independent_cluster_count: 3,
-  chart_extracted: false, flags: [], polarity_scope_passed: true,
+  chart_extracted: false, flags: [], polarity_scope_passed: true, frame_gate_passed: true,
 }
 
 // R3 fix-audit 的三条 P1 各配一个回归用例。它们全都能在旧实现上复现，
@@ -265,7 +269,7 @@ const C1_CASES = [
       counter_evidence_searched: true, counter_evidence_found: false,
       budget_state: 'ok', mechanism_results: [{ gate_class: 'GC-0', gate_id: 'G-RERUN', verdict: 'pass' }],
       evidence_grade: 'G5', retention_tier: 'A', independent_cluster_count: 1,
-      chart_extracted: false, flags: [], polarity_scope_passed: true,
+      chart_extracted: false, flags: [], polarity_scope_passed: true, frame_gate_passed: true,
     },
     want: ST.V,
   },
@@ -277,7 +281,7 @@ const C1_CASES = [
       counter_evidence_searched: true, counter_evidence_found: false,
       budget_state: 'ok', mechanism_results: [{ gate_class: 'GC-0', gate_id: 'G-L1', verdict: 'pass' }],
       evidence_grade: 'G5', retention_tier: 'B', independent_cluster_count: 1,
-      chart_extracted: false, flags: [], polarity_scope_passed: true,
+      chart_extracted: false, flags: [], polarity_scope_passed: true, frame_gate_passed: true,
     },
     want: ST.V,
   },
@@ -289,7 +293,7 @@ const C1_CASES = [
       counter_evidence_searched: true, counter_evidence_found: false,
       budget_state: 'ok', mechanism_results: [{ gate_class: 'GC-2', gate_id: 'G-L2', verdict: 'support' }],
       evidence_grade: 'G5', retention_tier: 'B', independent_cluster_count: 1,
-      chart_extracted: false, flags: [], polarity_scope_passed: true,
+      chart_extracted: false, flags: [], polarity_scope_passed: true, frame_gate_passed: true,
     },
     want: ST.U, // K(K-L-A)=2，单簇触发 2b：ST-A → ST-U
   },

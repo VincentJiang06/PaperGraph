@@ -66,6 +66,13 @@ red_case "红 R-6" "gate-ctx 的把关谓词改回 fail-open 缺省（行为层�
 red_case "红 R-7" "source_integrity 只核第一条证据（R6-08 原形态）" "R6 反例路径仍然走得通" \
   "perl -0pi -e 's/for \(const \{ ref \} of evidence\) \{/for (const { ref } of evidence.slice(0, 1)) {/' src/gate-ctx.mjs"
 
+# ── B 层 · per-evidence 支持过滤倒回（外部标定测试 T3-3） ────────────────
+# 倒回成「只看 evidence[0] 的锚点，其余证据不检查就计入簇」——
+# 那正是 T3-3 的形态：引 DiMasi + Prasad + Wouters 三篇，成稿印「来源 3/独立簇 3」，
+# 而后两篇的锚句里根本没有那个数，其中一篇还在反驳它。
+red_case "红 R-9" "证据不自证支持就计入簇（T3-3 原形态）" "独立簇却是" \
+  "perl -0pi -e 's/const supporting = ctx\.supporting_refs \?\? submission\.evidence_refs/const supporting = submission.evidence_refs/' src/pipeline.mjs"
+
 # ── B 层 · 簇归并倒回（R6-05） ───────────────────────────────────────────
 red_case "红 R-8" "不把内容哈希递给 G-CLUSTER（R6-05 原形态）" "R6 反例路径仍然走得通" \
   "perl -0pi -e 's/object_sha256: cards\[i\]\.object_sha256,//' src/run.mjs"

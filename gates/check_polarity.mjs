@@ -93,20 +93,44 @@ for (const [id, sent, payload, next, want, desc] of CASES) {
   console.log(`${id.padEnd(11)} ${(r.pass ? 'pass' : 'fail').padEnd(6)} ${(want ? 'pass' : 'fail').padEnd(6)} ${desc}${ok ? '' : '   ← 偏离'}`)
 }
 
-// 已认账的结构性假阴必须**可见**：跨句极性
-const cross = polarityScope('我们检验了三种方法。', ['92%'], '没有一种达到 92%。')
+// ── 跨句极性 · 两侧标定 ───────────────────────────────────────────────
+// 外部标定测试 T3-4 让这条已认账的假阴在真实数据上兑现：
+//   Prasad & Mailankody 摘要「…is $2.7 billion.」「However, this analysis lacks…」
+// 单取上句判 pass，成稿印「已归因」——而那篇正是在反驳这个数。
+// 现在按**下一句是否以转折词开头**分两档，两侧都要有样本。
+const A_PRASAD = 'A recent estimate of R&D spending is $2.7 billion (2017 US dollars).'
+const CROSS = [
+  ['X-1', false, A_PRASAD, '$2.7 billion', 'However, this analysis lacks transparency and independent replication.',
+   '★ T3-4：转折句首 + 否定 → 参与判定'],
+  ['X-2', false, '该方法达到 92%。', '92%', '然而，我们没有复现出这一结果。', '中文转折句首 + 否定'],
+  ['X-3', true,  A_PRASAD, '$2.7 billion', 'No funding was received for this study.',
+   '★ 非转折句首的否定 → 不参与判定（无关否定的假阳侧）'],
+  ['X-4', true,  A_PRASAD, '$2.7 billion', 'However, the estimate was later updated.',
+   '转折句首但无否定 → 不得判 fail'],
+  ['X-5', true,  A_PRASAD, '$2.7 billion', '', '没有下一句'],
+]
 console.log()
-if (!cross.knownLimitation) {
+console.log('跨句极性')
+console.log('─'.repeat(88))
+for (const [id, want, anchor, payload, next, desc] of CROSS) {
+  const r = polarityScope(anchor, [payload], next)
+  const ok = r.pass === want
+  if (ok) pass++; else failed++
+  console.log(`${id.padEnd(11)} ${(r.pass ? 'pass' : 'fail').padEnd(6)} ${(want ? 'pass' : 'fail').padEnd(6)} ${desc}${ok ? '' : '   ← 偏离'}`)
+}
+// 非转折的否定仍必须**被报出来**，不能因为不判定就静默
+const quiet = polarityScope(A_PRASAD, ['$2.7 billion'], 'No funding was received for this study.')
+if (!quiet.knownLimitation) {
   failed++
-  console.log('FAIL  跨句极性的已知假阴没有被报出来 —— 一条被静默掉的已知缺陷会在下次重构里被当成正常行为')
+  console.log('FAIL  非转折句首的跨句否定既不判定也不报告 —— 那等于它不存在')
 } else {
-  console.log(`已知未修（每次运行都必须可见）：${cross.knownLimitation}`)
+  console.log(`\n已知未修（每次运行都必须可见）：${quiet.knownLimitation}`)
 }
 
 console.log()
-if (failed) { console.log(`FAIL  ${failed}/${CASES.length + 1} 条偏离`); process.exit(1) }
+if (failed) { console.log(`FAIL  ${failed}/${CASES.length + CROSS.length + 1} 条偏离`); process.exit(1) }
 // 〔自我更正〕这行原本把「假阴侧 6 / 假阳侧 5」**硬编码**在字符串里，
 // 补入自攻用例后 6+5 ≠ 18 —— 一个自述数字与实测不符，正是本项目一直在抓的东西。
 const negSide = CASES.filter(c => c[4] === false).length
 const posSide = CASES.filter(c => c[4] === true).length
-console.log(`PASS  L1-c 标定集 ${CASES.length} 条（假阴侧 ${negSide} / 假阳侧 ${posSide}）全部符合，且跨句假阴保持可见`)
+console.log(`PASS  L1-c 标定集 ${CASES.length} 条（假阴侧 ${negSide} / 假阳侧 ${posSide}）+ 跨句 ${CROSS.length} 条全部符合，且非转折跨句否定保持可见`)

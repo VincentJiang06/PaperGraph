@@ -44,8 +44,11 @@ const autoQuery = (claim, op = '反驳') => {
   return { query: [...new Set(slots)].join(' ') + ' ' + op, result_keys: [] }
 }
 const CTR = q => ({ query: q, result_keys: [] })
-const base = (id, payload, slot_types, metric_frame) => ({
+// discriminator：逐字取自锚句、且不出现在任何兄弟读数里的片段。
+// 原文在同一处并列给了多个同量纲读数时，G-FRAME 要求 claim 声明它取的是哪一个。
+const base = (id, payload, slot_types, metric_frame, discriminator) => ({
   claim_id: id, kind: 'K-L-T', payload, slot_types, metric_frame, evidence_index: [0],
+  ...(discriminator ? { discriminator } : {}),
 })
 
 // ── T1 · AlphaFold CASP14 精度 ────────────────────────────────────────
@@ -84,7 +87,8 @@ run('T2-1', {
   fetches: [fetchOf('osc', 'Thirty-six')],
   claim: base('c1', { finding: 'replication', value: '36' },
               { finding: 'entity', value: 'value' },
-              { metric: '复现率(判据:统计显著)', sample_or_tier: '100 项心理学研究' }),
+              { metric: '复现率(判据:统计显著)', sample_or_tier: '100 项心理学研究' },
+              'statistically significant results'),
   skeleton: '在统计显著判据下,复现率为 {{claim:c1.value}}%。',
   counterSearch: 'AUTO',
 })
@@ -94,7 +98,8 @@ run('T2-2', {
   fetches: [fetchOf('osc', '39%')],
   claim: base('c1', { finding: 'replication', value: '39%' },
               { finding: 'entity', value: 'value' },
-              { metric: '复现率(判据:主观评定)', sample_or_tier: '100 项心理学研究' }),
+              { metric: '复现率(判据:主观评定)', sample_or_tier: '100 项心理学研究' },
+              'subjectively rated'),
   skeleton: '在主观评定判据下,复现率为 {{claim:c1.value}}。',
   counterSearch: 'AUTO',
 })

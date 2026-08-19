@@ -37,6 +37,7 @@ import { freezeGate } from './gates/g-freeze.mjs'
 import { inferenceGate } from './gates/g-inference.mjs'
 import { attributionGate } from './gates/g-attribution.mjs'
 import { gradeOfClaim, GRADE_VERSION } from './gates/g-grade.mjs'
+import { followingSentenceOf, anchorContainment } from './gates/g-containment.mjs'
 import { quoteFaithful } from './normalize.mjs'
 import { polarityScope } from './gates/g-polarity.mjs'
 
@@ -100,7 +101,35 @@ export function buildGateCtx({ root, submission, evidence = [], frozen = null,
   // ── 四个把关谓词：全部由门算，全部 fail-closed ────────────────────────
   const kind = submission.kind
   const payloadFields = Object.values(submission.payload ?? {}).map(v => String(v))
-  const pol = polarityScope(anchorSentence, payloadFields, first?.followingSentence ?? '')
+  // 下一句由门**从快照里算**，不读 fetch 递进来的值。
+  // 跨句极性现在参与判定，这个字段就是判定输入——判定输入不能来自被判定方。
+  const followingSentence = followingSentenceOf(snapshotText, anchorSentence)
+  const pol = polarityScope(anchorSentence, payloadFields, followingSentence)
+
+  // ── 每一条证据都要自证它在支持这条 claim ──────────────────────────────
+  // 〔外部标定测试 T3-3〕原实现只对 evidence[0] 做锚点包含与极性检验，
+  // 其余证据**一次都没被检查过**，却照样计入 nominal_source_count 与独立簇数。
+  // 真实后果：一条 claim 引 DiMasi + Prasad + Wouters 三篇，成稿印
+  // 「来源 3/独立簇 3」，读起来是三方独立支持——而后两篇的锚句里
+  // 根本没有那个数（它们讲的是各自不同的估计），其中一篇还正在反驳它。
+  //
+  // 判据是两条，都已经有门：
+  //   ① 这条证据的锚句里有没有这条 claim 的载荷（G-L1-b）
+  //   ② 这条证据的锚句（含转折下一句）是不是在否定它（G-L1-c）
+  // 任一不成立 ⇒ 它不是这条 claim 的**支持**来源，不计入簇。
+  // 它仍然留在证据卡里、仍然可见——排除的是「算作一票」，不是「存在」。
+  const perEvidence = evidence.map((e, i) => {
+    const f = e.fetch ?? {}
+    const a = String(f.anchorSentence ?? '')
+    const cont = anchorContainment(submission.payload, submission.slot_types, a)
+    const pp = polarityScope(a, payloadFields, followingSentenceOf(String(f.body ?? ''), a))
+    return {
+      index: i, work_id: e.ref?.work_id ?? f.work_id,
+      supports: cont.pass && pp.pass,
+      why: cont.pass ? (pp.pass ? null : '锚句被否定') : '锚句不含本 claim 的载荷',
+    }
+  })
+  const supportingRefs = evidence.filter((_, i) => perEvidence[i].supports).map(e => e.ref)
   const qf = quote ? quoteFaithful(snapshotText, quote, { pdf: !!first?.pdf }).verdict : 'na'
 
   // K-D 的两条。非 K-D 的 claim 不需要它们（S 只在 K-D 分支读），
@@ -118,7 +147,9 @@ export function buildGateCtx({ root, submission, evidence = [], frozen = null,
 
   return {
     snapshotText, anchorSentence,
-    followingSentence: first?.followingSentence ?? '',
+    followingSentence,
+    per_evidence_support: perEvidence,
+    supporting_refs: supportingRefs,
     quote,
     source_integrity: si,
     source_integrity_per_ref: perRef,

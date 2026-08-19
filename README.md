@@ -18,7 +18,7 @@
 | 证据引擎 | `g-polarity`（L1-c）· `g-cluster` · `g-ctr-scan`（X-2） | 三套两侧标定集（L1-c 32 条 / X-2 10 条） |
 | **把关谓词** | `g-rerun` · `g-freeze` · `g-inference` · `g-attribution` | 四个谓词从 `?? true` 变成真的有门在算 |
 | 存储 | `src/cas.mjs`（CAS + 证据卡 + `source_integrity`） | id 五分量敏感、断链当场拒、留存前提可检验 |
-| 管线 | `src/pipeline.mjs` → `src/status.mjs`（S） | 端到端 15 条 + 2778 万向量 oracle |
+| 管线 | `src/pipeline.mjs` → `src/status.mjs`（S） | 端到端 15 条 + 5557 万向量 oracle |
 | 组稿 | `src/composer.mjs`（W-10，拒裸数字） | 25 条，豁免须**自证身份** |
 | 编排 | `src/orchestrator.mjs` · `src/research.mjs`（并行多 loop） | 调度可复现、预算硬闸 |
 
@@ -151,7 +151,7 @@ v1 规划已归档于 `.archive/v1-2026-08-17/`，本轮从零重做。
 **本项目对自己的门押注必须分层说**（00-PREMISE B8）。
 **已落地的是文档层 + 状态函数层的门**：`./gates/run_all.sh everything` 当前 **8/8 全绿**，退出码判定，
 其中三套负例套件在临时副本（`--root`）上走真实入口证明这些门会红；
-`check_status_exhaustive.mjs` 是 `src/status.mjs` 的**穷举 oracle**——**2778 万输入向量、六值全可达、回归 8/8**，
+`check_status_exhaustive.mjs` 是 `src/status.mjs` 的**穷举 oracle**——**5557 万输入向量、六值全可达、回归 8/8**，
 "`S` 是全函数"由此从断言变成了实测。
 **尚未落地的是证据层与运行层的门**：判据写成可核对的形式——`gates/` 下**没有任何一道门读过一件证据工件**
 （`claims/*`、快照、`status.json`、台账完备性），**也没有任何一道门读过一条运行时痕迹**

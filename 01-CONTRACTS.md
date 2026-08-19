@@ -285,7 +285,7 @@ S:
     K-D 数据推导（开放式）: 重跑门通过 → ST-A        否则 ST-U      （开放式端到端永不可达 ST-V，§2.1）
     K-L-T 文献转录       : 锚点包含检验 ∧ 极性作用域检验（L1-c）→ ST-V   任一不过则降为 K-L-A 处理
     K-L-A 文献归因       : 归因裁决 support → ST-A   partial/not-support → ST-U
-       注：K-L-T 的两个合取项分别由 `anchor_containment_passed` 与 `polarity_scope_passed`
+       注：K-L-T 的三个合取项分别由 `anchor_containment_passed`、`polarity_scope_passed` 与 `frame_gate_passed`
            承载（两者皆 §1.3 必填）；后者是 L1-c 的判定结果（03-EVIDENCE-ENGINE §3.1.1.2）
     K-I 逻辑推断         : 推断门全项通过 → ST-A     否则 ST-U      （K-I 永不可达 ST-V，§2.3.1）
     图形读数的数值断言    : base 强制为 ST-E（覆盖上述结果）        （§3.5）
@@ -462,7 +462,7 @@ kind ::= data-derived | literature-cited | logically-inferred
 
 **§2.2.1 两个子模式，边界由机器判定，不由人判断**：
 
-- **K-L-T 转录型**：**两个合取项同时成立**——
+- **K-L-T 转录型**：**三个合取项同时成立**——
   (i) **包含检验**：claim 的全部载重载荷（结构化字段中的数字、命名实体、口径三元组、比较对象）
       能被 `anchor_span` 逐字覆盖，判定式 `normalized(claim.payload) ⊆ normalized(anchor_span)`；
   (ii) **极性作用域检验**（L1-c，03-EVIDENCE-ENGINE §3.1.1.2）：载荷不落在 `anchor_span` 中
@@ -652,9 +652,9 @@ v1 缺失该维度。中文场景下「拿到全文」经常不可能，英文�
 | W-01 | `objects/<sha256>`（CAS：快照原始字节、抽取文本、run 输出） | **我们自建的检索/抓取工具执行器**，在同一次工具执行内写入 | 只读 | 落库 `tool/result` 存的是**截断后**内容；超阈值纯文本结果原文不在日志里 [E: GROUND-TRUTH-CORRECTIONS.md#A2, gt-evidence-substrate.md#E4]。且工具的 canonical value 是 execution-local、不进持久日志 [E: gt-exec-security.md#H-2] |
 | W-02 | `tool/result.data.meta.evidence`（抓取锚点：`object_sha256/url/retrieved_at/http_status/bytes/extractor_version`） | **同一个工具执行器的返回值** | 不可写 | 唯一零风险落点：模型不可见、被 pruner 完整保留、被持久化逐字保留、事件类型已知不影响 resume [E: GROUND-TRUTH-CORRECTIONS.md#A1/#E2, gt-evidence-substrate.md#B8/#D4] |
 | W-03 | `claims/<id>.json`（**内容**：kind、结构化载荷、metric_frame、证据指针、premises、tolerance） | **producer agent**，经 claim 提交工具，schema 硬校验 | 门只读 | — |
-| W-04 | `claims/<id>.status.json`（**status 及全部派生字段**：status、evidence_grade、independent_cluster_count、**nominal_source_count**、counter_evidence_*、computed_at、gate_version、inputs_hash；**以及 S 实际消费的全部判定输入**——`mechanism_results[]`（含每项 `gate_class`，0g 与 §6.1 GC-2 上限的输入）、`flags[]`（2d/2d′ 的输入）、`budget_state`（0f/2e 的输入）、`retention_tier`、`kind`、`source_integrity`、`counter_evidence_searched`、`counter_evidence_found`、`chart_extracted`、`sub_mode`，及**九个**正交谓词 `has_verbatim_quote` / `quote_faithful` / `question_frozen` / `anchor_containment_passed` / **`polarity_scope_passed`** / `rerun_gate_passed` / `inference_gate_passed` / `chart_extracted` / `attribution_verdict` | **门代码（确定性脚本）** | 任何 agent 不可写；提交工具的 schema **不含** status 字段，出现即 `tools/pre-execute` deny | I-W1、I-W2 |
+| W-04 | `claims/<id>.status.json`（**status 及全部派生字段**：status、evidence_grade、independent_cluster_count、**nominal_source_count**、counter_evidence_*、computed_at、gate_version、inputs_hash；**以及 S 实际消费的全部判定输入**——`mechanism_results[]`（含每项 `gate_class`，0g 与 §6.1 GC-2 上限的输入）、`flags[]`（2d/2d′ 的输入）、`budget_state`（0f/2e 的输入）、`retention_tier`、`kind`、`source_integrity`、`counter_evidence_searched`、`counter_evidence_found`、`chart_extracted`、`sub_mode`，及**十个**正交谓词 `has_verbatim_quote` / `quote_faithful` / `question_frozen` / `anchor_containment_passed` / **`polarity_scope_passed`** / **`frame_gate_passed`** / `rerun_gate_passed` / `inference_gate_passed` / `chart_extracted` / `attribution_verdict` | **门代码（确定性脚本）** | 任何 agent 不可写；提交工具的 schema **不含** status 字段，出现即 `tools/pre-execute` deny | I-W1、I-W2 |
 
-〔R5-08 修复〕`polarity_scope_passed` 本轮成了 K-L-T 的必填合取项（缺失即抛 ContractGap）， 但本清单——它自称是「S 实际消费的**全部**判定输入」——**没跟上**； 原文还写「七个」却列了八个。后果不是笔误：**没进 W-04 就没有写者契约**， 对照 EE-L-20 对 `sub_mode` 明令 producer 声明即 deny，而 producer 直接把 `polarity_scope_passed` 填 `true` 就能拿 ST-V。九个谓词全部由 W-04 指派写者为门代码。〔R3 修复〕本节自称「穷举，不留『等等』」，但此前只列派生字段，**S 的判定输入一个都没列**——七个谓词在全部规划文档里出现 0 次，而它们决定 §1.5 第 1 步的 base）   **门代码（确定性脚本）**   任何 agent 不可写；提交工具的 schema **不含** status 字段，出现即 `tools/pre-execute` deny   I-W1、I-W2；前代 `reproduced` 列门既不读也不写，「门的输出才是记录」只兑现在旁路文件里，台账本身永远停在 `?` [E: gt-pg-current.md#C-8]。**`nominal_source_count` 于本轮补入**：写者是门代码（03-EVIDENCE-ENGINE 的 **G-CLUSTER**，与 `independent_cluster_count` **同一写者、同一行为**——同门产出、同门写入、该门自己不做任何降级动作），补入理由是 §5.5 R-I6 要求它与独立簇数**并排展示**，不补则渲染层拿不到这个数。**`cluster_map` 不随之进入 W-04**：它体量大且只用于审计与人审队列，落在 `gate-reports/<run_id>/G-CLUSTER.json`（W-08）
+〔R5-08 修复〕`polarity_scope_passed` 本轮成了 K-L-T 的必填合取项（缺失即抛 ContractGap）， 但本清单——它自称是「S 实际消费的**全部**判定输入」——**没跟上**； 原文还写「七个」却列了八个。后果不是笔误：**没进 W-04 就没有写者契约**， 对照 EE-L-20 对 `sub_mode` 明令 producer 声明即 deny，而 producer 直接把 `polarity_scope_passed` 填 `true` 就能拿 ST-V。十个谓词全部由 W-04 指派写者为门代码。〔外部标定测试 T2-4 修复〕`frame_gate_passed` 本轮成为 K-L-T 的第三个合取项，同时补入本清单——**R5-08 的教训是「新增合取项而清单没跟上」，这次没有再犯**。〔R3 修复〕本节自称「穷举，不留『等等』」，但此前只列派生字段，**S 的判定输入一个都没列**——七个谓词在全部规划文档里出现 0 次，而它们决定 §1.5 第 1 步的 base）   **门代码（确定性脚本）**   任何 agent 不可写；提交工具的 schema **不含** status 字段，出现即 `tools/pre-execute` deny   I-W1、I-W2；前代 `reproduced` 列门既不读也不写，「门的输出才是记录」只兑现在旁路文件里，台账本身永远停在 `?` [E: gt-pg-current.md#C-8]。**`nominal_source_count` 于本轮补入**：写者是门代码（03-EVIDENCE-ENGINE 的 **G-CLUSTER**，与 `independent_cluster_count` **同一写者、同一行为**——同门产出、同门写入、该门自己不做任何降级动作），补入理由是 §5.5 R-I6 要求它与独立簇数**并排展示**，不补则渲染层拿不到这个数。**`cluster_map` 不随之进入 W-04**：它体量大且只用于审计与人审队列，落在 `gate-reports/<run_id>/G-CLUSTER.json`（W-08）
 
 | W-05 | `ledger/`（per-claim manifest，append-only） | **门代码** | 只读 | — |
 | W-06 | `evidence/<evidence_id>.json`（证据卡；id = `sha256(work_id ‖ version_id ‖ locator ‖ normalize(quote) ‖ extractor_version)`） | **抓取工具执行器** | 只读 | 按**来源坐标**内容寻址 → 并行写入天然幂等、去重不需要 embedding、**矛盾在构造上不可能被去重门吃掉** [E: ext-evidence-schema.md#结论摘要-7] |
