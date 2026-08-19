@@ -19,9 +19,16 @@
  * 但**「原文在同一句里并列给了多个同类读数」是可机器判定的**，
  * 而这恰好是框架塌陷最常见的现场：作者从枚举里挑走一个，丢掉判据。
  *
- * 指纹：分号并列的子句，各自带一个**同量纲**的数。
- * 分号枚举是学术摘要里"同一个量的多个读法"的标准写法，
- * 不是任意两个数碰巧同量纲。
+ * 指纹：**同一句之内**并列出现的多个同量纲的数。
+ *
+ * 〔范围扩展 · S6 之后〕初版只认分号。分号枚举确实是学术摘要里"同一个量的
+ * 多个读法"最标准的写法，但不是唯一的：
+ *   "36%, 47%, and 39% respectively"        —— 逗号枚举
+ *   "92% precision and 87% recall"          —— and 并列
+ * 后者尤其值得触发：一条 claim 若写「模型达到 92%」并锚在这句上，
+ * **它确实该说清楚是哪个指标**。
+ * 现在按 `;` `，` `,` ` and ` ` 与 ` 一起切，仍然限定在**锚句所在的那一句**内
+ * ——跨句的枚举不算，那是另一个量级的问题。
  *
  * 触发之后要求的不是"解释一下"，而是一个可核的东西：
  * **discriminator** —— 一段逐字取自锚句子句、且**不出现在任何兄弟子句**里的文字。
@@ -58,7 +65,7 @@ function numbersIn(clause) {
   const out = []
   for (const m of clause.matchAll(NUM_RE)) {
     const after = clause.slice(m.index + m[0].length, m.index + m[0].length + 30)
-    if (NON_READING.test(after)) continue          // “95% confidence interval” 不是一个读数
+    if (NON_READING.test(after)) continue
     out.push({ tok: m[0], cls: unitClass(m[0], after) })
   }
   return out
@@ -103,8 +110,17 @@ export function frameGate(body = '', anchor = '', discriminator = '') {
   // Nature 那篇正文里到处是分号 + 数字，与 “0.96 Å 主链精度” 毫无关系，
   // 却被算成它的竞争读数。一道在全文上恒触发的门，等于把 K-L-T 关死。
   const window = containingSentence(b, a)
-  const clauses = window.split(/[;；]/).map(c => c.trim()).filter(Boolean)
-  const mine = clauses.find(c => a.includes(c) || c.includes(a.replace(/[;；]\s*$/, '')))
+  // 先把**置信区间括号**整段抹掉，再切子句。
+  // 〔标定用例 F-3/F-8 一起逼出来的〕逗号切分会把
+  // "…(95% CI, $683.6 million-$1228.9 million)" 切成两半，CI 标记留在前半，
+  // 后半只剩两个金额 → 被当成两个竞争读数。
+  // 而若改成「整个子句含 CI 就整条排除」，47% 那条**合法的**竞争读数
+  // 也会因为句中提到 confidence interval 而被整条丢掉（F-3 由此红过一次）。
+  // 正确的粒度是：只抹掉区间本身那一段，句子的其余部分照常参与判定。
+  const masked = window.replace(/[（(][^）)]*(?:confidence\s+interval|\bCI\b|置信区间)[^）)]*[）)]/gi, ' ')
+  const clauses = masked.split(/[;；，,]|\sand\s|\s与\s/).map(c => c.trim()).filter(Boolean)
+  const aMasked = a.replace(/[（(][^）)]*(?:confidence\s+interval|\bCI\b|置信区间)[^）)]*[）)]/gi, ' ')
+  const mine = clauses.find(c => aMasked.includes(c) || c.includes(aMasked.replace(/[;；]\s*$/, '').trim()))
   if (!mine) return { ...base, pass: true, why: '锚句不构成分号子句 —— 本门只看分号枚举' }
 
   const myNums = numbersIn(mine)

@@ -57,6 +57,43 @@ for (const [id, refs, want, wantCand, desc] of CASES) {
 }
 
 // 诚实边界必须可见：没有自陈关系时本门看不见转引
+// ── ⓪-b 近似归并 · 两侧标定（SA-5 第二步闭合） ────────────────────────
+// ⓪ 只抓逐字节相同。真实转引链里二手来源几乎总会改一两个词，
+// 一个字节之差哈希就分开，11 家转载又变成 11 个独立簇。
+// 近似归并**可能错并**，所以独立侧的样本比压塌侧更要紧。
+{
+  const T = 'Researchers report that the new drug development cost is 2.6 billion dollars.'
+  const NEAR = [
+    ['C-N1', 1, [T, T + ' '], '★ 只差一个尾空格'],
+    ['C-N2', 1, [T, T.replace('dollars.', 'dollars, reportedly.')], '★ 加了一个词的转载'],
+    ['C-N3', 1, [T, T.replace('Researchers report', 'Researchers reported')], '★ 改了时态'],
+    ['C-N4', 2, [T, 'A fresh estimate puts what it takes to bring a medicine to market at about 2.6bn.'],
+     '★ 重写型转引 —— 抓不到（已认账，需要语义比对）'],
+    ['C-N5', 2, ['The model reached 92% accuracy on CASP14.',
+                 'A different team measured 61% accuracy on the same benchmark.'],
+     '★ 真独立的两条：句式接近但内容不同，**不得错并**'],
+    ['C-N6', 2, ['We evaluate on the CASP14 benchmark using standard protocols.',
+                 'We evaluate on the CASP15 benchmark using standard protocols.'],
+     '★★ 只差一个字符但是**不同的评测集** —— 近似归并最危险的假阳，必须分开'],
+  ]
+  for (const [id, want, texts, why] of NEAR) {
+    const r = cluster(texts.map((t, i) => ({ evidence_id: `E${i}`, work_id: `W${i}`, anchor_sentence: t })))
+    const ok = r.independent_cluster_count === want
+    if (!ok) failed++
+    console.log(`${id.padEnd(7)} ${String(r.independent_cluster_count).padEnd(4)} ${String(want).padEnd(4)} ${why}${ok ? '' : '   ← 偏离'}`)
+  }
+  // 近似归并必须在 applied_rules 里标 level:'near'，与确定性归并区分
+  const r = cluster([{ evidence_id: 'E0', work_id: 'W0', anchor_sentence: T },
+                     { evidence_id: 'E1', work_id: 'W1', anchor_sentence: T + ' ' }])
+  const nearRules = r.applied_rules.filter(x => x.level === 'near')
+  if (!nearRules.length) {
+    failed++
+    console.log("FAIL  近似归并没有标 level:'near' —— 可能错并的合并必须与确定性合并可区分")
+  } else {
+    console.log(`      近似归并已标记：${nearRules.map(x => x.rule).join(', ')}`)
+  }
+}
+
 const opaque = cluster([{ work_id: 'W1', title: 'A' }, { work_id: 'W2', title: 'B' }])
 console.log()
 if (!opaque.knownLimitation) {
@@ -68,4 +105,5 @@ if (!opaque.knownLimitation) {
 
 console.log()
 if (failed) { console.log(`FAIL  ${failed} 条偏离`); process.exit(1) }
-console.log(`PASS  G-CLUSTER 标定集 ${CASES.length} 条（压塌侧 5 / 独立侧 3 / 低置信 1）全部符合`)
+// 〔自纠〕这三个数原本是硬编码的，加了近似归并的 6 条之后就不准了。
+console.log(`PASS  G-CLUSTER 标定集 ${CASES.length} 条 + 近似归并 6 条全部符合；近似合并与确定性合并可区分`)

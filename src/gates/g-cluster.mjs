@@ -84,6 +84,65 @@ export function cluster(refs = []) {
     else byContent.set(k, i)
   })
 
+  // ── ⓪-b 近似同一：改写过的转载 ────────────────────────────────────────
+  //
+  // 〔SA-5 的第二步闭合〕⓪ 只抓**逐字节**相同。真实的转引链里，
+  // 二手来源几乎总会改一两个词、换个标点、加个 "reportedly"——
+  // 一个字节之差，哈希就分开，11 家转载又变成 11 个独立簇。
+  //
+  // 判据是 **5 字符 shingle 的 Jaccard 重合度**：确定性、离线、可复算，
+  // 不需要任何自陈字段，producer 也伪造不了（要伪造就得真的把正文改得不像）。
+  // 阈值 0.82 是**高**阈值：它抓的是「同一段话改了几个词」，
+  // 不是「两篇讲同一件事的独立报道」——后者的重合度远在此之下。
+  //
+  // 这条与 ⓪ 的关键差别：它可能**错并**。所以它归并的对，
+  // 在 applied_rules 里标 level:'near'，人审队列看得见是哪一条规则合的。
+  const SHINGLE_K = 5
+  const NEAR_DUP_THRESHOLD = 0.82
+  const shinglesOf = t => {
+    const n = String(t ?? '').toLowerCase().replace(/\s+/g, ' ').trim()
+    if (n.length < SHINGLE_K) return new Set()
+    const out = new Set()
+    for (let i = 0; i + SHINGLE_K <= n.length; i++) out.add(n.slice(i, i + SHINGLE_K))
+    return out
+  }
+  // 名字必须与文件里既有的 `jaccard`（按**数组**算）区分开。
+  // 〔标定用例 C-9 抓到的〕初版就叫 jaccard，在 cluster() 作用域内遮蔽了外层那个，
+  // 而外层那个被 ⑥ 低置信候选按数组调用（`.length`）——
+  // 到我这里变成 `.size`，`undefined` 是 falsy，于是**低置信候选一条都生不出来**，
+  // 人审队列静默清空。同名不同签名的遮蔽，是最不响的一类破坏。
+  const jaccardSet = (a, b) => {
+    if (!a.size || !b.size) return 0
+    let inter = 0
+    for (const x of a) if (b.has(x)) inter++
+    return inter / (a.size + b.size - inter)
+  }
+  //
+  // **数字守卫**：文本重合度再高，只要两边的数字不同，就不是同一段话。
+  // 〔标定用例 C-N6 抓到的，也是这条规则最危险的假阳〕
+  //   "We evaluate on the CASP14 benchmark using standard protocols."
+  //   "We evaluate on the CASP15 benchmark using standard protocols."
+  // 只差一个字符，Jaccard 接近 1，却是**两个不同的评测集**。
+  // 而数字恰恰是本项目全部判定的核心对象——把两个数不同的句子并成一簇，
+  // 等于亲手制造一次「合成共识」，正是这道门要防的东西。
+  const digitsOf = t => String(t ?? '').match(/\d+(?:\.\d+)?/g)?.sort().join(',') ?? ''
+  const raw = items.map(({ e }) => e.anchor_sentence ?? e.quote ?? '')
+  const texts = raw.map(shinglesOf)
+  const digits = raw.map(digitsOf)
+  for (let a = 0; a < items.length; a++) {
+    for (let b = a + 1; b < items.length; b++) {
+      if (find(a) === find(b)) continue
+      if (digits[a] !== digits[b]) continue          // 数字不同 ⇒ 不是同一段话
+      const j = jaccardSet(texts[a], texts[b])
+      if (j >= NEAR_DUP_THRESHOLD) {
+        const before = applied.length
+        union(a, b, `near-duplicate(jaccard=${j.toFixed(3)})`, applied)
+        // 近似归并要与确定性归并区分开：它可能错并，人审队列据此排查
+        if (applied.length > before) applied[applied.length - 1].level = 'near'
+      }
+    }
+  }
+
   // ── ① 确定性同一：同 DOI / arXiv / work_id ────────────────────────────
   const byExact = new Map()
   items.forEach(({ i, e }) => {
@@ -163,8 +222,12 @@ export function cluster(refs = []) {
     rules_version: CLUSTER_RULES_VERSION,
     // 诚实边界：本实现只处理**自陈**的链路（cites_source_id / upstream_id / self_cite_group）。
     // 没有自陈时它看不见转引——而真实语料里自陈往往缺失。
+    // 诚实边界（更新）：⓪ 抓逐字节相同、⓪-b 抓改写过的转载（shingle 重合 ≥0.82）。
+    // 仍然抓不到的是**重写**的转引——二手来源用自己的话复述同一个数，
+    // 文本重合度低于阈值。那需要的是语义比对，不是 GC-0 的量级。
     knownLimitation: refs.some(e => !e.cites_source_id && !e.upstream_id && !e.self_cite_group)
-      ? '部分证据未自陈上游/转引/自证关系，本门只能按身份键归并；真实语料里转引链常常不自陈（R5 第 3 条预测未闭合）'
+      ? '部分证据未自陈上游/转引/自证关系。本门可抓：同身份键、逐字节同文、改写过的转载（shingle 重合 ≥0.82）；'
+        + '抓不到：用自己的话复述同一个数的重写型转引（需要语义比对，非 GC-0 量级）'
       : null,
   }
 }

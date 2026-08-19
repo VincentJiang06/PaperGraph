@@ -30,6 +30,11 @@ const SINGLE = 'The estimated average out-of-pocket cost per approved new compou
 // 置信区间不是一个「读数」
 const WITH_CI = 'The median investment was $985.3 million (95% CI, $683.6 million-$1228.9 million).'
 
+// 分号之外的并列形态
+const AND_CLAUSE = 'The model reached 92% precision and 87% recall on the held-out set.'
+const COMMA_LIST = 'Accuracy was 36%, 47%, 39% across the three evaluation criteria.'
+const ONE_AND    = 'The system achieved 92% accuracy and was released under an open license.'
+
 // [编号, 期望pass, 正文, 锚句, discriminator, 说明]
 const CASES = [
   // ── 该触发且该拦 ────────────────────────────────────────────────────
@@ -52,6 +57,18 @@ const CASES = [
   ['F-7', true,  SINGLE, SINGLE, '', '原文只给了一个数'],
   ['F-8', true,  WITH_CI, WITH_CI, '', '★ 置信区间的 95% 不是一个竞争读数'],
   ['F-9', true,  OSC, '这句话不在快照里。', '', '锚句不在快照里 —— 由 G-QUOTE 负责，本门不越权'],
+
+  // ── 分号之外的并列形态（范围扩展） ─────────────────────────────────
+  // 初版只认 `;`。分号是最标准的写法但不是唯一的，下面两种同样是
+  // 「同一句里并列多个同量纲读数」，而且第二种尤其该触发。
+  ['F-10', false, AND_CLAUSE, AND_CLAUSE, '',
+   '★ `and` 并列：92% precision 与 87% recall —— 写「模型达到 92%」必须说是哪个指标'],
+  ['F-11', true,  AND_CLAUSE, AND_CLAUSE, 'precision',
+   '同上，说清楚了就放行'],
+  ['F-12', false, COMMA_LIST, COMMA_LIST, '',
+   '★ 逗号枚举：三个同量纲读数'],
+  ['F-13', true,  ONE_AND, ONE_AND, '',
+   '★ `and` 连的不是两个读数（一个数 + 一段文字）—— 不得误伤'],
 ]
 
 let bad = 0
