@@ -64,6 +64,7 @@ if [ "$SCOPE" = all ] || [ "$SCOPE" = everything ] || [ "$SCOPE" = s1 ]; then
   run '写者契约门'        node gates/check_writer_contract.mjs
   run '负例套件 · 写者契约门'  bash gates/test_check_writer_contract.sh
   run '供给侧契约门'      node gates/check_supply_contract.mjs
+  run '负例套件 · 本轮三道新门'   bash gates/test_new_gates.sh
   run '负例套件 · 供给侧契约门'  bash gates/test_check_supply_contract.sh
 
   # ── S2 · 产品层 ─────────────────────────────────────────────────────

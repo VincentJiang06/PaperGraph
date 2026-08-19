@@ -35,6 +35,11 @@ const AND_CLAUSE = 'The model reached 92% precision and 87% recall on the held-o
 const COMMA_LIST = 'Accuracy was 36%, 47%, 39% across the three evaluation criteria.'
 const ONE_AND    = 'The system achieved 92% accuracy and was released under an open license.'
 const NOUN_AND   = 'The median capitalized research and development investment was estimated at $985.3 million.'
+// 逐字取自 Wouters et al., JAMA 323(9):844-853 (2020)。
+const WOUTERS = 'After accounting for the costs of failed trials, the median capitalized research and '
+  + 'development investment to bring a new drug to market was estimated at $985.3 million '
+  + '(95% CI, $683.6 million-$1228.9 million), and the mean investment was estimated at '
+  + '$1335.9 million (95% CI, $1042.5 million-$1637.5 million) in the base case analysis.'
 
 // [编号, 期望pass, 正文, 锚句, discriminator, 说明]
 const CASES = [
@@ -70,9 +75,14 @@ const CASES = [
    '★ 逗号枚举：三个同量纲读数'],
   ['F-13', true,  ONE_AND, ONE_AND, '',
    '★ `and` 连的不是两个读数（一个数 + 一段文字）—— 不得误伤'],
+  ['F-15', true,  WOUTERS, WOUTERS, 'median',
+   '★★ 真实的那句（Wouters 2020）：中位数与均值并列，而 `research and development` 里的' +
+   ' and 是名词短语内部的。切开它会让含载荷的半句丢掉 median —— ' +
+   ' F-14 的合成样本**不能鉴别**这条判据（切开后前半句没数字，本来就不算兄弟读数），' +
+   ' 是负例套件 F-3 抓出来的空心样本。'],
   ['F-14', true,  NOUN_AND, NOUN_AND, 'median',
-   '★★ `research and development` 是名词短语内部的 and：切开会让含载荷的半句丢掉 median，' +
-   ' 于是 discriminator 被判成「不是逐字片段」—— 一个理由完全错误的红（真实文献 T3-6）'],
+   '〔空心样本，留作对照〕它看起来覆盖了「名词短语内部的 and」这条判据，实则不能鉴别：' +
+   ' 切开后前半句没有数字，本来就不算兄弟读数。真正有鉴别力的是上面的 F-15。'],
 ]
 
 let bad = 0
