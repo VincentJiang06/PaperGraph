@@ -5,9 +5,9 @@
 > 数据分析可重跑 / 他文引证可回溯到原文 / 逻辑推断前提可追。
 > **研究是产品，散文只是渲染层。**
 
-**当前状态：规划 + 七轮攻击（R1–R5 · S3 自攻 · R6 独立攻击）+ 产品层跑通。**
+**当前状态：规划 + 七轮攻击（R1–R5 · S3 自攻 · R6 独立攻击）+ 产品层跑通 + 外部标定测试。**
 
-`./gates/run_all.sh all` 当前 **26/26 全绿**，退出码判定。产品代码约 2700 行，门另有约 4200 行：
+`./gates/run_all.sh all` 当前 **30/30 全绿**，退出码判定。产品代码约 3500 行，门与外部测试另有约 6400 行：
 
 | 层 | 模块 | 门 |
 |---|---|---|
@@ -15,11 +15,12 @@
 | 写者契约 | `src/writer-contract.mjs` | S 读的每个字段都不能是被检查方能写的 |
 | **供给侧契约** | `src/gate-ctx.mjs`（构造 ctx 的唯一入口） | 结构 4 条 + 行为 6 条反例 + 1 条绿控 |
 | 归一化 | `src/normalize.mjs`（与 Python 复现脚本互为独立实现） | 双实现逐格对拍 |
-| 证据引擎 | `g-polarity`（L1-c）· `g-cluster` · `g-ctr-scan`（X-2） | 三套两侧标定集（L1-c 32 条 / X-2 10 条） |
+| 证据引擎 | `g-polarity`（L1-c）· `g-cluster` · `g-ctr-scan`（X-2）· `g-frame` · `g-containment` | 五套两侧标定集；L1-c 另有**外部**标定集（17 句取自真实论文摘要） |
 | **把关谓词** | `g-rerun` · `g-freeze` · `g-inference` · `g-attribution` | 四个谓词从 `?? true` 变成真的有门在算 |
 | 存储 | `src/cas.mjs`（CAS + 证据卡 + `source_integrity`） | id 五分量敏感、断链当场拒、留存前提可检验 |
 | 管线 | `src/pipeline.mjs` → `src/status.mjs`（S） | 端到端 15 条 + 5557 万向量 oracle |
 | 组稿 | `src/composer.mjs`（W-10，拒裸数字） | 25 条，豁免须**自证身份** |
+| 跨模块 | 全角/半角归一化 | 5 个文本比对入口 × 4 组样本，判定必须一致 |
 | 编排 | `src/orchestrator.mjs` · `src/research.mjs`（并行多 loop） | 调度可复现、预算硬闸 |
 
 **核心承诺，以及它被判过假这件事：**
@@ -103,7 +104,7 @@ v1 规划已归档于 `.archive/v1-2026-08-17/`，本轮从零重做。
 | [04-ORCHESTRATION.md](04-ORCHESTRATION.md) | 拓扑、循环结构、扇出准入、停止与饱和、预算双计数器、检索资源治理、人在环 | 971 行 |
 | [05-TESTING.md](05-TESTING.md) | 三层评测、指标纪律、held-out、A/B 证伪、红队、校准、eval-of-eval、人力预算 | 1289 行 |
 | [06-SURVEY.md](06-SURVEY.md) | 调研摘要与**载荷数字总表**（全项目引用数字的唯一入口） | 1131 行 / 784 行核验表 |
-| [07-ATTACK-LEDGER.md](07-ATTACK-LEDGER.md) | **攻击台账**——每轮的靶标指纹、种子命中率、findings 全量、裁决与修复状态 | 1691 行 / R1 收 164 条 |
+| [07-ATTACK-LEDGER.md](07-ATTACK-LEDGER.md) | **攻击台账**——每轮的靶标指纹、种子命中率、findings 全量、裁决与修复状态 | 1729 行 / R1 收 164 条 |
 | `research/v2/` | 证据基座：26 份调研文件 / 25 维度 / 11,675 行 | ~1.1 MB |
 | `.loop/` | 持续迭代开发 runbook（**设计态，不自动启动**） | — |
 

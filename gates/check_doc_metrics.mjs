@@ -201,6 +201,28 @@ if (!existsSync(statsPath)) {
   }
 }
 
+// ── README 的「N/N 全绿」必须与实际跑的门数相符 ────────────────────────
+// 〔本门第三次被自己的边界打中〕头注早就写明「自述数字门只覆盖它列举过的
+// 那几种数字」。门数是 README 的**头条数字**，而它一直不在视野里：
+// 实测 26 → 30 的过程中 README 一直写着 26，五轮无人察觉。
+// 工件由 run_all.sh 落（它是唯一知道「这次真的跑了几道」的一方），
+// 缺失即判红 —— 与 oracle 向量数同一条纪律。
+{
+  const gp = join(ROOT, 'gates/.gate-stats.json')
+  if (!existsSync(gp)) {
+    problems.push({ what: 'gates/.gate-stats.json 不存在', want: '先跑 ./gates/run_all.sh all', got: '（缺）' })
+  } else {
+    const { total } = JSON.parse(readFileSync(gp, 'utf8'))
+    const m = readme.match(/\*\*(\d+)\s*\/\s*(\d+)\s*全绿\*\*/)
+    if (!m) {
+      problems.push({ what: 'README 未声明门数（形如 **N/N 全绿**）', want: `${total}/${total}`, got: '（缺）' })
+    } else if (Number(m[2]) !== total || Number(m[1]) !== total) {
+      problems.push({ what: 'README 写门数', want: `${total}/${total} 全绿`, got: `${m[1]}/${m[2]} 全绿` })
+      fixed = fixed.replace(m[0], `**${total}/${total} 全绿**`)
+    }
+  }
+}
+
 // ── 相对链接必须指向真实存在的文件 ────────────────────────────────────
 // 〔R3 修复 · 由 README «部分调研未收录» 一节暴露〕那一节把读者指向
 // `research/v2/EXCLUDED.md` 说明排除理由，而该文件**根本不存在**；同时还断言

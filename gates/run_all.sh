@@ -112,5 +112,14 @@ fi
 
 printf '\n════════════════════════════════════\n'
 printf '%d/%d 门通过\n' "$((total - failed))" "$total"
+
+# 落一份统计工件，供自述数字门比对 README 里的「N/N 全绿」。
+# 〔为什么要落工件而不是让 doc_metrics 自己数〕数门的方式有很多种
+# （数 run 行、数文件、按 scope 过滤），每一种都会和实际跑的那一套漂移。
+# 唯一不会漂的是**这次真的跑了几道**——所以由跑的人来记。
+if [ "$SCOPE" = all ]; then
+  printf '{"scope":"all","total":%d,"passed":%d}\n' "$total" "$((total - failed))" \
+    > "$(dirname "$0")/.gate-stats.json"
+fi
 [ "$failed" -eq 0 ] || printf '%d 道红\n' "$failed"
 exit "$failed"
