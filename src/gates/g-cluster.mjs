@@ -190,6 +190,46 @@ export function cluster(refs = []) {
 
   // ── ⑥ 低置信身份候选：**只提议不执行** ────────────────────────────────
   const candidates = []
+
+  // ⑥-a 重写型转引的候选（SA-5 剩下的那一半）。
+  //
+  // ⓪-b 的 shingle 阈值抓「同一段话改了几个词」。抓不到的是**重写**：
+  // 二手来源用自己的话复述同一个数，文本重合度低于任何合理阈值。
+  // 那需要语义比对，不是 GC-0 的量级——这一条 §S7 二认过账。
+  //
+  // 但**「不能自动归并」不等于「只能装作没看见」**。
+  // 有一个信号是确定性的、离线可算的：**两条证据带着同一个罕见数字**。
+  // 罕见的判据是保守的：小整数、年份、常见百分比一律不算
+  // （它们在任意两篇论文里撞车都很正常）。
+  // 命中即进人审队列 —— 与标题相似那一档同样是**只提议不执行**，
+  // 理由也相同：自动执行低置信合并，会把假合并率变成没人看得见的旋钮。
+  const COMMON = /^(?:19|20)\d\d$|^\d$|^\d\d$|^(?:100|50|95|99)(?:\.0+)?%?$/
+  const rareNums = t => {
+    const out = new Set()
+    for (const m of String(t ?? '').normalize('NFKC').matchAll(/\d+(?:[.,]\d+)*%?/g)) {
+      const tok = m[0]
+      if (COMMON.test(tok)) continue
+      if (tok.replace(/\D/g, '').length < 3) continue   // 三位有效数字以下不算罕见
+      out.add(tok)
+    }
+    return out
+  }
+  const rare = raw.map(rareNums)
+  for (let a = 0; a < items.length; a++) {
+    for (let b = a + 1; b < items.length; b++) {
+      if (find(a) === find(b)) continue
+      const shared = [...rare[a]].filter(x => rare[b].has(x))
+      if (!shared.length) continue
+      candidates.push({
+        pair: [refs[a].evidence_id ?? refs[a].work_id, refs[b].evidence_id ?? refs[b].work_id],
+        rule: 'same-rare-number',
+        confidence: 'low',
+        shared_numbers: shared,
+        why: `两条证据带着同一个罕见数字 ${shared.join('、')}，文本却不近似 —— ` +
+             `可能是重写型转引（同源），也可能是真正的独立复现。本门不替人做这个判断。`,
+      })
+    }
+  }
   for (let a = 0; a < items.length; a++) {
     for (let b = a + 1; b < items.length; b++) {
       if (find(a) === find(b)) continue
@@ -225,9 +265,15 @@ export function cluster(refs = []) {
     // 诚实边界（更新）：⓪ 抓逐字节相同、⓪-b 抓改写过的转载（shingle 重合 ≥0.82）。
     // 仍然抓不到的是**重写**的转引——二手来源用自己的话复述同一个数，
     // 文本重合度低于阈值。那需要的是语义比对，不是 GC-0 的量级。
+    // 诚实边界（S10 更新）：
+    //   自动归并：同身份键 / 逐字节同文 / 改写过的转载（shingle ≥0.82）
+    //   只提议不执行：标题高度相似 · **同一罕见数字**（重写型转引的信号）
+    //   仍然抓不到：换了数字表述的转引（如「约 26 亿」对「$2558 million」），
+    //     以及不带数字的同源叙述。那些需要语义比对，非 GC-0 量级。
     knownLimitation: refs.some(e => !e.cites_source_id && !e.upstream_id && !e.self_cite_group)
-      ? '部分证据未自陈上游/转引/自证关系。本门可抓：同身份键、逐字节同文、改写过的转载（shingle 重合 ≥0.82）；'
-        + '抓不到：用自己的话复述同一个数的重写型转引（需要语义比对，非 GC-0 量级）'
+      ? '部分证据未自陈上游/转引/自证关系。自动归并：同身份键、逐字节同文、改写过的转载（shingle ≥0.82）；'
+        + '只提议不执行：标题相似、同一罕见数字（重写型转引的信号，进人审队列）；'
+        + '仍抓不到：换了数字表述的转引与不带数字的同源叙述（需语义比对，非 GC-0 量级）'
       : null,
   }
 }

@@ -82,7 +82,29 @@ for (const [id, refs, want, wantCand, desc] of CASES) {
     if (!ok) failed++
     console.log(`${id.padEnd(7)} ${String(r.independent_cluster_count).padEnd(4)} ${String(want).padEnd(4)} ${why}${ok ? '' : '   ← 偏离'}`)
   }
-  // 近似归并必须在 applied_rules 里标 level:'near'，与确定性归并区分
+    // ── ⑥-a 重写型转引的候选（SA-5 剩下的那一半） ────────────────────────
+  // 抓不到不等于装作没看见：同一个**罕见数字**是确定性、离线可算的信号。
+  // 只提议不执行 —— 与标题相似那一档同理。
+  const CAND = [
+    ['C-R1', 1, ['The estimated cost to develop a new drug is $2558 million in 2013 dollars.',
+                 'A recent analysis puts what it takes to bring a medicine to market at $2558 million.'],
+     '★ 重写型转引：文本不近似，但同一个罕见数字 —— 应进人审队列'],
+    ['C-R2', 0, ['We enrolled 100 patients in 2019.', 'A total of 100 subjects were studied in 2019.'],
+     '★ 常见数字撞车（100 / 2019）不得进队列 —— 否则队列会被噪声淹没'],
+    ['C-R3', 0, ['Accuracy reached 92.4 GDT_TS.', 'The system scored 61.3 GDT_TS.'],
+     '★ 不同的数字：不是同源的信号'],
+    ['C-R4', 0, ['The estimated cost is $2558 million.', 'The estimated cost is $2558 million.'],
+     '★ 逐字相同 —— 已被 ⓪ 归并，不该再重复提议'],
+  ]
+  for (const [id, want, texts, why] of CAND) {
+    const r = cluster(texts.map((t, i) => ({ evidence_id: `E${i}`, work_id: `W${i}`, anchor_sentence: t })))
+    const n = r.identity_merge_candidates.filter(c => c.rule === 'same-rare-number').length
+    const ok = n === want
+    if (!ok) failed++
+    console.log(`${id.padEnd(7)} ${String(n).padEnd(4)} ${String(want).padEnd(4)} ${why}${ok ? '' : '   ← 偏离'}`)
+  }
+
+// 近似归并必须在 applied_rules 里标 level:'near'，与确定性归并区分
   const r = cluster([{ evidence_id: 'E0', work_id: 'W0', anchor_sentence: T },
                      { evidence_id: 'E1', work_id: 'W1', anchor_sentence: T + ' ' }])
   const nearRules = r.applied_rules.filter(x => x.level === 'near')
@@ -106,4 +128,5 @@ if (!opaque.knownLimitation) {
 console.log()
 if (failed) { console.log(`FAIL  ${failed} 条偏离`); process.exit(1) }
 // 〔自纠〕这三个数原本是硬编码的，加了近似归并的 6 条之后就不准了。
-console.log(`PASS  G-CLUSTER 标定集 ${CASES.length} 条 + 近似归并 6 条全部符合；近似合并与确定性合并可区分`)
+console.log(`PASS  G-CLUSTER 标定集 ${CASES.length} 条 + 近似归并 6 条 + 重写型候选 4 条全部符合；` +
+  `近似合并与确定性合并可区分；重写型只提议不执行`)
